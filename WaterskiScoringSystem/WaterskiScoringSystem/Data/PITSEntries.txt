@@ -1,0 +1,2395 @@
+-------- WSTIMS Rel 3.53+ Registration Worksheet --------								-EVENTS-			OFCL	RANKING LIST SCORES			 RATINGS						-- Membership Status --			--Entry Fees--		Part-				
+Tourn Name:	PITS Fall Festival			ID #:		08M027		24	11	10	RTGS	 AS OF mm/dd/yyyy			---------			SKR	TR	JP	Rdy to 	Reason if	Upgrd	  AMT	  AMT	ici-				
+Member ID #	Last-name	1st-name  T	eam	Dv	Ag	Home City	ST	SL	TR	JP	DJCS	-SLM-	-TRK-	-JMP-	SL	TR	JP	WGT	BT	RH	 Ski?	Not Ready	$ Amt	 PAID	  DUE	pant?	Etc.			
+---+--+----	------------	----------	---	--	--	------------	--	--	--	--	----	-----	-----	-----	--	--	--	---	--	--	------	-----------	-----	---.--	---.--	-----	----			
+																														
+000-00-0001	Builta	Kara		G3	16	Mahomet	IL	AA				45									Yes			40.00		x				
+700-04-0544	Chappell	Dean		M5	56	Decatur	IL	BB	AA	AA	SSR-	89.833	1593.3	134.66	E1	M1	E3		MA	5	Yes				50.00	x				
+400-00-0932	Chappell	Sara		W2	28	Decatur	IL	BB	AA		CC	67.333	1916.6	42.300	M1	M2			MA		Yes				45.00	x				
+200-06-2741	Flickinger	Brent		M3	40	Decatur	IL	AA			AA--	90.333			X2						Yes				40.00	x				
+500-00-6786	Grubb	Dana		M1	19	Philo	IL	AA		AA		89.000	270.00	171.33	M1		E3			H	Yes				35.00	x				
+500-04-1062	Hall	Alan		M3	44	Bloomington	IL	AA			-R-C	57.831									Yes			40.00		x				
+400-01-5390	Isaacs	Sandra		W3	36	Pleasant Pla	IL	BB				78.000			M2						Yes				40.00	x				
+000-05-5406	Jackson	Samuel		B2	13	Columbus	IN	AA				91.666			E3						Yes			40.00		x				
+600-05-5404	Jackson	Thomas		M3	43	Columbus	IN	AA				89.166			X3						Yes			40.00		x				
+000-00-0899	Krueger	Fred		M7	66	Tower Hill	IL	BB			CJ	87.500			E3						Yes				40.00	x				
+400-00-0312	LaFerla	Mike		M4	49	New Athens	IL		AA			71.725	2503.3			E1			MC		Yes			40.00		x				
+000-12-1200	Leutz	Benjamin		B1	9	Jacksonville	IL	AA				68.000	126.66		E3						Yes			40.00		x
+200-04-0789	Leutz	Darr		M4	46	Jacksonville	IL	BB			SA-R	98.500	788.50		E3	X1					Yes			40.00		x
+000-00-3384	Leutz	Dawn		W3	38	Jacksonville	IL	BB			--A-	77.333			M2						Yes			40.00		x
+300-11-3066	Leutz	Savannah		G2	11	Jacksonville	IL	AA	AA			73.333	356.66		E3	X3			CC		Yes			40.00		x
+900-00-3651	Madden	Christine		W1	20	Homer Glen	IL	BB	AA	AA		74.500	3183.3	104.33	M2	E2	E2		MA	5	Yes				40.00	x
+800-04-1214	Madden	Janet		W5	53	Homer Glen	IL	BB	AA	AA	-A-S								MA	5	Yes				45 / 50	x
+100-07-9566	Matzelle	Shari		W3	43	Chicago	IL	BB				51.750									Yes			40.00		x
+800-00-7384	Miller	David		M4	51	Mansfield	IL	BB	AA	AA		62.666	1283.3	97.666		X3	M3		MA	5	Yes				50.00	x
+100-11-0678	Monroe	Chris		M2	28	Decatur	IL	AA			-A--	89.666	36.000		M1						Yes			40.00		x
+000-00-9270	Montavon	Elizabeth		G2	13	Dixon	IL	AA	AA			80.333	4216.6		E3	E3			MC		Yes			45.00		x
+500-07-4055	Montavon	Zach		B1	9	Dixon	IL	AA	AA			67.833	3323.3		E3	E3			MC		Yes			45.00		x
+800-01-8700	Myers	Abigail		G2	12	Du Quoin	IL	AA		AA		55.000		29.925	M3		E3			5	Yes				45.00	
+400-11-4345	Rose	Brandon		M1	21	Brookfield	WI		AA	AA		0.475	1530	84.666		M2	X2		MC	H	Yes			35.00		x
+100-00-4465	Verhagen	Ben		M4	47	Ballwin	MO			AA	---C	57.237		83.666			X2			5	Yes			40.00		x
+700-00-0931	Zoellner	Kelly		W2	29	Edinburg	IL	BB	AA	AA	ASA-	93.833	3183.3	130.00	E3	E3	E3		MA	5	Yes				50.00	x
+100-01-5391	Zoellner	Troy		M3	40	Edinburg	IL	AA		AA	CD	92.333		154.00	M1		E3			5	Yes				45.00	x
+
+600-05-3226	Isaacs	Kristi		G2	10	Pleasant Pla	IL														Yes					x
+300-05-3227	Isaacs	Tyler		B2	12	Pleasant Pla	IL					53.333			M1						Yes					x
+500-00-6434	Surdej	Barb		W4	51	Wilmington	IL				-R--	76.666	1313.3	42.333	E3	M1	M1		CC	5	Yes					x
+
+000-00-0930	Chappell	Becky		W5	53	Decatur	IL				--S-									5	Yes					o
+700-04-1998	Grubb	Tim		M4	47	Philo	IL				A---	75.166		89.666			X2			5	Yes					o
+200-04-3366	Isaacs	Gary		M3	43	Pleasant Pla	IL				CS	95.166			E1						Yes					o
+800-00-4611	Krueger	Rose		W6	64	Tower Hill	IL				-S--	57.166			E2						Yes					o
+400-00-9269	Montavon	Sally		W3	40	Dixon	IL				-A--										Yes					o
+400-04-2497	Montavon	William		M3	44	Dixon	IL														Yes					o
+500-01-1221	Sheedy	Pat		M3	42	Springfield	IL				R---										Yes					o
+900-00-0838	Smith	Jill		W2	32	New Carlisle	IN				-RR-		4370.0			E3					Yes					o
+700-00-6432	Surdej	Roy		M5	53	Wilmington	IL				SR--										Yes					o
+200-00-0837	Woodland	Diana		W5	59	Oblong	IL				--S-										Yes					o
+800-04-0505	Woodland	Steve		M5	59	Oblong	IL				-R--										Yes					o
+
+600-01-8379	Brandt	Nancy		W4	51	High Ridge	MO				-R--	53.100	2340.0			M2					Yes					
+800-04-0617	Bolger	Thomas		M4	45	Walton	KY				-R--										Yes					x
+100-12-3456	Broussard	Suzanne		W3	43	Decatur	IL														Yes					x
+800-01-8078	Cassidy	Corynn		W1	21	New Lenox	IL														Yes					x
+900-01-6059	Cassidy	Mark		M1	19	New Lenox	IL					81.750	1873.3	131.66	X2	E1	M2				Yes					x
+700-03-1142	Gabrielson	Eric		M2	28	Shorewood	IL				AA-S										Yes					x
+600-02-4433	Jacobi	Sean		B3	17	Flossmoor	IL							139.00			E3				Yes					x
+900-02-2720	Koziol	Edward		M4	50	Wilmington	IL					84.333	522.00		X2						Yes					x
+800-08-5225	Koziol	Erin		G3	15	Wilmington	IL					70.666	1200.0	48.000	M2	X2	X2				Yes					x
+700-01-1722	LaMarche	Michael		M2	33	New Lenox	IL							85.000			M2				Yes					x
+500-04-0522	LaMarche	Michael		M5	56	New Lenox	IL				SR--										Yes					x
+900-00-0883	LaMarche	Pamela		W5	55	New Lenox	IL				-AR-										Yes					x
+000-00-8259	Ludden	Kerry		M1	18	Gardner	IL														Yes					x
+000-02-0347	Lunsford	Garrett		M1	22	Carterville	IL														Yes					x
+700-02-0348	Lunsford	Kyle		M1	19	Carterville	IL					43.000									Yes					x
+800-00-3652	Madden	Andy		M1	18	Homer Glen	IL														Yes					x
+
+
+500-09-0064	McCain	Chase		B3	16	McCordsville	IN							139.66			E3			H	Yes					x
+500-05-4156	Meeker	Doug		M3	37	Farmer City	IL				-A--										Yes					x
+700-02-5426	Meeker	Kristin		W3	37	Farmer City	IL					56.700			X1						Yes					x
+500-07-9360	Sheedy	Kassidy		G2	12	Loami	IL					38.250			X1						Yes					x
+200-07-9361	Sheedy	Kennedy		G2	10	Loami	IL														Yes					x
+600-00-6433	Surdej	Jeff		M2	31	Wilmington	IL				AS--	104.33	4073.3	144.87	E3	E3	E1				Yes					x
+400-00-2000	Threlkeld	Kurtis		M1	24	Chicago	IL				-A--	84.000	613.33	151.33	X3	X2	E3				Yes					x
+200-13-1344	Tranchita	James		M1	24	Wilmington	IL														Yes					x
+300-04-2001	Tranchita	James		M5	53	Wilmington	IL				-R-S										Yes					x
+
+
+
+
+
+200-12-0379	Abdnor	Jonathan		M1	20	Arlington He	IL														Yes		
+900-00-1916	Aberle	James		M2	30	Wonder Lake	IL														Yes		
+100-11-8872	Adami	Tyler		B2	11	Wonder Lake	IL														Yes		
+100-00-1808	Adams	David		M4	48	Ewing	IL														Yes		
+400-11-8176	Aholt	James		B3	17	Lake Lotawan	MO														Yes		
+200-12-5329	Aholt	James		M6	63	Lake Lotawan	MO														Yes		
+500-11-8175	Aholt	Rita		W5	59	Lake Lotawan	MO														Yes		
+900-12-7227	Alberts	Alana		G3	15	Cedar Falls	IA														Yes		
+800-01-8023	Allen	Robert		B3	14	Batavia	IL														Yes		
+300-04-2816	Allen	Terry		M4	51	Batavia	IL														Yes		
+900-12-2994	Alsot	Elizabeth		G1	7	Wonder Lake	IL														Yes		
+000-12-5956	Ancil	Jordyn		G3	14	Warsaw	IN														Yes		
+100-12-5955	Ancil	Morgan		G2	12	Warsaw	IN														Yes		
+700-04-4137	Andersen	Lisa		W3	39	Inverness	IL														Yes		
+300-09-3476	Anderson	Ali		W1	20	Genoa	IL														Yes		
+700-04-2326	Anderson	Andy		M6	61	Jeffersonvil	IN					58.500									Yes
+300-00-8614	Anderson	Beverly		W3	41	Jeffersonvil	IN					2.7000									Yes
+500-04-6830	Anderson	Clinton		M2	29	Marshalltown	IA				-A--	61.200		105.45			X2				Yes
+900-01-6976	Anderson	David		M1	22	Bettendorf	IA														Yes
+500-01-6974	Anderson	Deborah		W4	48	Bettendorf	IA														Yes
+900-05-6307	Anderson	Eric		M3	42	Crystal Lake	IL				---C	95.166	4026.6	136.33	E1	E3	E3				Yes
+900-04-3578	Anderson	Larry		M4	50	Bettendorf	IA				---C										Yes
+600-01-6977	Anderson	Melanie		W1	21	Bettendorf	IA														Yes
+100-10-4219	Anderson	Michael		M1	22	Iowa City	IA														Yes
+500-12-3810	Anderson	Ronald		M4	46	Genoa	IL														Yes
+600-11-8921	Anderson	Tyler		M1	19	Rochester	IN														Yes
+600-12-4267	Andrew	Elizabeth		W1	20	Quincy	IL														Yes
+900-09-1803	Annarella	John		M3	42	Ingleside	IL				---C	81.166		72.675			X1				Yes
+700-01-7861	Ansel	Brian		M2	28	Ames	IA					86.500	774.00	139.33	X3	X3	M3				Yes
+400-01-6942	Antoff	Sarah		G3	16	Worden	IL														Yes
+000-02-9018	Appleby	John		M5	54	Springfield	MO					38.500									Yes
+300-07-3197	Archambeau	Donna		W3	43	Walton	KY														Yes
+900-00-0221	Archambeau	Robert		M4	52	Walton	KY				SA-R	96.166	1166.6	111.00	E2	X3	M3				Yes
+100-13-0843	Arnason	Molly		G2	11	Burr Ridge	IL														Yes
+000-13-0844	Arnason	Taylor		G2	13	Burr Ridge	IL														Yes
+000-12-4188	Arnold	Matt		M4	48	Lake Lotawan	MO														Yes
+500-12-4190	Arnold	Olivia		G2	10	Lake Lotawan	MO														Yes
+900-12-8477	Arriola	Michael		M1	20	Clive	IA														Yes
+000-11-8927	Asbach	Jeffrey		M3	41	Spring Grove	IL					1.8000	963.00	77.400		X1	X1				Yes
+900-11-8928	Asbach	Kayla		G1	7	Spring Grove	IL														Yes
+800-11-8929	Asbach	Melanie		W3	36	Spring Grove	IL														Yes
+400-07-7981	Atkinson	Crystal		W1	20	Marquette	IA														Yes
+900-12-4516	Atwater	Anna		G3	17	Winfield	IL														Yes
+600-04-2547	Austin	James		M4	47	Village Of L	IL														Yes
+000-12-5086	Bachner	Grant		B3	16	Minooka	IL														Yes
+100-10-6459	Bacon	Amy		G2	11	Hopkinton	IA														Yes
+500-09-7841	Bacon	Andrew		B3	16	Hopkinton	IA														Yes
+200-09-7839	Bacon	Charlie		M4	45	Hopkinton	IA														Yes
+800-09-7840	Bacon	Joy		W4	45	Hopkinton	IA														Yes
+500-10-0286	Bailey	Benjamin		M2	33	Lagro	IN					2.2500									Yes
+100-12-9175	Baird	Janey		W1	21	Rockford	IL														Yes
+400-09-2575	Baker	Cheri		W1	23	Northbrook	IL					18.166	440.00	56.000		X2	M3				Yes
+100-01-1216	Baker	Debbie		W5	54	Indianapolis	IN														Yes
+400-04-3388	Baker	Mike		M5	54	Indianapolis	IN				---C	84.333			X2						Yes
+400-13-0642	Baker	Steve		M1	20	Clermont	IA														Yes
+500-08-9497	Baker	Tim		M1	24	West Lafayet	IN				-A--	94.333	114.00	92.333	M3		M1				Yes
+100-09-9382	Baldwin	Bryan		M1	18	Nashua	IA														Yes
+500-09-9595	Baldwin	Erin		W1	23	Nashua	IA														Yes
+300-11-1376	Balek	Kristen		W1	18	Park Ridge	IL														Yes
+700-12-5133	Balek	Richard		B3	15	Park Ridge	IL														Yes
+300-13-0643	Balek	Robert		B2	13	Park Ridge	IL														Yes
+400-10-7927	Balkenbush	Emma		G3	14	Edwardsville	IL														Yes
+000-00-3834	Banas	Stan		M4	51	Lake Forest	IL					57.150									Yes
+200-12-1710	Barber	Collin		B2	11	Ingleside	IL														Yes
+600-02-0387	Barnes	Matthew		M4	50	Foster	KY				---C	39.425									Yes
+500-10-9104	Barnes	Theresa		W4	49	Foster	KY				---C										Yes
+200-11-0363	Barone	Brittany		G3	15	Wonder Lake	IL														Yes
+500-11-1053	Barone	Danielle		G3	17	Wonder Lake	IL														Yes
+700-04-9330	Barr	Matthew		M1	21	Larwill	IN				---C										Yes
+000-11-7807	Bartlett	Brian		M3	44	Pendleton	IN														Yes
+200-12-0102	Bartlow	Matt		M1	20	Springfield	MO														Yes
+100-09-8657	Bass	Taylor		M2	25	New Hampton	IA														Yes
+200-13-0118	Bates	Kyle		B2	13	Durand	IL														Yes
+700-13-0083	Bates	Matthew		B2	11	Durand	IL														Yes
+600-13-0084	Bates	Michael		B3	14	Durand	IL														Yes
+900-10-6550	Bates	Mindy		W2	27	Fremont	IN				-A--		3286.6			E3					Yes
+600-12-1297	Bates	Samuel		M2	26	Fremont	IN														Yes
+900-05-2912	Bauers	Douglas		M2	33	Delhi	IA				---C										Yes
+300-01-1775	Bauers	Paul		M2	31	Delhi	IA														Yes
+300-01-7968	Baugh	Carla		W4	49	Edwardsville	IL														Yes
+000-01-7969	Baugh	Kevin		M1	24	Edwardsville	IL														Yes
+700-04-3767	Baugh	Kevin		M4	51	Edwardsville	IL														Yes
+500-12-1793	Baumann	Brent		M2	25	Indianapolis	IN														Yes
+400-12-1565	Baumann	Gary		M4	52	Indianapolis	IN					2.7000									Yes
+900-12-1591	Baumann	Ryan		M1	22	Indianapolis	IN					63.000			X1						Yes
+000-12-9886	Baumgartner	Daniel		M2	30	Rockton	IL														Yes
+100-01-8655	Baurhyte	Timothy		M1	23	Lake Zurich	IL														Yes
+400-08-7120	Bawek	Gerald		M4	51	Independence	IA														Yes
+800-10-7282	Bawek	Gina		G1	8	Independence	IA														Yes
+800-11-7182	Bawek	Mitch		B1	6	Independence	IA														Yes
+400-13-1397	Baxter	Bob		M6	62	Loves Park	IL														Yes
+100-00-3963	Baxter	David		M2	31	Ottawa	IL														Yes
+100-08-9239	Beach	Bradley		M2	28	Nixa	MO					53.500	776.66		X1	X1					Yes
+900-13-1613	Beach	Mondell		M1	19	Iowa City	IA														Yes
+300-13-1688	Beard	Meghan		W1	19	Springfield	MO														Yes
+800-00-1207	Beck	James		M4	49	Syracuse	IN				SR--	91.000	1040.2		M3	X1					Yes
+700-05-3117	Beck	Matt		M1	24	Syracuse	IN				R---	77.666			X2						Yes
+900-06-1512	Becker	Matthew		B3	16	Davenport	IA														Yes
+600-06-1513	Becker	Michael		B3	14	Davenport	IA														Yes
+200-06-1511	Becker	Mindy		W3	42	Davenport	IA														Yes
+400-00-9986	Becker	Paul		M4	45	Davenport	IA				---C										Yes
+400-00-7708	Beerman	Brad		M3	44	Waterloo	IN					97.833			E3						Yes
+400-08-4147	Beerman	Brittni		G3	14	Waterloo	IN														Yes
+700-08-4146	Beerman	Bryan		B3	17	Waterloo	IN					72.166			X3						Yes
+700-04-6229	Behr	Carole		W4	46	Clinton	IA														Yes
+300-11-6890	Belcher	Rick		M4	50	Plainfield	IN														Yes
+000-01-6924	Bell	Michele		W1	19	Worden	IL														Yes
+900-06-3112	Bell	Richard		M6	61	Waverly	IA														Yes
+600-00-1919	Belote	Bethany		W3	41	Milford	IN														Yes
+000-01-7394	Bender	Lester		M7	67	Fort Wayne	IN					46.833			X3						Yes
+100-13-0850	Bergdoil	Alex		B2	13	Muncie	IN														Yes
+400-01-7578	Bergsma	Ron		M7	65	Richmond	IL														Yes
+400-04-1366	Berndt	Rick		M5	56	Wonder Lake	IL				---C										Yes
+100-00-4052	Berndt	Steve		M2	25	Cary	IL														Yes
+100-00-4045	Berner	Carrie		W2	29	Wonder Lake	IL														Yes
+800-12-1660	Berner	Julie		W2	26	Wonder Lake	IL														Yes
+900-09-7690	Berns	Jeffrey		M2	32	Waterville	IA				---C										Yes
+600-12-6285	Bert	Jennifer		W1	20	Champaign	IL														Yes
+700-02-0971	Bickley	Amy		W2	33	Waterloo	IA														Yes
+900-09-4758	Bidus	Claire		W5	53	Lisle	IL														Yes
+600-07-3295	Bidus	Tim		M5	53	Lisle	IL														Yes
+100-12-8642	Bierman	Rachel		W1	19	Springfield	MO														Yes
+600-10-0261	Birdsell	Emily		W1	20	Moline	IL														Yes
+500-10-9562	Birdsell	Melissa		W1	23	Moline	IL														Yes
+700-05-1278	Birza	Ann		W4	50	Lake Saint L	MO														Yes
+000-07-4331	Birza	Brian		B2	11	Lake Saint L	MO					12.825	550.00	0.0000		M2					Yes
+400-05-1279	Birza	Judson		M1	18	Lake Saint L	MO				-A--										Yes
+300-05-1276	Birza	Judson		M4	49	Lake Saint L	MO				---R										Yes
+100-01-0552	Bisel	Dave		M3	42	Lake Ozark	MO				---C										Yes
+400-12-7529	Black	Austen		B2	13	Roscoe	IL														Yes
+100-00-6049	Black	Eric		B2	12	Indianapolis	IN														Yes
+700-12-7526	Black	Jennifer		W3	37	Roscoe	IL				---C										Yes
+100-00-1112	Black	Kimberly		W3	43	Indianapolis	IN				-RAS	81.500			E3						Yes
+600-12-7527	Black	Kori		G3	15	Roscoe	IL														Yes
+100-04-0591	Black	Lance		M4	47	Indianapolis	IN				A---	72.900									Yes
+800-00-3775	Black	Morgan		G3	14	Indianapolis	IN														Yes
+500-12-7153	Blake	Jennifer		G2	10	Libertyville	IL														Yes
+500-12-3940	Blake	Patrick		M4	49	Libertyville	IL														Yes
+100-08-1404	Blaszczyk	Zachary		M1	20	Port Byron	IL														Yes
+200-11-6433	Blattel	Gregory		M1	23	O Fallon	MO														Yes
+400-09-8276	Blean	Craig		M1	24	Champaign	IL					87.833	870.00	102.00	M1	X2	M2				Yes
+000-10-3879	Blean	Mark		M1	22	Carbondale	IL														Yes
+100-12-0103	Blean	Ted		M5	54	Prophetstown	IL														Yes
+900-12-7821	Blean	Thomas		M1	19	Prophetstown	IL														Yes
+200-08-0590	Bleier	Erica		W2	25	Northbrook	IL														Yes
+800-12-0267	Blevins	Dustin		M2	33	Shelbyville	KY														Yes
+000-12-3624	Blevins	Jennifer		W2	33	Shelbyville	KY				---C										Yes
+200-11-9700	Blinkhorn	Jon		B3	17	Louisville	KY					69.000			X2						Yes
+300-12-2358	Blinkhorn	Kim		W4	50	Louisville	KY														Yes
+400-12-2357	Blinkhorn	Richard		M5	56	Louisville	KY														Yes
+400-11-8169	Block	John		B2	12	Joliet	IL														Yes
+600-11-8167	Block	Joseph		B3	15	Joliet	IL														Yes
+700-06-1194	Bloom	Brandon		B3	15	McHenry	IL														Yes
+300-06-1192	Bloom	Meghan		G2	12	McHenry	IL														Yes
+000-06-1193	Bloom	Nicholas		B2	13	McHenry	IL														Yes
+600-13-1128	Blrelshan	Danielle		G3	17	Quincy	IL														Yes
+000-01-7534	Bocke	Brad		M2	34	O Fallon	MO														Yes
+100-02-9363	Bode	Clifford		M5	53	Bensenville	IL														Yes
+300-01-1283	Bodine	Bridget		W1	19	Deerfield	IL														Yes
+000-01-1284	Bodine	Dustin		M1	18	Deerfield	IL														Yes
+500-06-2287	Bodine	Kaylyn		G2	13	Deerfield	IL														Yes
+400-12-9479	Boehm	Brittany		G1	7	Lake St Loui	MO														Yes
+500-12-9478	Boehm	Richard		M4	45	Lake St Loui	MO														Yes
+500-02-0946	Boettcher	Denny		M5	53	Granger	IN				S---										Yes
+500-12-9942	Bohlig	Nicole		G2	13	Homer Glen	IL					39.150			X1						Yes
+000-12-9374	Boivin	Brad		B2	11	Worden	IL														Yes
+700-11-7831	Boivin	Matthew		B2	13	Worden	IL														Yes
+900-10-6123	Bojan	Anita		W3	42	McHenry	IL														Yes
+200-00-1449	Bojan	Dan		M3	44	McHenry	IL														Yes
+000-00-1960	Bojan	James		M3	39	McHenry	IL				-A--										Yes
+300-10-6440	Bojan	John		B1	4	McHenry	IL														Yes
+600-06-1191	Bojan	Mary		W3	39	McHenry	IL														Yes
+700-00-5435	Bojan	Mike		M5	55	McHenry	IL														Yes
+100-00-3581	Bojan	Scott		M2	31	Lakemoor	IL														Yes
+600-06-8402	Bokos	Alexis		W1	18	Hinsdale	IL														Yes
+900-06-8401	Bokos	Michele		W5	57	Hinsdale	IL														Yes
+200-09-1435	Bokos	Peter		M5	59	Hinsdale	IL														Yes
+300-05-3214	Bokos	Sterling		G3	16	Hinsdale	IL														Yes
+300-09-5922	Boland	Bethany		W1	24	Springfield	MO				---S	49.500	216.66	43.666			X2				Yes
+400-09-7723	Bolger	Austin		B2	11	Walton	KY					18.900									Yes
+700-12-9155	Bolger	Carolyn		W3	40	Walton	KY														Yes
+400-11-8206	Bonnema	Eric		W1	19	Cedar Rapids	IA														Yes
+300-11-8207	Bonnema	Jessica		G3	16	Cedar Rapids	IA														Yes
+000-12-5567	Borie	Nathan		B3	16	Fairdale	KY														Yes
+400-04-9427	Bortz	Amber		G1	9	Robins	IA														Yes
+300-04-1149	Bortz	Mark		M3	43	Robins	IA														Yes
+100-00-4595	Bortz	Mary		W3	38	Robins	IA														Yes
+000-10-0250	Bortz	Taryn		G1	6	Robins	IA														Yes
+300-12-9814	Bottensek	Ariel		G3	15	Rockton	IL														Yes
+700-05-7630	Bourdillon	Patrick		M6	61	Carmel	IN														Yes
+400-05-7631	Bourdillon	Paul		B3	16	Carmel	IN														Yes
+500-12-4725	Bouwkamp	Caleb		B2	10	Zionsville	IN														Yes
+400-12-8908	Bouwkamp	Chris		M3	42	Crawfordsvil	IN														Yes
+400-12-4726	Bouwkamp	Keila		G2	12	Crawfordsvil	IN														Yes
+600-12-8838	Bowles	Wesley		M1	20	Lexington	KY														Yes
+400-10-7828	Bradshaw	Craig		-2	25	West Lafayet	IN														Yes
+600-11-7450	Brady	Adam		B2	12	Rockton	IL														Yes
+000-11-7449	Brady	Breanna		G3	16	Rockton	IL														Yes
+200-11-7447	Brady	Joe		M4	47	Rockton	IL				---C										Yes
+100-11-7448	Brady	Rosemary		W4	45	Rockton	IL				---C										Yes
+500-09-9230	Braet	Patrick		M1	20	East Moline	IL														Yes
+400-01-8315	Brainard	Colin		M1	22	Northfield	IL														Yes
+500-04-5499	Brainard	Darcy		W1	19	Northfield	IL														Yes
+000-11-5568	Brandau	James		M6	61	Waverly	IA														Yes
+
+300-01-3685	Branson	Teresa		W5	56	Mount Vernon	IN				--S-										Yes
+200-09-8353	Breshears	Larry		M4	49	Brunswick	MO				-A--										Yes
+400-08-1403	Breshears	Tyler		B3	17	Brunswick	MO				-A--	99.666	1426.6	76.000	E3	M1					Yes
+900-06-5796	Bresson	Jeff		M3	44	Delhi	IA														Yes
+300-09-6123	Bresson	Jill		W1	18	Waterloo	IA														Yes
+700-09-6125	Bresson	Katie		W1	20	Waterloo	IA														Yes
+500-11-5570	Briggs	Michael		M3	44	Waverly	IA														Yes
+600-05-2702	Broadbent	Tim		M3	37	Springfield	MO				---C	97.666			E3						Yes
+000-11-9344	Brockett	Stacey		W1	19	Davenport	IA						0.0000	0.0000							Yes
+200-11-0790	Brockman	Alexis		B3	16	Hinsdale	IL														Yes
+800-07-6609	Broghammer	Nathan		M1	24	Davenport	IA														Yes
+000-12-8049	Brooks	Richard		M8	72	Waverly	IA														Yes
+700-11-8241	Broom	Amy		W2	27	Rockford	IL														Yes
+600-10-1671	Broom	David		M2	32	Rockford	IL				---C										Yes
+900-13-1163	Brown	Benjamin		B1	4	McDaniels	KY														Yes
+200-04-1005	Brown	E. Daniel		M4	51	Dubuque	IA														Yes
+900-00-2807	Brown	Karen		W5	54	Dubuque	IA														Yes
+200-12-8856	Brown	Mark		M1	22	Niangua	MO														Yes
+500-12-5999	Brown	Michael		M3	36	Mc Daniels	KY														Yes
+600-12-6001	Brown	Nick		B1	8	Mc Daniels	KY														Yes
+400-04-2257	Brown	Ronald		M4	51	Carterville	IL				R---										Yes
+200-12-5565	Brown	Zach		B2	10	Mc Daniels	KY														Yes
+200-04-6480	Brucki	Ben		B2	13	Wonder Lake	IL														Yes
+900-04-1840	Brucki	David		M4	47	Wonder Lake	IL				---C										Yes
+500-07-9331	Brucki	Regina		W4	52	Wonder Lake	IL				---C										Yes
+400-12-0056	Bryan	James		M2	27	Fishers	IN					97.166	686.66		M2						Yes
+200-00-0176	Bryant	Errol		M7	67	Beechmont	KY					77.000	993.33		E2	E2					Yes
+800-11-0770	Bryant	Patricia		W7	67	Beechmont	KY														Yes
+100-04-3871	Bryant	William		M4	47	Greensburg	IN														Yes
+600-08-2499	Buchanan	Katherine		W1	24	Chicago	IL				---C	3.6000	540.00	37.525		X1					Yes
+300-00-0843	Bucher	Brandon		M2	30	Syracuse	IN				AS--	89.775			M3						Yes
+900-00-0841	Bucher	Don		M6	60	Syracuse	IN				SPSS										Yes
+600-00-0842	Bucher	Peggy		W5	55	Syracuse	IN				---C										Yes
+000-00-1878	Bucher	Shane		M2	34	Syracuse	IN				RR--										Yes
+100-12-3791	Buckwalter	Deborah		W4	47	Milan	IL														Yes
+100-12-1667	Buckwalter	Emily		G3	15	Milan	IL														Yes
+400-12-7451	Buckwalter	Rodger		M4	47	Milan	IL														Yes
+500-10-8305	Budreau	Austin		M1	24	Muncie	IN														Yes
+200-12-8993	Budweg	Nolan		B3	16	Eldora	IA														Yes
+600-07-5585	Buehrle	Christine		W3	40	Lake Saint L	MO														Yes
+900-07-5584	Buehrle	Jeffrey		M3	42	Lake Saint L	MO														Yes
+000-07-5587	Buehrle	Madison		G2	13	Lake Saint L	MO														Yes
+300-07-5586	Buehrle	Mitchell		B2	10	Lake Saint L	MO														Yes
+700-01-1607	Bulkeley	Dick		M7	69	Red Oak	IA					54.333			X2						Yes
+500-12-9454	Bunge	Gabrielle		G2	11	Waterloo	IA														Yes
+700-12-9452	Bunge	Garrett		B2	12	Waterloo	IA														Yes
+800-12-9451	Bunge	John		M3	41	Waterloo	IA														Yes
+600-00-1070	Burdick	Cale		M1	21	Danville	IN				-S-S	115.00	5043.3	179.33	O3	E3	O3				Yes
+600-00-1070	Burdick	Cale		OM	21	Danville	IN				-S-S	111.66	4993.3	179.33	O3		O3				Yes
+100-00-1068	Burdick	Cindy		W4	52	Danville	IN					67.500			M1						Yes
+800-04-0336	Burdick	Richard		M5	53	Danville	IN														Yes
+200-11-1605	Burger	Heather		G3	17	Greenwood	MO					63.333	36.000		X3						Yes
+300-11-8634	Burke	Brigid		G3	17	Elgin	IL														Yes
+200-12-3868	Burke	James		M4	47	Elgin	IL														Yes
+100-12-3869	Burke	Nancy		W3	44	Elgin	IL														Yes
+800-12-7495	Burke	Nicholas		B2	12	Glenview	IL														Yes
+200-11-8635	Burke	Shane		B3	15	Elgin	IL														Yes
+000-11-7982	Burke	Shawn		M3	35	Minooka	IL														Yes
+900-12-7494	Burke	Tamara		W3	41	Glenview	IL														Yes
+900-11-7983	Burke	Tami		W4	46	Minooka	IL														Yes
+400-00-0862	Burkhead	Cathy		W5	58	Paducah	KY				-RS-										Yes
+700-04-0515	Burkhead	Joe		M5	59	Paducah	KY				-S--	92.333	1695.7	99.275	E2	M1	E3				Yes
+100-12-2299	Burkle	Shawna		W1	22	Earlville	IA														Yes
+000-12-7486	Burkle	Stacey		W1	19	Dyersville	IA														Yes
+700-04-1084	Burney	Bryan		M5	58	Mc Cordsvill	IN														Yes
+800-00-2976	Burney	Virginia		W5	58	Indianapolis	IN				--RC										Yes
+300-07-5049	Burns	James		M4	45	Lexington	KY														Yes
+400-00-4103	Burrill	Brint		M4	51	Sherrard	IL				---C										Yes
+600-04-1388	Burrill	Gail		W5	55	Sherrard	IL				---C										Yes
+900-13-1637	Burt	Jared		M1	21	Rator	IN														Yes
+400-11-0248	Burton	John		M4	47	Village Of L	IL														Yes
+900-10-1692	Burton-Wire	Terri		W4	48	Urbandale	IA														Yes
+300-12-6721	Bush	Jake		M1	19	Iowa City	IA					0.4750		0.0000							Yes
+700-12-6529	Bush	Jessica		W1	19	Iowa City	IA														Yes
+200-12-9334	Bushman	Riley		G3	15	Rockford	IL														Yes
+400-11-2822	Busse	Cory		B1	9	Wonder Lake	IL														Yes
+800-12-4265	Busse	Jake		B1	7	Wonder Lake	IL														Yes
+700-12-7441	Busse	Laurie		W3	40	Wonder Lake	IL														Yes
+800-12-8898	Butkovich	Thomas		M1	22	Lake Ozark	MO														Yes
+500-07-5975	Butz	Erica		G2	12	Loves Park	IL														Yes
+700-07-5971	Butz	Heidi		W2	34	Loves Park	IL														Yes
+400-07-5969	Butz	Marc		M2	33	Loves Park	IL				---C										Yes
+200-09-9893	Byrne	Ian		M1	18	Algonquin	IL														Yes
+000-12-9848	Caiafa	Joey		M1	22	Iowa City	IA														Yes
+600-11-4633	Caksackkar	Andrew		M1	22	Lexington	KY														Yes
+500-12-1861	Calabrese	Eric		M2	30	McHenry	IL														Yes
+700-12-6109	Caldwell	Lacey		W1	20	Williamsvill	IL														Yes
+700-12-8837	Caldwell	Micah		W1	22	Catlettsburg	KY														Yes
+000-12-3990	Caldwell	Rick		M3	41	Waverly	IA														Yes
+900-11-9130	Callaway	Richard		M6	61	Cicero	IN														Yes
+800-11-8394	Camodeca	Alyssa		G3	15	Hampshire	IL														Yes
+900-12-7371	Camodeca	Sue		W3	44	Hampshire	IL														Yes
+900-11-8393	Camodeca	Tim		M1	19	Hampshire	IL														Yes
+900-12-1683	Camodeca	Tim		M4	46	Hampshire	IL														Yes
+200-11-8550	Campbell	Dean		M5	55	Waverly	IA														Yes
+900-11-4043	Campbell	Robert		M4	49	Iowa Falls	IA														Yes
+400-13-0147	Cannady	Logan		B3	15	Quincy	IL														Yes
+900-08-7659	Cannady	Lucas		M1	18	Quincy	IL														Yes
+700-11-9125	Cantrell	Bob		M4	51	Lake Lotawan	MO				---C										Yes
+100-00-0300	Capek	Raymond		M4	51	Antioch	IL														Yes
+500-11-9264	Capler	Allison		W1	23	Beech Grove	IN														Yes
+000-10-3855	Carlson	Alex		B1	9	Warsaw	IN														Yes
+600-01-4661	Carlson	Andrew		M1	24	Rockford	IL				---C										Yes
+000-01-4663	Carlson	Benjamin		M1	19	Rockford	IL														Yes
+400-12-1916	Carlson	Britney		G3	15	Delhi	IA														Yes
+000-12-2283	Carlson	Danielle		G3	16	Delhi	IA														Yes
+300-10-3326	Carlson	Derrick		B3	14	Warsaw	IN														Yes
+300-04-3299	Carlson	Jeffrey		M4	51	Rockford	IL				---C										Yes
+200-11-2930	Carlson	Katherine		W1	19	Glenview	IL					0.3333	106.66	41.000			X1				Yes
+700-09-9054	Carlson	Larry		M4	47	Warsaw	IN														Yes
+300-01-4662	Carlson	Matt		M1	22	Rockford	IL														Yes
+900-08-9767	Carlson	Nate		M1	18	Warsaw	IN														Yes
+200-10-3327	Carlson	Rusty		B3	14	Warsaw	IN														Yes
+200-00-4051	Carlsten	Janice		W5	55	McHenry	IL														Yes
+300-00-4050	Carlsten	Kimberly		W2	28	McHenry	IL														Yes
+700-04-1365	Carlsten	Roy		M6	64	McHenry	IL				---C										Yes
+500-13-1518	Carmody	Casey		M2	31	Chicago	IL														Yes
+200-04-2334	Carran	Janet		W3	42	Wonder Lake	IL														Yes
+200-06-1298	Carran	John		M3	44	Wonder Lake	IL														Yes
+900-06-1299	Carran	Stephanie		G3	15	Wonder Lake	IL														Yes
+100-01-3704	Carran	Tanya		G3	17	Wonder Lake	IL														Yes
+200-11-5870	Carroll	David		M4	45	Janesville	IA				---C										Yes
+400-12-9936	Carroll	Mitch		M1	24	Janesville	IA														Yes
+000-12-4461	Carvis	James		M3	43	Lindenhurst	IL														Yes
+700-00-1208	Cary	Tony		M3	43	Bowling Gree	KY														Yes
+300-13-0780	Casetti	Alfredo		M3	38	Gransen	IN														Yes
+200-13-0781	Casetti	Elizabeth		G1	6	Gransen	IN														Yes
+100-13-0782	Casetti	Nicholas		B1	6	Gransen	IN														Yes
+000-13-0783	Casetti	Rachel		G1	6	Gransen	IN														Yes
+900-00-2425	Catlett	Ann		W4	49	Frankfort	KY														Yes
+300-04-0331	Catlett	Bill		M4	51	Frankfort	KY					77.850			X1						Yes
+500-04-4889	Cecola	Anthony		M3	43	Chicago	IL														Yes
+500-09-8802	Cecola	Pam		W4	49	Chicago	IL														Yes
+900-13-1170	Cepela	Jake		G3	17	Shorewood	IL														Yes
+700-11-8173	Chamblin	Tim		M4	46	Lake Lotawan	MO														Yes
+100-12-8284	Champion	Corey		M1	20	Monmouth	IL														Yes
+900-12-5810	Chandler	Karissa		G2	12	Winona Lake	IN														Yes
+700-12-5911	Chandler-Bre	Denise		W4	46	Winona Lake	IN														Yes
+200-08-6176	Chapman	Connie		G3	16	Clinton	IA														Yes
+600-13-0121	Chase	Scott		M4	46	Lake Lotawan	MO														Yes
+000-12-9671	Cherrier	Nicholas		M1	24	Manchester	IA														Yes
+100-12-8840	Chesnut	Evan		-3	44	Shell Rock	IA														Yes
+800-00-4277	Chinnery-Val	Amy		W3	38	Lake Lotawan	MO				---C										Yes
+900-12-8910	Christiansen	Taylor		G2	13	Northwood	IA														Yes
+000-04-6921	Clark	Camille		G2	11	Laotto	IN					38.333			X2						Yes
+900-12-9849	Clark	Casey		M1	23	Cedar Rapids	IA														Yes
+300-00-1967	Clark	Chris		M3	42	Laotto	IN				-R--	107.33			O3						Yes
+300-00-1967	Clark	Chris		MM	42	Laotto	IN				-R--	107.33			O3						Yes
+100-00-0850	Clark	David		M6	62	Algonquin	IL				-PS-										Yes
+800-00-5526	Clark	Jacob		M1	23	Wonder Lake	IL														Yes
+000-11-1133	Clark	Jessica		G3	15	Hinsdale	IL														Yes
+000-00-6194	Clark	Krystal		W1	19	Wonder Lake	IL														Yes
+300-04-6920	Clark	Lake		B2	13	Laotto	IN					74.833			E2						Yes
+300-00-8188	Clark	Linda		W4	50	Wonder Lake	IL														Yes
+300-04-1839	Clark	Stephen		M5	58	Wonder Lake	IL														Yes
+900-11-1134	Clark	William		M1	19	Hinsdale	IL														Yes
+200-12-5428	Clausen	Amy		W1	21	Johnston	IA					46.833	536.66			X3					Yes
+200-02-2790	Claver	David		M2	28	Moline	IL														Yes
+300-12-6301	Clinite	Allison		W1	21	Winnebago	IL														Yes
+800-00-9784	Clow	Donald		M6	62	Cedar Rapids	IA				---C										Yes
+900-06-8373	Clow	Nathan		M3	36	Cedar Rapids	IA														Yes
+700-05-5308	Cochran	James		M3	42	Arlington He	IL														Yes
+200-13-1221	Coe	David		B3	14	North Manche	IN														Yes
+000-13-0387	Coffey	Austin		M1	18	Burnside	KY														Yes
+300-09-1623	Coffey	Cody		B2	11	Medinah	IL														Yes
+400-00-1157	Coffey	Dale		M5	54	Burnside	KY					103.50			O3						Yes
+900-09-1621	Coffey	Kaila		G1	9	Medinah	IL														Yes
+400-13-1502	Coffman	Kristen		G3	17	Machesney Pa	IL														Yes
+600-04-0369	Colburn	Newton		MA	84	Burlington	IA														Yes
+500-10-7971	Collins	Alexandera		G2	11	Wonder Lake	IL														Yes
+500-00-9565	Collins	Brittany		W1	19	Murray	KY					61.833	1560.0	86.666	M3	M3	E3				Yes
+600-00-9564	Collins	Tyler		M1	21	Murray	KY				AS--			181.66			O3				Yes
+300-12-0682	Colloins	Austin		B1	5	Murray	KY														Yes
+800-00-1146	Colp	Bill		M4	50	Benton	KY				-R--										Yes
+800-00-1054	Combs	Adonna		W4	51	Columbus	IN														Yes
+100-04-0575	Combs	Jared		M7	67	Columbus	IN														Yes
+300-11-1147	Comerford Sc	Jodie		W3	38	Kokomo	IN														Yes
+800-12-7693	Comparato	Corey		M1	22	Columbia	MO														Yes
+800-06-6725	Conley	John		M2	29	Warsaw	IN				---C										Yes
+100-11-1514	Conley	William		M2	28	West Lafayet	IN														Yes
+500-12-2813	Connelly	Allyson		G2	13	Bettendorf	IA														Yes
+300-12-2815	Connelly	Tammy		W2	28	Bettendorf	IA														Yes
+400-12-2814	Connelly	Tyler		B2	11	Bettendorf	IA														Yes
+900-13-1392	Conolty	Kimberly		W1	21	Batavia	IL														Yes
+500-00-1026	Contos	Casey		M1	24	Anderson	IN				-S--	104.83			E3						Yes
+200-00-0840	Contos	Kim		M4	52	Pendleton	IN				-A--	104.83			O3						Yes
+200-00-0840	Contos	Kim		MM	52	Pendleton	IN				-A--	104.83			O3						Yes
+000-11-8743	Converse	Ainslee		G2	10	Dyersville	IA														Yes
+400-12-7390	Cook	Ayda		G1	1	Robins	IA														Yes
+400-06-7627	Cook	Jimi		M3	42	Columbia	MO				A---										Yes
+800-01-5011	Cook	Leigh		W3	38	Robins	IA														Yes
+800-04-5542	Cook	Patrick		M2	34	Robins	IA				AA--	47.500	926.66	122.33		X3	M3				Yes
+700-03-3515	Cook	Tom		M4	50	Goshen	IN					45.362			M1						Yes
+100-00-2645	Coomes	Joy		W4	52	Owensboro	KY				--A-										Yes
+800-04-0998	Coomes	Mark		M4	51	Owensboro	KY				AA-S	93.500			M3						Yes
+500-04-0999	Coomes	Pat		M5	54	Owensboro	KY				SA--	80.166	703.33	72.333	X2		X2				Yes
+800-11-5584	Coonradt	William		M4	48	Waverly	IA														Yes
+800-12-4142	Cornet	Cameron		M1	18	Dyer	IN														Yes
+200-00-5430	Costa	Robert		M7	65	Mundelein	IL														Yes
+400-01-4199	Cowherd	Jayna		W2	27	Bettendorf	IA														Yes
+600-12-9378	Cowherd	Michael		M2	28	Bettendorf	IA														Yes
+000-02-1407	Cox	M Travis		M3	42	Danville	KY														Yes
+200-01-7754	Craig	Harvey		M8	70	Independence	MO				-R--										Yes
+500-00-0315	Craig	Jeff		M3	44	Independence	MO				-A--										Yes
+800-11-9407	Craig	Matthew		B3	14	Independence	MO														Yes
+400-12-9363	Crane	Aaron		M2	31	Indianapolis	IN														Yes
+400-12-4191	Crane	Alexis		G1	9	Lake Lotawan	MO														Yes
+500-13-0221	Crane	Shelly		W3	38	Lake Lotawan	MO														Yes
+800-05-9176	Criel	Jeff		M2	34	Lake Villa	IL														Yes
+500-12-7481	Criel	Jennifer		W2	34	Lake Villa	IL														Yes
+800-13-0730	Cross	Amy		W3	40	Preemption	IL														Yes
+300-12-4079	Cross	Elisabeth		G2	11	Preemption	IL														Yes
+900-08-9105	Cross	Jeffrey		M2	33	Greenfield	IN														Yes
+600-08-9106	Cross	Jill		W2	30	Greenfield	IN														Yes
+400-12-4078	Cross	John		M3	39	Preemption	IL														Yes
+700-09-8220	Crotty	Jacob		B2	10	Moline	IL														Yes
+400-09-8218	Crotty	Monica		W2	34	Moline	IL														Yes
+000-09-8159	Crotty	Nathan		M3	36	Moline	IL				---C										Yes
+100-09-8219	Crotty	Whitney		G3	14	Moline	IL														Yes
+000-12-4904	Crowe	Tommy		M1	18	Indianapolis	IN														Yes
+400-12-7796	Crull	Bianca		G3	15	Cedar Rapids	IA														Yes
+500-12-7795	Crull	Mallary		W1	19	Cedar Rapids	IA														Yes
+200-12-8559	Culbertson	Tyler		M1	22	Iowa City	IA														Yes
+000-00-6200	Cullen	Erin		W1	21	Lombard	IL														Yes
+700-04-1691	Cullen	Jacki		W5	56	Lombard	IL														Yes
+000-00-5371	Cullen	Jill		W1	24	Lombard	IL				---C										Yes
+000-12-7349	Curran	Connor		B2	11	Palatine	IL														Yes
+200-12-7347	Curran	Nicholas		B2	13	Palatine	IL														Yes
+400-12-7345	Curran	Robert		M3	42	Palatine	IL														Yes
+100-13-0102	Curtis	Kim		W4	50	Fort Wayne	IN														Yes
+800-11-9315	Custer	Aaron		M2	32	Lake Lotawan	MO				---C										Yes
+100-00-8906	Custer	Dan		M6	61	Mount Vernon	IN				SS--										Yes
+500-03-2110	Dahlem	Richard		M2	33	Robins	IA														Yes
+700-11-0962	Dahms	Anna		G2	11	Saint Charle	IL														Yes
+600-11-0963	Dahms	Ellie		G3	16	Saint Charle	IL														Yes
+700-09-6084	Dahms	Jake		M1	18	Saint Charle	IL														Yes
+400-12-4900	Daly	Colin		B2	13	Zionsville	IN														Yes
+700-10-9713	Daly	Leah		W1	23	Springfield	MO				---C										Yes
+400-09-9646	Daly	Robert		M5	53	Beech Grove	IN														Yes
+600-09-8483	Damgaard	Nicole		W1	24	Cedar Falls	IA														Yes
+300-09-8484	Damgaard	Thomas		M5	53	Cedar Falls	IA														Yes
+600-06-5797	Damm	Ande		W3	35	Delhi	IA														Yes
+000-06-5801	Damm	Sydney		G2	11	Delhi	IA														Yes
+300-06-5800	Damm	Tyler		B3	16	Delhi	IA														Yes
+300-00-4685	Danford	Thomas		M4	50	Angola	IN				SPS-	97.500	4290.0	98.666	E3	E3	M3				Yes
+800-12-4661	Danielewicz	Brian		M3	38	Antioch	IL														Yes
+900-12-7135	Danielewicz	Holden		B2	11	Antioch	IL														Yes
+000-12-7134	Danielewicz	Zayne		B1	4	Antioch	IL														Yes
+200-04-2389	Dardick	Howard		M5	57	Northbrook	IL														Yes
+000-00-8853	Dardick	Nancy		W5	56	Northbrook	IL														Yes
+500-12-8839	Dashner	Alyson		W1	19	Richmond	KY					0.0000	63.000								Yes
+200-04-5995	Daugherty	Erin		W2	26	Columbia	MO				-R--	87.162			E2						Yes
+800-00-0835	Daugherty	Jack		M4	52	Columbia	MO				S---	96.833			E3						Yes
+800-10-1587	Daugherty	John		B3	17	Lexington	KY					94.500			E3						Yes
+000-13-0318	Davis	Ian		B1	9	Champaign	IL														Yes
+400-10-9198	Davis	Joseph		M4	48	Village Of L	IL				---C										Yes
+300-10-9199	Davis	Margaret		W4	52	Village Of L	IL				---C										Yes
+700-11-8463	Davis	Morgan		G3	15	Champaign	IL														Yes
+500-04-1752	Davis	Todd		M3	42	Waverly	IA														Yes
+900-03-1560	Dawson	Brian		M3	36	Leo	IN					88.200			E1						Yes
+900-00-0218	Day	Kevin		M4	48	Saint Louis	MO														Yes
+600-10-7345	De Laney	Lyn		W5	53	Grafton	IL														Yes
+400-11-1528	De Stefano	Gina		G2	13	Northbrook	IL														Yes
+700-12-7663	DeGrave	Kalie		W1	22	Atkinson	IL														Yes
+500-12-8679	DeHart	George		M3	40	Brownsburg	IN														Yes
+700-08-5277	Delagardelle	Sean		M2	27	Gilbertville	IA														Yes
+400-01-3761	Delagardelle	Tiffany		W2	28	Hopkinton	IA														Yes
+000-13-0684	DeMartino	John		B3	15	St. Louis	MO					6.7500									Yes
+100-10-3892	Dembowski	Candice		G3	16	Machesney Pa	IL														Yes
+000-10-3893	Dembowski	Michelle		G3	17	Machesney Pa	IL														Yes
+900-12-9931	Dempsey	CJ		B1	7	Lake Lotawan	MO														Yes
+100-13-1024	Dempsey	Maria		W3	39	Lees Summit	MO														Yes
+000-12-9930	Dempsey	Michael		B1	8	Lake Lotawan	MO														Yes
+600-06-5768	Deno	Jaxson		B1	8	Indianapolis	IN														Yes
+300-04-1040	Deno	Lisa		W3	43	Indianapolis	IN														Yes
+400-00-4684	Deno	Tim		M3	44	Indianapolis	IN														Yes
+800-12-0786	DePriest	Melissa		W1	21	Columbia	MO														Yes
+200-12-8412	Derflinger	Terri		W4	51	Stanley	IA														Yes
+300-12-8046	Derflinger	Tia		W1	18	Stanley	IA														Yes
+400-00-6572	Detty	Brian		M4	45	Danville	IN				S---										Yes
+300-04-6889	Detty	Briant		B2	13	Danville	IN					91.166	856.66	97.666	E3	E3	E3				Yes
+800-00-4291	Detty	Jon		M3	40	Mooresville	IN					76.950									Yes
+000-00-6965	Deutmeyer	Terry		M2	34	Fairbank	IA														Yes
+700-01-3504	Deutmeyer	Tracy		W2	33	Fairbank	IA														Yes
+900-12-8637	Dickie	Katie		W1	21	Springfield	MO														Yes
+800-05-0760	Didion	Matt		M1	21	Springfield	MO														Yes
+400-00-5162	Diedrich	Kevin		M3	39	Johnsburg	IL					85.737			M1						Yes
+900-12-9474	Dietz	James		M3	35	Lake St Loui	MO														Yes
+200-12-4384	Dillon	James		B2	12	Clayton	MO														Yes
+100-00-8197	Dixon	Clare		M6	62	Reinbeck	IA														Yes
+600-11-9621	Donehey	Kierston		G2	10	Spring Grove	IL														Yes
+500-13-0283	Dougherty	Bryan		M2	29	Burgersville	IN														Yes
+400-12-9929	Dougherty	Kia		G3	15	Lake Lotawan	MO														Yes
+200-13-1023	Dougherty	Linda		W4	52	Lake Lotawan	MO														Yes
+500-12-1717	Douglas	Leska		W3	36	Crystal Lake	IL														Yes
+200-11-8604	Douglas	William		M3	41	Crystal Lake	IL														Yes
+400-12-3682	Dowling	Don		M4	50	Eureka	MO														Yes
+000-10-9642	Downs	Lauren		G2	11	Edwardsville	IL														Yes
+500-02-9422	Drape	DerekDerek		M1	19	Fredericksbu	IA														Yes
+900-04-1530	Drape	Jolee		W4	51	Fredericksbu	IA														Yes
+400-04-6374	Drape	Milo		M5	53	Fredericksbu	IA														Yes
+500-12-9928	Drees	Rebecca		W1	20	Earlville	IA														Yes
+600-12-4427	Dristas	Beth		W3	43	Indianapolis	IN														Yes
+200-00-7342	Driver	Rob		M4	45	Fremont	IN														Yes
+000-11-6428	Driver	Roth		B3	17	Fremont	IN					0.0000									Yes
+500-11-6430	Driver	Saige		G3	14	Fremont	IN														Yes
+900-11-6429	Driver	Tawn		G3	15	Fremont	IN														Yes
+400-12-4849	Duesterhaus	Cole		B1	9	Fowler	IL														Yes
+000-12-4850	Duesterhaus	Megan		G2	11	Fowler	IL														Yes
+100-00-2829	Duff	Joe		M8	73	Lexington	KY				-R--	68.333	593.75		E2	E1					Yes
+200-01-3033	Dugan	Benjamin		M2	32	Cedar Rapids	IA														Yes
+900-10-7335	Dugan	Jim		M6	60	Bethalto	IL														Yes
+900-11-4555	Dugas	Christophe		M4	51	Buffalo	MO					61.750									Yes
+700-12-5560	Dumeyer	Erica		W1	19	Louisville	KY														Yes
+000-13-0752	Duncan	Dillion		B2	11	Mendon	IL														Yes
+000-12-4324	Duncan	Taylor		B3	14	Mendon	IL														Yes
+000-10-1493	Dunkin	Benjamin		M1	23	Waterloo	IA														Yes
+900-11-5590	Dunkin	Mary		W5	56	Waverly	IA														Yes
+000-00-4312	Durlam	Brian		M4	48	Cambridge	IA				AR-C	94.250			E1						Yes
+600-02-5874	Durlam	Nicole		W1	19	Cambridge	IA					61.750			M1						Yes
+200-11-1599	Dutro	Jordan		G3	17	Lake Winneba	MO					80.833	286.66		E1						Yes
+300-06-3479	DuVall	Austin		M1	18	Connersville	IN														Yes
+900-10-9506	DuVall	Caitlin		G3	14	Connersville	IN														Yes
+000-10-9505	DuVall	Karen		W3	42	Connersville	IN														Yes
+500-06-3475	DuVall	Michael		M3	43	Connersville	IN														Yes
+200-09-6232	Duvel	Jeremy		M2	28	Mc Gregor	IA				---C										Yes
+800-12-6177	Dwyer	Brad		M1	19	Clive	IA														Yes
+300-12-3850	Dwyer	Liam		B2	11	Lake Lotawan	MO														Yes
+700-12-3849	Dwyer	William		M2	34	Lake Lotawan	MO														Yes
+500-08-7194	Eagen	Katy		W1	22	Lake Bluff	IL														Yes
+600-12-7312	Eastman	Holly		W2	25	Cedar Rapids	IA														Yes
+300-12-9937	Eastman	Jonathan		M2	25	Cedar Rapids	IA														Yes
+100-07-3315	Eastman	Patrick		M1	23	Cedar Rapids	IA														Yes
+800-13-1652	Edgar	Jorgan		M1	20	Coatsville	IN														Yes
+600-12-7800	Edwards	Dillan		B3	15	Cedar Falls	IA														Yes
+600-12-6438	Edwards	Drake		B3	17	Cedar Falls	IA														Yes
+700-13-0939	Edwards	Nick		M1	21	Cedar Rapids	IA														Yes
+700-00-1659	Edwards	Prissy		W5	59	Alexandria	IN				-R-S	74.500	3093.3	75.333	E3	E3	E3				Yes
+300-01-1001	Edwards	Timothy		M3	35	Loves Park	IL														Yes
+300-12-4338	Eftink	Benjamin		M1	19	Quincy	IL														Yes
+900-12-8217	Eggers	Jared		M2	26	Manchester	MO														Yes
+200-08-8255	Eggers	Thomas		M4	47	Brownsburg	IN														Yes
+200-04-0680	Ehrig	Larry		M6	62	Waterloo	IA														Yes
+000-12-1514	Ehrig	Sara		W2	29	Waterloo	IA														Yes
+300-07-5599	Elhoffer	Stephanie		W1	19	Lake Saint L	MO														Yes
+800-00-9029	Elliott	George		M8	74	Quincy	IL														Yes
+300-02-0445	Elliott	Mark		M4	47	Danville	IN														Yes
+700-04-4083	Elliott	Ronda		W4	46	Danville	IN														Yes
+800-00-9890	Elmes	Laurie		W3	44	Columbus	IN														Yes
+400-04-2666	Elmes	Tony		M4	45	Mitchell	IN														Yes
+700-09-5218	Elsbury	Cheral		W5	53	Plainfield	IN														Yes
+100-00-9958	Elsbury	Michael		M5	55	Plainfield	IN														Yes
+000-08-4653	Elzinga	Jordan		G3	17	Burbank	IL														Yes
+500-09-9074	Elzinga	Joshua		M1	23	Burbank	IL														Yes
+800-07-4645	Engberg	Diane		W4	49	Lake Saint L	MO														Yes
+200-07-4647	Engberg	Josh		B3	15	Lake Saint L	MO														Yes
+500-07-4646	Engberg	Mike		M4	48	Lake Saint L	MO				---C										Yes
+100-13-0317	Engelking	Jessica		G2	10	Hinsdale	IL														Yes
+100-11-0845	Engelking	Katie		G3	15	Hinsdale	IL														Yes
+500-11-0841	Engelking	Lauren		G3	17	Hinsdale	IL														Yes
+600-12-5066	Engelking	Madeline		G2	10	Hinsdale	IL														Yes
+100-10-7364	Engleman	Mark		M6	60	Indianapolis	IN														Yes
+400-11-1245	Erchinger	Keith		M4	47	Minooka	IL														Yes
+300-11-1246	Erchinger	Linda		W4	47	Minooka	IL														Yes
+600-13-1760	Erickson	Brian		M2	33	West Lafayat	IN														Yes
+400-13-1762	Erickson	Leighanne		W2	31	West Lafayat	IN														Yes
+000-08-1188	Ermey	Mitchell		M4	48	Cape Fair	MO														Yes
+000-00-9416	Esry	Bill		M4	49	Independence	MO														Yes
+500-12-4282	Essex	David		M5	55	Fortville	IN														Yes
+300-12-1009	Ethell	Meagan		G2	10	Channahon	IL														Yes
+300-08-9602	Evans	Annie		G3	17	Lake Bluff	IL														Yes
+600-08-5638	Evans	John		M3	42	Chicago	IL				---C										Yes
+600-08-9601	Evans	Rhys		M1	20	Terre Haute	IN														Yes
+600-04-5955	Faber	William		M3	36	Gurnee	IL														Yes
+200-10-1309	Feaker	Megan		W1	22	Solon	IA														Yes
+900-12-6794	Feather	William		M1	19	Lexington	KY														Yes
+000-06-1023	Federspill	Carol		W5	54	Mooresville	IN														Yes
+300-06-1022	Federspill	Daniel		M5	55	Mooresville	IN														Yes
+700-08-5376	Feid	James		M1	18	Deerfield	IL														Yes
+100-08-5378	Feid	Kristin		G3	17	Deerfield	IL														Yes
+300-01-5946	Felton	Barry		M4	49	Chesterton	IN						1980.0	86.400		M1	M3				Yes
+100-04-0942	Felver	Dennis		M5	55	Hamilton	IN				---R										Yes
+200-00-2378	Felver	Paula		W5	55	Hamilton	IN				--A-										Yes
+800-12-6344	Fetters	Dannica		W1	21	Fenton	MO														Yes
+300-09-5638	Fiepke	Dustin		M1	23	Machesney Pa	IL				---C										Yes
+800-11-5492	Fietsam	Brian		M1	21	New Athens	IL					46.350									Yes
+500-12-6040	Figge	Luke		M1	21	Normal	IL														Yes
+900-13-0098	Figge	Mark		M1	19	Northbrook	IL														Yes
+500-11-4627	Fillmore	Matthew		M1	21	West Lafayet	IN					91.916	1020.0	93.666	M2	M1	X2				Yes
+900-10-8998	Fink	Alicia		G2	11	Harpers Ferr	IA														Yes
+200-10-8995	Fink	Gregory		M5	54	Harpers Ferr	IA				---C										Yes
+000-10-8997	Fink	Lori		W4	47	Harpers Ferr	IA				---C										Yes
+100-10-8996	Fink	Tara		G2	13	Harpers Ferr	IA														Yes
+100-00-3130	First	Glenn		M2	29	Tolono	IL														Yes
+900-06-1554	Fisher	Ali		G3	16	Kansas City	MO														Yes
+800-12-6009	Fisher	Connor		B2	10	Indianapolis	IN														Yes
+200-06-1553	Fisher	Jake		B2	13	Kansas City	MO														Yes
+900-12-7807	Fisher	James		M3	37	Indianapolis	IN														Yes
+800-06-1551	Fisher	Kenton		M3	43	Kansas City	MO														Yes
+000-10-8584	Fisk	Peter		M1	22	Monona	IA				---C										Yes
+300-12-4192	Fitts	Logan		B2	13	Lake Lotawan	MO														Yes
+000-11-9955	Fitzer	Scott		M1	21	Springfield	MO														Yes
+000-00-4053	Fitzgerald	Heather		W4	45	Richmond	IL														Yes
+200-12-5947	Fitzpatrick	Scott		M1	20	Shell Knob	MO														Yes
+500-12-4220	Fitzsimmons	Jim		M3	41	Lake Lotawan	MO														Yes
+400-12-4221	Fitzsimmons	Mikaela		G2	10	Lake Lotawan	MO														Yes
+100-10-1546	Flanery	Chad		M1	22	Plattsburg	MO														Yes
+300-10-1544	Flanery	Chala		W4	46	Plattsburg	MO														Yes
+200-10-1545	Flanery	Jacqueline		W1	20	Plattsburg	MO														Yes
+500-10-1542	Flanery	James		M1	23	Plattsburg	MO														Yes
+800-12-8539	Fleck	Blayne		M1	22	Chatham	IL														Yes
+500-12-9850	Fleckenstein	Stephanie		W1	19	Iowa City	IA														Yes
+000-01-7013	Fleer	Jason		M2	33	Mendon	IL														Yes
+900-04-3792	Fleer	Steven		M5	59	Quincy	IL														Yes
+200-09-2652	Fleischmann	Kevin		M1	24	Niles	IL														Yes
+700-12-0473	Fleming	Scott		M1	20	Naperville	IL														Yes
+
+100-12-2060	Folkerts	Neil		M3	38	Waverly	IA														Yes
+800-12-3244	Forbing	Mark		M4	46	Fort Wayne	IN														Yes
+100-11-7868	Forbregd	Dennis		M7	66	Bristol	IN														Yes
+700-11-8388	Forbregd	Randall		M4	45	Bristol	IN														Yes
+700-12-4020	Ford	Leann		G1	9	East Peoria	IL														Yes
+700-11-8517	Fortin	Greg		W4	48	Lake Lotawan	MO														Yes
+800-11-8172	Foulke	Elena		G2	11	Lake Lotawan	MO														Yes
+900-11-8171	Foulke	Lori		W4	46	Lake Lotawan	MO														Yes
+700-12-9049	Foulke	Mariel		G1	8	Lake Lotawan	MO														Yes
+000-09-2515	Fowler	Elizabeth		G2	13	Crestwood	KY					67.333	61.750	29.925	E3		M3				Yes
+900-04-4993	Fowler	John		M5	53	Crestwood	KY														Yes
+400-12-8779	Frailey	Stephanie		W1	22	Springfield	MO														Yes
+100-12-3470	Frashier	Sarah		W2	31	Lake Lotawan	MO														Yes
+800-11-5348	Freeman	Burton		M5	59	Lake Lotawan	MO														Yes
+700-08-0016	Freeman	Ora		M2	29	Syracuse	IN					65.075									Yes
+300-12-9944	Frickelton	Michael		B3	16	Lakewood	IL														Yes
+400-08-6172	Fried	Richard		M4	51	Moline	IL				---C										Yes
+500-10-6820	Friedmann	Abby		G3	17	Dyersville	IA														Yes
+500-08-6117	Friese	Hayden		B1	6	Libertyville	IL														Yes
+700-00-8931	Friese	Heather		W3	38	Libertyville	IL				-R--	79.666	1856.6	70.775	M3	M3	M3				Yes
+000-12-1880	Friese	Hollis		G1	2	Libertyville	IL														Yes
+700-10-8594	Friese	Hunter		B1	4	Libertyville	IL														Yes
+500-04-1400	Friese	Mark		M3	38	Libertyville	IL				-A--	92.666	1830.0	105.66	M3	M3	M3				Yes
+100-06-5680	Friess	Tad		M3	38	Naperville	IL					82.350			X1						Yes
+500-05-2077	Frkovic	Kathleen		W3	43	Lake Saint L	MO				---C										Yes
+800-05-2076	Frkovic	Thomas		M4	51	Lake Saint L	MO				---C										Yes
+200-05-2078	Frkovic	Timothy		B2	13	Lake Saint L	MO														Yes
+500-12-3544	Fryback	Aaron		B2	12	Warsaw	IN														Yes
+600-12-3543	Fryback	Austin		B2	12	Warsaw	IN														Yes
+800-12-3541	Fryback	Matthew		M3	37	Warsaw	IN														Yes
+100-12-4590	Fuchs	Brigita		W3	40	Lake Saint L	MO				---C										Yes
+000-12-4591	Fuchs	Lauren		G2	13	Lake Saint L	MO														Yes
+900-12-4592	Fuchs	Michael		B2	12	Lake Saint L	MO														Yes
+100-12-9151	Fuchs	Michael		M3	43	Lake Saint L	MO														Yes
+200-12-3707	Fulton	Mariah		G2	13	Huntington	IN														Yes
+300-12-3706	Fulton	Shantiel		W3	40	Huntington	IN														Yes
+800-13-1119	Funke	Ryan		M1	23	Swisher	IA														Yes
+100-06-7107	Furnish	Ryan		M1	20	Cedar Rapids	IA														Yes
+900-00-3224	Fye	Delbert		M8	70	Ollie	IA														Yes
+100-01-7201	Fye	Tracy		M4	47	Richland	IA							81.000			X1				Yes
+700-13-1158	Gabrielsen	Rachel		W1	23	Bettendorf	IA														Yes
+500-12-8211	Gaff	Chenee		G2	11	Pierceton	IN														Yes
+400-12-8212	Gaff	KateLynn		G1	9	Pierceton	IN														Yes
+200-12-9976	Gaff	Matt		M3	40	Larwill	IN														Yes
+200-12-9020	Gagnon	Jalyn		G2	13	Edwardsville	IL														Yes
+900-12-8507	Gahgan	Rhiannan		G1	8	Wonder Lake	IL														Yes
+900-00-2654	Gambrel	Gary		M4	50	Corbin	KY					92.333	3826.6		M3	E3					Yes
+600-12-3888	Gammill	Terrence		M2	31	Lake Lotawan	MO				---C										Yes
+200-11-5795	Gannon	Martin		M4	46	Minooka	IL														Yes
+200-13-1351	Gardner	Matthew		B1	6	Lake Lotawan	MO														Yes
+900-12-4387	Gardner	Michael		M4	45	Lake Lotawan	MO														Yes
+400-12-9523	Gardner	Michael		B1	7	Lake Lotawan	MO														Yes
+700-08-6759	Garland	Darien		G3	14	Lake St Loui	MO														Yes
+300-08-6757	Garland	Jonathan		M3	42	Lake St Loui	MO														Yes
+100-11-9718	Garretson	Barry		M1	21	Iowa City	IA														Yes
+600-12-7534	Garrett	Charles		M1	20	Lake Forest	IL														Yes
+600-02-1252	Garrison	Tim		M5	55	Noblesville	IN														Yes
+300-12-9432	Gates	Jonathan		M1	22	Huntley	IL														Yes
+300-07-5205	Gatschenberg	Charles		M4	50	Lake Saint L	MO														Yes
+800-05-0364	Gavin	Michael		M1	18	Worden	IL														Yes
+700-11-1464	Gee	Jenny		G3	17	Rowley	IA														Yes
+600-11-1465	Gee	Trisha		W1	18	Rowley	IA														Yes
+200-00-2309	Geiger	Daniel		M5	58	Lexington	KY				--A-										Yes
+200-07-3082	Gelman	Debra		W4	47	Highland Par	IL				---C										Yes
+400-06-4967	Gelman	Jessica		G3	16	Highland Par	IL														Yes
+900-08-3730	Gelman	Joshua		B3	15	Highland Par	IL														Yes
+300-08-4636	Gelman	Robert		M4	45	Highland Par	IL														Yes
+600-03-3822	Genegels	Megan		W1	22	Lake Villa	IL														Yes
+000-04-6934	Genengels	Madeline		W1	18	Lake Villa	IL														Yes
+700-04-6935	Genengels	Mercedes		G3	17	Lake Villa	IL														Yes
+300-13-0834	Gerdes	Bernard		M9	77	Dixon	IL														Yes
+700-13-0557	Gerhke	Cameron		B3	14	Lake Forest	IL														Yes
+600-13-0558	Gerhke	Caroline		G2	10	Lake Forest	IL														Yes
+800-13-0556	Gerhke	Chris		B3	16	Lake Forest	IL														Yes
+400-12-5853	Gerken	Michael		M1	19	Ames	IA														Yes
+100-01-6646	Gerkin	Scott		M4	48	Sioux City	IA					76.050			X1						Yes
+800-06-0954	Gerkin	Shane		M1	18	Sioux City	IA														Yes
+000-01-3699	Gerstad	Diane		W4	49	Wonder Lake	IL				---C										Yes
+800-00-4055	Gerstad	Lindsey		W1	18	Wonder Lake	IL														Yes
+300-01-3700	Gerstad	R C		B3	14	Wonder Lake	IL														Yes
+100-04-1367	Gerstad	Roger		M4	50	Wonder Lake	IL				---C										Yes
+100-11-2962	Gessel	Bradley		M1	21	Chesterfield	MO														Yes
+600-09-8607	Getsfred	Chris		M4	52	Edwardsville	IL														Yes
+400-00-1027	Giddens	Lance		W2	29	Florence	KY				-S--										Yes
+400-08-8040	Gilbert	Jenna		G3	16	Fort Wayne	IN					66.833			M3						Yes
+800-08-8039	Gilbert	Steve		M5	54	Fort Wayne	IN					21.666									Yes
+000-04-8097	Giles	Debi		W5	54	Indianapolis	IN														Yes
+600-11-8242	Giles	Richard		M5	54	Galesburg	IL														Yes
+800-02-0143	Gillian	Caitlin		W1	22	Forest Park	IL														Yes
+400-13-0772	Gilliland	Brady		B1	8	Quincy	IL														Yes
+100-11-8841	Girk	Nan		W5	59	Indianapolis	IN				---C										Yes
+300-13-0056	Gisel	Andrew		M1	21	Dewitt	IA														Yes
+700-12-2125	Glavan	Kara		G2	10	Elmhurst	IL														Yes
+800-12-2124	Glavan	Keith		M3	39	Elmhurst	IL														Yes
+300-13-1510	Goddard	Luke		M1	20	Iowa City	IA														Yes
+700-02-2810	Godsey	Alex		M3	35	Somerset	KY				AR--										Yes
+300-12-8060	Goebel	Colton		B1	9	Fort Wayne	IN														Yes
+700-12-8059	Goebel	Gunnar		B2	11	Fort Wayne	IN														Yes
+900-12-0013	Goekler	Shawna		W1	23	West Lafayet	IN							0.0000							Yes
+000-13-1216	Gofforth	Melissa		G3	14	Marion	IA														Yes
+900-00-7406	Goings	Roger		M7	68	Noblesville	IN														Yes
+000-09-9897	Goldberg	Adam		B2	12	Cedar Rapids	IA														Yes
+500-11-0346	Goldberg	Judy		W3	43	Cedar Rapids	IA														Yes
+400-11-0347	Goldberg	Kylie		G2	10	Cedar Rapids	IA														Yes
+300-07-8527	Golden	Brian		M2	33	California	KY					96.166			M2						Yes
+800-09-8322	Goldstein	Lisa		W1	21	Saint Louis	MO														Yes
+000-12-5130	Good	Tyler		M1	19	Warsaw	IN														Yes
+300-00-5248	Gordon	Edward		M7	65	Fox Lake	IL														Yes
+000-04-1210	Goyen	Michael		M5	54	Cedar Falls	IA														Yes
+100-01-9294	Gradle	John		M5	54	Syracuse	IN					88.587			E3						Yes
+600-13-0688	Graefe	Jessica		W1	22	Rockford	IL														Yes
+800-04-5274	Graefe	William		M2	31	Rockford	IL														Yes
+800-04-4763	Graff	Ken		M4	52	Wonder Lake	IL														Yes
+900-03-1911	Graff	Mary Jo		W4	52	Wonder Lake	IL														Yes
+300-11-6814	Graham	Beth		W2	26	Iowa City	IA					3.3250	36.000	0.0000							Yes
+200-12-9686	Gramer	Brandon		B2	12	Lake in the	IL														Yes
+100-03-6181	Gramer	Christophe		M3	42	Lake In the	IL														Yes
+100-12-9687	Gramer	Kirsten		G1	8	Lake in the	IL														Yes
+000-11-0198	Gramolino	Anthony		M3	42	Lake Saint L	MO														Yes
+400-12-1664	Granzella	Daryl		M5	59	Lake Winneba	MO														Yes
+400-11-8077	Gray	Abi		G2	13	Atkins	IA														Yes
+500-12-7177	Gray	Derek		B1	9	Greenwood	IN														Yes
+900-00-1732	Gray	Joseph		M5	53	Greenwood	IN														Yes
+200-05-4537	Greene	Bryon		M2	33	Mooresville	IN														Yes
+400-07-8731	Greene	Lawrence		M3	43	Lake Saint L	MO														Yes
+600-12-2300	Greenwood	Megan		W1	19	Peosta	IA														Yes
+400-09-9448	Grennes	Robert		M4	50	Indianapolis	IN														Yes
+300-08-8795	Gress	Melita		G2	13	Monona	IA														Yes
+600-08-8794	Gress	Tyler		B3	15	Monona	IA														Yes
+300-04-3695	Gries Griffi	Janice		W4	51	Barrington	IL														Yes
+900-12-4417	Groh	Alyssa		G3	14	Crystal Lake	IL														Yes
+100-12-7553	Groh	Mark		M4	48	Crystal Lake	IL														Yes
+500-01-3090	Gronczewski	Keith		M5	53	Des Plaines	IL														Yes
+700-12-4495	Gronset	Bryan		B3	16	Chicago	IL														Yes
+600-12-4496	Gronset	Dylan		B2	11	Chicago	IL														Yes
+800-11-3764	Gronset	Kyle		B3	16	Chicago	IL														Yes
+800-12-1721	Grossmayer	Desiree		W4	49	Wonder Lake	IL														Yes
+700-12-1722	Grossmayer	Estea		W1	20	Wonder Lake	IL														Yes
+900-12-1720	Grossmayer	Jim		M4	46	Wonder Lake	IL														Yes
+600-04-1515	Groth	Kedric		M4	51	Castalia	IA														Yes
+900-07-5852	Grotjan	Anne		G1	9	Lake Saint L	MO														Yes
+100-07-5845	Grotjan	H Edward		M6	60	Lake St Loui	MO														Yes
+900-12-1546	Groves	Cassandra		G2	13	Rockford	IL														Yes
+000-10-6917	Grubb	Elaine		W4	45	Philo	IL														Yes
+400-00-6787	Grubb	Lauren		G3	15	Sidney	IL														Yes
+200-01-8067	Gruhn	Jamile		W1	20	Solon	IA														Yes
+600-12-7282	Gudeman	Garrett		B1	7	Kouts	IN														Yes
+900-08-1792	Gudeman	Mathew		M2	34	Kouts	IN														Yes
+000-08-0213	Guilford	Jacob		B3	15	Columbia	MO					52.000			X3						Yes
+700-12-3061	Guilford	Stacy		M3	41	Columbia	MO					87.666			X2						Yes
+500-06-4030	Gustafson	Connie		W5	56	Indianapolis	IN														Yes
+000-10-5095	Gustafson	Jeffrey		M1	22	Chicago	IL														Yes
+900-06-4029	Gustafson	Rick		M5	59	Indianapolis	IN														Yes
+500-00-9886	Guthrie	Pamela		W4	52	Albany	KY					75.166			M3						Yes
+900-03-9155	Haag	Lisa		W4	48	McHenry	IL														Yes
+000-12-9008	Haag	Lukas		B2	10	Edwardsville	IL														Yes
+100-07-0981	Habryl	Michelle		W2	25	Syracuse	IN														Yes
+600-12-7848	Hagen	Benjamin		M1	20	Springfield	MO														Yes
+700-11-8166	Hahn	Ashley		W1	23	Lake Lotawan	MO														Yes
+100-04-0012	Hahn	Katie		W1	24	Lake Lotawan	MO														Yes
+400-02-0068	Hahn	Kyle		M1	22	Lake Lotawan	MO														Yes
+300-00-3480	Hall	Gary		M6	60	Indianapolis	IN				RR--										Yes
+300-13-1558	Hall	Judith		W2	25	Indianaoplis	IN														Yes
+200-12-6746	Hall	Kathryn		W1	21	Hustonville	KY														Yes
+700-10-7931	Halverson	Henry		M3	36	Worden	IL				---C										Yes
+400-11-7018	Halverson	Kirsten		G1	7	Worden	IL														Yes
+300-13-1633	Hamilton	Emily		G3	15	Yorktown	IN														Yes
+700-09-9182	Hammontree	Daniel		M3	35	Grandview	MO														Yes
+700-00-3806	Hampton	Stan		M4	51	Cicero	IN														Yes
+700-12-7168	Hamstra	Gary		M4	46	Wheatfield	IN														Yes
+800-11-8783	Hand	Joe		M4	50	Fortville	IN														Yes
+700-08-9026	Hanley	Katherine		W1	18	Lindenhurst	IL														Yes
+400-12-9615	Hanover	David		M1	18	Carmel	IN														Yes
+800-00-4048	Hansen	Cathy		W4	51	Wonder Lake	IL														Yes
+000-00-4046	Hansen	Daniel		M2	27	Wonder Lake	IL														Yes
+400-00-4042	Hansen	KImberly		W3	37	Wonder Lake	IL														Yes
+900-00-4047	Hansen	Nicole		W1	21	Wonder Lake	IL														Yes
+000-04-1364	Hansen	Roger		M5	53	Wonder Lake	IL				---C										Yes
+400-12-4986	Hanson	Berklee		G1	6	Lansing	IA														Yes
+500-12-4985	Hanson	Mike		M3	37	Lansing	IA														Yes
+700-12-4198	Hanson	Rylee		G2	10	Lansing	IA														Yes
+600-08-7762	Happe	Daniel		M2	34	Walford	IA														Yes
+200-11-1018	Harken	Abby		W1	19	Eldora	IA														Yes
+400-11-6578	Harken	Alex		B3	16	Eldora	IA														Yes
+300-11-1017	Harken	James		M4	52	Eldora	IA				---C										Yes
+900-11-7372	Harken	Vicki		W4	52	Eldora	IA														Yes
+100-00-4106	Harkey	Cindy		W4	52	Bettendorf	IA				---C										Yes
+100-04-1383	Harkey	Tom		M5	56	Bettendorf	IA				---C										Yes
+900-12-8996	Harmon	Savannah		G2	12	Downers Grov	IL														Yes
+200-09-9116	Harms	Justin		M1	24	Grundy Cente	IA														Yes
+400-11-4161	Harrington	Carrie		W1	21	Western Spri	IL														Yes
+900-00-0911	Harris	Bob		M5	56	Paducah	KY				-S-C	86.000			X2						Yes
+100-09-2183	Harris	Christine		W1	18	Rockford	Il														Yes
+300-11-5039	Harris	John		M4	46	Nicholasvill	KY				-A-S	53.500									Yes
+400-11-4666	Harris	Lauren		G2	12	Nicholasvill	KY					74.500	323.33	10.333	E3	X1	M1				Yes
+200-12-8771	Harris	Lisa		W2	34	Lake Lotawan	MO														Yes
+100-12-5047	Harris	Maria		G1	7	Lake Lotawan	MO														Yes
+900-11-5040	Harris	Pam		W4	45	Nicholasvill	KY				--RS										Yes
+300-12-8770	Harris	Robert		M3	40	Lake Lotawan	MO														Yes
+500-11-4290	Harris	Ryan		B2	11	Nicholasvill	KY					63.416	660.00	0.0000	M2	E3					Yes
+600-11-1328	Harris	Terry		W5	54	Paducah	KY														Yes
+900-04-2492	Harrison	Daryl		M5	58	Indianapolis	IN														Yes
+000-00-9256	Harrison	Molly		W1	20	Indianapolis	IN						3926.6			E3					Yes
+400-12-5945	Hart	Corrin		W2	28	Lake Ozark	MO														Yes
+500-04-1509	Hart	Thomas		M5	55	Orland Park	IL														Yes
+700-06-1558	Hartman	Cole		B2	10	Smithville	MO														Yes
+300-06-1556	Hartman	Darsi		W3	43	Smithville	MO														Yes
+600-06-1555	Hartman	Joel		M3	41	Smithville	MO					84.500	707.75	24.225		X1					Yes
+400-06-1559	Hartman	Payton		G3	15	Smithville	MO					59.666	117.00		X3						Yes
+600-12-2065	Hartman	Rick		M5	56	Waverly	IA														Yes
+700-00-6234	Hartmann	Billy		M2	25	Loves Park	IL														Yes
+100-10-7104	Hartmann	Blake		B1	8	Wonder Lake	IL														Yes
+800-04-1368	Hartmann	Bob		M3	43	Wonder Lake	IL														Yes
+900-10-7106	Hartmann	Brenda		W3	41	Wonder Lake	IL														Yes
+700-07-6198	Hartmann	Brianna		G2	12	Wonder Lake	IL														Yes
+600-10-8700	Hartmann	Bridget		W4	45	Cedar Falls	IA														Yes
+200-10-7103	Hartmann	Bryce		G2	10	Wonder Lake	IL														Yes
+800-08-4699	Hartmann	Derek		B1	9	Wonder Lake	IL														Yes
+200-01-8702	Hartmann	George		M1	22	Wonder Lake	IL														Yes
+800-00-6233	Hartmann	Jane		W4	52	Loves Park	IL														Yes
+500-00-6236	Hartmann	John		M1	21	Loves Park	IL														Yes
+000-09-8807	Hartmann	Megan		G3	14	Cedar Falls	IA														Yes
+600-00-6211	Hartmann	Patti		W4	49	Wonder Lake	IL														Yes
+600-00-6235	Hartmann	Rebecca		W1	23	Loves Park	IL														Yes
+700-12-1593	Hartmann	Samuel		B3	17	Cedar Falls	IA														Yes
+100-08-4698	Hartmann	Tami		W3	40	Wonder Lake	IL														Yes
+600-01-7925	Hartmann	William		M3	40	Wonder Lake	IL				---C										Yes
+200-04-1852	Hartmann	William		M5	53	Loves Park	IL														Yes
+200-11-1544	Hass	Charles		M2	26	Northbrook	IL														Yes
+000-00-4107	Hast	Gene		M4	51	Moline	IL				---C										Yes
+200-00-2491	Hatch	Eric		M3	37	Columbia	MO				-R--	86.333	1153.3	74.666	M1	M1	X3				Yes
+000-04-1645	Hawblitzel	Gary		M3	38	Warsaw	IN				---C										Yes
+800-08-5283	Hawblitzel	McKenna		G1	6	Warsaw	IN														Yes
+000-00-5593	Hawblitzel	Pam		W2	34	Warsaw	IN														Yes
+800-04-2460	Hawblitzel	Tom		M7	66	Warsaw	IN														Yes
+800-13-0822	Hawes	Corey		M3	38	Paducah	KY							98.100			M1				Yes
+700-13-0823	Hawes	Jackson		B2	10	Paducah	KY														Yes
+000-07-5644	Hawk	Ellie		G3	16	Lake Saint L	MO														Yes
+900-13-0555	Hawkins	Ian		M1	19	Claredon Hil	IL														Yes
+100-13-0942	Hayes	Sydney		G3	15	Wonder Lake	IL														Yes
+500-11-1329	Haynie	Codie		B2	12	Loves Park	IL														Yes
+300-13-0933	Hazelett	Charles		M1	23	Iowa City	IA														Yes
+900-09-9315	Heckendorf	Cody		B1	9	Geneva	IL														Yes
+700-06-4391	Heckendorf	Lori		W3	40	Geneva	IL														Yes
+300-00-4203	Hefley	Grant		M2	28	Blue Springs	MO				-A--	96.500	2310.0	109.00	M2	E2	X3				Yes
+500-11-5563	Heggen	Dennis		M4	50	Rock Island	IL				---C										Yes
+800-12-8690	Hegi	Evan		M1	21	Springfield	MO														Yes
+300-11-8740	Heidrich	Elise		G3	15	Wilmette	IL														Yes
+200-11-1292	Heidrich	Nicole		G3	15	Wilmette	IL														Yes
+000-11-7838	Hein	Aubrei		G2	10	Edwardsville	IL														Yes
+200-12-8535	Heineman	Thomas		M1	19	Grinnell	IA														Yes
+000-13-0714	Heinsohn	Alyssa		G2	12	Lake Saint L	MO														Yes
+600-09-3149	Heinsohn	Doug		M4	46	Lake Saint L	MO														Yes
+200-13-0804	Heinze	Ian		B2	10	Quincy	IL														Yes
+300-12-1863	Heitzman	Barbara		W4	49	Dyersville	IA														Yes
+000-11-9474	Heitzman	Bill		M4	51	Dyersville	IA														Yes
+200-11-8888	Heitzman	Emerald		G3	14	Dyersville	IA														Yes
+100-12-1155	Heller	Andrew		M3	44	Indianapolis	IN														Yes
+700-00-6098	Helmricks	Kim		W2	26	Evansdale	IA														Yes
+700-04-2256	Helton	Lynette		W5	58	Plainfield	IN														Yes
+800-00-1849	Helton	Richard		--		Avon	IN														Yes
+400-00-8361	Helton	Steve		M5	58	Plainfield	IN														Yes
+500-07-0798	Hemphill	Derek		M2	28	Ankeny	IA														Yes
+400-12-5181	Henderson	Danny		M3	43	Delhi	IA														Yes
+600-13-0077	Henderson	Janet		W4	50	Delhi	IA														Yes
+300-12-9616	Hendrix	Brookelin		G2	12	Roscoe	IL														Yes
+300-10-0165	Hennessy	Sean		B3	15	Riverside	IL														Yes
+100-06-7884	Henseler	Joseph		M1	21	Columbus	IN														Yes
+900-11-7341	Herman	Cameron		B1	8	Chicago	IL														Yes
+800-11-7342	Herman	Carson		B1	6	Chicago	IL														Yes
+700-11-7343	Herman	Claudie		G1	4	Chicago	IL														Yes
+400-11-7339	Herman	Jim		M3	43	Chicago	IL														Yes
+000-11-7340	Herman	Nancy		W3	40	Chicago	IL														Yes
+200-00-0288	Hicks	Robert		M9	76	Glenview	IL				-E--		893.33			E3					Yes
+700-01-8877	Higby	Jim		M3	41	Lake St Loui	MO														Yes
+700-04-2579	Hill	Bobby		M4	48	Murray	KY				SS--										Yes
+000-11-7845	Hill	Gabrielle		G2	12	Glenview	IL														Yes
+800-00-0538	Hill	Harold		M8	72	Gravois Mill	MO				-EE-										Yes
+800-00-9562	Hill	Tina		W4	46	Murray	KY				AA-S										Yes
+900-11-7846	Hill	Trevor		B3	14	Glenview	IL														Yes
+300-01-7690	Hintz	Jennifer		W2	27	Elgin	IL														Yes
+300-12-1634	Hintzman	Adam		B2	12	Arlington He	IL														Yes
+200-12-1635	Hintzman	Lauren		G2	11	Arlington He	IL														Yes
+400-10-8696	Hipskind	Andrew		M2	26	Fort Wayne	IN					2.6666	126.66	56.333							Yes
+800-12-6252	Hlavacek	Jenna		W1	19	Aurora	IL							0.0000							Yes
+500-01-9283	Hobson	Douglas		M3	41	Indianapolis	IN					87.875			M3						Yes
+000-11-8163	Hodes	Jean		M3	43	Lake Lotawan	MO														Yes
+000-12-2054	Hodes	Robert		M4	46	Lake Lotawan	MO														Yes
+800-11-8165	Hodes	Ryan		B3	16	Lake Lotawan	MO														Yes
+300-11-7729	Hodges	Jerry		M4	50	Indianapolis	IN														Yes
+500-05-3546	Hoehne	Bonita		W4	46	Lake Saint L	MO														Yes
+700-08-8908	Hofmann	Joshua		B1	8	Port Byron	IL														Yes
+000-08-8907	Hofmann	Morgan		G2	10	Port Byron	IL														Yes
+300-08-8906	Hofmann	Richard		M3	42	Port Byron	IL														Yes
+800-04-1384	Hofmann	Teresa		W3	40	Port Byron	IL														Yes
+900-07-6037	Hogan	Jamie		W1	20	Edwardsville	IL														Yes
+300-13-0773	Hogge	Nathaniel		B1	8	Quincy	IL														Yes
+900-04-1572	Hohenstatt	Gina		W4	51	Indianapolis	IN				---S										Yes
+200-09-7826	Hohenstatt	Timothy		M3	41	Indianapolis	IN														Yes
+300-11-3813	Hohs	Daniel		M1	21	Mundelein	IL					57.833	1170.0			M3					Yes
+900-11-0878	Holcomb	Albert		M2	27	Cedar Rapids	IA														Yes
+600-10-8632	Hollabaugh	Laura		W1	23	Fulton	MO				---C										Yes
+800-12-6306	Hollabaugh	Scott		M1	19	Fulton	MO														Yes
+100-11-8162	Holley	Mackenzy		G3	14	Lake Lotawan	MO														Yes
+200-11-8161	Holley	Renee		W3	43	Lake Lotawan	MO														Yes
+900-04-0988	Holm	Carl		M5	57	Joliet	IL														Yes
+700-00-2601	Holm	Erik		M1	24	Rockdale	IL														Yes
+700-12-7137	Holmberg	Michael		B3	16	Yorkville	IL														Yes
+500-13-0153	Holt	Worthe		M4	50	Fishers	IN														Yes
+100-11-3099	Homsey	Pierce		B3	15	Mundelein	IL														Yes
+400-04-1043	Hopler	Carla		W3	40	Fishers	IN														Yes
+400-00-5551	Hopler	Jeffrey		M3	42	Fishers	IN														Yes
+800-06-2567	Hopler	Tristin		B1	8	Fishers	IN														Yes
+400-12-2166	Horan	Angela		W1	21	Bellevue	IA														Yes
+700-10-7344	Horn	Cami		W3	41	Herrin	IL														Yes
+100-12-8659	Horner	Daniel		M3	42	Spring Grove	IL				---C										Yes
+700-12-8660	Horner	Joey		B1	9	Spring Grove	IL														Yes
+500-12-8556	Horwitz	Jenna		W1	19	Bannockburn	IL														Yes
+700-09-9463	Houg	Heather		W1	21	Cedar Rapids	IA				---C										Yes
+600-00-0293	Hough	Benjamin		M7	65	Mundelein	IL														Yes
+400-08-7555	Howery	Lisa		W3	43	Indianapolis	IN														Yes
+800-00-1702	Howery	Steve		M4	52	Indianapolis	IN														Yes
+200-00-0697	Hubert	Steve		M6	60	Saint Louis	MO														Yes
+600-12-9361	Hucek	Nolan		B3	14	Joliet	IL														Yes
+600-12-5400	Hughes	Beth		W2	28	Libertyville	IL														Yes
+100-12-5399	Hughes	Joel		M2	28	Libertyville	IL														Yes
+700-13-0687	Hugley	Thomas		M2	32	Marengo	IL														Yes
+000-12-8742	Hulick	Logan		M1	19	Rockford	IL														Yes
+600-13-1180	Hull	Bradley		M2	27	Geneseo	IL														Yes
+400-12-6003	Hults	Matt		B3	16	Indianapolis	IN														Yes
+400-11-1689	Humphreys	Debbie		W5	55	Delhi	IA				---C										Yes
+500-11-1688	Humphreys	William		M7	65	Delhi	IA				---C										Yes
+200-12-6586	Hunt	Victoria		W1	19	Crawfordsvil	IN						72.000								Yes
+300-00-9758	Huntzinger	John		M4	45	Greenfield	IN				SRR-										Yes
+300-10-8604	Hupp	Jessica		G3	14	Ely	IA														Yes
+700-12-2163	Hupp	Josh		B2	13	Ely	IA														Yes
+100-11-0791	Hupp	Kevin		M4	48	Ely	IA														Yes
+900-00-4214	Hurd	David		M4	48	Winnebago	IL														Yes
+000-09-4748	Hurd	Kenny		B2	11	Winnebago	IL														Yes
+300-13-0940	Hurlbert	Megan		G3	14	Cedar Rapids	IA														Yes
+300-13-1381	Hurlbert	Randy		M4	48	Swisher	IA														Yes
+500-13-1556	Hutton	Andrea		W2	25	Indianapolis	IN														Yes
+000-07-1879	Hutton	Charles		M2	26	Indianapolis	IN						1611.0			M1					Yes
+400-08-7894	Iancu	Ana-Maria		W1	21	Rockford	IL														Yes
+500-11-8663	Ianno	Tony		M1	20	Naperville	IL														Yes
+200-12-2168	Ice	Richard		M7	67	Galena	MO					0.4500	270.00	0.0000							Yes
+300-11-9303	Idlas	Jacob		M1	19	Third Lake	IL					0.4500	76.500	68.400			X1				Yes
+900-13-0470	Ipock	James		B2	12	Round Lake B	IL														Yes
+200-12-1970	Irmscher	Adam		B3	17	Fort Wayne	IN														Yes
+000-12-1965	Irmscher	Kim		M5	55	Fort Wayne	IN														Yes
+600-12-1969	Irmscher	Matthew		B3	17	Fort Wayne	IN					77.400			M3						Yes
+700-00-8245	Irvine	Christophe		M1	20	Castalia	IA														Yes
+800-00-4550	Irvine	Michael		M1	23	North Libert	IA														Yes
+700-04-1521	Irvine	Tim		M4	47	Castalia	IA														Yes
+700-12-6468	Jaacks	Colleen		W1	20	Prospect Hei	IL														Yes
+500-11-7246	Jaacks	Jenny		W1	22	Prospect Hei	IL														Yes
+100-00-3901	Jackson	Daniel		M3	42	Greenville	IL														Yes
+000-09-4371	Jackson	Delaney		G1	8	Columbus	IN					4.1666									Yes
+000-09-4371	Jackson	Delaney		G2	8	Columbus	IN					4.1666									Yes
+500-10-6615	Jackson	Karen		W3	41	Liberty	MO														Yes
+300-05-5405	Jackson	Lora		W3	42	Columbus	IN														Yes
+600-10-6614	Jackson	Megan		G1	8	Liberty	MO														Yes
+
+100-06-1662	Jackson	Taylor		M4	46	Liberty	MO														Yes
+700-10-6613	Jackson	Taylor		B2	12	Liberty	MO														Yes
+
+200-04-2631	Jacobazzi	Denise		W4	49	Downers Grov	IL				--R-										Yes
+300-04-1404	Jacobi	Jean		MA	83	Olympia Fiel	IL														Yes
+400-04-3614	Jacobi	Jonathan		M4	48	Flossmoor	IL														Yes
+900-00-4177	Jacobi	Lillian		W9	79	Olympia Fiel	IL														Yes
+100-12-8932	Jacobs	Daniel		B3	17	Shorewood	IL														Yes
+600-12-9330	Jankowski	Andrew		B2	13	Fort Wayne	IN														Yes
+900-12-9290	Jankowski	Cameron		B3	14	Fort Wayne	IN														Yes
+600-12-9019	Jarke	Tolia		B2	13	Edwardsville	IL														Yes
+700-00-5732	Jarrett	Dave		M6	61	Nineveh	IN				---S	68.000			X1						Yes
+700-05-2594	Jarvis	Nicholas		M1	24	Muncie	IN				---C										Yes
+500-01-7021	Jenkins	Aaron		M2	31	Wentzville	MO														Yes
+500-11-5778	Jensen	Erick		M4	48	Cedar Falls	IA														Yes
+300-00-4104	Jepsen	Susan Mich		W4	48	Sabula	IA														Yes
+400-04-9443	Jester	Holiday		W3	36	Monona	IA				---C										Yes
+200-12-9907	Joens	Jarred		B3	14	Cedar Rapids	IA														Yes
+600-13-0046	Joens	Larry		M4	50	Cedar Rapids	IA														Yes
+500-01-1458	Jogerst	Allen		M2	28	Machesney Pa	IL														Yes
+400-07-7741	Johnson	Cliff		M4	50	Waterloo	IA														Yes
+700-04-2298	Johnson	Jeffrey		M4	45	Fort Wayne	IN														Yes
+500-02-5954	Johnson	Michael		M4	45	Lake Winneba	MO														Yes
+600-00-0785	Johnson	Randall		M3	43	Loves Park	IL														Yes
+900-00-5754	Johnson	Regan		M4	47	Indianapolis	IN														Yes
+400-00-2482	Johnson	Robert		M8	71	Rockford	IL														Yes
+600-01-0049	Johnson	Wade		M2	25	North Libert	IA														Yes
+900-12-9009	Johnston	Benjamin		B2	12	Edwardsville	IL														Yes
+700-05-1380	Jones	Caitlin		W1	20	Lake Saint L	MO														Yes
+500-02-0863	Jones	Chris		M2	32	Earlville	IA														Yes
+800-00-9678	Jones	Kyle		M3	39	Corbin	KY					105.33			O3						Yes
+400-09-9589	Joosten	Heather		W1	19	Cedar Rapids	IA														Yes
+000-12-7707	Judickas	Jacque		G2	11	Sherrard	IL														Yes
+200-12-7705	Judickas	Keith		M4	48	Sherrard	IL														Yes
+100-12-7706	Judickas	Lauren		G3	17	Sherrard	IL														Yes
+900-12-7708	Judickas	Marcia		W4	47	Sherrard	IL														Yes
+800-12-7709	Judickas	Sara		G2	12	Sherrard	IL														Yes
+500-04-4144	Juhl	Bob		M4	48	Janesville	IA														Yes
+100-02-1611	Juhl	Jarred		M1	24	Waverly	IA														Yes
+600-11-5593	Juhl	Ralph		MB	88	Waverly	IA														Yes
+100-01-5599	Julkowski	Richard		M7	65	Clarendon Hi	IL														Yes
+100-12-1902	Jungbauer	Erin		W3	44	Leesburg	IN				---C										Yes
+700-11-8630	Jungbauer	Rachel		G2	12	Leesburg	IN														Yes
+300-11-9747	Jungbauer	Sarah		G3	15	Leesburg	IN														Yes
+200-12-1901	Jungbauer	Steve		M4	48	Leesburg	IN				---C										Yes
+700-07-4217	Jurewicz	Jake		B3	15	Wonder Lake	IL														Yes
+700-04-1873	Jurewicz	John		M4	45	Wonder Lake	IL														Yes
+700-08-3789	Jurewicz	Kate		G3	17	Wonder Lake	IL														Yes
+700-01-0310	Kadera	Christophe		M2	26	Lake Villa	IL					0.9000	450.00	65.000							Yes
+800-13-0563	Kairy	Adam		M1	19	Hannibal	MO														Yes
+400-10-7217	Kalkbrenner	Cole		M1	22	Springfield	MO				---C	69.666	1440.0	111.66	X3	M3	M3				Yes
+100-12-8901	Kane	Jenna		W1	20	Iowa City	IA														Yes
+400-12-9660	Kaplan	Elizabeth		G3	16	Wilmette	IL														Yes
+800-12-5095	Kathe	Alyssa		G2	10	Schaumburg	IL														Yes
+900-13-0296	Kathe	Cathy		W3	40	Schaumburg	IL														Yes
+500-11-6300	Kathe	Jordan		B2	13	Schaumburg	IL														Yes
+900-13-0678	Kaub	Paul		M4	51	Noblesville	IN														Yes
+700-12-9742	Keating	Carson		B1	6	Lake Lotawan	MO														Yes
+800-12-9741	Keating	Catherine		W3	41	Lake Lotawan	MO														Yes
+200-12-4186	Keating	Jonathan		B3	17	Lake Lotawan	MO														Yes
+100-12-4187	Keating	Ryan		B2	11	Lake Lotawan	MO														Yes
+600-12-2362	Keith	Sheryn		W3	38	Rayville	MO				---C										Yes
+500-04-2474	Keller	David		M6	60	Somerset	KY				-A--										Yes
+700-11-1051	Keller	William		M3	44	Bristol	IN														Yes
+500-12-7757	Kellett	Elizabeth		W1	19	Columbia	IL														Yes
+100-13-1123	Kelley	Chloe		G1	7	Bowling Gree	KY														Yes
+300-00-6894	Kelley	Eric		M3	41	Bowling Gree	KY					104.00	807.50	83.600	E3	X3	X3				Yes
+600-07-3013	Kelley	Joshua		B2	11	Bowling Gree	KY					78.833	76.000	36.000	E3		X3				Yes
+300-12-9371	Kelley	Lacie		G2	13	Edwardsville	IL														Yes
+900-00-0250	Kelling	Kerry		M7	69	Cedar Falls	IA														Yes
+600-09-2555	Kellough	Jeffrey		M2	31	Burr Ridge	IL					2.7000									Yes
+700-04-9806	Kelly	Briant		M2	34	Libertyville	IL														Yes
+400-06-9003	Kelly	Maureen		W2	31	Zion	IL														Yes
+000-12-9473	Kelsey	James		M1	21	Lake Lotawan	MO														Yes
+500-04-1286	Kemker	Bernard		M4	48	Jasper	IN														Yes
+000-13-0585	Kemp	Audie		M3	36	Carmel	IN														Yes
+100-12-9847	Kennedy	Andrew		M1	20	Cedar Rapids	IA														Yes
+100-12-9915	Kent	Dena		W3	40	Grain Valley	MO														Yes
+000-12-9916	Kent	Kaley		G1	6	Grain Valley	MO														Yes
+300-12-4406	Kent	Kinley		G2	10	Grain Valley	MO														Yes
+200-04-5937	Kerfoot Stau	Natascha		W2	31	Darien	IL														Yes
+500-09-3120	Kesheimer	David		M5	56	Lexington	KY				---C	43.225									Yes
+000-10-5668	Kesheimer	Emily		G3	14	Lexington	KY														Yes
+100-10-5667	Kesheimer	Kathryn		W4	47	Lexington	KY				-AR-	56.666									Yes
+700-08-7848	Kestler	Art		M5	57	Louisville	KY														Yes
+800-04-2840	Keune	Dale		M4	45	Edwardsville	IL														Yes
+900-01-0626	Keune	Justin		M1	19	Edwardsville	IL														Yes
+800-04-5427	Kever	Anderson		B2	10	Versailles	KY														Yes
+300-00-6931	Kever	Gregory		M4	49	Versailles	KY				-R--	81.500	1266.6	78.000		X3	X3				Yes
+100-04-5426	Kever	Samuel		B2	13	Versailles	KY					70.833	583.33	21.375	M3	E1					Yes
+400-04-5425	Kever	Tami		W4	47	Versailles	KY														Yes
+800-12-6054	Kilburn	Zachariah		M1	24	West Lafayet	IN														Yes
+200-13-1634	King	Ben		B2	12	Indianapolis	IN														Yes
+000-13-1643	King	Brian		M3	39	Indianapolis	IN														Yes
+100-13-1635	King	Will		B1	8	Indianapolis	IN														Yes
+700-10-3995	Kingsmill	Christy		W1	23	Iowa City	IA				-A--	1.0000	190.00	14.000							Yes
+900-06-3167	Kinsel	Lisa		W2	28	Waterloo	IA														Yes
+100-01-8796	Kintzle	Jordan		B3	16	Earlville	IA														Yes
+400-04-3908	Kintzle	Mark		M3	44	Earlville	IA														Yes
+300-01-8792	Kintzle	Melanie		W1	21	Iowa City	IA														Yes
+400-02-1511	Kirchens	Amber		G3	17	Wheeling	IL														Yes
+100-06-8410	Kirchens	Brandon		B3	16	Wheeling	IL														Yes
+200-05-4649	Kirchens	Lisa		W3	43	Wheeling	IL														Yes
+100-11-9442	Kirchens	Patrick		M4	46	Wheeling	IL														Yes
+400-11-1405	Kitchel	Jami		W2	28	Johnston	IA														Yes
+000-01-8975	Kitchen	Donald		M4	48	Corbin	KY					77.400			X1						Yes
+600-00-3289	Kittstein	Craig		M3	42	Jerseyville	IL					103.66			E2						Yes
+000-05-3611	Klein	Josh		M1	24	Flossmoor	IL					80.750	999.00	34.200	X2	M1					Yes
+900-12-3625	Kline	Ray		M1	22	Naperville	IL														Yes
+500-01-3160	Kling	Amy		W3	44	Loves Park	IL														Yes
+600-01-3163	Kling	Brant		B3	16	Loves Park	IL														Yes
+600-04-6156	Kling	Emily		G1	9	Loves Park	IL														Yes
+200-01-3161	Kling	Jacob		M1	18	Loves Park	IL														Yes
+400-04-2161	Kling	Steven		M4	45	Loves Park	IL				---C										Yes
+400-11-9135	Klingaman	Douglas		M4	48	Waukegan	IL				---C										Yes
+000-12-9466	Klingaman	Karli		W1	21	Waukegan	IL														Yes
+700-11-9064	Klingaman	Taylor		M1	18	Waukegan	IL														Yes
+400-11-6714	Klingbeil	Kevin		M1	22	Estherville	IA							52.666							Yes
+700-08-8276	Klinger	Ron		M3	38	Delhi	IA				---C										Yes
+600-11-1304	Klinkhamer	Jeff		M3	40	Rochester	IN					77.425									Yes
+500-11-1305	Klinkhamer	Sabrina		W3	36	Rochester	IN					46.350									Yes
+000-04-9313	Klooster	John		M4	49	Carmel	IN														Yes
+600-10-6393	Kniesly	Angelia		W3	41	Indianapolis	IN														Yes
+800-04-3450	Kniesly	John		M5	56	Indianapolis	IN					90.487		78.850	E2		E3				Yes
+200-03-0764	Knight	Tony		M3	41	Lake Saint L	MO														Yes
+100-04-9444	Knipf	Charles		B3	15	Monona	IA														Yes
+800-04-9445	Knipf	Taylor		G3	17	Monona	IA														Yes
+500-12-2806	Knipper	Anita		W3	40	Moline	IL														Yes
+300-12-2808	Knipper	Kai		B2	11	Moline	IL														Yes
+400-12-2807	Knipper	Tim		M3	39	Moline	IL														Yes
+000-00-3568	Knoerzer	Pete		M8	72	Whiting	IN														Yes
+400-04-7629	Knoerzer	Timothy		M3	40	Lake Saint L	MO				---C										Yes
+600-08-5245	Knowlton	Debra		W3	44	Lake St Loui	MO														Yes
+700-08-8391	Knowlton	Kayla		G2	11	Lake St Loui	MO														Yes
+000-08-5247	Knowlton	Tara		G3	14	Lake Saint L	MO														Yes
+300-08-5246	Knowlton	Terry		M3	43	Lake Saint L	MO				---C										Yes
+000-13-0127	Koch	Anna		G2	10	Panora	IA														Yes
+500-13-0108	Koch	James		M4	51	Panora	IA					67.500									Yes
+100-00-3598	Kodiak	Chad		M2	32	Wilmington	IL														Yes
+000-02-2723	Kodiak	Cris		M1	24	Wilmington	IL				AA--	67.166	1980.0	117.66	X1	M3	M3				Yes
+200-09-2595	Koehler	Adam		M1	24	Bloomingdale	IL														Yes
+400-10-1390	Koehler	Ariana		B2	13	Wauconda	IL														Yes
+000-10-9185	Koehler	Bob		M3	42	Wauconda	IL				---C										Yes
+300-04-7051	Koehler	Casey		M3	38	Kearney	MO				---C	43.500	1186.6	95.475		M3	M3				Yes
+300-10-1391	Koehler	Kailey		G2	11	Wauconda	IL														Yes
+900-10-9186	Koehler	Kami		W3	41	Wauconda	IL														Yes
+600-03-1350	Koehler	Shelly		W2	34	Kearney	MO					31.166	556.66	42.275							Yes
+500-06-7112	Koehn	Darcy		G3	14	Cedar Rapids	IA														Yes
+600-06-8374	Koehn	Molly		W3	44	Cedar Rapids	IA														Yes
+400-12-5112	Kogay	Alina		G3	14	Bettendorf	IA														Yes
+200-09-0304	Kotaska	Amber		G3	17	Cedar Rapids	IA														Yes
+800-13-1416	Kotaska	Edward		W4	49	Cedar Rapids	IA														Yes
+800-11-7595	Kozicki	Dawson		B1	9	Wonder Lake	IL														Yes
+200-10-9756	Kramer	Gregory		M1	20	Elgin	IL					40.166		55.100							Yes
+900-12-9245	Krejci	Ryne		B3	15	Joliet	IL														Yes
+800-12-2223	Krejcie	Alex		M1	20	Skokie	IL														Yes
+200-09-9257	Krieger	Brenton		B2	13	Lake Bluff	IL														Yes
+900-09-9258	Krieger	Kendall		G2	11	Lake Bluff	IL														Yes
+200-09-9468	Krieger	Lori		W4	46	Lake Bluff	IL														Yes
+900-10-6161	Kriegsmann	Diana		W4	49	Indianapolis	IN														Yes
+700-06-6847	Kriegsmann	Thomas		M4	48	Indianapolis	IN														Yes
+800-12-6542	Kroeplin	Kelli		W1	20	Iowa City	IA														Yes
+300-00-7433	Krohne	David		M4	51	Ballwin	MO					84.416			X2						Yes
+900-12-6244	Kroll	Caitlyn		W1	19	Lemont	IL														Yes
+000-07-6832	Kruchten	Beth		W1	21	Mount Prospe	IL						853.33	58.666		M1	M2				Yes
+700-08-8953	Kruchten	Linda		W5	58	Mount Prospe	IL														Yes
+000-08-8952	Kruchten	Michael		M6	60	Mount Prospe	IL														Yes
+700-05-1281	Krueger	Bryan		M1	21	Johnsburg	IL														Yes
+900-12-6053	Krueger	Erica		W1	22	Battle Groun	IN														Yes
+500-09-3980	Krumrey	Mike		M2	25	St Louis	MO				---C										Yes
+000-00-3223	Kubitz	Becky		G3	16	Dubuque	IA														Yes
+600-04-0343	Kubitz	Greg		M4	47	Dubuque	IA				---C										Yes
+000-00-6408	Kueser	Erin		W1	23	Parkville	MO					56.333	3036.6	73.666	E3	E3	M2				Yes
+400-12-4153	Kuhn	Tim		B3	14	Naperville	IL														Yes
+900-13-1514	Kulovitz	Holly		W1	19	Orland Park	IL														Yes
+500-11-3804	Kulow	Steve		M3	42	Iowa Falls	IA														Yes
+700-01-5823	Kunde	Bruce		M8	71	Sterling	IL					74.666	1646.6	88.350	E3	E3	E3				Yes
+600-12-7749	Kunkel	Thilo		M2	26	Columbia	MO														Yes
+700-12-4426	Kusz	Emily		W2	27	Indianapolis	IN														Yes
+700-01-0237	Kusz	Jeffrey		M2	29	Indianapolis	IN														Yes
+900-11-5781	Kuykendall	David		M5	58	Roland	IA														Yes
+400-11-1177	Kuzniar	Kristyn		G3	16	Des Plaines	IL														Yes
+600-10-9639	La Hue	Larry		M5	59	Indianapolis	IN														Yes
+500-12-9935	Laabs	Jason		B3	17	Sumner	IA														Yes
+
+500-11-8205	Lafler	Jennifer		G3	17	Palo	IA														Yes
+800-04-3645	Lahaie	Donn		M3	42	Chicago	IL														Yes
+500-11-6812	LaHaie	Nicolle		W2	31	Chicago	IL														Yes
+900-00-1251	Lamberson	Eugene		M7	67	Monticello	IN						963.33			E2					Yes
+000-10-6696	Lambert	Jennifer		W3	43	Brownsburg	IN														Yes
+900-10-6697	Lambert	Megan		G3	14	Brownsburg	IN														Yes
+200-05-9475	Lambert	Tony		M3	43	Brownsburg	IN					97.833			E3						Yes
+400-00-5759	Lamers	Bill		M7	65	Saint Louis	MO														Yes
+100-08-8814	Landau	Debra		W5	53	Cedar Falls	IA				---C										Yes
+700-04-2384	Landau	Jeff		M5	55	Cedar Falls	IA														Yes
+400-12-9820	Lankenau	Lance		M3	44	Lake St Loui	MO														Yes
+300-12-9821	Lankenau	Lauren		G2	13	Lake St Loui	MO														Yes
+900-02-1503	Lasky	Jim		M3	37	Wauconda	IL														Yes
+900-12-8316	Latham	Geoffrey		M1	19	Lake Bluff	IL														Yes
+800-04-5964	Laux	Michael		M4	49	McHenry	IL														Yes
+700-07-3384	Laux	Rebecca		G3	14	McHenry	IL														Yes
+500-04-5965	Laux	Susan		W4	50	McHenry	IL														Yes
+600-11-8891	Lawson	Chloe		G3	16	Delhi	IA														Yes
+700-10-9645	Layton	Elizabeth		G2	13	Edwardsville	IL														Yes
+500-12-3964	Lea	Maureen		W2	29	Manhattan	IL					89.166		105.33	E2		E2				Yes
+400-00-9801	Lebda	Amanda		W1	23	Buffalo Grov	IL														Yes
+500-00-9800	Lebda	Arik		M1	23	Buffalo Grov	IL														Yes
+000-00-9799	Lebda	Brett		M2	25	Wonder Lake	IL														Yes
+100-00-9798	Lebda	Nanci		W4	47	Buffalo Grov	IL														Yes
+400-04-2637	Lebda	Steven		M4	49	Buffalo Grov	IL														Yes
+200-12-9501	Lebel-Rabito	Jeanie		W4	45	Glendale Hei	IL														Yes
+700-12-9483	Lechtenberg	Courtney		G3	17	Delhi	IA														Yes
+200-04-7454	Lechtenberg	Jackie		W4	51	Postville	IA														Yes
+400-12-5860	Lefevre	Ryan		M1	19	Ames	IA														Yes
+200-07-8157	Legate	Amanda		W1	18	Cedar Rapids	IA														Yes
+200-08-0772	Legate	Barbara		W4	45	Cedar Rapids	IA														Yes
+400-01-0407	Legg	Brian		M2	26	Kansas City	MO					96.833	1616.6	93.600	E3	M1	X3				Yes
+200-04-3142	Leiner	Fred		M4	50	Chicago	IL														Yes
+500-12-5043	LeMaster	Larry		M4	51	Granite City	IL														Yes
+400-11-6301	Lenz	Caroline		G2	11	Winfield	IL														Yes
+900-12-1805	Lenz	Laura		W4	46	Winfield	IL														Yes
+200-11-1476	Lenz	Madeline		G3	14	Winfield	IL														Yes
+800-11-5249	Lenz	Robert		M4	45	Winfield	IL														Yes
+400-09-4852	Leonard	Fran		W4	50	Eminence	KY														Yes
+800-00-0752	Leonard	Leon		M6	60	Eminence	KY				SS--										Yes
+100-12-8543	Leonas	Melissa		W1	19	Minooka	IL					0.0000									Yes
+500-09-9892	Lescher	Alexandria		G3	16	Crystal Lake	IL														Yes
+800-09-9891	Lescher	Craig		B3	15	Crystal Lake	IL														Yes
+500-10-9449	Lescher	Teri		W4	45	Crystal Lake	IL														Yes
+100-13-1543	Lewis	Alex		M1	20	Mt Zion	IL														Yes
+000-11-9115	Lewis	Annika		G1	9	Ursa	IL														Yes
+200-12-4629	Lewis	Grayson		B1	7	Ursa	IL														Yes
+900-11-9116	Lewis	Lauren		G2	12	Ursa	IL														Yes
+900-04-6519	Lewis	Marilynne		W4	45	Bettendorf	IA														Yes
+500-13-0771	Lewis	Nicole		G3	17	Ursa	IL														Yes
+400-11-5595	Liebau	Clayton		M2	25	Waverly	IA														Yes
+600-11-5777	Liebau	Cody		M1	22	Waverly	IA														Yes
+400-04-1014	Lindgren	Jim		M4	46	Elk Horn	IA				-A--	56.700	873.00	123.00			E2				Yes
+800-07-5440	Lindhorst	Amy		W3	37	Carter Lake	IA				-AA-	80.000			M3						Yes
+400-06-9425	Lindsey	Andrew		B3	16	Springfield	MO				-A--	100.16			E3						Yes
+000-02-2484	Lindsey	Jeff		M3	44	Springfield	MO				-S-S	92.833	2660.0	111.66	M3	E3	M3				Yes
+200-08-6754	Lindsey	Tristina		W3	44	Springfield	MO				-RAS	81.333	2286.6		M3	E1					Yes
+300-13-0353	Lipinski	Robert		M1	19	Riverwoods	IL														Yes
+400-12-3965	Lira	Elijah		B1	8	Northwood	IA														Yes
+400-12-4047	Lisula	Steve		M2	33	Minooka	IL														Yes
+100-00-8654	Little	Howard		M6	64	Boswell	IN						2170.0			E3					Yes
+800-13-0686	Lochstampfor	Rebecca		W1	24	Lake St. Lou	MO														Yes
+300-12-9036	Loewe	Corey		M2	34	Cambridge	IA					56.250									Yes
+100-12-9960	Lombard	Breanne		G2	12	Northwood	IA														Yes
+600-12-9958	Lombard	Jennifer		W3	43	Northwood	IA														Yes
+500-12-9959	Lombard	Nicholas		B2	11	Northwood	IA														Yes
+500-00-4027	Lott	Marla		W3	36	Avon	IN				-A--	91.000			E3						Yes
+100-12-9373	Lotter	Devin		B1	9	Edwardsville	IL														Yes
+100-01-0718	Louvar	Steve		M3	39	Cedar Rapids	IA														Yes
+700-01-9148	Lovelace	Megan		W1	23	Quincy	IL														Yes
+000-12-8483	Lowe	Ryan		M1	20	Belleville	IL														Yes
+300-13-0131	Lowenstein	Jennifer		G3	16	Deerfield	IL														Yes
+900-01-7333	Lubben	Keven		M4	50	Cedar Rapids	IA														Yes
+900-04-3060	Lucas	Steve		M4	46	Loves Park	IL														Yes
+700-11-4809	Lucido	Vito		M3	43	Ballwin	MO				---C										Yes
+900-04-2476	Luebchow	Carl		M3	44	Lisle	IL														Yes
+700-09-9096	Luther	Tonya		W1	21	Walford	IA														Yes
+100-09-8107	Lybarger	Courtney		G2	13	Edwardsville	IL														Yes
+000-10-7938	Lybarger	Taylor		G2	11	Edwardsville	IL														Yes
+000-01-0476	Mabry	Doris		W6	63	Decatur	IL														Yes
+200-09-8522	Mabry	Jay		M2	32	Decatur	IL														Yes
+100-03-0745	Machonga	Gary		M4	51	Park Ridge	IL														Yes
+000-04-2367	MacNaughton	James		M5	54	Lake Bluff	IL														Yes
+
+400-04-1717	Madden	Barry		M4	50	Van Meter	IA				SRR-										Yes
+500-00-5499	Madden	Sarah		G3	17	Van Meter	IA														Yes
+200-12-4520	Mairet	Leilani		W3	35	Lake Lotawan	MO														Yes
+100-12-4521	Mairet	Makayla		G2	10	Lake Lotawan	MO														Yes
+300-05-2464	Majewski	John		M3	39	South Bend	IN														Yes
+800-01-6139	Malcolm	Angela		W2	30	Leo	IN				---C										Yes
+300-12-9692	Malcolm	Connor		B1	8	Cedar Rapids	IA														Yes
+900-12-9689	Malcolm	Kyle		B2	12	Cedar Rapids	IA														Yes
+900-13-1187	Malcolm	Rod		M3	41	Cedar Rapids	IA														Yes
+700-13-1189	Malcolm	Tracey		W4	52	Cedar Rapids	IA														Yes
+800-12-5781	Maloney	MIchelle		W1	19	Glencoe	MO					0.0000	72.000								Yes
+100-03-8851	Manley	Brenda		W3	40	Fishers	IN					66.500	594.00		M1						Yes
+500-11-9592	Mann	Alicia		G2	13	Downers Grov	IL														Yes
+100-13-0454	Mann	Mariah		G3	17	Wentzville	MO														Yes
+500-11-5280	Manning	Andrew		M2	27	Waterloo	IA														Yes
+300-10-6785	Manning	Bob		M5	56	Waterloo	IA				---C										Yes
+200-10-6786	Manning	Lexie		W1	20	Waterloo	IA														Yes
+400-04-0334	Manning	Paul		M5	56	Bringhurst	IN						2780.0			E3					Yes
+500-12-2677	Marchese	Danielle		W1	21	Woodridge	IL					1.0000	126.66	0.0000							Yes
+000-13-0417	Marden	Mitchell		B3	17	Defiance	MO														Yes
+900-12-9559	Marks	Daniel		M2	34	Indianapolis	IN														Yes
+700-13-1103	Marks	Timothy		B2	13	Zionsville	IN														Yes
+100-04-0533	Marquess	Carl		M5	53	Paducah	KY				-S--										Yes
+000-00-0914	Marquess	Carly		W1	20	Paducah	KY					59.333	2683.3	45.900	X3	E2	X1				Yes
+700-12-9841	Marshall	Angela		W3	38	Warsaw	IN														Yes
+500-12-6095	Marshall	Brad		M1	20	Muncie	IN														Yes
+400-04-1746	Marshall	James		M4	52	Dixon	IL														Yes
+600-12-9842	Marshall	Natasha		G2	13	Warsaw	IN														Yes
+600-12-3185	Martel	Jenna		G1	9	Moline	IL														Yes
+800-12-3848	Martel	Joshua		B2	11	Moline	IL														Yes
+300-12-3683	Martel	Laura		W3	39	Moline	IL														Yes
+600-11-4541	Martin	Natalie		W1	21	Bloomingdale	IL														Yes
+100-12-9908	Martin	Ryan		M1	23	Brookfield	IL														Yes
+600-10-7932	Martinussen	Andrew		B2	13	Edwardsville	IL														Yes
+400-12-9011	Martinussen	Denise		W3	41	Edwardsville	IL														Yes
+400-10-7934	Martinussen	Victoria		G2	13	Edwardsville	IL														Yes
+200-13-1757	Mason	Brian		M1	23	Syracuse	IN														Yes
+200-04-4046	Mason	Deborah		W5	54	Wonder Lake	IL														Yes
+400-07-2931	Mass	Jacquelyn		W3	41	Minooka	IL														Yes
+000-07-2926	Mass	Michael		M4	45	Minooka	IL														Yes
+200-07-2935	Mass	Paige		G2	13	Minooka	IL														Yes
+500-07-2934	Mass	Troy		B3	15	Minooka	IL														Yes
+600-11-3483	Masterson	Adam		M1	18	Arlington He	IL														Yes
+500-12-8778	Mathes	Mary		W1	19	California	MO														Yes
+700-11-8159	Mathewson	Kendra		W3	40	Lake Lotawan	MO														Yes
+700-11-8784	Mathewson	Lachlan		B1	6	Lake Lotawan	MO														Yes
+800-11-8158	Mathewson	Mark		M3	43	Lake Lotawan	MO				---C										Yes
+300-11-8160	Mathewson	McKenna		G2	11	Lake Lotawan	MO														Yes
+
+500-00-3440	Mauchenheime	Marty		M3	42	Leslie	MO														Yes
+000-00-3902	Maurer	Darlene		W6	63	Fairbank	IA														Yes
+600-00-4125	Maurer	Dean		M2	34	Cedar Falls	IA														Yes
+800-04-1313	Maurer	Lowell		M7	67	Fairbank	IA														Yes
+200-11-1247	May	Garrett		B3	15	Minooka	IL														Yes
+100-11-1248	May	Rachel		G2	12	Minooka	IL														Yes
+100-13-0485	Mazalewski	Ryan		M1	23	McHenry	IL														Yes
+
+400-05-4009	McCain	Lori		W4	47	Mc Cordsvill	IN														Yes
+800-09-0063	McCain	Matt		M1	18	Mc Cordsvill	IN														Yes
+800-00-9654	McCain	Scott		M4	48	Mc Cordsvill	IN														Yes
+800-04-0480	McCalmon	Bruce		M5	59	Rockford	IL				---C										Yes
+300-00-0786	McCalmon	Marsha		W5	57	Rockford	IL														Yes
+700-01-9320	McCarthy	Thomas		M5	54	Glenview	IL														Yes
+000-00-9782	McCartin	Allison		W1	23	Lemont	IL														Yes
+100-12-9472	McCartney	Kevin		M3	41	Fort Dodge	IA														Yes
+200-12-0348	McCarty	Amanda		W1	21	Bloomington	IN					54.666		47.333	X3		X3				Yes
+000-12-8629	McClintock	Bryan		M3	36	Fort Wayne	IN														Yes
+600-08-5302	McConnell	Jessica		G3	16	Edwardsville	IL														Yes
+400-11-7841	McCormick	Annie		G2	13	Edwardsville	IL														Yes
+000-12-0159	McCulllough	Andrew		M1	20	Pacific	MO														Yes
+300-11-8771	McCullough	Taylor		G1	9	Centralia	IL														Yes
+500-08-8027	McDermott	Cody		M2	28	Farley	IA				---C										Yes
+700-12-3740	McDonald	Michael		M4	49	Roach	MO					96.500			E2						Yes
+500-12-9737	McGarry	Astor		B3	17	Warsaw	IN														Yes
+600-02-0361	McGavic	Brian		M2	33	Kokomo	IN														Yes
+800-02-2826	McGuire	Brendon		M1	20	Loves Park	IL														Yes
+100-07-3203	McGuire	Karen		W4	49	Wonder Lake	IL														Yes
+300-06-1754	McGuire	Lindsay		W1	21	Wonder Lake	IL														Yes
+200-11-9397	McGuire	Molly		G1	8	Oak Park	IL														Yes
+400-07-3202	McGuire	Rick		M4	52	Wonder Lake	IL				---C										Yes
+900-06-1752	McGuire	Shannon		W1	18	Wonder Lake	IL														Yes
+200-07-5765	McIntyre	Darryl		M4	48	Columbus	IN					69.300									Yes
+900-01-2888	McKune	Heather		W3	37	Georgetown	KY														Yes
+600-01-2889	McKune	Hunter		B2	12	Nicholasvill	KY					50.666	1100.0	69.333	X3	E3	E3				Yes
+400-04-1340	McKune	Tim		M3	43	Georgetown	KY				SA--	97.500		82.333	E2		X2				Yes
+300-08-6405	McLaughlin	Charles		M4	47	Warsaw	IN				---C										Yes
+400-06-2929	McLaughlin	Jennifer		W2	26	Warsaw	IN														Yes
+900-09-4956	McLaughlin	Susan		W4	46	Warsaw	IN														Yes
+600-04-3636	McLin	Monte		M5	53	Lake Lotawan	MO				---C										Yes
+500-10-7131	McMcullough	Laura		W1	23	Pacific	MO				---C										Yes
+600-12-2812	McNamara	Clair		G3	16	Delhi	IA														Yes
+200-12-2816	McNamara	Ryan		B3	15	Delhi	IA														Yes
+400-01-8795	Meany	Larry		M5	53	Washburn	IA				---R										Yes
+400-12-9486	Meier	Madison		G1	9	Lake St Loui	MO														Yes
+100-00-0298	Melker	John		M9	77	Oak Lawn	IL					76.000			E2						Yes
+100-01-0185	Melnuk	Bryan		M1	20	Chesterfield	MO					88.650	2502.0		M3	E3					Yes
+500-01-0187	Melnuk	Kevin		M1	19	Chesterfield	MO					96.068	6520.0	183.00	E3	O3	O3				Yes
+100-04-2737	Melnuk	Paul		M5	53	Chesterfield	MO														Yes
+900-11-7297	Meloon	Ken		M6	60	Angola	IN														Yes
+700-11-8074	Melter	BreAnna		G3	14	Cedar Rapids	IA														Yes
+300-05-3850	Melter	James		M3	35	Cedar Rapids	IA														Yes
+900-01-2916	Melton	Willie		M1	23	West Lafayet	IN					2.6125	541.50	28.975		M1					Yes
+100-13-0294	Melvin	Nicholas		M1	21	Indianapolis	IN						228.00								Yes
+100-13-0294	Melvin	Nicholas		NM	21	Indianapolis	IN						228.00								Yes
+200-12-8320	Mendenhall	Keith		M1	21	Naperville	IL														Yes
+600-02-0853	Menge	Brian		M1	23	Cedar Rapids	IA				---C										Yes
+200-04-9153	Menge	Jennifer		W1	18	Cascade	IA														Yes
+800-05-8706	Menge	Julie		W4	49	Cascade	IA														Yes
+200-04-4088	Menge	Kevin		M4	49	Cascade	IA														Yes
+100-03-3306	Menge	Marty		M2	29	Cedar Rapids	IA				---C										Yes
+100-12-9489	Menne	Adam		M2	31	Lake St Loui	MO														Yes
+100-11-6922	Menning	Katherine		W1	22	Denver	IA						150.00	0.0000							Yes
+400-11-7162	Mensching	Devon		G2	12	Itasca	IL														Yes
+300-11-7163	Mensching	Emily		G2	12	Itasca	IL														Yes
+500-11-7161	Mensching	James		M4	45	Itasca	IL														Yes
+600-11-6170	Mensching	Lynnea		W3	44	Itasca	IL														Yes
+600-00-4118	Menzer	Tagen		W1	23	Moline	IL														Yes
+800-00-4116	Menzer	Taryn		G2	11	Sherrard	IL														Yes
+700-00-4117	Menzer	Trista		W2	25	Sherrard	IL														Yes
+900-12-8170	Mergl	Jeff		M3	35	Wonder Lake	IL														Yes
+800-12-8171	Mergl	Samantha		G1	9	Wonder Lake	IL														Yes
+600-08-0211	Mertzlufft	Alex		B3	15	Columbia	MO														Yes
+000-01-8214	Mertzlufft	Joe		M4	45	Columbia	MO				--R-										Yes
+400-08-5111	Mertzlufft	Kathy		W3	44	Columbia	MO														Yes
+600-11-5807	Metzka	Emily		G3	15	Kankakee	IL														Yes
+300-12-3287	Metzler	Marie		W2	32	Brownsburg	IN						1826.6			M3					Yes
+200-12-4971	Meyer	Bryan		B3	14	Quincy	IL														Yes
+500-09-8026	Meyer	David		M3	40	Chicago	IL														Yes
+400-12-9967	Meyer	Kelli		G2	11	Quincy	IL														Yes
+800-12-7501	Meyers	Jacob		M1	20	Green Ridge	MO														Yes
+900-13-0135	Meyers	Jenna		W1	18	Syracuse	IN														Yes
+600-01-7503	Mikel	Christina		W1	21	Wonder Lake	IL				---C										Yes
+000-01-7505	Mikel	Cynthia		W1	19	Wonder Lake	IL														Yes
+900-01-7502	Mikel	Katherine		W4	50	Wonder Lake	IL														Yes
+500-04-3675	Mikel	Robert		M4	50	Wonder Lake	IL				---C										Yes
+200-11-7874	Milbert	Brian		M1	24	Dyersville	IA														Yes
+500-12-1519	Miller	Alexandra		G1	9	Belvidere	IL														Yes
+100-03-0282	Miller	Brian		M3	35	Walton	KY														Yes
+200-11-8079	Miller	Carissa		W1	19	Cedar Rapids	IA														Yes
+600-13-0183	Miller	Cole		B1	6	Cedar Falls	IA														Yes
+100-12-1520	Miller	Felicia		G1	9	Belvidere	IL														Yes
+800-04-3728	Miller	John		M7	68	Syracuse	IN				-S--										Yes
+900-13-0180	Miller	Kevin		M4	46	Cedar Falls	IA														Yes
+700-13-0182	Miller	Mason		B2	10	Cedar Falls	IA														Yes
+800-12-4418	Miller	Nate		B3	16	Cedar Rapids	IA														Yes
+000-12-1521	Miller	Nicholas		B1	6	Belvidere	IL														Yes
+800-00-3980	Miller	Paul		M3	43	Mc Cordsvill	IN					90.962	216.00	0.0000	M3						Yes
+800-13-0181	Miller	Shelby		G2	12	Cedar Falls	IA														Yes
+700-12-1517	Miller	Steven		M3	42	Belvidere	IL														Yes
+000-12-8506	Miller	Thomas		M1	23	Iowa City	IA														Yes
+900-12-1386	Miner	Emma		G3	14	Brookville	IN														Yes
+100-12-1384	Miner	Greg		M4	52	Brookville	IN														Yes
+300-06-6551	Mitchell	Jeffrey		M4	47	Worden	IL														Yes
+000-12-6748	Mitchell	Laura		W1	20	Murray	KY														Yes
+700-06-3062	Mize	Caitlin		G3	15	Smithville	MO					1.8000	479.75	53.000			X3				Yes
+000-06-3058	Mize	Kim		W3	40	Smithville	MO														Yes
+400-06-3063	Mize	Peyton		B1	9	Smithville	MO					3.6666	63.333								Yes
+300-06-3057	Mize	Scott		M3	43	Smithville	MO				-A-S	56.500	840.00	54.000		X2					Yes
+700-11-4601	Moeller	Michael		M1	22	Ames	IA														Yes
+000-13-0806	Mohr	Andria		G3	15	Quincy	IL														Yes
+800-04-1409	Mommer	John		M7	66	Dike	IA														Yes
+400-00-4196	Mommer	Mary		W5	54	Dike	IA				A---										Yes
+000-13-0639	Money	Lora		W3	42	Indianapolis	IN														Yes
+000-06-1081	Monroe	Becky		W5	56	Castalia	IA														Yes
+600-00-5429	Monroe	Darin		M2	33	Decorah	IA				---C										Yes
+300-08-7466	Monroe	Ernest		M6	61	O Fallon	IL														Yes
+100-00-7596	Monroe	Mark		M2	27	Ossian	IA				---C										Yes
+700-12-7816	Monroe	Rebecca		W2	28	Decatur	IL														Yes
+000-00-6286	Montgomery	Jack		M7	66	Culver	IN														Yes
+400-12-8618	Moody	Ky		M1	21	Carl Junctio	MO														Yes
+100-00-9996	Moon	Karen		W2	30	Ames	IA					61.037	1254.0	0.0000	X3	M1					Yes
+700-00-2830	Moore	Doug		M4	50	Noblesville	IN														Yes
+900-12-1652	Moorman	Melani		W2	30	Manchester	IA														Yes
+500-13-1761	Moran	David		M1	20	Springfield	MO														Yes
+600-12-4410	Morgan	Chloe		G3	14	Lake Lotawan	MO														Yes
+000-12-4409	Morgan	Kailey		G3	14	Lake Lotawan	MO														Yes
+500-00-9947	Morris	Jeremy		M2	33	Martinsville	IN					75.150		41.400	X1						Yes
+100-12-0295	Morris	Kelly		W2	29	Martinsville	IN														Yes
+100-01-7607	Morrison	Gary		M3	37	Leitchfield	KY														Yes
+500-06-1549	Mossey	Tamra		W1	20	Rockford	IL														Yes
+100-10-2710	Motes	Kyle		M3	43	Danville	IN														Yes
+500-00-5338	Mrowka	Alan		M5	53	Wonder Lake	IL														Yes
+600-12-5707	Mullen	Angela		W1	24	Davenport	IA														Yes
+700-12-5706	Mullen	Seth		M1	24	Davenport	IA														Yes
+700-12-6512	Mumford	Ellis		W1	20	Indianapolis	IN														Yes
+300-10-6341	Munger	Andy		B3	15	Lincolnshire	IL														Yes
+700-08-1712	Munger	Thomas		B3	16	Lincolnshire	IL														Yes
+200-13-1627	Murfey	Joseph		B3	14	Minooka	IL														Yes
+200-00-3849	Murphy	Bridget		W1	24	Chicago	IL					80.000	1320.0	105.33	M3	M3	E3				Yes
+000-13-0523	Mursau	Christophe		M2	32	Grayslake	IL														Yes
+800-11-8080	Myeres	Nik		B3	16	Cedar Rapids	IA														Yes
+
+000-07-8528	Myers	J Ryan		B1	8	Du Quoin	IL														Yes
+900-04-3888	Myers	Jeff		M4	48	Du Quoin	IL					73.800		57.600			X1				Yes
+900-13-0784	Myers	Jeffrey		M2	31	Wabash	IN														Yes
+500-01-8699	Myers	Paula		W4	50	Du Quoin	IL														Yes
+400-11-1306	MyGrant	Jason		M3	36	Noblesville	IN														Yes
+100-12-9632	Nason	Allison		G2	11	West Dundee	IL														Yes
+700-12-9629	Nason	Danielle		G2	13	West Dundee	IL														Yes
+700-12-9636	Nason	Delaney		G1	6	West Dundee	IL														Yes
+900-12-9634	Nason	Josie		G2	10	West Dundee	IL														Yes
+800-12-9628	Nason	Laura		W3	39	West Dundee	IL														Yes
+100-12-5580	Neagle	Jason		M2	34	Elizabethtow	KY														Yes
+700-12-1661	Neal	Elizabeth		G2	13	Rolling Mead	IL														Yes
+000-12-4683	Neal	Emily		G2	10	Rolling Mead	IL														Yes
+400-13-0390	Neal	Lisa		W4	45	Rolling Mead	IL														Yes
+700-12-7311	Neal	M Bryan		M3	44	Rolling Mead	IL														Yes
+600-12-9408	Nega	Kelly		W1	20	Elgin	IL														Yes
+400-09-5785	Nelson	Brooke		G3	15	Wonder Lake	IL														Yes
+000-01-3813	Nelson	Corrine		W3	44	Des Moines	IA				--R-										Yes
+200-12-9709	Nelson	Daniel		B3	16	West Des Moi	IA														Yes
+200-12-9846	Nelson	Ethan		M1	19	Cedar Rapids	IA														Yes
+800-12-9710	Nelson	Joseph		B3	14	West Des Moi	IA														Yes
+700-09-5784	Nelson	Kelly		W3	44	Wonder Lake	IL														Yes
+500-12-9706	Nelson	Lynn		M4	47	West Des Moi	IA														Yes
+000-09-5783	Nelson	Steven		M4	45	Wonder Lake	IL				---C										Yes
+300-04-2957	Nelson	Todd		M3	44	Des Moines	IA				-A--	79.833	713.33								Yes
+100-09-5786	Nelson	Tyler		M1	19	Wonder Lake	IL														Yes
+800-12-3145	Neuman	Thomas		M1	20	Wonder Lake	IL														Yes
+000-12-5864	Newhouse	Cameron		B1	9	Fort Wayne	IN														Yes
+400-02-0154	Newton	Jackie		W5	55	Earlville	IA														Yes
+400-11-4062	Newton	John		M3	42	Naperville	IL					4.9500									Yes
+600-08-0563	Nicely	Sara		W1	20	Manchester	MO					48.600	288.00								Yes
+900-11-7808	Nicholson	Clint		B3	14	Pendleton	IN														Yes
+200-05-4540	Nicolosi	Ralph		M5	59	Nineveh	IN														Yes
+300-13-0551	Nicols	Jason		M3	35	Pierceton	IN														Yes
+600-12-8210	Nicols	Tresa		W3	35	Pierceton	IN														Yes
+600-12-9736	Nielsen	Kenneth		M1	18	Winona Lake	IN														Yes
+300-12-4703	Niersbach	Suzanne		W1	18	Chicago	IL														Yes
+800-13-0136	Nile	John		M3	41	Rochester	IN														Yes
+100-12-4156	Nissen	Bailey		G3	14	Winthrop Har	IL														Yes
+300-12-3027	Nobel	Robert		M5	54	Manchester	MO				---C										Yes
+100-00-4939	Nock	Jennie		W3	36	Hoffman Esta	IL														Yes
+100-00-9828	Nock	Jodi		W3	39	Buffalo Grov	IL														Yes
+600-04-1106	Nock	John		M3	38	Hoffman Esta	IL														Yes
+300-00-0294	Nock	Richard		M8	74	Skokie	IL				SS--	79.166			E3						Yes
+800-10-6490	Nock	Thomas		B1	4	Hoffman Esta	IL														Yes
+500-12-1724	Nock	William		B1	2	Hoffman Esta	IL														Yes
+200-00-0767	Nock	Wilma		W8	73	Skokie	IL				-RS-		810.00			E3					Yes
+600-10-3873	Noon	Christian		M1	24	Ames	IA							131.66			M2				Yes
+800-12-9260	Norris	Andrew		B3	17	Warsaw	IN														Yes
+900-12-6039	Nosal	Brendon		M1	20	Lemont	IL					2.5000	603.33			X1					Yes
+100-08-5042	Nuck	Charlie		B3	15	Naperville	IL														Yes
+400-08-5041	Nuck	Emily		G3	17	Naperville	IL														Yes
+100-08-5039	Nuck	John		M4	47	Naperville	IL														Yes
+400-11-0262	Nurre	Brandon		M2	27	Coggon	IA														Yes
+600-01-7251	Oakley	John		M3	44	Cumming	IA														Yes
+100-06-6766	O'Brien	Raymond		M3	37	Wonder Lake	IL				---C										Yes
+200-00-4686	OConnor	Jamison		M2	28	Wonder Lake	IL														Yes
+500-10-2723	O'Connor	Katie		G2	13	Columbia	MO					41.500	2336.6		M3	E3					Yes
+000-10-1318	O'Connor	Michael		M3	43	Columbia	MO				A---	74.700									Yes
+500-05-6545	O'Daniel	Kirk		M4	48	Columbus	IN					81.937			M3						Yes
+800-01-7497	Offenwanger	Kelsie		G3	17	Wauconda	IL														Yes
+100-04-3673	Offenwanger	Marie		W4	48	Wauconda	IL				---C										Yes
+100-01-7496	Offenwanger	Walter		M4	47	Wauconda	IL														Yes
+200-00-5720	Ogren	Paul		M1	20	Homewood	IL							74.700			X1				Yes
+700-12-4204	Olson	Dayna		G2	13	Lindenhurst	IL														Yes
+800-12-4203	Olson	Douglas		M4	45	Lindenhurst	IL														Yes
+800-04-2204	Olson	Gary		M6	63	Lake Saint L	MO				---C										Yes
+500-12-9751	Oman	Eric		M4	46	Lake St Loui	MO				---C										Yes
+000-12-6632	Onken	Kristine		W1	21	Ames	IA														Yes
+700-09-7582	Oppel	Alison		G2	13	Le Claire	IA														Yes
+300-09-7580	Oppel	Curt		M3	44	Le Claire	IA				---C										Yes
+000-09-7581	Oppel	Kirstin		W3	41	Le Claire	IA				---C										Yes
+400-09-7583	Oppel	Nicole		G2	11	Le Claire	IA														Yes
+300-12-9807	Orozco	Stephanny		G3	16	Rockford	IL														Yes
+800-00-5106	Ortiz	Robert		M4	49	Glen Ellyn	IL														Yes
+900-13-0647	O'Shea	Michael		M3	41	Park Ridge	IL														Yes
+700-04-2920	Oskins	Estle		M8	74	Rockford	IL														Yes
+200-01-0993	Oskins	Marilyn		W8	74	Rockford	IL														Yes
+300-03-3485	Osterberger	Pete		M1	24	East Dubuque	IL							142.02			M2				Yes
+900-11-0786	Ostermeier	Kevin		B3	14	Naperville	IL														Yes
+100-12-8628	Otte	Emily		W1	20	Springfield	MO														Yes
+400-12-9851	Packingham	Danica		W1	20	Cedar Rapids	IA														Yes
+300-11-9860	Pahl	Jason		M3	35	Rockford	IL														Yes
+700-12-4266	Paradise	Michael		B3	14	Winfield	IL														Yes
+600-12-7503	Parker	Christine		W2	33	Woodstock	IL														Yes
+400-10-1628	Parker	Gordon		M3	42	Cedar Rapids	IA														Yes
+700-13-1073	Parker	Maggie		W1	20	Naperville	IL														Yes
+300-11-8641	Parker	Molly		G3	16	Woodstock	IL														Yes
+700-12-7502	Parker	Shawn		M3	42	Woodstock	IL														Yes
+500-00-0740	Parsons	Michael		M4	49	Chesterfield	MO				-A--										Yes
+300-11-0201	Passavant	Richard		M3	37	Crystal Lake	IL				---C										Yes
+300-12-9852	Pata	Emily		G3	15	Mt Vernon	IA														Yes
+400-12-8205	Pata	Hailey		G3	17	Mount Vernon	IA														Yes
+200-12-9853	Pata	Jordan		G3	17	Mt Vernon	IA														Yes
+300-12-8206	Pata	Paul		M3	43	Mount Vernon	IA														Yes
+200-13-1214	Patocek	Eliese		G2	13	Waukegan	IL														Yes
+400-07-8674	Paton	Kristine		W2	30	Leesburg	IN														Yes
+700-04-2566	Patrick	Brett		M4	45	North Manche	IN														Yes
+300-10-7096	Patrick	Caleb		B2	11	Warsaw	IN														Yes
+400-01-1509	Patrick	Dee		W4	45	North Manche	IN														Yes
+000-01-1510	Patrick	Kaleigh		W1	19	North Manche	IN														Yes
+000-00-9515	Patrick	Keaton		M1	21	North Manche	IN														Yes
+000-04-1380	Patrick	Randal		M4	52	Warsaw	IN														Yes
+400-00-4097	Patrick	Tracey		W3	42	Warsaw	IN														Yes
+500-00-4119	Patrick	Tyrel		M2	27	Warsaw	IN														Yes
+600-00-9519	Patterson	Eric		M2	33	Carol Stream	IL														Yes
+700-06-8872	Patterson	Julie		W2	29	Carol Stream	IL														Yes
+600-04-0653	Patterson	Mike		M5	54	Thorntown	IN				SP-C	84.787			M3						Yes
+500-00-1255	Patterson	Patricia		W5	53	Thorntown	IN				-RSC										Yes
+300-11-5596	Paulson	Ronald		M6	61	Waverly	IA														Yes
+000-00-9829	Pease	Brendan		B2	13	Buffalo Grov	IL														Yes
+200-10-6489	Pease	Ellie		G1	4	Buffalo Grov	IL														Yes
+300-06-2210	Pease	Jarrett		B1	7	Buffalo Grov	IL														Yes
+700-04-2649	Pease	Jeff		M3	44	Buffalo Grov	IL														Yes
+600-00-9830	Pease	Zachary		B2	11	Buffalo Grov	IL														Yes
+800-07-5990	Pehler	Benjamin		M1	20	Cherry Valle	IL														Yes
+800-07-5987	Pehler	Heike		W3	43	Cherry Valle	IL				---R										Yes
+400-07-5985	Pehler	Matthew		M4	46	Cherry Valle	IL				---C										Yes
+500-07-5988	Pehler	Natascha		W1	18	Cherry Valle	IL														Yes
+200-07-5989	Pehler	Samantha		W1	18	Cherry Valle	IL														Yes
+900-04-2306	Peschang	John		M5	55	Waverly	IA														Yes
+700-00-1864	Peter	Garth		M2	31	Waterloo	IA				---C										Yes
+200-11-8581	Peters	Deborah		W3	44	Hawthorn Woo	IL														Yes
+300-11-8580	Peters	James		M4	49	Hawthorn Woo	IL														Yes
+800-11-7298	Peters	Jeff		M4	46	Lemont	IL														Yes
+900-11-1271	Peters	Jeff		B3	15	Lemont	IL														Yes
+100-11-8582	Peters	Stephanie		G3	14	Hawthorn Woo	IL														Yes
+400-11-0880	Petersen	Elizabeth		W4	48	Waterloo	IA														Yes
+200-11-0882	Petersen	Katherine		G2	13	Waterloo	IA														Yes
+300-11-0881	Petersen	Robert		B3	17	Waterloo	IA														Yes
+800-11-0879	Petersen	Robert		M4	50	Waterloo	IA				---C										Yes
+200-12-4278	Peterson	Cindy		W4	47	Cedar Rapids	IA														Yes
+900-11-7952	Peterson	Darin		M1	24	Decorah	IA														Yes
+100-12-4279	Peterson	Skylar		G2	10	Cedar Rapids	IA														Yes
+700-00-2588	Peterson	Walter		M7	66	Onawa	IA					0.9500	54.000	66.333			E3				Yes
+200-12-8627	Peyton	Kevin		M1	20	Sac City	IA														Yes
+700-11-8746	Pfaff	Brittany		G3	15	Machesney Pa	IL														Yes
+900-11-8744	Pfaff	Teresa		W3	39	Machesney Pa	IL				---C										Yes
+900-11-8157	Pfefferkorn	Katy		G2	11	Lake Lotawan	MO														Yes
+000-11-8156	Pfefferkorn	Kelly		W3	42	Lake Lotawan	MO														Yes
+900-11-9314	Pfefferkorn	Mark		M4	52	Lake Lotawan	MO														Yes
+400-01-0056	Phelps	Wendell		M6	64	Algona	IA														Yes
+500-00-5642	Phillipp	Anne		W2	28	Syracuse	IN														Yes
+800-04-1751	Phillipp	Edward		M5	54	Syracuse	IN														Yes
+400-12-2883	Phillips	Ned		M4	48	Indianapolis	IN														Yes
+100-05-2851	Phillips	Randall		M2	33	Chesterfield	MO														Yes
+100-13-0713	Piazza	Alexandra		G3	15	Joliet	IL														Yes
+400-02-2725	Pickford	Pat		M3	44	Fort Madison	IA						1656.0			M3					Yes
+800-04-2499	Pickford	Scott		M5	54	Sterling	IL						1062.0			X3					Yes
+000-01-6966	Pierce	Amanda		G3	17	Worden	IL														Yes
+300-01-6965	Pierce	Lisa		W4	45	Worden	IL														Yes
+500-04-3576	Pierce	Mark		M4	47	Worden	IL				---C										Yes
+600-07-7213	Pierce	Michael		M1	21	McCullom Lak	IL														Yes
+700-01-6967	Pierce	Sarah		G2	13	Worden	IL														Yes
+400-00-2055	Pierson	Kyle		M1	20	Kansas City	MO														Yes
+200-08-0194	Pierson	Patrick		M4	46	Cambridge	IA				RA--	82.333	225.00	63.900	X1		X1				Yes
+600-04-0806	Pierson	Rick		M5	58	Kansas City	MO														Yes
+100-12-5429	Pierson	Sydney		G1	8	Cambridge	IA					0.6666									Yes
+900-04-0496	Pinkerton	John		M8	72	Carter Lake	IA				SA--										Yes
+000-00-2240	Pinkerton	Mary Jo		W8	72	Carter Lake	IA				-R--	57.916	1033.3	44.000	E3	E3	E3				Yes
+700-08-6775	Piper	Abigail		G2	12	Lake Saint L	MO														Yes
+200-08-6770	Piper	Brian		M3	42	Lake Saint L	MO														Yes
+300-08-6773	Piper	Kieran		B3	16	Lake Saint L	MO														Yes
+900-08-6771	Piper	Mary		W3	43	Lake Saint L	MO														Yes
+800-08-6778	Piper	Shannon		G2	13	Lake Saint L	MO														Yes
+400-09-0595	Pipher	Jeffrey		M3	43	Indianapolis	IN														Yes
+800-09-8377	Pipher	Victoria		W3	39	Indianapolis	IN														Yes
+500-00-4102	Place	Adam		M2	27	Bettendorf	IA				---C										Yes
+400-04-1382	Place	Marsha		W5	56	Bettendorf	IA														Yes
+100-00-4977	Place	Timothy		M6	61	Bettendorf	IA				---C										Yes
+600-10-8588	Pleggenkuhle	Jada		G3	16	Sumner	IA														Yes
+700-10-8587	Pleggenkuhle	Merilee		W5	58	Sumner	IA														Yes
+400-04-1410	Plummer	Steven		M5	54	Leesburg	IN				-SR-	82.500	1866.6		X3	E1					Yes
+700-08-0748	Poganski	Gregory		M5	53	Prospect	KY														Yes
+500-08-7037	Poli	Rachel		W1	22	Roscoe	IL														Yes
+900-08-2063	Pollack	Thomas		M2	25	Syracuse	IN				-A--										Yes
+800-00-7049	Pollard	Adam		B3	15	Lake Saint L	MO														Yes
+400-00-7050	Pollard	Alex		B3	15	Lake Saint L	MO														Yes
+000-00-7047	Pollard	Breanne		W1	24	Lake Saint L	MO														Yes
+100-00-7046	Pollard	Dotty		W4	49	Lake Saint L	MO				---C										Yes
+400-04-1733	Pollard	Terry		M4	50	Lake Saint L	MO				---C										Yes
+500-00-5468	Pontecorvo	Mark		M4	51	Angola	IN					71.100									Yes
+300-02-7152	Pontecorvo	Samuel		M1	18	Angola	IN														Yes
+700-12-4662	Popovich	Emily		G2	13	Batavia	IL														Yes
+600-12-4663	Popovich	Sonja		G1	9	Batavia	IL														Yes
+800-08-6905	Porreca	AJ		B3	15	Willowbrook	IL														Yes
+400-08-6903	Porreca	Anthony		M4	50	Willowbrook	IL														Yes
+500-08-6906	Porreca	Kelsey		W1	18	Willowbrook	IL														Yes
+800-02-0862	Pottebaum	Marty		M2	31	Earlville	IA				---C										Yes
+800-12-8317	Potter	Courtney		W1	20	Palos Height	IL														Yes
+500-04-1385	Poulos	Mark		M4	52	Rock Island	IL														Yes
+700-02-4382	Poulos	Pamela		W5	53	Rock Island	IL														Yes
+900-00-5464	Poulos	Steven		M2	26	Rock Island	IL														Yes
+200-01-5589	Pound	Joe		M3	41	Hopkinsville	KY					107.33			O3						Yes
+200-01-5589	Pound	Joe		MM	41	Hopkinsville	KY					107.33			O3						Yes
+100-00-1587	Powers	Mark		M4	52	Greenfield	IN					85.500			M1						Yes
+700-00-3240	Pregler	Ashley		W1	19	Dubuque	IA														Yes
+000-00-3735	Pregler	Benjamin		B3	14	Dubuque	IA														Yes
+600-04-1164	Pregler	Chip		M4	47	Dubuque	IA														Yes
+100-00-3239	Pregler	Matt		B3	17	Dubuque	IA														Yes
+400-11-8800	Price	Lauren		W1	18	Deerfield	IL														Yes
+800-12-9475	Prideaux	Katie		W2	31	Lake Lotawan	MO														Yes
+100-13-1345	Prochaska	Charles		B3	17	Wilmington	IL														Yes
+900-00-0896	Prociw	Janice		W6	63	Carter Lake	IA				-PSS	63.833	1893.3	71.666	E3	E3	E3				Yes
+200-00-0895	Prociw	Steve		M6	62	Carter Lake	IA				RA-S	67.166		103.00	X3		E3				Yes
+800-12-1981	Proeschel	Douglas		M1	20	Indianapolis	IN					50.400									Yes
+600-12-8531	Provost	Evan		B1	8	Roscoe	IL														Yes
+400-12-8526	Provost	Jonathan		M3	40	Roscoe	IL														Yes
+700-12-8530	Provost	Jonny		B2	12	Roscoe	IL														Yes
+200-12-8528	Provost	Lauren		G3	16	Roscoe	IL														Yes
+100-12-8529	Provost	Natasha		G2	13	Roscoe	IL														Yes
+300-12-8527	Provost	Tanya		W3	38	Roscoe	IL														Yes
+300-07-3209	Pudlo	Desiree		W4	50	Palatine	IL														Yes
+600-07-3208	Pudlo	Edward		M4	50	Palatine	IL														Yes
+700-06-6834	Pudlo	Rachael		W1	18	Palatine	IL														Yes
+400-10-9549	Pulsipher	Scott		M2	34	Russiaville	IN														Yes
+500-12-8921	Purviance	Lindsey		G3	17	Caledonia	IL														Yes
+400-08-9689	Qualkinbush	Amy		G3	15	Indianapolis	IN														Yes
+300-01-7674	Qualkinbush	Mark		M4	46	Indianapolis	IN				---C	48.166	945.25			X1					Yes
+500-12-8105	Queck	Toni		W5	57	Sherrard	IL														Yes
+700-12-5317	Quill	Rebecca		G3	14	Indianapolis	IN														Yes
+700-12-5140	Quill	Thomas		M4	47	Indianapolis	IN														Yes
+100-12-9069	Rabenold	Eric		M6	61	Lawrenceburg	IN														Yes
+100-12-2343	Rabenold	Heather		W1	19	Lawrenceburg	IN														Yes
+700-12-9070	Rabenold	Rebecca		W5	54	Lawrenceburg	IN														Yes
+300-00-1820	Ramey	Glenn		M7	67	Oakley	IL														Yes
+400-10-4377	Rangel	Amber		G2	13	Caledonia	IL														Yes
+400-11-7926	Rangel	Josef		M3	42	Caledonia	IL														Yes
+500-11-7932	Rangel	Tracy		W3	39	Caledonia	IL														Yes
+900-12-3953	Rankin	Abigail		W1	18	Warsaw	IN														Yes
+800-12-3695	Rankin	Benjamin		B3	17	Warsaw	IN														Yes
+200-07-4225	Rash	Jeffrey		M3	42	Fishers	IN				---C										Yes
+300-12-7520	Rathe	David		M4	48	Waverly	IA														Yes
+500-00-8353	Rau	Kelli		W3	40	Greenwood	IN														Yes
+800-01-4724	Rau	Lauren		G2	10	Greenwood	IN														Yes
+600-06-0804	Rau	Madeleine		G1	8	Greenwood	IN														Yes
+900-04-1189	Rau	Todd		M3	42	Greenwood	IN														Yes
+300-09-4242	Rawson	Roger		M4	50	Worden	IL														Yes
+700-04-2313	Reed	Brian		M3	43	Bellevue	IA							128.66			E1				Yes
+500-11-1510	Reed	Daniel		M4	51	Indianapolis	IN					40.500		48.600							Yes
+900-04-1402	Reel	Jeff		M5	54	Mc Cordsvill	IN					72.000			X1						Yes
+300-00-4173	Reel	John		M1	19	Mc Cordsvill	IN					99.833			M3						Yes
+400-00-4172	Reel	Justin		M1	22	Mc Cordsvill	IN														Yes
+500-04-3943	Reese	Daniel		M4	47	Cedar Falls	IA														Yes
+400-02-0167	Reese	Leslie		W3	37	Cedar Falls	IA														Yes
+900-13-0845	Regole	Gretchen		G3	15	Eagle River	IL														Yes
+700-01-2949	Reh	Janis		W4	49	Chicago	IL														Yes
+200-11-4422	Reich	Joshua		M1	23	Montreal	MO				---C										Yes
+300-13-0025	Reidy	Allie		G3	15	Park Ridge	IL														Yes
+700-13-0175	Reidy	Katie		G1	7	Park Ridge	IL														Yes
+200-11-8048	Reilly	Kimberly		W2	31	Walton	KY														Yes
+000-04-2581	Reinhardt	Mark		M4	50	Waverly	IA														Yes
+400-11-3799	Rekowski	Joseph		M1	22	Springfield	MO														Yes
+100-03-2600	Remke	Laurie		W5	56	Algonquin	IL				---C										Yes
+600-13-0589	Rendler	Georiga		W1	22	Winthrop Har	IL														Yes
+100-12-5801	Repine	Roy		M1	20	Avilla	IN					0.0000	290.00	23.333							Yes
+000-10-8904	Rettenmeier	Michael		M4	47	Dubuque	IA														Yes
+300-12-9906	Rettig	Jason		B3	14	Robins	IA														Yes
+700-06-1743	Reu	Mollie		W1	18	Ingleside	IL														Yes
+700-11-8258	Riccio de Ol	Alexandre		M2	27	Bettendorf	IA														Yes
+500-06-4928	Rice	John		M3	44	Warsaw	IN														Yes
+500-02-2166	Rickson	Darryl		M3	43	La Grange	KY				AA--	97.250			E2						Yes
+900-06-1356	Rickson	Kathryn		W3	38	La Grange	KY														Yes
+500-13-1501	Riddle	Nicole		W1	18	Loves Park	IL														Yes
+100-11-0760	Ridenour	Holly		W3	43	Crystal Lake	IL														Yes
+000-11-0761	Ridenour	Richard		B3	16	Crystal Lake	IL														Yes
+200-10-7318	Ridenour	Richard		M3	43	Crystal Lake	IL				---C										Yes
+900-11-0762	Ridenour	Tanner		B2	13	Crystal Lake	IL														Yes
+300-00-6542	Ridgley	Chris		W3	37	Colona	IL														Yes
+000-04-3117	Ridgley	Craig		M3	38	Colona	IL														Yes
+100-11-1477	Rienks	Matthew		M1	21	Glen Ellyn	IL														Yes
+500-04-8584	Rietz	Casey		M1	24	Saint Charle	IL														Yes
+800-05-4353	Riley	James		M5	56	La Salle	IL														Yes
+600-12-2522	Riley	Wava		W5	54	La Salle	IL														Yes
+600-01-8270	Ripley	Ryan		M2	31	Ingleside	IL					58.500	1377.0			X1					Yes
+800-04-4440	Rishling	Todd		M3	36	Wonder Lake	IL														Yes
+400-13-0925	Risk	Tom		M1	19	Indianapolis	IN														Yes
+500-08-1109	Ritter	Ruthie		W4	52	Worden	IL														Yes
+300-01-5780	Riutzel	Alexa		W1	18	Quincy	IL														Yes
+700-01-5779	Riutzel	Eric		M1	20	Quincy	IL														Yes
+500-04-2544	Roach	William		M5	58	Carmel	IN				---N	0.0000	252.00								Yes
+900-09-9229	Roberts	Austin		M1	18	Milan	IL														Yes
+800-11-7847	Roberts	Caleb		B2	12	Edwardsville	IL														Yes
+100-04-0463	Roberts	Charles		M6	63	Big Rock	IL					3.5625	817.00								Yes
+000-00-2127	Roberts	John		M1	19	Big Rock	IL					28.500	774.25	35.100		X2					Yes
+200-00-7397	Roberts	Jonathan		M3	44	Georgetown	KY					91.833			M1						Yes
+000-12-3068	Roberts	Julia		W1	20	Wilmette	IL						95.000								Yes
+200-12-9372	Roberts	Kyleigh		G1	9	Edwardsville	IL														Yes
+200-00-1357	Roberts	Lydia		W5	55	Big Rock	IL					27.075	788.50		X1	M2					Yes
+900-06-9459	Roberts	Vanessa		W2	34	Georgetown	KY														Yes
+300-11-1598	Roberts	William		M5	53	Lake Villa	IL														Yes
+200-00-8059	Robertson	Ben		M1	18	Elk Horn	IA														Yes
+300-00-8058	Robertson	Paige		W1	19	Elk Horn	IA							79.333			M2				Yes
+000-12-6007	Robinson	Alan		M1	22	Muncie	IN														Yes
+400-01-7651	Robinson	Cory		M3	36	Cedar Rapids	IA				---C										Yes
+600-12-4625	Robinson	Michael		M3	37	Carmel	IN														Yes
+100-12-2879	Robison	Susan		W6	60	Lake Lotawan	MO														Yes
+800-11-7571	Roby	Brad		M4	46	Pendleton	IN														Yes
+400-07-7796	Rocko	Joe		B3	17	McHenry	IL														Yes
+900-11-6849	Rodgers	Josh		M1	22	Indianapolis	IN					75.500		66.975	X2		X1				Yes
+000-01-8409	Roemer	Dan		M3	36	Kansas City	MO														Yes
+400-12-8168	Roketa	Drake		B3	16	Shorewood	IL														Yes
+000-07-7794	Romme	Angela		G3	15	Wonder Lake	IL														Yes
+500-09-5803	Romme	Johnna		G2	12	Wonder Lake	IL														Yes
+000-08-5528	Romme	Lars		M4	45	Wonder Lake	IL				---C										Yes
+900-09-5805	Romme	Sam		M1	18	Wonder Lake	IL														Yes
+200-11-1513	Roney	Raquel		W1	21	Urbana	IL														Yes
+900-04-7822	Rose	Blaise		B3	14	Quincy	IL														Yes
+200-04-7821	Rose	Dallas		B2	11	Quincy	IL														Yes
+900-01-6653	Rose	Tracy		W3	36	Quincy	IL														Yes
+700-12-9179	Rosplock	Michael		B2	12	Roscoe	IL														Yes
+100-07-9371	Ross	Alan		M5	53	Willow Sprin	IL				---C										Yes
+400-07-7473	Ross	Alan		M1	19	Willow Sprin	IL				---C										Yes
+500-07-9373	Ross	William		M1	18	Willow Sprin	IL														Yes
+400-09-2690	Rothfuss	Michelle		W1	23	West Lafayet	IN					2.0000	153.33	46.000			X2				Yes
+500-08-5565	Rothmaler	Barbara		W4	48	Roscoe	IL														Yes
+600-08-5571	Rothmaler	Bethany		G2	11	Roscoe	IL														Yes
+300-08-5569	Rothmaler	Bryan		B3	14	Roscoe	IL														Yes
+900-08-5567	Rothmaler	Gustave		B3	16	Roscoe	IL														Yes
+800-08-5564	Rothmaler	Gustave		M4	47	Roscoe	IL				---S										Yes
+100-11-5598	Rottink	Dawn		W4	46	Clarksville	IA														Yes
+300-03-1869	Rowland	Rod		M4	50	Waverly	IA														Yes
+500-12-9973	Rowray	Charles		M1	22	Ceder Rapids	IA														Yes
+300-11-7125	Royster	Stephen		M2	27	Indianapolis	IN														Yes
+300-10-7218	Rozier	Bradley		M1	23	Osage Beach	MO				---C	39.166		83.333			X3				Yes
+300-04-5422	Rozow	Elizabeth		G1	9	Milford	IN														Yes
+600-04-5418	Rozow	Hannah		G3	16	Milford	IN					67.333			M3						Yes
+900-04-5420	Rozow	Nicholas		B2	13	Milford	IN					75.416		25.200	E2						Yes
+600-04-5421	Rozow	Rachel		G2	11	Milford	IN														Yes
+300-04-5419	Rozow	Sarah		G3	14	Milford	IN														Yes
+100-01-1696	Rozow	Stephen		M3	39	Milford	IN				---S	84.666									Yes
+900-13-0159	Rubow	David		M4	45	Eldora	IA														Yes
+300-13-0162	Rubow	Dillon		B1	9	Eldora	IA														Yes
+100-13-0164	Rubow	Luke		B1	7	Eldora	IA														Yes
+100-00-8371	Ruddick	Deborah		W4	47	Mc Cordsvill	IN				--R-	74.000			M2						Yes
+500-04-1707	Ruddy	Kevin		M4	48	Wonder Lake	IL				---C										Yes
+900-12-9924	Rudy	Lindsay		G3	14	Rockton	IL														Yes
+300-07-4893	Ruehs	Amanda		W1	20	Jesup	IA														Yes
+400-06-6413	Ruehs	David		M1	22	Jesup	IA														Yes
+600-11-0192	Rufkahr	Stephanie		G2	13	Lake Saint L	MO														Yes
+200-07-9444	Rummel	Jessica		W1	22	Lake Forest	IL														Yes
+000-12-7516	Runkle	Noel		M1	20	Lake Lotawan	MO														Yes
+900-01-7601	Ruthrauff	Jim		M3	42	Granger	IN					91.333			M3						Yes
+400-12-3521	Ryan	John		M4	52	Long Grove	IL														Yes
+500-12-5821	Ryder	Thomas		M3	38	Fishers	IN														Yes
+400-04-6415	Ryker	Randy		M3	38	Olney	IL				-A--	89.100			E1						Yes
+200-12-9433	Salamie	Ron		M3	38	Saint Louis	MO														Yes
+500-12-9577	Salmons	Michael		M2	26	Machesney Pa	IL														Yes
+600-12-8203	Salzwedel	Deb		W4	47	Cedar Rapids	IA														Yes
+800-11-6178	Salzwedel	Jessica		G3	15	Cedar Rapids	IA														Yes
+900-11-6177	Salzwedel	Wayne		M4	47	Cedar Rapids	IA														Yes
+200-06-3926	Santamaria	Cassie		G3	17	Warsaw	IN														Yes
+400-06-3922	Santamaria	Joan		W3	43	Warsaw	IN														Yes
+500-05-1339	Santamaria	Sarah		W1	18	Warsaw	IN														Yes
+700-13-0816	Sartoris	David		M1	19	Coal City	IL														Yes
+400-04-2918	Sasman	Ken		M3	35	Machesney Pa	IL														Yes
+600-02-0457	Scafidi	Scott		M2	27	Mundelein	IL					56.700	589.00	52.200							Yes
+600-11-7849	Scaturro	Melissa		B3	14	Worden	IL														Yes
+500-12-9072	Schaber	Jeff		M4	46	Fort Thomas	KY														Yes
+500-10-7940	Schaefer	Christin		G2	10	Edwardsville	IL														Yes
+900-09-9034	Schaefer	Jamie		G3	15	Edwardsville	IL														Yes
+800-10-8968	Schaefer	Kirstin		G2	12	Edwardsville	IL														Yes
+800-07-5156	Schaefer	Robert		M4	45	Indianapolis	IN														Yes
+800-10-6780	Schares	Carsyn		G2	12	Jesup	IA														Yes
+000-11-7371	Schares	Cory		M1	23	Jesup	IA														Yes
+800-11-5898	Schares	David		M4	49	Jesup	IA														Yes
+800-00-2341	Schares	Jodi		W2	27	Chicago	IL														Yes
+200-09-5705	Schares	Krista		W1	21	Jesup	IA														Yes
+200-11-5900	Schares	Kyle		B2	13	Jesup	IA														Yes
+700-11-5899	Schares	Renee		W3	43	Jesup	IA														Yes
+200-09-6315	Scheidler	Taylor		G2	12	Woodstock	IL														Yes
+200-12-6340	Schemmer	Caroline		W1	19	Chesterfield	MO				---C										Yes
+500-12-7320	Schenck	Addison		G1	1	Fishers	IN														Yes
+200-12-7323	Schenck	Krissy		W3	35	Fishers	IN														Yes
+400-12-7321	Schenck	Olivia		G1	4	Fishers	IN														Yes
+300-11-8979	Schenck	Steven		M3	35	Fishers	IN														Yes
+200-04-3762	Schiesl	Bob		M3	41	Dubuque	IA														Yes
+500-01-7935	Schiesl	Kelley		W3	36	Dubuque	IA														Yes
+600-08-5021	Schleicher	Brandon		B1	9	Geneva	IL														Yes
+300-04-1970	Schleicher	John		M3	39	Geneva	IL														Yes
+700-04-9426	Schleicher	Susi		W3	38	Geneva	IL				---C										Yes
+300-05-3805	Schleicher	Tyler		B2	11	Geneva	IL														Yes
+600-12-7701	Schmidt	James		B1	7	McHenry	IL														Yes
+400-02-1470	Schmidt	James		M3	38	McHenry	IL				---C										Yes
+900-11-8638	Schmidt	Jenna		G1	9	McHenry	IL														Yes
+600-12-6421	Schmidt	Jessica		W1	20	Clarendon Hi	IL														Yes
+900-00-2418	Schmitt	Abby		W1	21	Mount Vernon	IN				--A-	81.333	2290.0	90.000	M2	E2	E2				Yes
+000-06-1391	Schmitt	Andrew		B3	14	Mount Vernon	IN														Yes
+100-00-3857	Schmitt	Cheryl		W5	54	Mount Vernon	IN				-A-R	59.500	710.00	46.333	E1	M1	E2				Yes
+200-05-4032	Schmitt	Clay		B3	14	Mount Vernon	IN														Yes
+800-00-1689	Schmitt	Jean		W5	53	Mount Vernon	IN				--R-										Yes
+400-00-9955	Schmitt	Kirby		G3	16	Mount Vernon	IN					50.666	1716.6	64.000	M2	M3	E1				Yes
+100-04-0335	Schmitt	Mark		M5	53	Mount Vernon	IN				RA--										Yes
+700-04-2678	Schmitt	Michael		M4	51	Mount Vernon	IN				AR--										Yes
+600-00-9953	Schmitt	Rhonda		W3	43	Mount Vernon	IN				-R--		2628.0			E1					Yes
+700-04-1295	Schmitt	Sam		M4	52	Mount Vernon	IN				-S--										Yes
+500-00-9954	Schmitt	Scott		M1	19	Mount Vernon	IN					84.666	4106.6	118.66	M1	E3	M3				Yes
+400-11-1146	Schmitt	Thomas		M3	37	Kokomo	IN					75.050	1838.2			M2					Yes
+200-12-4407	Schmitz	Gretchen		G3	16	Blue Springs	MO														Yes
+600-12-9521	Schmitz	Jane		W3	44	Blue Springs	MO														Yes
+700-00-4766	Schmitz	Joseph		M1	23	Waterloo	IA				---C										Yes
+600-00-4767	Schmitz	Julie		W1	21	Waterloo	IA														Yes
+000-00-4763	Schmitz	Marilyn		W4	51	Waterloo	IA				---S										Yes
+900-04-2364	Schnee	Mark		M4	49	Dubuque	IA														Yes
+200-04-7636	Schneider	Michael		M4	52	O Fallon	MO														Yes
+300-12-6592	Schneider	Michelle		G3	17	Vine Grove	KY					1.8000									Yes
+400-12-6591	Schneider	William		M3	40	Vine Grove	KY					57.916									Yes
+000-11-6374	Scholke	Mary		W1	22	Breese	IL														Yes
+000-12-8452	Schoville	Ellen		W1	24	Johnston	IA														Yes
+700-02-0140	Schroeder	Don		M3	41	McHenry	IL														Yes
+800-06-2893	Schroeder	Jonathon		B3	16	McHenry	IL														Yes
+300-10-2596	Schultz	Brian		M3	43	Cedar Rapids	IA				---C										Yes
+400-13-0482	Schultz	Mitchell		B2	10	Moline	IL														Yes
+900-13-0746	Schultz	Robert		M2	33	Moline	IL														Yes
+000-12-7561	Schuman	Caitlin		G1	8	Hopkinton	IA														Yes
+900-12-7562	Schuman	Danielle		G1	7	Hopkinton	IA														Yes
+100-12-2282	Schuman	Tyler		B3	16	Hopkinton	IA														Yes
+600-00-9786	Schwake	Whitney		W1	20	Iowa City	IA														Yes
+900-05-4343	Schwartz	Jay		M5	54	Lafayette	IN														Yes
+500-06-7550	Scoggin	Annette		W3	40	South Wilmin	IL														Yes
+600-01-0685	Scoggin	Brian		M3	43	South Wilmin	IL														Yes
+600-07-5220	Scrimgeour	Jeff		M5	53	Chicago	IL														Yes
+200-07-6429	Seamans	Joshua		M2	28	Cedar Rapids	IA														Yes
+300-12-1450	Seamans	Laura		W2	28	Cedar Rapids	IA														Yes
+800-09-8898	Seelander	Christen		M1	18	Urbana	IL														Yes
+700-00-8580	Seerup	Brandon		B3	17	Rockford	IL														Yes
+600-00-8581	Seerup	Trina		G3	14	Rockford	IL														Yes
+700-00-2359	Seidel	Jim		M4	47	Chesterfield	MO														Yes
+100-12-9366	Seifert	Dylan		B2	12	Edwardsville	IL														Yes
+200-08-8945	Sell	Francesca		W3	41	Wonder Lake	IL				---C										Yes
+600-10-6720	Sell	Gavin		B2	10	Wonder Lake	IL														Yes
+100-07-7940	Sell	Justin		B3	17	Wonder Lake	IL														Yes
+500-08-8944	Sell	Kim		M3	42	Wonder Lake	IL														Yes
+900-08-8946	Sell	Zachary		B3	14	Wonder Lake	IL														Yes
+800-08-7036	Senn	Kevin		M3	38	Rockford	IL				---C										Yes
+100-09-3045	Sessions	Jaron		M2	25	Highland	IL														Yes
+900-01-7362	Seufert	Joe		M3	42	Indianapolis	IN														Yes
+900-12-5902	Sexson	Clay		M1	19	Springfield	MO						125.00								Yes
+200-13-1467	Sexton	Andrew		M1	19	Lee's Summit	MO														Yes
+000-05-2382	Sharkey	Jared		B3	17	Mishawaka	IN						5203.3			E3					Yes
+000-00-0211	Sharkey	Randy		M6	61	Mishawaka	IN						1368.0			X1					Yes
+600-09-5695	Sharp	Christophe		B3	15	Machesney Pa	IL														Yes
+100-08-6470	Sharp	Erika		W1	18	Machesney Pa	IL														Yes
+500-08-9695	Sharp	Travis		M3	43	Machesney Pa	IL														Yes
+400-08-6466	Sharp	Victoria		W3	41	Machesney Pa	IL														Yes
+200-11-9304	Shearer	Andrew		B3	17	Lagrange	IN														Yes
+500-04-1145	Shedd	Frederick		M4	47	Columbus	IN				-A--	90.725			E3						Yes
+700-10-6385	Shedd	Nicholas		B1	9	Columbus	IN					44.000	225.00		E3	X3					Yes
+400-00-9542	Shedd	Philippa		W4	47	Columbus	IN				-S--	98.500			O3						Yes
+400-00-9542	Shedd	Philippa		OW	47	Columbus	IN				-S--	98.500			O3						Yes
+100-06-1071	Shedd	Taylor		B3	14	Columbus	IN														Yes
+700-08-9112	Sheehan	Claire		W1	18	Evanston	IL														Yes
+800-11-9995	Shehorn	Britni		G3	17	Milan	IL														Yes
+500-00-5826	Sheltz	Steven		M3	43	Louisville	KY														Yes
+100-10-9436	Sherman	David		M5	53	McHenry	IL														Yes
+600-12-4380	Sherwin	Kimberly		G3	14	Spring Grove	IL														Yes
+100-01-7847	Shiel	Bryan		B3	17	Wonder Lake	IL														Yes
+800-04-3744	Shiel	Caryn		W4	48	Wonder Lake	IL														Yes
+400-01-7846	Shiel	Kyle		M1	18	Wonder Lake	IL														Yes
+200-12-1666	Shoemaker	Kamis		G2	10	Rockford	IL														Yes
+400-12-1671	Shoemaker	Kellen		G2	11	Rockford	IL														Yes
+300-12-1665	Shoemaker	Kerry		W5	57	Rockford	IL														Yes
+900-06-9417	Shriver	Andrew		M1	23	Syracuse	IN				---C										Yes
+700-07-3230	Shriver	Charles		B3	16	Goshen	IN														Yes
+000-06-2406	Shriver	Ginger		W4	48	Goshen	IN														Yes
+300-06-2405	Shriver	Jeffrey		M4	47	Goshen	IN														Yes
+100-07-3229	Shriver	Kirsten		G2	12	Goshen	IN														Yes
+100-11-8568	Shull	John		B2	13	Hartville	MO					64.500	1006.6		M3	E3					Yes
+300-04-0513	Shull	John		M7	65	Hartville	MO				SR--										Yes
+900-12-3908	Shull	Mary		G2	10	Hartville	MO														Yes
+200-11-8567	Shull	Pat		M3	37	Hartville	MO				A---										Yes
+000-00-0857	Shull	Patty		W6	61	Hartville	MO														Yes
+900-00-8175	Silnes	Jill		W5	54	Greenwood	IN														Yes
+800-00-8176	Silnes	Kelly		G2	13	Greenwood	IN														Yes
+700-04-2029	Silnes	Thomas		M3	42	Greenwood	IN														Yes
+800-11-4174	Singler	Elizabeth		W1	21	Chicago	IL														Yes
+100-00-6711	Skibowski	Amanda		G3	17	Warsaw	IN														Yes
+900-00-6713	Skibowski	Brittany		G3	14	Warsaw	IN														Yes
+600-04-1979	Skibowski	Mark		M3	43	Warsaw	IN														Yes
+000-00-6712	Skibowski	Teri		W3	43	Warsaw	IN														Yes
+400-01-0999	Slife	Michael		M3	37	Loves Park	IL														Yes
+400-10-9013	Sloan	Kara		G3	14	Delhi	IA														Yes
+500-11-0933	Sloan	Mallory		G1	8	Delhi	IA														Yes
+600-11-0932	Sloan	Mary		W3	44	Delhi	IA														Yes
+700-11-0931	Sloan	Michael		M3	44	Delhi	IA				---C										Yes
+000-10-9147	Sloan	Taylor		G2	11	Delhi	IA														Yes
+800-12-2070	Slominski	Emily		G3	15	Gurnee	IL														Yes
+400-13-0055	Smith	Adam		M1	22	Ely	IA														Yes
+500-07-9315	Smith	Alex		B3	14	New Haven	IN														Yes
+700-12-0503	Smith	Alexander		M1	21	Louisville	KY														Yes
+900-11-2872	Smith	Alysa		W1	19	Robins	IA														Yes
+200-05-3787	Smith	Anthony		M3	38	Crystal Lake	IL														Yes
+400-10-2724	Smith	Brian		M3	37	Independence	MO														Yes
+600-12-1464	Smith	Cameron		B2	12	Rockford	IL														Yes
+400-12-9578	Smith	Crys		W3	36	Delhi	IA														Yes
+100-07-9313	Smith	Dan		M3	40	New Haven	IN														Yes
+500-12-2165	Smith	Grant		M3	39	Robins	IA														Yes
+100-12-8857	Smith	Jeffrey		M1	23	Iowa City	IA														Yes
+300-01-1845	Smith	Kelci		W1	20	Cedar Rapids	IA														Yes
+500-00-4256	Smith	Kevin		M4	47	Mc Cordsvill	IN				R---	102.16			O3						Yes
+100-00-0876	Smith	Larry		M6	62	Anderson	IN				-SR-	70.500	1870.0	38.000	X3	M3	X1				Yes
+900-11-9406	Smith	Mallory		G3	15	Greenville	IL														Yes
+600-04-7612	Smith	Nate		B3	17	Mc Cordsvill	IN				A---	106.83			O3						Yes
+600-12-2164	Smith	Tammy		W3	39	Robins	IA														Yes
+500-09-8211	Smith	Tyler		M4	45	Rockford	IL														Yes
+200-09-8212	Smith	Zoe		G3	14	Rockford	IL														Yes
+300-05-1304	Smothers	Amy		G3	17	Lake Saint L	MO														Yes
+500-05-1298	Smothers	Ann		W4	47	Lake Saint L	MO				---C										Yes
+900-05-1302	Smothers	Holly		G3	15	Lake Saint L	MO														Yes
+300-10-1629	Snodgrass	Wyatt		M1	23	Palo	IA														Yes
+600-07-3154	Sommer	Carley		G2	13	Lake Saint L	MO														Yes
+700-01-7803	Sommer	David		M4	46	Lake Saint L	MO														Yes
+800-11-8851	Songstad	Janice		W1	19	Waterloo	IA														Yes
+100-01-9616	Sorace	Edward		M5	58	Elizabethtow	KY				---S	74.500			X1						Yes
+800-12-6276	Sorace	Ruth		W5	55	Louisville	KY														Yes
+100-01-6237	Sorenson	Lori		W1	20	Northbrook	IL														Yes
+900-09-2257	Spading	Jonathan		M1	19	Manchester	IA														Yes
+400-12-1619	Spading	Matthew		B3	16	Solon	IA														Yes
+800-06-1382	Sparks	Kelsey		G2	13	Richmond	KY					34.437			X1						Yes
+600-04-1289	Sparks	Mark		M4	47	Richmond	KY				A--R	43.225			X1						Yes
+200-13-0064	Spaw	David		M3	44	Delhi	IA														Yes
+000-11-0853	Spears	J Andrew		M3	38	Angola	IN														Yes
+200-00-5188	Speicher	Jay		M3	36	Fredericksbu	IA														Yes
+700-06-1884	Speicher	Mercedez		G2	12	Fredericksbu	IA														Yes
+300-08-5981	St Peters	Marissa		G2	13	Worden	IL														Yes
+100-10-7944	St Peters	Megan		G1	9	Worden	IL														Yes
+100-11-0081	Stange-Crott	Leslie		M6	62	Moline	IL														Yes
+900-10-7113	Stangeland	Tristin		W1	23	Springfield	MO				---C	63.833	286.66	48.666	M1		X2				Yes
+000-04-1728	Stark	Harold		M8	72	Cicero	IN														Yes
+800-12-8669	Steckly	Ashton		W1	21	Iowa City	IA														Yes
+000-04-0486	Steffen	Greg		M5	57	Cedar Falls	IA				-SS-										Yes
+200-00-1661	Steffen	Phyllis		W5	53	Cedar Falls	IA														Yes
+300-12-8275	Steger	Amy		W1	19	New Vienna	IA					0.0000		0.0000							Yes
+900-11-8799	Stein	Jordan		M1	21	Glenview	IL														Yes
+300-00-3091	Steinback	Tom		M4	52	Mount Vernon	IN				-A--	52.833									Yes
+600-01-8085	Steiner	Zac		M2	31	Ballwin	MO														Yes
+300-11-8573	Stephens	Rick		M4	47	Osage Beach	MO					85.250	1520.0		X2	X3					Yes
+300-11-8085	Stessman	Carl		M1	19	Washburn	IA														Yes
+200-05-3208	Stevens	Michelle		G3	17	Sycamore	IL														Yes
+800-05-3206	Stevens	Valerie		W1	18	Sycamore	IL														Yes
+900-09-9261	Stevens	Vicki		W4	47	Sycamore	IL														Yes
+000-12-9855	Steward	Megan		G2	13	Rockton	IL														Yes
+800-09-6144	Stewart	Kris		M2	33	Springfield	MO					66.000									Yes
+500-11-8083	Stewart	Morgan		G2	13	Worden	IL														Yes
+600-11-5609	Stifter	Jack		M8	70	Waverly	IA														Yes
+400-04-1663	Stockel	Craig		M5	56	Bellevue	IA														Yes
+300-02-3080	Stocki	Craig		M3	38	Cedar Rapids	IA														Yes
+500-00-6717	Stornetta	Carla		W2	29	Indianapolis	IN				-A-S	75.500	1493.3	73.000	E2	M2	M2				Yes
+500-12-3919	Stornetta	Nathan		M2	31	Indianapolis	IN														Yes
+300-12-3638	Strannigan	Keegan		B1	8	Lake Lotawan	MO														Yes
+400-12-3637	Strannigan	Thomas		M2	33	Lake Lotawan	MO														Yes
+900-11-7228	Stratton	Beth		W4	52	Sherrard	IL														Yes
+800-11-7229	Stratton	James		B3	16	Sherrard	IL														Yes
+600-11-8075	Straub	Jessica		G3	14	Cedar Rapids	IA														Yes
+500-11-8076	Straub	Sheelie		G3	16	Cedar Rapids	IA														Yes
+900-00-9868	Strauss	Frederick		M5	58	Wonder Lake	IL														Yes
+800-04-9825	Strebig	Randy		M3	44	Fort Wayne	IN														Yes
+800-12-1028	Strock	Philip		M7	69	Mc Cordsvill	IN														Yes
+800-00-4482	Stuck	Raymond		M6	62	Indianapolis	IN														Yes
+000-01-6726	Stuessel	Ed		M6	61	Marion	IA				---C										Yes
+900-01-6723	Stuessel	Samantha		W2	28	Marion	IA				---C										Yes
+600-13-0923	Sturgeon	Jerry		M6	61	Louisville	KY														Yes
+100-04-3590	Sturm	Marcus		M6	64	Berwyn	IL														Yes
+900-13-1651	Sturzzelinge	Paul		M1	20	Indianapolis	IN														Yes
+600-12-1822	Sullivan	Patrick		B2	11	Wonder Lake	IL														Yes
+000-12-6755	Summarell	Blake		M1	19	Gilbertsvill	KY					0.9000	0.0000								Yes
+900-13-1576	Sundberg	Elin		G3	17	Clinton	IA														Yes
+100-12-9021	Surdej	Megan		G3	16	Channahon	IL														Yes
+900-11-6894	Surratt	Jared		M1	21	Champaign	IL					1.1875									Yes
+600-00-0727	Svoboda	Ron		M7	65	Schaumburg	IL														Yes
+600-11-8204	Swails	Heather		G3	17	Cedar Rapids	IA														Yes
+400-06-2408	Swanborg	Kristyn		W1	23	Rockford	IL														Yes
+400-12-8083	Swestka	Tim		M1	21	Cedar Falls	IA														Yes
+500-09-1760	Swigert	Anna		G3	14	Louisville	KY														Yes
+900-12-6282	Swigert	Jacqueline		G2	13	Louisville	KY					27.900									Yes
+500-12-7306	Swigert	Kirk		M4	47	Louisville	KY														Yes
+700-09-6323	Swigert	Laura		W4	47	Louisville	KY														Yes
+800-10-1563	Taft	Edwin		M5	59	Carterville	IL					3.0875									Yes
+700-10-1564	Taft	Lindsay		W1	19	Carterville	IL					27.787			X1						Yes
+200-12-3981	Talley	Curt		M2	28	Lees Summit	MO														Yes
+900-10-1401	Tamboli	Cyrus		M3	39	Iowa City	IA														Yes
+000-06-5786	Tanner	Mitch		M1	20	Delhi	IA														Yes
+000-02-0855	Tanner	Stephanie		W1	18	Delhi	IA														Yes
+200-11-5610	Tatroe	Elman		M5	59	Waverly	IA														Yes
+000-11-8576	Tatroe	Randy		M2	25	Waverly	IA														Yes
+000-11-5612	Tatroe	Todd		M2	32	Waverly	IA														Yes
+900-13-0401	Taussig	Lindsey		G2	12	Riverwoods	IL					18.000									Yes
+600-07-5684	Teetor	Mark		B2	12	Lake St Loui	MO					38.166	226.66			X1					Yes
+900-12-7661	Tennesen	Craig		M1	21	Fenton	MO														Yes
+800-13-0327	Terry	Matt		M1	23	Centeralia	IL														Yes
+700-03-9005	Thayer	Bradley		M4	46	Iowa City	IA														Yes
+900-05-0338	Thayer	Gina		G3	14	Iowa City	IA														Yes
+200-05-0337	Thayer	Zachary		B3	17	Iowa City	IA														Yes
+100-12-7454	Thayne	Eric		B3	17	Dubuque	IA														Yes
+200-12-7453	Thayne	Michael		M5	53	Dubuque	IA														Yes
+500-04-0410	Thomas	Charles		M8	70	Machesney Pa	IL														Yes
+200-00-2163	Thomas	Jan		W7	65	Machesney Pa	IL														Yes
+500-04-2234	Thomas	Shirley		W6	63	Wonder Lake	IL														Yes
+000-07-6056	Thompson	Amber		G3	14	Edwardsville	IL														Yes
+200-09-0432	Thompson	Brandon		B2	12	Cambridge	IA					61.666	36.000		M3						Yes
+700-07-6057	Thompson	Cody		B2	11	Edwardsville	IL														Yes
+300-07-6055	Thompson	Maria		W3	39	Edwardsville	IL														Yes
+500-10-0279	Thompson	Randy		M3	38	Bettendorf	IA				---C										Yes
+400-00-1010	Thompson	Scott		M3	42	Cambridge	IA				SR--	105.00			O3						Yes
+400-00-1010	Thompson	Scott		MM	42	Cambridge	IA				SR--	105.00			O3						Yes
+900-10-0282	Thompson	Tanner		G1	9	Bettendorf	IA														Yes
+600-07-6054	Thompson	Todd		M3	40	Edwardsville	IL														Yes
+000-10-0281	Thompson	Tristan		G2	12	Bettendorf	IA														Yes
+600-12-2966	Thompson	Tyler		M1	21	Colfax	IL					62.000									Yes
+100-10-0280	Thompson	Valerie		W3	38	Bettendorf	IA														Yes
+600-00-1278	Thomson	Don		M7	66	Jefferson Ci	MO				---C										Yes
+300-00-5996	Thordarson	G Thor		M3	44	La Porte	IN														Yes
+500-04-0621	Threlkeld	Dick		M4	52	Thorntown	IN				-A--	77.500									Yes
+300-00-2001	Threlkeld	Erika		W1	20	Thorntown	IN														Yes
+100-11-5413	Threlkeld	Micara		G2	11	Thorntown	IN					3.6666									Yes
+900-00-1176	Threlkeld	Michele		W4	50	Thorntown	IN					50.666									Yes
+100-03-0013	Thus	Monte		M5	59	Edwardsville	IL														Yes
+100-13-0461	Tichacek	Erin		G2	13	Palos Height	IL														Yes
+000-13-0462	Tichacek	Kristen		G3	15	Palos Height	IL														Yes
+700-12-0107	Tieman	Chad		M1	19	Leo	IN					55.800									Yes
+200-06-6628	Tiemann	Douglas		M4	45	Lake Saint L	MO														Yes
+000-11-8514	Tillema	Brian		M3	43	Lake Lotawan	MO				---C										Yes
+900-11-8515	Tillema	David		B2	12	Lake Lotawan	MO														Yes
+000-11-9313	Tillema	Lisa		W3	44	Lake Lotawan	MO														Yes
+000-01-9994	Timmerman	Leah		W1	21	Iowa City	IA				-A--	52.666	563.33	102.00		X3	E3				Yes
+800-00-9401	Tlusty	Chuck		M3	39	Plainfield	IA					51.300	216.00	124.33			E1				Yes
+700-03-5214	Tognarelli	Peter		B2	10	Antioch	IL														Yes
+500-01-7175	Toledano	Rykert		M2	32	Coralville	IA				A---	92.666	2033.3	143.00	M2	E1	M3				Yes
+700-11-4328	Toler	Ashley		W1	22	Springfield	MO														Yes
+500-12-8570	Tolish	Gail		W1	19	Mokena	IL					0.0000									Yes
+700-04-1419	Tollefson	Steve		M4	47	Cambridge	IA				A---	74.250	873.00	55.800							Yes
+600-00-4231	Tollefson	Susan		W4	46	Cambridge	IA					47.250	180.00								Yes
+100-11-7851	Toring	Sarah		G2	10	Edwardsville	IL														Yes
+900-04-2926	Torres	Ector		M5	54	Rockford	IL				---C										Yes
+600-10-1398	Trachster	Randy		B3	16	Crystal Lake	IL														Yes
+200-00-6796	Tranchita	Michelle		W1	21	Wilmington	IL					56.666	230.00	40.666	X3						Yes
+900-00-3798	Treasure	Adam		M1	24	Wonder Lake	IL														Yes
+400-08-5278	Trebon	Kristina		W1	22	Washburn	IA														Yes
+100-11-8148	Trefz	Martin		M7	65	Lees Summit	MO				---C										Yes
+900-11-9574	Trompen	Mick		M3	38	Westfield	IN														Yes
+400-07-4177	Trotta	Jennifer		W1	19	Indianapolis	IN														Yes
+200-03-7806	Trotta	Michael		M5	53	Indianapolis	IN														Yes
+100-00-6704	Truesdale	Carl		M7	65	Indianapolis	IN				APR-										Yes
+500-12-2493	Truesdale	Margaret		W6	61	Indianapolis	IN														Yes
+800-05-1929	Tucker	Christophe		M1	18	Maple Park	IL														Yes
+600-11-4350	Tuepker	Jennifer		W1	22	Kirkwood	MO														Yes
+400-12-4542	Tuohy	Brendan		B2	12	Lake Forest	IL														Yes
+500-12-4541	Tuohy	Liam		B2	11	Lake Forest	IL														Yes
+400-00-4202	Turner	Jeanne		W5	57	Blue Springs	MO														Yes
+200-12-6418	Tuuk	Patric		M1	20	Lansing	IL														Yes
+500-12-5111	Tvorozhkov	Andrey		M3	44	Bettendorf	IA														Yes
+800-06-4703	Tweten	Shawn		M2	28	Decorah	IA				---C										Yes
+000-00-8433	Tynan	Scott		M3	42	Columbus	IN				-A-S	110.16			O3						Yes
+000-00-8433	Tynan	Scott		MM	42	Columbus	IN				-A-S	110.16			O3						Yes
+800-12-4531	Uhen	Margaret		G3	15	Wheaton	IL														Yes
+700-12-4532	Uhen	Michael		B2	13	Wheaton	IL														Yes
+500-04-0340	Ulseth	Mark		M4	47	Milford	IN														Yes
+800-01-6944	Unangst	Joshua		M2	25	Edwardsville	IL														Yes
+900-12-5049	Underwood	Clayton		M1	19	Martinsville	IN														Yes
+500-11-4252	Uribe	Sergio		M1	19	West Lafayet	IN					100.00	5640.0	171.66	E3	O3	O3				Yes
+500-11-4252	Uribe	Sergio		OM	19	West Lafayet	IN					99.666									Yes
+500-09-5944	Valant	David		M4	52	Bellevue	IA														Yes
+900-09-5946	Valant	Michael		M1	20	Cedar Rapids	IA														Yes
+600-13-0275	Valentine	Dian		W5	57	Rockford	IL														Yes
+000-05-3736	Valentine	Doug		M2	29	Rockford	IL				---C										Yes
+800-07-9369	Valin	Brian		B3	16	Lindenhurst	IL														Yes
+000-10-7402	Valmassei	Annica		G1	4	Lake Lotawan	MO														Yes
+900-05-4103	Valmassei	Daniel		B1	8	Lake Lotawan	MO														Yes
+400-04-1551	Valmassei	Scott		M3	43	Lake Lotawan	MO				---C										Yes
+800-12-7440	Van Fleet	Elyse		W1	20	Syracuse	IN														Yes
+400-11-7490	Van Haver	Jennifer		W3	35	Mishawaka	IN														Yes
+300-01-6783	Van Lue	Shawna		W3	36	Syracuse	IN				-RR-										Yes
+600-10-9509	Van Meter	Charles		M5	53	Carmel	IN														Yes
+100-09-7584	Van Osdel	Mark		M2	34	Bettendorf	IA														Yes
+000-12-4256	Vance	Elisha		G3	15	Monona	IA														Yes
+100-12-4255	Vance	Rebecca		W2	33	Monona	IA				---C										Yes
+200-12-4254	Vance	Todd		M3	37	Monona	IA				---C										Yes
+600-00-9533	Vandament	Brenda		W3	37	Quincy	IL														Yes
+300-12-9845	Vandament	Kara		G1	8	Quincy	IL														Yes
+100-12-3562	Vandament	Kendra		G1	8	Quincy	IL														Yes
+800-12-9444	VanDerMolen	Paul		M3	40	Oswego	IL														Yes
+200-12-3110	Vaughan	Johnna		W3	39	Hartville	MO														Yes
+100-08-9086	Vaughan	Justine		G3	16	Hartville	MO					68.083			X2						Yes
+700-12-0534	Vaughan	Kurt		B3	14	Hartville	MO														Yes
+900-12-9658	Velander	Sara		W1	24	Mundelein	IL					53.100	589.00		X1	X2					Yes
+300-01-6147	Venderley	David		M6	64	Fort Wayne	IN														Yes
+
+900-11-8577	Verhagen	Joel		B3	17	Ballwin	MO					11.875									Yes
+800-11-8578	Verhagen	Suzy		G3	15	Ballwin	MO					13.537									Yes
+500-12-8525	Vertin	Phillip		B3	15	Channahon	IL														Yes
+000-10-8249	Vespestad	Andy		M3	35	Alleman	IA				AA--										Yes
+600-10-8250	Vespestad	Deanne		W3	35	Alleman	IA				--A-										Yes
+700-10-8266	Vespestad	Drew		B3	16	Alleman	IA					89.833	126.00	44.666	E1						Yes
+500-10-8268	Vespestad	Erin		G2	12	Alleman	IA					55.666			M3						Yes
+300-10-2749	Vieke	Noah		M1	20	Indianapolis	IN					83.700			M1						Yes
+700-12-5942	Vint	Daniel		M1	21	Springfield	MO														Yes
+000-11-3199	Vittetau	James		M1	22	Carmel	IN														Yes
+000-12-5000	Vogel	Jessica		G2	11	La Grange	MO														Yes
+900-00-5815	Vogt	Kellie		W2	25	Rock Island	IL														Yes
+400-04-2963	Vogt	Kevin		M5	53	Rock Island	IL				---C										Yes
+700-12-5980	Voigt	Allyson		W1	20	Hoffman Esta	IL														Yes
+900-13-1071	Volling	Noah		M1	18	Channahon	IL														Yes
+200-08-4112	Voss	Austin		M1	18	Owensville	MO				---C										Yes
+300-11-8306	Voss	Betsy		W4	50	Warsaw	IN														Yes
+300-10-3579	Voss	Jenna		W1	23	Iowa City	IA					3.0000		41.000			X1				Yes
+000-05-0865	Voss	Joseph		M5	55	Owensville	MO				---C										Yes
+200-11-8307	Voss	Juergen		M5	53	Warsaw	IN														Yes
+700-05-3427	Voss	Julie		W2	25	Owensville	MO				---C										Yes
+700-11-6513	Voss	Matthew		B3	16	Warsaw	IN														Yes
+100-11-8308	Voss	Michelle		W1	19	Warsaw	IN														Yes
+800-10-6421	Voss	Rhoda		W5	56	Owensville	MO				---C										Yes
+300-12-4185	Vossberg	Jessica		W1	20	Waverly	IA														Yes
+000-12-9367	Wachowski	Amy		--		Edwardsville	IL														Yes
+200-10-9640	Wachowski	Bruce		B1	9	Edwardsville	IL														Yes
+900-09-8750	Wachowski	Darlene		G3	14	Edwardsville	IL														Yes
+000-11-7852	Wachowski	Michael		M3	37	Edwardsville	IL														Yes
+800-00-2792	Wagner	Debra		W4	50	Thorntown	IN				-R--	79.681			E3						Yes
+000-04-1041	Wagner	John		M4	50	Thorntown	IN				A---	83.125			M3						Yes
+600-00-8574	Wagner	Michael		M5	58	Louisville	KY														Yes
+900-12-0440	Wagner	Ryan		M1	22	Champaign	IL														Yes
+000-11-0099	Wagner	Shelley		W1	23	Sycamore	IL														Yes
+700-04-1378	Wahl	Marilyn		W5	53	Woodstock	IL														Yes
+700-01-8794	Walen	Kristin		W2	28	Washburn	IA														Yes
+700-02-0153	Walen	Terry		M2	33	Washburn	IA				---C										Yes
+600-05-2591	Walker	Christophe		M4	45	Muncie	IN				---C										Yes
+600-01-7529	Walker	Chuck		M4	49	Angola	IN														Yes
+200-13-0057	Walker	Melissa		G3	15	Marion	IA														Yes
+400-05-2595	Walker	Sarah		W1	18	Muncie	IN														Yes
+300-11-1543	Walsh	James		M1	23	Glenview	IL														Yes
+500-12-5319	Walstrom	Brian		M3	38	Avon	IN														Yes
+600-12-8548	Walters	Ashley		W2	29	Pendleton	IN														Yes
+200-08-6585	Walton	Roy		M2	34	Loves Park	IL														Yes
+500-13-0566	Wandling	Rachel		G2	13	O'Fallon	IL														Yes
+100-01-1331	Warburg	Frank		M3	44	Louisville	KY				-R--	95.166	1050.0	79.800	E3	M1	X3				Yes
+900-06-7523	Warburg	Joey		B3	14	Louisville	KY														Yes
+400-11-9937	Ward	Huntley		B2	12	Louisville	KY					30.600									Yes
+700-12-4419	Ward	Mckenzie		G3	17	Cedar Rapids	IA														Yes
+200-02-4192	Ward	Stephen		M3	42	Louisville	KY					76.950									Yes
+200-00-5775	Warne	John		M4	46	Carmel	IN				R--C	87.875			M3						Yes
+800-13-0754	Warner	William		M4	52	Lake Saint L	MO														Yes
+000-07-5673	Warren	Abby		W1	19	Lake Saint L	MO														Yes
+900-07-5670	Warren	Jeffrey		M4	51	Lake Saint L	MO														Yes
+300-07-5672	Warren	Kathryn		W4	47	Lake Saint L	MO				---C										Yes
+500-12-4428	Wasem	Carey		M4	46	Zionsville	IN														Yes
+500-01-5418	Waters	Evan		M1	18	Quincy	IL														Yes
+900-12-8538	Watson	Terri		W4	49	Roscoe	IL														Yes
+300-12-0248	Weaver	Adam		M1	20	Williamsburg	IA														Yes
+200-12-0270	Webb	Suzanne		W5	58	Leitchfield	KY					47.000	204.25		E1						Yes
+500-12-9010	Webber	Brooke		G1	7	Edwardsville	IL														Yes
+800-00-1030	Weber	Dean		M5	59	Waterloo	IA				---C										Yes
+400-11-8145	Weber	Debbie		W3	43	Lees Summit	MO				---C										Yes
+300-11-8146	Weber	Nikki		G2	11	Lees Summit	MO														Yes
+000-12-4195	Weber	Peter		B1	9	Lees Summit	MO														Yes
+100-12-4194	Weber	Philip		M4	49	Lees Summit	MO														Yes
+900-12-4196	Weber	Samantha		G1	7	Lees Summit	MO														Yes
+000-09-9996	Weber	Troy		M2	34	Kankakee	IL				---C										Yes
+700-11-8319	Wegman	Brian		M1	20	Delhi	IA														Yes
+600-04-1193	Weiser	Denis		M5	53	Osceola	IA														Yes
+800-00-3355	Weiser	Jay		M2	26	Ames	IA														Yes
+800-00-3379	Weiser	Jessica		W1	18	Osceola	IA														Yes
+400-08-9225	Wellman	John		M1	24	Quincy	IL				---C										Yes
+500-00-2122	Wells	Joseph		M1	18	Zionsville	IN														Yes
+600-00-5955	Wells	Lindsey		G2	12	Zionsville	IN														Yes
+600-00-2121	Wells	Lori		W4	47	Zionsville	IN														Yes
+000-04-0639	Wells	Tad		M4	51	Zionsville	IN														Yes
+700-10-9751	Wesley	Brandon		M2	34	Edwardsville	IL														Yes
+400-12-6041	Westhoven	Craig		M1	20	Crystal Lake	IL														Yes
+000-01-7477	Westhoven	Doug		M4	48	Crystal Lake	IL														Yes
+600-02-3216	Wheeler	David		M1	24	Lone Jack	MO														Yes
+400-11-7636	Whitaker	James		M2	32	Loves Park	IL														Yes
+500-12-1731	Whitaker	Jodi		W2	33	Loves Park	IL														Yes
+800-01-3804	Whitehouse	David		M4	52	Lexington	KY				--AS										Yes
+300-11-4582	Wickersham	Michael		M1	23	Bloomington	IN														Yes
+700-12-2361	Wicks	Thomas		M3	44	Traer	IA														Yes
+700-04-4012	Wiemerslage	Jane		W6	63	Geneva	IL														Yes
+200-01-9945	Wiemerslage	Ronald		M7	66	Geneva	IL														Yes
+400-12-5914	Wier	Tyler		M1	24	Springfield	MO														Yes
+500-12-2127	Wignot	Leroy		M4	47	Carmel	IN														Yes
+400-02-8554	Wilder	James		M3	43	Leitchfield	KY														Yes
+300-10-8550	Wilkey	David		M2	27	Lebanon	IL														Yes
+700-10-8549	Wilkey	June		W4	52	Lebanon	IL														Yes
+500-10-4420	Will	Andrew		M1	24	Dubuque	IA														Yes
+900-12-8453	Wille	Samantha		W1	21	Metamora	IL														Yes
+500-04-2250	Williams	Barbara		W7	65	McHenry	IL														Yes
+700-11-4045	Williams	Cory		M2	25	Rockton	IL				---C										Yes
+500-12-6088	Williams	Eric		M1	19	Mt  Zion	IL							84.000			X2				Yes
+100-07-6231	Williams	James		M5	57	Harrisburg	IL														Yes
+500-00-6212	Williams	Keith		M3	36	McHenry	IL				---C										Yes
+000-12-5888	Williams	Kristy		W1	22	Springfield	MO														Yes
+000-00-7603	Williams	Mandi		W1	21	Ozark	MO						1550.0			M3					Yes
+000-00-7603	Williams	Mandi		OW	21	Ozark	MO					97.000			O3						Yes
+600-06-3098	Williams	Randy		M4	45	Ozark	MO				-A-C										Yes
+700-01-3702	Williams	Russell		M7	67	McHenry	IL														Yes
+600-00-7423	Williams	Stephen		M4	47	Decatur	IL														Yes
+600-06-3100	Williams	Tami		W3	44	Ozark	MO				--R-										Yes
+900-06-1145	Willig	Adriane		W4	47	Naperville	IL														Yes
+100-00-8661	Willig	Joe		M4	49	Naperville	IL														Yes
+300-06-1147	Willig	Zachary		B2	12	Naperville	IL														Yes
+900-12-0259	Wills	Kelley		W1	21	West Lafayet	IN														Yes
+400-06-7560	Wilson	Angela		W1	23	Warsaw	IN														Yes
+400-06-7557	Wilson	Ashley		G3	17	Warsaw	IN														Yes
+700-09-9223	Wilson	Brianna		G3	16	Worden	IL														Yes
+800-05-3631	Wilson	Christophe		M2	28	Warsaw	IN														Yes
+600-11-6576	Wilson	Curt		M4	45	Fort Wayne	IN														Yes
+800-06-7559	Wilson	Erica		W1	21	Warsaw	IN														Yes
+300-03-2888	Wilson	Gregg		M4	51	Rockford	IL														Yes
+500-02-0438	Wilson	Jakim		M2	25	Warsaw	IN														Yes
+200-10-8261	Wilson	Michael		M2	25	Warsaw	IN														Yes
+300-12-9579	Wilson	Nathan		M1	19	Warsaw	IN														Yes
+700-06-7556	Wilson	Nicholas		B3	15	Warsaw	IN														Yes
+500-12-3957	Wilson	Riley		B1	4	Warsaw	IN														Yes
+500-11-6027	Wingler	Amy		W3	36	Avon	IN														Yes
+300-11-6029	Wingler	Connor		B1	5	Avon	IN														Yes
+400-11-6028	Wingler	Kayla		G1	8	Avon	IN														Yes
+900-04-8333	Wingler	Todd		M3	42	Avon	IN														Yes
+300-00-2452	Winninger	Ashely		G3	17	Waterloo	IA														Yes
+900-04-0751	Winninger	Ted		M5	56	Waterloo	IA														Yes
+100-09-0976	Wire	Mike		M4	48	Urbandale	IA														Yes
+600-10-2685	Wirfs	Kevin		M3	44	Belvidere	IL														Yes
+400-04-2442	Wischmeyer	Ralph		M4	45	Columbus	IN														Yes
+500-00-9107	Wischmeyer	Tammy		W3	43	Columbus	IN														Yes
+000-08-9968	Wojcik	Adam		M1	21	Bartlett	IL														Yes
+900-09-8804	Wojcik	Hannah		G3	16	Bartlett	IL														Yes
+300-08-9967	Wojcik	Matt		M1	19	Bartlett	IL														Yes
+600-09-8805	Wojcik	Mike		M3	44	Bartlett	IL														Yes
+200-09-8803	Wojcik	Pam		W4	45	Bartlett	IL														Yes
+300-12-3645	Wolf	Brandon		M1	23	Elkhart	IN														Yes
+000-12-8025	Wolfe	Jennifer		W2	30	Aurora	IL														Yes
+400-00-5452	Wolfe	Timothy		M2	30	Aurora	IL														Yes
+100-11-6465	Wolff	Reese		M3	40	Greenwood	MO														Yes
+300-11-4278	Wollenburg	Jim		M1	21	West Lafayet	IN														Yes
+200-09-4997	Wolowic	Linda		W4	48	Lake Villa	IL														Yes
+200-00-5508	Wolowic	Rick		M4	51	Lake Villa	IL					67.050	883.50	93.600			M1				Yes
+500-05-0071	Wolski	John		M3	43	Indianapolis	IN														Yes
+400-10-7620	Wolski	Suzanne		W3	41	Indianapolis	IN														Yes
+100-12-9496	Wood	Amanda		G3	14	Lake Lotawan	MO														Yes
+900-12-3731	Wood	Bradford		M3	44	Lake Lotawan	MO				---C										Yes
+900-12-4219	Wood	Caitlin		G3	15	Lake Lotawan	MO														Yes
+400-12-9042	Wood	Sabrina		G1	9	Lake Lotawan	MO														Yes
+800-12-9857	Wood	Vicky		W3	42	Lake Lotawan	MO														Yes
+500-07-5032	Woods	Douglas		B2	10	Lake Saint L	MO														Yes
+200-07-5033	Woods	Jaci		G2	12	Lake Saint L	MO														Yes
+900-07-5047	Woods	Nancy		W3	43	Lake Saint L	MO														Yes
+200-04-5416	Woods	Skyler		B2	11	Washburn	IA														Yes
+200-03-6379	Woods	Ted		M3	42	Lake Saint L	MO														Yes
+800-11-6338	Worthington	Elizabeth		G1	8	Waterloo	IA														Yes
+200-11-6334	Worthington	Glynis		W4	46	Waterloo	IA														Yes
+000-11-6336	Worthington	Glynn		G3	14	Waterloo	IA														Yes
+900-11-6337	Worthington	John		B2	10	Waterloo	IA														Yes
+100-11-6335	Worthington	Wayne		B3	15	Waterloo	IA					1.3500		54.000							Yes
+300-11-6333	Worthington	Wayne		M4	46	Waterloo	IA				---C										Yes
+700-05-1306	Wright	Gregory		M4	50	Lake Saint L	MO														Yes
+600-05-3635	Wright	Jason		M2	28	Lake Saint L	MO														Yes
+700-00-3097	Yarashus	Donald		M4	50	Wonder Lake	IL					1.8000									Yes
+700-00-9310	Yoder	Michael		M3	40	Milford	IN				-A--	100.00			E2						Yes
+700-09-4976	Yordy	Bradley		M2	25	Upland	IN				---C										Yes
+500-05-3195	York	Hannah		W1	22	Cedar Falls	IA														Yes
+300-13-0582	Young	John		M4	48	Spring Valle	IL														Yes
+900-09-8213	Zammuto	Brooke		W2	26	Roscoe	IL														Yes
+200-12-5794	Zehrt	Nicholas		M1	20	Saint Louis	MO														Yes
+700-12-4723	Zimbric	Bailey		G2	11	Lake Saint L	MO														Yes
+100-00-7299	Zimmer	Brian		M2	27	Indianapolis	IN					63.450	2538.0			E1					Yes
+800-00-5540	Zimmer	Mark		M2	32	Greenwood	IN					72.000	2385.0	72.000		E1					Yes
+400-02-5500	Zimmerman	Jim		M4	48	Barrington	IL					56.250									Yes
+000-08-3816	Zimmerman	Kevin		B3	14	Barrington	IL														Yes
+700-08-3817	Zimmerman	Kyle		B3	16	Barrington	IL					67.166			X2						Yes
+500-12-9652	Zinevich	Zachary		B2	12	Lake Lotawan	MO														Yes
+300-13-0759	Zummak	Joel		M2	25	Jesup	IA														Yes

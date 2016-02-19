@@ -1,0 +1,284 @@
+Table:	TrickList								
+PK	RuleCode	TrickCode	NumSkis	StartPos	NumTurns	RuleNum	TypeCode	Points	Description
+000	awsa	FALL	0	0	1	0	0	0	Fall out of course
+000	awsa	FALL	1	0	1	0	0	0	Fall out of course
+000	awsa	FALL	2	0	1	0	0	0	Fall out of course
+000	awsa	NSP	0	0	1	0	0	-1	Not skiing position
+000	awsa	NSP	1	0	1	0	0	-1	Not skiing position
+000	awsa	NSP	2	0	1	0	0	-1	Not skiing position
+32	awsa	RS	0	0	0	1	0	20	Reverse Slide (Wakeboard)
+51	awsa	S	0	0	0	1	0	20	Side Slide (Wakeboard)
+103	awsa	RS	1	0	0	1	0	40	Reverse Slide
+148	awsa	S	1	0	0	1	0	40	Side Slide
+221	awsa	RS	2	0	0	1	0	20	Reverse Slide
+230	awsa	S	2	0	0	1	0	20	Side Slide
+117	awsa	RTS	1	0	0	2	0	130	Reverse Toe Slide
+164	awsa	TS	1	0	0	2	0	130	Toe Side Slide
+5	awsa	B	0	0	1	3	0	30	Front to Back (Wakeboard)
+20	awsa	RB	0	0	1	3	0	30	Reverse Front to Back (Wakeboard)
+74	awsa	B	1	0	1	3	0	60	Front to Back
+91	awsa	RB	1	0	1	3	0	60	Reverse Front to Back
+206	awsa	B	2	0	1	3	0	30	Front to Back
+214	awsa	RB	2	0	1	3	0	30	Reverse Front to Back
+16	awsa	F	0	1	1	4	0	30	Front to Back (Wakeboard)
+30	awsa	RF	0	1	1	4	0	30	Reverse Front to Back (Wakeboard)
+85	awsa	F	1	1	1	4	0	60	Front to Back
+101	awsa	RF	1	1	1	4	0	60	Reverse Front to Back
+209	awsa	F	2	1	1	4	0	30	Front to Back
+217	awsa	RF	2	1	1	4	0	30	Reverse Front to Back
+1	awsa	5B	0	0	3	5	0	55	540 Front to Back (Wakeboard)
+2	awsa	5F	0	1	3	5	0	55	540 Back to Front (Wakeboard)
+3	awsa	7B	0	1	4	5	0	65	720 Back to Back (Wakeboard)
+4	awsa	7F	0	0	4	5	0	65	720 Front to Front (Wakeboard)
+6	awsa	BB	0	1	2	5	0	45	Back to Back (Wakeboard)
+6	awsa	OB	0	1	2	5	0	45	360 Back to Back (Wakeboard)
+19	awsa	O	0	0	2	5	0	45	360 Front to Front (Wakeboard)
+21	awsa	RBB	0	1	2	5	0	45	Back to Back (Wakeboard)
+21	awsa	ROB	0	1	2	5	0	45	Reverse 360 Back to Back (Wakeboard)
+31	awsa	RO	0	0	2	5	0	45	Reverse 360 Front to Front (Wakeboard)
+70	awsa	5B	1	0	3	5	0	110	540 Front to Back
+71	awsa	5F	1	1	3	5	0	110	540 Back to Front
+72	awsa	7B	1	1	4	5	0	130	720 Back to Back
+73	awsa	7F	1	0	4	5	0	130	720 Front to Front
+75	awsa	BB	1	1	2	5	0	90	Back to Back
+75	awsa	OB	1	1	2	5	0	90	360 Back to Back
+90	awsa	O	1	0	2	5	0	90	360 Front to Front
+92	awsa	RBB	1	1	2	5	0	90	Reverse Back to Back
+92	awsa	ROB	1	1	2	5	0	90	Reverse 360 Back to Back
+102	awsa	RO	1	0	2	5	0	90	Reverse 360 Front to Front
+202	awsa	5B	2	0	3	5	0	50	540 Front to Back
+203	awsa	5F	2	1	3	5	0	50	540 Back to Front
+204	awsa	7B	2	1	4	5	0	60	720 Back to Back
+205	awsa	7F	2	0	4	5	0	60	720 Front to Front
+207	awsa	BB	2	1	2	5	0	40	Back to Back
+207	awsa	OB	2	1	2	5	0	40	360 Back to Back
+213	awsa	O	2	0	2	5	0	40	360 Front to Front
+215	awsa	RBB	2	1	2	5	0	40	Reverse Back to Back
+215	awsa	ROB	2	1	2	5	0	40	Reverse 360 Back to Back
+220	awsa	RO	2	0	2	5	0	40	Reverse 360 Front to Front
+88	awsa	LB	1	0	1	6	0	110	Line Front to Back
+211	awsa	LB	2	0	1	6	0	70	Line Front to Back
+218	awsa	RLB	2	0	1	6	0	70	Reverse Line Front to Back
+89	awsa	LF	1	1	1	7	0	110	Line Back to Front
+212	awsa	LF	2	1	1	7	0	70	Line Back to Front
+219	awsa	RLF	2	1	1	7	0	70	Reverse Line Back to Front
+113	awsa	RTB	1	0	1	8	0	100	Reverse Toe Front to Back
+160	awsa	TB	1	0	1	8	0	100	Toe Front to Back
+115	awsa	RTF	1	1	1	9	0	100	Reverse Toe Front to Back
+162	awsa	TF	1	1	1	9	0	100	Toe Back to Front
+116	awsa	RTO	1	0	2	10	0	200	Reverse Toe 360 Front to Front
+163	awsa	TO	1	0	2	10	0	200	Toe 360 Front to Front
+114	awsa	RTBB	1	1	2	11	0	200	Reverse Toe Back to Back
+114	awsa	RTOB	1	1	2	11	0	200	Reverse Toe 360 Back to Back
+161	awsa	TBB	1	1	2	11	0	200	Toe Back to Back
+161	awsa	TOB	1	1	2	11	0	200	Toe 360 Back to Back
+112	awsa	RT5B	1	0	3	12	0	350	Reverse Toe 540 Front to Back
+157	awsa	T5B	1	0	3	12	0	350	Toe 540 Front to Back
+159	awsa	T7F	1	0	4	12	0	450	Toe 720 Front to Front
+159	awsa	T7	1	0	4	12	0	450	Toe 720 Front to Front
+158	awsa	T5F	1	1	3	13	0	350	Toe 540 Back to Front
+47	awsa	RWB	0	0	1	14	0	40	Reverse Wake Front to Back (Wakeboard)
+66	awsa	WB	0	0	1	14	0	40	Wake Front to Back (Wakeboard)
+134	awsa	RWB	1	0	1	14	0	80	Reverse Wake Front to Back
+186	awsa	WB	1	0	1	14	0	80	Wake Front to Back
+224	awsa	RWB	2	0	1	14	0	50	Reverse Wake Front to Back
+233	awsa	WB	2	0	1	14	0	50	Wake Front to Back
+49	awsa	RWF	0	1	1	15	0	40	Reverse Wake Back to Front (Wakeboard)
+68	awsa	WF	0	1	1	15	0	40	Wake Back to Front (Wakeboard)
+136	awsa	RWF	1	1	1	15	0	80	Reverse Wake Back to Front
+188	awsa	WF	1	1	1	15	0	80	Wake Back to Front
+226	awsa	RWF	2	1	1	15	0	50	Reverse Wake Back to Front
+235	awsa	WF	2	1	1	15	0	50	Wake Back to Front
+50	awsa	RWO	0	0	2	16	0	75	Reverse Wake 360 Front to Front (Wakeboard)
+69	awsa	WO	0	0	2	16	0	75	Wake 360 Front to Front (Wakeboard)
+147	awsa	RWO	1	0	2	16	0	150	Reverse Wake 360 Front to Front
+201	awsa	WO	1	0	2	16	0	150	Wake 360 Front to Front
+229	awsa	RWO	2	0	2	16	0	110	Reverse Wake 360 Front to Front
+238	awsa	WO	2	0	2	16	0	110	Wake 360 Front to Front
+48	awsa	RWBB	0	1	2	17	0	75	Reverse Wake Back to Back (Wakeboard)
+48	awsa	RWOB	0	1	2	17	0	75	Reverse 360 Back to Back (Wakeboard)
+67	awsa	WBB	0	1	2	17	0	75	Wake Back to Back (Wakeboard)
+67	awsa	WOB	0	1	2	17	0	75	Wake 360 Back to Back (Wakeboard)
+135	awsa	RWBB	1	1	2	17	0	150	Reverse Wake Back to Back
+135	awsa	RWOB	1	1	2	17	0	150	Reverse 360 Back to Back
+187	awsa	WBB	1	1	2	17	0	150	Wake Back to Back
+187	awsa	WOB	1	1	2	17	0	150	Wake 360 Back to Back
+225	awsa	RWBB	2	1	2	17	0	110	Reverse Wake Back to Back
+225	awsa	RWOB	2	1	2	17	0	110	Reverse 360 Back to Back
+234	awsa	WBB	2	1	2	17	0	110	Wake Back to Back
+234	awsa	WOB	2	1	2	17	0	110	Wake 360 Back to Back
+41	awsa	RW5B	0	0	3	18	0	155	Reverse Wake 540 Front to Back (Wakeboard)
+60	awsa	W5B	0	0	3	18	0	155	Wake 540 Front to Back (Wakeboard)
+128	awsa	RW5B	1	0	3	18	0	310	Reverse Wake 540 Front to Back
+180	awsa	W5B	1	0	3	18	0	310	Wake 540 Front to Back
+222	awsa	RW5B	2	0	3	18	0	310	Reverse Wake 540 Front to Back
+231	awsa	W5B	2	0	3	18	0	310	Wake 540 Front to Back
+42	awsa	RW5F	0	1	3	19	0	155	Reverse Wake 540 Back to Front (Wakeboard)
+61	awsa	W5F	0	1	3	19	0	155	Wake 540 Back to Front (Wakeboard)
+129	awsa	RW5F	1	1	3	19	0	310	Reverse Wake 540 Back to Front
+181	awsa	W5F	1	1	3	19	0	310	Wake 540 Back to Front
+223	awsa	RW5F	2	1	3	19	0	310	Reverse Wake 540 Back to Front
+232	awsa	W5F	2	1	3	19	0	310	Wake 540 Back to Front
+44	awsa	RW7F	0	0	4	20	0	400	Reverse Wake 720 Front to Front (Wakeboard)
+63	awsa	W7F	0	0	4	20	0	400	Wake 720 Front to Front (Wakeboard)
+131	awsa	RW7F	1	0	4	20	0	800	Reverse Wake 720 Front to Front
+183	awsa	W7F	1	0	4	20	0	800	Wake 720 Front to Front
+43	awsa	RW7B	0	1	4	21	0	240	Reverse Wake 720 Back to Back (Wakeboard)
+62	awsa	W7B	0	1	4	21	0	240	Wake 720 Back to Back (Wakeboard)
+130	awsa	RW7B	1	1	4	21	0	480	Reverse Wake 720 Back to Back
+182	awsa	W7B	1	1	4	21	0	480	Wake 720 Back to Back
+45	awsa	RW9B	0	0	5	22	0	425	Reverse Wake 900 Front to Back (Wakeboard)
+46	awsa	RW9F	0	1	5	22	0	425	Reverse Wake 900 Back to Front (Wakeboard)
+64	awsa	W9B	0	0	5	22	0	425	Wake 900 Front to Back (Wakeboard)
+65	awsa	W9F	0	1	5	22	0	425	Wake 900 Back to Front (Wakeboard)
+132	awsa	RW9B	1	0	5	22	0	850	Reverse Wake 900 Front to Back
+133	awsa	RW9F	1	1	5	22	0	850	Reverse Wake 900 Back to Front
+184	awsa	W9B	1	0	5	22	0	850	Wake 900 Front to Back
+185	awsa	W9F	1	1	5	22	0	850	Wake 900 Back to Front
+197	awsa	WLB	1	0	1	23	0	160	Wake Line Front to Back
+227	awsa	RWLB	2	0	1	23	0	110	Reverse Wake Line Front to Back
+236	awsa	WLB	2	0	1	23	0	110	Wake Line Front to Back
+199	awsa	WLF	1	1	1	24	0	160	Wake Line Back to Front
+228	awsa	RWLF	2	1	1	24	0	110	Reverse Wake Line Back to Front
+237	awsa	WLF	2	1	1	24	0	110	Wake Line Back to Front
+146	awsa	RWLO	1	0	2	25	0	260	Reverse Wake Line 360 Front to Front
+200	awsa	WLO	1	0	2	25	0	260	Wake Line 360 Front to Front
+145	awsa	RWLBB	1	1	2	26	0	260	Reverse Wake Line Back to Back
+145	awsa	RWLOB	1	1	2	26	0	260	Reverse Wake Line 360 Back to Back
+198	awsa	WLBB	1	1	2	26	0	260	Wake Line Back to Back
+198	awsa	WLOB	1	1	2	26	0	260	Wake Line 360 Back to Back
+137	awsa	RWL5B	1	0	3	27	0	420	Reverse Wake Line 540 Front to Back
+139	awsa	RWL5LB	1	0	3	27	0	500	Reverse Wake Line 540 Line Front to Back
+189	awsa	WL5B	1	0	3	27	0	420	Wake Line 540 Front to Back
+191	awsa	WL5LB	1	0	3	27	0	500	Wake Line 540 Line Front to Back
+138	awsa	RWL5F	1	1	3	28	0	420	Reverse Wake Line 540 Back to Front
+140	awsa	RWL5LF	1	1	3	28	0	500	Reverse 
+141	awsa	RWL7B	1	1	4	28	0	550	Reverse 
+190	awsa	WL5F	1	1	3	28	0	420	Wake Line 540 Back to Front
+192	awsa	WL5LF	1	1	3	28	0	500	Wake Line 540 Line Back to Front
+193	awsa	WL7B	1	1	4	28	0	550	Wake Line 720 Back to Back
+120	awsa	RTWB	1	0	1	29	0	150	Reverse Toe Wake Front to Back
+169	awsa	TWB	1	0	1	29	0	150	Toe Wake Front to Back
+122	awsa	RTWF	1	1	1	30	0	150	Reverse Toe Wake Back to Front
+171	awsa	TWF	1	1	1	30	0	150	Toe Wake Back to Front
+127	awsa	RTWO	1	0	2	31	0	300	Reverse Toe Wake 360 Front to Front
+179	awsa	TWO	1	0	2	31	0	300	Toe Wake 360 Front to Front
+121	awsa	RTWBB	1	1	2	32	0	330	Reverse Toe Wake Back to Front
+121	awsa	RTWOB	1	1	2	32	0	330	Reverse Toe Wake 360 Back to Back
+170	awsa	TWBB	1	1	2	32	0	330	Toe Wake Back to Front
+170	awsa	TWOB	1	1	2	32	0	330	Toe Wake 360 Back to Back
+118	awsa	RTW5B	1	0	3	33	0	500	Reverse Toe Wake 540 Front to Back
+165	awsa	TW5B	1	0	3	33	0	500	Toe Wake 540 Front to Back
+166	awsa	TW5F	1	1	3	34	0	500	Toe Wake 540 Back to Front
+119	awsa	RTW7F	1	0	4	35	0	650	Reverse Toe Wake 540 Back to Front
+168	awsa	TW7F	1	0	4	35	0	650	Toe Wake 720 Front to Front
+167	awsa	TW7B	1	1	4	36	0	650	Toe Wake 720 Back to Back
+175	awsa	TWLB	1	0	1	37	0	320	Toe Wake Line Front to Back
+177	awsa	TWLF	1	1	1	38	0	380	Toe Wake Line Back to Front
+126	awsa	RTWLO	1	0	2	39	0	480	Reverse Toe Wake Line 360 Front to Front
+178	awsa	TWLO	1	0	2	39	0	480	Toe Wake Line 360 Front to Front
+125	awsa	RTWLBB	1	1	2	40	0	480	Reverse Toe Wake Line Back to Back
+125	awsa	RTWLOB	1	1	2	40	0	480	Reverse Toe Wake Line 360 Back to Back
+176	awsa	TWLBB	1	1	2	40	0	480	Toe Wake Line Back to Back
+176	awsa	TWLOB	1	1	2	40	0	480	Toe Wake Line 360 Back to Back
+123	awsa	RTWL5B	1	0	3	41	0	600	Reverse Toe Wake Line 540 Front to Back
+172	awsa	TWL5B	1	0	3	41	0	600	Toe Wake Line 540 Front to Back
+124	awsa	RTWL5F	1	1	3	42	0	700	Reverse Toe Wake Line 540 Back to Front
+173	awsa	TWL5F	1	1	3	42	0	700	Toe Wake Line 540 Back to Front
+17	awsa	FFL	0	0	0	43	1	400	Front Flip (Wakeboard)
+17	awsa	RFFL	0	0	0	43	1	400	Reverse Front Flip (Wakeboard)
+86	awsa	FFL	1	0	0	43	1	800	Front Flip
+86	awsa	RFFL	1	0	0	43	1	800	Reverse Front Flip
+210	awsa	FFL	2	0	0	43	1	800	Front Flip
+210	awsa	RFFL	2	0	0	43	1	800	Reverse Front Flip
+7	awsa	BFL	0	0	0	44	1	250	Back Flip (Wakeboard)
+22	awsa	RBFL	0	0	0	44	1	250	Reverse Back Flip (Wakeboard)
+76	awsa	BFL	1	0	0	44	1	500	Back Flip
+93	awsa	RBFL	1	0	0	44	1	500	Reverse Back Flip
+208	awsa	BFL	2	0	0	44	1	500	Back Flip
+216	awsa	RBFL	2	0	0	44	1	500	Reverse Back Flip
+15	awsa	DBFL	0	0	0	45	1	500	Double Front Flip (Wakeboard)
+84	awsa	DBFL	1	0	0	45	1	1000	Double Front Flip
+14	awsa	BFLO	0	0	2	46	1	400	Back Flip 360 Front to Front (Wakeboard)
+29	awsa	RBFLO	0	0	2	46	1	400	Reverse Back Flip Line 360 Front to Front (Wakeboard)
+83	awsa	BFLO	1	0	2	46	1	800	Back Flip 360 Front to Front
+100	awsa	RBFLO	1	0	2	46	1	800	Reverse Back Flip Line 360 Front to Front
+11	awsa	BFLBB	0	1	2	47	1	400	Back Flip Back to Back (Wakeboard)
+11	awsa	BFLOB	0	1	2	47	1	400	Back Flip 360 Back to Back (Wakeboard)
+26	awsa	RBFLBB	0	1	2	47	1	400	Reverse Back Flip Back to Back (Wakeboard)
+26	awsa	RBFLOB	0	1	2	47	1	400	Reverse Back Flip 360 Back to Back (Wakeboard)
+80	awsa	BFLBB	1	1	2	47	1	800	Back Flip Back to Back
+80	awsa	BFLOB	1	1	2	47	1	800	Back Flip 360 Back to Back
+97	awsa	RBFLBB	1	1	2	47	1	800	Reverse Back Flip Back to Back
+97	awsa	RBFLOB	1	1	2	47	1	800	Reverse Back Flip 360 Back to Back
+10	awsa	BFLB	0	0	1	48	1	375	Back Flip Back (Wakeboard)
+25	awsa	RBFLB	0	0	1	48	1	375	Reverse Back Flip Line Front to Back (Wakeboard)
+79	awsa	BFLB	1	0	1	48	1	750	Back Flip Front to Back
+96	awsa	RBFLB	1	0	1	48	1	750	Reverse Back Flip Line Front to Back
+13	awsa	BFLLB	0	0	1	49	1	400	Back Flip Line Front to Back (Wakeboard)
+28	awsa	RBFLLB	0	0	1	49	1	400	Reverse Back Flip Line Front to Back (Wakeboard)
+82	awsa	BFLLB	1	0	1	49	1	800	Back Flip Line Front to Back
+99	awsa	RBFLLB	1	0	1	49	1	800	Reverse Back Flip Line Front to Back
+12	awsa	BFLF	0	1	1	50	1	275	Back Flip Back to Front (Wakeboard)
+27	awsa	RBFLF	0	1	1	50	1	275	Reverse Back Flip Back to Front (Wakeboard)
+81	awsa	BFLF	1	1	1	50	1	550	Back Flip Back to Back to Front
+98	awsa	RBFLF	1	1	1	50	1	550	Reverse Back Flip Back to Front
+9	awsa	BFL5F	0	1	3	51	1	425	Back Flip 540 Back to Front (Wakeboard)
+24	awsa	RBFL5F	0	1	3	51	1	425	Reverse Back Flip 540 Back to Front (Wakeboard)
+78	awsa	BFL5F	1	1	3	51	1	850	Back Flip 540 Back to Front
+95	awsa	RBFL5F	1	1	3	51	1	850	Reverse Back Flip 540 Back to Front
+8	awsa	BFL5B	0	0	3	52	1	450	Back Flip 540 Front to Back (Wakeboard)
+23	awsa	RBFL5B	0	0	3	52	1	450	Reverse Back Flip 540 Front to Back (Wakeboard)
+77	awsa	BFL5B	1	0	3	52	1	900	Back Flip 540 Front to Back
+94	awsa	RBFL5B	1	0	3	52	1	900	Reverse Back Flip 540 Front to Back
+37	awsa	RSLB	0	0	1	53	0	175	Reverse Ski Line Back (Wakeboard)
+56	awsa	SLB	0	0	1	53	0	175	Ski Line Back (Wakeboard)
+108	awsa	RSLB	1	0	1	53	0	350	Reverse Ski Line Back
+153	awsa	SLB	1	0	1	53	0	350	Ski Line Back
+39	awsa	RSLF	0	1	1	54	0	200	Reverse Ski Line Front (Wakeboard)
+58	awsa	SLF	0	1	1	54	0	200	Ski Line Front (Wakeboard)
+110	awsa	RSLF	1	1	1	54	0	400	Reverse Ski Line Front
+155	awsa	SLF	1	1	1	54	0	400	Ski Line Front
+40	awsa	RSLO	0	0	2	55	0	200	Reverse Ski Line 360 Front to Front (Wakeboard)
+59	awsa	SLO	0	0	2	55	0	200	Ski Line 360 Front to Front (Wakeboard)
+111	awsa	RSLO	1	0	2	55	0	400	Reverse Ski Line 360 Front to Front
+156	awsa	SLO	1	0	2	55	0	400	Ski Line 360 Front to Front
+38	awsa	RSLBB	0	1	2	56	0	225	Reverse Ski Line Back to Back (Wakeboard)
+38	awsa	RSLOB	0	1	2	56	0	225	Reverse Ski Line 360 Back to Back (Wakeboard)
+57	awsa	SLBB	0	1	2	56	0	225	Ski Line Back to Back (Wakeboard)
+57	awsa	SLOB	0	1	2	56	0	225	Ski Line 360 Back to Back (Wakeboard)
+109	awsa	RSLBB	1	1	2	56	0	450	Reverse Ski Line Back to Back
+109	awsa	RSLOB	1	1	2	56	0	450	Reverse Ski Line 360 Back to Back
+154	awsa	SLBB	1	1	2	56	0	450	Ski Line Back to Back
+154	awsa	SLOB	1	1	2	56	0	450	Ski Line 360 Back to Back
+33	awsa	RSL5B	0	0	3	57	0	275	Reverse Ski Line 540 Back (Wakeboard)
+52	awsa	SL5B	0	0	3	57	0	275	Ski Line 540 Front to Back (Wakeboard)
+104	awsa	RSL5B	1	0	3	57	0	550	Reverse Ski Line 540 Back
+149	awsa	SL5B	1	0	3	57	0	550	Ski Line 540 Front to Back
+34	awsa	RSL5F	0	1	3	58	0	275	Reverse Ski Line 540 Front (Wakeboard)
+53	awsa	SL5F	0	1	3	58	0	275	Ski Line 540 Back to Front (Wakeboard)
+105	awsa	RSL5F	1	1	3	58	0	550	Reverse Ski Line 540 Front
+150	awsa	SL5F	1	1	3	58	0	550	Ski Line 540 Back to Front
+35	awsa	RSL7B	0	1	4	59	0	375	Reverse Ski Line 720 Back to Back (Wakeboard)
+54	awsa	SL7B	0	1	4	59	0	375	Ski Line 720 Back to Back (Wakeboard)
+106	awsa	RSL7B	1	1	4	59	0	750	Reverse Ski Line 720 Back to Back
+151	awsa	SL7B	1	1	4	59	0	750	Ski Line 720 Back to Back
+36	awsa	RSL7F	0	0	4	60	0	400	Reverse Ski Line 720 Front to Front (Wakeboard)
+55	awsa	SL7F	0	0	4	60	0	400	Ski Line 720 Front to Front (Wakeboard)
+107	awsa	RSL7F	1	0	4	60	0	800	Reverse Ski Line 720 Front to Front
+152	awsa	SL7F	1	0	4	60	0	800	Ski Line 720 Front to Front
+142	awsa	RWL7F	1	0	4	61	0	700	Reverse Ski Line 720 Front to Front
+194	awsa	WL7F	1	0	4	61	0	700	Ski Line 720 Front to Front
+143	awsa	RWL9B	1	0	5	62	0	800	Reverse Wake Line 900 Front to Back
+195	awsa	WL9B	1	0	5	62	0	800	Wake Line 900 Front to Back
+144	awsa	RWL9F	1	1	5	63	0	800	Reverse Wake Line 900 Back to Front
+196	awsa	WL9F	1	1	5	63	0	800	Wake Line 900 Back to Front
+18	awsa	FFLB	0	0	1	64	1	425	Front Flip Front to Back (Wakeboard)
+87	awsa	FFLB	1	0	1	64	1	850	Front Flip Front to Back
+174	awsa	TWL7F	1	0	4	65	0	800	Toe Wake Line 720 Front to Front
+0	awsa	FFLF	0	1	1	66	1	425	Front Flip Back to Front (Wakeboard)
+88	awsa	FFLF	1	1	1	66	1	850	Front Flip Back to Front
+0	awsa	FFLBB	0	1	4	67	0	450	Front Flip Back to Back (Wakeboard)
+0	awsa	BFLSLBB	0	1	4	67	0	450	Back Flip Ski Line Back to Back (Wakeboard)
+0	awsa	FFLBB	1	1	4	67	0	900	Front Flip Back to Back
+0	awsa	BFLSLBB	1	1	4	67	0	900	Back Flip Ski Line Back to Back

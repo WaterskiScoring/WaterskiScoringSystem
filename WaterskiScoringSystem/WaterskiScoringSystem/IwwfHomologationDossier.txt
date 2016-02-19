@@ -1,0 +1,237 @@
+International Water Ski Federation
+2014 Edition Homologation Dossier
+
+
+IMPORTANT NOTICE:
+It is not the intent of this form to add hours of extra
+work to the homologator's job, but rather to provide a
+quick checklist that gives visibility of the technical
+effort to the general skiing public.
+
+
+START OF HOMOLOGATION FORM
+code of competition:
+name of competition:
+Date:
+Venue:
+Organizing Country:
+GPS Location of site: __ __ _____ _ __ __ _____ _
+(example: Dubna       56 44 03.28 N 37 07 41.54 E –World Championships)
+
+Type of competition ( )
+Were cash prizes or merchandise awarded (Yes/No) ( ) Amount:
+
+Homologator's and Chief Judge recommendation to Tournament Council
+(Fill in R-Record, L-Standing List, N-Not list capable)
+
+Event    Round 1 Round 2 Round 3 Round 4
+Slalom    (   )   (   )   (   )   (   )
+Tricks    (   )   (   )   (   )   (   )
+Jump      (   )   (   )   (   )   (   )
+
+OBLIGATORY COMPOSITION OF DOSSIER:
+1 copy of this document including the homologation notice
+
+
+HOMOLOGATOR'S CHECKLIST
+
+If checked and all according to rules put OK in brackets.
+If checked and any variation to the rules put an X in the brackets
+and explain in "Remarks" section on last page.
+Not applicable is NA.
+
+1. Boats and equipment (W 10.01)                  ( )
+2. Speed Control (W 10.07)                        ( )
+Maunfacturer:
+Software Version:
+                                           slalom ( )
+                                           tricks ( )
+                                             jump ( )
+3. Arrangement for checking skis (W 10.03)        ( )
+4. Measure lines and handles (W 10.04)            ( )
+                                           slalom ( )
+                                             jump ( )
+                                          handles ( )
+5. Arrangement for checking of skier
+   supplied handles (W 10.06)                     ( )
+6. Timing devices (W 11.03)                       ( )
+7. Homologation notice posted before start        ( )
+8. Automatic timing-jump                          ( )
+9. Jump distance indication (W 13.11)             ( )
+10.Video Jump Distance measurement (W 13.11)      ( )
+Backup - video tape                               (        )
+
+11.Automatic timing-slalom Dual Segment           ( ) All Buoys ( )
+12.Position and height of slalom towers           ( ) (W 14.05 and W diagram 6)
+12a. 2 Towers x 2 Judges ( ) 2 Central Tower Judges ( ) Boat Video ( )
+13.Slalom buoys (W 14.06)                         ( )
+14.VHS video/digital slalom endcourse (W 14.17)   ( )
+15.Trick course checked (W diagram 3)             ( )
+16.Position and height of trick towers            ( ) (W 15.11)
+16a. 5 Judges ( )         1 x 3 Judges with video ( ) 2x 3 Judges with video ( )
+
+17a. Video Tricks Timing ( ) with Additional judge( ) Chief Judge ( )
+18.VHS video/digital tricks (W15.15)              ( )
+19a.Video Tricks Timing system manufacturer       (            )
+
+SLALOM COURSE TYPE :
+21.VHS video/digital jump endcourse(W13.08a)(NA)
+
+JUMP COURSE
+
+
+JUMP MEASUREMENT SETUP
+
+VIDEO JUMP
+
+40m Test buoy
+Survey          x (XXX.XX) y (XXX.XX)
+Video system    x (XXX.XX) y (XXX.XX)
+
+60m Test buoy
+Survey          x (XXX.XX) y (XXX.XX)
+Video system    x (XXX.XX) y (XXX.XX)
+
+Manufacturer of Jump Video System :
+
+JUMP RAMP
+Width at top (W 13.02a)                           X.XX m
+Width at bottom                                   X.XX m
+Top edge to 6.4m line left side (W 13.02b,h)      X.XX m
+Top edge to 6.4m line right side (W 13.02b.h)     X.XX m
+Top edge to 6.7m line left side (W 13.02b,h)      X.XX m
+Top edge to 6.7m line right side (W 13.02b.h)     X.XX m
+Length underwater from 6.7m line (W 13.02c)       X.XX m
+
+Maximum Deviation from plane
+Diagonal string measurement (W 13.02f)            X.X cm
+Center string measurement (W 13.02f)              X.X cm
+
+(OK/X)
+Apron under water (W 13.02g)                      ( )
+Apron full length (W 13.02g)                      ( )
+Sighting line (W 13.02i)                          ( )
+Secure anchoring (W 13.02i)                       ( )
+
+
+Apron Angle (W 13.02k)
+
+jump height                                       X.XX m (a)
+length of edge of apron from top corner to water  X.XX m (b)
+
+ratio of b/a    (X.XXX) (         )
+minimum 0.883 maximum 0.643
+
+RAMP SETTING
+           Right Side            Left Side
+Setting    Height Length Ratio   Height Length Ratio
+1.50       XXX.X  XXX.X  XXX.X   XXX.X  XXX.X  XXX.X
+1.65       XXX.X  XXX.X  XXX.X   XXX.X  XXX.X  XXX.X
+1.80       XXX.X  XXX.X  XXX.X   XXX.X  XXX.X  XXX.X
+
+
+
+
+
+END OF HOMOLOGATION FORM
+
+It is important to leave the above section in the exact format
+as it will be processed automatically. The following section
+is where free form comments are added and attachments are made.
+
+HOMOLOGATOR'S REMARKS
+
+Give details of any variations of IWWF rules. List any alterations
+to the course, etc. during the competition. List any malfunction
+of equipment. Give any further information which might affect the
+Tournament Council's assessment of the homologation.
+
+Homologator:
+(name and address)
+
+
+
+Email:
+
+Chief Judge:
+(name and address)
+
+
+
+Email:
+
+Chief Scorer:
+(name and address)
+
+
+
+Email:
+
+This homologation record has been emailed to bcorson@comcast.net
+for E&A: email also to Raymond Marc <skiraymo@aol.com>
+
+
+-----------------------------------------------------------------------------
+To be posted before the tournament starts
+
+HOMOLOGATION NOTICE
+
+Tournament Name:
+Date:
+
+We recommend to the IWWF Tournament Council the following class
+of homologation:
+
+
+Event    Round 1 Round 2 Round 3 Round 4
+Slalom   ( )     ( )     ( )     ( )
+Tricks   ( )     ( )     ( )     ( )
+Jump     ( )     ( )     ( )     ( )
+
+Speed Control Manufacturer:
+
+Software Version:
+
+Mode for tricks (if applicable):________________________
+
+Date                   _________     ________     _______
+
+Time                   _________     ________     _______
+
+Chief Judge  
+                                 Homologator
+____________________                          ________________
+
+Note: These recomendations may change during the competition.
+
+Remarks:
+
+Officials (list as applicable):
+Chief Judge:
+Homologator:
+Chief Scorer:
+Chief Driver:
+AssistantHomologator:
+Techician:
+Scorer1:
+Scorer2:
+Judge1:
+Judge2:
+Judge3:
+Judge4:
+Judge5:
+Judge6:
+Judge7:
+Judge8:
+Judge9:
+Judge10:
+Driver1:
+Driver2:
+Driver3:
+
+
+
+
+
+
+End of Document
