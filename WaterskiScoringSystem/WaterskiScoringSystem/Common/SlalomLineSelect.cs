@@ -15,7 +15,7 @@ namespace WaterskiScoringSystem.Common {
 
     public partial class SlalomLineSelect : UserControl {
         public DataTable myDataTable;
-        private Decimal showValueNum = 0M;
+        private Decimal myShowValueNum = 0M;
     
         public SlalomLineSelect() {
             InitializeComponent();
@@ -132,8 +132,8 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public Decimal CurrentShowValueNum {
-            get { return showValueNum; }
-            set { showValueNum = value; }
+            get { return myShowValueNum; }
+            set { myShowValueNum = value; }
         }
 
         public void showCurrentValue( Decimal inValue ) {

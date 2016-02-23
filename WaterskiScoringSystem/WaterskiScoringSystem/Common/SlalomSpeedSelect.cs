@@ -17,6 +17,7 @@ namespace WaterskiScoringSystem.Common {
         public DataTable myDataTable;
         private Int16 myMaxSpeed;
         private Int16 myMinSpeed;
+        private Int16 myShowValueNum = 0;
 
         public SlalomSpeedSelect() {
             InitializeComponent();
@@ -91,6 +92,7 @@ namespace WaterskiScoringSystem.Common {
                             myRadio.ForeColor = Color.DarkBlue;
                             myRadio.BackColor = Color.White;
                             this.Tag = rbValue.ToString();
+                            CurrentShowValueNum = rbValue;
                         } else if ( rbValue > myMaxSpeed ) {
                             myRadio.ForeColor = Color.Gray;
                             myRadio.BackColor = Color.Silver;
@@ -144,6 +146,11 @@ namespace WaterskiScoringSystem.Common {
 
         }
 
+        public Int16 CurrentShowValueNum {
+            get { return myShowValueNum; }
+            set { myShowValueNum = value; }
+        }
+
         public void showCurrentValue( Int16 inValue ) {
             Int16 rbValue;
             String curEntryValue = "";
@@ -156,6 +163,7 @@ namespace WaterskiScoringSystem.Common {
                         curEntryValue = (String)myRadio.Value;
                         rbValue = Convert.ToInt16( curEntryValue );
                         if ( rbValue == inValue ) {
+                            CurrentShowValueNum = rbValue;
                             myRadio.ForeColor = Color.White;
                             myRadio.BackColor = Color.Lime;
                         } else if ( rbValue > myMaxSpeed ) {
