@@ -846,6 +846,16 @@ namespace WaterskiScoringSystem.Tournament {
             DataTable curJumpDataTable = myJumpDataTable.DefaultView.ToTable();
             DataTable curTeamDataTable = myTeamDataTable;
 
+            if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
+                PrintPointsSlalom.HeaderText = "NOPS";
+                PrintPointsTrick.HeaderText = "NOPS";
+                PrintPointsJump.HeaderText = "NOPS";
+            } else {
+                PrintPointsSlalom.HeaderText = "Points";
+                PrintPointsTrick.HeaderText = "Points";
+                PrintPointsJump.HeaderText = "Points";
+            }
+
             //Load data for print data grid
             int curPrintIdx = 0, curSkierIdx = 0, curSkierIdxMax = 0;
             DataGridViewRow curPrintRow = null;
@@ -889,7 +899,11 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                 }
                 try {
-                    curPrintRow.Cells["PrintPointsSlalom"].Value = ((Decimal)curTeamRow["TeamScoreSlalom"]).ToString( "##,##0" );
+                    if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
+                        curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = ( (Decimal) curTeamRow["TeamScoreSlalom"] ).ToString("##,##0");
+                    } else {
+                        curPrintRow.Cells["PrintPointsSlalom"].Value = ( (Decimal) curTeamRow["TeamScoreSlalom"] ).ToString("##,##0");
+                    }
                 } catch {
                     curPrintRow.Cells["PrintPointsSlalom"].Value = "";
                 }
@@ -899,7 +913,11 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintPlcmtSlalom"].Value = "";
                 }
                 try {
-                    curPrintRow.Cells["PrintPointsTrick"].Value = ((Decimal)curTeamRow["TeamScoreTrick"] ).ToString( "##,##0" );
+                    if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
+                        curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = ( (Decimal) curTeamRow["TeamScoreTrick"] ).ToString("##,##0");
+                    } else {
+                        curPrintRow.Cells["PrintPointsTrick"].Value = ( (Decimal) curTeamRow["TeamScoreTrick"] ).ToString("##,##0");
+                    }
                 } catch {
                     curPrintRow.Cells["PrintPointsTrick"].Value = "";
                 }
@@ -909,7 +927,11 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintPlcmtTrick"].Value = "";
                 }
                 try {
-                    curPrintRow.Cells["PrintPointsJump"].Value = ( (Decimal)curTeamRow["TeamScoreJump"] ).ToString( "##,##0" );
+                    if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
+                        curPrintRow.Cells["PrintPlcmtPointsJump"].Value = ( (Decimal) curTeamRow["TeamScoreJump"] ).ToString("##,##0");
+                    } else {
+                        curPrintRow.Cells["PrintPointsJump"].Value = ( (Decimal) curTeamRow["TeamScoreJump"] ).ToString("##,##0");
+                    }
                 } catch {
                     curPrintRow.Cells["PrintPointsJump"].Value = "";
                 }

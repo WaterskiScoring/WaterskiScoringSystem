@@ -617,13 +617,14 @@ namespace WaterskiScoringSystem.Trick {
         private void saveTrickPassUpdatePK( String inPassPrefix, DataGridViewRow inViewRow ) {
             try {
                 int curPK = Convert.ToInt32( inViewRow.Cells[inPassPrefix + "PK"].Value );
-                if ( curPK < 0 ) {
-                    String curMemberId = (String)inViewRow.Cells[inPassPrefix + "MemberId"].Value;
+                if ( curPK < 0 ) {String curMemberId = (String)inViewRow.Cells[inPassPrefix + "MemberId"].Value;
                     String curAgeGroup = (String)inViewRow.Cells[inPassPrefix + "AgeGroup"].Value;
                     String curCode = (String)inViewRow.Cells[inPassPrefix + "Code"].Value;
                     String curSkis = (String)inViewRow.Cells[inPassPrefix + "Skis"].Value;
-                    if ( curSkis.ToLower().Equals( "wb" ) || curSkis.ToLower().Equals( "w" ) ) {
+                    if ( curSkis.ToLower().Equals("wb") || curSkis.ToLower().Equals("w") ) {
                         curSkis = "0";
+                    } else if ( curSkis.ToLower().Equals("kb") || curSkis.ToLower().Equals("k") ) {
+                        curSkis = "9";
                     }
                     String curResults = (String)inViewRow.Cells[inPassPrefix + "Results"].Value;
                     if ( curCode.Length > 0 && curSkis.Length > 0 && curResults.Length > 0 ) {
@@ -670,6 +671,8 @@ namespace WaterskiScoringSystem.Trick {
                     curSkis = inViewRow.Cells[inPassPrefix + "Skis"].Value.ToString();
                     if ( curSkis.ToLower().Equals( "wb" ) || curSkis.ToLower().Equals( "w" ) ) {
                         curSkis = "0";
+                    } else if ( curSkis.ToLower().Equals("kb") || curSkis.ToLower().Equals("k") ) {
+                        curSkis = "9";
                     }
                 } catch {
                     curSkis = "0";
@@ -777,6 +780,8 @@ namespace WaterskiScoringSystem.Trick {
                             curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                 curNumSkis = 0;
+                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                curNumSkis = 9;
                             } else {
                                 curNumSkis = Convert.ToByte( curValue );
                             }
@@ -858,6 +863,8 @@ namespace WaterskiScoringSystem.Trick {
                                 curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                                 if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                     curNumSkis = 0;
+                                } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                    curNumSkis = 9;
                                 } else {
                                     curNumSkis = Convert.ToByte( curValue );
                                 }
@@ -1123,6 +1130,8 @@ namespace WaterskiScoringSystem.Trick {
                             curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                 curNumSkis = 0;
+                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                curNumSkis = 9;
                             } else {
                                 curNumSkis = Convert.ToByte( curValue );
                             }
@@ -1151,6 +1160,8 @@ namespace WaterskiScoringSystem.Trick {
                             curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                 curNumSkis = 0;
+                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                curNumSkis = 9;
                             } else {
                                 curNumSkis = Convert.ToByte( curValue );
                             }
@@ -1184,6 +1195,8 @@ namespace WaterskiScoringSystem.Trick {
                             curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                 curNumSkis = 0;
+                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                curNumSkis = 9;
                             } else {
                                 curNumSkis = Convert.ToByte( curValue );
                             }
@@ -1200,6 +1213,8 @@ namespace WaterskiScoringSystem.Trick {
                     newPassRow.Cells[curColPrefix + "Round"].Value = curRound.ToString();
                     if ( curNumSkis == 0 ) {
                         newPassRow.Cells[curColPrefix + "Skis"].Value = "W";
+                    } else if ( curNumSkis == 9 ) {
+                        newPassRow.Cells[curColPrefix + "Skis"].Value = "K";
                     } else {
                         newPassRow.Cells[curColPrefix + "Skis"].Value = curNumSkis.ToString( "#" );
                     }
@@ -2278,10 +2293,12 @@ namespace WaterskiScoringSystem.Trick {
                     curViewRow.Cells[curColPrefix + "Round"].Value = ( (Byte)curDataRow["Round"] ).ToString();
                     curViewRow.Cells[curColPrefix + "PassNum"].Value = ( (Byte)curDataRow["PassNum"] ).ToString();
                     curViewRow.Cells[curColPrefix + "Seq"].Value = ( (Byte)curDataRow["Seq"] ).ToString();
-                    if ( (Byte)curDataRow["Skis"] == 0 ) {
+                    if ( (byte) curDataRow["Skis"] == 0 ) {
                         curViewRow.Cells[curColPrefix + "Skis"].Value = "W";
+                    } else if ( (byte) curDataRow["Skis"] == 9 ) {
+                        curViewRow.Cells[curColPrefix + "Skis"].Value = "K";
                     } else {
-                        curViewRow.Cells[curColPrefix + "Skis"].Value = ( (Byte)curDataRow["Skis"] ).ToString();
+                        curViewRow.Cells[curColPrefix + "Skis"].Value = ( (byte) curDataRow["Skis"] ).ToString();
                     }
                     curViewRow.Cells[curColPrefix + "Code"].Value = (String)curDataRow["Code"];
                     curViewRow.Cells[curColPrefix + "Results"].Value = (String)curDataRow["Results"];
@@ -2650,10 +2667,13 @@ namespace WaterskiScoringSystem.Trick {
                             e.Cancel = false;
                         } else if ( myTourRules.ToLower().Equals("ncwsa")
                             && (e.FormattedValue.ToString().ToLower().Equals( "wb" )
-                            || e.FormattedValue.ToString().ToLower().Equals( "w" )) ) {
+                            || e.FormattedValue.ToString().ToLower().Equals( "w" )
+                            || e.FormattedValue.ToString().ToLower().Equals("kb")
+                            || e.FormattedValue.ToString().ToLower().Equals("k")
+                            ) ) {
                             e.Cancel = false;
                         } else {
-                            MessageBox.Show( "Number of skis must equal 1 or 2 or WB for NCWSA" );
+                            MessageBox.Show( "Number of skis must equal 1 or 2 or (WB or KB for NCWSA)" );
                             e.Cancel = true;
                         }
                     }
@@ -2688,10 +2708,12 @@ namespace WaterskiScoringSystem.Trick {
                                     } else {
                                         Int16 curNumSkis = 0;
                                         try {
-                                            curNumSkis = Convert.ToByte( curPassRow.Cells[curColPrefix + "Skis"].Value );
+                                            //curNumSkis = Convert.ToByte( curPassRow.Cells[curColPrefix + "Skis"].Value );
                                             String curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                                             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                                                 curNumSkis = 0;
+                                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                                                curNumSkis = 9;
                                             } else {
                                                 curNumSkis = Convert.ToByte( curValue );
                                             }
@@ -2816,7 +2838,15 @@ namespace WaterskiScoringSystem.Trick {
                                 } else if (curValue.Equals( "FALL" )) {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
-                                    Int16 curNumSkis = Convert.ToInt16( curPassRow.Cells[curColPrefix + "Skis"].Value.ToString() );
+                                    Int16 curNumSkis = 0;
+                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
+                                    if ( curValueNumSkis.ToLower().Equals("wb") || curValueNumSkis.ToLower().Equals("w") ) {
+                                        curNumSkis = 0;
+                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
+                                        curNumSkis = 9;
+                                    } else {
+                                        curNumSkis = Convert.ToByte(curValueNumSkis);
+                                    }
                                     checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix );
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
@@ -2837,7 +2867,7 @@ namespace WaterskiScoringSystem.Trick {
                                         isPassEnded = true;
                                     }
                                 } else if (curValue.Equals( "NSP" )) {
-                                    curPassRow.Cells[curColPrefix + "Points"].Value = "-1";
+                                    curPassRow.Cells[curColPrefix + "Points"].Value = "9";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                     isPassEnded = true;
                                 } else {
@@ -2845,6 +2875,8 @@ namespace WaterskiScoringSystem.Trick {
                                     String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                                     if ( curValueNumSkis.ToLower().Equals( "wb" ) || curValueNumSkis.ToLower().Equals( "w" ) ) {
                                         curNumSkis = 0;
+                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
+                                        curNumSkis = 9;
                                     } else {
                                         curNumSkis = Convert.ToByte( curValueNumSkis );
                                     }
@@ -2875,7 +2907,15 @@ namespace WaterskiScoringSystem.Trick {
                                 } else if (curValue.Equals( "FALL" )) {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
-                                    Int16 curNumSkis = Convert.ToInt16( curPassRow.Cells[curColPrefix + "Skis"].Value.ToString()); 
+                                    Int16 curNumSkis = 0;
+                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
+                                    if ( curValueNumSkis.ToLower().Equals("wb") || curValueNumSkis.ToLower().Equals("w") ) {
+                                        curNumSkis = 0;
+                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
+                                        curNumSkis = 9;
+                                    } else {
+                                        curNumSkis = Convert.ToByte(curValueNumSkis);
+                                    }
                                     checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix );
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
@@ -2904,6 +2944,8 @@ namespace WaterskiScoringSystem.Trick {
                                     String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                                     if ( curValueNumSkis.ToLower().Equals( "wb" ) || curValueNumSkis.ToLower().Equals( "w" ) ) {
                                         curNumSkis = 0;
+                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
+                                        curNumSkis = 9;
                                     } else {
                                         curNumSkis = Convert.ToByte( curValueNumSkis );
                                     }
@@ -2969,6 +3011,8 @@ namespace WaterskiScoringSystem.Trick {
                 String curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
                 if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                     curNumSkis = 0;
+                } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                    curNumSkis = 9;
                 } else {
                     curNumSkis = Convert.ToByte( curValue );
                 }
@@ -3307,6 +3351,8 @@ namespace WaterskiScoringSystem.Trick {
             String curValue = inPassRow.Cells[inColPrefix + "Skis"].Value.ToString();
             if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
                 curNumSkis = 0;
+            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
+                curNumSkis = 9;
             } else {
                 curNumSkis = Convert.ToByte( curValue );
             }

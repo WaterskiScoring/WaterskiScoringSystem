@@ -414,7 +414,7 @@
       <Value Profile="(Default)">0, 0</Value>
     </Setting>
     <Setting Name="BuildVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">3.0.0.1 4/1/2015</Value>
+      <Value Profile="(Default)">3.0.0.1 4/1/2016</Value>
     </Setting>
     <Setting Name="SkierDoneReason_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
