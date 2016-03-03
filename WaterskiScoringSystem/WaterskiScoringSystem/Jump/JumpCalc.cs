@@ -69,6 +69,7 @@ namespace WaterskiScoringSystem.Jump {
                     myXCoord15M = (Decimal)curRow["XCoord15ET"];
                     myYCoord15M = (Decimal)curRow["YCoord15ET"];
                     myJumpDir = (Byte)curRow["JumpDirection"];
+                    if ( myJumpDir == 0 ) myJumpDir = -1;
                 } catch {
                     MessageBox.Show( "Exception encountered loaded jump setup data" );
                 }

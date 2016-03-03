@@ -31,7 +31,8 @@ namespace WaterskiScoringSystem.Common {
             int curIdx = 1;
 
             //Left to rightjump direction
-            curListCode = "-1";
+            //curListCode = "-1";
+            curListCode = "0";
             curListValue = "Left to Right";
             curItemSize = curListValue.Length * 8;
 

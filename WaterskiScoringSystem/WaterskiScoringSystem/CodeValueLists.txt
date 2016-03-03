@@ -1,5 +1,25 @@
 Table:	CodeValueList
 PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
+00000	SlalomAltScoreMethodQual	B1-C		1	Boys 1 Class C	0	0	Boys 1 Class C
+00000	SlalomAltScoreMethodQual	B1-F		2	Boys 1 Class F	0	0	Boys 1 Class F
+00000	SlalomAltScoreMethodQual	B2-C		3	Boys 2 Class C	0	0	Boys 2 Class C
+00000	SlalomAltScoreMethodQual	B2-F		4	Boys 2 Class F	0	0	Boys 2 Class F
+00000	SlalomAltScoreMethodQual	B3-C		5	Boys 3 Class C	0	0	Boys 3 Class C
+00000	SlalomAltScoreMethodQual	B3-F		6	Boys 3 Class F	0	0	Boys 3 Class F
+00000	SlalomAltScoreMethodQual	G1-C		7	Girls 1 Class C	0	0	Girls 1 Class C
+00000	SlalomAltScoreMethodQual	G1-F		8	Girls 1 Class F	0	0	Girls 1 Class F
+00000	SlalomAltScoreMethodQual	G2-C		9	Girls 2 Class C	0	0	Girls 2 Class C
+00000	SlalomAltScoreMethodQual	G2-F		10	Girls 2 Class F	0	0	Girls 2 Class F
+00000	SlalomAltScoreMethodQual	G3-C		11	Girls 3 Class C	0	0	Girls 3 Class C
+00000	SlalomAltScoreMethodQual	G3-F		12	Girls 3 Class F	0	0	Girls 3 Class F
+00000	SlalomAltScoreMethodQual	CM-C		13	Collegiate Men A Class C	0	0	Collegiate Men A Class C
+00000	SlalomAltScoreMethodQual	CM-F		14	Collegiate Men A Class F	0	0	Collegiate Men A Class F
+00000	SlalomAltScoreMethodQual	BM-C		15	Collegiate Men B Class C	0	0	Collegiate Men B Class C
+00000	SlalomAltScoreMethodQual	BM-F		16	Collegiate Men B Class F	0	0	Collegiate Men B Class F
+00000	SlalomAltScoreMethodQual	CW-C		17	Collegiate Women A Class C	0	0	Collegiate Women A Class C
+00000	SlalomAltScoreMethodQual	CW-F		18	Collegiate Women A Class F	0	0	Collegiate Women A Class F
+00000	SlalomAltScoreMethodQual	BW-C		19	Collegiate Women B Class C	0	0	Collegiate Women B Class C
+00000	SlalomAltScoreMethodQual	BW-F		20	Collegiate Women B Class F	0	0	Collegiate Women B Class F
 22356	AnnouncerRating	 	1.000	1	Unrated			
 22357	AnnouncerRating	S	2.000	2	State			
 22358	AnnouncerRating	R	3.000	3	Regional			
