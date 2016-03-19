@@ -420,8 +420,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22717	Federation	ven		34	Venezuela			
 22441	IwwfAgeGroup	JB		61	Intl Junior Boys	1.000	12.000	
 22442	IwwfAgeGroup	JG		62	Intl Junior Girls	1.000	12.000	
-22443	IwwfAgeGroup	IB		63	Intl Boys	1.000	17.000	
-22444	IwwfAgeGroup	IG		64	Intl Girls	1.000	17.000	
+22443	IwwfAgeGroup	IB		63	Intl Boys	1.000	16.000	
+22444	IwwfAgeGroup	IG		64	Intl Girls	1.000	16.000	
 22445	IwwfAgeGroup	IM		71	Intl Men	1.000	99.000	
 22446	IwwfAgeGroup	IW		72	Intl Women	1.000	99.000	
 22447	IwwfAgeGroup	JM		73	Intl Junior Men	1.000	20.000	

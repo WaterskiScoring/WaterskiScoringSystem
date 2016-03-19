@@ -1022,7 +1022,12 @@ namespace WaterskiScoringSystem.Tournament {
                                 curPrintIdx = PrintDataGridView.Rows.Add();
                                 curPrintRow = PrintDataGridView.Rows[curPrintIdx];
                             }
-                            if (curSlalomTeamSkierList.Length > curSkierIdx) {
+                            if ( curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
+                                curPrintRow.Cells["PrintSkierCategory"].Value = curDivShow;
+                            } else {
+                                curPrintRow.Cells["PrintSkierCategory"].Value = "";
+                            }
+                            if ( curSlalomTeamSkierList.Length > curSkierIdx) {
                                 if (curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
                                     curPrintRow.Cells["PrintSkierNameSlalom"].Value = (String)curSlalomTeamSkierList[curSkierIdx]["SkierName"] + " (" + ( String ) curSlalomTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
                                 } else {
@@ -1081,6 +1086,320 @@ namespace WaterskiScoringSystem.Tournament {
         private void navExport_Click( object sender, EventArgs e ) {
             ExportData myExportData = new ExportData();
             myExportData.exportData( PrintDataGridView );
+        }
+
+        private void navLiveWeb_Click( object sender, EventArgs e ) {
+            // Display the form as a modal dialog box.
+            ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
+            ExportLiveWeb.LiveWebDialog.ShowDialog(this);
+
+            // Determine if the OK button was clicked on the dialog box.
+            if ( ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK ) {
+                if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Set") ) {
+                    ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
+                    ExportLiveWeb.exportTourData(mySanctionNum);
+                    LiveWebLabel.Visible = true;
+                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("TwitterActive") ) {
+                    //ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
+                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("TwitterAuth") ) {
+                    //ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
+                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Disable") ) {
+                    ExportLiveWeb.LiveWebLocation = "";
+                    ExportLiveTwitter.TwitterLocation = "";
+                    LiveWebLabel.Visible = false;
+                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Resend") || ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("ResendAll") ) {
+                    if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+                        exportTeamData();
+                    }
+                }
+            }
+        }
+
+        public void exportTeamData() {
+            String curMethodName = "exportTeamData";
+            char[] singleQuoteDelim = new char[] { '\'' };
+            char[] numPlaceHolder = new char[] { '#' };
+            StringBuilder curXml = new StringBuilder("");
+            StringBuilder curXmlTemp = new StringBuilder("");
+            int curRowCount = 0;
+
+            String curTeamName = "", curSlalomSkierName = "", curTrickSkierName = "", curJumpSkierName = "";
+            String[] curKeyColumns = { "SanctionId", "TeamCode", "AgeGroup" };
+            String[] curColumns = { "SanctionId", "TeamCode", "AgeGroup", "Name", "ReportFormat", "OverallPlcmt", "SlalomPlcmt", "TrickPlcmt", "JumpPlcmt", "OverallScore", "SlalomScore", "TrickScore", "JumpScore" };
+
+            curXml.Append("<LiveWebRequest>");
+
+            curXml.Append("<Table name=\"TeamScore\" command=\"Delete\" >");
+            curXml.Append("<Columns count=\"1\"><Column>SanctionId</Column></Columns>");
+            curXml.Append("<Keys count=\"1\"><Key>SanctionId</Key></Keys>");
+            curXml.Append("<Rows count=\"1\"><Row colCount=\"1\">");
+            curXml.Append("<SanctionId>" + mySanctionNum + "</SanctionId>");
+            curXml.Append("</Row></Rows>");
+            curXml.Append("</Table>");
+
+            curXml.Append("<Table name=\"TeamScoreDetail\" command=\"Delete\" >");
+            curXml.Append("<Columns count=\"1\"><Column>SanctionId</Column></Columns>");
+            curXml.Append("<Keys count=\"1\"><Key>SanctionId</Key></Keys>");
+            curXml.Append("<Rows count=\"1\"><Row colCount=\"1\">");
+            curXml.Append("<SanctionId>" + mySanctionNum + "</SanctionId>");
+            curXml.Append("</Row></Rows>");
+            curXml.Append("</Table>");
+
+            curXml.Append("<Table name=\"TeamScore\" command=\"Update\" >");
+            curXml.Append("<Columns count=\"" + curColumns.Length + "\">");
+            foreach ( String curColumn in curColumns ) {
+                curXml.Append("<Column>" + curColumn + "</Column>");
+            }
+            curXml.Append("</Columns>");
+
+            curXml.Append("<Keys count=\"" + curKeyColumns.Length + "\">");
+            foreach ( String curColumn in curKeyColumns ) {
+                curXml.Append("<Key>" + curColumn + "</Key>");
+            }
+            curXml.Append("</Keys>");
+
+            curXmlTemp = new StringBuilder("<Rows count=\"#\">");
+
+            foreach ( DataGridViewRow curViewRow in TeamSummaryDataGridView.Rows ) {
+                curTeamName = (String) curViewRow.Cells["TeamCode"].Value;
+                if ( curTeamName == null ) curTeamName = "";
+
+                if ( curTeamName.Length > 0 ) {
+                    curRowCount++;
+                    curXmlTemp.Append("<Row colCount=\"" + curColumns.Length + "\">");
+                    
+                    curXmlTemp.Append("<SanctionId>" + mySanctionNum + "</SanctionId>");
+                    curXmlTemp.Append("<TeamCode>" + (String) curViewRow.Cells["TeamCode"].Value + "</TeamCode>");
+                    curXmlTemp.Append("<AgeGroup>" + (String) curViewRow.Cells["TeamDiv"].Value + "</AgeGroup>");
+                    curXmlTemp.Append("<Name>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["TeamName"].Value, singleQuoteDelim, "''" ) ) + "</Name>");
+
+                    curXmlTemp.Append("<ReportFormat>");
+                    if ( myTourRules.ToLower().Equals("awsa") ) {
+                        if ( plcmtAWSATeamButton.Checked ) {
+                            curXmlTemp.Append("awsa");
+                        } else {
+                            curXmlTemp.Append("std");
+                        }
+                    } else if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curXmlTemp.Append("ncwsa");
+                    } else if ( myTourRules.ToLower().Equals("iwwf") ) {
+                        curXmlTemp.Append("std");
+                    }
+                    curXmlTemp.Append("</ReportFormat>");
+
+                    try {
+                        curXmlTemp.Append("<OverallPlcmt>" + (String) curViewRow.Cells["TeamPlcmtOverall"].Value + "</OverallPlcmt>");
+                    } catch {
+                        curXmlTemp.Append("<OverallPlcmt></OverallPlcmt>");
+                    }
+                    try {
+                        curXmlTemp.Append("<SlalomPlcmt>" + (String) curViewRow.Cells["TeamPlcmtSlalom"].Value + "</SlalomPlcmt>");
+                    } catch {
+                        curXmlTemp.Append("<SlalomPlcmt></SlalomPlcmt>");
+                    }
+                    try {
+                        curXmlTemp.Append("<TrickPlcmt>" + (String) curViewRow.Cells["TeamPlcmtTrick"].Value + "</TrickPlcmt>");
+                    } catch {
+                        curXmlTemp.Append("<TrickPlcmt></TrickPlcmt>");
+                    }
+                    try {
+                        curXmlTemp.Append("<JumpPlcmt>" + (String) curViewRow.Cells["TeamPlcmtJump"].Value + "</JumpPlcmt>");
+                    } catch {
+                        curXmlTemp.Append("<JumpPlcmt></JumpPlcmt>");
+                    }
+                    try {
+                        curXmlTemp.Append("<OverallScore>" + (Decimal) curViewRow.Cells["TeamScoreTotal"].Value + "</OverallScore>");
+                    } catch {
+                        curXmlTemp.Append("<OverallScore>0</OverallScore>");
+                    }
+                    try {
+                        curXmlTemp.Append("<SlalomScore>" + (Decimal) curViewRow.Cells["TeamScoreSlalom"].Value + "</SlalomScore>");
+                    } catch {
+                        curXmlTemp.Append("<SlalomScore>0</SlalomScore>");
+                    }
+                    try {
+                        curXmlTemp.Append("<TrickScore>" + (Decimal) curViewRow.Cells["TeamScoreTrick"].Value + "</TrickScore>");
+                    } catch {
+                        curXmlTemp.Append("<TrickScore>0</TrickScore>");
+                    }
+                    try {
+                        curXmlTemp.Append("<JumpScore>" + (Decimal) curViewRow.Cells["TeamScoreJump"].Value + "</JumpScore>");
+                    } catch {
+                        curXmlTemp.Append("<JumpScore>0</JumpScore>");
+                    }
+                    curXmlTemp.Append("</Row>");
+                }
+
+            }
+            curXmlTemp.Append("</Rows>");
+            curXmlTemp.Append("</Table>");
+            curXml.Append(ExportLiveWeb.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
+
+            curKeyColumns = new String[]{ "SanctionId", "TeamCode", "AgeGroup", "LineNum" };
+            curColumns = new String[] { "SanctionId", "TeamCode", "AgeGroup", "SkierCategory", "LineNum"
+                , "SlalomSkierName", "SlalomPlcmt", "SlalomScore", "SlalomNops", "SlalomPoints"
+                , "TrickSkierName", "TrickPlcmt", "TrickScore", "TrickNops", "TrickPoints"
+                , "JumpSkierName", "JumpPlcmt", "JumpScore", "JumpNops", "JumpPoints" };
+
+            curXml.Append("<Table name=\"TeamScoreDetail\" command=\"Update\" >");
+            curXml.Append("<Columns count=\"" + curColumns.Length + "\">");
+            foreach ( String curColumn in curColumns ) {
+                curXml.Append("<Column>" + curColumn + "</Column>");
+            }
+            curXml.Append("</Columns>");
+
+            curXml.Append("<Keys count=\"" + curKeyColumns.Length + "\">");
+            foreach ( String curColumn in curKeyColumns ) {
+                curXml.Append("<Key>" + curColumn + "</Key>");
+            }
+            curXml.Append("</Keys>");
+
+            curRowCount = 0;
+            curTeamName = "";
+            curSlalomSkierName = "";
+            curTrickSkierName = "";
+            curJumpSkierName = "";
+            String curActiveTeamName = "", curAgeGroup = "", curActiveAgeGroup = "";
+
+            curXmlTemp = new StringBuilder("<Rows count=\"#\">");
+            int curSkierLineNum = 0;
+            foreach ( DataGridViewRow curViewRow in PrintDataGridView.Rows ) {
+
+                curTeamName = (String) curViewRow.Cells["PrintTeam"].Value;
+                if ( curTeamName == null ) curTeamName = "";
+                curAgeGroup = (String) curViewRow.Cells["PrintTeamDiv"].Value;
+                if ( curAgeGroup == null ) curAgeGroup = "";
+                curSlalomSkierName = (String) curViewRow.Cells["PrintSkierNameSlalom"].Value;
+                if ( curSlalomSkierName == null ) curSlalomSkierName = "";
+                curTrickSkierName = (String) curViewRow.Cells["PrintSkierNameTrick"].Value;
+                if ( curTrickSkierName == null ) curTrickSkierName = "";
+                curJumpSkierName = (String) curViewRow.Cells["PrintSkierNameJump"].Value;
+                if ( curJumpSkierName == null ) curJumpSkierName = "";
+
+                if ( curTeamName.Length == 0
+                    && curSlalomSkierName.Length == 0
+                    && curTrickSkierName.Length == 0
+                    && curJumpSkierName.Length == 0
+                    ) {
+                } else if ( curTeamName.Length > 0
+                    && curSlalomSkierName.Length == 0
+                    && curTrickSkierName.Length == 0
+                    && curJumpSkierName.Length == 0 
+                    ) {
+                    curSkierLineNum = 0;
+                    curActiveTeamName = curTeamName;
+                    curActiveAgeGroup = curAgeGroup;
+                } else {
+                    curRowCount++;
+                    curSkierLineNum++;
+
+                    curXmlTemp.Append("<Row colCount=\"" + curColumns.Length + "\">");
+                    curXmlTemp.Append("<SanctionId>" + mySanctionNum + "</SanctionId>");
+                    curXmlTemp.Append("<TeamCode>" + curActiveTeamName.Substring(0, curActiveTeamName.IndexOf("-") ) + "</TeamCode>");
+                    curXmlTemp.Append("<AgeGroup>" + curActiveAgeGroup + "</AgeGroup>");
+                    curXmlTemp.Append("<SkierCategory>" + (String) curViewRow.Cells["PrintSkierCategory"].Value + "</SkierCategory>");
+                    
+                    curXmlTemp.Append("<LineNum>" + curSkierLineNum + "</LineNum>");
+                    if ( plcmtAWSATeamButton.Checked ) {
+                        curXmlTemp.Append("<SkierCategory>" + (String) curViewRow.Cells["PrintSkierCategory"].Value + "</SkierCategory>");
+                    }
+
+                    if ( curSlalomSkierName.Length > 0 ) {
+                        curXmlTemp.Append("<SlalomSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameSlalom"].Value, singleQuoteDelim, "''")) + "</SlalomSkierName>");
+                        curXmlTemp.Append("<SlalomPlcmt>" + (String) curViewRow.Cells["PrintPlcmtSlalom"].Value + "</SlalomPlcmt>");
+                        try {
+                            curXmlTemp.Append("<SlalomScore>" + (String) curViewRow.Cells["PrintScoreSlalom"].Value + "</SlalomScore>");
+                        } catch {
+                            curXmlTemp.Append("<SlalomScore></SlalomScore>");
+                        }
+                        try {
+                            curXmlTemp.Append("<SlalomNops>" + (String) curViewRow.Cells["PrintPointsSlalom"].Value + "</SlalomNops>");
+                        } catch {
+                            curXmlTemp.Append("<SlalomNops></SlalomNops>");
+                        }
+                        try {
+                            curXmlTemp.Append("<SlalomPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsSlalom"].Value + "</SlalomPoints>");
+                        } catch {
+                            curXmlTemp.Append("<SlalomPoints></SlalomPoints>");
+                        }
+                    } else {
+                        curXmlTemp.Append("<SlalomSkierName></SlalomSkierName>");
+                        curXmlTemp.Append("<SlalomPlcmt></SlalomPlcmt>");
+                        curXmlTemp.Append("<SlalomScore></SlalomScore>");
+                        curXmlTemp.Append("<SlalomNops></SlalomNops>");
+                        curXmlTemp.Append("<SlalomPoints></SlalomPoints>");
+                    }
+
+                    if ( curTrickSkierName.Length > 0 ) {
+                        curXmlTemp.Append("<TrickSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameTrick"].Value, singleQuoteDelim, "''" ) ) + "</TrickSkierName>");
+                        curXmlTemp.Append("<TrickPlcmt>" + (String) curViewRow.Cells["PrintPlcmtTrick"].Value + "</TrickPlcmt>");
+                        try {
+                            curXmlTemp.Append("<TrickScore>" + (String) curViewRow.Cells["PrintScoreTrick"].Value + "</TrickScore>");
+                        } catch {
+                            curXmlTemp.Append("<TrickScore></TrickScore>");
+                        }
+                        try {
+                            curXmlTemp.Append("<TrickNops>" + (String) curViewRow.Cells["PrintPointsTrick"].Value + "</TrickNops>");
+                        } catch {
+                            curXmlTemp.Append("<TrickNops></TrickNops>");
+                        }
+                        try {
+                            curXmlTemp.Append("<TrickPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsTrick"].Value + "</TrickPoints>");
+                        } catch {
+                            curXmlTemp.Append("<TrickPoints></TrickPoints>");
+                        }
+                    } else {
+                        curXmlTemp.Append("<TrickSkierName></TrickSkierName>");
+                        curXmlTemp.Append("<TrickPlcmt></TrickPlcmt>");
+                        curXmlTemp.Append("<TrickScore></TrickScore>");
+                        curXmlTemp.Append("<TrickNops></TrickNops>");
+                        curXmlTemp.Append("<TrickPoints></TrickPoints>");
+                    }
+
+                    if ( curJumpSkierName.Length > 0 ) {
+                        curXmlTemp.Append("<JumpSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameJump"].Value, singleQuoteDelim, "''" ) ) + "</JumpSkierName>");
+                        curXmlTemp.Append("<JumpPlcmt>" + (String) curViewRow.Cells["PrintPlcmtJump"].Value + "</JumpPlcmt>");
+                        try {
+                            curXmlTemp.Append("<JumpScore>" + (String) curViewRow.Cells["PrintScoreJump"].Value + "</JumpScore>");
+                        } catch {
+                            curXmlTemp.Append("<JumpScore></JumpScore>");
+                        }
+                        try {
+                            curXmlTemp.Append("<JumpNops>" + (String) curViewRow.Cells["PrintPointsJump"].Value + "</JumpNops>");
+                        } catch {
+                            curXmlTemp.Append("<JumpNops></JumpNops>");
+                        }
+                        try {
+                            curXmlTemp.Append("<JumpPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsJump"].Value + "</JumpPoints>");
+                        } catch {
+                            curXmlTemp.Append("<JumpPoints></JumpPoints>");
+                        }
+                    } else {
+                        curXmlTemp.Append("<JumpSkierName></JumpSkierName>");
+                        curXmlTemp.Append("<JumpPlcmt></JumpPlcmt>");
+                        curXmlTemp.Append("<JumpScore></JumpScore>");
+                        curXmlTemp.Append("<JumpNops></JumpNops>");
+                        curXmlTemp.Append("<JumpPoints></JumpPoints>");
+                    }
+
+                    curXmlTemp.Append("</Row>");
+                }
+
+            }
+
+            curXmlTemp.Append("</Rows>");
+            curXmlTemp.Append("</Table>");
+            curXml.Append(ExportLiveWeb.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
+
+            curXml.Append("</LiveWebRequest>");
+
+            try {
+                Log.WriteFile(curMethodName + ":" + curXml.ToString());
+                SendMessageHttp.sendMessagePostXml(ExportLiveWeb.LiveWebLocation, curXml.ToString());
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error encountered trying to send data to web location \n\nError: " + ex.Message);
+                Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+            }
         }
 
         private void ShowTeamButton_Click( object sender, EventArgs e ) {
@@ -1412,6 +1731,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
         }
+
 
     }
 }

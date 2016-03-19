@@ -44,15 +44,13 @@ namespace WaterskiScoringSystem.Common {
                 curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
                 curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );
             } else if ( inPointsMethod.ToLower().Equals( "plcmt" ) ) {
-                //if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
-                if ( curRules.ToLower().Equals( "ncwsa" ) ) {
+                if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
-                    curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );
+                    curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
                     curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
-                    curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );
-                    //curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
+                    curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
                     curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
                 }
 
@@ -262,7 +260,7 @@ namespace WaterskiScoringSystem.Common {
             } else if ( inPointsMethod.ToLower().Equals( "plcmt" ) ) {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, curScoreDataTable, null, inDataType );
-                    curScoreDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curScoreDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );
+                    curScoreDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
                     curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Trick" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, curScoreDataTable, null, inDataType );
@@ -487,7 +485,7 @@ namespace WaterskiScoringSystem.Common {
             } else if ( inPointsMethod.ToLower().Equals( "plcmt" ) ) {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, null, curScoreDataTable, inDataType );
-                    curScoreDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curScoreDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );
+                    curScoreDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
                     curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Jump" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, null, curScoreDataTable, inDataType );

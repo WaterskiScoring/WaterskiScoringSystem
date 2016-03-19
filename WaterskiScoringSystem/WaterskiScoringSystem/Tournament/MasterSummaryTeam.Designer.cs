@@ -113,6 +113,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navPrint = new System.Windows.Forms.ToolStripButton();
             this.navExport = new System.Windows.Forms.ToolStripButton();
             this.navExportHtml = new System.Windows.Forms.ToolStripButton();
+            this.navLiveWeb = new System.Windows.Forms.ToolStripButton();
             this.NumPerTeamTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.slalomScoreSummaryDataGridView = new System.Windows.Forms.DataGridView();
@@ -201,10 +202,12 @@ namespace WaterskiScoringSystem.Tournament {
             this.ViewReportButton = new System.Windows.Forms.Button();
             this.EventGroupListLabel = new System.Windows.Forms.Label();
             this.EventGroupList = new System.Windows.Forms.ComboBox();
+            this.LiveWebLabel = new System.Windows.Forms.Label();
             this.PrintTeamPlcmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeamDiv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeam = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeamScoreTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PrintSkierCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintSkierSep = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintPlcmtSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintSkierNameSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -277,7 +280,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.navRefresh,
             this.navPrint,
             this.navExport,
-            this.navExportHtml});
+            this.navExportHtml,
+            this.navLiveWeb});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1218, 38);
@@ -325,6 +329,16 @@ namespace WaterskiScoringSystem.Tournament {
             this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
             this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
+            // 
+            // navLiveWeb
+            // 
+            this.navLiveWeb.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+            this.navLiveWeb.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navLiveWeb.Name = "navLiveWeb";
+            this.navLiveWeb.Size = new System.Drawing.Size(59, 35);
+            this.navLiveWeb.Text = "Live Web";
+            this.navLiveWeb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navLiveWeb.Click += new System.EventHandler(this.navLiveWeb_Click);
             // 
             // NumPerTeamTextBox
             // 
@@ -1491,6 +1505,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeamDiv,
             this.PrintTeam,
             this.PrintTeamScoreTotal,
+            this.PrintSkierCategory,
             this.PrintSkierSep,
             this.PrintPlcmtSlalom,
             this.PrintSkierNameSlalom,
@@ -1557,6 +1572,20 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventGroupList.Size = new System.Drawing.Size(100, 21);
             this.EventGroupList.TabIndex = 130;
             // 
+            // LiveWebLabel
+            // 
+            this.LiveWebLabel.AutoSize = true;
+            this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.LiveWebLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
+            this.LiveWebLabel.Location = new System.Drawing.Point(148, 78);
+            this.LiveWebLabel.Name = "LiveWebLabel";
+            this.LiveWebLabel.Size = new System.Drawing.Size(86, 13);
+            this.LiveWebLabel.TabIndex = 131;
+            this.LiveWebLabel.Text = "Live Web Active";
+            this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LiveWebLabel.Visible = false;
+            // 
             // PrintTeamPlcmt
             // 
             dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
@@ -1602,6 +1631,16 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeamScoreTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.PrintTeamScoreTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.PrintTeamScoreTotal.Width = 50;
+            // 
+            // PrintSkierCategory
+            // 
+            this.PrintSkierCategory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.PrintSkierCategory.HeaderText = "SkierCategory";
+            this.PrintSkierCategory.Name = "PrintSkierCategory";
+            this.PrintSkierCategory.ReadOnly = true;
+            this.PrintSkierCategory.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PrintSkierCategory.Visible = false;
+            this.PrintSkierCategory.Width = 25;
             // 
             // PrintSkierSep
             // 
@@ -1824,6 +1863,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1218, 583);
+            this.Controls.Add(this.LiveWebLabel);
             this.Controls.Add(this.EventGroupListLabel);
             this.Controls.Add(this.EventGroupList);
             this.Controls.Add(this.ViewReportButton);
@@ -1974,10 +2014,13 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn HCapBaseJump;
         private System.Windows.Forms.DataGridViewTextBoxColumn HCapScoreJump;
         private System.Windows.Forms.DataGridViewTextBoxColumn RoundJump;
+        private System.Windows.Forms.ToolStripButton navLiveWeb;
+        private System.Windows.Forms.Label LiveWebLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamPlcmt;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamDiv;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeam;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamScoreTotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierSep;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtSlalom;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameSlalom;

@@ -3493,26 +3493,27 @@ namespace WaterskiScoringSystem.Slalom {
                                 } else {
                                 }
                                 rerideReasonDialogForm.RerideReasonText = (String)myRecapRow.Cells["RerideReasonRecap"].Value;
-                                    if (rerideReasonDialogForm.ShowDialog() == DialogResult.OK) {
-                                        String curCommand = rerideReasonDialogForm.Command;
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
-                                        if (curCommand.ToLower().Equals( "updatewithprotect" )) {
-                                            myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-                                        }
-                                        saveScore();
-                                        Timer curTimerObj = new Timer();
-                                        curTimerObj.Interval = 5;
-                                        curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-                                        curTimerObj.Start();
-                                    } else {
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        rerideReasonDialogForm.RerideReasonText = "";
-                                        MessageBox.Show( "Reride can not be granted without a reason being specified." );
-                                        myRecapRow.Cells["RerideRecap"].Value = "N";
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        saveScore();
+                                if ( rerideReasonDialogForm.ShowDialog() == DialogResult.OK ) {
+                                    setEventRegRowStatus("InProg");
+                                    String curCommand = rerideReasonDialogForm.Command;
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
+                                    if ( curCommand.ToLower().Equals("updatewithprotect") ) {
+                                        myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
                                     }
+                                    saveScore();
+                                    Timer curTimerObj = new Timer();
+                                    curTimerObj.Interval = 5;
+                                    curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+                                    curTimerObj.Start();
+                                } else {
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    rerideReasonDialogForm.RerideReasonText = "";
+                                    MessageBox.Show("Reride can not be granted without a reason being specified.");
+                                    myRecapRow.Cells["RerideRecap"].Value = "N";
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    saveScore();
+                                }
                             } else {
                                 myRecapRow.Cells["Updated"].Value = "Y";
                                 setEventRegRowStatus( myRecapRow );

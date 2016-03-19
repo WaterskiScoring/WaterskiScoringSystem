@@ -318,7 +318,7 @@
             this.NopsUpdateMsgLabel.Name = "NopsUpdateMsgLabel";
             this.NopsUpdateMsgLabel.Size = new System.Drawing.Size(278, 31);
             this.NopsUpdateMsgLabel.TabIndex = 0;
-            this.NopsUpdateMsgLabel.Text = "Update required for 2015 tournaments scored before version 2.1.1.0";
+            this.NopsUpdateMsgLabel.Text = "Update required for 2016 tournaments scored before version 3.0.0.2";
             // 
             // TourPackageBuild
             // 

@@ -168,21 +168,30 @@ namespace WaterskiScoringSystem.Jump {
                         bool isAllDataValid = true;
                         myJumpCalc = new JumpCalc( mySanctionNum );
                         if ( myJumpCalc.distAtoB > 0 ) {
-                            isAllDataValid = myJumpCalc.checkMeterSetup();
+                            isAllDataValid = myJumpCalc.ValidateMeterSetup();
                             if ( isAllDataValid ) {
                                 if ( myMeterZeroTol < myJumpCalc.TriangleZero ) {
                                     jumpRecapDataGridView.Visible = false;
                                     isAllDataValid = false;
                                     MessageBox.Show( "Setup triangle at jump is not within allowed tolerance"
-                                        + "Current calculated triangle at jump is " + myJumpCalc.TriangleZero.ToString( "#0.00" )
-                                        + "Allowed tolerance for tournament class " + myTourClass + " is " + myMeterZeroTol.ToString( "#0.00" )
+                                        + "\nCurrent calculated triangle at jump is " + myJumpCalc.TriangleZero.ToString( "#0.00" )
+                                        + "\nAllowed tolerance for tournament class " + myTourClass + " is " + myMeterZeroTol.ToString( "#0.00" )
                                         );
                                     if ( myMeterZeroTol < myJumpCalc.Triangle15M ) {
                                         jumpRecapDataGridView.Visible = false;
                                         isAllDataValid = false;
                                         MessageBox.Show( "Setup triangle at 15 meter timing buoy is not within allowed tolerance"
-                                            + "Current calculated triangle at jump is " + myJumpCalc.Triangle15M.ToString( "#0.00" )
-                                            + "Allowed tolerance for tournament class " + myTourClass + " is " + myMeterZeroTol.ToString( "#0.00" )
+                                            + "\nCurrent calculated triangle at 15meter timing buoy is " + myJumpCalc.Triangle15M.ToString( "#0.00" )
+                                            + "\nAllowed tolerance for tournament class " + myTourClass + " is " + myMeterZeroTol.ToString( "#0.00" )
+                                            );
+                                    }
+                                } else {
+                                    if ( myMeterZeroTol < myJumpCalc.Triangle15M ) {
+                                        jumpRecapDataGridView.Visible = false;
+                                        isAllDataValid = false;
+                                        MessageBox.Show("Setup triangle at 15 meter timing buoy is not within allowed tolerance"
+                                            + "\nCurrent calculated triangle at 15meter timing buoy is " + myJumpCalc.Triangle15M.ToString("#0.00")
+                                            + "\nAllowed tolerance for tournament class " + myTourClass + " is " + myMeterZeroTol.ToString("#0.00")
                                             );
                                     }
                                 }
