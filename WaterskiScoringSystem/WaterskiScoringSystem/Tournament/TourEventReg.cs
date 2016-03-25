@@ -906,11 +906,14 @@ namespace WaterskiScoringSystem.Tournament {
             Decimal curHcapPct = (Decimal)myTourRow["Hcap" + inEvent + "Pct"];
 
             if ( curHcapBase > 0 ) {
+                curHcapScore = ( curHcapBase - inRankingScore ) * curHcapPct;
+                /*
                 if ( curHcapBase > inRankingScore ) {
                     curHcapScore = ( curHcapBase - inRankingScore ) * curHcapPct;
                 } else {
                     curHcapScore = Convert.ToDecimal( "0" );
                 }
+                */
             } else {
                 curHcapScore = Convert.ToDecimal( "0" );
             }

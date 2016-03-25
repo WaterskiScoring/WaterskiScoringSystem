@@ -962,5 +962,8 @@ namespace WaterskiScoringSystem.Trick {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
+        private void scoreSummaryDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
+
+        }
     }
 }
