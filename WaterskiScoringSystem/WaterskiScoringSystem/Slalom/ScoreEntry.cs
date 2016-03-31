@@ -2369,12 +2369,14 @@ namespace WaterskiScoringSystem.Slalom {
                                     if ( curPassLine == 0M ) {
                                         curPassLine = SlalomLineSelect.CurrentValueNum;
                                     }
+                                    /*
+                                    myPassRow = getPassRow(curMaxSpeed, curPassLine);
+                                    if ( myPassRow != null ) {
+                                        curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
+                                    }
+                                    */
                                 }
 
-                                myPassRow = getPassRow(curMaxSpeed, curPassLine);
-                                if ( myPassRow != null ) {
-                                    curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
-                                }
                             }
                         } else {
                             curPassNum++;
