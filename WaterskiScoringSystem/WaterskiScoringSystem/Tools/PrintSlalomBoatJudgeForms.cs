@@ -159,7 +159,11 @@ namespace WaterskiScoringSystem.Tools {
                 if (myTourRules.ToLower().Equals( "ncwsa" ) || myTourRules.ToLower().Equals( "htoh-div" )) {
                     curGroup = (String)curRow["AgeGroup"];
                 } else {
-                    curGroup = (String)curRow["EventGroup"];
+                    if ( curRow["EventGroup"] == null ) {
+                        curGroup = "";
+                    } else {
+                        curGroup = (String) curRow["EventGroup"];
+                    }
                 }
                 if (curGroup == prevGroup || curPageSkierCount == 0) {
                     if (curDiv != prevDiv ) {
@@ -185,9 +189,21 @@ namespace WaterskiScoringSystem.Tools {
                         curText = (String)curRow["SkierName"] + " (" + (String)curRow["AgeGroup"] + ")";
                     }
                     if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        curText += "\n  Team: " + (String)curRow["TeamCode"] + "  Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" );
+                        String curTeam = "";
+                        if ( curRow["TeamCode"] != System.DBNull.Value ) {
+                            curTeam = (String) curRow["TeamCode"];
+                        }
+                        if ( curRow["RankingScore"] == System.DBNull.Value ) {
+                            curText += "\n  Team: " + curTeam;
+                        } else {
+                            curText += "\n  Team: " + curTeam + "  Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                        }
                     } else {
-                        curText += "\n  Class: " + (String)curRow["EventClass"] + "  Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" );
+                        if ( curRow["RankingScore"] == System.DBNull.Value ) {
+                            curText += "\n  Class: " + (String) curRow["EventClass"];
+                        } else {
+                            curText += "\n  Class: " + (String) curRow["EventClass"] + "  Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                        }
                     }
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
                     curPosY = curPagePos[1];
