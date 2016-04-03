@@ -51,7 +51,8 @@ namespace WaterskiScoringSystem.Common {
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
-                    curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
+                    curScoreDataTable = CalcPointsPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
+                    //curScoreDataTable = CalcPointsRoundPlcmt(curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom");
                 }
 
             } else if ( inPointsMethod.ToLower().Equals( "kbase" ) ) {
@@ -2706,7 +2707,7 @@ namespace WaterskiScoringSystem.Common {
             DataRow[] curFindList;
 
             //Sort data
-            curSortCmd = "Round ASC, ";
+            curSortCmd = "Round" + inEvent + " ASC, ";
             if ( inEvent.Equals("Jump") ) {
                 if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
                     curSortCmd += "AgeGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
