@@ -533,6 +533,11 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void MergeTourButton_Click( object sender, EventArgs e ) {
+            TourMerge tourMergeFiles = new TourMerge();
+            tourMergeFiles.mergeTourFiles(this.mySanctionNum);
+        }
+
         private void writeTourIdentDataFile( DataRow inTourRow, String inOutputFolder ) {
             StringBuilder outLine = new StringBuilder( "" );
             String mySanctionNum = (String)inTourRow["SanctionId"];

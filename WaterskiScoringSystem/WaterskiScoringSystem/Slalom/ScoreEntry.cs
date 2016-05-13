@@ -790,6 +790,16 @@ namespace WaterskiScoringSystem.Slalom {
                         String curRopeLenMetric = ( (Decimal)myPassRow["MinValue"] ).ToString( "#0.00" );
                         String[] curPassAttr = ((String)myPassRow["CodeValue"]).Split(',');
                         curScorePassNum = (String)myPassRow["ListCode"];
+                        String curFinalRopeOff = curPassAttr[2];
+
+                        DataRow curClassRow = getClassRow(curEventClass);
+                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] 
+                            && SlalomSpeedSelect.CurrentValue < curMaxSpeed ) {
+                            curRopeLenMetric = (String) myRecapRow.Cells["PassLineLengthRecap"].Value;
+                            DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = " + SlalomLineSelect.CurrentShowValueNum);
+                            String curValue = (String)curLineRow[0]["CodeValue"];
+                            curFinalRopeOff = curValue.Substring(0, curValue.IndexOf("-") - 1);
+                        }
 
                         try {
                             if ( Convert.ToDecimal( curScoreRecap ) <= 0M ) {
@@ -822,7 +832,7 @@ namespace WaterskiScoringSystem.Slalom {
                                 curSqlStmt.Append( ", FinalSpeedMph = " + curPassAttr[3].Substring( 0, 4 ) );
                                 curSqlStmt.Append( ", FinalSpeedKph = " + curSpeedKph.ToString() );
                                 curSqlStmt.Append( ", FinalLen = '" + curRopeLenMetric + "'" );
-                                curSqlStmt.Append( ", FinalLenOff = '" + curPassAttr[2] + "'" );
+                                curSqlStmt.Append( ", FinalLenOff = '" + curFinalRopeOff + "'" );
                                 curSqlStmt.Append( ", FinalPassScore = " + curScoreRecap );
 
                                 curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
@@ -855,7 +865,7 @@ namespace WaterskiScoringSystem.Slalom {
                                 curSqlStmt.Append( ", " + curPassAttr[3].Substring( 0, 4 ) );
                                 curSqlStmt.Append( ", " + curSpeedKph.ToString() );
                                 curSqlStmt.Append( ", '" + curRopeLenMetric + "'" );
-                                curSqlStmt.Append( ", '" + curPassAttr[2] + "'" );
+                                curSqlStmt.Append( ", '" + curFinalRopeOff + "'" );
                                 curSqlStmt.Append( ", '" + curScoreRecap + "'" );
 
                                 curSqlStmt.Append( ", GETDATE()" );

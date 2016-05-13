@@ -48,6 +48,8 @@
             this.WebOutputButton = new System.Windows.Forms.Button();
             this.UpdateNopsButton = new System.Windows.Forms.Button();
             this.NopsUpdateMsgLabel = new System.Windows.Forms.Label();
+            this.MergeTourButton = new System.Windows.Forms.Button();
+            this.MergeDesc = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // HqReportInfoLabel
@@ -320,11 +322,37 @@
             this.NopsUpdateMsgLabel.TabIndex = 0;
             this.NopsUpdateMsgLabel.Text = "Update required for 2016 tournaments scored before version 3.0.0.2";
             // 
+            // MergeTourButton
+            // 
+            this.MergeTourButton.AutoSize = true;
+            this.MergeTourButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MergeTourButton.Location = new System.Drawing.Point(9, 522);
+            this.MergeTourButton.Name = "MergeTourButton";
+            this.MergeTourButton.Size = new System.Drawing.Size(205, 28);
+            this.MergeTourButton.TabIndex = 61;
+            this.MergeTourButton.Text = "Merge Admin Tournament";
+            this.MergeTourButton.UseVisualStyleBackColor = true;
+            this.MergeTourButton.Visible = false;
+            this.MergeTourButton.Click += new System.EventHandler(this.MergeTourButton_Click);
+            // 
+            // MergeDesc
+            // 
+            this.MergeDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MergeDesc.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MergeDesc.Location = new System.Drawing.Point(228, 521);
+            this.MergeDesc.Name = "MergeDesc";
+            this.MergeDesc.Size = new System.Drawing.Size(402, 31);
+            this.MergeDesc.TabIndex = 0;
+            this.MergeDesc.Text = "Merge administrative tournament into current package";
+            this.MergeDesc.Visible = false;
+            // 
             // TourPackageBuild
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 500);
+            this.ClientSize = new System.Drawing.Size(642, 567);
+            this.Controls.Add(this.MergeDesc);
+            this.Controls.Add(this.MergeTourButton);
             this.Controls.Add(this.NopsUpdateMsgLabel);
             this.Controls.Add(this.UpdateNopsButton);
             this.Controls.Add(this.label3);
@@ -384,5 +412,7 @@
         private System.Windows.Forms.Button WebOutputButton;
         private System.Windows.Forms.Button UpdateNopsButton;
         private System.Windows.Forms.Label NopsUpdateMsgLabel;
+        private System.Windows.Forms.Button MergeTourButton;
+        private System.Windows.Forms.Label MergeDesc;
     }
 }

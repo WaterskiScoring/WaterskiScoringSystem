@@ -47,12 +47,11 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
-                    curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
+                    curScoreDataTable = CalcPointsRoundPlcmt( inTourRow, curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, curScoreDataTable, null, null, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
                     curScoreDataTable = CalcPointsPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom" );
-                    //curScoreDataTable = CalcPointsRoundPlcmt(curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Slalom");
                 }
 
             } else if ( inPointsMethod.ToLower().Equals( "kbase" ) ) {
@@ -262,7 +261,7 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, curScoreDataTable, null, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
-                    curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Trick" );
+                    curScoreDataTable = CalcPointsRoundPlcmt( inTourRow, curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Trick" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, curScoreDataTable, null, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg );
@@ -487,7 +486,7 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, null, curScoreDataTable, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
-                    curScoreDataTable = CalcPointsRoundPlcmt( curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Jump" );
+                    curScoreDataTable = CalcPointsRoundPlcmt( inTourRow, curScoreDataTable, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, "Jump" );
                 } else {
                     curScoreDataTable = buildOverallSummary( inTourRow, null, null, curScoreDataTable, inDataType );
                     curScoreDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curScoreDataTable, "score", inPlcmtOrg, inDataType );
@@ -770,7 +769,8 @@ namespace WaterskiScoringSystem.Common {
                     }
                     curPlcmtSlalom = (String)curRow["PlcmtSlalom"];
 
-                    if (curRound > 0 && curRound < 25) {
+                    //if (curRound > 0 && curRound < 25) {
+                    if ( curRound < 25 ) {
                         try {
                             curScore = (Decimal)curRow[curScoreName];
                         } catch {
@@ -1001,7 +1001,7 @@ namespace WaterskiScoringSystem.Common {
                     }
                     curPlcmtTrick = (String)curRow["PlcmtTrick"];
 
-                    if (curRound > 0 && curRound < 25) {
+                    if (curRound < 25) {
                         try {
                             curScoreTrick = (Int16)curRow[curScoreName];
                         } catch {
@@ -1189,7 +1189,7 @@ namespace WaterskiScoringSystem.Common {
                     }
                     curPlcmtJump = (String)curRow["PlcmtJump"];
 
-                    if (curRound > 0 && curRound < 25) {
+                    if (curRound < 25) {
                         try {
                             curMeters = (Decimal)curRow["ScoreMeters"];
                         } catch {
@@ -2700,118 +2700,112 @@ namespace WaterskiScoringSystem.Common {
             return curScoreDataTable;
         }
 
-        private DataTable CalcPointsRoundPlcmt( DataTable inDataTable, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEvent ) {
+        private DataTable CalcPointsRoundPlcmt( DataRow inTourRow, DataTable inDataTable, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEvent ) {
             String curGroup = "", prevGroup = "", curSortCmd = "", curPlcmtValue = "", curSelectCmd, curSelectTieCmd;
             Decimal curScore = 0;
-            int curRound = 0, prevRound = 0, curPlcmt = 0, curPlcmtMax = 0, curIdx = 0, curTieAdj = 0;
+            int curPlcmt = 0, curPlcmtMax = 0, curIdx = 0, curTieAdj = 0;
             DataRow[] curFindList;
 
-            //Sort data
-            curSortCmd = "Round" + inEvent + " ASC, ";
-            if ( inEvent.Equals("Jump") ) {
-                if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                    curSortCmd += "AgeGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                    curSortCmd += "AgeGroup ASC, EventGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                    curSortCmd += "EventGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
+            Int16 numTourEventRounds = (byte)inTourRow[inEvent + "Rounds"];
+                
+                //Sort data
+            if ( inEvent.ToLower().Equals("jump") ) {
+                if ( inPlcmtOrg.ToLower().Equals("div") ) {
+                    curSortCmd = "AgeGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
+                } else if ( inPlcmtOrg.ToLower().Equals("divgr") ) {
+                    curSortCmd = "AgeGroup ASC, EventGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
+                } else if ( inPlcmtOrg.ToLower().Equals("group") ) {
+                    curSortCmd = "EventGroup ASC, Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
                 } else {
-                    curSortCmd += "Plcmt" + inEvent + " DESC, Score Desc ";
+                    curSortCmd = "Plcmt" + inEvent + " DESC, ScoreFeet Desc, ScoreMeters Desc ";
                     curPlcmtMax = inDataTable.Rows.Count;
                 }
             } else {
-                if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                    curSortCmd += "AgeGroup ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                    curSortCmd += "AgeGroup ASC, Event" + inEvent + " ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                    curSortCmd += "EventGroup ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
+                if ( inPlcmtOrg.ToLower().Equals("div") ) {
+                    curSortCmd = "AgeGroup ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
+                } else if ( inPlcmtOrg.ToLower().Equals("divgr") ) {
+                    curSortCmd = "AgeGroup ASC, EventGroup ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
+                } else if ( inPlcmtOrg.ToLower().Equals("group") ) {
+                    curSortCmd = "EventGroup ASC, Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
                 } else {
-                    curSortCmd += "Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
+                    curSortCmd = "Plcmt" + inEvent + " DESC, Score" + inEvent + " Desc ";
                     curPlcmtMax = inDataTable.Rows.Count;
                 }
             }
             inDataTable.DefaultView.Sort = curSortCmd;
             DataTable curScoreDataTable = inDataTable.DefaultView.ToTable();
 
-            //Calculate points based on placement
-            foreach ( DataRow curRow in curScoreDataTable.Rows ) {
-                try {
-                    if ( inEvent.Equals( "Jump" ) ) {
-                        curScore = (Decimal)( curRow["ScoreFeet"] );
-                    } else {
-                        curScore = ( Decimal ) ( curRow["Score" + inEvent] );
-                    }
-                } catch {
-                    curScore = 0;
-                }
+            DataRow[] curRoundRows = null;
+            String curFilterCommand = "";
+            for ( int curRound = 1; curRound <= numTourEventRounds; curRound++ ) {
+                curFilterCommand = "Round" + inEvent + " = " + curRound;
+                curRoundRows = curScoreDataTable.Select(curFilterCommand);
 
-                try {
-                    if ( curRow["Round"].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                        curRound = (Byte)curRow["Round"];
-                    } else if ( curRow["Round"].GetType() == System.Type.GetType( "System.Int16" ) ) {
-                        curRound = (Int16)curRow["Round"];
-                    } else if ( curRow["Round"].GetType() == System.Type.GetType( "System.Int32" ) ) {
-                        curRound = (int)curRow["Round"];
-                    } else {
-                        curRound = 0;
-                    }
-                } catch {
-                    curRound = 0;
-                }
-                if ( curRound != prevRound ) {
+                if ( curRoundRows.Length > 0 ) {
                     prevGroup = "";
-                    if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                        curFindList = curScoreDataTable.Select( "Round = " + curRound.ToString() );
-                        curPlcmtMax = curFindList.Length + 1;
+                    if ( inPlcmtOrg.ToLower().Equals("tour") || inPlcmtOrg.ToLower().Equals("awsa") ) {
+                        curPlcmtMax = curRoundRows.Length + 1;
+                    }
+
+                    foreach ( DataRow curRow in curRoundRows ) {
+                        try {
+                            if ( inEvent.Equals("Jump") ) {
+                                curScore = (Decimal) ( curRow["ScoreFeet"] );
+                            } else {
+                                curScore = (Decimal) ( curRow["Score" + inEvent] );
+                            }
+                        } catch {
+                            curScore = 0;
+                        }
+
+                        if ( inPlcmtOrg.ToLower().Equals("div") ) {
+                            curPlcmtValue = (String) curRow["Plcmt" + inEvent];
+                            curGroup = (String) curRow["AgeGroup"];
+                            curSelectCmd = "Round = " + curRound.ToString() + " AND AgeGroup = '" + curGroup + "'";
+                            curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
+                        } else if ( inPlcmtOrg.ToLower().Equals("divgr") ) {
+                            curPlcmtValue = (String) curRow["Plcmt" + inEvent];
+                            curGroup = (String) curRow["AgeGroup"] + "-" + (String) curRow["EventGroup"];
+                            curSelectCmd = "Round = " + curRound.ToString()
+                                + " AND AgeGroup = '" + (String) curRow["AgeGroup"] + "'"
+                                + " AND " + "EventGroup = '" + (String) curRow["EventGroup"] + "'";
+                            curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
+                        } else if ( inPlcmtOrg.ToLower().Equals("group") ) {
+                            curPlcmtValue = (String) curRow["Plcmt" + inEvent];
+                            curGroup = (String) curRow["EventGroup"];
+                            curSelectCmd = "Round = " + curRound.ToString() + " AND EventGroup = '" + curGroup + "'";
+                            curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
+                        } else {
+                            curPlcmtValue = (String) curRow["Plcmt" + inEvent];
+                            curGroup = "";
+                            curSelectCmd = "Round = " + curRound.ToString();
+                            curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
+                        }
+                        curTieAdj = 0;
+                        if ( curPlcmtValue.Contains("T") ) {
+                            curPlcmt = Convert.ToInt32(curPlcmtValue.Substring(0, curPlcmtValue.IndexOf("T")));
+                            curFindList = curScoreDataTable.Select(curSelectTieCmd);
+                            if ( curFindList.Length > 0 ) {
+                                curTieAdj = ( curFindList.Length - 1 ) * 5;
+                            }
+                        } else {
+                            curPlcmt = Convert.ToInt32(curPlcmtValue);
+                        }
+
+                        if ( !( curGroup.Equals(prevGroup) ) ) {
+                            curFindList = curScoreDataTable.Select(curSelectCmd);
+                            curPlcmtMax = curFindList.Length;
+                        }
+
+                        if ( curScore > 0 && curPlcmtMax > 0 ) {
+                            curScore = ( ( ( curPlcmtMax - curPlcmt ) + 1 ) * 10 ) - curTieAdj;
+                        }
+                        curRow["Points" + inEvent] = curScore;
+                        prevGroup = curGroup;
                     }
                 }
-                if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                    curPlcmtValue = (String)curRow["Plcmt" + inEvent];
-                    curGroup = (String)curRow["AgeGroup"];
-                    curSelectCmd = "Round = " + curRound.ToString() + " AND AgeGroup = '" + curGroup + "'";
-                    curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
-                } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                    curPlcmtValue = (String)curRow["Plcmt" + inEvent];
-                    curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-                    curSelectCmd = "Round = " + curRound.ToString()
-                        + " AND AgeGroup = '" + (String)curRow["AgeGroup"] + "'"
-                        + " AND " + "EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                    curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
-                } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                    curPlcmtValue = (String)curRow["Plcmt" + inEvent];
-                    curGroup = (String)curRow["EventGroup"];
-                    curSelectCmd = "Round = " + curRound.ToString() + " AND EventGroup = '" + curGroup + "'";
-                    curSelectTieCmd = curSelectCmd + " AND Plcmt" + inEvent + " = '" + curPlcmtValue + "'";
-                } else {
-                    curPlcmtValue = (String)curRow["Plcmt" + inEvent];
-                    curGroup = "";
-                    curSelectCmd = "Round = " + curRound.ToString();
-                    curSelectTieCmd = curSelectCmd + " AND Plcmt" +  inEvent + " = '" + curPlcmtValue + "'";
-                }
-                curTieAdj = 0;
-                if ( curPlcmtValue.Contains( "T" ) ) {
-                    curPlcmt = Convert.ToInt32( curPlcmtValue.Substring( 0, curPlcmtValue.IndexOf( "T" ) ) );
-                    curFindList = curScoreDataTable.Select( curSelectTieCmd );
-                    if ( curFindList.Length > 0 ) {
-                        curTieAdj = ( curFindList.Length - 1 ) * 5;
-                    }
-                } else {
-                    curPlcmt = Convert.ToInt32( curPlcmtValue );
-                }
-
-                if ( !( curGroup.Equals( prevGroup ) ) ) {
-                    curFindList = curScoreDataTable.Select( curSelectCmd );
-                    curPlcmtMax = curFindList.Length;
-                }
-
-                if ( curScore > 0 && curPlcmtMax > 0 ) {
-                    curScore = ( ( ( curPlcmtMax - curPlcmt ) + 1 ) * 10 ) - curTieAdj;
-                }
-                curRow["Points" + inEvent] = curScore;
-                prevGroup = curGroup;
-                prevRound = curRound;
             }
+
             return curScoreDataTable;
         }
 

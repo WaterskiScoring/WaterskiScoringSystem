@@ -336,6 +336,7 @@
     <Compile Include="Tools\UpgradeDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tournament\TourMerge.cs" />
     <Compile Include="Trick\LoadVideosFile.cs">
       <SubType>Form</SubType>
     </Compile>
