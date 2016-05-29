@@ -4094,14 +4094,24 @@ namespace WaterskiScoringSystem.Jump {
                         } catch {
                             curSkiYearAge = 0;
                         }
-                        if (curSkiYearAge > 0) {
+                        if ( curSkiYearAge == 0 ) {
+                            curSkiYearAge = (short)myAgeDivList.getMinAgeForDiv(curDiv);
+                        }
+                        if ( curSkiYearAge > 0) {
                             curIwwfEligDiv = myAgeDivList.getDivListForAgeIwwf( curSkiYearAge, curDiv );
                         }
-                        if (curIwwfEligDiv.Count > 0) {
-                            foreach (DataRow curRow in myJump3TimesDivDataTable.Rows) {
-                                if (curIwwfEligDiv.Contains( (String)curRow["ListCode"] )) {
-                                    curJump3TimesDiv = myJump3TimesDivDataTable.Select( "ListCode = '" + (String)curRow["ListCode"] + "'" );
-                                    break;
+                        if ( curIwwfEligDiv.Count > 0 ) {
+                            foreach ( DataRow curRow in myJump3TimesDivDataTable.Rows ) {
+                                foreach ( String curEligDiv in curIwwfEligDiv ) {
+                                    if ( curEligDiv.Substring(0, 2).Equals((String) curRow["ListCode"]) ) {
+                                        if ( curJump3TimesDiv.Length > 0 ) {
+                                            if ( (Decimal) curJump3TimesDiv[0]["MaxValue"] > (Decimal) curRow["MaxValue"] ) {
+                                                curJump3TimesDiv = myJump3TimesDivDataTable.Select("ListCode = '" + (String) curRow["ListCode"] + "'");
+                                            }
+                                        } else {
+                                            curJump3TimesDiv = myJump3TimesDivDataTable.Select("ListCode = '" + (String) curRow["ListCode"] + "'");
+                                        }
+                                    }
                                 }
                             }
                         }

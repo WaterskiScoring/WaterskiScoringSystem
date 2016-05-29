@@ -11,6 +11,7 @@ using System.Reflection;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Tournament;
 
 namespace WaterskiScoringSystem.Tournament {
     class TourMerge {
@@ -21,7 +22,16 @@ namespace WaterskiScoringSystem.Tournament {
 
         public Boolean mergeTourFiles(String inSanctionId) {
             Boolean returnValue = true;
-            String curAdminSanctionId = inSanctionId.Substring(0, 2) + "A" + inSanctionId.Substring(3, 3);
+            String curAdminSanctionId = "";
+            TourMergeSelect mergeDialogForm = new TourMergeSelect();
+            mergeDialogForm.ShowDialog();
+
+            // Determine if the OK button was clicked on the dialog box.
+            if ( mergeDialogForm.DialogResult == DialogResult.OK ) {
+                curAdminSanctionId = mergeDialogForm.SanctionNumToMerge;
+            } else {
+                return false;
+            }
 
             DataRow curTourRow = getTourData(inSanctionId);
 
@@ -50,8 +60,10 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                 }
 
-                MessageBox.Show(String.Format(" Files successfully merged: {0} \n File merges failed: {1}", curCountComplete, curCountFailed ) );
+                Cursor.Current = Cursors.WaitCursor;
+                ZipUtil.ZipFiles(curTourDataLoc, inSanctionId + curTourClass + ".zip", curFileFilterList);
 
+                MessageBox.Show(String.Format(" Files successfully merged: {0} \n File merges failed: {1}", curCountComplete, curCountFailed));
             }
 
             return returnValue;

@@ -400,23 +400,24 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22698	Federation	ger		15	Germany			
 22699	Federation	gbr		16	Great Britain			
 22700	Federation	gre		17	Greece			
-22701	Federation	irl		18	Ireland			
-22702	Federation	ita		19	Italy			
-22703	Federation	jpn		20	Japan			
-22704	Federation	kor		21	Korea			
-22705	Federation	mex		22	Mexico			
-22706	Federation	nam		23	Namibia			
-22707	Federation	ned		24	Netherlands			
-22708	Federation	nor		25	Norway			
-22709	Federation	nzl		26	New Zealand			
-22710	Federation	per		27	Peru			
-22711	Federation	por		28	Portugal			
-22712	Federation	rus		29	Russia			
-22713	Federation	rsa		30	South Africa			
-22714	Federation	esp		31	Spain			
-22715	Federation	sui		32	Switzerland			
-22716	Federation	swe		33	Sweden			
-22717	Federation	ven		34	Venezuela			
+22700	Federation	ina		17	Indonesia			
+22701	Federation	irl		19	Ireland			
+22702	Federation	ita		20	Italy			
+22703	Federation	jpn		21	Japan			
+22704	Federation	kor		22	Korea			
+22705	Federation	mex		23	Mexico			
+22706	Federation	nam		24	Namibia			
+22707	Federation	ned		25	Netherlands			
+22708	Federation	nor		26	Norway			
+22709	Federation	nzl		27	New Zealand			
+22710	Federation	per		28	Peru			
+22711	Federation	por		29	Portugal			
+22712	Federation	rus		30	Russia			
+22713	Federation	rsa		31	South Africa			
+22714	Federation	esp		32	Spain			
+22715	Federation	sui		33	Switzerland			
+22716	Federation	swe		34	Sweden			
+22717	Federation	ven		35	Venezuela			
 22441	IwwfAgeGroup	JB		61	Intl Junior Boys	1.000	12.000	
 22442	IwwfAgeGroup	JG		62	Intl Junior Girls	1.000	12.000	
 22443	IwwfAgeGroup	IB		63	Intl Boys	1.000	16.000	

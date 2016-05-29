@@ -535,7 +535,19 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void MergeTourButton_Click( object sender, EventArgs e ) {
             TourMerge tourMergeFiles = new TourMerge();
-            tourMergeFiles.mergeTourFiles(this.mySanctionNum);
+            bool curResults = tourMergeFiles.mergeTourFiles(this.mySanctionNum);
+            if ( curResults) {
+                String curTourFolder = Properties.Settings.Default.ExportDirectory;
+
+                Cursor.Current = Cursors.WaitCursor;
+                ArrayList curFileFilterList = getEndOfTourReportList(mySanctionNum, myTourClass);
+                ZipUtil.ZipFiles(curTourFolder, mySanctionNum + myTourClass + ".zip", curFileFilterList);
+                TourPackageButton.BeginInvoke((MethodInvoker) delegate () {
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.Default;
+                });
+
+            }
         }
 
         private void writeTourIdentDataFile( DataRow inTourRow, String inOutputFolder ) {

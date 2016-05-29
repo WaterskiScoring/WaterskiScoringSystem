@@ -332,7 +332,6 @@
             this.MergeTourButton.TabIndex = 61;
             this.MergeTourButton.Text = "Merge Admin Tournament";
             this.MergeTourButton.UseVisualStyleBackColor = true;
-            this.MergeTourButton.Visible = false;
             this.MergeTourButton.Click += new System.EventHandler(this.MergeTourButton_Click);
             // 
             // MergeDesc
@@ -344,7 +343,6 @@
             this.MergeDesc.Size = new System.Drawing.Size(402, 31);
             this.MergeDesc.TabIndex = 0;
             this.MergeDesc.Text = "Merge administrative tournament into current package";
-            this.MergeDesc.Visible = false;
             // 
             // TourPackageBuild
             // 

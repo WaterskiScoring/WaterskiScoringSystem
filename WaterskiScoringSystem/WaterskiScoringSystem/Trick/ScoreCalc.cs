@@ -3663,7 +3663,10 @@ namespace WaterskiScoringSystem.Trick {
                 retPoints = checkCreditAndPoints( curViewRow, curActivePassRow, inColPrefix, retPoints );
             } else if ( curRuleNum > 100 && curRuleNum < 200 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
-                    retPoints = checkCreditAndPoints( curViewRow, curActivePassRow, inColPrefix, retPoints );
+                    //curViewRow
+                    if ( curViewRow.Index < curActivePassRow.Index ) {
+                        retPoints = checkCreditAndPoints(curViewRow, curActivePassRow, inColPrefix, retPoints);
+                    }
                 }
             } else if ( curRuleNum > 200 && curRuleNum < 300 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
@@ -4289,9 +4292,19 @@ namespace WaterskiScoringSystem.Trick {
             curFoundList = myTrickListDataTable.Select( "TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies );
             if (curFoundList.Length > 0) {
                 curReturnRow = curFoundList[0];
-                if (inSkierClass.Equals( "L" ) || inSkierClass.Equals( "R" )) {
-                    if (mySpecialFlipList.Contains( inTrickCode )) {
+
+                if ( mySkierClassList.compareClassChange(inSkierClass, "L") <= 0 ) {
+                    if ( mySpecialFlipList.Contains(inTrickCode) ) {
                         curReturnRow["NumTurns"] = Convert.ToByte("3");
+                    }
+                    if ( inTrickCode.Equals("FFL") ) {
+                        curReturnRow = null;
+                        MessageBox.Show(String.Format("Trick {0} is not allowed for skiers in class L/R ", inTrickCode));
+                    }
+                } else {
+                    if ( inTrickCode.Equals("FFLO") || inTrickCode.Equals("FFLI") ) {
+                        curReturnRow = null;
+                        MessageBox.Show(String.Format("Trick {0} is only allow for skiers in class L/R ", inTrickCode));
                     }
                 }
             }
