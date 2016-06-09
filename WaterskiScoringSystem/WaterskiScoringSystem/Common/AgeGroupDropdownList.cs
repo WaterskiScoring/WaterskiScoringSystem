@@ -184,6 +184,15 @@ namespace WaterskiScoringSystem.Common {
             return returnIndex;
         }
 
+        public int getMinAgeForDiv( String inAgeDiv ) {
+            int returnValue = 0;
+            DataRow[] findRows = myDataTable.Select("Division = '" + inAgeDiv.ToUpper() + "'");
+            if ( findRows.Length > 0 ) {
+                returnValue = (int)(Decimal) findRows[0]["AgeBegin"];
+            }
+            return returnValue;
+        }
+
         public String getGenderOfAgeDiv( String inAgeDiv ) {
             String curGender = "";
             DataRow[] findRows = myDataTable.Select( "Division = '" + inAgeDiv + "'" );

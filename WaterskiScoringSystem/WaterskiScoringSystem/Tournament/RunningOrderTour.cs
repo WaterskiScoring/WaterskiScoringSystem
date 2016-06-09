@@ -939,6 +939,42 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void navRecalcHcapButton_Click( object sender, EventArgs e ) {
+            String curMethodName = "RunningOrder:navRecalcHcapButton_Click: ";
+            String curEvent = "";
+            if ( slalomButton.Checked ) {
+                curEvent = "Slalom";
+            } else if ( trickButton.Checked ) {
+                curEvent = "Trick";
+            } else if ( jumpButton.Checked ) {
+                curEvent = "Jump";
+            }
+
+            Decimal curHcapScore = 0;
+            Decimal curHcapBase = (Decimal) myTourRow["Hcap" + curEvent + "Base"];
+            Decimal curHcapPct = (Decimal) myTourRow["Hcap" + curEvent + "Pct"];
+
+            StringBuilder curSqlStmt = new StringBuilder("");
+            try {
+                curSqlStmt.Append("Update EventReg Set ");
+                if ( curHcapBase > 0 && curHcapPct  > 0) {
+                    curSqlStmt.Append("HcapScore = (" + curHcapBase + " - HCapBase) * " + curHcapPct);
+                } else {
+                    curSqlStmt.Append("HcapScore = 0");
+                }
+                curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
+                curSqlStmt.Append("  AND Event = '" + curEvent + "' ");
+                int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+                Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+
+                navRefresh_Click(null, null);
+
+            } catch ( Exception excp ) {
+                MessageBox.Show(curMethodName + "Exception encountered:\n" + excp.Message);
+            }
+
+        }
+
         private void navExportRunningOrder_Click(object sender, EventArgs e) {
             String curPageBreak = "\f";
             String curSkierName, curAgeGroup, curRunOrder, 
@@ -1803,6 +1839,7 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation " );
+            curSqlStmt.Append(", HcapSlalomBase, HcapSlalomPct, HcapTrickBase, HcapTrickPct, HcapJumpBase, HcapJumpPct ");
             curSqlStmt.Append( "FROM Tournament T " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );

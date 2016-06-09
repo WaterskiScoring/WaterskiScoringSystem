@@ -533,6 +533,23 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void MergeTourButton_Click( object sender, EventArgs e ) {
+            TourMerge tourMergeFiles = new TourMerge();
+            bool curResults = tourMergeFiles.mergeTourFiles(this.mySanctionNum);
+            if ( curResults) {
+                String curTourFolder = Properties.Settings.Default.ExportDirectory;
+
+                Cursor.Current = Cursors.WaitCursor;
+                ArrayList curFileFilterList = getEndOfTourReportList(mySanctionNum, myTourClass);
+                ZipUtil.ZipFiles(curTourFolder, mySanctionNum + myTourClass + ".zip", curFileFilterList);
+                TourPackageButton.BeginInvoke((MethodInvoker) delegate () {
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.Default;
+                });
+
+            }
+        }
+
         private void writeTourIdentDataFile( DataRow inTourRow, String inOutputFolder ) {
             StringBuilder outLine = new StringBuilder( "" );
             String mySanctionNum = (String)inTourRow["SanctionId"];
@@ -587,8 +604,8 @@ namespace WaterskiScoringSystem.Tournament {
             //Update NOPS values due to unavailable 2015 NOPS tables
             //Prior to version 1.0.1.82
             String curMsg = "This process will re-calculate all NOPS values for the current tournament "
-                + "based on the 2015 NOPS factors that were not available at the start of the 2015 ski season."
-                + "\n\nThis should include any 2015 tournaments scored before verion 2.1.1.0 was available and used."
+                + "based on the 2016 NOPS factors that were not available at the start of the 2016 ski season."
+                + "\n\nThis should include any 2016 tournaments scored before verion 3.0.0.2 was available and used."
                 + "\n\nClick OK to begin the update process";
             DialogResult msgResp = MessageBox.Show( curMsg, "Updater Notice",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1 );

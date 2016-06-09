@@ -669,7 +669,9 @@ namespace WaterskiScoringSystem.Common {
                 newSkierScoreRow["RunoffScore"] = 0;
                 newSkierScoreRow["FirstScore"] = 0;
                 newSkierScoreRow["BackupScore"] = 0;
-                if (inRules.ToLower().Equals( "iwwf" )) {
+                newSkierScoreRow["RankingScore"] = 0;
+
+                if ( inRules.ToLower().Equals( "iwwf" )) {
                     newSkierScoreRow["LineLength"] = 18.25M;
                 } else {
                     newSkierScoreRow["LineLength"] = 23M;
@@ -677,7 +679,7 @@ namespace WaterskiScoringSystem.Common {
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
-                curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass" );
+                curSqlStmt.Append(", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
                 curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
                 curSqlStmt.Append( ", MaxSpeed, StartSpeed, StartLen, Status, FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore " );
                 curSqlStmt.Append( "FROM SlalomScore SS " );
@@ -699,6 +701,11 @@ namespace WaterskiScoringSystem.Common {
                         curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "' "
                             + "AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"] );
                         try {
+                            newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
+                        } catch {
+                            newSkierScoreRow["RankingScore"] = 0;
+                        }
+                        try {
                             newSkierScoreRow["Score"] = (Decimal)curSkierDetailRow[0][curScoreName];
                         } catch {
                             newSkierScoreRow["Score"] = 0;
@@ -706,7 +713,7 @@ namespace WaterskiScoringSystem.Common {
                         try {
                             newSkierScoreRow["PassScore"] = (Decimal)curSkierDetailRow[0]["FinalPassScore"];
                         } catch {
-                            newSkierScoreRow["Score"] = 0;
+                            newSkierScoreRow["PassScore"] = 0;
                         }
                         try {
                             Decimal[] curLastPassData = getSlalomLastPass( curSkierDetailRow[0], curSkierRow, curRoundName );
@@ -846,13 +853,14 @@ namespace WaterskiScoringSystem.Common {
                 newSkierScoreRow["PassScore3"] = 0;
                 newSkierScoreRow["PassScore4"] = 0;
                 newSkierScoreRow["RunoffScore"] = 0;
+                newSkierScoreRow["RankingScore"] = 0;
                 newSkierScoreRow["RunoffScore"] = getTrickRunoffScore( (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
 
                 if (inRules.ToLower().Equals( "iwwf" )) {
                 } else {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
-                    curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass" );
+                    curSqlStmt.Append(", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
                     curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
                     curSqlStmt.Append( ", SS.ScorePass1, SS.ScorePass2 " );
                     curSqlStmt.Append( "FROM TrickScore SS " );
@@ -868,6 +876,11 @@ namespace WaterskiScoringSystem.Common {
                     if (curSkierResultsAll.Rows.Count > 0) {
                         curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
                             + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"].ToString() );
+                        try {
+                            newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
+                        } catch {
+                            newSkierScoreRow["RankingScore"] = 0;
+                        }
                         try {
                             newSkierScoreRow["Score"] = (Int16)curSkierDetailRow[0][curScoreName];
                         } catch {
@@ -1044,10 +1057,11 @@ namespace WaterskiScoringSystem.Common {
                 newSkierScoreRow["RunoffScoreMeters"] = 0;
                 newSkierScoreRow["BackupScoreFeet"] = 0;
                 newSkierScoreRow["BackupScoreMeters"] = 0;
+                newSkierScoreRow["RankingScore"] = 0;
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, SS.BoatSpeed, SS.RampHeight, ER.TeamCode, '' as BoatCode " );
-                curSqlStmt.Append( ", ER.AgeGroup,  ER.EventGroup, COALESCE(SS.EventClass, ER.EventClass) as EventClass");
+                curSqlStmt.Append(", ER.AgeGroup,  ER.EventGroup, COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
                 curSqlStmt.Append( ", SS.ScoreFeet, SS.ScoreMeters, SS.Round as " + curRoundName + ", SS.NopsScore as " + curPointsName + " " );
                 curSqlStmt.Append( "FROM JumpScore AS SS " );
                 curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
@@ -1061,6 +1075,11 @@ namespace WaterskiScoringSystem.Common {
                 if (curSkierResultsAll.Rows.Count > 0) {
                     curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
                         + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"].ToString() );
+                    try {
+                        newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
+                    } catch {
+                        newSkierScoreRow["RankingScore"] = 0;
+                    }
                     try {
                         if (inRules.ToLower().Equals( "iwwf" )) {
                             newSkierScoreRow["ScoreFeet"] = 0;
@@ -2089,6 +2108,14 @@ namespace WaterskiScoringSystem.Common {
             curCol.DefaultValue = 0;
             curDataTable.Columns.Add( curCol );
 
+            curCol = new DataColumn();
+            curCol.ColumnName = "RankingScore";
+            curCol.DataType = System.Type.GetType("System.Decimal");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
             return curDataTable;
         }
 
@@ -2195,6 +2222,14 @@ namespace WaterskiScoringSystem.Common {
             curCol.DefaultValue = 0;
             curDataTable.Columns.Add( curCol );
 
+            curCol = new DataColumn();
+            curCol.ColumnName = "RankingScore";
+            curCol.DataType = System.Type.GetType("System.Decimal");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
             return curDataTable;
         }
 
@@ -2284,6 +2319,14 @@ namespace WaterskiScoringSystem.Common {
             curCol.ReadOnly = false;
             curCol.DefaultValue = 0;
             curDataTable.Columns.Add( curCol );
+
+            curCol = new DataColumn();
+            curCol.ColumnName = "RankingScore";
+            curCol.DataType = System.Type.GetType("System.Decimal");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
 
             return curDataTable;
         }

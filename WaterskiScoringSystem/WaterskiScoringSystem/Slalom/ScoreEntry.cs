@@ -790,6 +790,16 @@ namespace WaterskiScoringSystem.Slalom {
                         String curRopeLenMetric = ( (Decimal)myPassRow["MinValue"] ).ToString( "#0.00" );
                         String[] curPassAttr = ((String)myPassRow["CodeValue"]).Split(',');
                         curScorePassNum = (String)myPassRow["ListCode"];
+                        String curFinalRopeOff = curPassAttr[2];
+
+                        DataRow curClassRow = getClassRow(curEventClass);
+                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] 
+                            && SlalomSpeedSelect.CurrentValue < curMaxSpeed ) {
+                            curRopeLenMetric = (String) myRecapRow.Cells["PassLineLengthRecap"].Value;
+                            DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = " + SlalomLineSelect.CurrentShowValueNum);
+                            String curValue = (String)curLineRow[0]["CodeValue"];
+                            curFinalRopeOff = curValue.Substring(0, curValue.IndexOf("-") - 1);
+                        }
 
                         try {
                             if ( Convert.ToDecimal( curScoreRecap ) <= 0M ) {
@@ -822,7 +832,7 @@ namespace WaterskiScoringSystem.Slalom {
                                 curSqlStmt.Append( ", FinalSpeedMph = " + curPassAttr[3].Substring( 0, 4 ) );
                                 curSqlStmt.Append( ", FinalSpeedKph = " + curSpeedKph.ToString() );
                                 curSqlStmt.Append( ", FinalLen = '" + curRopeLenMetric + "'" );
-                                curSqlStmt.Append( ", FinalLenOff = '" + curPassAttr[2] + "'" );
+                                curSqlStmt.Append( ", FinalLenOff = '" + curFinalRopeOff + "'" );
                                 curSqlStmt.Append( ", FinalPassScore = " + curScoreRecap );
 
                                 curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
@@ -855,7 +865,7 @@ namespace WaterskiScoringSystem.Slalom {
                                 curSqlStmt.Append( ", " + curPassAttr[3].Substring( 0, 4 ) );
                                 curSqlStmt.Append( ", " + curSpeedKph.ToString() );
                                 curSqlStmt.Append( ", '" + curRopeLenMetric + "'" );
-                                curSqlStmt.Append( ", '" + curPassAttr[2] + "'" );
+                                curSqlStmt.Append( ", '" + curFinalRopeOff + "'" );
                                 curSqlStmt.Append( ", '" + curScoreRecap + "'" );
 
                                 curSqlStmt.Append( ", GETDATE()" );
@@ -2369,12 +2379,14 @@ namespace WaterskiScoringSystem.Slalom {
                                     if ( curPassLine == 0M ) {
                                         curPassLine = SlalomLineSelect.CurrentValueNum;
                                     }
+                                    /*
+                                    myPassRow = getPassRow(curMaxSpeed, curPassLine);
+                                    if ( myPassRow != null ) {
+                                        curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
+                                    }
+                                    */
                                 }
 
-                                myPassRow = getPassRow(curMaxSpeed, curPassLine);
-                                if ( myPassRow != null ) {
-                                    curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
-                                }
                             }
                         } else {
                             curPassNum++;
@@ -3493,26 +3505,27 @@ namespace WaterskiScoringSystem.Slalom {
                                 } else {
                                 }
                                 rerideReasonDialogForm.RerideReasonText = (String)myRecapRow.Cells["RerideReasonRecap"].Value;
-                                    if (rerideReasonDialogForm.ShowDialog() == DialogResult.OK) {
-                                        String curCommand = rerideReasonDialogForm.Command;
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
-                                        if (curCommand.ToLower().Equals( "updatewithprotect" )) {
-                                            myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-                                        }
-                                        saveScore();
-                                        Timer curTimerObj = new Timer();
-                                        curTimerObj.Interval = 5;
-                                        curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-                                        curTimerObj.Start();
-                                    } else {
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        rerideReasonDialogForm.RerideReasonText = "";
-                                        MessageBox.Show( "Reride can not be granted without a reason being specified." );
-                                        myRecapRow.Cells["RerideRecap"].Value = "N";
-                                        myRecapRow.Cells["Updated"].Value = "Y";
-                                        saveScore();
+                                if ( rerideReasonDialogForm.ShowDialog() == DialogResult.OK ) {
+                                    setEventRegRowStatus("InProg");
+                                    String curCommand = rerideReasonDialogForm.Command;
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
+                                    if ( curCommand.ToLower().Equals("updatewithprotect") ) {
+                                        myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
                                     }
+                                    saveScore();
+                                    Timer curTimerObj = new Timer();
+                                    curTimerObj.Interval = 5;
+                                    curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+                                    curTimerObj.Start();
+                                } else {
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    rerideReasonDialogForm.RerideReasonText = "";
+                                    MessageBox.Show("Reride can not be granted without a reason being specified.");
+                                    myRecapRow.Cells["RerideRecap"].Value = "N";
+                                    myRecapRow.Cells["Updated"].Value = "Y";
+                                    saveScore();
+                                }
                             } else {
                                 myRecapRow.Cells["Updated"].Value = "Y";
                                 setEventRegRowStatus( myRecapRow );

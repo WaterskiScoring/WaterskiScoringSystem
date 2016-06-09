@@ -27,16 +27,6 @@ namespace WaterskiScoringSystem.Tournament {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -56,30 +46,9 @@ namespace WaterskiScoringSystem.Tournament {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle80 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -104,6 +73,37 @@ namespace WaterskiScoringSystem.Tournament {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle79 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
             this.winStatus = new System.Windows.Forms.StatusStrip();
             this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.ShowTeamButton = new System.Windows.Forms.Button();
@@ -113,22 +113,10 @@ namespace WaterskiScoringSystem.Tournament {
             this.navPrint = new System.Windows.Forms.ToolStripButton();
             this.navExport = new System.Windows.Forms.ToolStripButton();
             this.navExportHtml = new System.Windows.Forms.ToolStripButton();
+            this.navLiveWeb = new System.Windows.Forms.ToolStripButton();
             this.NumPerTeamTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.slalomScoreSummaryDataGridView = new System.Windows.Forms.DataGridView();
-            this.MemberIdSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SanctionIdSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SkierNameSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgeGroupSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TeamCodeSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventGroupSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NopsScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtPointsSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapBaseSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RoundSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PointsMethodGroupBox = new System.Windows.Forms.GroupBox();
             this.ratioPointsButton = new System.Windows.Forms.RadioButton();
             this.kBasePointsButton = new System.Windows.Forms.RadioButton();
@@ -169,42 +157,13 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventTrickLabel = new System.Windows.Forms.Label();
             this.EventSlalomLabel = new System.Windows.Forms.Label();
             this.trickScoreSummaryDataGridView = new System.Windows.Forms.DataGridView();
-            this.MemberIdTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SanctionIdTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SkierNameTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgeGroupTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TeamCodeTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventGroupTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NopsScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtPointsTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapBaseTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RoundTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.jumpScoreSummaryDataGridView = new System.Windows.Forms.DataGridView();
-            this.MemberIdJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SanctionIdJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SkierNameJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgeGroupJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TeamCodeJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventGroupJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScoreFeet = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScoreMeters = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NopsScoreJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlcmtPointsJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapBaseJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HCapScoreJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RoundJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintDataGridView = new System.Windows.Forms.DataGridView();
-            this.ViewReportButton = new System.Windows.Forms.Button();
-            this.EventGroupListLabel = new System.Windows.Forms.Label();
-            this.EventGroupList = new System.Windows.Forms.ComboBox();
             this.PrintTeamPlcmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeamDiv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeam = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintTeamScoreTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PrintSkierCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintSkierSep = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintPlcmtSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintSkierNameSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -223,6 +182,50 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintScoreJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintPointsJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintPlcmtPointsJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ViewReportButton = new System.Windows.Forms.Button();
+            this.EventGroupListLabel = new System.Windows.Forms.Label();
+            this.EventGroupList = new System.Windows.Forms.ComboBox();
+            this.LiveWebLabel = new System.Windows.Forms.Label();
+            this.MemberIdSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SanctionIdSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SkierNameSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgeGroupSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TeamCodeSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventGroupSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NopsScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtPointsSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapBaseSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapScoreSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RoundSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MemberIdTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SanctionIdTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SkierNameTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgeGroupTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TeamCodeTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventGroupTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NopsScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtPointsTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapBaseTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapScoreTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RoundTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MemberIdJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SanctionIdJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SkierNameJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgeGroupJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TeamCodeJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventGroupJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScoreFeet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScoreMeters = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NopsScoreJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlcmtPointsJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapBaseJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HCapScoreJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RoundJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.winStatus.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.slalomScoreSummaryDataGridView)).BeginInit();
@@ -277,7 +280,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.navRefresh,
             this.navPrint,
             this.navExport,
-            this.navExportHtml});
+            this.navExportHtml,
+            this.navLiveWeb});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1218, 38);
@@ -325,6 +329,16 @@ namespace WaterskiScoringSystem.Tournament {
             this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
             this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
+            // 
+            // navLiveWeb
+            // 
+            this.navLiveWeb.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+            this.navLiveWeb.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navLiveWeb.Name = "navLiveWeb";
+            this.navLiveWeb.Size = new System.Drawing.Size(59, 35);
+            this.navLiveWeb.Text = "Live Web";
+            this.navLiveWeb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navLiveWeb.Click += new System.EventHandler(this.navLiveWeb_Click);
             // 
             // NumPerTeamTextBox
             // 
@@ -389,162 +403,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.slalomScoreSummaryDataGridView.RowHeadersVisible = false;
             this.slalomScoreSummaryDataGridView.Size = new System.Drawing.Size(522, 136);
             this.slalomScoreSummaryDataGridView.TabIndex = 121;
-            // 
-            // MemberIdSlalom
-            // 
-            this.MemberIdSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.MemberIdSlalom.HeaderText = "MemberId";
-            this.MemberIdSlalom.Name = "MemberIdSlalom";
-            this.MemberIdSlalom.ReadOnly = true;
-            this.MemberIdSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MemberIdSlalom.Visible = false;
-            // 
-            // SanctionIdSlalom
-            // 
-            this.SanctionIdSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SanctionIdSlalom.HeaderText = "SanctionId";
-            this.SanctionIdSlalom.Name = "SanctionIdSlalom";
-            this.SanctionIdSlalom.ReadOnly = true;
-            this.SanctionIdSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SanctionIdSlalom.Visible = false;
-            // 
-            // PlcmtSlalom
-            // 
-            this.PlcmtSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.PlcmtSlalom.HeaderText = "Plcmt";
-            this.PlcmtSlalom.Name = "PlcmtSlalom";
-            this.PlcmtSlalom.ReadOnly = true;
-            this.PlcmtSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtSlalom.Width = 35;
-            // 
-            // SkierNameSlalom
-            // 
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SkierNameSlalom.DefaultCellStyle = dataGridViewCellStyle3;
-            this.SkierNameSlalom.HeaderText = "Skier Name";
-            this.SkierNameSlalom.Name = "SkierNameSlalom";
-            this.SkierNameSlalom.ReadOnly = true;
-            this.SkierNameSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SkierNameSlalom.Width = 125;
-            // 
-            // AgeGroupSlalom
-            // 
-            this.AgeGroupSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AgeGroupSlalom.DefaultCellStyle = dataGridViewCellStyle4;
-            this.AgeGroupSlalom.HeaderText = "Div";
-            this.AgeGroupSlalom.Name = "AgeGroupSlalom";
-            this.AgeGroupSlalom.ReadOnly = true;
-            this.AgeGroupSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AgeGroupSlalom.Width = 45;
-            // 
-            // TeamCodeSlalom
-            // 
-            this.TeamCodeSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TeamCodeSlalom.DefaultCellStyle = dataGridViewCellStyle5;
-            this.TeamCodeSlalom.HeaderText = "Team";
-            this.TeamCodeSlalom.Name = "TeamCodeSlalom";
-            this.TeamCodeSlalom.ReadOnly = true;
-            this.TeamCodeSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TeamCodeSlalom.Width = 60;
-            // 
-            // EventGroupSlalom
-            // 
-            this.EventGroupSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EventGroupSlalom.DefaultCellStyle = dataGridViewCellStyle6;
-            this.EventGroupSlalom.HeaderText = "Group";
-            this.EventGroupSlalom.Name = "EventGroupSlalom";
-            this.EventGroupSlalom.ReadOnly = true;
-            this.EventGroupSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EventGroupSlalom.Width = 50;
-            // 
-            // ScoreSlalom
-            // 
-            this.ScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.Format = "N2";
-            dataGridViewCellStyle7.NullValue = null;
-            this.ScoreSlalom.DefaultCellStyle = dataGridViewCellStyle7;
-            this.ScoreSlalom.HeaderText = "Score";
-            this.ScoreSlalom.Name = "ScoreSlalom";
-            this.ScoreSlalom.ReadOnly = true;
-            this.ScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScoreSlalom.Width = 75;
-            // 
-            // NopsScoreSlalom
-            // 
-            this.NopsScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.Format = "N1";
-            dataGridViewCellStyle8.NullValue = null;
-            this.NopsScoreSlalom.DefaultCellStyle = dataGridViewCellStyle8;
-            this.NopsScoreSlalom.HeaderText = "Points";
-            this.NopsScoreSlalom.Name = "NopsScoreSlalom";
-            this.NopsScoreSlalom.ReadOnly = true;
-            this.NopsScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NopsScoreSlalom.Width = 55;
-            // 
-            // PlcmtPointsSlalom
-            // 
-            this.PlcmtPointsSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.Format = "N0";
-            dataGridViewCellStyle9.NullValue = "0";
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsSlalom.DefaultCellStyle = dataGridViewCellStyle9;
-            this.PlcmtPointsSlalom.HeaderText = "Plcmt Pts";
-            this.PlcmtPointsSlalom.Name = "PlcmtPointsSlalom";
-            this.PlcmtPointsSlalom.ReadOnly = true;
-            this.PlcmtPointsSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsSlalom.Width = 55;
-            // 
-            // HCapBaseSlalom
-            // 
-            this.HCapBaseSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.Format = "N1";
-            dataGridViewCellStyle10.NullValue = null;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseSlalom.DefaultCellStyle = dataGridViewCellStyle10;
-            this.HCapBaseSlalom.HeaderText = "HBase";
-            this.HCapBaseSlalom.Name = "HCapBaseSlalom";
-            this.HCapBaseSlalom.ReadOnly = true;
-            this.HCapBaseSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseSlalom.Visible = false;
-            this.HCapBaseSlalom.Width = 45;
-            // 
-            // HCapScoreSlalom
-            // 
-            this.HCapScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.Format = "N1";
-            dataGridViewCellStyle11.NullValue = null;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreSlalom.DefaultCellStyle = dataGridViewCellStyle11;
-            this.HCapScoreSlalom.HeaderText = "HScore";
-            this.HCapScoreSlalom.Name = "HCapScoreSlalom";
-            this.HCapScoreSlalom.ReadOnly = true;
-            this.HCapScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreSlalom.Visible = false;
-            this.HCapScoreSlalom.Width = 45;
-            // 
-            // RoundSlalom
-            // 
-            this.RoundSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.RoundSlalom.DefaultCellStyle = dataGridViewCellStyle12;
-            this.RoundSlalom.HeaderText = "Rd";
-            this.RoundSlalom.Name = "RoundSlalom";
-            this.RoundSlalom.ReadOnly = true;
-            this.RoundSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.RoundSlalom.Visible = false;
-            this.RoundSlalom.Width = 30;
             // 
             // PointsMethodGroupBox
             // 
@@ -1095,159 +953,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.trickScoreSummaryDataGridView.Size = new System.Drawing.Size(512, 136);
             this.trickScoreSummaryDataGridView.TabIndex = 122;
             // 
-            // MemberIdTrick
-            // 
-            this.MemberIdTrick.HeaderText = "MemberId";
-            this.MemberIdTrick.Name = "MemberIdTrick";
-            this.MemberIdTrick.ReadOnly = true;
-            this.MemberIdTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MemberIdTrick.Visible = false;
-            // 
-            // SanctionIdTrick
-            // 
-            this.SanctionIdTrick.HeaderText = "SanctionId";
-            this.SanctionIdTrick.Name = "SanctionIdTrick";
-            this.SanctionIdTrick.ReadOnly = true;
-            this.SanctionIdTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SanctionIdTrick.Visible = false;
-            // 
-            // PlcmtTrick
-            // 
-            this.PlcmtTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.PlcmtTrick.HeaderText = "Plcmt";
-            this.PlcmtTrick.Name = "PlcmtTrick";
-            this.PlcmtTrick.ReadOnly = true;
-            this.PlcmtTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtTrick.Width = 35;
-            // 
-            // SkierNameTrick
-            // 
-            this.SkierNameTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SkierNameTrick.DefaultCellStyle = dataGridViewCellStyle32;
-            this.SkierNameTrick.HeaderText = "Skier Name";
-            this.SkierNameTrick.Name = "SkierNameTrick";
-            this.SkierNameTrick.ReadOnly = true;
-            this.SkierNameTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SkierNameTrick.Width = 125;
-            // 
-            // AgeGroupTrick
-            // 
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AgeGroupTrick.DefaultCellStyle = dataGridViewCellStyle33;
-            this.AgeGroupTrick.HeaderText = "Div";
-            this.AgeGroupTrick.Name = "AgeGroupTrick";
-            this.AgeGroupTrick.ReadOnly = true;
-            this.AgeGroupTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AgeGroupTrick.Width = 45;
-            // 
-            // TeamCodeTrick
-            // 
-            this.TeamCodeTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TeamCodeTrick.DefaultCellStyle = dataGridViewCellStyle34;
-            this.TeamCodeTrick.HeaderText = "Team";
-            this.TeamCodeTrick.Name = "TeamCodeTrick";
-            this.TeamCodeTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TeamCodeTrick.Width = 60;
-            // 
-            // EventGroupTrick
-            // 
-            this.EventGroupTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EventGroupTrick.DefaultCellStyle = dataGridViewCellStyle35;
-            this.EventGroupTrick.HeaderText = "Group";
-            this.EventGroupTrick.Name = "EventGroupTrick";
-            this.EventGroupTrick.ReadOnly = true;
-            this.EventGroupTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EventGroupTrick.Width = 50;
-            // 
-            // ScoreTrick
-            // 
-            this.ScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle36.Format = "N0";
-            dataGridViewCellStyle36.NullValue = null;
-            this.ScoreTrick.DefaultCellStyle = dataGridViewCellStyle36;
-            this.ScoreTrick.HeaderText = "Score";
-            this.ScoreTrick.Name = "ScoreTrick";
-            this.ScoreTrick.ReadOnly = true;
-            this.ScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScoreTrick.Width = 75;
-            // 
-            // NopsScoreTrick
-            // 
-            this.NopsScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle37.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle37.Format = "N1";
-            dataGridViewCellStyle37.NullValue = null;
-            this.NopsScoreTrick.DefaultCellStyle = dataGridViewCellStyle37;
-            this.NopsScoreTrick.HeaderText = "Points";
-            this.NopsScoreTrick.Name = "NopsScoreTrick";
-            this.NopsScoreTrick.ReadOnly = true;
-            this.NopsScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NopsScoreTrick.Width = 55;
-            // 
-            // PlcmtPointsTrick
-            // 
-            this.PlcmtPointsTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle38.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle38.Format = "N0";
-            dataGridViewCellStyle38.NullValue = null;
-            dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsTrick.DefaultCellStyle = dataGridViewCellStyle38;
-            this.PlcmtPointsTrick.HeaderText = "Plcmt Pts";
-            this.PlcmtPointsTrick.Name = "PlcmtPointsTrick";
-            this.PlcmtPointsTrick.ReadOnly = true;
-            this.PlcmtPointsTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsTrick.Width = 55;
-            // 
-            // HCapBaseTrick
-            // 
-            this.HCapBaseTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle39.Format = "N0";
-            dataGridViewCellStyle39.NullValue = null;
-            dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseTrick.DefaultCellStyle = dataGridViewCellStyle39;
-            this.HCapBaseTrick.HeaderText = "HBase";
-            this.HCapBaseTrick.Name = "HCapBaseTrick";
-            this.HCapBaseTrick.ReadOnly = true;
-            this.HCapBaseTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseTrick.Visible = false;
-            this.HCapBaseTrick.Width = 45;
-            // 
-            // HCapScoreTrick
-            // 
-            this.HCapScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle40.Format = "N0";
-            dataGridViewCellStyle40.NullValue = null;
-            dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreTrick.DefaultCellStyle = dataGridViewCellStyle40;
-            this.HCapScoreTrick.HeaderText = "HScore";
-            this.HCapScoreTrick.Name = "HCapScoreTrick";
-            this.HCapScoreTrick.ReadOnly = true;
-            this.HCapScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreTrick.Visible = false;
-            this.HCapScoreTrick.Width = 45;
-            // 
-            // RoundTrick
-            // 
-            this.RoundTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.RoundTrick.DefaultCellStyle = dataGridViewCellStyle41;
-            this.RoundTrick.HeaderText = "Rd";
-            this.RoundTrick.Name = "RoundTrick";
-            this.RoundTrick.ReadOnly = true;
-            this.RoundTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.RoundTrick.Visible = false;
-            this.RoundTrick.Width = 30;
-            // 
             // jumpScoreSummaryDataGridView
             // 
             this.jumpScoreSummaryDataGridView.AllowUserToAddRows = false;
@@ -1295,177 +1000,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.jumpScoreSummaryDataGridView.Size = new System.Drawing.Size(512, 136);
             this.jumpScoreSummaryDataGridView.TabIndex = 123;
             // 
-            // MemberIdJump
-            // 
-            this.MemberIdJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.MemberIdJump.HeaderText = "MemberId";
-            this.MemberIdJump.Name = "MemberIdJump";
-            this.MemberIdJump.ReadOnly = true;
-            this.MemberIdJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MemberIdJump.Visible = false;
-            // 
-            // SanctionIdJump
-            // 
-            this.SanctionIdJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SanctionIdJump.HeaderText = "SanctionId";
-            this.SanctionIdJump.Name = "SanctionIdJump";
-            this.SanctionIdJump.ReadOnly = true;
-            this.SanctionIdJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SanctionIdJump.Visible = false;
-            // 
-            // PlcmtJump
-            // 
-            this.PlcmtJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.PlcmtJump.HeaderText = "Plcmt";
-            this.PlcmtJump.Name = "PlcmtJump";
-            this.PlcmtJump.ReadOnly = true;
-            this.PlcmtJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtJump.Width = 35;
-            // 
-            // SkierNameJump
-            // 
-            this.SkierNameJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle45.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SkierNameJump.DefaultCellStyle = dataGridViewCellStyle45;
-            this.SkierNameJump.HeaderText = "Skier Name";
-            this.SkierNameJump.Name = "SkierNameJump";
-            this.SkierNameJump.ReadOnly = true;
-            this.SkierNameJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SkierNameJump.Width = 125;
-            // 
-            // AgeGroupJump
-            // 
-            this.AgeGroupJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AgeGroupJump.DefaultCellStyle = dataGridViewCellStyle46;
-            this.AgeGroupJump.HeaderText = "Div";
-            this.AgeGroupJump.Name = "AgeGroupJump";
-            this.AgeGroupJump.ReadOnly = true;
-            this.AgeGroupJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AgeGroupJump.Width = 45;
-            // 
-            // TeamCodeJump
-            // 
-            this.TeamCodeJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TeamCodeJump.DefaultCellStyle = dataGridViewCellStyle47;
-            this.TeamCodeJump.HeaderText = "Team";
-            this.TeamCodeJump.Name = "TeamCodeJump";
-            this.TeamCodeJump.ReadOnly = true;
-            this.TeamCodeJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TeamCodeJump.Width = 60;
-            // 
-            // EventGroupJump
-            // 
-            this.EventGroupJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle48.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EventGroupJump.DefaultCellStyle = dataGridViewCellStyle48;
-            this.EventGroupJump.HeaderText = "Group";
-            this.EventGroupJump.Name = "EventGroupJump";
-            this.EventGroupJump.ReadOnly = true;
-            this.EventGroupJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EventGroupJump.Width = 50;
-            // 
-            // ScoreFeet
-            // 
-            this.ScoreFeet.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle49.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle49.Format = "N0";
-            dataGridViewCellStyle49.NullValue = null;
-            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScoreFeet.DefaultCellStyle = dataGridViewCellStyle49;
-            this.ScoreFeet.HeaderText = "Feet";
-            this.ScoreFeet.Name = "ScoreFeet";
-            this.ScoreFeet.ReadOnly = true;
-            this.ScoreFeet.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScoreFeet.Width = 35;
-            // 
-            // ScoreMeters
-            // 
-            this.ScoreMeters.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle50.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle50.Format = "N1";
-            dataGridViewCellStyle50.NullValue = null;
-            this.ScoreMeters.DefaultCellStyle = dataGridViewCellStyle50;
-            this.ScoreMeters.HeaderText = "Meters";
-            this.ScoreMeters.Name = "ScoreMeters";
-            this.ScoreMeters.ReadOnly = true;
-            this.ScoreMeters.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScoreMeters.Width = 40;
-            // 
-            // NopsScoreJump
-            // 
-            this.NopsScoreJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle51.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle51.Format = "N1";
-            dataGridViewCellStyle51.NullValue = null;
-            this.NopsScoreJump.DefaultCellStyle = dataGridViewCellStyle51;
-            this.NopsScoreJump.HeaderText = "Points";
-            this.NopsScoreJump.Name = "NopsScoreJump";
-            this.NopsScoreJump.ReadOnly = true;
-            this.NopsScoreJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NopsScoreJump.Width = 55;
-            // 
-            // PlcmtPointsJump
-            // 
-            this.PlcmtPointsJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle52.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle52.Format = "N0";
-            dataGridViewCellStyle52.NullValue = "0";
-            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsJump.DefaultCellStyle = dataGridViewCellStyle52;
-            this.PlcmtPointsJump.HeaderText = "Plcmt Pts";
-            this.PlcmtPointsJump.Name = "PlcmtPointsJump";
-            this.PlcmtPointsJump.ReadOnly = true;
-            this.PlcmtPointsJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlcmtPointsJump.Width = 55;
-            // 
-            // HCapBaseJump
-            // 
-            this.HCapBaseJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle53.Format = "N1";
-            dataGridViewCellStyle53.NullValue = null;
-            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseJump.DefaultCellStyle = dataGridViewCellStyle53;
-            this.HCapBaseJump.HeaderText = "HBase";
-            this.HCapBaseJump.Name = "HCapBaseJump";
-            this.HCapBaseJump.ReadOnly = true;
-            this.HCapBaseJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapBaseJump.Visible = false;
-            this.HCapBaseJump.Width = 45;
-            // 
-            // HCapScoreJump
-            // 
-            this.HCapScoreJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle54.Format = "N1";
-            dataGridViewCellStyle54.NullValue = null;
-            dataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreJump.DefaultCellStyle = dataGridViewCellStyle54;
-            this.HCapScoreJump.HeaderText = "HScore";
-            this.HCapScoreJump.Name = "HCapScoreJump";
-            this.HCapScoreJump.ReadOnly = true;
-            this.HCapScoreJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HCapScoreJump.Visible = false;
-            this.HCapScoreJump.Width = 45;
-            // 
-            // RoundJump
-            // 
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.RoundJump.DefaultCellStyle = dataGridViewCellStyle55;
-            this.RoundJump.HeaderText = "Rd";
-            this.RoundJump.Name = "RoundJump";
-            this.RoundJump.ReadOnly = true;
-            this.RoundJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.RoundJump.Visible = false;
-            this.RoundJump.Width = 30;
-            // 
             // PrintDataGridView
             // 
             this.PrintDataGridView.AllowUserToAddRows = false;
@@ -1491,6 +1025,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeamDiv,
             this.PrintTeam,
             this.PrintTeamScoreTotal,
+            this.PrintSkierCategory,
             this.PrintSkierSep,
             this.PrintPlcmtSlalom,
             this.PrintSkierNameSlalom,
@@ -1529,33 +1064,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintDataGridView.TabIndex = 124;
             this.PrintDataGridView.TabStop = false;
             this.PrintDataGridView.Visible = false;
-            // 
-            // ViewReportButton
-            // 
-            this.ViewReportButton.Location = new System.Drawing.Point(348, 96);
-            this.ViewReportButton.Name = "ViewReportButton";
-            this.ViewReportButton.Size = new System.Drawing.Size(117, 22);
-            this.ViewReportButton.TabIndex = 55;
-            this.ViewReportButton.Text = "View Team Results";
-            this.ViewReportButton.UseVisualStyleBackColor = true;
-            this.ViewReportButton.Click += new System.EventHandler(this.ViewReportButton_Click);
-            // 
-            // EventGroupListLabel
-            // 
-            this.EventGroupListLabel.AutoSize = true;
-            this.EventGroupListLabel.Location = new System.Drawing.Point(930, 53);
-            this.EventGroupListLabel.Name = "EventGroupListLabel";
-            this.EventGroupListLabel.Size = new System.Drawing.Size(193, 13);
-            this.EventGroupListLabel.TabIndex = 129;
-            this.EventGroupListLabel.Text = "Select a division and click Refresh icon";
-            // 
-            // EventGroupList
-            // 
-            this.EventGroupList.FormattingEnabled = true;
-            this.EventGroupList.Location = new System.Drawing.Point(825, 49);
-            this.EventGroupList.Name = "EventGroupList";
-            this.EventGroupList.Size = new System.Drawing.Size(100, 21);
-            this.EventGroupList.TabIndex = 130;
             // 
             // PrintTeamPlcmt
             // 
@@ -1602,6 +1110,16 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeamScoreTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.PrintTeamScoreTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.PrintTeamScoreTotal.Width = 50;
+            // 
+            // PrintSkierCategory
+            // 
+            this.PrintSkierCategory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.PrintSkierCategory.HeaderText = "SkierCategory";
+            this.PrintSkierCategory.Name = "PrintSkierCategory";
+            this.PrintSkierCategory.ReadOnly = true;
+            this.PrintSkierCategory.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PrintSkierCategory.Visible = false;
+            this.PrintSkierCategory.Width = 25;
             // 
             // PrintSkierSep
             // 
@@ -1819,11 +1337,533 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintPlcmtPointsJump.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.PrintPlcmtPointsJump.Width = 46;
             // 
+            // ViewReportButton
+            // 
+            this.ViewReportButton.Location = new System.Drawing.Point(348, 96);
+            this.ViewReportButton.Name = "ViewReportButton";
+            this.ViewReportButton.Size = new System.Drawing.Size(117, 22);
+            this.ViewReportButton.TabIndex = 55;
+            this.ViewReportButton.Text = "View Team Results";
+            this.ViewReportButton.UseVisualStyleBackColor = true;
+            this.ViewReportButton.Click += new System.EventHandler(this.ViewReportButton_Click);
+            // 
+            // EventGroupListLabel
+            // 
+            this.EventGroupListLabel.AutoSize = true;
+            this.EventGroupListLabel.Location = new System.Drawing.Point(930, 53);
+            this.EventGroupListLabel.Name = "EventGroupListLabel";
+            this.EventGroupListLabel.Size = new System.Drawing.Size(193, 13);
+            this.EventGroupListLabel.TabIndex = 129;
+            this.EventGroupListLabel.Text = "Select a division and click Refresh icon";
+            // 
+            // EventGroupList
+            // 
+            this.EventGroupList.FormattingEnabled = true;
+            this.EventGroupList.Location = new System.Drawing.Point(825, 49);
+            this.EventGroupList.Name = "EventGroupList";
+            this.EventGroupList.Size = new System.Drawing.Size(100, 21);
+            this.EventGroupList.TabIndex = 130;
+            // 
+            // LiveWebLabel
+            // 
+            this.LiveWebLabel.AutoSize = true;
+            this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.LiveWebLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
+            this.LiveWebLabel.Location = new System.Drawing.Point(148, 78);
+            this.LiveWebLabel.Name = "LiveWebLabel";
+            this.LiveWebLabel.Size = new System.Drawing.Size(86, 13);
+            this.LiveWebLabel.TabIndex = 131;
+            this.LiveWebLabel.Text = "Live Web Active";
+            this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LiveWebLabel.Visible = false;
+            // 
+            // MemberIdSlalom
+            // 
+            this.MemberIdSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.MemberIdSlalom.HeaderText = "MemberId";
+            this.MemberIdSlalom.Name = "MemberIdSlalom";
+            this.MemberIdSlalom.ReadOnly = true;
+            this.MemberIdSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MemberIdSlalom.Visible = false;
+            // 
+            // SanctionIdSlalom
+            // 
+            this.SanctionIdSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SanctionIdSlalom.HeaderText = "SanctionId";
+            this.SanctionIdSlalom.Name = "SanctionIdSlalom";
+            this.SanctionIdSlalom.ReadOnly = true;
+            this.SanctionIdSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SanctionIdSlalom.Visible = false;
+            // 
+            // PlcmtSlalom
+            // 
+            this.PlcmtSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.PlcmtSlalom.HeaderText = "Plcmt";
+            this.PlcmtSlalom.Name = "PlcmtSlalom";
+            this.PlcmtSlalom.ReadOnly = true;
+            this.PlcmtSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtSlalom.Width = 35;
+            // 
+            // SkierNameSlalom
+            // 
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SkierNameSlalom.DefaultCellStyle = dataGridViewCellStyle3;
+            this.SkierNameSlalom.HeaderText = "Skier Name";
+            this.SkierNameSlalom.Name = "SkierNameSlalom";
+            this.SkierNameSlalom.ReadOnly = true;
+            this.SkierNameSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SkierNameSlalom.Width = 125;
+            // 
+            // AgeGroupSlalom
+            // 
+            this.AgeGroupSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AgeGroupSlalom.DefaultCellStyle = dataGridViewCellStyle4;
+            this.AgeGroupSlalom.HeaderText = "Div";
+            this.AgeGroupSlalom.Name = "AgeGroupSlalom";
+            this.AgeGroupSlalom.ReadOnly = true;
+            this.AgeGroupSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AgeGroupSlalom.Width = 45;
+            // 
+            // TeamCodeSlalom
+            // 
+            this.TeamCodeSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TeamCodeSlalom.DefaultCellStyle = dataGridViewCellStyle5;
+            this.TeamCodeSlalom.HeaderText = "Team";
+            this.TeamCodeSlalom.Name = "TeamCodeSlalom";
+            this.TeamCodeSlalom.ReadOnly = true;
+            this.TeamCodeSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TeamCodeSlalom.Width = 60;
+            // 
+            // EventGroupSlalom
+            // 
+            this.EventGroupSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EventGroupSlalom.DefaultCellStyle = dataGridViewCellStyle6;
+            this.EventGroupSlalom.HeaderText = "Group";
+            this.EventGroupSlalom.Name = "EventGroupSlalom";
+            this.EventGroupSlalom.ReadOnly = true;
+            this.EventGroupSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EventGroupSlalom.Width = 50;
+            // 
+            // ScoreSlalom
+            // 
+            this.ScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.Format = "N2";
+            dataGridViewCellStyle7.NullValue = null;
+            this.ScoreSlalom.DefaultCellStyle = dataGridViewCellStyle7;
+            this.ScoreSlalom.HeaderText = "Score";
+            this.ScoreSlalom.Name = "ScoreSlalom";
+            this.ScoreSlalom.ReadOnly = true;
+            this.ScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScoreSlalom.Width = 75;
+            // 
+            // NopsScoreSlalom
+            // 
+            this.NopsScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.Format = "N1";
+            dataGridViewCellStyle8.NullValue = null;
+            this.NopsScoreSlalom.DefaultCellStyle = dataGridViewCellStyle8;
+            this.NopsScoreSlalom.HeaderText = "Points";
+            this.NopsScoreSlalom.Name = "NopsScoreSlalom";
+            this.NopsScoreSlalom.ReadOnly = true;
+            this.NopsScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NopsScoreSlalom.Width = 55;
+            // 
+            // PlcmtPointsSlalom
+            // 
+            this.PlcmtPointsSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.Format = "N0";
+            dataGridViewCellStyle9.NullValue = "0";
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsSlalom.DefaultCellStyle = dataGridViewCellStyle9;
+            this.PlcmtPointsSlalom.HeaderText = "Plcmt Pts";
+            this.PlcmtPointsSlalom.Name = "PlcmtPointsSlalom";
+            this.PlcmtPointsSlalom.ReadOnly = true;
+            this.PlcmtPointsSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsSlalom.Width = 55;
+            // 
+            // HCapBaseSlalom
+            // 
+            this.HCapBaseSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.Format = "N1";
+            dataGridViewCellStyle10.NullValue = null;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseSlalom.DefaultCellStyle = dataGridViewCellStyle10;
+            this.HCapBaseSlalom.HeaderText = "HBase";
+            this.HCapBaseSlalom.Name = "HCapBaseSlalom";
+            this.HCapBaseSlalom.ReadOnly = true;
+            this.HCapBaseSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseSlalom.Visible = false;
+            this.HCapBaseSlalom.Width = 45;
+            // 
+            // HCapScoreSlalom
+            // 
+            this.HCapScoreSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.Format = "N1";
+            dataGridViewCellStyle11.NullValue = null;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreSlalom.DefaultCellStyle = dataGridViewCellStyle11;
+            this.HCapScoreSlalom.HeaderText = "HCap";
+            this.HCapScoreSlalom.Name = "HCapScoreSlalom";
+            this.HCapScoreSlalom.ReadOnly = true;
+            this.HCapScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreSlalom.Visible = false;
+            this.HCapScoreSlalom.Width = 45;
+            // 
+            // RoundSlalom
+            // 
+            this.RoundSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.RoundSlalom.DefaultCellStyle = dataGridViewCellStyle12;
+            this.RoundSlalom.HeaderText = "Rd";
+            this.RoundSlalom.Name = "RoundSlalom";
+            this.RoundSlalom.ReadOnly = true;
+            this.RoundSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.RoundSlalom.Visible = false;
+            this.RoundSlalom.Width = 30;
+            // 
+            // MemberIdTrick
+            // 
+            this.MemberIdTrick.HeaderText = "MemberId";
+            this.MemberIdTrick.Name = "MemberIdTrick";
+            this.MemberIdTrick.ReadOnly = true;
+            this.MemberIdTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MemberIdTrick.Visible = false;
+            // 
+            // SanctionIdTrick
+            // 
+            this.SanctionIdTrick.HeaderText = "SanctionId";
+            this.SanctionIdTrick.Name = "SanctionIdTrick";
+            this.SanctionIdTrick.ReadOnly = true;
+            this.SanctionIdTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SanctionIdTrick.Visible = false;
+            // 
+            // PlcmtTrick
+            // 
+            this.PlcmtTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.PlcmtTrick.HeaderText = "Plcmt";
+            this.PlcmtTrick.Name = "PlcmtTrick";
+            this.PlcmtTrick.ReadOnly = true;
+            this.PlcmtTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtTrick.Width = 35;
+            // 
+            // SkierNameTrick
+            // 
+            this.SkierNameTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SkierNameTrick.DefaultCellStyle = dataGridViewCellStyle32;
+            this.SkierNameTrick.HeaderText = "Skier Name";
+            this.SkierNameTrick.Name = "SkierNameTrick";
+            this.SkierNameTrick.ReadOnly = true;
+            this.SkierNameTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SkierNameTrick.Width = 125;
+            // 
+            // AgeGroupTrick
+            // 
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AgeGroupTrick.DefaultCellStyle = dataGridViewCellStyle33;
+            this.AgeGroupTrick.HeaderText = "Div";
+            this.AgeGroupTrick.Name = "AgeGroupTrick";
+            this.AgeGroupTrick.ReadOnly = true;
+            this.AgeGroupTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AgeGroupTrick.Width = 45;
+            // 
+            // TeamCodeTrick
+            // 
+            this.TeamCodeTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TeamCodeTrick.DefaultCellStyle = dataGridViewCellStyle34;
+            this.TeamCodeTrick.HeaderText = "Team";
+            this.TeamCodeTrick.Name = "TeamCodeTrick";
+            this.TeamCodeTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TeamCodeTrick.Width = 60;
+            // 
+            // EventGroupTrick
+            // 
+            this.EventGroupTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EventGroupTrick.DefaultCellStyle = dataGridViewCellStyle35;
+            this.EventGroupTrick.HeaderText = "Group";
+            this.EventGroupTrick.Name = "EventGroupTrick";
+            this.EventGroupTrick.ReadOnly = true;
+            this.EventGroupTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EventGroupTrick.Width = 50;
+            // 
+            // ScoreTrick
+            // 
+            this.ScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle36.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle36.Format = "N0";
+            dataGridViewCellStyle36.NullValue = null;
+            this.ScoreTrick.DefaultCellStyle = dataGridViewCellStyle36;
+            this.ScoreTrick.HeaderText = "Score";
+            this.ScoreTrick.Name = "ScoreTrick";
+            this.ScoreTrick.ReadOnly = true;
+            this.ScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScoreTrick.Width = 75;
+            // 
+            // NopsScoreTrick
+            // 
+            this.NopsScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle37.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle37.Format = "N1";
+            dataGridViewCellStyle37.NullValue = null;
+            this.NopsScoreTrick.DefaultCellStyle = dataGridViewCellStyle37;
+            this.NopsScoreTrick.HeaderText = "Points";
+            this.NopsScoreTrick.Name = "NopsScoreTrick";
+            this.NopsScoreTrick.ReadOnly = true;
+            this.NopsScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NopsScoreTrick.Width = 55;
+            // 
+            // PlcmtPointsTrick
+            // 
+            this.PlcmtPointsTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle38.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle38.Format = "N0";
+            dataGridViewCellStyle38.NullValue = null;
+            dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsTrick.DefaultCellStyle = dataGridViewCellStyle38;
+            this.PlcmtPointsTrick.HeaderText = "Plcmt Pts";
+            this.PlcmtPointsTrick.Name = "PlcmtPointsTrick";
+            this.PlcmtPointsTrick.ReadOnly = true;
+            this.PlcmtPointsTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsTrick.Width = 55;
+            // 
+            // HCapBaseTrick
+            // 
+            this.HCapBaseTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle39.Format = "N0";
+            dataGridViewCellStyle39.NullValue = null;
+            dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseTrick.DefaultCellStyle = dataGridViewCellStyle39;
+            this.HCapBaseTrick.HeaderText = "HBase";
+            this.HCapBaseTrick.Name = "HCapBaseTrick";
+            this.HCapBaseTrick.ReadOnly = true;
+            this.HCapBaseTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseTrick.Visible = false;
+            this.HCapBaseTrick.Width = 45;
+            // 
+            // HCapScoreTrick
+            // 
+            this.HCapScoreTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle40.Format = "N0";
+            dataGridViewCellStyle40.NullValue = null;
+            dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreTrick.DefaultCellStyle = dataGridViewCellStyle40;
+            this.HCapScoreTrick.HeaderText = "HCap";
+            this.HCapScoreTrick.Name = "HCapScoreTrick";
+            this.HCapScoreTrick.ReadOnly = true;
+            this.HCapScoreTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreTrick.Visible = false;
+            this.HCapScoreTrick.Width = 45;
+            // 
+            // RoundTrick
+            // 
+            this.RoundTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.RoundTrick.DefaultCellStyle = dataGridViewCellStyle41;
+            this.RoundTrick.HeaderText = "Rd";
+            this.RoundTrick.Name = "RoundTrick";
+            this.RoundTrick.ReadOnly = true;
+            this.RoundTrick.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.RoundTrick.Visible = false;
+            this.RoundTrick.Width = 30;
+            // 
+            // MemberIdJump
+            // 
+            this.MemberIdJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.MemberIdJump.HeaderText = "MemberId";
+            this.MemberIdJump.Name = "MemberIdJump";
+            this.MemberIdJump.ReadOnly = true;
+            this.MemberIdJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MemberIdJump.Visible = false;
+            // 
+            // SanctionIdJump
+            // 
+            this.SanctionIdJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SanctionIdJump.HeaderText = "SanctionId";
+            this.SanctionIdJump.Name = "SanctionIdJump";
+            this.SanctionIdJump.ReadOnly = true;
+            this.SanctionIdJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SanctionIdJump.Visible = false;
+            // 
+            // PlcmtJump
+            // 
+            this.PlcmtJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.PlcmtJump.HeaderText = "Plcmt";
+            this.PlcmtJump.Name = "PlcmtJump";
+            this.PlcmtJump.ReadOnly = true;
+            this.PlcmtJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtJump.Width = 35;
+            // 
+            // SkierNameJump
+            // 
+            this.SkierNameJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle45.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SkierNameJump.DefaultCellStyle = dataGridViewCellStyle45;
+            this.SkierNameJump.HeaderText = "Skier Name";
+            this.SkierNameJump.Name = "SkierNameJump";
+            this.SkierNameJump.ReadOnly = true;
+            this.SkierNameJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SkierNameJump.Width = 125;
+            // 
+            // AgeGroupJump
+            // 
+            this.AgeGroupJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AgeGroupJump.DefaultCellStyle = dataGridViewCellStyle46;
+            this.AgeGroupJump.HeaderText = "Div";
+            this.AgeGroupJump.Name = "AgeGroupJump";
+            this.AgeGroupJump.ReadOnly = true;
+            this.AgeGroupJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AgeGroupJump.Width = 45;
+            // 
+            // TeamCodeJump
+            // 
+            this.TeamCodeJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TeamCodeJump.DefaultCellStyle = dataGridViewCellStyle47;
+            this.TeamCodeJump.HeaderText = "Team";
+            this.TeamCodeJump.Name = "TeamCodeJump";
+            this.TeamCodeJump.ReadOnly = true;
+            this.TeamCodeJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TeamCodeJump.Width = 60;
+            // 
+            // EventGroupJump
+            // 
+            this.EventGroupJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle48.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EventGroupJump.DefaultCellStyle = dataGridViewCellStyle48;
+            this.EventGroupJump.HeaderText = "Group";
+            this.EventGroupJump.Name = "EventGroupJump";
+            this.EventGroupJump.ReadOnly = true;
+            this.EventGroupJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EventGroupJump.Width = 50;
+            // 
+            // ScoreFeet
+            // 
+            this.ScoreFeet.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle49.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle49.Format = "N0";
+            dataGridViewCellStyle49.NullValue = null;
+            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScoreFeet.DefaultCellStyle = dataGridViewCellStyle49;
+            this.ScoreFeet.HeaderText = "Feet";
+            this.ScoreFeet.Name = "ScoreFeet";
+            this.ScoreFeet.ReadOnly = true;
+            this.ScoreFeet.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScoreFeet.Width = 35;
+            // 
+            // ScoreMeters
+            // 
+            this.ScoreMeters.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle50.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle50.Format = "N1";
+            dataGridViewCellStyle50.NullValue = null;
+            this.ScoreMeters.DefaultCellStyle = dataGridViewCellStyle50;
+            this.ScoreMeters.HeaderText = "Meters";
+            this.ScoreMeters.Name = "ScoreMeters";
+            this.ScoreMeters.ReadOnly = true;
+            this.ScoreMeters.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScoreMeters.Width = 40;
+            // 
+            // NopsScoreJump
+            // 
+            this.NopsScoreJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle51.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle51.Format = "N1";
+            dataGridViewCellStyle51.NullValue = null;
+            this.NopsScoreJump.DefaultCellStyle = dataGridViewCellStyle51;
+            this.NopsScoreJump.HeaderText = "Points";
+            this.NopsScoreJump.Name = "NopsScoreJump";
+            this.NopsScoreJump.ReadOnly = true;
+            this.NopsScoreJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NopsScoreJump.Width = 55;
+            // 
+            // PlcmtPointsJump
+            // 
+            this.PlcmtPointsJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle52.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle52.Format = "N0";
+            dataGridViewCellStyle52.NullValue = "0";
+            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsJump.DefaultCellStyle = dataGridViewCellStyle52;
+            this.PlcmtPointsJump.HeaderText = "Plcmt Pts";
+            this.PlcmtPointsJump.Name = "PlcmtPointsJump";
+            this.PlcmtPointsJump.ReadOnly = true;
+            this.PlcmtPointsJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PlcmtPointsJump.Width = 55;
+            // 
+            // HCapBaseJump
+            // 
+            this.HCapBaseJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle53.Format = "N1";
+            dataGridViewCellStyle53.NullValue = null;
+            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseJump.DefaultCellStyle = dataGridViewCellStyle53;
+            this.HCapBaseJump.HeaderText = "HBase";
+            this.HCapBaseJump.Name = "HCapBaseJump";
+            this.HCapBaseJump.ReadOnly = true;
+            this.HCapBaseJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapBaseJump.Visible = false;
+            this.HCapBaseJump.Width = 45;
+            // 
+            // HCapScoreJump
+            // 
+            this.HCapScoreJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle54.Format = "N1";
+            dataGridViewCellStyle54.NullValue = null;
+            dataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreJump.DefaultCellStyle = dataGridViewCellStyle54;
+            this.HCapScoreJump.HeaderText = "HCap";
+            this.HCapScoreJump.Name = "HCapScoreJump";
+            this.HCapScoreJump.ReadOnly = true;
+            this.HCapScoreJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HCapScoreJump.Visible = false;
+            this.HCapScoreJump.Width = 45;
+            // 
+            // RoundJump
+            // 
+            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.RoundJump.DefaultCellStyle = dataGridViewCellStyle55;
+            this.RoundJump.HeaderText = "Rd";
+            this.RoundJump.Name = "RoundJump";
+            this.RoundJump.ReadOnly = true;
+            this.RoundJump.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.RoundJump.Visible = false;
+            this.RoundJump.Width = 30;
+            // 
             // MasterSummaryTeam
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1218, 583);
+            this.Controls.Add(this.LiveWebLabel);
             this.Controls.Add(this.EventGroupListLabel);
             this.Controls.Add(this.EventGroupList);
             this.Controls.Add(this.ViewReportButton);
@@ -1934,6 +1974,31 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn TeamScoreJump;
         private System.Windows.Forms.RadioButton groupPlcmtButton;
         private System.Windows.Forms.RadioButton plcmtAWSATeamButton;
+        private System.Windows.Forms.ToolStripButton navLiveWeb;
+        private System.Windows.Forms.Label LiveWebLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamPlcmt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamDiv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeam;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamScoreTotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierSep;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtSlalom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameSlalom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreSlalom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsSlalom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsSlalom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSlalomSep;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtTrick;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameTrick;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreTrick;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsTrick;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsTrick;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTrickSep;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtJump;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameJump;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreJump;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsJump;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsJump;
         private System.Windows.Forms.DataGridViewTextBoxColumn MemberIdSlalom;
         private System.Windows.Forms.DataGridViewTextBoxColumn SanctionIdSlalom;
         private System.Windows.Forms.DataGridViewTextBoxColumn PlcmtSlalom;
@@ -1974,27 +2039,5 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn HCapBaseJump;
         private System.Windows.Forms.DataGridViewTextBoxColumn HCapScoreJump;
         private System.Windows.Forms.DataGridViewTextBoxColumn RoundJump;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamPlcmt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamDiv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeam;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeamScoreTotal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierSep;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtSlalom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameSlalom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreSlalom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsSlalom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsSlalom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSlalomSep;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtTrick;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameTrick;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreTrick;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsTrick;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsTrick;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTrickSep;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtJump;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierNameJump;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintScoreJump;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPointsJump;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintPlcmtPointsJump;
     }
 }

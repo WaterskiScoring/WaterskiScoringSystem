@@ -184,10 +184,22 @@ namespace WaterskiScoringSystem.Tools {
                     } else {
                         curText = (String)curRow["SkierName"] + " (" + (String)curRow["AgeGroup"] + ")";
                     }
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        curText += "\n  Team: " + (String)curRow["TeamCode"] + "  Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" );
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        String curTeam = "";
+                        if ( curRow["TeamCode"] != System.DBNull.Value ) {
+                            curTeam = (String) curRow["TeamCode"];
+                        }
+                        if ( curRow["RankingScore"] == System.DBNull.Value ) {
+                            curText += "\n  Team: " + curTeam;
+                        } else {
+                            curText += "\n  Team: " + curTeam + "  Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                        }
                     } else {
-                        curText += "\n  Class: " + (String)curRow["EventClass"] + "  Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" );
+                        if ( curRow["RankingScore"] == System.DBNull.Value ) {
+                            curText += "\n  Class: " + (String) curRow["EventClass"];
+                        } else {
+                            curText += "\n  Class: " + (String) curRow["EventClass"] + "  Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                        }
                     }
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
                     curPosY = curPagePos[1];

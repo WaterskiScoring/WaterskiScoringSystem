@@ -327,7 +327,7 @@ namespace WaterskiScoringSystem.Slalom {
                     curRound = 0;
                 }
 
-                if (curEventClass.Length > 0 && curRound > 0) {
+                if (curEventClass.Length > 0 && ( (curRound > 0) || totalScoreButton.Checked ) ) {
                     curIdx = scoreSummaryDataGridView.Rows.Add();
                     prevReportGroup = curReportGroup;
 

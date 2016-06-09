@@ -531,7 +531,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
-            String curMethodName = "exportInsertStmt";
+            String curMethodName = "exportData";
             char[] singleQuoteDelim = new char[] { '\'' };
             String curMsg = "";
             String curValue;
@@ -623,19 +623,19 @@ namespace WaterskiScoringSystem.Tools {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-        private static String encodeXmlValue(String inValue) {
+        public static String encodeXmlValue(String inValue) {
             //String curEncodedXml = inValue.Replace( "&", "&amp;" ).Replace( "<", "&lt;" ).Replace( ">", "&gt;" ).Replace( "\"", "&quot;" ).Replace( "'", "&apos;" );
             String curEncodedXml = System.Security.SecurityElement.Escape( inValue );
             return curEncodedXml;
         }
-        private static String stripLineFeedChar(String inValue) {
+        public static String stripLineFeedChar(String inValue) {
             String curValue = inValue;
             curValue = curValue.Replace( '\n', ' ' );
             curValue = curValue.Replace( '\r', ' ' );
             curValue = curValue.Replace( '\t', ' ' );
             return curValue;
         }
-        private static String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
+        public static String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
             StringBuilder curNewValue = new StringBuilder( "" );
 
             String[] curValues = inValue.Split( inCurValue );
@@ -643,7 +643,7 @@ namespace WaterskiScoringSystem.Tools {
                 int curCount = 0;
                 foreach (String curValue in curValues) {
                     curCount++;
-                    if (curValues.Length < curCount) {
+                    if ( curCount < curValues.Length) {
                         curNewValue.Append( curValue + inReplValue );
                     } else {
                         curNewValue.Append( curValue );

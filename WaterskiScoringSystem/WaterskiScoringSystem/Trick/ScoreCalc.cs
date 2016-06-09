@@ -3571,7 +3571,8 @@ namespace WaterskiScoringSystem.Trick {
                                 tempRuleNum = Convert.ToInt16( Pass1DataGridView.Rows[curIdx].Cells["Pass1RuleNum"].Value.ToString() );
                                 retPoints = checkForRepeat( curRuleNum, tempRuleNum, Pass1DataGridView.Rows[curIdx], inPassRow, "Pass1", retPoints );
                                 if ( retPoints == 0 ) break;
-                            } catch {
+                            } catch (Exception ex ) {
+                                MessageBox.Show("Exception encountered calculating points: \n" + ex.Message);
                             }
                         }
                         curIdx++;
@@ -3662,7 +3663,10 @@ namespace WaterskiScoringSystem.Trick {
                 retPoints = checkCreditAndPoints( curViewRow, curActivePassRow, inColPrefix, retPoints );
             } else if ( curRuleNum > 100 && curRuleNum < 200 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
-                    retPoints = checkCreditAndPoints( curViewRow, curActivePassRow, inColPrefix, retPoints );
+                    //curViewRow
+                    if ( curViewRow.Index < curActivePassRow.Index ) {
+                        retPoints = checkCreditAndPoints(curViewRow, curActivePassRow, inColPrefix, retPoints);
+                    }
                 }
             } else if ( curRuleNum > 200 && curRuleNum < 300 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
@@ -3678,10 +3682,25 @@ namespace WaterskiScoringSystem.Trick {
             Int16 retPoints = curActivePoints;
             if ( curViewRow.Cells[inColPrefix + "Results"].Value.ToString().Equals( "Credit" ) ) {
                 if ( Convert.ToInt16( curViewRow.Cells[inColPrefix + "Points"].Value ) < retPoints ) {
-                    curViewRow.Cells[inColPrefix + "Points"].Value = 0;
-                    curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
+                    if ( inColPrefix.Equals("Pass1") && curViewRow.Index > 0 ) {
+                        if ( Pass1DataGridView.Rows[curViewRow.Index - 1].Cells[inColPrefix + "Results"].Value.ToString().Equals("Repeat") ) {
+                        } else {
+                            curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                            curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
+                        }
+                    } else if ( inColPrefix.Equals("Pass2") && curViewRow.Index > 0 ) {
+                        if ( Pass2DataGridView.Rows[curViewRow.Index - 1].Cells[inColPrefix + "Results"].Value.ToString().Equals("Repeat") ) {
+                        } else {
+                            curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                            curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
+                        }
+                    } else {
+                        curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                        curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
+                    }
                 } else {
-                    curActivePassRow.Cells[inColPrefix + "Results"].Value = "Repeat";
+                    //if ( curActivePassRow.DataGridView.Name.StartsWith("Pass2"))
+                    curActivePassRow.Cells[curActivePassRow.DataGridView.Name.Substring(0, 5) + "Results"].Value = "Repeat";
                     retPoints = 0;
                 }
             }
@@ -4273,8 +4292,9 @@ namespace WaterskiScoringSystem.Trick {
             curFoundList = myTrickListDataTable.Select( "TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies );
             if (curFoundList.Length > 0) {
                 curReturnRow = curFoundList[0];
-                if (inSkierClass.Equals( "L" ) || inSkierClass.Equals( "R" )) {
-                    if (mySpecialFlipList.Contains( inTrickCode )) {
+
+                if ( mySkierClassList.compareClassChange(inSkierClass, "L") <= 0 ) {
+                    if ( mySpecialFlipList.Contains(inTrickCode) ) {
                         curReturnRow["NumTurns"] = Convert.ToByte("3");
                     }
                 }

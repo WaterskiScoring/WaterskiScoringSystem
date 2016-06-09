@@ -297,6 +297,24 @@ namespace WaterskiScoringSystem.Jump {
             }
         }
 
+        public bool ValidateMeterSetup() {
+            if ( checkMeterSetup() ) {
+                if ( this.xCoordZero != 0 && this.yCoordZero != 0 ) {
+                    if ( this.xCoord15M > 0 && this.yCoord15M > 0 ) {
+                        return true;
+                    } else {
+                        MessageBox.Show("Coordinates for 15 meter timing buoy have not been calculated and are required");
+                        return false;
+                    }
+                } else {
+                    MessageBox.Show("Coordinates for jump center point have not been calculated and are required");
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
         public bool checkMeterConfig() {
             /*
              * VA=ABS(PB-PC)*RC

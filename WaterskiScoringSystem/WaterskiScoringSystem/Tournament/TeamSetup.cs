@@ -1773,8 +1773,10 @@ namespace WaterskiScoringSystem.Tournament {
                 if (( (String)myTeamDataTable.Rows[0]["AgeGroup"] ).Length > 0) {
                     curTeamsByDiv = true;
                 }
-                if (( (String)myTeamDataTable.Rows[0]["EventGroup"] ).Length > 0) {
-                    curTeamsByGroup = true;
+                if ( myTeamDataTable.Rows[0]["EventGroup"] != System.DBNull.Value ) {
+                    if ( ( (String) myTeamDataTable.Rows[0]["EventGroup"] ).Length > 0 ) {
+                        curTeamsByGroup = true;
+                    }
                 }
                 if (curTeamsByDiv && curTeamsByGroup) {
                     MessageBox.Show( "Teams may only be defined by division or by event group and not by both" );

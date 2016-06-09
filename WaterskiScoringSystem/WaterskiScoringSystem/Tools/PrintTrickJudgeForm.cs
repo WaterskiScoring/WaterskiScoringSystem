@@ -179,7 +179,11 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    curText = (String)curRow["SkierName"] + "\nTeam: " + (String)curRow["TeamCode"];
+                    String curTeam = "";
+                    if ( curRow["TeamCode"] != System.DBNull.Value ) {
+                        curTeam = (String) curRow["TeamCode"];
+                    }
+                    curText = (String)curRow["SkierName"] + "\nTeam: " + curTeam;
                 } else {
                     curText = (String)curRow["SkierName"] + "\nClass: " + (String)curRow["EventClass"];
                 }
@@ -201,7 +205,11 @@ namespace WaterskiScoringSystem.Tools {
                     curPosXDiv += curFormBoxWidth + Convert.ToSingle( 35 );
 
                     if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        curText = (String)curRow["SkierName"] + "\nTeam: " + (String)curRow["TeamCode"];
+                        String curTeam = "";
+                        if ( curRow["TeamCode"] != System.DBNull.Value ) {
+                            curTeam = (String) curRow["TeamCode"];
+                        }
+                        curText = (String) curRow["SkierName"] + "\nTeam: " + curTeam;
                     } else {
                         curText = (String)curRow["SkierName"] + "\nClass: " + (String)curRow["EventClass"];
                     }

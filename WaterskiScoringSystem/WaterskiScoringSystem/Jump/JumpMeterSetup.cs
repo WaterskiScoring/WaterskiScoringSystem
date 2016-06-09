@@ -930,6 +930,8 @@ namespace WaterskiScoringSystem.Jump {
                         if ( myMeterZeroTol < myJumpCalc.TriangleZero ) {
                             TriangleZeroMsg.Visible = true;
                         }
+                    } else {
+                        TriangleZeroMsg.Visible = true;
                     }
                 }
                 if ( isAllDataValid ) {
@@ -976,9 +978,14 @@ namespace WaterskiScoringSystem.Jump {
                             Double numCourseAngle = myJumpCalc.calcCourseAngle( numDist );
                             CourseAngleTextBox.Text = Math.Round( Convert.ToDecimal(numCourseAngle), 1).ToString("##0.0");
 
+                        } else {
+                            MessageBox.Show("15 Meter timing bouy coordinates are not valid and are required to validate meter setup"
+                                + "\n Coordinates produced a negative distance");
                         }
 
                         navSaveItem_Click( null, null );
+                    } else {
+                        MessageBox.Show("15 Meter timing bouy coordinates are required to validate meter setup");
                     }
                 }
             }

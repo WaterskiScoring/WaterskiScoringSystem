@@ -188,9 +188,13 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     try {
                         if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                            curText += "\n  Team: " + (String)curRow["TeamCode"]
-                                + " Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" )
-                                + " Ramp: " + ( (Decimal)curRow["JumpHeight"] ).ToString( "#0.0" );
+                            String curTeam = "";
+                            if ( curRow["TeamCode"] != System.DBNull.Value ) {
+                                curTeam = (String) curRow["TeamCode"];
+                            }
+                            curText += "\n  Team: " + curTeam
+                                + " Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00")
+                                + " Ramp: " + ( (Decimal) curRow["JumpHeight"] ).ToString("#0.0");
                         } else {
                             curText += "\n  Class: " + (String)curRow["EventClass"]
                                 + " Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" )
