@@ -4297,15 +4297,6 @@ namespace WaterskiScoringSystem.Trick {
                     if ( mySpecialFlipList.Contains(inTrickCode) ) {
                         curReturnRow["NumTurns"] = Convert.ToByte("3");
                     }
-                    if ( inTrickCode.Equals("FFL") ) {
-                        curReturnRow = null;
-                        MessageBox.Show(String.Format("Trick {0} is not allowed for skiers in class L/R ", inTrickCode));
-                    }
-                } else {
-                    if ( inTrickCode.Equals("FFLO") || inTrickCode.Equals("FFLI") ) {
-                        curReturnRow = null;
-                        MessageBox.Show(String.Format("Trick {0} is only allow for skiers in class L/R ", inTrickCode));
-                    }
                 }
             }
 

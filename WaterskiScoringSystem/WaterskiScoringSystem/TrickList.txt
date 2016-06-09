@@ -229,8 +229,6 @@ PK	RuleCode	TrickCode	NumSkis	StartPos	NumTurns	RuleNum	TypeCode	Points	Descript
 000	awsa	RFFL	9	0	0	43	1	200	Reverse Front Flip (Kneeboard)
 17	awsa	FFL	0	0	0	43	1	400	Front Flip (Wakeboard)
 17	awsa	RFFL	0	0	0	43	1	400	Reverse Front Flip (Wakeboard)
-86	awsa	FFL	1	0	0	43	1	800	Front Flip
-86	awsa	RFFL	1	0	0	43	1	800	Reverse Front Flip
 210	awsa	FFL	2	0	0	43	1	800	Front Flip
 210	awsa	RFFL	2	0	0	43	1	800	Reverse Front Flip
 000	awsa	FFLO	1	0	0	43	1	800	Front Flip Outside the line
