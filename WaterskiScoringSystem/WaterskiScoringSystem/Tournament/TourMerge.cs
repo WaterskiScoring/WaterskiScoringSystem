@@ -229,7 +229,7 @@ namespace WaterskiScoringSystem.Tournament {
                         String inputLine = "";
                         while ( ( inputLine = tourFileReader.ReadLine() ) != null ) {
                             if ( inputLine.Contains("Class=\"footer\"") ) {
-                                //tourFileStream.Position = filePos;
+                                tourFileStream.Position = filePos;
                                 break;
                             } else {
                                 filePos += inputLine.Length;
