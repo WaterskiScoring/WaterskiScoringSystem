@@ -388,7 +388,7 @@
             // 
             // ReqLabel1
             // 
-            this.ReqLabel1.Font = new System.Drawing.Font("Britannic Bold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReqLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReqLabel1.ForeColor = System.Drawing.Color.Red;
             this.ReqLabel1.Location = new System.Drawing.Point(57, 77);
             this.ReqLabel1.Margin = new System.Windows.Forms.Padding(0);
@@ -400,7 +400,7 @@
             // 
             // ReqLabel2
             // 
-            this.ReqLabel2.Font = new System.Drawing.Font("Britannic Bold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReqLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReqLabel2.ForeColor = System.Drawing.Color.Red;
             this.ReqLabel2.Location = new System.Drawing.Point(164, 70);
             this.ReqLabel2.Name = "ReqLabel2";
@@ -411,7 +411,7 @@
             // 
             // ReqLabel5
             // 
-            this.ReqLabel5.Font = new System.Drawing.Font("Britannic Bold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReqLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReqLabel5.ForeColor = System.Drawing.Color.Red;
             this.ReqLabel5.Location = new System.Drawing.Point(443, 77);
             this.ReqLabel5.Name = "ReqLabel5";
@@ -422,7 +422,7 @@
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Britannic Bold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Red;
             this.label1.Location = new System.Drawing.Point(611, 39);
             this.label1.Name = "label1";
@@ -451,7 +451,7 @@
             this.navDeleteItem});
             this.topNavMenu.Location = new System.Drawing.Point(0, 0);
             this.topNavMenu.Name = "topNavMenu";
-            this.topNavMenu.Size = new System.Drawing.Size(837, 36);
+            this.topNavMenu.Size = new System.Drawing.Size(837, 38);
             this.topNavMenu.TabIndex = 23;
             this.topNavMenu.Text = "toolStrip1";
             // 
@@ -460,7 +460,7 @@
             this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
             this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navRefresh.Name = "navRefresh";
-            this.navRefresh.Size = new System.Drawing.Size(49, 33);
+            this.navRefresh.Size = new System.Drawing.Size(50, 35);
             this.navRefresh.Text = "Refresh";
             this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
@@ -470,7 +470,7 @@
             this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
             this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navPrint.Name = "navPrint";
-            this.navPrint.Size = new System.Drawing.Size(33, 33);
+            this.navPrint.Size = new System.Drawing.Size(36, 35);
             this.navPrint.Text = "Print";
             this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navPrint.Click += new System.EventHandler(this.navPrint_Click);
@@ -480,7 +480,7 @@
             this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
             this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navExport.Name = "navExport";
-            this.navExport.Size = new System.Drawing.Size(43, 33);
+            this.navExport.Size = new System.Drawing.Size(44, 35);
             this.navExport.Text = "Export";
             this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -490,7 +490,7 @@
             // 
             this.navSaveItem.Image = ((System.Drawing.Image)(resources.GetObject("navSaveItem.Image")));
             this.navSaveItem.Name = "navSaveItem";
-            this.navSaveItem.Size = new System.Drawing.Size(35, 33);
+            this.navSaveItem.Size = new System.Drawing.Size(35, 35);
             this.navSaveItem.Text = "Save";
             this.navSaveItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navSaveItem.Click += new System.EventHandler(this.navSaveItem_Click);
@@ -501,7 +501,7 @@
             this.navAddItem.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.navAddItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navAddItem.Name = "navAddItem";
-            this.navAddItem.Size = new System.Drawing.Size(30, 33);
+            this.navAddItem.Size = new System.Drawing.Size(33, 35);
             this.navAddItem.Text = "Add";
             this.navAddItem.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.navAddItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -512,7 +512,7 @@
             this.navDeleteItem.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
             this.navDeleteItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navDeleteItem.Name = "navDeleteItem";
-            this.navDeleteItem.Size = new System.Drawing.Size(42, 33);
+            this.navDeleteItem.Size = new System.Drawing.Size(44, 35);
             this.navDeleteItem.Text = "Delete";
             this.navDeleteItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navDeleteItem.Click += new System.EventHandler(this.navDeleteItem_Click);
@@ -521,8 +521,9 @@
             // 
             this.listApprovedBoatsDataGridView.AllowUserToAddRows = false;
             this.listApprovedBoatsDataGridView.AllowUserToDeleteRows = false;
-            this.listApprovedBoatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listApprovedBoatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listApprovedBoatsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
@@ -542,12 +543,12 @@
             this.Transmission,
             this.Prop,
             this.BoatCodeApproved});
-            this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(166, 104);
+            this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(167, 103);
             this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
             this.listApprovedBoatsDataGridView.RowHeadersVisible = false;
             dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle19;
-            this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(612, 284);
+            this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(647, 285);
             this.listApprovedBoatsDataGridView.TabIndex = 24;
             this.listApprovedBoatsDataGridView.TabStop = false;
             this.listApprovedBoatsDataGridView.Visible = false;
@@ -629,11 +630,10 @@
             // 
             // BoatCodeApproved
             // 
-            this.BoatCodeApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.BoatCodeApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.BoatCodeApproved.HeaderText = "Boat Code";
             this.BoatCodeApproved.Name = "BoatCodeApproved";
-            this.BoatCodeApproved.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.BoatCodeApproved.Width = 75;
+            this.BoatCodeApproved.Width = 83;
             // 
             // BoatUse
             // 
@@ -689,14 +689,6 @@
         private System.Windows.Forms.ToolStripButton navAddItem;
         private System.Windows.Forms.ToolStripButton navDeleteItem;
         private System.Windows.Forms.DataGridView listApprovedBoatsDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HullStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FuelDel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Transmission;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Prop;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BoatCodeApproved;
         private System.Windows.Forms.DataGridViewTextBoxColumn PK;
         private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
         private System.Windows.Forms.DataGridViewTextBoxColumn BoatModel;
@@ -717,5 +709,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
         private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
         private System.Windows.Forms.DataGridViewTextBoxColumn TourBoatSeq;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HullStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FuelDel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Transmission;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Prop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BoatCodeApproved;
     }
 }

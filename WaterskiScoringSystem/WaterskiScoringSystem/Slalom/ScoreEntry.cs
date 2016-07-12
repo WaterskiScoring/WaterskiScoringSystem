@@ -1672,6 +1672,7 @@ namespace WaterskiScoringSystem.Slalom {
                         curRerideInd = (String)myRecapRow.Cells["RerideRecap"].Value;
                         curScoreProtInd = (String)myRecapRow.Cells["ScoreProtRecap"].Value;
                         curTimeInTolInd = (String)myRecapRow.Cells["TimeInTolRecap"].Value;
+                        curSkierPass = (Int16) int.Parse((String) myRecapRow.Cells["skierPassRecap"].Value);
 
                         if ( ( curTimeInTolInd.Equals( "Y" ) && curRerideInd.Equals( "N" ) && curPassScore == 6 )
                             || ( curTimeInTolInd.Equals( "N" ) && curScoreProtInd.Equals( "Y" ) && curPassScore == 6 )
@@ -1686,7 +1687,7 @@ namespace WaterskiScoringSystem.Slalom {
                                     This alternate scoring method no longer required that the skier be scored at long line when at less than max speed
                                     Rule 10.06 for ski year 2016
                                      */
-                                    if ( curRerideInd.Equals("N") ) {
+                                    if ( curRerideInd.Equals("N") || (curRerideInd.Equals("Y") && curSkierPass == 1) ) {
                                         curAddPass = nextPassWithOption(curPassSpeed, curClassRow);
                                         curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
                                         curPassSpeed = (Int16) (Decimal) myPassRow["MaxValue"];

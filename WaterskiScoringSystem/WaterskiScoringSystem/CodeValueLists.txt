@@ -27,44 +27,57 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22360	AnnouncerRating	E	5.000	5	Emeritus			
 22366	ApprovedBoats	--Select--	1.000	1	Select boat in use			 | | | | | 
 22367	ApprovedBoats	Unlisted	2.000	2	Unlisted			 | | | | | 
-22368	ApprovedBoats	Cen-57-Z0-13	10.000	10	Centurion Carbon Pro 5.7L ZO			New | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
-22369	ApprovedBoats	Cen-60-Z0-13	11.000	11	Centurion Carbon Pro 6.0L ZO			New | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO
-22370	ApprovedBoats	CC200-57-ZO-13	12.000	12	Ski Nautique 200 Excalibur 343 5.7L			New | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22371	ApprovedBoats	CC409-60-ZO-13	13.000	13	Ski Nautique 200 ZR409 6.0L			New | PCM ZR409 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22372	ApprovedBoats	CC450-60-ZO-13	14.000	14	Ski Nautique 200 ZR450 6.0L			New | PCM ZR450 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22373	ApprovedBoats	MATXI-57-ZO	16.000	16	Malibu Response TXi 5.7L			New | Indmar Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
-22374	ApprovedBoats	MATXI-60-ZO	17.000	17	Malibu Response TXi 6.0L			New | Indmar L96 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
-22375	ApprovedBoats	MC190MV8-57-ZO	20.000	20	MasterCraft 190 MV8 5.7L			New | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22376	ApprovedBoats	MC190MV8-60-ZO	21.000	21	MasterCraft 190 MV8 6.0L			New | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22377	ApprovedBoats	MC197MV8-57-ZO	24.000	24	MasterCraft 197 MV8 5.7L			New | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22378	ApprovedBoats	MC197MV8-60-ZO	25.000	25	MasterCraft 197 MV8 6.0L			New | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral  | ZO
-22379	ApprovedBoats	Cen-57-Z0-12	101.000	101	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
-22380	ApprovedBoats	Cen-60-Z0-12	102.000	102	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
-22381	ApprovedBoats	CC196-57-ZO	103.000	103	Correct Craft 196-5.7L ZO			Old | Engine:PCM Excalibur 5.7L PCM ZR6 5.7L | Fuel Del:MPI MPI | Trans:1.23:1 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
-22382	ApprovedBoats	CC206-60-ZO	104.000	104	Correct Craft 206-6.0L ZO			Old  | PCM ZR6 6.0L | Fuel Del:MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
-22383	ApprovedBoats	CC200-57-ZO-12	105.000	105	Ski Nautique 200 Excalibur 5.7L ZO			Old  | PCM Excalibur 343 5.7L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22384	ApprovedBoats	CC409-60-ZO-12	106.000	106	Ski Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22385	ApprovedBoats	CC450-60-ZO-12	107.000	107	Ski Nautique 200 ZR450 6.0L			Old | PCM ZR450 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22386	ApprovedBoats	CC200SP-60-ZO	108.000	108	Sport Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.48:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22387	ApprovedBoats	CC200-57-ZO	111.000	111	Correct Craft 200-6.0L ZO			Old  | PCM Excalibur 6.0L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22388	ApprovedBoats	CC200-60-ZO	112.000	112	Correct Craft 200-5.7L ZO			Old  | PCM ZR6 5.7L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22389	ApprovedBoats	MALXI-57-ZO-12	113.000	113	Malibu Respons Lxi-57 ZO			Old | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO
-22390	ApprovedBoats	MALXI-57-PS-12	114.000	114	Malibu Respons Lxi-57 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 5.7L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22391	ApprovedBoats	MALXI-62-ZO-12	115.000	115	Malibu Respons Lxi-62 ZO			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | ZO
-22392	ApprovedBoats	MALXI-62-PS-12	116.000	116	Malibu Respons Lxi-62 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22393	ApprovedBoats	MAFXI-62-ZO-12	117.000	117	Malibu Respons Fxi-62 ZO			Old | Indmar Hammerhead 6.2L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
-22394	ApprovedBoats	MC190MCX-57-ZO	118.000	118	MasterCraft 190 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22395	ApprovedBoats	MC190LY6-60-ZO	119.000	119	MasterCraft 190 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22396	ApprovedBoats	MC197MCX-57-ZO	120.000	120	MasterCraft 197 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22397	ApprovedBoats	MC197LY6-60-ZO	121.000	121	MasterCraft 197 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22398	ApprovedBoats	MC190-57-ZO	122.000	122	MasterCraft 190 - 5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO
-22399	ApprovedBoats	MC190-60-ZO	123.000	123	MasterCraft 190-6.0L ZO			Old | Indmar LY6 6.0L | Fuel Del:EFI | Trans:1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 14.25 x 14 Nibral | ZO
-22400	ApprovedBoats	MC197-57-ZO	124.000	124	MasterCraft 197-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral | ZO
-22401	ApprovedBoats	MC207-57-ZO	125.000	125	MasterCraft 214-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
-22402	ApprovedBoats	MC207-57-PS	126.000	126	MasterCraft 214-5.7L PS			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22403	ApprovedBoats	MC214V-57-ZO	127.000	127	MasterCraft 214V-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.56:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 17.5 | ZO
-22404	ApprovedBoats	Outback-57-PS	128.000	128	MMoomba Outback-5.7L PS			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO
-22405	ApprovedBoats	Outback-57-PP	129.000	129	MMoomba Outback-5.7L PP			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PPSG
+00000	ApprovedBoats	Cen-57-Z0-16	10	10	Centurion Carbon Pro 5.7L ZO			New | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO
+00000	ApprovedBoats	Cen-60-Z0-16	11	11	Centurion Carbon Pro 6.0L ZO			New | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+00000	ApprovedBoats	MATXI-62-16	20	20	Malibu Response TXi 6.2L Indmar			New | Indmar Raptor 6.2L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+00000	ApprovedBoats	MATXI-57-16	21	21	Malibu Response TXi 5.7L Crusader			New | Crusader 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+00000	ApprovedBoats	MATXI-60-409-16	22	22	Malibu Response TXi 6.0L Crusader 409			New | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+00000	ApprovedBoats	MATXI-60-450-16	23	23	Malibu Response TXi 6.0L Crusader 450			New | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+00000	ApprovedBoats	MALXR-57-16	24	24	Malibu Response LXR 5.7L Crusader			New | Crusader Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+00000	ApprovedBoats	MCProMV8-57-16	30	30	MasterCraft ProStar MV8 5.7L			New | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13 x 14.25 Nibral | ZO
+00000	ApprovedBoats	MCProMV8-62-16	31	31	MasterCraft ProStar MV8 6.2L			New | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
+00000	ApprovedBoats	CC200-53-P15-16	40	40	Ski Nautique 200 PCM H5 5.3L 4 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO
+00000	ApprovedBoats	CC200-53-P14-16	41	41	Ski Nautique 200 PCM H5 5.3L 3 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+00000	ApprovedBoats	CC206-62-P15-16	42	42	Ski Nautique 200 PCM H5 6.2L 4 Blade			New | PCM H5 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
+00000	ApprovedBoats	CC206-62-P14-16	43	43	Ski Nautique 200 PCM H5 6.2L 3 Blade			New | PCM H5 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+22368	ApprovedBoats	Cen-57-Z0-13	110	110	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+22369	ApprovedBoats	Cen-60-Z0-13	111	111	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO
+22370	ApprovedBoats	CC200-57-ZO-13	112	112	Ski Nautique 200 Excalibur 343 5.7L			Old | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22371	ApprovedBoats	CC409-60-ZO-13	113	113	Ski Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22372	ApprovedBoats	CC450-60-ZO-13	114	114	Ski Nautique 200 ZR450 6.0L			Old | PCM ZR450 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22373	ApprovedBoats	MATXI-57-ZO	116	116	Malibu Response TXi 5.7L			Old | Indmar Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+22374	ApprovedBoats	MATXI-60-ZO	117	117	Malibu Response TXi 6.0L			Old | Indmar L96 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+22375	ApprovedBoats	MC190MV8-57-ZO	120	120	MasterCraft 190 MV8 5.7L			Old | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22376	ApprovedBoats	MC190MV8-60-ZO	121	121	MasterCraft 190 MV8 6.0L			Old | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22377	ApprovedBoats	MC197MV8-57-ZO	124	124	MasterCraft 197 MV8 5.7L			Old | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22378	ApprovedBoats	MC197MV8-60-ZO	125	125	MasterCraft 197 MV8 6.0L			Old | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral  | ZO
+22379	ApprovedBoats	Cen-57-Z0-12	201	201	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
+22380	ApprovedBoats	Cen-60-Z0-12	202	202	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
+22381	ApprovedBoats	CC196-57-ZO	203	203	Correct Craft 196-5.7L ZO			Old | Engine:PCM Excalibur 5.7L PCM ZR6 5.7L | Fuel Del:MPI MPI | Trans:1.23:1 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
+22382	ApprovedBoats	CC206-60-ZO	204	204	Correct Craft 206-6.0L ZO			Old  | PCM ZR6 6.0L | Fuel Del:MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
+22383	ApprovedBoats	CC200-57-ZO-12	205	205	Ski Nautique 200 Excalibur 5.7L ZO			Old  | PCM Excalibur 343 5.7L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22384	ApprovedBoats	CC409-60-ZO-12	206	206	Ski Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22385	ApprovedBoats	CC450-60-ZO-12	207	207	Ski Nautique 200 ZR450 6.0L			Old | PCM ZR450 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22386	ApprovedBoats	CC200SP-60-ZO	208	208	Sport Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.48:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22387	ApprovedBoats	CC200-57-ZO	211	211	Correct Craft 200-6.0L ZO			Old  | PCM Excalibur 6.0L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22388	ApprovedBoats	CC200-60-ZO	212	212	Correct Craft 200-5.7L ZO			Old  | PCM ZR6 5.7L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22389	ApprovedBoats	MALXI-57-ZO-12	213	213	Malibu Respons Lxi-57 ZO			Old | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO
+22390	ApprovedBoats	MALXI-57-PS-12	214	214	Malibu Respons Lxi-57 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 5.7L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22391	ApprovedBoats	MALXI-62-ZO-12	215	215	Malibu Respons Lxi-62 ZO			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | ZO
+22392	ApprovedBoats	MALXI-62-PS-12	216	216	Malibu Respons Lxi-62 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22393	ApprovedBoats	MAFXI-62-ZO-12	217	217	Malibu Respons Fxi-62 ZO			Old | Indmar Hammerhead 6.2L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
+22394	ApprovedBoats	MC190MCX-57-ZO	218	218	MasterCraft 190 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22395	ApprovedBoats	MC190LY6-60-ZO	219	219	MasterCraft 190 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22396	ApprovedBoats	MC197MCX-57-ZO	220	220	MasterCraft 197 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22397	ApprovedBoats	MC197LY6-60-ZO	221	221	MasterCraft 197 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22398	ApprovedBoats	MC190-57-ZO	222	222	MasterCraft 190 - 5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO
+22399	ApprovedBoats	MC190-60-ZO	223	223	MasterCraft 190-6.0L ZO			Old | Indmar LY6 6.0L | Fuel Del:EFI | Trans:1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 14.25 x 14 Nibral | ZO
+22400	ApprovedBoats	MC197-57-ZO	224	224	MasterCraft 197-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral | ZO
+22401	ApprovedBoats	MC207-57-ZO	225	225	MasterCraft 214-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
+22402	ApprovedBoats	MC207-57-PS	226	226	MasterCraft 214-5.7L PS			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22403	ApprovedBoats	MC214V-57-ZO	227	227	MasterCraft 214V-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.56:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 17.5 | ZO
+22404	ApprovedBoats	Outback-57-PS	228	228	MMoomba Outback-5.7L PS			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO
+22405	ApprovedBoats	Outback-57-PP	229	229	MMoomba Outback-5.7L PP			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PPSG
 22361	ApprovedManufacturers	CC	1.000	1	Correct Craft			Correct Craft
 22362	ApprovedManufacturers	MC	2.000	2	MasterCraft			MasterCraft
 22363	ApprovedManufacturers	MA	3.000	3	Malibu			Malibu
