@@ -38,8 +38,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	ApprovedBoats	MCProMV8-62-16	31	31	MasterCraft ProStar MV8 6.2L			New | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
 00000	ApprovedBoats	CC200-53-P15-16	40	40	Ski Nautique 200 PCM H5 5.3L 4 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO
 00000	ApprovedBoats	CC200-53-P14-16	41	41	Ski Nautique 200 PCM H5 5.3L 3 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
-00000	ApprovedBoats	CC206-62-P15-16	42	42	Ski Nautique 200 PCM H5 6.2L 4 Blade			New | PCM H5 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
-00000	ApprovedBoats	CC206-62-P14-16	43	43	Ski Nautique 200 PCM H5 6.2L 3 Blade			New | PCM H5 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+00000	ApprovedBoats	CC206-62-P15-16	42	42	Ski Nautique 200 PCM H6 6.2L 4 Blade			New | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
+00000	ApprovedBoats	CC206-62-P14-16	43	43	Ski Nautique 200 PCM H6 6.2L 3 Blade			New | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
 22368	ApprovedBoats	Cen-57-Z0-13	110	110	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
 22369	ApprovedBoats	Cen-60-Z0-13	111	111	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO
 22370	ApprovedBoats	CC200-57-ZO-13	112	112	Ski Nautique 200 Excalibur 343 5.7L			Old | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
