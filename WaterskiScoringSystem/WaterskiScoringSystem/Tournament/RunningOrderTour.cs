@@ -440,13 +440,11 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintRow.Cells["PrintSkierName"].Value = (String)curTeamRow["SkierName"];
                         curPrintRow.Cells["PrintEvent"].Value = (String)curTeamRow["Event"];
                         curPrintRow.Cells["PrintAgeGroup"].Value = (String)curTeamRow["AgeGroup"];
+                        curPrintRow.Cells["PrintEventGroup"].Value = (String) curTeamRow["EventGroup"];
                         try {
-                            curPrintRow.Cells["PrintEventGroup"].Value = (String)curTeamRow["EventGroup"];
                             //curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
                             curPrintRow.Cells["PrintEventRotation"].Value = ( (Int16)curTeamRow["Rotation"] ).ToString() ;
-                            
                         } catch {
-                            curPrintRow.Cells["PrintEventGroup"].Value = "";
                             curPrintRow.Cells["PrintEventRotation"].Value = "";
                         }
                         try {
@@ -1736,6 +1734,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curPrintForm.TourName = (String)myTourRow["Name"];
                 curPrintForm.TourRules = myTourRules;
                 curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
+                curPrintForm.NumJudges = 4;
 
                 myEventRegDataTable.DefaultView.Sort = mySortCmd;
                 myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;

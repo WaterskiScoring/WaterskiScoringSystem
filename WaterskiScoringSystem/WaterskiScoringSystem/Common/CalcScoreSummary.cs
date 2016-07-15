@@ -771,6 +771,18 @@ namespace WaterskiScoringSystem.Common {
 
                     //if (curRound > 0 && curRound < 25) {
                     if ( curRound < 25 ) {
+                        if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
+                            int curIdx = curRound - 1;
+                            while ( curIdx > 0 ) {
+                                if ( checkForEventScore("Slalom", curSanctionId, curMemberId, curIdx) ) {
+                                    break;
+                                } else {
+                                    curRound = Convert.ToInt16(curIdx);
+                                }
+                                curIdx--;
+                            }
+                        }
+
                         try {
                             curScore = (Decimal)curRow[curScoreName];
                         } catch {
@@ -828,33 +840,13 @@ namespace WaterskiScoringSystem.Common {
                         if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
                             curFilterCommand = "MemberId = '" + curMemberId + "'"
                                 + " And RoundOverall = " + curRound
-                                + " And AgeGroup = '" + curAgeGroup + "'";
-                        } else if (inDataType.ToLower().Equals( "h2h" )) {
-                            curFilterCommand = "MemberId = '" + curMemberId + "'"
-                                + " And RoundOverall = " + curRound
-                                + " And AgeGroup = '" + curAgeGroup + "'";
+                                + " And AgeGroup = '" + curAgeGroup + "'"
+                                ;
                         } else {
                             curFilterCommand = "MemberId = '" + curMemberId + "'"
                                 + " And AgeGroup = '" + curAgeGroup + "'";
                         }
                         curFindRows = curSummaryDataTable.Select( curFilterCommand );
-                        if (curFindRows.Length == 0) {
-                            if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) || inDataType.ToLower().Equals( "h2h" )) {
-                                int curIdx = curRound - 1;
-                                while (curIdx > 0) {
-                                    curFilterCommand = "MemberId = '" + curMemberId + "'"
-                                        + " And RoundOverall = " + curIdx
-                                        + " And AgeGroup = '" + curAgeGroup + "'";
-                                    DataRow[] curFindRowsRound = curSummaryDataTable.Select( curFilterCommand );
-                                    if (curFindRowsRound.Length > 0) {
-                                        break;
-                                    } else {
-                                        curRound = Convert.ToInt16( curIdx );
-                                    }
-                                    curIdx--;
-                                }
-                            }
-                        }
                         if (curFindRows.Length > 0) {
                             curDataRow = curFindRows[0];
                             curDataRow["EventClassSlalom"] = curEventClass;
@@ -1002,6 +994,18 @@ namespace WaterskiScoringSystem.Common {
                     curPlcmtTrick = (String)curRow["PlcmtTrick"];
 
                     if (curRound < 25) {
+                        if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
+                            int curIdx = curRound - 1;
+                            while ( curIdx > 0 ) {
+                                if ( checkForEventScore("Trick", curSanctionId, curMemberId, curIdx) ) {
+                                    break;
+                                } else {
+                                    curRound = Convert.ToInt16(curIdx);
+                                }
+                                curIdx--;
+                            }
+                        }
+
                         try {
                             curScoreTrick = (Int16)curRow[curScoreName];
                         } catch {
@@ -1043,23 +1047,6 @@ namespace WaterskiScoringSystem.Common {
                                 + " And AgeGroup = '" + curAgeGroup + "'";
                         }
                         curFindRows = curSummaryDataTable.Select( curFilterCommand );
-                        if (curFindRows.Length == 0) {
-                            if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                                int curIdx = curRound - 1;
-                                while (curIdx > 0) {
-                                    curFilterCommand = "MemberId = '" + curMemberId + "'"
-                                        + " And RoundOverall = " + curIdx
-                                        + " And AgeGroup = '" + curAgeGroup + "'";
-                                    DataRow[] curFindRowsRound = curSummaryDataTable.Select( curFilterCommand );
-                                    if (curFindRowsRound.Length > 0) {
-                                        break;
-                                    } else {
-                                        curRound = Convert.ToInt16( curIdx );
-                                    }
-                                    curIdx--;
-                                }
-                            }
-                        }
                         if (curFindRows.Length > 0) {
                             curDataRow = curFindRows[0];
                             curDataRow["EventClassTrick"] = curEventClass;
@@ -1190,6 +1177,18 @@ namespace WaterskiScoringSystem.Common {
                     curPlcmtJump = (String)curRow["PlcmtJump"];
 
                     if (curRound < 25) {
+                        if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
+                            int curIdx = curRound - 1;
+                            while ( curIdx > 0 ) {
+                                if ( checkForEventScore("Jump", curSanctionId, curMemberId, curIdx) ) {
+                                    break;
+                                } else {
+                                    curRound = Convert.ToInt16(curIdx);
+                                }
+                                curIdx--;
+                            }
+                        }
+
                         try {
                             curMeters = (Decimal)curRow["ScoreMeters"];
                         } catch {
@@ -1240,23 +1239,6 @@ namespace WaterskiScoringSystem.Common {
                                 + " And AgeGroup = '" + curAgeGroup + "'";
                         }
                         curFindRows = curSummaryDataTable.Select( curFilterCommand );
-                        if (curFindRows.Length == 0) {
-                            if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                                int curIdx = curRound - 1;
-                                while (curIdx > 0) {
-                                    curFilterCommand = "MemberId = '" + curMemberId + "'"
-                                        + " And RoundOverall = " + curIdx
-                                        + " And AgeGroup = '" + curAgeGroup + "'";
-                                    DataRow[] curFindRowsRound = curSummaryDataTable.Select( curFilterCommand );
-                                    if (curFindRowsRound.Length > 0) {
-                                        break;
-                                    } else {
-                                        curRound = Convert.ToInt16( curIdx );
-                                    }
-                                    curIdx--;
-                                }
-                            }
-                        }
                         if (curFindRows.Length > 0) {
                             curDataRow = curFindRows[0];
                             curDataRow["EventClassJump"] = curEventClass;
@@ -5586,6 +5568,21 @@ namespace WaterskiScoringSystem.Common {
             return curDataTable;
         }
         
+        private Boolean checkForEventScore(String inEvent, String inSanctionId, String inMemberId, int inRound) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT SanctionId, MemberId, AgeGroup, Round ");
+            curSqlStmt.Append("FROM " + inEvent + "Score ");
+            curSqlStmt.Append("WHERE SanctionId = '" + inSanctionId + "' ");
+            curSqlStmt.Append(" AND MemberId = '" + inMemberId + "' ");
+            curSqlStmt.Append(" AND Round = " + inRound + " ");
+            DataTable curDataTable = getData(curSqlStmt.ToString());
+            if ( curDataTable.Rows.Count > 0 ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         private DataRow getEventMemberEntry( DataTable inDataTable, String inMemberId ) {
             if ( inDataTable == null ) {
                 return null;

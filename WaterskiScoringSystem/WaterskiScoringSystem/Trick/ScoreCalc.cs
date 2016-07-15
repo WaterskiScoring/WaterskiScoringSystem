@@ -2892,11 +2892,13 @@ namespace WaterskiScoringSystem.Trick {
                             }
                         } else {
                             isDataModified = true;
+                            /*
                             if ( curPassView.Name.Equals( "Pass1DataGridView" ) ) {
                                 if ( curPassRow.Index == 0 ) {
                                     checkForOverall();
                                 }
                             }
+                            */
                             curPassRow.Cells[e.ColumnIndex].Value = curValue.ToUpper();
                             if ( !(isObjectEmpty(curPassRow.Cells[curColPrefix + "Skis"].Value))
                                 && !(isObjectEmpty(curPassRow.Cells[curColPrefix + "Results"].Value))

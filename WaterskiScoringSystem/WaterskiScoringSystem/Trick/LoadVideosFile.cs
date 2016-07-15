@@ -27,6 +27,16 @@ namespace WaterskiScoringSystem.Trick {
         private DataRow myTourRow;
         private ProgressWindow myProgressInfo;
 
+        /*
+f you are using the API, webhooks, or direct video file URLS, here is a detailed guide for the steps you need to take to be prepared for the July 11, 2016 deadline for API changes. Below is a quick summary:
+
+    If you are using a direct video file URL, you will need to replace it with a URL in our new format.
+    You will also need to enable video file access permissions for the API, which are currently disabled by default as a security measure.
+    Also, you need to migrate away from our old video asset keys (sd_video_url, hd_video_url, source_video_url) to the new ones the API and webhooks will be returning (240p, 360p, 480p, 720p, 1080p, 2k, 4k, 8k and source).
+        */
+
+
+
         public LoadVideosFile() {
             InitializeComponent();
         }

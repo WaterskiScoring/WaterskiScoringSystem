@@ -1774,6 +1774,7 @@ namespace WaterskiScoringSystem.Slalom {
             } else {
                 #region Add new pass when this is the first pass being added
                 //curAddPass = false;
+                /*
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 Int16 tempRound = Convert.ToInt16( roundSelect.RoundValue );
                 if ( tempRound > 1 && tempRound < 25 ) {
@@ -1813,6 +1814,7 @@ namespace WaterskiScoringSystem.Slalom {
                         }
                     }
                 }
+                */
 
                 if ( curAddPass ) {
                     scoreEntryInprogress();

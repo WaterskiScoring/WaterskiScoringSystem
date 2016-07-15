@@ -3441,6 +3441,7 @@ namespace WaterskiScoringSystem.Jump {
                 curPassNum = Convert.ToInt16( jumpRecapDataGridView.Rows.Count + 1 );
             } else {
                 //curAddPass = false;
+                /*
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 Int16 tempRound = Convert.ToInt16( roundSelect.RoundValue );
                 if ( tempRound > 1 && tempRound < 25) {
@@ -3480,6 +3481,7 @@ namespace WaterskiScoringSystem.Jump {
                         }
                     }
                 }
+                */
                 scoreEntryInprogress();
                 curPassNum = 1;
 

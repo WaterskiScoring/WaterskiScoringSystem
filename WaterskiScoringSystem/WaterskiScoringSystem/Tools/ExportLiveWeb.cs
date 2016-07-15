@@ -50,6 +50,8 @@ namespace WaterskiScoringSystem.Tools {
                     curSqlStmt.Append( "      AND ER.AgeGroup = S.AgeGroup AND ER.Event = 'Trick' " );
                     curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
                     curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)" );
+                    curSqlStmt.Append("Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId");
+                    curDataTable = getData(curSqlStmt.ToString());
                 } else {
                     curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, ER.EventGroup " );
                     curSqlStmt.Append( "From " + inEvent + "Score S " );
