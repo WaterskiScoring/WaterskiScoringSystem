@@ -1055,6 +1055,7 @@
     <None Include="Resources\help.png" />
     <None Include="Resources\Slalom.jpg" />
     <None Include="Resources\Slalom.ico" />
+    <None Include="Resources\TrickFormTiming.png" />
     <Content Include="waterski.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

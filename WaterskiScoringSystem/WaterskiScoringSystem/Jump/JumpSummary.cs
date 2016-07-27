@@ -70,8 +70,13 @@ namespace WaterskiScoringSystem.Jump {
             if ( myTourProperties.JumpSummaryPointsMethod.ToLower().Equals( "ratio" ) ) ratioPointsButton.Checked = true;
             numPrelimTextBox.Text = myTourProperties.JumpSummaryNumPrelim;
 
+            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "Event", "EventClassJump"
+                    , "PlcmtJump", "TeamJump", "HCapBaseJump", "RoundJump", "ScoreMeters", "ScoreFeet", "PointsJump" };
             sortDialogForm = new SortDialogForm();
+            sortDialogForm.ColumnListArray = curList;
+
             filterDialogForm = new Common.FilterDialogForm();
+            filterDialogForm.ColumnListArray = curList;
 
             // Retrieve data from database
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -656,7 +661,6 @@ namespace WaterskiScoringSystem.Jump {
 
         private void navSort_Click(object sender, EventArgs e) {
             // Display the form as a modal dialog box.
-            sortDialogForm.ColumnList = scoreSummaryDataGridView.Columns;
             sortDialogForm.SortCommand = mySortCommand;
             sortDialogForm.ShowDialog(this);
 
@@ -670,13 +674,12 @@ namespace WaterskiScoringSystem.Jump {
 
         private void navFilter_Click(object sender, EventArgs e) {
             // Display the form as a modal dialog box.
-            filterDialogForm.ColumnList = scoreSummaryDataGridView.Columns;
+            filterDialogForm.FilterCommand = myFilterCmd;
             filterDialogForm.ShowDialog( this );
 
             // Determine if the OK button was clicked on the dialog box.
             if (filterDialogForm.DialogResult == DialogResult.OK) {
                 myFilterCmd = filterDialogForm.FilterCommand;
-                myFilterCmd = myFilterCmd.Replace( "TeamCode", "TeamJump" );
                 winStatusMsg.Text = "Filtered by " + myFilterCmd;
                 loadDataGrid( mySummaryDataTable );
             }

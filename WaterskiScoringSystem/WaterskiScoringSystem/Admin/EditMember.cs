@@ -33,6 +33,12 @@ namespace WaterskiScoringSystem.Admin {
             InitializeComponent();
         }
 
+        public String MemberId {
+            get {
+                return myMemberId;
+            }
+        }
+
         private void EditMember_Load( object sender, EventArgs e ) {
             if ( Properties.Settings.Default.EditMember_Width > 0 ) {
                 this.Width = Properties.Settings.Default.EditMember_Width;
@@ -297,6 +303,7 @@ namespace WaterskiScoringSystem.Admin {
                     int rowsProc = mySqlStmt.ExecuteNonQuery();
                     if ( rowsProc > 0 ) {
                         isDataModified = false;
+                        myMemberId = curMemberId;
                     } else {
                         MessageBox.Show( "No rows added" );
                     }

@@ -424,9 +424,8 @@ namespace WaterskiScoringSystem.Tournament {
                             curGroupCount = 1;
                             if (curPrintIdx > 0) {
                                 if (!( curPageBreakGroup.Equals( prevPageBreakGroup ) )) {
-                                    //curPrintRow.Cells["PrintAgeGroup"].Value = "\\n";
                                     curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
-                                    curPrintRow.Height = 4;
+                                    curPrintRow.Height = 8;
                                 }
                                 curPrintIdx = PrintDataGridView.Rows.Add();
                                 curPrintRow = PrintDataGridView.Rows[curPrintIdx];
@@ -653,8 +652,10 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 if ( EventRegDataGridView.Rows.Count > 0 ) {
-                    DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
+                    printHeaderNote.Focus();
                     EventRegDataGridView.EndEdit();
+                    EventRegDataGridView.Focus();
+                    DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
                     String curUpdateStatus = (String)curViewRow.Cells["Updated"].Value;
                     if ( curUpdateStatus.ToUpper().Equals( "Y" ) ) {
                         try {
@@ -1391,6 +1392,10 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void EventRegDataGridView_Leave( object sender, EventArgs e ) {
+            EventRegDataGridView.EndEdit();
+        }
+
         private void EventRegDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
             DataGridView myDataView = (DataGridView)sender;
             int curRowPos = e.RowIndex + 1;
@@ -1624,6 +1629,9 @@ namespace WaterskiScoringSystem.Tournament {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
+            //Font saveShowDefaultCellStyle = PrintDataGridView.DefaultCellStyle.Font;
+            //PrintDataGridView.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
@@ -1646,13 +1654,13 @@ namespace WaterskiScoringSystem.Tournament {
                     + "\n" + this.Text;
                 myPrintDoc = new PrintDocument();   
                 myPrintDoc.DocumentName = this.Text;
-                myPrintDoc.DefaultPageSettings.Margins = new Margins( 50, 50, 50, 50 );
+                myPrintDoc.DefaultPageSettings.Margins = new Margins( 30, 30, 30, 30 );
                 myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
                         CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 if (printHeaderNote.Text.Length > 0) {
                     myPrintDataGrid.SubtitleList();
-                    Font fontPrintSubTitle = new Font( "Arial", 10, FontStyle.Bold );
+                    Font fontPrintSubTitle = new Font( "Arial", 12, FontStyle.Bold );
                     StringFormat SubtitleStringFormat = new StringFormat();
                     SubtitleStringFormat.Trimming = StringTrimming.Word;
                     SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
@@ -1734,7 +1742,17 @@ namespace WaterskiScoringSystem.Tournament {
                 curPrintForm.TourName = (String)myTourRow["Name"];
                 curPrintForm.TourRules = myTourRules;
                 curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-                curPrintForm.NumJudges = 4;
+                curPrintForm.NumJudges = 3;
+                String dialogMsg = "Do you want to include a trick timing form?";
+                DialogResult msgResp =
+                    MessageBox.Show(dialogMsg, "Change Warning",
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button1);
+                if ( msgResp == DialogResult.Yes ) {
+                    curPrintForm.NumJudges = 4;
+                }
+
 
                 myEventRegDataTable.DefaultView.Sort = mySortCmd;
                 myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
@@ -1963,6 +1981,5 @@ namespace WaterskiScoringSystem.Tournament {
             }
             return curReturnValue;
         }
-
     }
 }

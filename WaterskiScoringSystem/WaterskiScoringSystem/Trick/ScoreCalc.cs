@@ -50,6 +50,8 @@ namespace WaterskiScoringSystem.Trick {
 
         private DataRow myTourRow;
         private DataRow myScoreRow;
+        private DataRow myClassCRow;
+        private DataRow myClassERow;
 
         private TourProperties myTourProperties;
         private ListSkierClass mySkierClassList;
@@ -170,6 +172,9 @@ namespace WaterskiScoringSystem.Trick {
                             scoreEventClass.DataSource = mySkierClassList.DropdownList;
                             scoreEventClass.DisplayMember = "ItemName";
                             scoreEventClass.ValueMember = "ItemValue";
+
+                            myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
+                            myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
 
                             //Load round selection list based on number of rounds specified for the tournament
                             roundSelect.SelectList_Load( myTourRow["TrickRounds"].ToString(), roundSelect_Click );
@@ -2688,7 +2693,8 @@ namespace WaterskiScoringSystem.Trick {
                                 isPassEnded = true;
                             } else if (e.FormattedValue.ToString().ToUpper().Equals( "FALL" )) {
                                 String curSkierClass = (String)( (ListItem)scoreEventClass.SelectedItem ).ItemValue;
-                                if (curSkierClass.Equals( "L" ) || curSkierClass.Equals( "R" )) {
+                                DataRow curClassRow = getClassRow(curSkierClass);
+                                if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) { 
                                     isPassEnded = true;
                                 }
                             }
@@ -2699,7 +2705,6 @@ namespace WaterskiScoringSystem.Trick {
                         } else {
                             if ( e.FormattedValue.ToString().ToUpper().Equals( "END" ) || e.FormattedValue.ToString().ToUpper().Equals( "HORN" ) ) {
                                 isPassEnded = true;
-                                e.Cancel = false;
                             } else {
                                 if ( !( e.FormattedValue.ToString().ToUpper().Equals( myOrigCodeValue.ToUpper() ) ) ) {
                                     DataGridViewRow curPassRow = curPassView.Rows[e.RowIndex];
@@ -2851,7 +2856,8 @@ namespace WaterskiScoringSystem.Trick {
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
                                         String curSkierClass = (String)( (ListItem)scoreEventClass.SelectedItem ).ItemValue;
-                                        if (curSkierClass.Equals( "L" ) || curSkierClass.Equals( "R" )) {
+                                        DataRow curClassRow = getClassRow(curSkierClass);
+                                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
                                             isPassEnded = true;
                                         } else {
                                             if (curPassView.Name.Equals( "Pass2DataGridView" )) {
@@ -2922,7 +2928,8 @@ namespace WaterskiScoringSystem.Trick {
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
                                         String curSkierClass = (String)( (ListItem)scoreEventClass.SelectedItem ).ItemValue;
-                                        if (curSkierClass.Equals( "L" ) || curSkierClass.Equals( "R" )) {
+                                        DataRow curClassRow = getClassRow(curSkierClass);
+                                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
                                             isPassEnded = true;
                                         } else {
                                             if (curPassView.Name.Equals( "Pass2DataGridView" )) {
@@ -3111,18 +3118,14 @@ namespace WaterskiScoringSystem.Trick {
                             if (inCode.Length > 1) {
                                 curCode = inCode;
                             } else {
-                                if (curSkierClass.Equals( "L" ) || curSkierClass.Equals( "R" )) {
-                                    curCode = inCode + prevCode;
-                                } else {
-                                    if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
-                                        if (myAllowedRepeatReverseList.Contains(prevCode)) {
-                                            curCode = prevCode;
-                                        } else {
-                                            curCode = inCode + prevCode;
-                                        }
+                                if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
+                                    if (myAllowedRepeatReverseList.Contains(prevCode)) {
+                                        curCode = prevCode;
                                     } else {
                                         curCode = inCode + prevCode;
                                     }
+                                } else {
+                                    curCode = inCode + prevCode;
                                 }
                             }
                             curTrickRow = getTrickRow( curCode, inNumSkis, curSkierClass );
@@ -3148,7 +3151,8 @@ namespace WaterskiScoringSystem.Trick {
                                 if (inCode.Length > 1) {
                                     curCode = inCode;
                                 } else {
-                                    if (curSkierClass.Equals( "L" ) || curSkierClass.Equals( "R" )) {
+                                    DataRow curClassRow = getClassRow(curSkierClass);
+                                    if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
                                         curCode = inCode + (String)inPassView.Rows[curIdx - 1].Cells[inColPrefix + "Code"].Value;
                                     } else {
                                         prevCode = (String)inPassView.Rows[curIdx - 1].Cells[inColPrefix + "Code"].Value;
@@ -4282,6 +4286,18 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "   AND PassNum = " + inPass.ToString() + " AND Seq = " + inSeq.ToString() );
             curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, PassNum, Seq" );
             return getData( curSqlStmt.ToString() );
+        }
+
+        private DataRow getClassRowCurrentSkier() {
+            return getClassRow((String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value);
+        }
+        private DataRow getClassRow( String inClass ) {
+            DataRow[] curRowsFound = mySkierClassList.SkierClassDataTable.Select("ListCode = '" + inClass + "'");
+            if ( curRowsFound.Length > 0 ) {
+                return curRowsFound[0];
+            } else {
+                return mySkierClassList.SkierClassDataTable.Select("ListCode = '" + myTourClass + "'")[0];
+            }
         }
 
         private DataRow getTrickRow(DataRow inDataRow, String inSkierClass) {
