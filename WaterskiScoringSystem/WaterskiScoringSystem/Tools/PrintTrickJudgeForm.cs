@@ -302,6 +302,12 @@ namespace WaterskiScoringSystem.Tools {
             Single curPosX = myLeftMargin;
 
             Image curImageFile = global::WaterskiScoringSystem.Properties.Resources.TrickForm;
+            if ( myNumJudges == 4 || myNumJudges == 6 ) {
+                if ( myNumJudgesPrint == 4 || myNumJudgesPrint == 6 ) {
+                    curImageFile = global::WaterskiScoringSystem.Properties.Resources.TrickFormTiming;
+                }
+            }
+
             myGraphicControl.DrawImage( curImageFile, myLeftMargin, myTopMargin, myPageWidth, myPageHeight );
 
             // Print the title if available and indicated

@@ -398,6 +398,7 @@ namespace WaterskiScoringSystem.Tournament {
                     return false;
                 } else {
                     if (getTourMemberRow( mySanctionNum, inMemberId, inAgeGroup ) == null) {
+                        #region Add skier to active tournament for the specified event but bypass if already registered for the event
                         DataTable curMemberDataTable = getDataMember( inMemberId );
                         if ( curMemberDataTable.Rows.Count > 0 ) {
                             curMemberRow = curMemberDataTable.Rows[0];
@@ -543,6 +544,7 @@ namespace WaterskiScoringSystem.Tournament {
                         } else {
                             returnStatus = false;
                         }
+                        #endregion
                     } else {
                         returnStatus = false;
                     }

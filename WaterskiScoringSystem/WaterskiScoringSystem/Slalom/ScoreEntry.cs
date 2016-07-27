@@ -793,11 +793,17 @@ namespace WaterskiScoringSystem.Slalom {
                         String curFinalRopeOff = curPassAttr[2];
 
                         DataRow curClassRow = getClassRow(curEventClass);
-                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] 
-                            && SlalomSpeedSelect.CurrentValue < curMaxSpeed ) {
+                        if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"]
+                            && curSpeedKph < curMaxSpeed ) {
                             curRopeLenMetric = (String) myRecapRow.Cells["PassLineLengthRecap"].Value;
                             DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = " + SlalomLineSelect.CurrentShowValueNum);
-                            String curValue = (String)curLineRow[0]["CodeValue"];
+                            String curValue = (String) curLineRow[0]["CodeValue"];
+                            curFinalRopeOff = curValue.Substring(0, curValue.IndexOf("-") - 1);
+                        } else if ( isQualifiedAltScoreMethod(curAgeGroup, (String) curClassRow["ListCode"]) 
+                            && curSpeedKph < curMaxSpeed ) {
+                            curRopeLenMetric = (String) myRecapRow.Cells["PassLineLengthRecap"].Value;
+                            DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = " + SlalomLineSelect.CurrentShowValueNum);
+                            String curValue = (String) curLineRow[0]["CodeValue"];
                             curFinalRopeOff = curValue.Substring(0, curValue.IndexOf("-") - 1);
                         }
 

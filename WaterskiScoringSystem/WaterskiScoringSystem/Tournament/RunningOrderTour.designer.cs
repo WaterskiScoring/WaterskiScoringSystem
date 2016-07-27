@@ -87,6 +87,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navClassChangeButton = new System.Windows.Forms.ToolStripButton();
             this.navLiveWeb = new System.Windows.Forms.ToolStripButton();
             this.navEditRound = new System.Windows.Forms.ToolStripButton();
+            this.navRecalcHcapButton = new System.Windows.Forms.ToolStripButton();
             this.RowStatusLabel = new System.Windows.Forms.Label();
             this.PrintDataGridView = new System.Windows.Forms.DataGridView();
             this.PrintCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -111,7 +112,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventGroupPanel = new System.Windows.Forms.Panel();
             this.EventGroupFilterLabel = new System.Windows.Forms.Label();
             this.LiveWebLabel = new System.Windows.Forms.Label();
-            this.navRecalcHcapButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.EventRegDataGridView)).BeginInit();
             this.TopNavMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -185,6 +185,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventRegDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.EventRegDataGridView_CellValidating);
             this.EventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
             this.EventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventRegDataGridView_RowEnter);
+            this.EventRegDataGridView.Leave += new System.EventHandler(this.EventRegDataGridView_Leave);
             // 
             // SanctionId
             // 
@@ -569,6 +570,17 @@ namespace WaterskiScoringSystem.Tournament {
             this.navEditRound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navEditRound.Click += new System.EventHandler(this.ViewEditRoundButton_Click);
             // 
+            // navRecalcHcapButton
+            // 
+            this.navRecalcHcapButton.Image = ((System.Drawing.Image)(resources.GetObject("navRecalcHcapButton.Image")));
+            this.navRecalcHcapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navRecalcHcapButton.Name = "navRecalcHcapButton";
+            this.navRecalcHcapButton.Size = new System.Drawing.Size(78, 35);
+            this.navRecalcHcapButton.Text = "ReCalc Hcap";
+            this.navRecalcHcapButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navRecalcHcapButton.ToolTipText = "Export visible data to a tab delimited text file";
+            this.navRecalcHcapButton.Click += new System.EventHandler(this.navRecalcHcapButton_Click);
+            // 
             // RowStatusLabel
             // 
             this.RowStatusLabel.AutoSize = true;
@@ -591,7 +603,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
             dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -618,8 +630,9 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintRankingRating});
             dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle25.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
             dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -684,7 +697,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintAgeGroup.Name = "PrintAgeGroup";
             this.PrintAgeGroup.ReadOnly = true;
             this.PrintAgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.PrintAgeGroup.Width = 28;
+            this.PrintAgeGroup.Width = 35;
             // 
             // PrintEventRotation
             // 
@@ -695,7 +708,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintEventRotation.HeaderText = "Rotation";
             this.PrintEventRotation.Name = "PrintEventRotation";
             this.PrintEventRotation.ReadOnly = true;
-            this.PrintEventRotation.Width = 71;
+            this.PrintEventRotation.Width = 86;
             // 
             // PrintSkierSep
             // 
@@ -719,7 +732,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintSkierName.Name = "PrintSkierName";
             this.PrintSkierName.ReadOnly = true;
             this.PrintSkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.PrintSkierName.Width = 39;
+            this.PrintSkierName.Width = 51;
             // 
             // PrintTeam
             // 
@@ -731,7 +744,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeam.Name = "PrintTeam";
             this.PrintTeam.ReadOnly = true;
             this.PrintTeam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.PrintTeam.Width = 37;
+            this.PrintTeam.Width = 49;
             // 
             // PrintRunOrder
             // 
@@ -742,7 +755,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintRunOrder.HeaderText = "Order";
             this.PrintRunOrder.Name = "PrintRunOrder";
             this.PrintRunOrder.ReadOnly = true;
-            this.PrintRunOrder.Width = 58;
+            this.PrintRunOrder.Width = 69;
             // 
             // PrintEventClass
             // 
@@ -753,7 +766,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintEventClass.HeaderText = "Class";
             this.PrintEventClass.Name = "PrintEventClass";
             this.PrintEventClass.ReadOnly = true;
-            this.PrintEventClass.Width = 57;
+            this.PrintEventClass.Width = 68;
             // 
             // PrintJumpHeight
             // 
@@ -764,7 +777,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintJumpHeight.HeaderText = "Jump Ht";
             this.PrintJumpHeight.Name = "PrintJumpHeight";
             this.PrintJumpHeight.ReadOnly = true;
-            this.PrintJumpHeight.Width = 71;
+            this.PrintJumpHeight.Width = 86;
             // 
             // PrintTrickBoat
             // 
@@ -772,7 +785,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTrickBoat.HeaderText = "Boat";
             this.PrintTrickBoat.Name = "PrintTrickBoat";
             this.PrintTrickBoat.ReadOnly = true;
-            this.PrintTrickBoat.Width = 53;
+            this.PrintTrickBoat.Width = 62;
             // 
             // PrintHcapBase
             // 
@@ -780,7 +793,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintHcapBase.HeaderText = "Hcap Base";
             this.PrintHcapBase.Name = "PrintHcapBase";
             this.PrintHcapBase.ReadOnly = true;
-            this.PrintHcapBase.Width = 80;
+            this.PrintHcapBase.Width = 99;
             // 
             // PrintHCapScore
             // 
@@ -788,7 +801,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintHCapScore.HeaderText = "Handicap";
             this.PrintHCapScore.Name = "PrintHCapScore";
             this.PrintHCapScore.ReadOnly = true;
-            this.PrintHCapScore.Width = 75;
+            this.PrintHCapScore.Width = 92;
             // 
             // PrintRankingScore
             // 
@@ -801,7 +814,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintRankingScore.Name = "PrintRankingScore";
             this.PrintRankingScore.ReadOnly = true;
             this.PrintRankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.PrintRankingScore.Width = 56;
+            this.PrintRankingScore.Width = 73;
             // 
             // PrintRankingRating
             // 
@@ -809,7 +822,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintRankingRating.HeaderText = "Rating";
             this.PrintRankingRating.Name = "PrintRankingRating";
             this.PrintRankingRating.ReadOnly = true;
-            this.PrintRankingRating.Width = 62;
+            this.PrintRankingRating.Width = 74;
             // 
             // printHeaderNote
             // 
@@ -865,17 +878,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.LiveWebLabel.Text = "Live Web Active";
             this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LiveWebLabel.Visible = false;
-            // 
-            // navRecalcHcapButton
-            // 
-            this.navRecalcHcapButton.Image = ((System.Drawing.Image)(resources.GetObject("navRecalcHcapButton.Image")));
-            this.navRecalcHcapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navRecalcHcapButton.Name = "navRecalcHcapButton";
-            this.navRecalcHcapButton.Size = new System.Drawing.Size(78, 35);
-            this.navRecalcHcapButton.Text = "ReCalc Hcap";
-            this.navRecalcHcapButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navRecalcHcapButton.ToolTipText = "Export visible data to a tab delimited text file";
-            this.navRecalcHcapButton.Click += new System.EventHandler(this.navRecalcHcapButton_Click);
             // 
             // RunningOrderTour
             // 

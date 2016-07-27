@@ -24,39 +24,16 @@ namespace WaterskiScoringSystem.Tournament {
         /// </summary>
         private void InitializeComponent() {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registration));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registration));
             this.tourRegDataGridView = new System.Windows.Forms.DataGridView();
-            this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReadyToSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.SlalomReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.TrickReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.JumpReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.SlalomGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrickGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JumpGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EntryDue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EntryPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PaymentMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AwsaMbrshpPaymt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AwsaMbrshpComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.winStatus = new System.Windows.Forms.StatusStrip();
             this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.navMainMenu = new System.Windows.Forms.ToolStrip();
@@ -77,6 +54,27 @@ namespace WaterskiScoringSystem.Tournament {
             this.RegCountSlalomLabel = new System.Windows.Forms.Label();
             this.RegCountTrickLabel = new System.Windows.Forms.Label();
             this.RegCountJumpLabel = new System.Windows.Forms.Label();
+            this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReadyToSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.SlalomReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TrickReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.JumpReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.SlalomGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrickGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JumpGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EntryDue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EntryPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PaymentMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AwsaMbrshpPaymt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AwsaMbrshpComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tourRegDataGridView)).BeginInit();
             this.winStatus.SuspendLayout();
             this.navMainMenu.SuspendLayout();
@@ -114,7 +112,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.EntryDue,
             this.EntryPaid,
             this.PaymentMethod,
-            this.Weight,
             this.JumpHeight,
             this.TrickBoat,
             this.AwsaMbrshpPaymt,
@@ -123,24 +120,24 @@ namespace WaterskiScoringSystem.Tournament {
             this.PK,
             this.SanctionId,
             this.Updated});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.tourRegDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.tourRegDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
             this.tourRegDataGridView.Location = new System.Drawing.Point(5, 55);
             this.tourRegDataGridView.Name = "tourRegDataGridView";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.tourRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.tourRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.tourRegDataGridView.RowHeadersWidth = 31;
             this.tourRegDataGridView.Size = new System.Drawing.Size(1073, 408);
             this.tourRegDataGridView.TabIndex = 1;
@@ -151,6 +148,220 @@ namespace WaterskiScoringSystem.Tournament {
             this.tourRegDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.tourRegDataGridView_CellValidating);
             this.tourRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
             this.tourRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourRegDataGridView_RowEnter);
+            // 
+            // winStatus
+            // 
+            this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.winStatusMsg});
+            this.winStatus.Location = new System.Drawing.Point(0, 466);
+            this.winStatus.Name = "winStatus";
+            this.winStatus.Size = new System.Drawing.Size(1090, 22);
+            this.winStatus.TabIndex = 4;
+            this.winStatus.Text = "statusStrip1";
+            // 
+            // winStatusMsg
+            // 
+            this.winStatusMsg.Name = "winStatusMsg";
+            this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
+            // 
+            // navMainMenu
+            // 
+            this.navMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.navRefresh,
+            this.navExport,
+            this.navFilter,
+            this.navSort,
+            this.navSave,
+            this.navAdd,
+            this.navEdit,
+            this.navRemove,
+            this.navSaveAs});
+            this.navMainMenu.Location = new System.Drawing.Point(0, 0);
+            this.navMainMenu.Name = "navMainMenu";
+            this.navMainMenu.Size = new System.Drawing.Size(1090, 38);
+            this.navMainMenu.TabIndex = 5;
+            this.navMainMenu.Text = "toolStrip1";
+            // 
+            // navRefresh
+            // 
+            this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+            this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navRefresh.Name = "navRefresh";
+            this.navRefresh.Size = new System.Drawing.Size(50, 35);
+            this.navRefresh.Text = "Refresh";
+            this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
+            // 
+            // navExport
+            // 
+            this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
+            this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navExport.Name = "navExport";
+            this.navExport.Size = new System.Drawing.Size(44, 35);
+            this.navExport.Text = "Export";
+            this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
+            this.navExport.Click += new System.EventHandler(this.navExport_Click);
+            // 
+            // navFilter
+            // 
+            this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
+            this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navFilter.Name = "navFilter";
+            this.navFilter.Size = new System.Drawing.Size(37, 35);
+            this.navFilter.Text = "Filter";
+            this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
+            // 
+            // navSort
+            // 
+            this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
+            this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navSort.Name = "navSort";
+            this.navSort.Size = new System.Drawing.Size(32, 35);
+            this.navSort.Text = "Sort";
+            this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navSort.Click += new System.EventHandler(this.navSort_Click);
+            // 
+            // navSave
+            // 
+            this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
+            this.navSave.Name = "navSave";
+            this.navSave.Size = new System.Drawing.Size(35, 35);
+            this.navSave.Text = "Save";
+            this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navSave.Click += new System.EventHandler(this.navSave_Click);
+            // 
+            // navAdd
+            // 
+            this.navAdd.Image = global::WaterskiScoringSystem.Properties.Resources.small_plus;
+            this.navAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navAdd.Name = "navAdd";
+            this.navAdd.Size = new System.Drawing.Size(33, 35);
+            this.navAdd.Text = "Add";
+            this.navAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navAdd.Click += new System.EventHandler(this.navInsert_Click);
+            // 
+            // navEdit
+            // 
+            this.navEdit.Image = ((System.Drawing.Image)(resources.GetObject("navEdit.Image")));
+            this.navEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navEdit.Name = "navEdit";
+            this.navEdit.Size = new System.Drawing.Size(31, 35);
+            this.navEdit.Text = "Edit";
+            this.navEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navEdit.Click += new System.EventHandler(this.navEdit_Click);
+            // 
+            // navRemove
+            // 
+            this.navRemove.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
+            this.navRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navRemove.Name = "navRemove";
+            this.navRemove.Size = new System.Drawing.Size(54, 35);
+            this.navRemove.Text = "Remove";
+            this.navRemove.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navRemove.Click += new System.EventHandler(this.navRemove_Click);
+            // 
+            // navSaveAs
+            // 
+            this.navSaveAs.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+            this.navSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navSaveAs.Name = "navSaveAs";
+            this.navSaveAs.Size = new System.Drawing.Size(48, 35);
+            this.navSaveAs.Text = "SaveAs";
+            this.navSaveAs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navSaveAs.ToolTipText = "Save As";
+            this.navSaveAs.Click += new System.EventHandler(this.navSaveAs_Click);
+            // 
+            // RowStatusLabel
+            // 
+            this.RowStatusLabel.AutoSize = true;
+            this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RowStatusLabel.Location = new System.Drawing.Point(8, 38);
+            this.RowStatusLabel.Name = "RowStatusLabel";
+            this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+            this.RowStatusLabel.TabIndex = 6;
+            this.RowStatusLabel.Text = "Row 1 of 9999";
+            // 
+            // SlalomRegCount
+            // 
+            this.SlalomRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.SlalomRegCount.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SlalomRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.SlalomRegCount.Location = new System.Drawing.Point(374, 38);
+            this.SlalomRegCount.Name = "SlalomRegCount";
+            this.SlalomRegCount.Size = new System.Drawing.Size(40, 14);
+            this.SlalomRegCount.TabIndex = 0;
+            this.SlalomRegCount.Text = "Slalom";
+            this.SlalomRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TrickRegCount
+            // 
+            this.TrickRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TrickRegCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrickRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.TrickRegCount.Location = new System.Drawing.Point(481, 38);
+            this.TrickRegCount.Name = "TrickRegCount";
+            this.TrickRegCount.Size = new System.Drawing.Size(40, 14);
+            this.TrickRegCount.TabIndex = 0;
+            this.TrickRegCount.Text = "Trick";
+            this.TrickRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // JumpRegCount
+            // 
+            this.JumpRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.JumpRegCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JumpRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.JumpRegCount.Location = new System.Drawing.Point(591, 38);
+            this.JumpRegCount.Name = "JumpRegCount";
+            this.JumpRegCount.Size = new System.Drawing.Size(40, 14);
+            this.JumpRegCount.TabIndex = 0;
+            this.JumpRegCount.Text = "Jump";
+            this.JumpRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // RegCountLabel
+            // 
+            this.RegCountLabel.AutoSize = true;
+            this.RegCountLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RegCountLabel.Location = new System.Drawing.Point(231, 39);
+            this.RegCountLabel.Name = "RegCountLabel";
+            this.RegCountLabel.Size = new System.Drawing.Size(97, 13);
+            this.RegCountLabel.TabIndex = 0;
+            this.RegCountLabel.Text = "Skier Counts: ";
+            this.RegCountLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
+            // RegCountSlalomLabel
+            // 
+            this.RegCountSlalomLabel.AutoSize = true;
+            this.RegCountSlalomLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RegCountSlalomLabel.Location = new System.Drawing.Point(333, 38);
+            this.RegCountSlalomLabel.Name = "RegCountSlalomLabel";
+            this.RegCountSlalomLabel.Size = new System.Drawing.Size(42, 15);
+            this.RegCountSlalomLabel.TabIndex = 0;
+            this.RegCountSlalomLabel.Text = "Slalom:";
+            this.RegCountSlalomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // RegCountTrickLabel
+            // 
+            this.RegCountTrickLabel.AutoSize = true;
+            this.RegCountTrickLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RegCountTrickLabel.Location = new System.Drawing.Point(451, 38);
+            this.RegCountTrickLabel.Name = "RegCountTrickLabel";
+            this.RegCountTrickLabel.Size = new System.Drawing.Size(32, 15);
+            this.RegCountTrickLabel.TabIndex = 0;
+            this.RegCountTrickLabel.Text = "Trick:";
+            this.RegCountTrickLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
+            // RegCountJumpLabel
+            // 
+            this.RegCountJumpLabel.AutoSize = true;
+            this.RegCountJumpLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RegCountJumpLabel.Location = new System.Drawing.Point(559, 38);
+            this.RegCountJumpLabel.Name = "RegCountJumpLabel";
+            this.RegCountJumpLabel.Size = new System.Drawing.Size(36, 15);
+            this.RegCountJumpLabel.TabIndex = 0;
+            this.RegCountJumpLabel.Text = "Jump:";
+            this.RegCountJumpLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // MemberId
             // 
@@ -292,25 +503,13 @@ namespace WaterskiScoringSystem.Tournament {
             this.PaymentMethod.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.PaymentMethod.Width = 60;
             // 
-            // Weight
-            // 
-            this.Weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Format = "N0";
-            dataGridViewCellStyle7.NullValue = null;
-            this.Weight.DefaultCellStyle = dataGridViewCellStyle7;
-            this.Weight.HeaderText = "Weight";
-            this.Weight.Name = "Weight";
-            this.Weight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Weight.Width = 40;
-            // 
             // JumpHeight
             // 
             this.JumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.Format = "N1";
-            dataGridViewCellStyle8.NullValue = null;
-            this.JumpHeight.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.Format = "N1";
+            dataGridViewCellStyle7.NullValue = null;
+            this.JumpHeight.DefaultCellStyle = dataGridViewCellStyle7;
             this.JumpHeight.HeaderText = "Jump Hgt";
             this.JumpHeight.Name = "JumpHeight";
             this.JumpHeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -374,220 +573,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.Updated.Visible = false;
             this.Updated.Width = 50;
             // 
-            // winStatus
-            // 
-            this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.winStatusMsg});
-            this.winStatus.Location = new System.Drawing.Point(0, 466);
-            this.winStatus.Name = "winStatus";
-            this.winStatus.Size = new System.Drawing.Size(1090, 22);
-            this.winStatus.TabIndex = 4;
-            this.winStatus.Text = "statusStrip1";
-            // 
-            // winStatusMsg
-            // 
-            this.winStatusMsg.Name = "winStatusMsg";
-            this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
-            // 
-            // navMainMenu
-            // 
-            this.navMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.navRefresh,
-            this.navExport,
-            this.navFilter,
-            this.navSort,
-            this.navSave,
-            this.navAdd,
-            this.navEdit,
-            this.navRemove,
-            this.navSaveAs});
-            this.navMainMenu.Location = new System.Drawing.Point(0, 0);
-            this.navMainMenu.Name = "navMainMenu";
-            this.navMainMenu.Size = new System.Drawing.Size(1090, 36);
-            this.navMainMenu.TabIndex = 5;
-            this.navMainMenu.Text = "toolStrip1";
-            // 
-            // navRefresh
-            // 
-            this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-            this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navRefresh.Name = "navRefresh";
-            this.navRefresh.Size = new System.Drawing.Size(49, 33);
-            this.navRefresh.Text = "Refresh";
-            this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
-            // 
-            // navExport
-            // 
-            this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
-            this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navExport.Name = "navExport";
-            this.navExport.Size = new System.Drawing.Size(43, 33);
-            this.navExport.Text = "Export";
-            this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
-            this.navExport.Click += new System.EventHandler(this.navExport_Click);
-            // 
-            // navFilter
-            // 
-            this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
-            this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navFilter.Name = "navFilter";
-            this.navFilter.Size = new System.Drawing.Size(35, 33);
-            this.navFilter.Text = "Filter";
-            this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
-            // 
-            // navSort
-            // 
-            this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
-            this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navSort.Name = "navSort";
-            this.navSort.Size = new System.Drawing.Size(31, 33);
-            this.navSort.Text = "Sort";
-            this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navSort.Click += new System.EventHandler(this.navSort_Click);
-            // 
-            // navSave
-            // 
-            this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
-            this.navSave.Name = "navSave";
-            this.navSave.Size = new System.Drawing.Size(35, 33);
-            this.navSave.Text = "Save";
-            this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navSave.Click += new System.EventHandler(this.navSave_Click);
-            // 
-            // navAdd
-            // 
-            this.navAdd.Image = global::WaterskiScoringSystem.Properties.Resources.small_plus;
-            this.navAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navAdd.Name = "navAdd";
-            this.navAdd.Size = new System.Drawing.Size(30, 33);
-            this.navAdd.Text = "Add";
-            this.navAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navAdd.Click += new System.EventHandler(this.navInsert_Click);
-            // 
-            // navEdit
-            // 
-            this.navEdit.Image = ((System.Drawing.Image)(resources.GetObject("navEdit.Image")));
-            this.navEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navEdit.Name = "navEdit";
-            this.navEdit.Size = new System.Drawing.Size(29, 33);
-            this.navEdit.Text = "Edit";
-            this.navEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navEdit.Click += new System.EventHandler(this.navEdit_Click);
-            // 
-            // navRemove
-            // 
-            this.navRemove.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
-            this.navRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navRemove.Name = "navRemove";
-            this.navRemove.Size = new System.Drawing.Size(50, 33);
-            this.navRemove.Text = "Remove";
-            this.navRemove.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navRemove.Click += new System.EventHandler(this.navRemove_Click);
-            // 
-            // navSaveAs
-            // 
-            this.navSaveAs.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
-            this.navSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.navSaveAs.Name = "navSaveAs";
-            this.navSaveAs.Size = new System.Drawing.Size(47, 33);
-            this.navSaveAs.Text = "SaveAs";
-            this.navSaveAs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.navSaveAs.ToolTipText = "Save As";
-            this.navSaveAs.Click += new System.EventHandler(this.navSaveAs_Click);
-            // 
-            // RowStatusLabel
-            // 
-            this.RowStatusLabel.AutoSize = true;
-            this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RowStatusLabel.Location = new System.Drawing.Point(8, 38);
-            this.RowStatusLabel.Name = "RowStatusLabel";
-            this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
-            this.RowStatusLabel.TabIndex = 6;
-            this.RowStatusLabel.Text = "Row 1 of 9999";
-            // 
-            // SlalomRegCount
-            // 
-            this.SlalomRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.SlalomRegCount.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SlalomRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.SlalomRegCount.Location = new System.Drawing.Point(374, 38);
-            this.SlalomRegCount.Name = "SlalomRegCount";
-            this.SlalomRegCount.Size = new System.Drawing.Size(40, 14);
-            this.SlalomRegCount.TabIndex = 0;
-            this.SlalomRegCount.Text = "Slalom";
-            this.SlalomRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // TrickRegCount
-            // 
-            this.TrickRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.TrickRegCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrickRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.TrickRegCount.Location = new System.Drawing.Point(481, 38);
-            this.TrickRegCount.Name = "TrickRegCount";
-            this.TrickRegCount.Size = new System.Drawing.Size(40, 14);
-            this.TrickRegCount.TabIndex = 0;
-            this.TrickRegCount.Text = "Trick";
-            this.TrickRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // JumpRegCount
-            // 
-            this.JumpRegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.JumpRegCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JumpRegCount.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.JumpRegCount.Location = new System.Drawing.Point(591, 38);
-            this.JumpRegCount.Name = "JumpRegCount";
-            this.JumpRegCount.Size = new System.Drawing.Size(40, 14);
-            this.JumpRegCount.TabIndex = 0;
-            this.JumpRegCount.Text = "Jump";
-            this.JumpRegCount.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // RegCountLabel
-            // 
-            this.RegCountLabel.AutoSize = true;
-            this.RegCountLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegCountLabel.Location = new System.Drawing.Point(231, 39);
-            this.RegCountLabel.Name = "RegCountLabel";
-            this.RegCountLabel.Size = new System.Drawing.Size(97, 13);
-            this.RegCountLabel.TabIndex = 0;
-            this.RegCountLabel.Text = "Skier Counts: ";
-            this.RegCountLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
-            // RegCountSlalomLabel
-            // 
-            this.RegCountSlalomLabel.AutoSize = true;
-            this.RegCountSlalomLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegCountSlalomLabel.Location = new System.Drawing.Point(333, 38);
-            this.RegCountSlalomLabel.Name = "RegCountSlalomLabel";
-            this.RegCountSlalomLabel.Size = new System.Drawing.Size(42, 15);
-            this.RegCountSlalomLabel.TabIndex = 0;
-            this.RegCountSlalomLabel.Text = "Slalom:";
-            this.RegCountSlalomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // RegCountTrickLabel
-            // 
-            this.RegCountTrickLabel.AutoSize = true;
-            this.RegCountTrickLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegCountTrickLabel.Location = new System.Drawing.Point(451, 38);
-            this.RegCountTrickLabel.Name = "RegCountTrickLabel";
-            this.RegCountTrickLabel.Size = new System.Drawing.Size(32, 15);
-            this.RegCountTrickLabel.TabIndex = 0;
-            this.RegCountTrickLabel.Text = "Trick:";
-            this.RegCountTrickLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
-            // RegCountJumpLabel
-            // 
-            this.RegCountJumpLabel.AutoSize = true;
-            this.RegCountJumpLabel.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegCountJumpLabel.Location = new System.Drawing.Point(559, 38);
-            this.RegCountJumpLabel.Name = "RegCountJumpLabel";
-            this.RegCountJumpLabel.Size = new System.Drawing.Size(36, 15);
-            this.RegCountJumpLabel.TabIndex = 0;
-            this.RegCountJumpLabel.Text = "Jump:";
-            this.RegCountJumpLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
             // Registration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -635,6 +620,15 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.ToolStripButton navEdit;
         private System.Windows.Forms.ToolStripButton navRemove;
         private System.Windows.Forms.ToolStripButton navAdd;
+        private System.Windows.Forms.Label RowStatusLabel;
+        private System.Windows.Forms.ToolStripButton navSaveAs;
+        private System.Windows.Forms.Label SlalomRegCount;
+        private System.Windows.Forms.Label TrickRegCount;
+        private System.Windows.Forms.Label JumpRegCount;
+        private System.Windows.Forms.Label RegCountLabel;
+        private System.Windows.Forms.Label RegCountSlalomLabel;
+        private System.Windows.Forms.Label RegCountTrickLabel;
+        private System.Windows.Forms.Label RegCountJumpLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
         private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
@@ -648,7 +642,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn EntryDue;
         private System.Windows.Forms.DataGridViewTextBoxColumn EntryPaid;
         private System.Windows.Forms.DataGridViewTextBoxColumn PaymentMethod;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Weight;
         private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrickBoat;
         private System.Windows.Forms.DataGridViewTextBoxColumn AwsaMbrshpPaymt;
@@ -657,14 +650,5 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn PK;
         private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
-        private System.Windows.Forms.Label RowStatusLabel;
-        private System.Windows.Forms.ToolStripButton navSaveAs;
-        private System.Windows.Forms.Label SlalomRegCount;
-        private System.Windows.Forms.Label TrickRegCount;
-        private System.Windows.Forms.Label JumpRegCount;
-        private System.Windows.Forms.Label RegCountLabel;
-        private System.Windows.Forms.Label RegCountSlalomLabel;
-        private System.Windows.Forms.Label RegCountTrickLabel;
-        private System.Windows.Forms.Label RegCountJumpLabel;
     }
 }

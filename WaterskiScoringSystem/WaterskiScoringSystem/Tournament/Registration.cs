@@ -166,12 +166,6 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["PaymentMethod"].Value = "";
                     }
                     try {
-                        String curValue = ( (Int16)curDataRow["Weight"] ).ToString();
-                        curViewRow.Cells["Weight"].Value = ( (Int16)curDataRow["Weight"] ).ToString();
-                    } catch {
-                        curViewRow.Cells["Weight"].Value = "";
-                    }
-                    try {
                         curViewRow.Cells["JumpHeight"].Value = ( (Decimal)curDataRow["JumpHeight"] ).ToString( "#.#" );
                     } catch {
                         curViewRow.Cells["JumpHeight"].Value = "";
@@ -323,7 +317,7 @@ namespace WaterskiScoringSystem.Tournament {
                     && curMemberId.Length > 1
                     ) {
                     try {
-                        String curEntryDue, curEntryPaid, curWeight, curJumpHeight, curTrickBoat, curNotes
+                        String curEntryDue, curEntryPaid, curJumpHeight, curTrickBoat, curNotes
                             , curAwsaMbrshpPaymt, curReadyToSki, curPaymentMethod, curAwsaMbrshpComment;
 
                         try {
@@ -335,11 +329,6 @@ namespace WaterskiScoringSystem.Tournament {
                             curTrickBoat = (String)curViewRow.Cells["TrickBoat"].Value;
                         } catch {
                             curTrickBoat = "";
-                        }
-                        try {
-                            curWeight = Convert.ToInt16( (String)curViewRow.Cells["Weight"].Value).ToString();
-                        } catch {
-                            curWeight = "Null";
                         }
                         try {
                             curReadyToSki = (String)curViewRow.Cells["ReadyToSki"].Value;
@@ -384,7 +373,7 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( ", EntryDue = " + curEntryDue );
                         curSqlStmt.Append( ", EntryPaid = " + curEntryPaid );
                         curSqlStmt.Append( ", PaymentMethod = '" + curPaymentMethod + "'" );
-                        curSqlStmt.Append( ", Weight = " + curWeight );
+                        curSqlStmt.Append(", Weight = Null" );
                         curSqlStmt.Append( ", JumpHeight = " + curJumpHeight );
                         curSqlStmt.Append( ", TrickBoat = '" + curTrickBoat + "'" );
                         curSqlStmt.Append( ", AwsaMbrshpPaymt = " + curAwsaMbrshpPaymt);
@@ -775,8 +764,7 @@ namespace WaterskiScoringSystem.Tournament {
             if (tourRegDataGridView.Rows.Count > 0) {
                 if ( !(tourRegDataGridView.Columns[e.ColumnIndex].ReadOnly)) {
                     String curColName = tourRegDataGridView.Columns[e.ColumnIndex].Name;
-                    if ( curColName.Equals("Weight")
-                        || curColName.Equals( "JumpHeight" )
+                    if ( curColName.Equals( "JumpHeight" )
                         || curColName.Equals("EntryDue")
                         || curColName.Equals("EntryPaid")
                         || curColName.Equals("AwsaMbrshpPaymt")
@@ -816,19 +804,7 @@ namespace WaterskiScoringSystem.Tournament {
             if ( tourRegDataGridView.Rows.Count > 0 ) {
                 String curColName = tourRegDataGridView.Columns[e.ColumnIndex].Name;
                 DataGridViewRow curViewRow = tourRegDataGridView.Rows[e.RowIndex];
-                if ( curColName.Equals( "Weight" ) ) {
-                    if ( isObjectEmpty( e.FormattedValue ) ) {
-                        e.Cancel = false;
-                    } else {
-                        try {
-                            Int16 curNum = Convert.ToInt16( e.FormattedValue.ToString() );
-                            e.Cancel = false;
-                        } catch {
-                            e.Cancel = true;
-                            MessageBox.Show( curColName + " must be numeric (integer)" );
-                        }
-                    }
-                } else if ( curColName.Equals( "EntryDue" )
+                if ( curColName.Equals( "EntryDue" )
                     || curColName.Equals( "EntryPaid" )
                     || curColName.Equals( "AwsaMbrshpPaymt" )
                     || curColName.Equals( "JumpHeight" )
@@ -935,19 +911,6 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( curValue != myOrigItemValue ) {
                         isDataModified = true;
                         curViewRow.Cells["Updated"].Value = "Y";
-                    }
-                } else if (curColName.Equals("Weight")) {
-                    if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
-                        if ( myOrigItemValue.Length > 0 ) {
-                            isDataModified = true;
-                            curViewRow.Cells["Updated"].Value = "Y";
-                        }
-                    } else {
-                        Int16 curNum = Convert.ToInt16((String)curViewRow.Cells[e.ColumnIndex].Value);
-                        if ( curNum.ToString() != myOrigItemValue ) {
-                            isDataModified = true;
-                            curViewRow.Cells["Updated"].Value = "Y";
-                        }
                     }
                 } else if (curColName.Equals("EntryDue")
                     || curColName.Equals("EntryPaid")
@@ -1211,7 +1174,7 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, ");
             curSqlStmt.Append( "R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment, " );
-            curSqlStmt.Append( "R.Weight, R.TrickBoat, R.JumpHeight, R.Notes, " );
+            curSqlStmt.Append( "R.TrickBoat, R.JumpHeight, R.Notes, " );
             curSqlStmt.Append( "S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup, " );
             curSqlStmt.Append( "T.Event AS TrickEvent, T.EventGroup AS TrickGroup, " );
             curSqlStmt.Append( "J.Event AS JumpEvent, J.EventGroup AS JumpGroup " );

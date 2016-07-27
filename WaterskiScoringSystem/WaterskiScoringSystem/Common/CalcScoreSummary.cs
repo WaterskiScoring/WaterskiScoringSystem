@@ -3727,46 +3727,41 @@ namespace WaterskiScoringSystem.Common {
                 }
                 */
                 curDiv = ( String ) curRow["AgeGroup"];
-                if ( curDiv.Substring( 0, 1 ).Equals( "M" ) ) {
+                if ( curDiv.Substring( 0, 1 ).Equals( "M") || curDiv.Equals("OM") || curDiv.Equals("MM") ) {
                     curCategory = "Cat1";
-                } else if ( curDiv.Substring( 0, 1 ).Equals( "W" ) ) {
+                } else if ( curDiv.Substring( 0, 1 ).Equals( "W" ) || curDiv.Equals("OW") || curDiv.Equals("MW") ) {
                     curCategory = "Cat2";
                 } else if ( curDiv.Substring( 0, 1 ).Equals( "B" ) ) {
                     curCategory = "Cat3";
                 } else if ( curDiv.Substring( 0, 1 ).Equals( "G" ) ) {
                     curCategory = "Cat3";
+                } else {
+                    curCategory = "";
                 }
-                curRow["EventGroup"] = curCategory;
-                try {
-                    curScore = ( Decimal ) ( curRow["Points" + curEvent] );
-                    curPlcmt = ( String ) curRow["Plcmt" + curEvent];
-                    if ( Int32.TryParse( curPlcmt, out curPlcmtNum ) ) {
-                        curPlcmtPoints = ( curPlcmtPosCount - curPlcmtNum ) * 10;
-                    } else {
-                        if ( curPlcmt.Contains( "T" ) ) {
-                            if ( Int32.TryParse( curPlcmt.Substring( 0, curPlcmt.IndexOf( "T" ) ), out curPlcmtNum ) ) {
-                                curPlcmtPoints = ( ( curPlcmtPosCount - curPlcmtNum ) * 10 ) + 5; ;
+                if ( curCategory.Length > 0 ) {
+                    curRow["EventGroup"] = curCategory;
+                    try {
+                        curScore = (Decimal) ( curRow["Points" + curEvent] );
+                        curPlcmt = (String) curRow["Plcmt" + curEvent];
+                        if ( Int32.TryParse(curPlcmt, out curPlcmtNum) ) {
+                            curPlcmtPoints = ( curPlcmtPosCount - curPlcmtNum ) * 10;
+                        } else {
+                            if ( curPlcmt.Contains("T") ) {
+                                if ( Int32.TryParse(curPlcmt.Substring(0, curPlcmt.IndexOf("T")), out curPlcmtNum) ) {
+                                    curPlcmtPoints = ( ( curPlcmtPosCount - curPlcmtNum ) * 10 ) + 5; ;
+                                } else {
+                                    curPlcmtPoints = 0;
+                                }
                             } else {
                                 curPlcmtPoints = 0;
                             }
-                        } else {
-                            curPlcmtPoints = 0;
                         }
+                    } catch {
+                        curScore = 0;
+                        curPlcmtPoints = 0;
                     }
-                } catch {
-                    curScore = 0;
-                    curPlcmtPoints = 0;
+                    curRow["PlcmtPoints" + curEvent] = curPlcmtPoints;
                 }
-                curRow["PlcmtPoints" + curEvent] = curPlcmtPoints;
-                /*
-                MessageBox.Show( "Skier=" + curRow["SkierName"] 
-                    + ", Division=" + curRow["AgeGroup"] 
-                    + ", Category=" + curRow["EventGroup"] 
-                    + ", TeamCode=" + ( String ) curRow["Team" + curEvent] 
-                    + ", PlcmtPoints=" + curPlcmtPoints
-                    + ", Points=" + curScore
-                    + ", Plcmt=" + curRow["Plcmt" + curEvent] + " (" + curPlcmtPos  + ")");
-                */
             }
 
             return curEventDataTable;

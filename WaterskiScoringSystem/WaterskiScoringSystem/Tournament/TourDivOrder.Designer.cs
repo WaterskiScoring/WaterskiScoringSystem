@@ -62,7 +62,7 @@
             this.navSave});
             this.TopNavMenu.Location = new System.Drawing.Point(0, 0);
             this.TopNavMenu.Name = "TopNavMenu";
-            this.TopNavMenu.Size = new System.Drawing.Size(409, 36);
+            this.TopNavMenu.Size = new System.Drawing.Size(409, 38);
             this.TopNavMenu.TabIndex = 12;
             this.TopNavMenu.Text = "toolStrip1";
             // 
@@ -71,7 +71,7 @@
             this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
             this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navRefresh.Name = "navRefresh";
-            this.navRefresh.Size = new System.Drawing.Size(49, 33);
+            this.navRefresh.Size = new System.Drawing.Size(50, 35);
             this.navRefresh.Text = "Refresh";
             this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
@@ -81,7 +81,7 @@
             this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
             this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navPrint.Name = "navPrint";
-            this.navPrint.Size = new System.Drawing.Size(33, 33);
+            this.navPrint.Size = new System.Drawing.Size(36, 35);
             this.navPrint.Text = "Print";
             this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navPrint.Click += new System.EventHandler(this.navPrint_Click);
@@ -90,7 +90,7 @@
             // 
             this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
             this.navSave.Name = "navSave";
-            this.navSave.Size = new System.Drawing.Size(35, 33);
+            this.navSave.Size = new System.Drawing.Size(35, 35);
             this.navSave.Text = "Save";
             this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navSave.Click += new System.EventHandler(this.navSave_Click);
@@ -214,6 +214,7 @@
             this.TourDivDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.TourDivDataGridView_CellValidating);
             this.TourDivDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
             this.TourDivDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TourDivDataGridView_RowEnter);
+            this.TourDivDataGridView.Leave += new System.EventHandler(this.TourDivDataGridView_Leave);
             // 
             // SanctionId
             // 

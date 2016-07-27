@@ -463,6 +463,9 @@ namespace WaterskiScoringSystem.Jump {
         }
 
         private void navSaveItem_Click(object sender, EventArgs e) {
+            roundActiveSelect.Focus();
+            jumpRecapDataGridView.EndEdit();
+            jumpRecapDataGridView.Focus();
             try {
                 if ( saveScore() ) {
                     isDataModified = false;
@@ -2553,6 +2556,10 @@ namespace WaterskiScoringSystem.Jump {
                 curRow.Cells["SkierName"].Style.BackColor = SystemColors.Window;
                 curRow.Cells["Status"].Value = "1-TBD";
             }
+        }
+
+        private void jumpRecapDataGridView_Leave( object sender, EventArgs e ) {
+            jumpRecapDataGridView.EndEdit();
         }
 
         private void jumpRecapDataGridView_RowEnter(object sender, DataGridViewCellEventArgs e) {
@@ -5528,6 +5535,5 @@ namespace WaterskiScoringSystem.Jump {
             }
             return curReturnValue;
         }
-
     }
 }

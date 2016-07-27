@@ -224,7 +224,13 @@ namespace WaterskiScoringSystem.Tournament {
 
             // Determine if the OK button was clicked on the dialog box.
             if ( myEditMemberDialog.DialogResult == DialogResult.OK ) {
-                //New member added
+                searchMemberList(myEditMemberDialog.MemberId, null, null, null);
+                myMemberListDataTable = searchMemberList(myEditMemberDialog.MemberId, null, null, null);
+                if ( myMemberListDataTable != null ) {
+                    loadDataGridView();
+                    DataGridView.Rows[0].Selected = true;
+                    AddButton_Click(null, null);
+                }
             }
         }
 

@@ -139,22 +139,12 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void checkModifyPrompt() {
+            TourDivDataGridView.EndEdit();
             if ( isDataModified ) {
-                String dialogMsg = "Changes have been made to currently displayed data!"
-                    + "\n Do you want to save the changes before closing the window?";
-                DialogResult msgResp =
-                    MessageBox.Show( dialogMsg, "Change Warning",
-                        MessageBoxButtons.YesNoCancel,
-                        MessageBoxIcon.Warning,
-                        MessageBoxDefaultButton.Button1 );
-                if ( msgResp == DialogResult.Yes ) {
-                    try {
-                        navSave_Click( null, null );
-                    } catch ( Exception excp ) {
-                        MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
-                    }
-                } else if ( msgResp == DialogResult.No ) {
-                    isDataModified = false;
+                try {
+                    navSave_Click(null, null);
+                } catch ( Exception excp ) {
+                    MessageBox.Show("Error attempting to save changes \n" + excp.Message);
                 }
             }
         }
@@ -167,6 +157,9 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 if ( TourDivDataGridView.Rows.Count > 0 ) {
+                    LoadDataButton.Focus();
+                    TourDivDataGridView.EndEdit();
+                    TourDivDataGridView.Focus();
                     DataGridViewRow curViewRow = TourDivDataGridView.Rows[myViewIdx];
                     String curUpdateStatus = (String)curViewRow.Cells["Updated"].Value;
                     if ( curUpdateStatus.ToUpper().Equals( "Y" ) ) {
@@ -585,5 +578,9 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnValue;
         }
 
+        private void TourDivDataGridView_Leave( object sender, EventArgs e ) {
+            TourDivDataGridView.EndEdit();
+
+        }
     }
 }
