@@ -140,6 +140,12 @@ namespace WaterskiScoringSystem.Tournament {
                 // Retrieve data from database depending on selection criteria
                 String curMsg = "Tournament scores retrieved ";
 
+                if ( plcmtAWSATeamButton.Checked ) {
+                    bestScoreButton.Checked = true;
+                    pointsScoreButton.Checked = true;
+                    nopsPointsButton.Checked = true;
+                }
+
                 if ( bestScoreButton.Checked ) {
                     curDataType = "best";
                     winStatusMsg.Text = curMsg + "- best scores ";
@@ -214,21 +220,18 @@ namespace WaterskiScoringSystem.Tournament {
                 }
 
                 if (myTourRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" )) {
-                    mySlalomDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue );
-                    loadSlalomDataGrid( mySlalomDataTable );
-                    myTrickDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Trick", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue );
-                    loadTrickDataGrid( myTrickDataTable );
-                    myJumpDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue );
-                    loadJumpDataGrid( myJumpDataTable );
+                    mySlalomDataTable = curCalcSummary.CalcIwwfEventPlcmts(myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue);
+                    loadSlalomDataGrid(mySlalomDataTable);
+                    myTrickDataTable = curCalcSummary.CalcIwwfEventPlcmts(myTourRow, mySanctionNum, "Trick", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue);
+                    loadTrickDataGrid(myTrickDataTable);
+                    myJumpDataTable = curCalcSummary.CalcIwwfEventPlcmts(myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue);
+                    loadJumpDataGrid(myJumpDataTable);
 
-                    myTeamDataTable = curCalcSummary.getSlalomSummaryTeam( mySlalomDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                    myTeamDataTable = curCalcSummary.getTrickSummaryTeam( myTeamDataTable, myTrickDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                    myTeamDataTable = curCalcSummary.getJumpSummaryTeam( myTeamDataTable, myJumpDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                    if (plcmtTourButton.Checked) {
-                        myTeamDataTable = curCalcSummary.CalcTeamCombinedSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam );
-                    }
-                    if ( plcmtAWSATeamButton.Checked ) {
-                        //myTeamDataTable = curCalcSummary.CalcTeamAwsaCombinedSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam );
+                    myTeamDataTable = curCalcSummary.getSlalomSummaryTeam(mySlalomDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod);
+                    myTeamDataTable = curCalcSummary.getTrickSummaryTeam(myTeamDataTable, myTrickDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod);
+                    myTeamDataTable = curCalcSummary.getJumpSummaryTeam(myTeamDataTable, myJumpDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod);
+                    if ( plcmtTourButton.Checked ) {
+                        myTeamDataTable = curCalcSummary.CalcTeamCombinedSummary(myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam);
                     }
                 } else if (myTourRules.ToLower().Equals( "ncwsa" )) {
                     if (plcmtTourButton.Checked) {

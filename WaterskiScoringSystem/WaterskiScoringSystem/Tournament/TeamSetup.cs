@@ -709,6 +709,122 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void loadTeamSkierList() {
+            DataGridViewRow curViewRow;
+            String curTeamCode = "", prevTeamCode = "", curEvent = "", prevEvent = "";
+            Cursor.Current = Cursors.WaitCursor;
+            //            curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
+            //                                    curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
+            //curPrintRow.Height = 8;
+
+            try {
+                int curRowIdx = 0;
+                PrintTeamDataGridView.Rows.Clear();
+                DataTable curDataTable = getTeamSkierList();
+                if ( curDataTable.Rows.Count > 0 ) {
+                    foreach ( DataRow curDataRow in curDataTable.Rows ) {
+                        curRowIdx = PrintTeamDataGridView.Rows.Add();
+                        curViewRow = PrintTeamDataGridView.Rows[curRowIdx];
+
+                        curTeamCode = (String) curDataRow["TeamCode"];
+                        curEvent = (String) curDataRow["Event"];
+
+                        if ( curRowIdx > 0) {
+                            if ( curTeamCode == prevTeamCode ) {
+                                if ( curEvent == prevEvent ) {
+                                    curViewRow.Cells["PrintTeamCode"].Value = "";
+                                    curViewRow.Cells["PrintTeamName"].Value = "";
+                                    curViewRow.Cells["PrintEvent"].Value = "";
+                                } else {
+                                    curViewRow.DefaultCellStyle.BackColor = Color.Silver;
+                                    curViewRow.Height = 8;
+
+                                    curRowIdx = PrintTeamDataGridView.Rows.Add();
+                                    curViewRow = PrintTeamDataGridView.Rows[curRowIdx];
+
+                                    curViewRow.Cells["PrintTeamCode"].Value = "";
+                                    curViewRow.Cells["PrintTeamName"].Value = "";
+                                    try {
+                                        curViewRow.Cells["PrintEvent"].Value = ( (String) curDataRow["Event"] ).ToString();
+                                    } catch {
+                                        curViewRow.Cells["PrintEvent"].Value = "";
+                                    }
+                                }
+                            } else {
+                                curViewRow.DefaultCellStyle.BackColor = Color.DarkGray;
+                                curViewRow.Height = 24;
+
+                                curRowIdx = PrintTeamDataGridView.Rows.Add();
+                                curViewRow = PrintTeamDataGridView.Rows[curRowIdx];
+
+                                try {
+                                    curViewRow.Cells["PrintTeamCode"].Value = (String) curDataRow["TeamCode"];
+                                } catch {
+                                    curViewRow.Cells["PrintTeamCode"].Value = "";
+                                }
+                                try {
+                                    curViewRow.Cells["PrintTeamName"].Value = (String) curDataRow["Name"];
+                                } catch {
+                                    curViewRow.Cells["PrintTeamName"].Value = "";
+                                }
+                                try {
+                                    curViewRow.Cells["PrintEvent"].Value = ( (String) curDataRow["Event"] ).ToString();
+                                } catch {
+                                    curViewRow.Cells["PrintEvent"].Value = "";
+                                }
+                            }
+                        } else {
+                            try {
+                                curViewRow.Cells["PrintTeamCode"].Value = (String) curDataRow["TeamCode"];
+                            } catch {
+                                curViewRow.Cells["PrintTeamCode"].Value = "";
+                            }
+                            try {
+                                curViewRow.Cells["PrintTeamName"].Value = (String) curDataRow["Name"];
+                            } catch {
+                                curViewRow.Cells["PrintTeamName"].Value = "";
+                            }
+                            try {
+                                curViewRow.Cells["PrintEvent"].Value = ( (String) curDataRow["Event"] ).ToString();
+                            } catch {
+                                curViewRow.Cells["PrintEvent"].Value = "";
+                            }
+                        }
+
+                        try {
+                            curViewRow.Cells["PrintSkierDiv"].Value = ( (String) curDataRow["AgeGroup"] ).ToString();
+                        } catch {
+                            curViewRow.Cells["PrintSkierDiv"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["PrintSkierEventGroup"].Value = ( (String) curDataRow["EventGroup"] ).ToString();
+                        } catch {
+                            curViewRow.Cells["PrintSkierEventGroup"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["PrintSkierName"].Value = ( (String) curDataRow["SkierName"] ).ToString();
+                        } catch {
+                            curViewRow.Cells["PrintSkierName"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["PrintRankingScore"].Value = ( (String) curDataRow["RankingScore"] ).ToString();
+                        } catch {
+                            curViewRow.Cells["PrintRankingScore"].Value = "";
+                        }
+
+                        prevTeamCode = curTeamCode;
+                        prevEvent = curEvent;
+
+                    }
+                }
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error retrieving tournament teams \n" + ex.Message);
+            }
+
+            Cursor.Current = Cursors.Default;
+            myViewLoad = false;
+        }
+
         private void ShowTeamButton_Click( object sender, EventArgs e ) {
             myShowTeam = true;
             String curFilterCommand = "", curTeamCode = "", curDiv = "", curGroup = "";
@@ -1963,6 +2079,17 @@ namespace WaterskiScoringSystem.Tournament {
             return getData( curSqlStmt.ToString() );
         }
 
+        private DataTable getTeamSkierList() {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
+            curSqlStmt.Append("From TeamList T ");
+            curSqlStmt.Append("Inner Join EventReg E ON E.SanctionId = T.SanctionId AND E.TeamCode = T.TeamCode ");
+            curSqlStmt.Append("INNER JOIN TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup ");
+            curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' ");
+            curSqlStmt.Append("Order by T.Name, E.Event, E.AgeGroup, R.SkierName ");
+            return getData(curSqlStmt.ToString());
+        }
+
         private DataTable getTourData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
@@ -2006,6 +2133,8 @@ namespace WaterskiScoringSystem.Tournament {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
+            loadTeamSkierList();
+
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
@@ -2023,12 +2152,12 @@ namespace WaterskiScoringSystem.Tournament {
             curPrintDialog.PrinterSettings.DefaultPageSettings.Landscape = true;
 
             if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-                String printTitle = Properties.Settings.Default.Mdi_Title + " - Team Running Order";
+                String printTitle = Properties.Settings.Default.Mdi_Title + " - Team List";
                 myPrintDoc = new PrintDocument();
                 myPrintDoc.DocumentName = this.Text;
                 myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
                 myPrintDoc.DefaultPageSettings.Landscape = true;
-                myPrintDataGrid = new DataGridViewPrinter( TeamDataGridView, myPrintDoc,
+                myPrintDataGrid = new DataGridViewPrinter(PrintTeamDataGridView, myPrintDoc,
                     CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
