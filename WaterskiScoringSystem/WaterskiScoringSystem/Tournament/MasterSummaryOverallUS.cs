@@ -279,9 +279,6 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( ( ( (String)curRow["EligOverall"] ).Equals( "Yes" ) && showEligButton.Checked )
                     || ( ( (String)curRow["QualifyOverall"] ).Equals( "Yes" ) && ( (String)curRow["EligOverall"] ).Equals( "Yes" )  && showQlfyButton.Checked )
                     || showAllButton.Checked ) {
-                    curPlcmt++;
-                    curIdx = scoreSummaryDataGridView.Rows.Add();
-                    prevReportGroup = curReportGroup;
 
                     if (roundScoreButton.Checked) {
                         RoundJump.Visible = false;
@@ -289,12 +286,6 @@ namespace WaterskiScoringSystem.Tournament {
                         RoundSlalom.Visible = false;
 
                         prevRound = curRound;
-                        try {
-                            curRound = (Int16)curRow["RoundOverall"];
-                        } catch (Exception ex) {
-                            MessageBox.Show("Exception enocuntered: " + ex.Message);
-                            curRound = 0;
-                        }
                     } else {
                         if (myTourRules.ToLower().Equals( "ncwsa" )) {
                         } else {
@@ -304,124 +295,141 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                     }
 
-                    curGroup = (String)curRow["EventGroupOverall"];
-                    if ( ( (String)curRow["AgeGroup"] ).Length > 2 ) {
-                        curDiv = ( (String)curRow["AgeGroup"] ).Substring( 0, 2 );
-                    } else {
-                        curDiv = (String)curRow["AgeGroup"];
+                    try {
+                        curRound = (Int16) curRow["RoundOverall"];
+                    } catch ( Exception ex ) {
+                        MessageBox.Show("Exception enocuntered: " + ex.Message);
+                        curRound = 0;
                     }
-                    if ( groupPlcmtButton.Checked ) {
-                        curReportGroup = curGroup;
-                    } else if ( plcmtTourButton.Checked ) {
-                        curReportGroup = "";
-                    } else if ( plcmtDivButton.Checked ) {
-                        curReportGroup = curDiv;
-                    } else if ( plcmtDivGrpButton.Checked ) {
-                        curReportGroup = curDiv + "-" + curGroup;
-                    } else {
-                        curReportGroup = curGroup;
-                    }
-                    if ((curReportGroup != prevReportGroup) && prevReportGroup.Length > 0) {
-                        curViewRow = scoreSummaryDataGridView.Rows[curIdx];
-                        curViewRow.DefaultCellStyle.BackColor = Color.DarkGray;
-                        scoreSummaryDataGridView.Rows[curIdx].Height = 4;
+
+                    if ( curRound > 0 ) {
+                        prevReportGroup = curReportGroup;
+                        curPlcmt++;
                         curIdx = scoreSummaryDataGridView.Rows.Add();
-                        curPlcmt = 1;
-                        prevScore = 0;
-                    } else if (roundScoreButton.Checked) {
-                        if (curRound != prevRound) {
+                        curGroup = (String) curRow["EventGroupOverall"];
+
+                        if ( ( (String) curRow["AgeGroup"] ).Length > 2 ) {
+                            curDiv = ( (String) curRow["AgeGroup"] ).Substring(0, 2);
+                        } else {
+                            curDiv = (String) curRow["AgeGroup"];
+                        }
+                        if ( groupPlcmtButton.Checked ) {
+                            curReportGroup = curGroup;
+                        } else if ( plcmtTourButton.Checked ) {
+                            curReportGroup = "";
+                        } else if ( plcmtDivButton.Checked ) {
+                            curReportGroup = curDiv;
+                        } else if ( plcmtDivGrpButton.Checked ) {
+                            curReportGroup = curDiv + "-" + curGroup;
+                        } else {
+                            curReportGroup = curGroup;
+                        }
+                        if ( ( curReportGroup != prevReportGroup ) && prevReportGroup.Length > 0 ) {
                             curViewRow = scoreSummaryDataGridView.Rows[curIdx];
-                            curViewRow.DefaultCellStyle.BackColor = Color.AntiqueWhite;
-                            scoreSummaryDataGridView.Rows[curIdx].Height = 2;
+                            curViewRow.DefaultCellStyle.BackColor = Color.DarkGray;
+                            scoreSummaryDataGridView.Rows[curIdx].Height = 4;
                             curIdx = scoreSummaryDataGridView.Rows.Add();
                             curPlcmt = 1;
                             prevScore = 0;
-                        }
-                    }
-
-                    curViewRow = scoreSummaryDataGridView.Rows[curIdx];
-                    curViewRow.Cells["MemberId"].Value = (String)curRow["MemberId"];
-                    curViewRow.Cells["SanctionId"].Value = (String)curRow["SanctionId"];
-                    curViewRow.Cells["SkierName"].Value = (String)curRow["SkierName"];
-                    curViewRow.Cells["AgeGroup"].Value = curDiv;
-                    curViewRow.Cells["EventGroup"].Value = curGroup;
-                    curViewRow.Cells["QualifyOverall"].Value = (String)curRow["QualifyOverall"];
-                    curViewRow.Cells["EligOverall"].Value = (String)curRow["EligOverall"];
-
-                    curViewRow.Cells["SepSlalom"].Value = " ";
-                    if ( ( (String)curRow["EventClassSlalom"] ).Length > 0 ) {
-                        curViewRow.Cells["EventClassSlalom"].Value = (String)curRow["EventClassSlalom"];
-                        curViewRow.Cells["RoundSlalom"].Value = (Int16)curRow["RoundSlalom"];
-                        curViewRow.Cells["ScoreSlalom"].Value = (Decimal)curRow["ScoreSlalom"];
-                        curViewRow.Cells["PointsSlalom"].Value = (Decimal)curRow["PointsSlalom"];
-
-                        curViewRow.Cells["LastPassBuoys"].Value = ( (Decimal)curRow["FinalPassScore"] ).ToString( "0.00" );
-                        curViewRow.Cells["RopeLengthFeetSlalom"].Value = (String)curRow["FinalLenOff"];
-                        curViewRow.Cells["RopeLenghtMetricSlalom"].Value = (String)curRow["FinalLen"];
-                        curViewRow.Cells["BoatSpeedMphSlalom"].Value = (Byte)curRow["FinalSpeedMph"];
-                        curViewRow.Cells["BoatSpeedKphSlalom"].Value = (Byte)curRow["FinalSpeedKph"];
-                        if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                            curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamSlalom"];
-                        }
-                    }
-
-                    curViewRow.Cells["SepTrick"].Value = " ";
-                    if ( ( (String)curRow["EventClassTrick"] ).Length > 0 ) {
-                        curViewRow.Cells["EventClassTrick"].Value = (String)curRow["EventClassTrick"];
-                        curViewRow.Cells["RoundTrick"].Value = (Int16)curRow["RoundTrick"];
-                        curViewRow.Cells["ScorePass1Trick"].Value = (Int16)curRow["Pass1Trick"];
-                        curViewRow.Cells["ScorePass2Trick"].Value = (Int16)curRow["Pass2Trick"];
-                        curViewRow.Cells["ScoreTrick"].Value = (Int16)curRow["ScoreTrick"];
-                        curViewRow.Cells["PointsTrick"].Value = (Decimal)curRow["PointsTrick"];
-                        if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                            if (curViewRow.Cells["TeamCodeNcwsa"].Value == null) {
-                                curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamTrick"];
+                        } else if ( roundScoreButton.Checked ) {
+                            if ( curRound != prevRound ) {
+                                curViewRow = scoreSummaryDataGridView.Rows[curIdx];
+                                curViewRow.DefaultCellStyle.BackColor = Color.AntiqueWhite;
+                                scoreSummaryDataGridView.Rows[curIdx].Height = 2;
+                                curIdx = scoreSummaryDataGridView.Rows.Add();
+                                curPlcmt = 1;
+                                prevScore = 0;
                             }
                         }
-                    }
 
-                    curViewRow.Cells["SepJump"].Value = " ";
-                    if ( ( (String)curRow["EventClassJump"] ).Length > 0 ) {
-                        curViewRow.Cells["EventClassJump"].Value = (String)curRow["EventClassJump"];
-                        curViewRow.Cells["RoundJump"].Value = (Int16)curRow["RoundJump"];
-                        curViewRow.Cells["ScoreMeters"].Value = (Decimal)curRow["ScoreMeters"];
-                        curViewRow.Cells["ScoreFeet"].Value = (Decimal)curRow["ScoreFeet"];
-                        curViewRow.Cells["PointsJump"].Value = (Decimal)curRow["PointsJump"];
-                        if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                            if (curViewRow.Cells["TeamCodeNcwsa"].Value == null) {
-                                curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamJump"];
+                        curViewRow = scoreSummaryDataGridView.Rows[curIdx];
+                        curViewRow.Cells["MemberId"].Value = (String) curRow["MemberId"];
+                        curViewRow.Cells["SanctionId"].Value = (String) curRow["SanctionId"];
+                        curViewRow.Cells["SkierName"].Value = (String) curRow["SkierName"];
+                        curViewRow.Cells["AgeGroup"].Value = curDiv;
+                        curViewRow.Cells["EventGroup"].Value = curGroup;
+                        curViewRow.Cells["QualifyOverall"].Value = (String) curRow["QualifyOverall"];
+                        curViewRow.Cells["EligOverall"].Value = (String) curRow["EligOverall"];
+
+                        curViewRow.Cells["SepSlalom"].Value = " ";
+                        if ( ( (String) curRow["EventClassSlalom"] ).Length > 0 && ( (String) curRow["PlcmtSlalom"] ).Length > 0 ) {
+                            curViewRow.Cells["EventClassSlalom"].Value = (String) curRow["EventClassSlalom"];
+                            curViewRow.Cells["RoundSlalom"].Value = (Int16) curRow["RoundSlalom"];
+                            curViewRow.Cells["ScoreSlalom"].Value = (Decimal) curRow["ScoreSlalom"];
+                            curViewRow.Cells["PointsSlalom"].Value = (Decimal) curRow["PointsSlalom"];
+
+                            curViewRow.Cells["LastPassBuoys"].Value = ( (Decimal) curRow["FinalPassScore"] ).ToString("0.00");
+                            curViewRow.Cells["RopeLengthFeetSlalom"].Value = (String) curRow["FinalLenOff"];
+                            curViewRow.Cells["RopeLenghtMetricSlalom"].Value = (String) curRow["FinalLen"];
+                            curViewRow.Cells["BoatSpeedMphSlalom"].Value = (Byte) curRow["FinalSpeedMph"];
+                            curViewRow.Cells["BoatSpeedKphSlalom"].Value = (Byte) curRow["FinalSpeedKph"];
+                            if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                                curViewRow.Cells["TeamCodeNcwsa"].Value = (String) curRow["TeamSlalom"];
                             }
                         }
-                    }
 
-                    curScore = (Decimal)curRow["ScoreOverall"];
-                    curViewRow.Cells["SepOverall"].Value = " ";
-                    curViewRow.Cells["ScoreOverall"].Value = curScore;
-                    curViewRow.Cells["RoundOverall"].Value = (Int16)curRow["RoundOverall"];
-                    if (curScore < prevScore) {
-                        curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
-                    } else {
-                        if (curPlcmt > 1) {
-                            String curValue = "";
-                            if (scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value == null) {
-                                curValue = curPlcmt.ToString();
-                            } else {
-                                curValue = scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value.ToString();
+                        curViewRow.Cells["SepTrick"].Value = " ";
+                        if ( ( (String) curRow["EventClassTrick"] ).Length > 0 && ( (String) curRow["PlcmtTrick"] ).Length > 0 ) {
+                            curViewRow.Cells["EventClassTrick"].Value = (String) curRow["EventClassTrick"];
+                            curViewRow.Cells["RoundTrick"].Value = (Int16) curRow["RoundTrick"];
+                            curViewRow.Cells["ScorePass1Trick"].Value = (Int16) curRow["Pass1Trick"];
+                            curViewRow.Cells["ScorePass2Trick"].Value = (Int16) curRow["Pass2Trick"];
+                            curViewRow.Cells["ScoreTrick"].Value = (Int16) curRow["ScoreTrick"];
+                            curViewRow.Cells["PointsTrick"].Value = (Decimal) curRow["PointsTrick"];
+                            if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                                if ( curViewRow.Cells["TeamCodeNcwsa"].Value == null ) {
+                                    curViewRow.Cells["TeamCodeNcwsa"].Value = (String) curRow["TeamTrick"];
+                                }
                             }
-                            if (curValue.Contains( "T" )) {
-                                curViewRow.Cells["OverallPlcmt"].Value = curValue;
-                            } else {
-                                curValue = (curPlcmt - 1).ToString( "##0" ) + "T";
-                                scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value = curValue;
-                                curViewRow.Cells["OverallPlcmt"].Value = curValue;
+                        }
+
+                        curViewRow.Cells["SepJump"].Value = " ";
+                        if ( ( (String) curRow["EventClassJump"] ).Length > 0 && ( (String) curRow["PlcmtJump"] ).Length > 0 ) {
+                            curViewRow.Cells["EventClassJump"].Value = (String) curRow["EventClassJump"];
+                            curViewRow.Cells["RoundJump"].Value = (Int16) curRow["RoundJump"];
+                            curViewRow.Cells["ScoreMeters"].Value = (Decimal) curRow["ScoreMeters"];
+                            curViewRow.Cells["ScoreFeet"].Value = (Decimal) curRow["ScoreFeet"];
+                            curViewRow.Cells["PointsJump"].Value = (Decimal) curRow["PointsJump"];
+                            if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                                if ( curViewRow.Cells["TeamCodeNcwsa"].Value == null ) {
+                                    curViewRow.Cells["TeamCodeNcwsa"].Value = (String) curRow["TeamJump"];
+                                }
                             }
-                        } else {
+                        }
+
+                        curScore = (Decimal) curRow["ScoreOverall"];
+                        curViewRow.Cells["SepOverall"].Value = " ";
+                        curViewRow.Cells["ScoreOverall"].Value = curScore;
+                        curViewRow.Cells["RoundOverall"].Value = (Int16) curRow["RoundOverall"];
+                        if ( curScore < prevScore ) {
                             curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
+                        } else {
+                            if ( curPlcmt > 1 ) {
+                                String curValue = "";
+                                if ( scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value == null ) {
+                                    curValue = curPlcmt.ToString();
+                                } else {
+                                    curValue = scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value.ToString();
+                                }
+                                if ( curValue.Contains("T") ) {
+                                    curViewRow.Cells["OverallPlcmt"].Value = curValue;
+                                } else {
+                                    curValue = ( curPlcmt - 1 ).ToString("##0") + "T";
+                                    scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value = curValue;
+                                    curViewRow.Cells["OverallPlcmt"].Value = curValue;
+                                }
+                            } else {
+                                curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
+                            }
                         }
+                        prevScore = curScore;
+                    } else {
+                        MessageBox.Show("Current round is zero for skier " + (String) curRow["SkierName"]);
                     }
-                    prevScore = curScore;
                 }
             }
+
+
             try {
                 RowStatusLabel.Text = "Row 1 of " + scoreSummaryDataGridView.Rows.Count.ToString();
 

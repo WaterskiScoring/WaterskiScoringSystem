@@ -170,9 +170,9 @@ namespace WaterskiScoringSystem.Common {
                         myRadio = (RadioButtonWithValue)myControl;
                         rbValue = (String)myRadio.Value;
                         if (rbValue.Equals(curCellValue)) {
-                            myRadio.Checked = true;
                             myRadio.ForeColor = Color.DarkBlue;
                             myRadio.BackColor = Color.White;
+                            myRadio.Checked = true;
                         } else if (rbValue.Equals("")) {
                             myDefaultRadio = myRadio;
                             myRadio.ForeColor = Color.Black;

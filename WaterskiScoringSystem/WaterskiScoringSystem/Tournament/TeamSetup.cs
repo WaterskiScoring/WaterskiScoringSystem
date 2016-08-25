@@ -348,21 +348,25 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void navExport_Click(object sender, EventArgs e) {
             ExportData myExportData = new ExportData();
-            String[] curSelectCommand = new String[2];
-            String[] curTableName = { "TeamList", "TeamOrder" };
+            String[] curSelectCommand = new String[3];
+            String[] curTableName = { "TeamList", "TeamOrder", "EventReg" };
 
             //----------------------------------------
             //Export data related to teams
             //----------------------------------------
             curSelectCommand[0] = "SELECT * FROM TeamList Where SanctionId = '" + mySanctionNum + "' ";
             curSelectCommand[1] = "SELECT * FROM TeamOrder Where SanctionId = '" + mySanctionNum + "' ";
+            curSelectCommand[2] = "SELECT SanctionId, MemberId, AgeGroup, TeamCode, Event, LastUpdateDate FROM EventReg Where SanctionId = '" + mySanctionNum + "' AND TeamCode is not null ";
 
             myExportData.exportData( curTableName, curSelectCommand );
         }
 
         private void navSaveAs_Click(object sender, EventArgs e) {
             ExportData myExportData = new ExportData();
-            myExportData.exportData( myTeamDataTable );
+            loadPrintTeamSkierList();
+            PrintMemberId.Visible = true;
+            myExportData.exportData(PrintTeamDataGridView);
+            PrintMemberId.Visible = false;
         }
 
         private void SlalomOrderButton_CheckedChanged(object sender, EventArgs e) {
@@ -709,13 +713,10 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void loadTeamSkierList() {
+        private void loadPrintTeamSkierList() {
             DataGridViewRow curViewRow;
             String curTeamCode = "", prevTeamCode = "", curEvent = "", prevEvent = "";
             Cursor.Current = Cursors.WaitCursor;
-            //            curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
-            //                                    curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
-            //curPrintRow.Height = 8;
 
             try {
                 int curRowIdx = 0;
@@ -807,7 +808,12 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["PrintSkierName"].Value = "";
                         }
                         try {
-                            curViewRow.Cells["PrintRankingScore"].Value = ( (String) curDataRow["RankingScore"] ).ToString();
+                            curViewRow.Cells["PrintMemberId"].Value = ( (String) curDataRow["MemberId"] ).ToString();
+                        } catch {
+                            curViewRow.Cells["PrintMemberId"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["PrintRankingScore"].Value = ( (Decimal) curDataRow["RankingScore"] ).ToString();
                         } catch {
                             curViewRow.Cells["PrintRankingScore"].Value = "";
                         }
@@ -2081,7 +2087,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getTeamSkierList() {
             StringBuilder curSqlStmt = new StringBuilder("");
-            curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
+            curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, R.MemberId, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
             curSqlStmt.Append("From TeamList T ");
             curSqlStmt.Append("Inner Join EventReg E ON E.SanctionId = T.SanctionId AND E.TeamCode = T.TeamCode ");
             curSqlStmt.Append("INNER JOIN TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup ");
@@ -2133,7 +2139,7 @@ namespace WaterskiScoringSystem.Tournament {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
-            loadTeamSkierList();
+            loadPrintTeamSkierList();
 
             bool CenterOnPage = true;
             bool WithTitle = true;
@@ -2176,5 +2182,148 @@ namespace WaterskiScoringSystem.Tournament {
                 e.HasMorePages = true;
         }
 
-      }
+        private void navImport_Click( object sender, EventArgs e ) {
+            string inputBuffer, curTeamCode = "", curEvent = "";
+            int curInputLineCount = 0, rowsProc = 0;
+            Boolean rowFound = false;
+            string[] inputCols = null, inputColNames = null;
+            char[] tabDelim = new char[] { '\t' };
+            int idxTeamCode = 0, idxTeamName = 1, idxEvent = 2, idxDiv = 3, idxEventGroup = 4, idxSkierName = 5, idxRankingScore = 6, idxMemberId = 7;
+            DataTable curDataTable = null;
+
+            StringBuilder curSqlStmt = new StringBuilder("");
+            StreamReader myReader = null;
+
+            try {
+                myReader = getImportFile();
+                if ( myReader != null ) {
+                    isDataModified = false;
+                    curInputLineCount = 0;
+                    inputBuffer = myReader.ReadLine();
+                    inputColNames = inputBuffer.Split(tabDelim);
+
+                    while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+                        curInputLineCount++;
+                        rowFound = false;
+                        inputCols = inputBuffer.Split(tabDelim);
+
+                        if ( inputCols.Length >= 8 ) {
+                            if ( inputCols[idxMemberId].Length > 0 ) {
+                                if ( inputCols[idxMemberId].Length < 9 ) {
+                                    inputCols[idxMemberId] = inputCols[idxMemberId].PadLeft(9, '0' );
+                                }
+
+                                if ( inputCols[idxEvent].Length > 0 ) {
+                                    curEvent = inputCols[idxEvent];
+                                }
+
+                                if ( inputCols[idxTeamCode].Length > 0 ) {
+                                    curTeamCode = inputCols[idxTeamCode];
+
+                                    curSqlStmt = new StringBuilder("");
+                                    curSqlStmt.Append("Select * from TeamList ");
+                                    curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[idxTeamCode] + "'");
+                                    curDataTable = getData(curSqlStmt.ToString());
+                                    if ( curDataTable.Rows.Count > 0 ) {
+                                        curSqlStmt = new StringBuilder("");
+                                        curSqlStmt.Append("Update TeamList Set Name = '" + inputCols[idxTeamName] + "' ");
+                                        curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[idxTeamCode] + "'");
+                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+                                    } else {
+                                        curSqlStmt = new StringBuilder("");
+                                        curSqlStmt.Append("Insert TeamList (");
+                                        curSqlStmt.Append("SanctionId, TeamCode, Name, LastUpdateDate");
+                                        curSqlStmt.Append(") Values (");
+                                        curSqlStmt.Append("'" + mySanctionNum + "' ");
+                                        curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "' ");
+                                        if ( inputCols[idxTeamName].Length > 0 ) {
+                                            curSqlStmt.Append(", '" + inputCols[idxTeamName] + "' ");
+                                        } else {
+                                            curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "' ");
+                                        }
+                                        curSqlStmt.Append(", getdate()");
+                                        curSqlStmt.Append(")");
+                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+
+                                        curSqlStmt = new StringBuilder("");
+                                        curSqlStmt.Append("Insert TeamOrder (");
+                                        curSqlStmt.Append("SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, Notes, LastUpdateDate");
+                                        curSqlStmt.Append(") Values (");
+                                        curSqlStmt.Append("'" + mySanctionNum + "' ");
+                                        curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "', '' ");
+                                        curSqlStmt.Append(", 1, 1, 1, 'Import', getdate()");
+                                        curSqlStmt.Append(")");
+                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+                                    }
+                                }
+
+                                curSqlStmt = new StringBuilder("");
+                                curSqlStmt.Append("Select SanctionId, MemberId, AgeGroup, EventGroup, Event, TeamCode from EventReg ");
+                                curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
+                                curSqlStmt.Append("And MemberId = '" + inputCols[idxMemberId] + "' ");
+                                curSqlStmt.Append("And AgeGroup = '" + inputCols[idxDiv] + "' ");
+                                curSqlStmt.Append("And Event = '" + curEvent + "' ");
+                                curDataTable = getData(curSqlStmt.ToString());
+                                if ( curDataTable.Rows.Count > 0 ) {
+                                    curSqlStmt = new StringBuilder("");
+                                    curSqlStmt.Append("Update EventReg Set TeamCode = '" + curTeamCode + "' ");
+                                    curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
+                                    curSqlStmt.Append("And MemberId = '" + inputCols[idxMemberId] + "' ");
+                                    curSqlStmt.Append("And AgeGroup = '" + inputCols[idxDiv] + "' ");
+                                    curSqlStmt.Append("And Event = '" + curEvent + "' ");
+                                    rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+                                } else {
+                                    MessageBox.Show(String.Format("Skier {1} {0} is not currently registered in Division {2} and Event {3} "
+                                        , inputCols[idxMemberId], inputCols[idxSkierName], inputCols[idxDiv], inputCols[idxEvent]));
+                                }
+
+
+                            } else {
+                                //Assume no data on this line, bypassing record
+                            }
+                        } else {
+                            //Assume no data on this line, bypassing record
+                        }
+                    }
+                }
+            } catch ( Exception ex ) {
+                String ExcpMsg = ex.Message;
+                if ( curSqlStmt != null ) {
+                    ExcpMsg += "\n" + curSqlStmt.ToString();
+                }
+                MessageBox.Show("Error: Performing SQL operations" + "\n\nError: " + ExcpMsg);
+            } finally {
+                myReader.Close();
+                myReader.Dispose();
+            }
+
+            isDataModified = false;
+            navRefresh_Click(null, null);
+        }
+
+        private StreamReader getImportFile() {
+            String curFileName = "", curPath = "";
+            OpenFileDialog myFileDialog = new OpenFileDialog();
+            StreamReader myReader = null;
+            try {
+                curPath = Properties.Settings.Default.ExportDirectory;
+                if ( curPath.Length < 2 ) {
+                    curPath = Directory.GetCurrentDirectory();
+                }
+                myFileDialog.InitialDirectory = curPath;
+                myFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                myFileDialog.FilterIndex = 2;
+                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
+                    curFileName = myFileDialog.FileName;
+                    if ( curFileName != null ) {
+                        myReader = new StreamReader(curFileName);                    }
+                }
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error: Could not get an import file to process " + "\n\nError: " + ex.Message);
+            }
+
+            return myReader;
+        }
+
+    }
 }

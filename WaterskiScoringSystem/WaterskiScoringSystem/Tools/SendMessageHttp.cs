@@ -267,11 +267,16 @@ namespace WaterskiScoringSystem.Tools {
                     curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( curResponseMessage );
                     
                     //showServerRespJson( curResponseDataList );
+                } else {
+                    curResponseDataList = new Dictionary<string, object>() {
+                    { "Error", "Response from video server was empty, video load not complete" } };
                 }
             } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
+                //MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
+                //curResponseDataList = null;
                 Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                curResponseDataList = null;
+                curResponseDataList = new Dictionary<string, object>() {
+                    { "Error", "Exception encountered loading video: " + ex.Message } } ;
             } finally {
                 // Clean up the streams.
                 if (curStreamReader != null) curStreamReader.Close();

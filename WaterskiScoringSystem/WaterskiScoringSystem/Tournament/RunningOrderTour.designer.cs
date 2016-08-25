@@ -112,6 +112,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventGroupPanel = new System.Windows.Forms.Panel();
             this.EventGroupFilterLabel = new System.Windows.Forms.Label();
             this.LiveWebLabel = new System.Windows.Forms.Label();
+            this.navSaveAs = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.EventRegDataGridView)).BeginInit();
             this.TopNavMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -178,7 +179,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.EventRegDataGridView.RowHeadersVisible = false;
             this.EventRegDataGridView.RowHeadersWidth = 31;
-            this.EventRegDataGridView.Size = new System.Drawing.Size(777, 304);
+            this.EventRegDataGridView.Size = new System.Drawing.Size(900, 304);
             this.EventRegDataGridView.TabIndex = 10;
             this.EventRegDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventRegDataGridView_CellEnter);
             this.EventRegDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventRegDataGridView_CellValidated);
@@ -376,7 +377,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.winStatus.Location = new System.Drawing.Point(0, 425);
             this.winStatus.Name = "winStatus";
-            this.winStatus.Size = new System.Drawing.Size(788, 22);
+            this.winStatus.Size = new System.Drawing.Size(911, 22);
             this.winStatus.TabIndex = 4;
             this.winStatus.Text = "statusStrip1";
             // 
@@ -434,6 +435,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navFilter,
             this.navSort,
             this.navSave,
+            this.navSaveAs,
             this.navExportRunorder,
             this.navExportSplashEye,
             this.navClassChangeButton,
@@ -442,7 +444,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navRecalcHcapButton});
             this.TopNavMenu.Location = new System.Drawing.Point(0, 0);
             this.TopNavMenu.Name = "TopNavMenu";
-            this.TopNavMenu.Size = new System.Drawing.Size(788, 38);
+            this.TopNavMenu.Size = new System.Drawing.Size(911, 38);
             this.TopNavMenu.TabIndex = 11;
             this.TopNavMenu.Text = "toolStrip1";
             // 
@@ -642,7 +644,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintDataGridView.Name = "PrintDataGridView";
             this.PrintDataGridView.RowHeadersVisible = false;
             this.PrintDataGridView.RowHeadersWidth = 31;
-            this.PrintDataGridView.Size = new System.Drawing.Size(682, 99);
+            this.PrintDataGridView.Size = new System.Drawing.Size(805, 99);
             this.PrintDataGridView.TabIndex = 126;
             this.PrintDataGridView.TabStop = false;
             this.PrintDataGridView.Visible = false;
@@ -830,7 +832,7 @@ namespace WaterskiScoringSystem.Tournament {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.printHeaderNote.Location = new System.Drawing.Point(487, 40);
             this.printHeaderNote.Name = "printHeaderNote";
-            this.printHeaderNote.Size = new System.Drawing.Size(294, 20);
+            this.printHeaderNote.Size = new System.Drawing.Size(417, 20);
             this.printHeaderNote.TabIndex = 6;
             // 
             // PrintHeaderLabel
@@ -851,7 +853,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.EventGroupPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.EventGroupPanel.Location = new System.Drawing.Point(61, 64);
             this.EventGroupPanel.Name = "EventGroupPanel";
-            this.EventGroupPanel.Size = new System.Drawing.Size(715, 45);
+            this.EventGroupPanel.Size = new System.Drawing.Size(838, 45);
             this.EventGroupPanel.TabIndex = 7;
             this.EventGroupPanel.TabStop = true;
             // 
@@ -879,11 +881,22 @@ namespace WaterskiScoringSystem.Tournament {
             this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LiveWebLabel.Visible = false;
             // 
+            // navSaveAs
+            // 
+            this.navSaveAs.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+            this.navSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navSaveAs.Name = "navSaveAs";
+            this.navSaveAs.Size = new System.Drawing.Size(48, 35);
+            this.navSaveAs.Text = "SaveAs";
+            this.navSaveAs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navSaveAs.ToolTipText = "Save As";
+            this.navSaveAs.Click += new System.EventHandler(this.navSaveAs_Click);
+            // 
             // RunningOrderTour
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 447);
+            this.ClientSize = new System.Drawing.Size(911, 447);
             this.Controls.Add(this.LiveWebLabel);
             this.Controls.Add(this.EventGroupFilterLabel);
             this.Controls.Add(this.EventGroupPanel);
@@ -978,5 +991,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingScore;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingRating;
         private System.Windows.Forms.ToolStripButton navRecalcHcapButton;
+        private System.Windows.Forms.ToolStripButton navSaveAs;
     }
 }

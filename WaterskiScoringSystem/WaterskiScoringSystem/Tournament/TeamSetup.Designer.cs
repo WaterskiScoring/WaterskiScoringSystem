@@ -158,6 +158,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintSkierEventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintSkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PrintRankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PrintMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.navImport = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.TeamDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TeamSlalomDataGridView)).BeginInit();
             this.winStatus.SuspendLayout();
@@ -532,7 +534,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.navSaveAs,
             this.navSave,
             this.navAdd,
-            this.navRemove});
+            this.navRemove,
+            this.navImport});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1031, 38);
@@ -1282,7 +1285,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintSkierDiv,
             this.PrintSkierEventGroup,
             this.PrintSkierName,
-            this.PrintRankingScore});
+            this.PrintRankingScore,
+            this.PrintMemberId});
             dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle35.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1294,7 +1298,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeamDataGridView.Location = new System.Drawing.Point(136, 214);
             this.PrintTeamDataGridView.Name = "PrintTeamDataGridView";
             this.PrintTeamDataGridView.RowHeadersVisible = false;
-            this.PrintTeamDataGridView.Size = new System.Drawing.Size(490, 322);
+            this.PrintTeamDataGridView.Size = new System.Drawing.Size(643, 205);
             this.PrintTeamDataGridView.TabIndex = 120;
             this.PrintTeamDataGridView.Visible = false;
             // 
@@ -1351,6 +1355,24 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintRankingScore.HeaderText = "Ranking Score";
             this.PrintRankingScore.Name = "PrintRankingScore";
             this.PrintRankingScore.ReadOnly = true;
+            // 
+            // PrintMemberId
+            // 
+            this.PrintMemberId.HeaderText = "MemberId";
+            this.PrintMemberId.Name = "PrintMemberId";
+            this.PrintMemberId.ReadOnly = true;
+            this.PrintMemberId.Visible = false;
+            // 
+            // navImport
+            // 
+            this.navImport.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
+            this.navImport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.navImport.Name = "navImport";
+            this.navImport.Size = new System.Drawing.Size(79, 35);
+            this.navImport.Text = "Import Team";
+            this.navImport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.navImport.ToolTipText = "Import Team";
+            this.navImport.Click += new System.EventHandler(this.navImport_Click);
             // 
             // TeamSetup
             // 
@@ -1512,5 +1534,7 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierEventGroup;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierName;
         private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingScore;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrintMemberId;
+        private System.Windows.Forms.ToolStripButton navImport;
     }
 }

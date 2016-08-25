@@ -1218,6 +1218,19 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void navSaveAs_Click( object sender, EventArgs e ) {
+            String curEvent = "Slalom";
+            if ( slalomButton.Checked ) {
+                curEvent = "Slalom";
+            } else if ( trickButton.Checked ) {
+                curEvent = "Trick";
+            } else if ( jumpButton.Checked ) {
+                curEvent = "Jump";
+            }
+            ExportData myExportData = new ExportData();
+            myExportData.exportData(EventRegDataGridView, curEvent + "RunOrderList.txt");
+        }
+
         private void writeExportFile(StreamWriter outBuffer, StringBuilder outLine, bool inSideBySide) {
             if (inSideBySide) {
                 String curPad = "";
@@ -1981,5 +1994,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
             return curReturnValue;
         }
+
     }
 }

@@ -471,133 +471,65 @@ namespace WaterskiScoringSystem.Tournament {
 
                 if (JudgeChiefCB.Checked) {
                     isChiefJudge = true;
-                    try {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update Tournament Set " );
-                        curSqlStmt.Append( "ChiefJudgeMemberId = '" + editMemberId.Text + "' " );
-                        curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                        if (rowsProc > 0) {
-                            isDataModified = false;
-                            curReturnValue = true;
-                            MessageBox.Show( "Remember to update the contact information for this new chief official" );
-                        }
-                    } catch (Exception excp) {
-                        MessageBox.Show( "Error updating chief judge \n" + excp.Message );
+                    bool curUpdateComplete = checkAndUpdateChiefOfficial("Judge");
+                    if ( curUpdateComplete ) {
+                        isDataModified = false;
+                        curReturnValue = true;
                     }
                 } else {
                     if (isChiefJudge) {
-                        try {
-                            isChiefJudge = false;
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefJudgeMemberId = ''" );
-                            curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                            mySqlStmt.CommandText = curSqlStmt.ToString();
-                            rowsProc = mySqlStmt.ExecuteNonQuery();
-                            winStatusMsg.Text = "Removal of chief judge successfully saved";
-                        } catch (Exception excp) {
-                            MessageBox.Show( "Error removing chief judge \n" + excp.Message );
+                        isChiefJudge = false;
+                        bool curUpdateComplete = checkAndRemoveChiefOfficial("Judge");
+                        if ( curUpdateComplete ) {
+                            isDataModified = false;
+                            curReturnValue = true;
                         }
                     }
                 }
                 if (DriverChiefCB.Checked) {
                     isChiefDriver = true;
-                    try {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update Tournament Set " );
-                        curSqlStmt.Append( "ChiefDriverMemberId = '" + editMemberId.Text + "' " );
-                        curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                        if (rowsProc > 0) {
-                            isDataModified = false;
-                            curReturnValue = true;
-                            MessageBox.Show( "Remember to update the contact information for this new chief official" );
-                        }
-                    } catch (Exception excp) {
-                        MessageBox.Show( "Error updating chief driver \n" + excp.Message );
+                    bool curUpdateComplete = checkAndUpdateChiefOfficial("Driver");
+                    if ( curUpdateComplete ) {
+                        isDataModified = false;
+                        curReturnValue = true;
                     }
                 } else {
-                    if (isChiefDriver) {
+                    if ( isChiefDriver) {
                         isChiefDriver = false;
-                        try {
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefDriverMemberId = ''" );
-                            curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                            mySqlStmt.CommandText = curSqlStmt.ToString();
-                            rowsProc = mySqlStmt.ExecuteNonQuery();
-                            winStatusMsg.Text = "Removal of chief driver successfully saved";
-                        } catch (Exception excp) {
-                            MessageBox.Show( "Error removing chief driver \n" + excp.Message );
+                        bool curUpdateComplete = checkAndRemoveChiefOfficial("Driver");
+                        if ( curUpdateComplete ) {
+                            isDataModified = false;
+                            curReturnValue = true;
                         }
                     }
                 }
                 if (ScoreChiefCB.Checked) {
                     isChiefScore = true;
-                    try {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update Tournament Set " );
-                        curSqlStmt.Append( "ChiefScorerMemberId = '" + editMemberId.Text + "' " );
-                        curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                        if (rowsProc > 0) {
-                            isDataModified = false;
-                            curReturnValue = true;
-                            MessageBox.Show( "Remember to update the contact information for this new chief official" );
-                        }
-                    } catch (Exception excp) {
-                        MessageBox.Show( "Error updating chief scorer \n" + excp.Message );
+                    bool curUpdateComplete = checkAndUpdateChiefOfficial("Scorer");
+                    if ( curUpdateComplete ) {
+                        isDataModified = false;
+                        curReturnValue = true;
                     }
                 } else {
                     if (isChiefScore) {
                         isChiefScore = false;
-                        try {
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefScorerMemberId = ''" );
-                            curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                            mySqlStmt.CommandText = curSqlStmt.ToString();
-                            rowsProc = mySqlStmt.ExecuteNonQuery();
-                            winStatusMsg.Text = "Removal of chief scorer successfully saved";
-                        } catch (Exception excp) {
-                            MessageBox.Show( "Error removing chief scorer \n" + excp.Message );
+                        bool curUpdateComplete = checkAndRemoveChiefOfficial("Scorer");
+                        if ( curUpdateComplete ) {
+                            isDataModified = false;
+                            curReturnValue = true;
                         }
                     }
                 }
                 if (SafetyChiefCB.Checked) {
                     isChiefSafety = true;
-                    try {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update Tournament Set " );
-                        curSqlStmt.Append( "SafetyDirMemberId = '" + editMemberId.Text + "' " );
-                        curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                        if (rowsProc > 0) {
-                            isDataModified = false;
-                            curReturnValue = true;
-                            MessageBox.Show( "Remember to update the contact information for this new chief official" );
-                        }
-                    } catch (Exception excp) {
-                        MessageBox.Show( "Error updating safety director \n" + excp.Message );
-                    }
+                    bool curUpdateComplete = checkAndUpdateChiefOfficial("Safety");
                 } else {
                     if (isChiefSafety) {
                         isChiefSafety = false;
-                        try {
-                            curSqlStmt = new StringBuilder( "Update Tournament Set SafetyDirMemberId = ''" );
-                            curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                            mySqlStmt.CommandText = curSqlStmt.ToString();
-                            rowsProc = mySqlStmt.ExecuteNonQuery();
-                            winStatusMsg.Text = "Removal of chief safety successfully saved";
-                        } catch (Exception excp) {
-                            MessageBox.Show( "Error removing chief safety \n" + excp.Message );
+                        bool curUpdateComplete = checkAndRemoveChiefOfficial("Safety");
+                        if ( curUpdateComplete ) {
+                            isDataModified = false;
+                            curReturnValue = true;
                         }
                     }
                 }
@@ -1463,6 +1395,86 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
             return getData( curSqlStmt.ToString() );
+        }
+
+        private Boolean checkAndRemoveChiefOfficial( String inChiefType ) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            String curChiefOfficalAttrName = "Chief" + inChiefType + "MemberId";
+            if ( inChiefType.Equals("Safety") ) {
+                curChiefOfficalAttrName = "SafetyDirMemberId";
+            }
+
+            try {
+                isChiefJudge = false;
+                curSqlStmt = new StringBuilder("Update Tournament Set " + curChiefOfficalAttrName + " = ''");
+                curSqlStmt.Append(", LastUpdateDate = getdate() ");
+                curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "'");
+                curSqlStmt.Append(" AND " + curChiefOfficalAttrName + " = '" + editMemberId.Text + "' ");
+                mySqlStmt.CommandText = curSqlStmt.ToString();
+                int rowsProc = mySqlStmt.ExecuteNonQuery();
+                winStatusMsg.Text = "Removal of chief judge successfully saved";
+                return true;
+            } catch ( Exception excp ) {
+                MessageBox.Show("Error removing chief judge \n" + excp.Message);
+                return false;
+            }
+        }
+
+        private Boolean checkAndUpdateChiefOfficial(String inChiefType) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            String curChiefOfficalAttrName = "Chief" + inChiefType + "MemberId";
+            if ( inChiefType.Equals("Safety" ) ) {
+                curChiefOfficalAttrName = "SafetyDirMemberId";
+            }
+
+            try {
+                curSqlStmt.Append("Select " + curChiefOfficalAttrName + " as ChiefMemberId From Tournament ");
+                curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
+                DataTable curDataTable = getData(curSqlStmt.ToString());
+                bool isUpdateReqd = false;
+                if ( curDataTable.Rows.Count > 0 ) {
+                    String curMemberId = (String) curDataTable.Rows[0]["ChiefMemberId"];
+                    if ( curMemberId.Trim().Length == 0 ) {
+                        isUpdateReqd = true;
+                    } else if ( curMemberId.Equals(editMemberId.Text) ) {
+                        isUpdateReqd = false;
+                    } else {
+                        String dialogMsg = "Primary chief " + inChiefType + " is already assigned, do you want to change that assignment?";
+                        DialogResult msgResp =
+                            MessageBox.Show(dialogMsg, "Change Warning",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button1);
+                        if ( msgResp == DialogResult.Yes ) {
+                            isUpdateReqd = true;
+                        } else {
+                            isUpdateReqd = false;
+                        }
+                    }
+                }
+
+                if ( isUpdateReqd ) {
+                    curSqlStmt = new StringBuilder("");
+                    curSqlStmt.Append("Update Tournament Set ");
+                    curSqlStmt.Append(curChiefOfficalAttrName + " = '" + editMemberId.Text + "' ");
+                    curSqlStmt.Append(", LastUpdateDate = getdate() ");
+                    curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
+                    mySqlStmt.CommandText = curSqlStmt.ToString();
+                    int rowsProc = mySqlStmt.ExecuteNonQuery();
+                    if ( rowsProc > 0 ) {
+                        MessageBox.Show("Remember to update the contact information for this new chief official");
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            } catch ( Exception excp ) {
+                MessageBox.Show("Error updating " + inChiefType + "\n" + excp.Message);
+                return false;
+            }
         }
 
         private DataTable getData( String inSelectStmt ) {
