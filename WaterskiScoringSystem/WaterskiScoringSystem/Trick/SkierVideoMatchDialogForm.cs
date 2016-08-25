@@ -16,7 +16,8 @@ namespace WaterskiScoringSystem.Trick {
         private Int16 myTourRounds = 0;
         private Int16 mySkierRound = 0;
         private Int16 mySkierPass = 0;
-        private DataTable myDataTable = null;
+        private DataTable myFullSkierDataTable = null;
+        private DataRow[] mySkierMatchList = null;
 
         public SkierVideoMatchDialogForm() {
             InitializeComponent();
@@ -39,7 +40,7 @@ namespace WaterskiScoringSystem.Trick {
             set {
                 mySkierRound = value;
                 if (mySkierRound <= myTourRounds) {
-                    roundActiveSelect.RoundValue = "mySkierRound";
+                    roundActiveSelect.RoundValue = mySkierRound.ToString();
                 }
             }
         }
@@ -82,18 +83,36 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
 
-        public DataTable SkierMatchList {
-            get { return myDataTable; }
+        public DataTable FullSkierDataTable {
+            get { return myFullSkierDataTable; }
             set {
-                myDataTable = value;
+                myFullSkierDataTable = value;
+            }
+        }
+
+        public DataRow[] SkierMatchList {
+            get { return mySkierMatchList; }
+            set {
+                mySkierMatchList = value;
                 previewDataGridView.Rows.Clear();
                 int curRowIdx = 0;
-                foreach (DataRow curRow in myDataTable.Rows) {
-                    curRowIdx = previewDataGridView.Rows.Add();
-                    DataGridViewRow curViewRow = previewDataGridView.Rows[curRowIdx];
-                    curViewRow.Cells["SkierName"].Value = (String)curRow["SkierName"];
-                    curViewRow.Cells["MemberId"].Value = (String)curRow["MemberId"];
-                    curViewRow.Cells["AgeGroup"].Value = (String)curRow["AgeGroup"];
+
+                if ( mySkierMatchList == null ) {
+                    foreach ( DataRow curRow in myFullSkierDataTable.Rows ) {
+                        curRowIdx = previewDataGridView.Rows.Add();
+                        DataGridViewRow curViewRow = previewDataGridView.Rows[curRowIdx];
+                        curViewRow.Cells["SkierName"].Value = (String) curRow["SkierName"];
+                        curViewRow.Cells["MemberId"].Value = (String) curRow["MemberId"];
+                        curViewRow.Cells["AgeGroup"].Value = (String) curRow["AgeGroup"];
+                    }
+                } else {
+                    foreach ( DataRow curRow in mySkierMatchList ) {
+                        curRowIdx = previewDataGridView.Rows.Add();
+                        DataGridViewRow curViewRow = previewDataGridView.Rows[curRowIdx];
+                        curViewRow.Cells["SkierName"].Value = (String) curRow["SkierName"];
+                        curViewRow.Cells["MemberId"].Value = (String) curRow["MemberId"];
+                        curViewRow.Cells["AgeGroup"].Value = (String) curRow["AgeGroup"];
+                    }
                 }
             }
         }
@@ -102,7 +121,7 @@ namespace WaterskiScoringSystem.Trick {
             if (sender != null) {
                 String curValue = ( (RadioButtonWithValue)sender ).Value.ToString();
                 try {
-                    roundActiveSelect.RoundValue = curValue;
+                    //roundActiveSelect.RoundValue = curValue;
                     mySkierRound = Int16.Parse(curValue);
                 } catch (Exception ex) {
                     MessageBox.Show("Exception encountered selecting round: \n\n" + ex.Message);

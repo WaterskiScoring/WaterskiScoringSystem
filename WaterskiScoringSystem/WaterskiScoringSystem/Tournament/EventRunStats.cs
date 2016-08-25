@@ -90,6 +90,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         public void navRefresh_Click( object sender, EventArgs e ) {
             this.Cursor = Cursors.WaitCursor;
+            setTourStats();
             myDataTable = getEventStatsData();
             loadDataGrid();
             this.Cursor = Cursors.Default;
@@ -131,7 +132,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["PerSkier"].Value = "";
                         }
                         try {
-                            curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalRoundSkiers ).ToString( "##0.0" );
+                            curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventPasses).ToString( "##0.0" );
                         } catch {
                             curViewRow.Cells["PerPass"].Value = "";
                         }
@@ -156,7 +157,7 @@ namespace WaterskiScoringSystem.Tournament {
                                 curViewRow.Cells["PerSkier"].Value = "";
                             }
                             try {
-                                curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventSkiers ).ToString( "##0.0" );
+                                curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventPasses).ToString( "##0.0" );
                             } catch {
                                 curViewRow.Cells["PerPass"].Value = "";
                             }
@@ -227,7 +228,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curViewRow.Cells["PerSkier"].Value = "";
                 }
                 try {
-                    curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventSkiers ).ToString( "##0.0" );
+                    curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalRoundPasses).ToString( "##0.0" );
                 } catch {
                     curViewRow.Cells["PerPass"].Value = "";
                 }
@@ -247,7 +248,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curViewRow.Cells["PerSkier"].Value = "";
                 }
                 try {
-                    curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventSkiers ).ToString( "##0.0" );
+                    curViewRow.Cells["PerPass"].Value = Convert.ToDecimal( curTotalMins / curTotalEventPasses).ToString( "##0.0" );
                 } catch {
                     curViewRow.Cells["PerPass"].Value = "";
                 }
@@ -260,6 +261,143 @@ namespace WaterskiScoringSystem.Tournament {
                 RowStatusLabel.Text = "";
             }
 
+        }
+
+        private void setTourStats() {
+            String selectStmt = "";
+            DataTable curDataTable;
+            DataRow curRow;
+            int curNumRides = 0;
+            int curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
+
+            if ( myTourRow["SlalomRounds"] != DBNull.Value ) {
+                curSlalomRounds = (Byte) myTourRow["SlalomRounds"];
+            }
+            if ( myTourRow["TrickRounds"] != DBNull.Value ) {
+                curTrickRounds = (Byte) myTourRow["TrickRounds"];
+            }
+            if ( myTourRow["JumpRounds"] != DBNull.Value ) {
+                curJumpRounds = (Byte) myTourRow["JumpRounds"];
+            }
+
+            if ( curSlalomRounds > 0 ) {
+                // Calcualte number of slalom participants
+                selectStmt = "Select count(*) as SkierCount "
+                    + " From (SELECT DISTINCT MemberId From SlalomScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    SlalomNumTextBox.Text = curRow["SkierCount"].ToString();
+                } else {
+                    SlalomNumTextBox.Text = "";
+                }
+
+                // Calcualte number of slalom rides
+                selectStmt = "Select count(*) as RideCount "
+                    + " From SlalomScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    SlalomRidesTextBox.Text = curRow["RideCount"].ToString();
+                    curNumRides += (int) curRow["RideCount"];
+                } else {
+                    SlalomRidesTextBox.Text = "";
+                }
+            } else {
+                SlalomNumTextBox.Text = "";
+                SlalomRidesTextBox.Text = "";
+            }
+
+            if ( curTrickRounds > 0 ) {
+                // Calcualte number of trick participants
+                selectStmt = "Select count(*) as SkierCount "
+                    + " From (SELECT DISTINCT MemberId From TrickScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    TrickNumTextBox.Text = curRow["SkierCount"].ToString();
+                } else {
+                    TrickNumTextBox.Text = "";
+                }
+
+                // Calcualte number of trick rides
+                selectStmt = "Select count(*) as RideCount "
+                    + " From TrickScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    TrickRidesTextBox.Text = curRow["RideCount"].ToString();
+                    curNumRides += (int) curRow["RideCount"];
+                } else {
+                    TrickRidesTextBox.Text = "";
+                }
+            } else {
+                TrickNumTextBox.Text = "";
+                TrickRidesTextBox.Text = "";
+            }
+
+            if ( curJumpRounds > 0 ) {
+                // Calcualte number of jump participants
+                selectStmt = "Select count(*) as SkierCount "
+                    + " From (SELECT DISTINCT MemberId From JumpScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    JumpNumTextBox.Text = curRow["SkierCount"].ToString();
+                } else {
+                    JumpNumTextBox.Text = "";
+                }
+
+                // Calcualte number of jump rides
+                selectStmt = "Select count(*) as RideCount "
+                    + " From JumpScore "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData(selectStmt);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow) curDataTable.Rows[0];
+                    JumpRidesTextBox.Text = curRow["RideCount"].ToString();
+                    curNumRides += (int) curRow["RideCount"];
+                } else {
+                    JumpRidesTextBox.Text = "";
+                }
+            } else {
+                JumpNumTextBox.Text = "";
+                JumpRidesTextBox.Text = "";
+            }
+
+            // Calcualte total number of ski rides
+            TotalRidesTextBox.Text = curNumRides.ToString();
+
+            // Calcualte total number of participants
+            selectStmt = "Select count(*) as SkierCount "
+                + " From ( "
+                + " SELECT DISTINCT MemberId From EventReg "
+                + " WHERE SanctionId = '" + mySanctionNum + "' "
+                + "   AND ("
+                + "      EXISTS (SELECT 1 FROM SlalomScore "
+                + "       WHERE SanctionId = EventReg.SanctionId AND MemberId = EventReg.MemberId AND AgeGroup = EventReg.AgeGroup) "
+                + "       OR "
+                + "       EXISTS (SELECT 1 FROM TrickScore "
+                + "       WHERE SanctionId = EventReg.SanctionId AND MemberId = EventReg.MemberId AND AgeGroup = EventReg.AgeGroup) "
+                + "       OR "
+                + "       EXISTS (SELECT 1 FROM JumpScore "
+                + "       WHERE SanctionId = EventReg.SanctionId AND MemberId = EventReg.MemberId AND AgeGroup = EventReg.AgeGroup) "
+                + " ) ) myTable";
+
+            curDataTable = getData(selectStmt);
+            if ( curDataTable.Rows.Count > 0 ) {
+                curRow = (DataRow) curDataTable.Rows[0];
+                TotalSkiersTextBox.Text = curRow["SkierCount"].ToString();
+                TotalNumTextBox.Text = TotalSkiersTextBox.Text;
+            } else {
+                TotalSkiersTextBox.Text = "";
+                TotalNumTextBox.Text = "";
+            }
         }
 
         private void navExport_Click( object sender, EventArgs e ) {

@@ -57,6 +57,19 @@ namespace WaterskiScoringSystem.Tournament {
             CheckForChiefOfficials();
             CheckBoatUse();
 
+            if ( ( (String) myTourRow["Name"] ).Contains("Alumni") ) {
+                String curMsg = "This has been recognized as a collegiate alumni tournament  "
+                    + "\nSlalom scores for these tournaments have been adjust for tournament scoring purposes"
+                    + "\nYou will need to have the scores adjusted to submit them to the AWSA Ranking List"
+                    + "\n\nClick OK to perform this update "
+                    + "\nClick Cancel to bypass this update if you want to skip the update or have previously completed the update";
+                DialogResult msgResp = MessageBox.Show(curMsg, "Update Notice",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                if ( msgResp == DialogResult.OK ) {
+                    execUpdateAlumniSlalomScores();
+                }
+            }
+
             TourPackageButton.BeginInvoke( (MethodInvoker)delegate() {
                 Application.DoEvents();
                 Cursor.Current = Cursors.Default;
@@ -625,6 +638,37 @@ namespace WaterskiScoringSystem.Tournament {
                         + "\nPlease correct the errors shown and then retry" );
                 }
             }
+        }
+
+        private bool execUpdateAlumniSlalomScores() {
+            bool curReturnValue = true;
+
+            SqlCeCommand sqlStmt = null;
+            SqlCeConnection myDbConn = null;
+            DataTable myDataTable = new DataTable();
+            StringBuilder curSqlStmt = new StringBuilder();
+            int rowsProc = 0;
+
+            try {
+                myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
+                myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
+                myDbConn.Open();
+                sqlStmt = myDbConn.CreateCommand();
+                sqlStmt.CommandText = "Update SlalomScore "
+                    + "SET Score = ( ( FinalPassNum - 1 ) * 6 ) + FinalPassScore "
+                    + "Where SanctionId = '" + mySanctionNum + "' "
+                    + "And Score > 6";
+                rowsProc = sqlStmt.ExecuteNonQuery();
+                MessageBox.Show( String.Format("{0} slalom scores updated ", rowsProc) );
+
+            } catch ( Exception excp ) {
+                String curMsg = ":Error attempting to update slalom scores for alumni tournament \n" + excp.Message;
+                MessageBox.Show(curMsg);
+                curReturnValue = false;
+            } finally {
+                myDbConn.Close();
+            }
+            return curReturnValue;
         }
 
         private bool execUpdateNops() {

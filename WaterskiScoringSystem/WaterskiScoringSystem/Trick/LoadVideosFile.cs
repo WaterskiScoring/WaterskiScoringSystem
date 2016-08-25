@@ -26,38 +26,40 @@ namespace WaterskiScoringSystem.Trick {
         private SkierVideoMatchDialogForm mySkierSelectDialog = null;
         private DataRow myTourRow;
         private ProgressWindow myProgressInfo;
-
-        /*
-f you are using the API, webhooks, or direct video file URLS, here is a detailed guide for the steps you need to take to be prepared for the July 11, 2016 deadline for API changes. Below is a quick summary:
-
-    If you are using a direct video file URL, you will need to replace it with a URL in our new format.
-    You will also need to enable video file access permissions for the API, which are currently disabled by default as a security measure.
-    Also, you need to migrate away from our old video asset keys (sd_video_url, hd_video_url, source_video_url) to the new ones the API and webhooks will be returning (240p, 360p, 480p, 720p, 1080p, 2k, 4k, 8k and source).
-        */
-
-
+        private DataTable myFullSkierDataTable = null;
 
         public LoadVideosFile() {
             InitializeComponent();
+
         }
 
         private void LoadVideosFile_Load(object sender, EventArgs e) {
-            if (Properties.Settings.Default.LoadVideosFile_Width > 0) {
-                this.Width = Properties.Settings.Default.LoadVideosFile_Width;
-            }
-            if (Properties.Settings.Default.LoadVideosFile_Height > 0) {
-                this.Height = Properties.Settings.Default.LoadVideosFile_Height;
-            }
-            if (Properties.Settings.Default.LoadVideosFile_Location.X > 0
-                && Properties.Settings.Default.LoadVideosFile_Location.Y > 0) {
-                this.Location = Properties.Settings.Default.LoadVideosFile_Location;
-            }
             VideoFolderLocTextbox.Text = Properties.Settings.Default.ExportDirectory;
             loadedVideoDataGridView.Visible = false;
             selectedFileDataGridView.Visible = false;
+            ReviewVideoMatchDataGridView.Visible = false;
+
+            ExportLoadedButton.Visible = false;
+            ExportLoadedButton.Enabled = false;
+
             selectedFileDataGridView.Location = loadedVideoDataGridView.Location;
-            selectedFileDataGridView.Width = this.Width - 10;
-            selectedFileDataGridView.Height = this.Height - 290;
+            selectedFileDataGridView.Width = this.Width - 25;
+            //selectedFileDataGridView.Height = this.Height - loadedVideoDataGridView.Location.X - 25;
+
+            ReviewVideoMatchDataGridView.Location = loadedVideoDataGridView.Location;
+            ReviewVideoMatchDataGridView.Width = this.Width - 25;
+            //ReviewVideoMatchDataGridView.Height = this.Height - loadedVideoDataGridView.Location.X - 25;
+
+            if ( Properties.Settings.Default.LoadVideosFile_Width > 0 ) {
+                this.Width = Properties.Settings.Default.LoadVideosFile_Width;
+            }
+            if ( Properties.Settings.Default.LoadVideosFile_Height > 0 ) {
+                this.Height = Properties.Settings.Default.LoadVideosFile_Height;
+            }
+            if ( Properties.Settings.Default.LoadVideosFile_Location.X > 0
+                && Properties.Settings.Default.LoadVideosFile_Location.Y > 0 ) {
+                this.Location = Properties.Settings.Default.LoadVideosFile_Location;
+            }
 
             // Retrieve data from database
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -156,15 +158,28 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                     mySelectedFileList = new List<string>( myFileDialog.FileNames );
                     if (mySelectedFileList.Count > 0) {
                         mySkierSelectDialog = new SkierVideoMatchDialogForm();
+                        mySkierSelectDialog.TourRounds = myTrickRounds;
                         mySkierVideoList = new List<SkierVideoEntry>();
                         DataGridViewRow curViewRow;
                         int curViewIdx = 0;
 
                         loadedVideoDataGridView.Visible = false;
+                        ReviewVideoMatchDataGridView.Visible = false;
                         selectedFileDataGridView.Visible = true;
                         selectedFileDataGridView.Rows.Clear();
 
-                        foreach (String curVideoFileName in mySelectedFileList) {
+                        //Get all avaialble trick skiers if filtered search found zero skiers
+                        StringBuilder curSqlStmt = new StringBuilder("");
+                        curSqlStmt.Append("SELECT Distinct T.MemberId, T.SkierName, T.AgeGroup, T.AgeGroup as Div ");
+                        curSqlStmt.Append("FROM TourReg T ");
+                        curSqlStmt.Append("     INNER JOIN EventReg R ON T.SanctionId = R.SanctionId AND T.MemberId = R.MemberId AND T.AgeGroup = R.AgeGroup ");
+                        curSqlStmt.Append("INNER JOIN TrickScore S ON T.SanctionId = S.SanctionId AND T.MemberId = S.MemberId AND T.AgeGroup = S.AgeGroup ");
+                        curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND R.Event = 'Trick' ");
+                        curSqlStmt.Append("Order by T.SkierName, T.AgeGroup ");
+                        myFullSkierDataTable = getData(curSqlStmt.ToString());
+                        mySkierSelectDialog.FullSkierDataTable = myFullSkierDataTable;
+
+                        foreach ( String curVideoFileName in mySelectedFileList) {
                             SkierVideoEntry curSkierVideoEntry = new SkierVideoEntry( curVideoFileName, "", "", "", 0, 0, 0 );
                             if (searchForMatchingSkier( curSkierVideoEntry )) {
                                 mySkierVideoList.Add( curSkierVideoEntry );
@@ -176,6 +191,7 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                                 curViewRow.Cells["SelectedAgeGroup"].Value = curSkierVideoEntry.AgeGroup;
                                 curViewRow.Cells["SelectedRound"].Value = curSkierVideoEntry.Round;
                                 curViewRow.Cells["SelectedPass"].Value = curSkierVideoEntry.Pass;
+                                curViewRow.Cells["SelectedLoadStatus"].Value = "";
                             }
                         }
                         try {
@@ -202,6 +218,29 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
             this.Close();
         }
 
+        private void ReviewButton_Click( object sender, EventArgs e ) {
+            String curMethodName = "ViewButton_Click";
+            ReviewVideoMatchDataGridView.Rows.Clear();
+            ReviewVideoMatchDataGridView.Visible = true;
+            DataGridViewRow curViewRow;
+            int curViewIdx = 0;
+
+            //Get all avaialble trick skiers if filtered search found zero skiers
+
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("Select R.SkierName, S.MemberId, S.AgeGroup, S.Round, Score, V.Pass1VideoUrl, V.Pass2VideoUrl ");
+            curSqlStmt.Append("from TrickScore S ");
+            curSqlStmt.Append("JOIN TourReg R ON R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup ");
+            curSqlStmt.Append("LEFT OUTER JOIN TrickVideo V ON V.SanctionId = S.SanctionId AND V.MemberId = S.MemberId ");
+            curSqlStmt.Append("AND V.AgeGroup = S.AgeGroup AND V.Round = S.Round ");
+            curSqlStmt.Append("where S.sanctionid = '16W999' ");
+            curSqlStmt.Append("Order by S.AgeGroup, R.SkierName, S.Round ");
+            DataTable curDataTable = getData(curSqlStmt.ToString());
+
+            ReviewVideoMatchDataGridView.DataSource = curDataTable;
+
+        }
+
         private void ViewButton_Click(object sender, EventArgs e) {
             String curMethodName = "ViewButton_Click";
             String curApiKey = "36924f60689e082b2626ae7da73d0404";
@@ -212,6 +251,10 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
             String curReqstUrl = curVideoListUrl + curQueryString + mySanctionNum;
             Dictionary<string, object> curResponseDataList = null;
             NameValueCollection curHeaderParams = null;
+
+            ReviewVideoMatchDataGridView.Visible = false;
+            selectedFileDataGridView.Visible = false;
+            loadedVideoDataGridView.Visible = true;
 
             curHeaderParams = new NameValueCollection();
             curHeaderParams.Add( curApiKeyName, curApiKey );
@@ -234,8 +277,6 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                             }
                             ArrayList curList = (ArrayList)curResponseDataList["videos"];
                             if (curList.Count > 0) {
-                                selectedFileDataGridView.Visible = false;
-                                loadedVideoDataGridView.Visible = true;
 
                                 foreach (Dictionary<string, object> curVideoEntry in curList) {
                                     curViewIdx = loadedVideoDataGridView.Rows.Add();
@@ -317,6 +358,8 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                     }
                 }
                 MessageBox.Show( ( curViewIdx + 1 ) + " videos returned " );
+                ExportLoadedButton.Visible = true;
+                ExportLoadedButton.Enabled = true;
             } catch (Exception ex) {
                 MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 String curMsg = curMethodName + ":Exception=" + ex.Message;
@@ -329,23 +372,26 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
             String curApiKey = "36924f60689e082b2626ae7da73d0404";
             String curApiKeyName = "SproutVideo-Api-Key";
             String curFileFormName = "source_video";
+            DataGridViewRow curViewRow = null; ;
             NameValueCollection curFormData = null;
             NameValueCollection curHeaderParams = null;
 
             if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+                myProgressInfo = new ProgressWindow();
                 try {
                     if (mySkierVideoList != null && mySkierVideoList.Count > 0) {
-                        myProgressInfo = new ProgressWindow();
                         myProgressInfo.setProgessMsg( "Uploading " + mySkierVideoList.Count + " trick video files" );
                         myProgressInfo.setProgressMax( mySkierVideoList.Count );
                         myProgressInfo.Show();
-                        int curProcessCount = 0;
+                        int curProcessCount = 0, curViewIdx = 0;
                         foreach (SkierVideoEntry curSkierVideoEntry in mySkierVideoList) {
                             curProcessCount++;
                             myProgressInfo.setProgressValue( curProcessCount );
                             myProgressInfo.setProgessMsg( "Processing file " + Path.GetFileName( curSkierVideoEntry.VideoFileName ) );
                             myProgressInfo.Refresh();
                             myProgressInfo.Show();
+
+                            curViewRow = selectedFileDataGridView.Rows[curViewIdx];
 
                             curFormData = new NameValueCollection();
                             curFormData.Add( "title", curSkierVideoEntry.SkierName + " " + curSkierVideoEntry.AgeGroup + " Round " + curSkierVideoEntry.Round + " Pass " + curSkierVideoEntry.Pass );
@@ -374,25 +420,42 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                             //List<KeyValuePair<String, String>> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
                             Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
 
-                            if (curResponseDataList != null) {
-                                if (curResponseDataList != null && curResponseDataList.Count > 0) {
-                                    if (curResponseDataList.ContainsKey( "embed_code" )) {
-                                        foreach (KeyValuePair<String, object> curEntry in curResponseDataList) {
-                                            if (curEntry.Key.Equals( "embed_code" )) {
-                                                updateSkierScoreVideoUrl( curSkierVideoEntry, (String)curEntry.Value );
+                            if ( curResponseDataList == null ) {
+                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
+                            } else {
+                                if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
+                                    if ( curResponseDataList.ContainsKey("embed_code") ) {
+                                        foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
+                                            if ( curEntry.Key.Equals("embed_code") ) {
+                                                bool curResults = updateSkierScoreVideoUrl(curSkierVideoEntry, (String) curEntry.Value);
+                                                if ( curResults) {
+                                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Video load complete";
+                                                } else {
+                                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Error encountered attaching video URL to skier";
+                                                }
+                                            } else {
+                                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed, API response not recognized";
                                             }
                                         }
+                                    } else if ( curResponseDataList.ContainsKey("Error") ) {
+                                        curViewRow.Cells["SelectedLoadStatus"].Value = curResponseDataList["Error"].ToString();
                                     }
+                                } else {
+                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
                                 }
                             }
+
+                            curViewIdx++;
                         }
                         myProgressInfo.Close();
                     } else {
+                        myProgressInfo.Close();
                     }
                 } catch (Exception ex) {
-                    MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
+                    //MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
                     String curMsg = curMethodName + ":Exception=" + ex.Message;
                     Log.WriteFile( curMsg );
+                    myProgressInfo.Close();
                 }
             } else {
                 MessageBox.Show( curMethodName + ":Live Web must be activated to load videos" );
@@ -410,27 +473,25 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
 
         private bool searchForMatchingSkier(SkierVideoEntry inSkierVideoEntry) {
             String curMethodName = "searchForMatchingSkier";
-            DataTable curDataTable = null;
             String curNumValue = "";
             Int16 curPass = 0, curRound = 0;
             if (myTrickRounds == 1) curRound = myTrickRounds;
-            
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT Distinct T.MemberId, T.SkierName, T.AgeGroup, T.AgeGroup as Div " );
-            curSqlStmt.Append( "FROM TourReg T " );
-            curSqlStmt.Append( "     INNER JOIN EventReg R ON T.SanctionId = R.SanctionId AND T.MemberId = R.MemberId AND T.AgeGroup = R.AgeGroup " );
-            curSqlStmt.Append( "INNER JOIN TrickScore S ON T.SanctionId = S.SanctionId AND T.MemberId = S.MemberId AND T.AgeGroup = S.AgeGroup " );
-            curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' AND R.Event = 'Trick' " );
 
             int curDelimIdx = Path.GetFileName( inSkierVideoEntry.VideoFileName ).LastIndexOf( '.' );
+            DataRow[] curFindSkiers = null;
             String curFileName = Path.GetFileName( inSkierVideoEntry.VideoFileName).Substring( 0, curDelimIdx );
 
             String curFileNameMod = Regex.Replace( curFileName, @"(\p{Lu})", " $1" ).TrimStart();
             String[] curFileNameNodes = curFileNameMod.Split( myCharDelimLimit, StringSplitOptions.RemoveEmptyEntries );
             if (curFileNameNodes.Length > 1) {
-                curSqlStmt.Append( " AND T.SkierName like '%" + curFileNameNodes[0] + "%'" );
-                curSqlStmt.Append( " AND T.SkierName like '%" + curFileNameNodes[1] + "%'" );
+                /*
+                 * Search list of all skiers to determine if the parsed file name can be matched to a skier
+                 */
+                curFindSkiers = myFullSkierDataTable.Select(String.Format("SkierName like '%{0}%' AND SkierName like '%{0}%'", curFileNameNodes[0], curFileNameNodes[1]));
 
+                /*
+                 * Parse file name in an attempt to identify the round and pass the video file represents
+                 */
                 int curIdx = 0;
                 foreach (String curEntry in curFileNameNodes) {
                     if (curIdx > 1) {
@@ -517,39 +578,29 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
                     }
                     curIdx++;
                 }
-                curDataTable = getData( curSqlStmt.ToString() );
-
-            } else {
-                curDataTable = getData( curSqlStmt.ToString() );
             }
 
-            if (curDataTable.Rows.Count == 1 && curRound > 0 && curPass > 0) {
+            if ( curFindSkiers != null && curFindSkiers.Length == 1 && curRound > 0 && curPass > 0 ) {
                 //Use record found by filtered search
-                inSkierVideoEntry.MemberId = (String)curDataTable.Rows[0]["MemberId"];
-                inSkierVideoEntry.SkierName = (String)curDataTable.Rows[0]["SkierName"];
-                inSkierVideoEntry.AgeGroup = (String)curDataTable.Rows[0]["AgeGroup"];
+                inSkierVideoEntry.MemberId = (String) curFindSkiers[0]["MemberId"];
+                inSkierVideoEntry.SkierName = (String) curFindSkiers[0]["SkierName"];
+                inSkierVideoEntry.AgeGroup = (String) curFindSkiers[0]["AgeGroup"];
                 inSkierVideoEntry.Round = curRound;
                 inSkierVideoEntry.Pass = curPass;
             } else {
-                if (curDataTable.Rows.Count == 0) {
-                    //Get all avaialble trick skiers if filtered search found zero skiers
-                    curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "SELECT Distinct T.MemberId, T.SkierName, T.AgeGroup, T.AgeGroup as Div " );
-                    curSqlStmt.Append( "FROM TourReg T " );
-                    curSqlStmt.Append( "     INNER JOIN EventReg R ON T.SanctionId = R.SanctionId AND T.MemberId = R.MemberId AND T.AgeGroup = R.AgeGroup " );
-                    curSqlStmt.Append( "INNER JOIN TrickScore S ON T.SanctionId = S.SanctionId AND T.MemberId = S.MemberId AND T.AgeGroup = S.AgeGroup " );
-                    curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' AND R.Event = 'Trick' " );
-                    curSqlStmt.Append( "Order by T.SkierName, T.AgeGroup " );
-                    curDataTable = getData( curSqlStmt.ToString() );
+                if ( curFindSkiers == null ) {
+                    mySkierSelectDialog.SkierMatchList = null;
+                } else if ( curFindSkiers.Length > 1 ) {
+                    mySkierSelectDialog.SkierMatchList = curFindSkiers;
+                } else {
+                    mySkierSelectDialog.SkierMatchList = null;
                 }
 
-                mySkierSelectDialog.TourRounds = myTrickRounds;
-                if (curRound > 0) mySkierSelectDialog.SkierRound = curRound;
-                if (curPass > 0) mySkierSelectDialog.SkierPass = curPass;
+                if ( curRound > 0 ) mySkierSelectDialog.SkierRound = curRound;
+                if ( curPass > 0 ) mySkierSelectDialog.SkierPass = curPass;
                 mySkierSelectDialog.FileName = Path.GetFileName(inSkierVideoEntry.VideoFileName);
-                mySkierSelectDialog.SkierMatchList = curDataTable;
                 DialogResult curDialogResult = mySkierSelectDialog.ShowDialog();
-                if (curDialogResult == DialogResult.OK) {
+                if ( curDialogResult == DialogResult.OK ) {
                     inSkierVideoEntry.MemberId = mySkierSelectDialog.SkierMemberId;
                     inSkierVideoEntry.SkierName = mySkierSelectDialog.SkierNameSelected;
                     inSkierVideoEntry.AgeGroup = mySkierSelectDialog.SkierAgeGroup;
@@ -559,13 +610,13 @@ f you are using the API, webhooks, or direct video file URLS, here is a detailed
             }
 
             if (inSkierVideoEntry.MemberId.Length > 0 ) {
-                curSqlStmt = new StringBuilder( "" );
+                StringBuilder curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT PK FROM TrickScore " );
                 curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
                 curSqlStmt.Append( " AND MemberId = '" + inSkierVideoEntry.MemberId + "' " );
                 curSqlStmt.Append( " AND AgeGroup = '" + inSkierVideoEntry.AgeGroup + "' " );
                 curSqlStmt.Append( " AND Round = " + inSkierVideoEntry.Round + " " );
-                curDataTable = getData( curSqlStmt.ToString() );
+                DataTable curDataTable = getData( curSqlStmt.ToString() );
                 if (curDataTable.Rows.Count == 1) {
                     inSkierVideoEntry.SkierScorePK = (Int64)curDataTable.Rows[0]["PK"];
                     return true;

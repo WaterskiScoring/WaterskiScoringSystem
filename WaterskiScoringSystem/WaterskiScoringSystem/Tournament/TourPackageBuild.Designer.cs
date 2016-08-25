@@ -303,6 +303,7 @@
             // UpdateNopsButton
             // 
             this.UpdateNopsButton.AutoSize = true;
+            this.UpdateNopsButton.Enabled = false;
             this.UpdateNopsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpdateNopsButton.Location = new System.Drawing.Point(231, 51);
             this.UpdateNopsButton.Name = "UpdateNopsButton";
@@ -310,10 +311,12 @@
             this.UpdateNopsButton.TabIndex = 1;
             this.UpdateNopsButton.Text = "NOPS Update";
             this.UpdateNopsButton.UseVisualStyleBackColor = true;
+            this.UpdateNopsButton.Visible = false;
             this.UpdateNopsButton.Click += new System.EventHandler(this.UpdateNops_Click);
             // 
             // NopsUpdateMsgLabel
             // 
+            this.NopsUpdateMsgLabel.Enabled = false;
             this.NopsUpdateMsgLabel.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NopsUpdateMsgLabel.ForeColor = System.Drawing.SystemColors.WindowText;
             this.NopsUpdateMsgLabel.Location = new System.Drawing.Point(354, 49);
@@ -321,6 +324,7 @@
             this.NopsUpdateMsgLabel.Size = new System.Drawing.Size(278, 31);
             this.NopsUpdateMsgLabel.TabIndex = 0;
             this.NopsUpdateMsgLabel.Text = "Update required for 2016 tournaments scored before version 3.0.0.2";
+            this.NopsUpdateMsgLabel.Visible = false;
             // 
             // MergeTourButton
             // 

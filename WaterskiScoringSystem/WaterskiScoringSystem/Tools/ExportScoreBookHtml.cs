@@ -230,7 +230,12 @@ namespace WaterskiScoringSystem.Tools {
                                 writeIndexJumpResults( curPlcmtOrg, myJumpDataTable, outBuffer );
                                 writeIndexOverallResults( curPlcmtOrg, myOverallDataTable, outBuffer );
 
-                                if (isTeamAvailable()) {
+                                Boolean curTeamsAvailble = isTeamAvailable();
+                                //if ( this.myTourClass.Equals("B") || this.myTourClass.Equals("A") ) {
+                                //    curTeamsAvailble = false;
+                                //}
+
+                                if ( curTeamsAvailble ) {
                                     Int16 myNumPerTeam = Convert.ToInt16( myTourProperties.TeamSummary_NumPerTeam);
                                     String curTeamPlcmtOrg = myTourProperties.TeamSummaryPlcmtOrg;
                                     //String curTeamPlcmtOrg = Properties.Settings.Default.TeamSummaryPlcmtOrg;
@@ -259,35 +264,37 @@ namespace WaterskiScoringSystem.Tools {
                                         curTeamPointsMethod = "nops";
                                     }
 
-                                    String curSortCmd = "";
-                                    if (curTeamPlcmtOrg.ToLower().Equals( "div" )) {
-                                        curSortCmd = "AgeGroup ASC, PointsSlalom DESC, SkierName ASC";
-                                    } else {
-                                        curSortCmd = "PointsSlalom DESC, SkierName ASC";
+                                    if ( this.myTourClass.Equals("B") || this.myTourClass.Equals("A") ) {
+                                        curTeamPointsMethod = "nops";
+                                        curTeamDataType = "best";
+                                        curTeamPlcmtOrg = "awsa";
+                                        curTeamPlcmtMethod = "points";
+                                        myNumPerTeam = 4;
                                     }
-                                    mySlalomDataTable.DefaultView.Sort = curSortCmd;
-                                    mySlalomDataTable = mySlalomDataTable.DefaultView.ToTable();
-                                    DataTable myTeamDataTable = curCalcSummary.getSlalomSummaryTeam( mySlalomDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod );
 
-                                    if (curTeamPlcmtOrg.ToLower().Equals( "div" )) {
-                                        curSortCmd = "AgeGroup ASC, PointsTrick DESC, SkierName ASC";
-                                    } else {
-                                        curSortCmd = "PointsTrick DESC, SkierName ASC";
+                                    String curGroupValue = "all";
+                                    mySlalomDataTable = curCalcSummary.getSlalomSummary(myTourRow, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod, "Team", curGroupValue);
+                                    myTrickDataTable = curCalcSummary.getTrickSummary(myTourRow, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod, "Team", curGroupValue);
+                                    myJumpDataTable = curCalcSummary.getJumpSummary(myTourRow, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod, "Team", curGroupValue);
+
+                                    DataTable myTeamDataTable = null;
+                                    myTeamDataTable = curCalcSummary.getSlalomSummaryTeam(mySlalomDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod);
+                                    myTeamDataTable = curCalcSummary.getTrickSummaryTeam(myTeamDataTable, myTrickDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod);
+                                    myTeamDataTable = curCalcSummary.getJumpSummaryTeam(myTeamDataTable, myJumpDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod);
+                                    if ( curTeamPlcmtOrg.ToLower().Equals("tour") ) { 
+                                        myTeamDataTable = curCalcSummary.CalcTeamCombinedSummary(myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam);
                                     }
-                                    myTrickDataTable.DefaultView.Sort = curSortCmd;
-                                    myTrickDataTable = myTrickDataTable.DefaultView.ToTable();
-                                    myTeamDataTable = curCalcSummary.getTrickSummaryTeam( myTeamDataTable, myTrickDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod );
 
-                                    if (curTeamPlcmtOrg.ToLower().Equals( "div" )) {
-                                        curSortCmd = "AgeGroup ASC, PointsJump DESC, SkierName ASC";
+                                    if ( myTourClass.Equals("B") || myTourClass.Equals("A") ) {
+                                        mySlalomDataTable = curCalcSummary.CalcTeamAwsaEventPoints(mySlalomDataTable, "Slalom");
+                                        myTrickDataTable = curCalcSummary.CalcTeamAwsaEventPoints(myTrickDataTable, "Trick");
+                                        myJumpDataTable = curCalcSummary.CalcTeamAwsaEventPoints(myJumpDataTable, "Jump");
+                                        myTeamDataTable = curCalcSummary.CalcTeamAwsaCombinedSummary(myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam);
+                                        writeIndexTeamResults(myTeamDataTable, myNumPerTeam, curTeamPlcmtOrg, outBuffer);
+                                        writeIndexTeamDetailResults(mySlalomDataTable, myTrickDataTable, myJumpDataTable, myNumPerTeam, curTeamPlcmtOrg, outBuffer);
                                     } else {
-                                        curSortCmd = "PointsJump DESC, SkierName ASC";
+                                        writeIndexTeamResults(myTeamDataTable, myNumPerTeam, curTeamPlcmtOrg, outBuffer);
                                     }
-                                    myJumpDataTable.DefaultView.Sort = curSortCmd;
-                                    myJumpDataTable = myJumpDataTable.DefaultView.ToTable();
-                                    myTeamDataTable = curCalcSummary.getJumpSummaryTeam( myTeamDataTable, myJumpDataTable, myTourRow, myNumPerTeam, curTeamDataType, curTeamPlcmtMethod, curTeamPlcmtOrg, curTeamPointsMethod );
-
-                                    writeIndexTeamResults( myTeamDataTable, myNumPerTeam, curTeamPlcmtOrg, outBuffer );
                                 }
                             } else {
                                 outLine = new StringBuilder( "</div>" );
@@ -1834,6 +1841,313 @@ namespace WaterskiScoringSystem.Tools {
                 outLine.Append( "<td>" + "Team Error: " + ex.Message + "</td>" );
                 return false;
             }
+        }
+        private bool writeIndexTeamDetailResults( DataTable inSlalomDataTable, DataTable inTrickDataTable, DataTable inJumpDataTable, Int16 inNumPerTeam, String inPlcmtOrg, StreamWriter outBuffer ) {
+            StringBuilder outLine = new StringBuilder("");
+            try {
+                String curTeam = "", prevTeam = "", curEventGroup = "", prevEventGroup = "";
+                String curSortCmd = "TeamSlalom ASC, EventGroup ASC, PointsSlalom DESC";
+                inSlalomDataTable.DefaultView.Sort = curSortCmd;
+                DataTable curEventDataTable = inSlalomDataTable.DefaultView.ToTable();
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<br/><br/><hr/><a name=TeamCombinedSlalom></a>");
+                outLine.Append("\n<div Class=\"SectionTitle\">");
+                outLine.Append("Combined Team Slalom Results");
+                outLine.Append("</div>");
+                outLine.Append("\n<div class=\"MainContent\">");
+                outBuffer.WriteLine(outLine.ToString());
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<Table Class=\"DataGridView\">");
+                outLine.Append("\n<tr>");
+                outLine.Append("<th>Team</th>");
+                outLine.Append("<th>SkierName</th>");
+                outLine.Append("<th>Event Plcmt</th>");
+                outLine.Append("<th>Group</th>");
+                outLine.Append("<th>Div</th>");
+                outLine.Append("<th>Buoys</th>");
+                outLine.Append("<th>NOPS</th>");
+                outLine.Append("<th>Points</th>");
+                outLine.Append("</tr>");
+                outBuffer.WriteLine(outLine.ToString());
+
+                foreach ( DataRow curRow in curEventDataTable.Rows ) {
+                    curTeam = (String) curRow["TeamSlalom"];
+                    curEventGroup = (string) curRow["EventGroup"];
+
+                    if ( prevTeam.Length > 0 && curTeam != prevTeam ) {
+                        outLine = new StringBuilder("");
+                        outLine.Append("\n<tr><td colspan=\"99\"></td>&nbsp;</tr>");
+                        outBuffer.WriteLine(outLine.ToString());
+                    }
+
+                    outLine = new StringBuilder("");
+                    outLine.Append("\n<tr>");
+                    try {
+                        outLine.Append("<td>" + (String) curRow["TeamSlalom"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td class=\"DataLeft\">" + (String) curRow["SkierName"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["PlcmtSlalom"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["EventGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["AgeGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["ScoreSlalom"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PointsSlalom"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PlcmtPointsSlalom"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    outLine = new StringBuilder("</tr>");
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    prevTeam = curTeam;
+                    prevEventGroup = curEventGroup;
+                }
+
+                outLine = new StringBuilder("");
+                outLine.Append("</table>");
+                outLine.Append("<a href=#PageTop>Return to Index</a>");
+                outLine.Append("\n</div><br/>");
+                outBuffer.WriteLine(outLine.ToString());
+
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error writing team detail results to Scorebook: " + "\n\nError: " + ex.Message);
+                outLine.Append("<td>" + "Team Error: " + ex.Message + "</td>");
+                return false;
+            }
+
+            try {
+                String curTeam = "", prevTeam = "", curEventGroup = "", prevEventGroup = "";
+                String curSortCmd = "TeamTrick ASC, EventGroup ASC, PointsTrick DESC";
+                inTrickDataTable.DefaultView.Sort = curSortCmd;
+                DataTable curEventDataTable = inTrickDataTable.DefaultView.ToTable();
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<br/><br/><hr/><a name=TeamCombinedTrick></a>");
+                outLine.Append("\n<div Class=\"SectionTitle\">");
+                outLine.Append("Combined Team Trick Results");
+                outLine.Append("</div>");
+                outLine.Append("\n<div class=\"MainContent\">");
+                outBuffer.WriteLine(outLine.ToString());
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<Table Class=\"DataGridView\">");
+                outLine.Append("\n<tr>");
+                outLine.Append("<th>Team</th>");
+                outLine.Append("<th>SkierName</th>");
+                outLine.Append("<th>Event Plcmt</th>");
+                outLine.Append("<th>Group</th>");
+                outLine.Append("<th>Div</th>");
+                outLine.Append("<th>Buoys</th>");
+                outLine.Append("<th>NOPS</th>");
+                outLine.Append("<th>Points</th>");
+                outLine.Append("</tr>");
+                outBuffer.WriteLine(outLine.ToString());
+
+                foreach ( DataRow curRow in curEventDataTable.Rows ) {
+                    curTeam = (String) curRow["TeamTrick"];
+                    curEventGroup = (string) curRow["EventGroup"];
+
+                    if ( prevTeam.Length > 0 && curTeam != prevTeam ) {
+                        outLine = new StringBuilder("");
+                        outLine.Append("\n<tr><td colspan=\"99\"></td>&nbsp;</tr>");
+                        outBuffer.WriteLine(outLine.ToString());
+                    }
+
+                    outLine = new StringBuilder("");
+                    outLine.Append("\n<tr>");
+                    try {
+                        outLine.Append("<td>" + (String) curRow["TeamTrick"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td class=\"DataLeft\">" + (String) curRow["SkierName"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["PlcmtTrick"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["EventGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["AgeGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["ScoreTrick"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PointsTrick"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PlcmtPointsTrick"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    outLine = new StringBuilder("</tr>");
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    prevTeam = curTeam;
+                    prevEventGroup = curEventGroup;
+                }
+
+                outLine = new StringBuilder("");
+                outLine.Append("</table>");
+                outLine.Append("<a href=#PageTop>Return to Index</a>");
+                outLine.Append("\n</div><br/>");
+                outBuffer.WriteLine(outLine.ToString());
+
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error writing trick team details results to Scorebook: " + "\n\nError: " + ex.Message);
+                outLine.Append("<td>" + "Team Error: " + ex.Message + "</td>");
+                return false;
+            }
+
+            try {
+                String curTeam = "", prevTeam = "", curEventGroup = "", prevEventGroup = "";
+                String curSortCmd = "TeamJump ASC, EventGroup ASC, PointsJump DESC";
+                inJumpDataTable.DefaultView.Sort = curSortCmd;
+                DataTable curEventDataTable = inJumpDataTable.DefaultView.ToTable();
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<br/><br/><hr/><a name=TeamCombinedJump></a>");
+                outLine.Append("\n<div Class=\"SectionTitle\">");
+                outLine.Append("Combined Team Jump Results");
+                outLine.Append("</div>");
+                outLine.Append("\n<div class=\"MainContent\">");
+                outBuffer.WriteLine(outLine.ToString());
+
+                outLine = new StringBuilder("");
+                outLine.Append("\n<Table Class=\"DataGridView\">");
+                outLine.Append("\n<tr>");
+                outLine.Append("<th>Team</th>");
+                outLine.Append("<th>SkierName</th>");
+                outLine.Append("<th>Event Plcmt</th>");
+                outLine.Append("<th>Group</th>");
+                outLine.Append("<th>Div</th>");
+                outLine.Append("<th>Buoys</th>");
+                outLine.Append("<th>NOPS</th>");
+                outLine.Append("<th>Points</th>");
+                outLine.Append("</tr>");
+                outBuffer.WriteLine(outLine.ToString());
+
+                foreach ( DataRow curRow in curEventDataTable.Rows ) {
+                    curTeam = (String) curRow["TeamJump"];
+                    curEventGroup = (string) curRow["EventGroup"];
+
+                    if ( prevTeam.Length > 0 && curTeam != prevTeam ) {
+                        outLine = new StringBuilder("");
+                        outLine.Append("\n<tr><td colspan=\"99\"></td>&nbsp;</tr>");
+                        outBuffer.WriteLine(outLine.ToString());
+                    }
+
+                    outLine = new StringBuilder("");
+                    outLine.Append("\n<tr>");
+                    try {
+                        outLine.Append("<td>" + (String) curRow["TeamJump"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td class=\"DataLeft\">" + (String) curRow["SkierName"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["PlcmtJump"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["EventGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + (string) curRow["AgeGroup"] + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["ScoreJump"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PointsJump"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    try {
+                        outLine.Append("<td>" + ( (Decimal) curRow["PlcmtPointsJump"] ).ToString("###,##0.0") + "</td>");
+                    } catch {
+                        outLine.Append("<td>&nbsp;</td>");
+                    }
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    outLine = new StringBuilder("</tr>");
+                    outBuffer.WriteLine(outLine.ToString());
+
+                    prevTeam = curTeam;
+                    prevEventGroup = curEventGroup;
+                }
+
+                outLine = new StringBuilder("");
+                outLine.Append("</table>");
+                outLine.Append("<a href=#PageTop>Return to Index</a>");
+                outLine.Append("\n</div><br/>");
+                outBuffer.WriteLine(outLine.ToString());
+
+            } catch ( Exception ex ) {
+                MessageBox.Show("Error writing team detail results to Scorebook: " + "\n\nError: " + ex.Message);
+                outLine.Append("<td>" + "Team Error: " + ex.Message + "</td>");
+                return false;
+            }
+
+            return true;
         }
 
         private Boolean writeTeamCombinedSkierDetail(String curSectionTitle, StreamWriter outBuffer) {

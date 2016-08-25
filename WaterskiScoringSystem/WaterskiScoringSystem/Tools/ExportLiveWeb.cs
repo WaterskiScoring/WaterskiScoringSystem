@@ -315,7 +315,7 @@ namespace WaterskiScoringSystem.Tools {
                 returnStatus = true;
             } catch (Exception ex) {
                 returnStatus = false;
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
             }
 

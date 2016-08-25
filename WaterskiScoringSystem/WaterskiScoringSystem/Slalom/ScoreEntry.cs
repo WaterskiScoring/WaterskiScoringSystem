@@ -4726,10 +4726,19 @@ namespace WaterskiScoringSystem.Slalom {
 
         private DataTable getMinSpeedData( String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue" );
-            curSqlStmt.Append( " FROM CodeValueList" );
-            curSqlStmt.Append( " WHERE ListName like '%SlalomMin' AND ListCode = '" + inAgeGroup + "'" );
-            curSqlStmt.Append( " ORDER BY SortSeq" );
+            
+            if ( ((String)myTourRow["Name"]).Contains("Alumni") ) {
+                curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
+                curSqlStmt.Append(" FROM CodeValueList");
+                curSqlStmt.Append(" WHERE ListName = 'AlumniMinSlalom' AND ListCode = '" + inAgeGroup + "'");
+                curSqlStmt.Append(" ORDER BY SortSeq");
+            } else {
+                curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
+                curSqlStmt.Append(" FROM CodeValueList");
+                curSqlStmt.Append(" WHERE ListName like '%SlalomMin' AND ListCode = '" + inAgeGroup + "'");
+                curSqlStmt.Append(" ORDER BY SortSeq");
+            }
+
             return getData( curSqlStmt.ToString());
         }
 
