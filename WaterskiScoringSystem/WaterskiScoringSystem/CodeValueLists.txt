@@ -1,83 +1,122 @@
 Table:	CodeValueList
 PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
-00000	SlalomAltScoreMethodQual	B1-C		1	Boys 1 Class C	0	0	Boys 1 Class C
-00000	SlalomAltScoreMethodQual	B1-F		2	Boys 1 Class F	0	0	Boys 1 Class F
-00000	SlalomAltScoreMethodQual	B2-C		3	Boys 2 Class C	0	0	Boys 2 Class C
-00000	SlalomAltScoreMethodQual	B2-F		4	Boys 2 Class F	0	0	Boys 2 Class F
-00000	SlalomAltScoreMethodQual	B3-C		5	Boys 3 Class C	0	0	Boys 3 Class C
-00000	SlalomAltScoreMethodQual	B3-F		6	Boys 3 Class F	0	0	Boys 3 Class F
-00000	SlalomAltScoreMethodQual	G1-C		7	Girls 1 Class C	0	0	Girls 1 Class C
-00000	SlalomAltScoreMethodQual	G1-F		8	Girls 1 Class F	0	0	Girls 1 Class F
-00000	SlalomAltScoreMethodQual	G2-C		9	Girls 2 Class C	0	0	Girls 2 Class C
-00000	SlalomAltScoreMethodQual	G2-F		10	Girls 2 Class F	0	0	Girls 2 Class F
-00000	SlalomAltScoreMethodQual	G3-C		11	Girls 3 Class C	0	0	Girls 3 Class C
-00000	SlalomAltScoreMethodQual	G3-F		12	Girls 3 Class F	0	0	Girls 3 Class F
-00000	SlalomAltScoreMethodQual	CM-C		13	Collegiate Men A Class C	0	0	Collegiate Men A Class C
-00000	SlalomAltScoreMethodQual	CM-F		14	Collegiate Men A Class F	0	0	Collegiate Men A Class F
-00000	SlalomAltScoreMethodQual	BM-C		15	Collegiate Men B Class C	0	0	Collegiate Men B Class C
-00000	SlalomAltScoreMethodQual	BM-F		16	Collegiate Men B Class F	0	0	Collegiate Men B Class F
-00000	SlalomAltScoreMethodQual	CW-C		17	Collegiate Women A Class C	0	0	Collegiate Women A Class C
-00000	SlalomAltScoreMethodQual	CW-F		18	Collegiate Women A Class F	0	0	Collegiate Women A Class F
-00000	SlalomAltScoreMethodQual	BW-C		19	Collegiate Women B Class C	0	0	Collegiate Women B Class C
-00000	SlalomAltScoreMethodQual	BW-F		20	Collegiate Women B Class F	0	0	Collegiate Women B Class F
+0	SlalomAltScoreMethodQual	B1		1	Boys 1 	0	0	Boys 1 
+0	SlalomAltScoreMethodQual	B2		2	Boys 2 	0	0	Boys 2 
+0	SlalomAltScoreMethodQual	B3		3	Boys 3 	0	0	Boys 3 
+0	SlalomAltScoreMethodQual	BM		4	Collegiate Men B 	0	0	Collegiate Men B 
+0	SlalomAltScoreMethodQual	BW		5	Collegiate Women B 	0	0	Collegiate Women B 
+0	SlalomAltScoreMethodQual	CM		6	Collegiate Men A 	0	0	Collegiate Men A 
+0	SlalomAltScoreMethodQual	CW		7	Collegiate Women A 	0	0	Collegiate Women A 
+0	SlalomAltScoreMethodQual	G1		8	Girls 1 	0	0	Girls 1 
+0	SlalomAltScoreMethodQual	G2		9	Girls 2 	0	0	Girls 2 
+0	SlalomAltScoreMethodQual	G3		10	Girls 3 	0	0	Girls 3 
+0	SlalomAltScoreMethodQual	M1		11	Mens 1 	0	0	Mens 1 
+0	SlalomAltScoreMethodQual	M2		12	Mens 2 	0	0	Mens 2 
+0	SlalomAltScoreMethodQual	M3		13	Mens 3 	0	0	Mens 3 
+0	SlalomAltScoreMethodQual	M4		14	Mens 4 	0	0	Mens 4 
+0	SlalomAltScoreMethodQual	M5		15	Mens 5 	0	0	Mens 5 
+0	SlalomAltScoreMethodQual	M6		16	Mens 6 	0	0	Mens 6 
+0	SlalomAltScoreMethodQual	M7		17	Mens 7 	0	0	Mens 7 
+0	SlalomAltScoreMethodQual	M8		18	Mens 8 	0	0	Mens 8 
+0	SlalomAltScoreMethodQual	M9		19	Mens 9 	0	0	Mens 9 
+0	SlalomAltScoreMethodQual	MA		20	Mens 10 	0	0	Mens 10 
+0	SlalomAltScoreMethodQual	MB		21	Mens 11 	0	0	Mens 11 
+0	SlalomAltScoreMethodQual	MM		22	Master Men 	0	0	Master Men 
+0	SlalomAltScoreMethodQual	MW		23	Master Women 	0	0	Master Women 
+0	SlalomAltScoreMethodQual	NM		24	Novice Mens 	0	0	Novice Mens 
+0	SlalomAltScoreMethodQual	NW		25	Novice Womens 	0	0	Novice Womens 
+0	SlalomAltScoreMethodQual	OM		26	Open Men 	0	0	Open Men 
+0	SlalomAltScoreMethodQual	OW		27	Open Women 	0	0	Open Women 
+0	SlalomAltScoreMethodQual	W1		28	Womens 1 	0	0	Womens 1 
+0	SlalomAltScoreMethodQual	W2		29	Womens 2 	0	0	Womens 2 
+0	SlalomAltScoreMethodQual	W3		30	Womens 3 	0	0	Womens 3 
+0	SlalomAltScoreMethodQual	W4		31	Womens 4 	0	0	Womens 4 
+0	SlalomAltScoreMethodQual	W5		32	Womens 5 	0	0	Womens 5 
+0	SlalomAltScoreMethodQual	W6		33	Womens 6 	0	0	Womens 6 
+0	SlalomAltScoreMethodQual	W7		34	Womens 7 	0	0	Womens 7 
+0	SlalomAltScoreMethodQual	W8		35	Womens 8 	0	0	Womens 8 
+0	SlalomAltScoreMethodQual	W9		36	Womens 9 	0	0	Womens 9 
+0	SlalomAltScoreMethodQual	WA		37	Womens 10 	0	0	Womens 10 
+0	SlalomAltScoreMethodQual	WB		38	Womens 11 	0	0	Womens 11 
 22356	AnnouncerRating	 	1.000	1	Unrated			
 22357	AnnouncerRating	S	2.000	2	State			
 22358	AnnouncerRating	R	3.000	3	Regional			
 22359	AnnouncerRating	N	4.000	4	National			
 22360	AnnouncerRating	E	5.000	5	Emeritus			
-22366	ApprovedBoats	--Select--	1.000	1	Select boat in use			 | | | | | 
-22367	ApprovedBoats	Unlisted	2.000	2	Unlisted			 | | | | | 
-00000	ApprovedBoats	Cen-57-Z0-16	10	10	Centurion Carbon Pro 5.7L ZO			New | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO
-00000	ApprovedBoats	Cen-60-Z0-16	11	11	Centurion Carbon Pro 6.0L ZO			New | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
-00000	ApprovedBoats	MATXI-62-16	20	20	Malibu Response TXi 6.2L Indmar			New | Indmar Raptor 6.2L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
-00000	ApprovedBoats	MATXI-57-16	21	21	Malibu Response TXi 5.7L Crusader			New | Crusader 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
-00000	ApprovedBoats	MATXI-60-409-16	22	22	Malibu Response TXi 6.0L Crusader 409			New | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
-00000	ApprovedBoats	MATXI-60-450-16	23	23	Malibu Response TXi 6.0L Crusader 450			New | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
-00000	ApprovedBoats	MALXR-57-16	24	24	Malibu Response LXR 5.7L Crusader			New | Crusader Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
-00000	ApprovedBoats	MCProMV8-57-16	30	30	MasterCraft ProStar MV8 5.7L			New | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13 x 14.25 Nibral | ZO
-00000	ApprovedBoats	MCProMV8-62-16	31	31	MasterCraft ProStar MV8 6.2L			New | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
-00000	ApprovedBoats	CC200-53-P15-16	40	40	Ski Nautique 200 PCM H5 5.3L 4 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO
-00000	ApprovedBoats	CC200-53-P14-16	41	41	Ski Nautique 200 PCM H5 5.3L 3 Blade			New | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
-00000	ApprovedBoats	CC206-62-P15-16	42	42	Ski Nautique 200 PCM H6 6.2L 4 Blade			New | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
-00000	ApprovedBoats	CC206-62-P14-16	43	43	Ski Nautique 200 PCM H6 6.2L 3 Blade			New | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
-22368	ApprovedBoats	Cen-57-Z0-13	110	110	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
-22369	ApprovedBoats	Cen-60-Z0-13	111	111	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO
-22370	ApprovedBoats	CC200-57-ZO-13	112	112	Ski Nautique 200 Excalibur 343 5.7L			Old | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22371	ApprovedBoats	CC409-60-ZO-13	113	113	Ski Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22372	ApprovedBoats	CC450-60-ZO-13	114	114	Ski Nautique 200 ZR450 6.0L			Old | PCM ZR450 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
-22373	ApprovedBoats	MATXI-57-ZO	116	116	Malibu Response TXi 5.7L			Old | Indmar Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
-22374	ApprovedBoats	MATXI-60-ZO	117	117	Malibu Response TXi 6.0L			Old | Indmar L96 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
-22375	ApprovedBoats	MC190MV8-57-ZO	120	120	MasterCraft 190 MV8 5.7L			Old | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22376	ApprovedBoats	MC190MV8-60-ZO	121	121	MasterCraft 190 MV8 6.0L			Old | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22377	ApprovedBoats	MC197MV8-57-ZO	124	124	MasterCraft 197 MV8 5.7L			Old | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
-22378	ApprovedBoats	MC197MV8-60-ZO	125	125	MasterCraft 197 MV8 6.0L			Old | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral  | ZO
-22379	ApprovedBoats	Cen-57-Z0-12	201	201	Centurion Carbon Pro 5.7L ZO			Old | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
-22380	ApprovedBoats	Cen-60-Z0-12	202	202	Centurion Carbon Pro 6.0L ZO			Old | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
-22381	ApprovedBoats	CC196-57-ZO	203	203	Correct Craft 196-5.7L ZO			Old | Engine:PCM Excalibur 5.7L PCM ZR6 5.7L | Fuel Del:MPI MPI | Trans:1.23:1 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
-22382	ApprovedBoats	CC206-60-ZO	204	204	Correct Craft 206-6.0L ZO			Old  | PCM ZR6 6.0L | Fuel Del:MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
-22383	ApprovedBoats	CC200-57-ZO-12	205	205	Ski Nautique 200 Excalibur 5.7L ZO			Old  | PCM Excalibur 343 5.7L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22384	ApprovedBoats	CC409-60-ZO-12	206	206	Ski Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22385	ApprovedBoats	CC450-60-ZO-12	207	207	Ski Nautique 200 ZR450 6.0L			Old | PCM ZR450 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22386	ApprovedBoats	CC200SP-60-ZO	208	208	Sport Nautique 200 ZR409 6.0L			Old | PCM ZR409 6.0L | Fuel | Trans: 1.48:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22387	ApprovedBoats	CC200-57-ZO	211	211	Correct Craft 200-6.0L ZO			Old  | PCM Excalibur 6.0L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22388	ApprovedBoats	CC200-60-ZO	212	212	Correct Craft 200-5.7L ZO			Old  | PCM ZR6 5.7L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
-22389	ApprovedBoats	MALXI-57-ZO-12	213	213	Malibu Respons Lxi-57 ZO			Old | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO
-22390	ApprovedBoats	MALXI-57-PS-12	214	214	Malibu Respons Lxi-57 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 5.7L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22391	ApprovedBoats	MALXI-62-ZO-12	215	215	Malibu Respons Lxi-62 ZO			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | ZO
-22392	ApprovedBoats	MALXI-62-PS-12	216	216	Malibu Respons Lxi-62 PS			Old | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22393	ApprovedBoats	MAFXI-62-ZO-12	217	217	Malibu Respons Fxi-62 ZO			Old | Indmar Hammerhead 6.2L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
-22394	ApprovedBoats	MC190MCX-57-ZO	218	218	MasterCraft 190 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22395	ApprovedBoats	MC190LY6-60-ZO	219	219	MasterCraft 190 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22396	ApprovedBoats	MC197MCX-57-ZO	220	220	MasterCraft 197 MCX 5.7L			Old | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22397	ApprovedBoats	MC197LY6-60-ZO	221	221	MasterCraft 197 LY6 6.0L			Old | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
-22398	ApprovedBoats	MC190-57-ZO	222	222	MasterCraft 190 - 5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO
-22399	ApprovedBoats	MC190-60-ZO	223	223	MasterCraft 190-6.0L ZO			Old | Indmar LY6 6.0L | Fuel Del:EFI | Trans:1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 14.25 x 14 Nibral | ZO
-22400	ApprovedBoats	MC197-57-ZO	224	224	MasterCraft 197-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral | ZO
-22401	ApprovedBoats	MC207-57-ZO	225	225	MasterCraft 214-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
-22402	ApprovedBoats	MC207-57-PS	226	226	MasterCraft 214-5.7L PS			Old | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
-22403	ApprovedBoats	MC214V-57-ZO	227	227	MasterCraft 214V-5.7L ZO			Old | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.56:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 17.5 | ZO
-22404	ApprovedBoats	Outback-57-PS	228	228	MMoomba Outback-5.7L PS			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO
-22405	ApprovedBoats	Outback-57-PP	229	229	MMoomba Outback-5.7L PP			Old | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PPSG
+22366	ApprovedBoats	--Select--	1	1	Select boat in use			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+22367	ApprovedBoats	Unlisted	2	2	Unlisted			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+0	ApprovedBoats	Cen-57-Z0-17-3	170010	170010	Centurion Carbon Pro 5.7L ZO 3 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	Cen-57-Z0-17-4	170011	170011	Centurion Carbon Pro 5.7L ZO 4 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+0	ApprovedBoats	Cen-60-Z0-17-3	170012	170012	Centurion Carbon Pro 6.0L ZO 3 Blade			2017 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	Cen-60-Z0-17-4	170013	170013	Centurion Carbon Pro 6.0L ZO 4 Blade			2017 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+0	ApprovedBoats	MATXI-62-17-STD	170020	170020	Malibu Response TXi 6.2L STD Indmar			2017 | Indmar Raptor 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MATXI-62-17-HO1	170021	170021	Malibu Response TXi 6.2L HO Indmar 13x11.5			2017 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MATXI-62-17-HO2	170022	170022	Malibu Response TXi 6.2L HO Indmar 13x12			2017 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+0	ApprovedBoats	MATXI1-60-409-17	170023	170023	Malibu Response TXi 6.0L Crusader 409 13x12			2017 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+0	ApprovedBoats	MATXI2-60-409-17	170024	170024	Malibu Response TXi 6.0L Crusader 409 13x11.5			2017 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MATXI1-60-450-17	170025	170025	Malibu Response TXi 6.0L Crusader 450 13x12			2017 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+0	ApprovedBoats	MATXI2-60-450-17	170026	170026	Malibu Response TXi 6.0L Crusader 450 13x11.5			2017 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MCProMV8-57-17-4	170030	170030	MasterCraft ProStar MV8 5.7L 4 Blade			2017 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO
+0	ApprovedBoats	MCProMV8-57-17-3	170031	170031	MasterCraft ProStar MV8 5.7L 3 Blade			2017 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	MCProMV8-62-17-4	170032	170032	MasterCraft ProStar MV8 6.2L 4 Blade			2017 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO
+0	ApprovedBoats	MCProMV8-62-17-3	170033	170033	MasterCraft ProStar MV8 6.2L 3 Blade			2017 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	CC200-53-H5-4-17	170040	170040	Ski Nautique 200 PCM H5 5.3L 4 Blade			2017 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO
+0	ApprovedBoats	CC200-53-H5-3-17	170041	170041	Ski Nautique 200 PCM H5 5.3L 3 Blade			2017 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+0	ApprovedBoats	CC206-62-H6-4-17	170042	170042	Ski Nautique 200 PCM H6 6.2L 4 Blade			2017 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
+0	ApprovedBoats	CC206-62-H6-3-17	170043	170043	Ski Nautique 200 PCM H6 6.2L 3 Blade			2017 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+0	ApprovedBoats	CC206-62-4094-17	170044	170044	Ski Nautique 200 PCM ZR409 6.0L 4 Blade			2017 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
+0	ApprovedBoats	CC206-62-4093-17	170045	170045	Ski Nautique 200 PCM ZR409 6.0L 3 Blade			2017 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+0	ApprovedBoats	Cen-57-Z0-16	160010	160010	Centurion Carbon Pro 5.7L ZO			2016 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	Cen-60-Z0-16	160011	160011	Centurion Carbon Pro 6.0L ZO			2016 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+0	ApprovedBoats	MATXI-62-16	160020	160020	Malibu Response TXi 6.2L Indmar			2016 | Indmar Raptor 6.2L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MATXI-57-16	160021	160021	Malibu Response TXi 5.7L Crusader			2016 | Crusader 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MATXI-60-409-16	160022	160022	Malibu Response TXi 6.0L Crusader 409			2016 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+0	ApprovedBoats	MATXI-60-450-16	160023	160023	Malibu Response TXi 6.0L Crusader 450			2016 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+0	ApprovedBoats	MALXR-57-16	160024	160024	Malibu Response LXR 5.7L Crusader			2016 | Crusader Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+0	ApprovedBoats	MCProMV8-57-16	160030	160030	MasterCraft ProStar MV8 5.7L			2016 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13 x 14.25 Nibral | ZO
+0	ApprovedBoats	MCProMV8-62-16	160031	160031	MasterCraft ProStar MV8 6.2L			2016 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO
+0	ApprovedBoats	CC200-53-P15-16	160040	160040	Ski Nautique 200 PCM H5 5.3L 4 Blade			2016 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO
+0	ApprovedBoats	CC200-53-P14-16	160041	160041	Ski Nautique 200 PCM H5 5.3L 3 Blade			2016 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+0	ApprovedBoats	CC206-62-P15-16	160042	160042	Ski Nautique 200 PCM H6 6.2L 4 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO
+0	ApprovedBoats	CC206-62-P14-16	160043	160043	Ski Nautique 200 PCM H6 6.2L 3 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO
+22368	ApprovedBoats	Cen-57-Z0-13	150010	150010	Centurion Carbon Pro 5.7L ZO			2015 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO
+22369	ApprovedBoats	Cen-60-Z0-13	150011	150011	Centurion Carbon Pro 6.0L ZO			2015 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO
+22370	ApprovedBoats	CC200-57-ZO-13	150012	150012	Ski Nautique 200 Excalibur 343 5.7L			2015 | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22371	ApprovedBoats	CC409-60-ZO-13	150013	150013	Ski Nautique 200 ZR409 6.0L			2015 | PCM ZR409 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22372	ApprovedBoats	CC450-60-ZO-13	150014	150014	Ski Nautique 200 ZR450 6.0L			2015 | PCM ZR450 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO
+22373	ApprovedBoats	MATXI-57-ZO	150016	150016	Malibu Response TXi 5.7L			2015 | Indmar Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO
+22374	ApprovedBoats	MATXI-60-ZO	150017	150017	Malibu Response TXi 6.0L			2015 | Indmar L96 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO
+22375	ApprovedBoats	MC190MV8-57-ZO	150020	150020	MasterCraft 190 MV8 5.7L			2015 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22376	ApprovedBoats	MC190MV8-60-ZO	150021	150021	MasterCraft 190 MV8 6.0L			2015 | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22377	ApprovedBoats	MC197MV8-57-ZO	150024	150024	MasterCraft 197 MV8 5.7L			2015 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO
+22378	ApprovedBoats	MC197MV8-60-ZO	150025	150025	MasterCraft 197 MV8 6.0L			2015 | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral  | ZO
+22379	ApprovedBoats	Cen-57-Z0-12	140001	140001	Centurion Carbon Pro 5.7L ZO			2014 or older | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
+22380	ApprovedBoats	Cen-60-Z0-12	140002	140002	Centurion Carbon Pro 6.0L ZO			2014  or older| PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO
+22381	ApprovedBoats	CC196-57-ZO	140003	140003	Correct Craft 196-5.7L ZO			2014 or older | Engine:PCM Excalibur 5.7L PCM ZR6 5.7L | Fuel Del:MPI MPI | Trans:1.23:1 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
+22382	ApprovedBoats	CC206-60-ZO	140004	140004	Correct Craft 206-6.0L ZO			2014 or older  | PCM ZR6 6.0L | Fuel Del:MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO
+22383	ApprovedBoats	CC200-57-ZO-12	140005	140005	Ski Nautique 200 Excalibur 5.7L ZO			2014 or older  | PCM Excalibur 343 5.7L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22384	ApprovedBoats	CC409-60-ZO-12	140006	140006	Ski Nautique 200 ZR409 6.0L			2014 or older | PCM ZR409 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22385	ApprovedBoats	CC450-60-ZO-12	140007	140007	Ski Nautique 200 ZR450 6.0L			2014 or older | PCM ZR450 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22386	ApprovedBoats	CC200SP-60-ZO	140008	140008	Sport Nautique 200 ZR409 6.0L			2014 or older | PCM ZR409 6.0L | Fuel | Trans: 1.48:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22387	ApprovedBoats	CC200-57-ZO	140011	140011	Correct Craft 200-6.0L ZO			2014 or older  | PCM Excalibur 6.0L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22388	ApprovedBoats	CC200-60-ZO	140012	140012	Correct Craft 200-5.7L ZO			2014 or older  | PCM ZR6 5.7L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO
+22389	ApprovedBoats	MALXI-57-ZO-12	140013	140013	Malibu Respons Lxi-57 ZO			2014 or older | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO
+22390	ApprovedBoats	MALXI-57-PS-12	140014	140014	Malibu Respons Lxi-57 PS			2014 or older | Indmar Monsoon 5.7L Indmar Hammerhead 5.7L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22391	ApprovedBoats	MALXI-62-ZO-12	140015	140015	Malibu Respons Lxi-62 ZO			2014 or older | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | ZO
+22392	ApprovedBoats	MALXI-62-PS-12	140016	140016	Malibu Respons Lxi-62 PS			2014 or older | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22393	ApprovedBoats	MAFXI-62-ZO-12	140017	140017	Malibu Respons Fxi-62 ZO			2014 or older | Indmar Hammerhead 6.2L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
+22394	ApprovedBoats	MC190MCX-57-ZO	140018	140018	MasterCraft 190 MCX 5.7L			2014 or older | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22395	ApprovedBoats	MC190LY6-60-ZO	140019	140019	MasterCraft 190 LY6 6.0L			2014 or older | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22396	ApprovedBoats	MC197MCX-57-ZO	140020	140020	MasterCraft 197 MCX 5.7L			2014 or older | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22397	ApprovedBoats	MC197LY6-60-ZO	140021	140021	MasterCraft 197 LY6 6.0L			2014 or older | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO
+22398	ApprovedBoats	MC190-57-ZO	140022	140022	MasterCraft 190 - 5.7L ZO			2014 or older | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO
+22399	ApprovedBoats	MC190-60-ZO	140023	140023	MasterCraft 190-6.0L ZO			2014 or older | Indmar LY6 6.0L | Fuel Del:EFI | Trans:1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 14.25 x 14 Nibral | ZO
+22400	ApprovedBoats	MC197-57-ZO	140024	140024	MasterCraft 197-5.7L ZO			2014 or older | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral | ZO
+22401	ApprovedBoats	MC207-57-ZO	140025	140025	MasterCraft 214-5.7L ZO			2014 or older | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO
+22402	ApprovedBoats	MC207-57-PS	140026	140026	MasterCraft 214-5.7L PS			2014 or older | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+22403	ApprovedBoats	MC214V-57-ZO	140027	140027	MasterCraft 214V-5.7L ZO			2014 or older | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.56:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 17.5 | ZO
+22404	ApprovedBoats	Outback-57-PS	140028	140028	MMoomba Outback-5.7L PS			2014 or older | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO
+22405	ApprovedBoats	Outback-57-PP	140029	140029	MMoomba Outback-5.7L PP			2014 or older | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PPSG
 22361	ApprovedManufacturers	CC	1.000	1	Correct Craft			Correct Craft
 22362	ApprovedManufacturers	MC	2.000	2	MasterCraft			MasterCraft
 22363	ApprovedManufacturers	MA	3.000	3	Malibu			Malibu
@@ -111,10 +150,10 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22431	AWSAAgeGroup	W9		37	Womens 9	75.000	79.000	
 22432	AWSAAgeGroup	WA		38	Womens 10	80.000	84.000	
 22433	AWSAAgeGroup	WB		39	Womens 11	85.000	100.000	
-22434	AWSAAgeGroup	OM		40	Open Mens	1.000	100.000	
-22435	AWSAAgeGroup	OW		41	Open Womens	1.000	100.000	
-22436	AWSAAgeGroup	MM		42	Master Mens	35.000	100.000	
-22437	AWSAAgeGroup	MW		43	Master Womens	35.000	100.000	
+22434	AWSAAgeGroup	OM		40	Open Men	1.000	100.000	
+22435	AWSAAgeGroup	OW		41	Open Women	1.000	100.000	
+22436	AWSAAgeGroup	MM		42	Master Men	35.000	100.000	
+22437	AWSAAgeGroup	MW		43	Master Women	35.000	100.000	
 22438	AWSAAgeGroup	NM		44	Novice Mens	18.000	100.000	
 22439	AWSAAgeGroup	NW		45	Novice Womens	18.000	100.000	
 22445	AWSAAgeGroup	IM		71	Intl Men	1.000	99.000	
@@ -188,27 +227,27 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23470	AWSARecords	B1-T		12	Boys 1 - Trick		4090.000	 8/15/2001 Adam Pickos  
 00000	AWSARecords	B2-S		21	Boys 2 - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
 23472	AWSARecords	B2-T		22	Boys 2 - Trick		7870.000	 6/20/2004 Adam Pickos  
-23473	AWSARecords	B2-J		23	Boys 2 - Jump		143.000	(43.5m) 7/20/2011 Taylor Garcia 
+00000	AWSARecords	B2-J		23	Boys 2 - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 23474	AWSARecords	B3-S		31	Boys 3 - Slalom		117.000	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 23475	AWSARecords	B3-T		32	Boys 3 - Trick		10430.000	 7/18/2009 Adam Pickos  
 00000	AWSARecords	B3-J		33	Boys 3 - Jump		193	(58.8m) 5/17/2015 Taylor Garcia
 23477	AWSARecords	G1-S		41	Girls 1 - Slalom		80.000	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)
 23478	AWSARecords	G1-T		42	Girls 1 - Trick		5340.000	7/24/2011 Neilly Ross
-00000	AWSARecords	G2-S		51	Girls 2 - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin
+00000	AWSARecords	G2-S		51	Girls 2 - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin
 00000	AWSARecords	G2-T		52	Girls 2 - Trick		7170.000	6/28/2014 Brooke Baldwin
-23481	AWSARecords	G2-J		53	Girls 2 - Jump		120.000	 6/22/2008 Brittany Greenwood  
-00000	AWSARecords	G3-S		61	Girls 3 - Slalom		106	4 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 6/27/2015 Samantha Dumala
-00000	AWSARecords	G3-T		62	Girls 3 - Trick		10010	11/21/2015 Anna Gay
+23481	AWSARecords	G2-J		53	Girls 2 - Jump		120.0	6/22/2008 Brittany Greenwood  
+00000	AWSARecords	G3-S		61	Girls 3 - Slalom		106	4 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 6/27/2015 Samantha Dumala 9/24/2016 Brooke Baldwin
+00000	AWSARecords	G3-T		62	Girls 3 - Trick		10220	8/10/2016 Anna Gay
 23484	AWSARecords	G3-J		63	Girls 3 - Jump		154.000	(46.9m) 4/25/2010 Lauren Morgan
 23485	AWSARecords	M1-S		71	Mens 1 - Slalom		122.000	2 buoy at 9.75m @ 58 kph (43 off @ 36 mph) 6/2/2013 Nate Smith 
-00000	AWSARecords	M1-T		72	Mens 1 - Trick		11510	5/10/2015 Adam Pickos
+00000	AWSARecords	M1-T		72	Mens 1 - Trick		11620	6/12/2016 Adam Pickos
 23487	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 10/5/2013 Zack Worden
 23488	AWSARecords	M2-S		81	Mens 2 - Slalom		122.000	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish  
 23489	AWSARecords	M2-T		82	Mens 2 - Trick		12090.000	4/30/2011 Jimmy Seimers
 23490	AWSARecords	M2-J		83	Mens 2 - Jump		216.000	 9/24/2002 Mark Lane  
-23491	AWSARecords	M3-S		91	Mens 3 - Slalom		115.000	1 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 9/15/2012 Jeff Rodgers
+00000	AWSARecords	M3-S		91	Mens 3 - Slalom		115.25	1.25 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 9/16/2012 Jeff Rodgers
 23492	AWSARecords	M3-T		92	Mens 3 - Trick		12070.000	 7/17/2005 Russell Gay  
-00000	AWSARecords	M3-J		93	Mens 3 - Jump		199	(60.7) 7/8/2015 Scot Ellis
+00000	AWSARecords	M3-J		93	Mens 3 - Jump		200	(61.1) 57kph 5ft 7/30/2016 Scot Ellis
 00000	AWSARecords	M4-S		101	Mens 4 - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
 00000	AWSARecords	M4-T		102	Mens 4 - Trick		11470.000	10/24/2014 Russell Gay
 23496	AWSARecords	M4-J		103	Mens 4 - Jump		179.000	(54.5m) 10/3/2010 Danny Zeisler  
@@ -220,17 +259,17 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 9/27/2014 Frankie Dees
 00000	AWSARecords	M7-S		131	Mens 7 - Slalom		101	5 bouys at 10.75m @ 52 kph (39 off @ 32.2 mph) 8/30/2014 Steve Rafael
 23504	AWSARecords	M7-T		132	Mens 7 - Trick		3750.000	 8/24/2002 Jerry Hosner  
-23505	AWSARecords	M7-J		133	Mens 7 - Jump		112.000	(34.1m) 8/15/2006 Bruce Kunde  
+00000	AWSARecords	M7-J		133	Mens 7 - Jump		122	(37.1m) 48kph 5ft 8/20/2016 Frankie Dees
 00000	AWSARecords	M8-S		141	Mens 8 - Slalom		92	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/31/2014 Brad Conger 6/28/2015 Jim Kinney
 00000	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
 23508	AWSARecords	M8-J		143	Mens 8 - Jump		96	(29.3m) 8/31/2013 Brad Conger
 00000	AWSARecords	M9-S		151	Mens 9 - Slalom		86.5	2.5 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 4/5/2014 Jerry Hosner
-23510	AWSARecords	M9-T		152	Mens 9 - Trick		1740.000	 8/5/2004 Harry Price  
+00000	AWSARecords	M9-T		152	Mens 9 - Trick		1990	8/10/2016 Carroll Piercy
 00000	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 8/7/2014 Bruce Kunde
 23512	AWSARecords	MA-S		161	Mens 10 - Slalom		73.500	1.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 9/11/2005 Jim Salmas  
 23513	AWSARecords	MA-T		162	Mens 10 - Trick		1600.000	 10/20/2007 Harry Price  
 23514	AWSARecords	MA-J		163	Mens 10 - Jump		47.000	(14.2m) 8/14/2010 Elgin Faulkner  
-23515	AWSARecords	MB-S		171	Mens 11 - Slalom		38.000	2 bouys at 23m @ 43 kph (75 @ 26.7 mph) 10/29/2012 Harry Price
+00000	AWSARecords	MB-S		171	Mens 11 - Slalom		46	4 bouys at 23m @ 46 kph (75' @ 28.6 mph) 11/5/2016 Bill Wenner
 23516	AWSARecords	MB-T		172	Mens 11 - Trick		1050.000	10/29/2012 Harry Price
 23517	AWSARecords	MB-J		173	Mens 11 - Jump		22.000	(6.7m) 10/29/2012 Harry Price
 23518	AWSARecords	W1-S		181	Womens 1 - Slalom		109.000	1 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/3/2009 Regina Jaquess  
@@ -247,13 +286,13 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 10/12/2014 Lori Krueger
 00000	AWSARecords	W5-S		221	Womens 5 - Slalom		96.5	0.5 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/5/2014 Phillipa Shedd
 23531	AWSARecords	W5-T		222	Womens 5 - Trick		5060.000	 8/18/2007 Kay Nichols  
-00000	AWSARecords	W5-J		223	Womens 5 - Jump		114	(34.6) 48kph 10/4/2015 Joy Kelly
+00000	AWSARecords	W5-J		223	Womens 5 - Jump		115	(34.9) 48kph 5ft 9/4/2016 Joy Kelly
 00000	AWSARecords	W6-S		231	Womens 6 - Slalom		89.000	5 bouys at 12m @ 52 kph (32 off @ 32.3 mph) 10/21/2012 Leza Harrison
 23534	AWSARecords	W6-T		232	Womens 6 - Trick		3780.000	 8/11/1998 Thelma Salmas  
 23535	AWSARecords	W6-J		233	Womens 6 - Jump		95.000	(29.1m) 6/23/2012 Leza Harrison
-23536	AWSARecords	W7-S		241	Womens 7 - Slalom		80.000	2 buoys at 12m @ 49 kph (35 off @ 30.4 mph) 8/3/2001 Lorretta Morris  
+00000	AWSARecords	W7-S		241	Womens 7 - Slalom		82	4 bouys at 12m @ 49 kph (35 off @ 30.4 mph) 8/27/2016 Leza Harrison
 23537	AWSARecords	W7-T		242	Womens 7 - Trick		3330.000	 8/14/2001 Thelma Salmas  
-23538	AWSARecords	W7-J		243	Womens 7 - Jump		69.000	 7/26/2001 Thelma Salmas  
+00000	AWSARecords	W7-J		243	Womens 7 - Jump		85	(25.8m) 45kph 5ft 8/20/2016 Leza Harrison
 23539	AWSARecords	W8-S		251	Womens 8 - Slalom		75.500	3.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 6/14/2008 Margaret Anne Woodard  
 23540	AWSARecords	W8-T		252	Womens 8 - Trick		2270.000	 5/14/2006 Thelma Salmas  
 23541	AWSARecords	W8-J		253	Womens 8 - Jump		57.000	 7/9/2006 Thelma Salmas  
@@ -266,52 +305,52 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23548	AWSARecords	WB-S		281	Womens 11 - Slalom		46.000	4 buoys at 23m @ 43 kph (75 @ 26.7 mph) 7/17/2005 Lucille Borgen  
 00000	AWSARecords	WB-T		282	Womens 11 - Trick		1120	8/19/2014 Artis Price
 23550	AWSARecords	WB-J		283	Womens 11 - Jump		0.000	 none none  
-23551	AWSARecords	OM-S		291	Open Mens - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
-23552	AWSARecords	OM-T		292	Open Mens - Trick		12090.000	4/30/2011 Jimmy Siemers
+23551	AWSARecords	OM-S		291	Open Men - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
+23552	AWSARecords	OM-T		292	Open Men - Trick		12090.000	4/30/2011 Jimmy Siemers
 00000	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3) 5/1/2014 Freddy Krueger
-00000	AWSARecords	OW-S		301	Open Womens - Slalom		111.25	3.25 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2014 Regina Jaquess
-00000	AWSARecords	OW-T		302	Open Womens - Trick		10460	5/10/2014 Erika Lang
-23556	AWSARecords	OW-J		303	Open Womens - Jump		184	(56.1m) 10/5/2013 Alex Lauretano
-00000	AWSARecords	MM-S		311	Master Mens - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
-23558	AWSARecords	MM-T		312	Master Mens - Trick		11570.000	 5/8/2010 Russell Gay  
-23559	AWSARecords	MM-J		313	Master Mens - Jump		215.000	(65.5m) 4/9/2011 Scot Ellis
-00000	AWSARecords	MW-S		321	Master Womens-Slalom		109.0	1 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 8/10/2015 BENCHMARK
-00000	AWSARecords	MW-T		322	Master Womens-Trick		6450.000	8/10/2015 BENCHMARK
-00000	AWSARecords	MW-J		323	Master Womens-Jump		155	8/10/2015 BENCHMARK
-22562	AWSASlalomMax	B1		1	49kph, 30mph	30.000	49.000	
-22563	AWSASlalomMax	B2		2	55kph, 34mph	34.000	55.000	
-22564	AWSASlalomMax	B3		3	58kph, 36mph	36.000	58.000	
-22565	AWSASlalomMax	G1		4	49kph, 30mph	30.000	49.000	
-22566	AWSASlalomMax	G2		5	52kph, 32mph	32.000	52.000	
-22567	AWSASlalomMax	G3		6	55kph, 34mph	34.000	55.000	
-22568	AWSASlalomMax	M1		7	58kph, 36mph	36.000	58.000	
-22569	AWSASlalomMax	M2		8	58kph, 36mph	36.000	58.000	
-22570	AWSASlalomMax	M3		9	55kph, 34mph	34.000	55.000	
-22571	AWSASlalomMax	M4		10	55kph, 34mph	34.000	55.000	
-22572	AWSASlalomMax	M5		11	55kph, 34mph	34.000	55.000	
-22573	AWSASlalomMax	M6		12	55kph, 34mph	34.000	55.000	
-22574	AWSASlalomMax	M7		13	52kph, 32mph	32.000	52.000	
-22575	AWSASlalomMax	M8		14	49kph, 30mph	30.000	49.000	
-22576	AWSASlalomMax	M9		15	49kph, 30mph	30.000	49.000	
-22577	AWSASlalomMax	MA		16	49kph, 30mph	30.000	49.000	
-22578	AWSASlalomMax	MB		17	46kph, 28mph	28.000	46.000	
-22579	AWSASlalomMax	W1		18	55kph, 34mph	34.000	55.000	
-22580	AWSASlalomMax	W2		19	55kph, 34mph	34.000	55.000	
-22581	AWSASlalomMax	W3		20	55kph, 34mph	34.000	55.000	
-22582	AWSASlalomMax	W4		21	55kph, 34mph	34.000	55.000	
-22583	AWSASlalomMax	W5		22	52kph, 32mph	32.000	52.000	
-22584	AWSASlalomMax	W6		23	52kph, 32mph	32.000	52.000	
-22585	AWSASlalomMax	W7		24	49kph, 30mph	30.000	49.000	
-22586	AWSASlalomMax	W8		25	49kph, 30mph	30.000	49.000	
-22587	AWSASlalomMax	W9		26	46kph, 28mph	28.000	46.000	
-22588	AWSASlalomMax	WA		27	46kph, 28mph	28.000	46.000	
-22589	AWSASlalomMax	WB		28	43kph, 26mph	28.000	46.000	
-22590	AWSASlalomMax	OM		29	58kph, 36mph	36.000	58.000	
-22591	AWSASlalomMax	OW		30	55kph, 34mph	34.000	55.000	
-22592	AWSASlalomMax	MM		40	55kph, 34mph	34.000	55.000	
-22593	AWSASlalomMax	MW		41	55kph, 34mph	34.000	55.000	
-22594	AWSASlalomMax	NM		42	58kph, 36mph	36.000	58.000	
-22595	AWSASlalomMax	NW		43	55kph, 34mph	34.000	55.000	
+00000	AWSARecords	OW-S		301	Open Women - Slalom		111.25	3.25 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2014 Regina Jaquess
+00000	AWSARecords	OW-T		302	Open Women - Trick		10460	5/10/2014 Erika Lang
+23556	AWSARecords	OW-J		303	Open Women - Jump		184	(56.1m) 10/5/2013 Alex Lauretano
+00000	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
+23558	AWSARecords	MM-T		312	Master Men - Trick		11570.000	 5/8/2010 Russell Gay  
+23559	AWSARecords	MM-J		313	Master Men - Jump		215.000	(65.5m) 4/9/2011 Scot Ellis
+00000	AWSARecords	MW-S		321	Master Women-Slalom		109.0	1 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 8/10/2015 BENCHMARK
+00000	AWSARecords	MW-T		322	Master Women-Trick		6450.000	8/10/2015 BENCHMARK
+00000	AWSARecords	MW-J		323	Master Women-Jump		155	8/10/2015 BENCHMARK
+22562	AWSASlalomMax	B1		1	49kph, 30mph	30	49	
+22563	AWSASlalomMax	B2		2	55kph, 34mph	34	55	
+22564	AWSASlalomMax	B3		3	58kph, 36mph	36	58	
+22565	AWSASlalomMax	G1		4	49kph, 30mph	30	49	
+22566	AWSASlalomMax	G2		5	52kph, 32mph	32	52	
+22567	AWSASlalomMax	G3		6	55kph, 34mph	34	55	
+22568	AWSASlalomMax	M1		7	58kph, 36mph	36	58	
+22569	AWSASlalomMax	M2		8	58kph, 36mph	36	58	
+22570	AWSASlalomMax	M3		9	55kph, 34mph	36	58	
+22571	AWSASlalomMax	M4		10	55kph, 34mph	36	58	
+22572	AWSASlalomMax	M5		11	55kph, 34mph	36	58	
+22573	AWSASlalomMax	M6		12	55kph, 34mph	36	58	
+22574	AWSASlalomMax	M7		13	52kph, 32mph	36	58	
+22575	AWSASlalomMax	M8		14	49kph, 30mph	36	58	
+22576	AWSASlalomMax	M9		15	49kph, 30mph	36	58	
+22577	AWSASlalomMax	MA		16	49kph, 30mph	36	58	
+22578	AWSASlalomMax	MB		17	46kph, 28mph	36	58	
+22579	AWSASlalomMax	W1		18	55kph, 34mph	34	55	
+22580	AWSASlalomMax	W2		19	55kph, 34mph	34	55	
+22581	AWSASlalomMax	W3		20	55kph, 34mph	34	55	
+22582	AWSASlalomMax	W4		21	55kph, 34mph	34	55	
+22583	AWSASlalomMax	W5		22	52kph, 32mph	34	55	
+22584	AWSASlalomMax	W6		23	52kph, 32mph	34	55	
+22585	AWSASlalomMax	W7		24	49kph, 30mph	34	55	
+22586	AWSASlalomMax	W8		25	49kph, 30mph	34	55	
+22587	AWSASlalomMax	W9		26	46kph, 28mph	34	55	
+22588	AWSASlalomMax	WA		27	46kph, 28mph	34	55	
+22589	AWSASlalomMax	WB		28	43kph, 26mph	34	55	
+22590	AWSASlalomMax	OM		29	58kph, 36mph	36	58	
+22591	AWSASlalomMax	OW		30	55kph, 34mph	34	55	
+22592	AWSASlalomMax	MM		40	55kph, 34mph	36	58	
+22593	AWSASlalomMax	MW		41	55kph, 34mph	34	55	
+22594	AWSASlalomMax	NM		42	58kph, 36mph	36	58	
+22595	AWSASlalomMax	NW		43	55kph, 34mph	34	55	
 23409	AWSASlalomMin	JB		11	43kph, 26mph	-6.000	43.000	
 23410	AWSASlalomMin	JG		12	40kph, 24mph	-5.000	40.000	
 23411	AWSASlalomMin	IB		13	46kph, 28mph	-7.000	46.000	
@@ -385,8 +424,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22670	EndOfTourReports	F21		16	######TS.txt			Tournament data file
 22671	EndOfTourReports	F23		17	######TU.PRN			Towboat Use Report (PRN)
 22672	EndOfTourReports	F24		18	######TU.txt			Towboat use data file
-22674	EndOfTourReports	F25		19	######HD.txt			IwwfHomologationDossier.txt
-000000	EndOfTourReports	F26		20	.hom$			IwwfHomologationDossier.txt
+22674	EndOfTourReports	F25		19	######HD.txt			Iwwf Homologation Dossier as a text file
+00000	EndOfTourReports	F26		20	######SV.ZIP			Iwwf Site Survey (optional)
+00000	EndOfTourReports	F27		21	.hom$			IwwfHomologationDossier.txt
 22675	EventType	Chief		1	Chief			
 22676	EventType	AsstChief		2	Assistant Chief			
 22677	EventType	Slalom		3	Slalom			
@@ -836,7 +876,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	NCWSARecords	CM-T		492	College Men - Trick		7050	5/17/2014 Dylan Schaffer
 00000	NCWSARecords	CM-J		493	College Men - Jump		194	(59.13m) 10/14/2011 Zack Worden
 00000	NCWSARecords	CW-S		501	College Women - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 9/1/2012 Manon Costard 9/19/2015 Samantha Dumala
-00000	NCWSARecords	CW-T		502	College Women - Trick		5510	10/18/2014 Erika Lang
+00000	NCWSARecords	CW-T		502	College Women - Trick		5960	10/7/2015 Erika Lang
 23573	NCWSARecords	CW-J		503	College Women - Jump		157.000	(47.9m) 10/1/2011 Lauren Morgan
 22596	NcwsaSlalomMax	CM		44	58kph, 36mph	36.000	58.000	
 22598	NcwsaSlalomMax	BM		44	58kph, 36mph	36.000	58.000	

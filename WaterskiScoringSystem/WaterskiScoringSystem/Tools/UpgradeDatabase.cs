@@ -35,7 +35,7 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '03.43', 3.43, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '04.04', 4.04, 1";
 
                 if (myDatabaseVersion < 2.27M) {
                     MessageBox.Show( "The version on your database is very old or has been corrupted."
@@ -44,73 +44,28 @@ namespace WaterskiScoringSystem.Tools {
                     );
                     return false;
                 }
-                /* --------------------------------------------------
-                if ( myDatabaseVersion < 1.27M ) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase.sql";
-                    copyDatabaseFile();
-                    updateSchema( curFileRef );
-                }
-                if ( myDatabaseVersion < 1.43M ) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase_v1x43.sql";
-                    copyDatabaseFile();
-                    updateSchema( curFileRef );
-                }
-                if ( myDatabaseVersion < 1.55M ) {
-                    if ( openDbConn() ) {
-                        String curFileRef = Application.StartupPath + "\\BuildDatabaseTeam.sql";
-                        copyDatabaseFile();
-                        updateSchema( curFileRef );
-                    }
-                }
-                if (myDatabaseVersion < 1.58M) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase_v1x58.sql";
-                    copyDatabaseFile();
-                    updateSchema(curFileRef);
-                }
-                if (myDatabaseVersion < 1.62M) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase_v1x62.sql";
-                    copyDatabaseFile();
-                    updateSchema(curFileRef);
-                }
-                if (myDatabaseVersion < 1.68M) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase_v1x64.sql";
-                    copyDatabaseFile();
-                    updateSchema(curFileRef);
-                }
-                if (myDatabaseVersion < 1.74M) {
-                    String curFileRef = Application.StartupPath + "\\BuildDatabase_v1x74.sql";
-                    copyDatabaseFile();
-                    updateSchema(curFileRef);
-                }
-                if (myDatabaseVersion < 2.09M) {
-                    if (openDbConn()) {
-                        updateTourRegCity();
-                    }
-                }
-
-                 */
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
                     copyDatabaseFile();
                 }
-                if (myDatabaseVersion < 3.32M ) {
+                if (myDatabaseVersion < 4.04M ) {
                     if (openDbConn()) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
-                if (myDatabaseVersion < 3.40M) {
+                if (myDatabaseVersion < 4.02M) {
                     if ( openDbConn() ) {
                         loadTrickList();
                     }
                 }
-                if (myDatabaseVersion < 3.35M) {
+                if (myDatabaseVersion < 4.02M) {
                     if ( openDbConn() ) {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 3.43M ) {
+                if ( myDatabaseVersion < 4.01M ) {
                     if ( openDbConn() ) {
                         loadListValues();
                     }

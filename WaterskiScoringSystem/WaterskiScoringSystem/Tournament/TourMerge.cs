@@ -75,6 +75,7 @@ namespace WaterskiScoringSystem.Tournament {
             if ( curTourFile.ToLower().EndsWith(".tny")
                 || curTourFile.ToLower().EndsWith(".log")
                 || curTourFile.ToLower().EndsWith("hd.txt")
+                || curTourFile.ToLower().EndsWith("sv.zip")
                 || curTourFile.ToLower().EndsWith(".log")
                 || curTourFile.ToLower().EndsWith("cj.txt")
                 || curTourFile.ToLower().EndsWith("sd.txt")
@@ -383,10 +384,10 @@ namespace WaterskiScoringSystem.Tournament {
                 int curCount = 0;
                 foreach ( String curValue in curValues ) {
                     curCount++;
-                    if ( curValues.Length < curCount ) {
-                        curNewValue.Append(curValue);
-                    } else {
+                    if ( curCount < curValues.Length ) {
                         curNewValue.Append(curValue + inReplValue);
+                    } else {
+                        curNewValue.Append(curValue);
                     }
                 }
             } else {

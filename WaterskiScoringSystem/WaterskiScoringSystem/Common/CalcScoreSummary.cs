@@ -689,7 +689,7 @@ namespace WaterskiScoringSystem.Common {
 
             Int16 curRound, curScoreTrick;
             int curDivOrder = 0;
-            Byte curFinalSpeedKph, curFinalSpeedMph, curBoatSpeedJump, curMaxSpeed, curStartSpeed, curSkiYearAge;
+            Byte curFinalSpeedKph, curFinalSpeedMph, curCompletedSpeedMph, curCompletedSpeedKph, curBoatSpeedJump, curMaxSpeed, curStartSpeed, curSkiYearAge;
 
             DataRowView newDataRow;
             DataRow curDataRow;
@@ -816,8 +816,8 @@ namespace WaterskiScoringSystem.Common {
                                 curFinalSpeedKph = (Byte)curRow["StartSpeed"];
                                 curFinalSpeedMph = getSlalomSpeedMph( curFinalSpeedKph );
                             } else {
-                                curFinalSpeedMph = (Byte)curRow["FinalSpeedMph"];
-                                curFinalSpeedKph = (Byte)curRow["FinalSpeedKph"];
+                                curFinalSpeedMph = (Byte) curRow["FinalSpeedMph"];
+                                curFinalSpeedKph = (Byte) curRow["FinalSpeedKph"];
                             }
                         } catch (Exception ex) {
                             curFinalSpeedMph = 0;
@@ -825,6 +825,18 @@ namespace WaterskiScoringSystem.Common {
                             curMaxSpeed = 0;
                             curStartSpeed = 0;
                             curStartLen = "";
+                        }
+                        try {
+                            if ( curRow["CompletedSpeedKph"].GetType() == System.Type.GetType("System.Byte") ) {
+                                curCompletedSpeedMph = (Byte)curRow["CompletedSpeedMph"];
+                                curCompletedSpeedKph = (Byte)curRow["CompletedSpeedKph"];
+                            } else {
+                                curCompletedSpeedMph = (Byte) ( (int) curRow["CompletedSpeedMph"] );
+                                curCompletedSpeedKph = (Byte) ( (int) curRow["CompletedSpeedKph"] );
+                            }
+                        } catch ( Exception ex ) {
+                            curCompletedSpeedMph = 0;
+                            curCompletedSpeedKph = 0;
                         }
                         try {
                             curFinalLenOff = (String)curRow["FinalLenOff"];
@@ -866,6 +878,8 @@ namespace WaterskiScoringSystem.Common {
                             curDataRow["FinalSpeedKph"] = curFinalSpeedKph;
                             curDataRow["FinalSpeedMph"] = curFinalSpeedMph;
                             curDataRow["FinalPassScore"] = curFinalPassScore;
+                            curDataRow["CompletedSpeedMph"] = curCompletedSpeedMph;
+                            curDataRow["CompletedSpeedKph"] = curCompletedSpeedKph;
 
                             curDataRow["MaxSpeed"] = curMaxSpeed;
                             curDataRow["StartSpeed"] = curStartSpeed;
@@ -905,6 +919,8 @@ namespace WaterskiScoringSystem.Common {
                             newDataRow["FinalSpeedKph"] = curFinalSpeedKph;
                             newDataRow["FinalSpeedMph"] = curFinalSpeedMph;
                             newDataRow["FinalPassScore"] = curFinalPassScore;
+                            newDataRow["CompletedSpeedMph"] = curCompletedSpeedMph;
+                            newDataRow["CompletedSpeedKph"] = curCompletedSpeedKph;
 
                             newDataRow["MaxSpeed"] = curMaxSpeed;
                             newDataRow["StartSpeed"] = curStartSpeed;
@@ -1517,6 +1533,19 @@ namespace WaterskiScoringSystem.Common {
                                 }
 
                                 try {
+                                    if ( curSlalomDetailRow["CompletedSpeedKph"].GetType() == System.Type.GetType("System.Byte") ) {
+                                        newDataRow["CompletedSpeedMph"] = (Byte) curSlalomDetailRow["CompletedSpeedMph"];
+                                        newDataRow["CompletedSpeedKph"] = (Byte) curSlalomDetailRow["CompletedSpeedKph"];
+                                    } else {
+                                        newDataRow["CompletedSpeedMph"] = (Byte)((int) curSlalomDetailRow["CompletedSpeedMph"]);
+                                        newDataRow["CompletedSpeedKph"] = (Byte) ( (int) curSlalomDetailRow["CompletedSpeedKph"]);
+                                    }
+                                } catch ( Exception ex ) {
+                                    newDataRow["CompletedSpeedMph"] = 0;
+                                    newDataRow["CompletedSpeedKph"] = 0;
+                                }
+
+                                try {
                                     newDataRow["FinalPassScore"] = (Decimal)curSlalomDetailRow["FinalPassScore"];
                                 } catch {
                                     newDataRow["FinalPassScore"] = 0M;
@@ -1738,6 +1767,19 @@ namespace WaterskiScoringSystem.Common {
                                 }
 
                                 try {
+                                    if ( curSlalomRow["CompletedSpeedKph"].GetType() == System.Type.GetType("System.Byte") ) {
+                                        newDataRow["CompletedSpeedMph"] = (Byte) curSlalomRow["CompletedSpeedMph"];
+                                        newDataRow["CompletedSpeedKph"] = (Byte) curSlalomRow["CompletedSpeedKph"];
+                                    } else {
+                                        newDataRow["CompletedSpeedMph"] = (Byte) ( (int) curSlalomRow["CompletedSpeedMph"] );
+                                        newDataRow["CompletedSpeedKph"] = (Byte) ( (int) curSlalomRow["CompletedSpeedKph"] );
+                                    }
+                                } catch ( Exception ex ) {
+                                    newDataRow["CompletedSpeedMph"] = 0;
+                                    newDataRow["CompletedSpeedKph"] = 0;
+                                }
+
+                                try {
                                     newDataRow["FinalPassScore"] = (Decimal)curSlalomRow["FinalPassScore"];
                                 } catch {
                                     newDataRow["FinalPassScore"] = 0M;
@@ -1874,9 +1916,9 @@ namespace WaterskiScoringSystem.Common {
                 curSortCmd = "Plcmt" + inEvent + " DESC";
             }
 
-            curFinalScoreDataTable.DefaultView.Sort = curSortCmd;
-
-            return curFinalScoreDataTable.DefaultView.ToTable();
+            //curFinalScoreDataTable.DefaultView.Sort = curSortCmd;
+            //return curFinalScoreDataTable.DefaultView.ToTable();
+            return curFinalScoreDataTable;
         }
 
         /*
@@ -2043,11 +2085,16 @@ namespace WaterskiScoringSystem.Common {
             Calculate final placements
             */
             if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                curSortCmd = "Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+                //curSortCmd = "Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+                curSortCmd = "Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
             } else {
-                curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+                //curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+                curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
             }
+            curFinalsDataTable.DefaultView.Sort = curSortCmd;
+            curFinalsDataTable = curFinalsDataTable.DefaultView.ToTable();
 
+            /*
             int curLastRound = 0, curSkierRound = 0;
 
             curGroup = "";
@@ -2057,8 +2104,6 @@ namespace WaterskiScoringSystem.Common {
             curPlcmtPos = 1;
             curScore = 0;
             prevScore = -1;
-            curFinalsDataTable.DefaultView.Sort = curSortCmd;
-            curFinalsDataTable = curFinalsDataTable.DefaultView.ToTable();
             DataRow curDataRow = null;
             while ( curIdx < curFinalsDataTable.Rows.Count ) {
                 curDataRow = curFinalsDataTable.Rows[curIdx];
@@ -2131,6 +2176,7 @@ namespace WaterskiScoringSystem.Common {
                 curPlcmtPos++;
                 curIdx++;
             }
+            */
 
             return curFinalsDataTable;
         }
@@ -4618,6 +4664,22 @@ namespace WaterskiScoringSystem.Common {
             curDataTable.Columns.Add( curCol );
 
             curCol = new DataColumn();
+            curCol.ColumnName = "CompletedSpeedMph";
+            curCol.DataType = System.Type.GetType("System.Byte");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            curCol = new DataColumn();
+            curCol.ColumnName = "CompletedSpeedKph";
+            curCol.DataType = System.Type.GetType("System.Byte");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            curCol = new DataColumn();
             curCol.ColumnName = "FinalLenOff";
             curCol.DataType = System.Type.GetType( "System.String" );
             curCol.AllowDBNull = false;
@@ -4973,7 +5035,8 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( ", TR.SkiYearAge, TR.State, TR.Federation, TR.City" );
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass" );
             curSqlStmt.Append( ", COALESCE(SS.Round, 0) as Round, SS.Score, SS.NopsScore, SS.Rating, SS.MaxSpeed, SS.StartSpeed, SS.StartLen, SS.Status" );
-            curSqlStmt.Append( ", SS.FinalPassNum, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore " );
+            curSqlStmt.Append(", SS.FinalPassNum, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore");
+            curSqlStmt.Append(", COALESCE(SS.CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(SS.CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
@@ -5072,7 +5135,8 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append( ", SS.Round, SS.Score, SS.NopsScore, SS.Rating, MaxSpeed, StartSpeed, StartLen, Status" );
-            curSqlStmt.Append( ", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore " );
+            curSqlStmt.Append(", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore");
+            curSqlStmt.Append(", COALESCE(CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM SlalomScore SS " );
             curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
@@ -5080,7 +5144,7 @@ namespace WaterskiScoringSystem.Common {
             if (curTeamData) {
                 curSqlStmt.Append( "  INNER JOIN TeamList TM ON SS.SanctionId = TM.SanctionId AND ER.TeamCode = TM.TeamCode " );
             }
-            curSqlStmt.Append( "WHERE SS.SanctionId = '" + inSanctionId + "' AND ER.Event = 'Slalom'" );
+            curSqlStmt.Append( "WHERE SS.SanctionId = '" + inSanctionId + "' AND ER.Event = 'Slalom' " );
             if ( curEventGroup.Length > 0 ) {
                 curSqlStmt.Append( "  And ER.EventGroup = '" + curEventGroup + "' " );
             }

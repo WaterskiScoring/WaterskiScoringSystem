@@ -893,6 +893,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintTeamPlcmt"].Value = curTeamPlcmt.ToString();
                 }
                 try {
+                    //PrintDataGridView.Rows[curPrintIdx].Height = 60;
                     curPrintRow.Cells["PrintTeam"].Value = (String)curTeamRow["TeamCode"] + "-" + (String)curTeamRow["Name"];
                 } catch {
                     try {
@@ -974,6 +975,8 @@ namespace WaterskiScoringSystem.Tournament {
                     if (curInsertNewRow) {
                         curPrintIdx = PrintDataGridView.Rows.Add();
                         curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+                        curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
+                        PrintDataGridView.Rows[curPrintIdx].Height = 8;
                     }
                     curInsertNewRow = true;
 
@@ -986,18 +989,24 @@ namespace WaterskiScoringSystem.Tournament {
                     curFilterCmd = "TeamSlalom='" + (String)curTeamRow["TeamCode"] + "'";
                     if (curGroupAttrName.Length > 0) {
                         curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
+                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
                     }
                     curSlalomTeamSkierList = curSlalomDataTable.Select( curFilterCmd );
 
                     curFilterCmd = "TeamTrick='" + (String)curTeamRow["TeamCode"] + "'";
                     if (curGroupAttrName.Length > 0) {
                         curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
+                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
                     }
                     curTrickTeamSkierList = curTrickDataTable.Select( curFilterCmd );
 
                     curFilterCmd = "TeamJump='" + (String)curTeamRow["TeamCode"] + "'";
                     if (curGroupAttrName.Length > 0) {
                         curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
+                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
                     }
                     curJumpTeamSkierList = curJumpDataTable.Select( curFilterCmd );
 
@@ -1018,13 +1027,9 @@ namespace WaterskiScoringSystem.Tournament {
 
                     for (curSkierIdx = 0; curSkierIdx < curSkierIdxMax; curSkierIdx++) {
                         if (myNumPerTeam > curSkierIdx || myNumPerTeam == 0) {
-                            if (curSkierIdx > 0) {
-                                curPrintIdx = PrintDataGridView.Rows.Add();
-                                curPrintRow = PrintDataGridView.Rows[curPrintIdx];
-                            } else {
-                                curPrintIdx = PrintDataGridView.Rows.Add();
-                                curPrintRow = PrintDataGridView.Rows[curPrintIdx];
-                            }
+                            curPrintIdx = PrintDataGridView.Rows.Add();
+                            curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+                            //PrintDataGridView.Rows[curPrintIdx].Height = 30;
                             if ( curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
                                 curPrintRow.Cells["PrintSkierCategory"].Value = curDivShow;
                             } else {
@@ -1073,13 +1078,66 @@ namespace WaterskiScoringSystem.Tournament {
                                     curPrintRow.Cells["PrintScoreJump"].Value = ( (Decimal)curJumpTeamSkierList[curSkierIdx]["ScoreFeet"] ).ToString( "##0" );
                                 }
                             }
+                        } else {
+                            if ( myNumPerTeam == curSkierIdx ) {
+                                curPrintIdx = PrintDataGridView.Rows.Add();
+                                curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+                                curPrintRow.DefaultCellStyle.BackColor = Color.LightGray;
+                                PrintDataGridView.Rows[curPrintIdx].Height = 4;
+                            }
+                            curPrintIdx = PrintDataGridView.Rows.Add();
+                            curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+
+                            if ( curSlalomTeamSkierList.Length > curSkierIdx ) {
+                                if ( curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
+                                    curPrintRow.Cells["PrintSkierNameSlalom"].Value = "* " + (String) curSlalomTeamSkierList[curSkierIdx]["SkierName"] + " (" + (String) curSlalomTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
+                                } else {
+                                    curPrintRow.Cells["PrintSkierNameSlalom"].Value = "* " + (String) curSlalomTeamSkierList[curSkierIdx]["SkierName"];
+                                }
+                                curPrintRow.Cells["PrintPointsSlalom"].Value = ( (Decimal) curSlalomTeamSkierList[curSkierIdx]["PointsSlalom"] ).ToString("###0.0");
+                                curPrintRow.Cells["PrintScoreSlalom"].Value = ( (Decimal) curSlalomTeamSkierList[curSkierIdx]["ScoreSlalom"] ).ToString("##0.00");
+                                curPrintRow.Cells["PrintPlcmtSlalom"].Value = (String) curSlalomTeamSkierList[curSkierIdx]["PlcmtSlalom"];
+                                curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = (Decimal) curSlalomTeamSkierList[curSkierIdx]["PlcmtPointsSlalom"];
+                            }
+                            if ( curTrickTeamSkierList.Length > curSkierIdx ) {
+                                if ( curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
+                                    curPrintRow.Cells["PrintSkierNameTrick"].Value = "* " + (String) curTrickTeamSkierList[curSkierIdx]["SkierName"] + " (" + (String) curTrickTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
+                                } else {
+                                    curPrintRow.Cells["PrintSkierNameTrick"].Value = "* " + (String) curTrickTeamSkierList[curSkierIdx]["SkierName"];
+                                }
+                                curPrintRow.Cells["PrintPointsTrick"].Value = ( (Decimal) curTrickTeamSkierList[curSkierIdx]["PointsTrick"] ).ToString("###0.0");
+                                curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = (Decimal) curTrickTeamSkierList[curSkierIdx]["PlcmtPointsTrick"];
+                                if ( curTrickTeamSkierList[curSkierIdx]["ScoreTrick"].GetType() == System.Type.GetType("System.Int32") ) {
+                                    curPrintRow.Cells["PrintScoreTrick"].Value = ( (Int32) curTrickTeamSkierList[curSkierIdx]["ScoreTrick"] ).ToString("##,##0");
+                                } else {
+                                    curPrintRow.Cells["PrintScoreTrick"].Value = ( (Int16) curTrickTeamSkierList[curSkierIdx]["ScoreTrick"] ).ToString("##,##0");
+                                }
+                                curPrintRow.Cells["PrintPlcmtTrick"].Value = (String) curTrickTeamSkierList[curSkierIdx]["PlcmtTrick"];
+                            }
+                            if ( curJumpTeamSkierList.Length > curSkierIdx ) {
+                                if ( curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
+                                    curPrintRow.Cells["PrintSkierNameJump"].Value = "* " + (String) curJumpTeamSkierList[curSkierIdx]["SkierName"] + " (" + (String) curJumpTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
+                                } else {
+                                    curPrintRow.Cells["PrintSkierNameJump"].Value = "* " + (String) curJumpTeamSkierList[curSkierIdx]["SkierName"];
+                                }
+                                curPrintRow.Cells["PrintPointsJump"].Value = ( (Decimal) curJumpTeamSkierList[curSkierIdx]["PointsJump"] ).ToString("###0.0");
+                                curPrintRow.Cells["PrintPlcmtPointsJump"].Value = (Decimal) curJumpTeamSkierList[curSkierIdx]["PlcmtPointsJump"];
+                                curPrintRow.Cells["PrintPlcmtJump"].Value = (String) curJumpTeamSkierList[curSkierIdx]["PlcmtJump"];
+                                if ( myTourRules.ToLower().Equals("iwwf") ) {
+                                    PrintScoreJump.HeaderText = "Mtrs";
+                                    curPrintRow.Cells["PrintScoreJump"].Value = ( (Decimal) curJumpTeamSkierList[curSkierIdx]["ScoreMeters"] ).ToString("##0.0");
+                                } else {
+                                    PrintScoreJump.HeaderText = "Feet";
+                                    curPrintRow.Cells["PrintScoreJump"].Value = ( (Decimal) curJumpTeamSkierList[curSkierIdx]["ScoreFeet"] ).ToString("##0");
+                                }
+                            }
                         }
                     }
                 }
 
                 curPrintIdx = PrintDataGridView.Rows.Add();
                 curPrintRow = PrintDataGridView.Rows[curPrintIdx];
-                curPrintRow.DefaultCellStyle.BackColor = Color.Ivory;
+                curPrintRow.DefaultCellStyle.BackColor = Color.MediumBlue;
                 PrintDataGridView.Rows[curPrintIdx].Height = 8;
                 prevDiv = curDiv;
 
@@ -1657,8 +1715,8 @@ namespace WaterskiScoringSystem.Tournament {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             Font saveShowDefaultCellStyle = TeamSummaryDataGridView.DefaultCellStyle.Font;
-            TeamSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
-            TeamSummaryDataGridView.RowTemplate.Height = 34;
+            //TeamSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
+            TeamSummaryDataGridView.RowTemplate.Height = 28;
 
             bool CenterOnPage = true;
             bool WithTitle = true;

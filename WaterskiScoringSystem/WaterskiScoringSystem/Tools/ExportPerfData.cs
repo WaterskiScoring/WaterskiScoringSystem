@@ -635,7 +635,15 @@ namespace WaterskiScoringSystem.Tools {
                     }
 
                     try {
-                        outLine.Append( "," + ( (Decimal)curScoreRow["FinalPassScore"] ).ToString( "0.00" ) );
+                        Byte curFinalSpeedKph = (Byte) curScoreRow["FinalSpeedKph"];
+                        Byte curCompletedSpeedKph = (Byte) curScoreRow["CompletedSpeedKph"];
+                        Decimal curFinalPassScore = (Decimal) curScoreRow["FinalPassScore"];
+                        if ( curCompletedSpeedKph > 0 ) {
+                            if ( curCompletedSpeedKph != curFinalSpeedKph ) {
+                                curFinalPassScore = curFinalPassScore * -1;
+                            }
+                        }
+                        outLine.Append( "," + curFinalPassScore.ToString( "0.00" ) );
                         if ( curSlalomScore < 6 ) {
                             if (inRules.ToLower().Equals( "iwwf" )) {
                                 outLine.Append( "," + getIwwfSlalomMin( curAgeGroup ) );

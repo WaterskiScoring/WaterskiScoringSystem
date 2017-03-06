@@ -17,7 +17,9 @@ namespace WaterskiScoringSystem.Tools {
         private String mySanctionNum;
         private string myTableName = null;
         private DateTime myImportFileDate;
-        
+        private char[] myTabDelim = new char[] { '\t' };
+        private char[] mySingleQuoteDelim = new char[] { '\'' };
+
         private int myCountMemberInput = 0;
         private int myCountMemberAdded = 0;
         private int myCountMemberUpdate = 0;
@@ -93,8 +95,6 @@ namespace WaterskiScoringSystem.Tools {
         public void importData(String inFileName) {
             string inputBuffer, colValue, MatchCommand = "", curMatchCommand = "", curLastUpdateDateIn = "";
             string[] inputCols = null, inputColNames = null, inputKeys = null, curImportDataMatchMsg = { "", "", "", "" };
-            char[] tabDelim = new char[] { '\t' };
-            char[] singleQuoteDelim = new char[] { '\'' };
             DateTime curLastUpdateDate = new DateTime(), curDateValue = new DateTime();
             Boolean rowFound = false;
             bool curImportConfirmMsg = true;
@@ -158,7 +158,7 @@ namespace WaterskiScoringSystem.Tools {
                                 myProgressInfo.setProgressValue( curInputLineCount );
 
                                 rowFound = false;
-                                inputCols = inputBuffer.Split( tabDelim );
+                                inputCols = inputBuffer.Split( myTabDelim );
 
                                 if (inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" )) {
                                     //Display statistics when another table entry is found
@@ -318,7 +318,7 @@ namespace WaterskiScoringSystem.Tools {
                                                                 stmtData.Append( "[" + colName + "] = " );
                                                             }
                                                             if (inputCols[idx].Length > 0) {
-                                                                String tempValue = stringReplace( inputCols[idx], singleQuoteDelim, "''" );
+                                                                String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
                                                                 stmtData.Append( "'" + tempValue + "'" );
                                                             } else {
                                                                 if (inputKeys.Contains( colName )) {
@@ -393,7 +393,7 @@ namespace WaterskiScoringSystem.Tools {
                                                     if (stmtInsert.Length > 1) {
                                                         stmtInsert.Append( ", [" + colName + "]" );
                                                         if (inputCols[idx].Length > 0) {
-                                                            String tempValue = stringReplace( inputCols[idx], singleQuoteDelim, "''" );
+                                                            String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
                                                             stmtData.Append( ", '" + tempValue + "'" );
                                                         } else {
                                                             if (inputKeys.Contains( colName )) {
@@ -405,7 +405,7 @@ namespace WaterskiScoringSystem.Tools {
                                                     } else {
                                                         stmtInsert.Append( "[" + colName + "]" );
                                                         if (inputCols[idx].Length > 0) {
-                                                            String tempValue = stringReplace( inputCols[idx], singleQuoteDelim, "''" );
+                                                            String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
                                                             stmtData.Append( "'" + tempValue + "'" );
                                                         } else {
                                                             if (inputKeys.Contains( colName )) {
@@ -560,7 +560,6 @@ namespace WaterskiScoringSystem.Tools {
             string inputBuffer, myfileName, MemberId;
             string[] inputCols;
             string[] inputColsSaved = null;
-            char[] tabDelim = new char[] { '\t' };
             DateTime curFileDate;
             SqlCeCommand sqlStmt = null;
             StreamReader myReader;
@@ -638,7 +637,7 @@ namespace WaterskiScoringSystem.Tools {
                                     ) {
                                     break;
                                 } else {
-                                    inputCols = inputBuffer.Split( tabDelim );
+                                    inputCols = inputBuffer.Split( myTabDelim );
                                     if ( inputCols.Length > 8 ) {
                                         //Check first line of input file to analyze the file format supplied
                                         if ( curInputLineCount == 1 && curNcwsa == false ) {
@@ -950,7 +949,7 @@ namespace WaterskiScoringSystem.Tools {
                         if (ScorerJumpRating == "-") ScorerJumpRating = "";
                         if (SafetyOfficialRating == "-") SafetyOfficialRating = "";
                     } else {
-                        curOfficialRating = curOfficialRating.Replace( "-", " " );
+                        curOfficialRating = stringReplace(curOfficialRating, mySingleQuoteDelim, "''");
                         curOfficialRating = curOfficialRating.Trim();
                         if ( curOfficialRating.Equals( "CJ" )
                             || curOfficialRating.Equals( "ACJ" )
@@ -996,9 +995,10 @@ namespace WaterskiScoringSystem.Tools {
                 } else {
                     Gender = "";
                 }
-                inputCols[idxLastName] = inputCols[idxLastName].Replace( "'", "''" );
-                inputCols[idxFirstName] = inputCols[idxFirstName].Replace( "'", "''" );
-                inputCols[idxCity] = inputCols[idxCity].Replace( "'", "''" );
+
+                inputCols[idxLastName] = stringReplace(inputCols[idxLastName], mySingleQuoteDelim, "''");
+                inputCols[idxFirstName] = stringReplace(inputCols[idxFirstName], mySingleQuoteDelim, "''");
+                inputCols[idxCity] = stringReplace(inputCols[idxCity], mySingleQuoteDelim, "''");
                 if ( inputCols[idxSkiYearAge].Length > 0 ) {
                     if ( int.TryParse( inputCols[idxSkiYearAge], out numCk ) ) {
                         SkiYearAge = inputCols[idxSkiYearAge];
@@ -1064,7 +1064,7 @@ namespace WaterskiScoringSystem.Tools {
                         if ( inputCols[idxNote] == null ) {
                             curNote = "";
                         } else {
-                            curNote = inputCols[idxNote].Replace( "'", "''" );
+                            curNote = stringReplace(inputCols[idxNote], mySingleQuoteDelim, "''");
                             if ( idxNote2 > 0 && idxNote2 < inputCols.Length ) {
                                 if ( inputCols[idxNote2] != null ) {
                                     curNote += " " + inputCols[idxNote2];
@@ -1093,7 +1093,7 @@ namespace WaterskiScoringSystem.Tools {
                         + ") Values ("
                         + "'" + MemberId + "'"
                         + ", '" + inputCols[idxLastName] + "'"
-                        + ", '" + inputCols[idxFirstName] + "'"
+                        +", '" + inputCols[idxFirstName] + "'"
                         + ", " + SkiYearAge
                         + ", '" + Gender + "'"
                         + ", '" + inputCols[idxCity] + "'"
@@ -2544,10 +2544,10 @@ namespace WaterskiScoringSystem.Tools {
                 int curCount = 0;
                 foreach ( String curValue in curValues ) {
                     curCount++;
-                    if ( curValues.Length < curCount ) {
-                        curNewValue.Append( curValue );
+                    if ( curCount < curValues.Length ) {
+                        curNewValue.Append(curValue + inReplValue);
                     } else {
-                        curNewValue.Append( curValue + inReplValue );
+                        curNewValue.Append(curValue);
                     }
                 }
             } else {

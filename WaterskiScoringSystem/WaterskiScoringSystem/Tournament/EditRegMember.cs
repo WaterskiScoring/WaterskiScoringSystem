@@ -302,6 +302,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
             if (editCity_Validation()) {
                 curCity = editCity.Text;
+                curCity = curCity.Replace("'", "''");
             } else {
                 curValidStatus = false;
             }

@@ -218,17 +218,32 @@ namespace WaterskiScoringSystem.Tools {
                 curValue = curRow["DriverChief"].ToString();
                 if ( curValue.Equals( "Y" ) ) {
                     if (isSlalomActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["DriverSlalomCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
                     if (isTrickActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["DriverTrickCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
                     if (isJumpActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["DriverJumpCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
@@ -236,17 +251,32 @@ namespace WaterskiScoringSystem.Tools {
                     curValue = curRow["DriverAsstChief"].ToString();
                     if ( curValue.Equals( "Y" ) ) {
                         if ( isSlalomActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["DriverSlalomCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
                         if ( isTrickActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["DriverTrickCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
                         if ( isJumpActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["DriverJumpCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
@@ -288,17 +318,32 @@ namespace WaterskiScoringSystem.Tools {
                 curValue = curRow["JudgeChief"].ToString();
                 if ( curValue.Equals( "Y" ) ) {
                     if (isSlalomActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["JudgeSlalomCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
                     if (isTrickActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["JudgeTrickCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
                     if (isJumpActive) {
-                        outLine.Append( "C" );
+                        curValue = curRow["JudgeJumpCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
                         outLine.Append( "-" );
                     }
@@ -306,17 +351,32 @@ namespace WaterskiScoringSystem.Tools {
                     curValue = curRow["JudgeAsstChief"].ToString();
                     if ( curValue.Equals( "Y" ) ) {
                         if ( isSlalomActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["JudgeSlalomCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
                         if ( isTrickActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["JudgeTrickCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
                         if ( isJumpActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["JudgeJumpCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
                             outLine.Append( "-" );
                         }
@@ -357,38 +417,68 @@ namespace WaterskiScoringSystem.Tools {
                 outLine.Append( "    " );
                 curValue = curRow["ScoreChief"].ToString();
                 if ( curValue.Equals( "Y" ) ) {
-                    if (isSlalomActive) {
-                        outLine.Append( "C" );
+                    if ( isSlalomActive ) {
+                        curValue = curRow["ScoreSlalomCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
-                    if (isTrickActive) {
-                        outLine.Append( "C" );
+                    if ( isTrickActive ) {
+                        curValue = curRow["ScoreTrickCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
-                    if (isJumpActive) {
-                        outLine.Append( "C" );
+                    if ( isJumpActive ) {
+                        curValue = curRow["ScoreJumpCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
                 } else {
                     curValue = curRow["ScoreAsstChief"].ToString();
                     if ( curValue.Equals( "Y" ) ) {
                         if ( isSlalomActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["ScoreSlalomCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isTrickActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["ScoreTrickCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isJumpActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["ScoreJumpCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                     } else {
                         if ( isSlalomActive ) {
@@ -427,38 +517,68 @@ namespace WaterskiScoringSystem.Tools {
                 outLine.Append( "    " );
                 curValue = curRow["SafetyChief"].ToString();
                 if ( curValue.Equals( "Y" ) ) {
-                    if (isSlalomActive) {
-                        outLine.Append( "C" );
+                    if ( isSlalomActive ) {
+                        curValue = curRow["SafetySlalomCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
-                    if (isTrickActive) {
-                        outLine.Append( "C" );
+                    if ( isTrickActive ) {
+                        curValue = curRow["SafetyTrickCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
-                    if (isJumpActive) {
-                        outLine.Append( "C" );
+                    if ( isJumpActive ) {
+                        curValue = curRow["SafetyJumpCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
                 } else {
                     curValue = curRow["SafetyAsstChief"].ToString();
                     if ( curValue.Equals( "Y" ) ) {
                         if ( isSlalomActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["SafetySlalomCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isTrickActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["SafetyTrickCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isJumpActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["SafetyJumpCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                     } else {
                         if ( isSlalomActive ) {
@@ -498,37 +618,67 @@ namespace WaterskiScoringSystem.Tools {
                 curValue = curRow["TechChief"].ToString();
                 if ( curValue.Equals( "Y" ) ) {
                     if ( isSlalomActive ) {
-                        outLine.Append( "C" );
+                        curValue = curRow["TechSlalomCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
                     if ( isTrickActive ) {
-                        outLine.Append( "C" );
+                        curValue = curRow["TechTrickCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
                     if ( isJumpActive ) {
-                        outLine.Append( "C" );
+                        curValue = curRow["TechJumpCredit"].ToString();
+                        if ( curValue.Equals("Y") ) {
+                            outLine.Append("C");
+                        } else {
+                            outLine.Append("-");
+                        }
                     } else {
-                        outLine.Append( "-" );
+                        outLine.Append("-");
                     }
                 } else {
                     curValue = curRow["TechAsstChief"].ToString();
                     if ( curValue.Equals( "Y" ) ) {
                         if ( isSlalomActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["TechSlalomCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isTrickActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["TechTrickCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                         if ( isJumpActive ) {
-                            outLine.Append( "A" );
+                            curValue = curRow["TechJumpCredit"].ToString();
+                            if ( curValue.Equals("Y") ) {
+                                outLine.Append("A");
+                            } else {
+                                outLine.Append("-");
+                            }
                         } else {
-                            outLine.Append( "-" );
+                            outLine.Append("-");
                         }
                     } else {
                         if ( isSlalomActive ) {

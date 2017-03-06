@@ -812,10 +812,10 @@ namespace WaterskiScoringSystem.Trick {
                 int curCount = 0;
                 foreach (String curValue in curValues) {
                     curCount++;
-                    if (curCount < curValues.Length) {
-                        curNewValue.Append( curValue + inReplValue );
+                    if ( curCount < curValues.Length ) {
+                        curNewValue.Append(curValue + inReplValue);
                     } else {
-                        curNewValue.Append( curValue );
+                        curNewValue.Append(curValue);
                     }
                 }
             } else {

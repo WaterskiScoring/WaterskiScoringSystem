@@ -26,10 +26,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MemberList));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.navMainMenu = new System.Windows.Forms.ToolStrip();
             this.navRefresh = new System.Windows.Forms.ToolStripButton();
             this.navExport = new System.Windows.Forms.ToolStripButton();
@@ -40,15 +36,6 @@
             this.navRemoveAll = new System.Windows.Forms.ToolStripButton();
             this.navDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SkiYearAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.City = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MemberStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.winStatus = new System.Windows.Forms.StatusStrip();
             this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.RowStatusLabel = new System.Windows.Forms.Label();
@@ -70,7 +57,7 @@
             this.navDeleteItem});
             this.navMainMenu.Location = new System.Drawing.Point(0, 0);
             this.navMainMenu.Name = "navMainMenu";
-            this.navMainMenu.Size = new System.Drawing.Size(735, 38);
+            this.navMainMenu.Size = new System.Drawing.Size(849, 38);
             this.navMainMenu.TabIndex = 5;
             this.navMainMenu.Text = "toolStrip1";
             // 
@@ -159,149 +146,44 @@
             // 
             // dataGridView
             // 
-            this.dataGridView.AllowDrop = true;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.MemberId,
-            this.LastName,
-            this.FirstName,
-            this.SkiYearAge,
-            this.City,
-            this.State,
-            this.Federation,
-            this.MemberStatus,
-            this.UpdateDate});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridView.Location = new System.Drawing.Point(5, 57);
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView.Location = new System.Drawing.Point(8, 66);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ShowCellToolTips = false;
-            this.dataGridView.Size = new System.Drawing.Size(724, 339);
+            this.dataGridView.Size = new System.Drawing.Size(829, 490);
             this.dataGridView.TabIndex = 10;
             this.dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellContentDoubleClick);
             this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
             this.dataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_RowEnter);
             // 
-            // MemberId
-            // 
-            this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.MemberId.HeaderText = "Member Id";
-            this.MemberId.Name = "MemberId";
-            this.MemberId.ReadOnly = true;
-            this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MemberId.Width = 80;
-            // 
-            // LastName
-            // 
-            this.LastName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LastName.HeaderText = "Last Name";
-            this.LastName.Name = "LastName";
-            this.LastName.ReadOnly = true;
-            this.LastName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.LastName.Width = 90;
-            // 
-            // FirstName
-            // 
-            this.FirstName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.FirstName.HeaderText = "First Name";
-            this.FirstName.MaxInputLength = 128;
-            this.FirstName.Name = "FirstName";
-            this.FirstName.ReadOnly = true;
-            this.FirstName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FirstName.Width = 80;
-            // 
-            // SkiYearAge
-            // 
-            this.SkiYearAge.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SkiYearAge.DefaultCellStyle = dataGridViewCellStyle3;
-            this.SkiYearAge.HeaderText = "Ski Year Age";
-            this.SkiYearAge.Name = "SkiYearAge";
-            this.SkiYearAge.ReadOnly = true;
-            this.SkiYearAge.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SkiYearAge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.SkiYearAge.Width = 35;
-            // 
-            // City
-            // 
-            this.City.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.City.HeaderText = "City";
-            this.City.Name = "City";
-            this.City.ReadOnly = true;
-            this.City.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.City.Width = 75;
-            // 
-            // State
-            // 
-            this.State.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.State.HeaderText = "State";
-            this.State.Name = "State";
-            this.State.ReadOnly = true;
-            this.State.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.State.Width = 45;
-            // 
-            // Federation
-            // 
-            this.Federation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Federation.HeaderText = "Fed";
-            this.Federation.Name = "Federation";
-            this.Federation.ReadOnly = true;
-            this.Federation.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Federation.Width = 40;
-            // 
-            // MemberStatus
-            // 
-            this.MemberStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-            this.MemberStatus.DefaultCellStyle = dataGridViewCellStyle4;
-            this.MemberStatus.HeaderText = "Status";
-            this.MemberStatus.Name = "MemberStatus";
-            this.MemberStatus.ReadOnly = true;
-            this.MemberStatus.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MemberStatus.Width = 65;
-            // 
-            // UpdateDate
-            // 
-            this.UpdateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.UpdateDate.HeaderText = "Update Date";
-            this.UpdateDate.MaxInputLength = 10;
-            this.UpdateDate.Name = "UpdateDate";
-            this.UpdateDate.ReadOnly = true;
-            this.UpdateDate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
             // winStatus
             // 
             this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-            this.winStatus.Location = new System.Drawing.Point(0, 402);
+            this.winStatus.Location = new System.Drawing.Point(0, 559);
             this.winStatus.Name = "winStatus";
-            this.winStatus.Size = new System.Drawing.Size(735, 22);
+            this.winStatus.Size = new System.Drawing.Size(849, 22);
             this.winStatus.TabIndex = 7;
             this.winStatus.Text = "statusStrip1";
             // 
@@ -324,7 +206,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 424);
+            this.ClientSize = new System.Drawing.Size(849, 581);
             this.Controls.Add(this.RowStatusLabel);
             this.Controls.Add(this.winStatus);
             this.Controls.Add(this.dataGridView);
@@ -358,14 +240,5 @@
         private System.Windows.Forms.ToolStripButton navEdit;
         private System.Windows.Forms.ToolStripButton navRefresh;
         private System.Windows.Forms.Label RowStatusLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SkiYearAge;
-        private System.Windows.Forms.DataGridViewTextBoxColumn City;
-        private System.Windows.Forms.DataGridViewTextBoxColumn State;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MemberStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn UpdateDate;
     }
 }

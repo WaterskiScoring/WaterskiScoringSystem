@@ -45,877 +45,1245 @@ namespace WaterskiScoringSystem.Common {
                 }
                 return true;
             } else {
+                /*
+                * Use reflection to get list of methods and then initialize all the property values
+                */
+
                 return false;
             }
         }
 
         //-----------------------------------------------------
         #region Master Summary methods
-        private String myMasterSummaryDataType = "best";
         public String MasterSummaryDataType {
-            get { return myMasterSummaryDataType; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "best";
+                    setMasterSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryDataType( value ); }
         }
         public void setMasterSummaryDataType(String value) {
-            myMasterSummaryDataType = value;
-            updateProperty( "MasterSummaryDataType", myMasterSummaryDataType, 100 );
+            updateProperty( "MasterSummaryDataType", value, 100 );
         }
 
-        private String myMasterSummaryPointsMethod = "nops";
         public String MasterSummaryPointsMethod {
-            get { return myMasterSummaryPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "nops";
+                    setMasterSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set {setMasterSummaryPointsMethod( value );}
         }
         public void setMasterSummaryPointsMethod(String value) {
-            myMasterSummaryPointsMethod = value;
-            updateProperty( "MasterSummaryPointsMethod", myMasterSummaryPointsMethod, 100 );
+            updateProperty( "MasterSummaryPointsMethod", value, 100 );
         }
 
-        private String myMasterSummaryPlcmtMethod = "score";
         public String MasterSummaryPlcmtMethod {
-            get { return myMasterSummaryPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "score";
+                    setMasterSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryPlcmtMethod( value ); }
         }
         public void setMasterSummaryPlcmtMethod(String value) {
-            myMasterSummaryPlcmtMethod = value;
-            updateProperty( "MasterSummaryPlcmtMethod", myMasterSummaryPlcmtMethod, 100 );
+            updateProperty( "MasterSummaryPlcmtMethod", value, 100 );
         }
 
-        private String myMasterSummaryPlcmtOrg = "div";
         public String MasterSummaryPlcmtOrg {
-            get { return myMasterSummaryPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "div";
+                    setMasterSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryPlcmtOrg( value ); }
         }
         public void setMasterSummaryPlcmtOrg(String value) {
-            myMasterSummaryPlcmtOrg = value;
-            updateProperty( "MasterSummaryPlcmtOrg", myMasterSummaryPlcmtOrg, 100 );
+            updateProperty( "MasterSummaryPlcmtOrg", value, 100 );
         }
         #endregion
 
         //-----------------------------------------------------
         #region Master Overall Summary methods
-        private String myMasterSummaryOverallDataType = "round";
         public String MasterSummaryOverallDataType {
-            get { return myMasterSummaryOverallDataType; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryOverallDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "round";
+                    setMasterSummaryOverallDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryOverallDataType( value ); }
         }
         public void setMasterSummaryOverallDataType(String value) {
-            myMasterSummaryOverallDataType = value;
-            updateProperty( "MasterSummaryOverallDataType", myMasterSummaryOverallDataType, 110 );
+            updateProperty( "MasterSummaryOverallDataType", value, 110 );
         }
 
-        private String myMasterSummaryOverallPointsMethod = "nops";
         public String MasterSummaryOverallPointsMethod {
-            get { return myMasterSummaryOverallPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryOverallPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "nops";
+                    setMasterSummaryOverallPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryOverallPointsMethod( value ); }
         }
         public void setMasterSummaryOverallPointsMethod(String value) {
-            myMasterSummaryOverallPointsMethod = value;
-            updateProperty( "MasterSummaryOverallPointsMethod", myMasterSummaryOverallPointsMethod, 110 );
+            updateProperty( "MasterSummaryOverallPointsMethod", value, 110 );
         }
 
-        private String myMasterSummaryOverallPlcmtMethod = "points";
         public String MasterSummaryOverallPlcmtMethod {
-            get { return myMasterSummaryOverallPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryOverallPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "points";
+                    setMasterSummaryOverallPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryOverallPlcmtMethod( value ); }
         }
         public void setMasterSummaryOverallPlcmtMethod(String value) {
-            myMasterSummaryOverallPlcmtMethod = value;
-            updateProperty( "MasterSummaryOverallPlcmtMethod", myMasterSummaryOverallPlcmtMethod, 110 );
+            updateProperty( "MasterSummaryOverallPlcmtMethod", value, 110 );
         }
 
-        private String myMasterSummaryOverallPlcmtOrg = "div";
         public String MasterSummaryOverallPlcmtOrg {
-            get { return myMasterSummaryOverallPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryOverallPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "div";
+                    setMasterSummaryOverallPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryOverallPlcmtOrg( value ); }
         }
         public void setMasterSummaryOverallPlcmtOrg(String value) {
-            myMasterSummaryOverallPlcmtOrg = value;
-            updateProperty( "MasterSummaryOverallPlcmtOrg", myMasterSummaryOverallPlcmtOrg, 110 );
+            updateProperty( "MasterSummaryOverallPlcmtOrg", value, 110 );
         }
 
-        private String myMasterSummaryOverallFilter = "all";
         public String MasterSummaryOverallFilter {
-            get { return myMasterSummaryOverallFilter; }
+            get {
+                String curReturnValue = getPropertyByName("MasterSummaryOverallFilter");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "all";
+                    setMasterSummaryOverallFilter(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setMasterSummaryOverallFilter( value ); }
         }
         public void setMasterSummaryOverallFilter(String value) {
-            myMasterSummaryOverallFilter = value;
-            updateProperty( "MasterSummaryOverallFilter", myMasterSummaryOverallFilter, 110 );
+            updateProperty( "MasterSummaryOverallFilter", value, 110 );
         }
         #endregion
 
         //-----------------------------------------------------
         #region Master Team Summary methods
-        private String myTeamSummaryDataType = "best";
         public String TeamSummaryDataType {
-            get { return myTeamSummaryDataType; }
+            get {
+                String curReturnValue = getPropertyByName("TeamSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "best";
+                    setTeamSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTeamSummaryDataType( value ); }
         }
         public void setTeamSummaryDataType(String value) {
-            myTeamSummaryDataType = value;
-            updateProperty( "TeamSummaryDataType", myTeamSummaryDataType, 900 );
+            updateProperty( "TeamSummaryDataType", value, 900 );
         }
 
-        private String myTeamSummaryPointsMethod = "nops";
         public String TeamSummaryPointsMethod {
-            get { return myTeamSummaryPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("TeamSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "nops";
+                    setTeamSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTeamSummaryPointsMethod( value ); }
         }
         public void setTeamSummaryPointsMethod(String value) {
-            myTeamSummaryPointsMethod = value;
-            updateProperty( "TeamSummaryPointsMethod", myTeamSummaryPointsMethod, 900 );
+            updateProperty( "TeamSummaryPointsMethod", value, 900 );
         }
 
-        private String myTeamSummaryPlcmtMethod = "points";
         public String TeamSummaryPlcmtMethod {
-            get { return myTeamSummaryPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("TeamSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "points";
+                    setTeamSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTeamSummaryPlcmtMethod( value ); }
         }
         public void setTeamSummaryPlcmtMethod(String value) {
-            myTeamSummaryPlcmtMethod = value;
-            updateProperty( "TeamSummaryPlcmtMethod", myTeamSummaryPlcmtMethod, 900 );
+            updateProperty( "TeamSummaryPlcmtMethod", value, 900 );
         }
 
-        private String myTeamSummaryPlcmtOrg = "div";
         public String TeamSummaryPlcmtOrg {
-            get { return myTeamSummaryPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("TeamSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "div";
+                    setTeamSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTeamSummaryPlcmtOrg( value ); }
         }
         public void setTeamSummaryPlcmtOrg(String value) {
-            myTeamSummaryPlcmtOrg = value;
-            updateProperty( "TeamSummaryPlcmtOrg", myTeamSummaryPlcmtOrg, 900 );
+            updateProperty( "TeamSummaryPlcmtOrg", value, 900 );
         }
 
-        private String myTeamSummary_NumPerTeam = "0";
         public String TeamSummary_NumPerTeam {
             get {
-                if (myTeamSummary_NumPerTeam == null) myTeamSummary_NumPerTeam = "";
-                if (myTeamSummary_NumPerTeam.Length == 0) {
-                if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    setTeamSummary_NumPerTeam( "4" );
-                } else {
-                    setTeamSummary_NumPerTeam( "0" );
+                String curReturnValue = getPropertyByName("TeamSummary_NumPerTeam");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "4";
+                    } else {
+                        curReturnValue = "0";
+                    }
+                    setTeamSummary_NumPerTeam(curReturnValue);
                 }
-            }
-            return myTeamSummary_NumPerTeam;
+                return curReturnValue;
             }
             set { setTeamSummary_NumPerTeam( value ); }
         }
         public void setTeamSummary_NumPerTeam(String value) {
-            myTeamSummary_NumPerTeam = value;
-            updateProperty( "TeamSummary_NumPerTeam", myTeamSummary_NumPerTeam, 900 );
+            updateProperty( "TeamSummary_NumPerTeam", value, 900 );
         }
         #endregion
 
         #region Slalom Team Summary methods
-        private String mySlalomTeamSummaryDataType = ""; //myInstance.TeamSummaryDataType;
         public String SlalomTeamSummaryDataType {
-            get { return mySlalomTeamSummaryDataType; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomTeamSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "points";
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setSlalomTeamSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomTeamSummaryDataType( value ); }
         }
         public void setSlalomTeamSummaryDataType(String value) {
-            mySlalomTeamSummaryDataType = value;
-            updateProperty( "SlalomTeamSummaryDataType", mySlalomTeamSummaryDataType, 910 );
+            updateProperty( "SlalomTeamSummaryDataType", value, 910 );
         }
 
-        private String mySlalomTeamSummaryPointsMethod = ""; //myInstance.TeamSummaryPointsMethod;
         public String SlalomTeamSummaryPointsMethod {
-            get { return mySlalomTeamSummaryPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomTeamSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setSlalomTeamSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomTeamSummaryPointsMethod( value ); }
         }
         public void setSlalomTeamSummaryPointsMethod(String value) {
-            mySlalomTeamSummaryPointsMethod = value;
-            updateProperty( "SlalomTeamSummaryPointsMethod", mySlalomTeamSummaryPointsMethod, 910 );
+            updateProperty( "SlalomTeamSummaryPointsMethod", value, 910 );
         }
 
-        private String mySlalomTeamSummaryPlcmtMethod = ""; //myInstance.TeamSummaryPlcmtMethod;
         public String SlalomTeamSummaryPlcmtMethod {
-            get { return mySlalomTeamSummaryPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomTeamSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setSlalomTeamSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomTeamSummaryPlcmtMethod( value ); }
         }
         public void setSlalomTeamSummaryPlcmtMethod(String value) {
-            mySlalomTeamSummaryPlcmtMethod = value;
-            updateProperty( "SlalomTeamSummaryPlcmtMethod", mySlalomTeamSummaryPlcmtMethod, 910 );
+            updateProperty( "SlalomTeamSummaryPlcmtMethod", value, 910 );
         }
 
-        private String mySlalomTeamSummaryPlcmtOrg = ""; //myInstance.TeamSummaryPlcmtOrg;
         public String SlalomTeamSummaryPlcmtOrg {
-            get { return mySlalomTeamSummaryPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomTeamSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "tour";
+                    }
+                    setSlalomTeamSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomTeamSummaryPlcmtOrg( value ); }
         }
         public void setSlalomTeamSummaryPlcmtOrg(String value) {
-            mySlalomTeamSummaryPlcmtOrg = value;
-            updateProperty( "SlalomTeamSummaryPlcmtOrg", mySlalomTeamSummaryPlcmtOrg, 910 );
+            updateProperty( "SlalomTeamSummaryPlcmtOrg", value, 910 );
         }
 
-        private String mySlalomTeamSummary_NumPerTeam = ""; //myInstance.TeamSummary_NumPerTeam;
         public String SlalomTeamSummary_NumPerTeam {
             get {
-                if (mySlalomTeamSummary_NumPerTeam == null) setSlalomTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam);
-                if (mySlalomTeamSummary_NumPerTeam.Length == 0) setSlalomTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam);
-                return mySlalomTeamSummary_NumPerTeam;
+                String curReturnValue = getPropertyByName("SlalomTeamSummary_NumPerTeam");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "4";
+                    } else {
+                        curReturnValue = "0";
+                    }
+                    setSlalomTeamSummary_NumPerTeam(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomTeamSummary_NumPerTeam( value ); }
         }
         public void setSlalomTeamSummary_NumPerTeam(String value) {
-            mySlalomTeamSummary_NumPerTeam = value;
-            updateProperty( "SlalomTeamSummary_NumPerTeam", mySlalomTeamSummary_NumPerTeam, 910 );
+            updateProperty( "SlalomTeamSummary_NumPerTeam", value, 910 );
         }
         #endregion
 
         #region Trick Team Summary methods
-        private String myTrickTeamSummaryDataType = ""; //myInstance.TeamSummaryDataType;
         public String TrickTeamSummaryDataType {
-            get { return myTrickTeamSummaryDataType; }
+            get {
+                String curReturnValue = getPropertyByName("TrickTeamSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "points";
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setTrickTeamSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickTeamSummaryDataType( value ); }
         }
         public void setTrickTeamSummaryDataType(String value) {
-            myTrickTeamSummaryDataType = value;
-            updateProperty( "TrickTeamSummaryDataType", myTrickTeamSummaryDataType, 920 );
+            updateProperty( "TrickTeamSummaryDataType", value, 920 );
         }
 
-        private String myTrickTeamSummaryPointsMethod = ""; //myInstance.TeamSummaryPointsMethod;
         public String TrickTeamSummaryPointsMethod {
-            get { return myTrickTeamSummaryPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("TrickTeamSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setTrickTeamSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickTeamSummaryPointsMethod( value ); }
         }
         public void setTrickTeamSummaryPointsMethod(String value) {
-            myTrickTeamSummaryPointsMethod = value;
-            updateProperty( "TrickTeamSummaryPointsMethod", myTrickTeamSummaryPointsMethod, 920 );
+            updateProperty( "TrickTeamSummaryPointsMethod", value, 920 );
         }
 
-        private String myTrickTeamSummaryPlcmtMethod = ""; //myInstance.TeamSummaryPlcmtMethod;
         public String TrickTeamSummaryPlcmtMethod {
-            get { return myTrickTeamSummaryPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("TrickTeamSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setTrickTeamSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickTeamSummaryPlcmtMethod( value ); }
         }
         public void setTrickTeamSummaryPlcmtMethod(String value) {
-            myTrickTeamSummaryPlcmtMethod = value;
-            updateProperty( "TrickTeamSummaryPlcmtMethod", myTrickTeamSummaryPlcmtMethod, 920 );
+            updateProperty( "TrickTeamSummaryPlcmtMethod", value, 920 );
         }
 
-        private String myTrickTeamSummaryPlcmtOrg = ""; //myInstance.TeamSummaryPlcmtOrg;
         public String TrickTeamSummaryPlcmtOrg {
-            get { return myTrickTeamSummaryPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("TrickTeamSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "tour";
+                    }
+                    setTrickTeamSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickTeamSummaryPlcmtOrg( value ); }
         }
         public void setTrickTeamSummaryPlcmtOrg(String value) {
-            myTrickTeamSummaryPlcmtOrg = value;
-            updateProperty( "TrickTeamSummaryPlcmtOrg", myTrickTeamSummaryPlcmtOrg, 920 );
+            updateProperty( "TrickTeamSummaryPlcmtOrg", value, 920 );
         }
 
-        private String myTrickTeamSummary_NumPerTeam = ""; //myInstance.TeamSummary_NumPerTeam;
         public String TrickTeamSummary_NumPerTeam {
             get {
-                if (myTrickTeamSummary_NumPerTeam == null) setTrickTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam );
-                if (myTrickTeamSummary_NumPerTeam.Length == 0) setTrickTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam );
-                return myTrickTeamSummary_NumPerTeam;
+                String curReturnValue = getPropertyByName("TrickTeamSummary_NumPerTeam");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "4";
+                    } else {
+                        curReturnValue = "0";
+                    }
+                    setTrickTeamSummary_NumPerTeam(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickTeamSummary_NumPerTeam( value ); }
         }
         public void setTrickTeamSummary_NumPerTeam(String value) {
-            myTrickTeamSummary_NumPerTeam = value;
-            updateProperty( "TrickTeamSummary_NumPerTeam", myTrickTeamSummary_NumPerTeam, 920 );
+            updateProperty( "TrickTeamSummary_NumPerTeam", value, 920 );
         }
         #endregion
 
         #region Jump Team Summary methods
-        private String myJumpTeamSummaryDataType = ""; //myInstance.TeamSummaryDataType;
         public String JumpTeamSummaryDataType {
-            get { return myJumpTeamSummaryDataType; }
+            get {
+                String curReturnValue = getPropertyByName("JumpTeamSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setJumpTeamSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpTeamSummaryDataType( value ); }
         }
         public void setJumpTeamSummaryDataType(String value) {
-            myJumpTeamSummaryDataType = value;
-            updateProperty( "JumpTeamSummaryDataType", myJumpTeamSummaryDataType, 930 );
+            updateProperty( "JumpTeamSummaryDataType", value, 930 );
         }
 
-        private String myJumpTeamSummaryPointsMethod = ""; //myInstance.TeamSummaryPointsMethod;
         public String JumpTeamSummaryPointsMethod {
-            get { return myJumpTeamSummaryPointsMethod; }
+            get {
+                String curReturnValue = getPropertyByName("JumpTeamSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setJumpTeamSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpTeamSummaryPointsMethod( value ); }
         }
         public void setJumpTeamSummaryPointsMethod(String value) {
-            myJumpTeamSummaryPointsMethod = value;
-            updateProperty( "JumpTeamSummaryPointsMethod", myJumpTeamSummaryPointsMethod, 930 );
+            updateProperty( "JumpTeamSummaryPointsMethod", value, 930 );
         }
 
-        private String myJumpTeamSummaryPlcmtMethod = ""; //myInstance.TeamSummaryPlcmtMethod;
         public String JumpTeamSummaryPlcmtMethod {
-            get { return myJumpTeamSummaryPlcmtMethod; }
+            get {
+                String curReturnValue = getPropertyByName("JumpTeamSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setJumpTeamSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpTeamSummaryPlcmtMethod( value ); }
         }
         public void setJumpTeamSummaryPlcmtMethod(String value) {
-            myJumpTeamSummaryPlcmtMethod = value;
-            updateProperty( "JumpTeamSummaryPlcmtMethod", myJumpTeamSummaryPlcmtMethod, 930 );
+            updateProperty( "JumpTeamSummaryPlcmtMethod", value, 930 );
         }
 
-        private String myJumpTeamSummaryPlcmtOrg = ""; //myInstance.TeamSummaryPlcmtOrg;
         public String JumpTeamSummaryPlcmtOrg {
-            get { return myJumpTeamSummaryPlcmtOrg; }
+            get {
+                String curReturnValue = getPropertyByName("JumpTeamSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "tour";
+                    }
+                    setJumpTeamSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpTeamSummaryPlcmtOrg( value ); }
         }
         public void setJumpTeamSummaryPlcmtOrg(String value) {
-            myJumpTeamSummaryPlcmtOrg = value;
-            updateProperty( "JumpTeamSummaryPlcmtOrg", myJumpTeamSummaryPlcmtOrg, 930 );
+            updateProperty( "JumpTeamSummaryPlcmtOrg", value, 930 );
         }
 
-        private String myJumpTeamSummary_NumPerTeam = ""; //myInstance.TeamSummary_NumPerTeam;
         public String JumpTeamSummary_NumPerTeam {
             get {
-                if (myJumpTeamSummary_NumPerTeam == null) setJumpTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam );
-                if (myJumpTeamSummary_NumPerTeam.Length == 0) setJumpTeamSummary_NumPerTeam( myTeamSummary_NumPerTeam );
-                return myJumpTeamSummary_NumPerTeam;
+                String curReturnValue = getPropertyByName("JumpTeamSummary_NumPerTeam");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "4";
+                    } else {
+                        curReturnValue = "0";
+                    }
+                    setJumpTeamSummary_NumPerTeam(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpTeamSummary_NumPerTeam( value ); }
         }
         public void setJumpTeamSummary_NumPerTeam(String value) {
-            myJumpTeamSummary_NumPerTeam = value;
-            updateProperty( "JumpTeamSummary_NumPerTeam", myJumpTeamSummary_NumPerTeam, 930 );
+            updateProperty( "JumpTeamSummary_NumPerTeam", value, 930 );
         }
         #endregion
 
         //-----------------------------------------------------
         #region Slalom Summary methods
-        private String mySlalomSummaryDataType = ""; 
         public String SlalomSummaryDataType {
             get {
-                if (mySlalomSummaryDataType == null) setSlalomSummaryDataType( myMasterSummaryDataType);
-                if (mySlalomSummaryDataType.Length == 0) setSlalomSummaryDataType( myMasterSummaryDataType);
-                return mySlalomSummaryDataType; }
+                String curReturnValue = getPropertyByName("SlalomSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "best";
+                    setSlalomSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomSummaryDataType( value ); }
         }
         public void setSlalomSummaryDataType(String value) {
-            mySlalomSummaryDataType = value;
-            updateProperty( "SlalomSummaryDataType", mySlalomSummaryDataType, 300 );
+            updateProperty( "SlalomSummaryDataType", value, 300 );
         }
 
-        private String mySlalomSummaryPointsMethod = "";
         public String SlalomSummaryPointsMethod {
             get {
-                if (mySlalomSummaryPointsMethod == null) setSlalomSummaryPointsMethod( myMasterSummaryPointsMethod );
-                if (mySlalomSummaryPointsMethod.Length == 0) setSlalomSummaryPointsMethod( myMasterSummaryPointsMethod );
-                return mySlalomSummaryPointsMethod;
+                String curReturnValue = getPropertyByName("SlalomSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setSlalomSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomSummaryPointsMethod( value ); }
         }
         public void setSlalomSummaryPointsMethod(String value) {
-            mySlalomSummaryPointsMethod = value;
-            updateProperty( "SlalomSummaryPointsMethod", mySlalomSummaryPointsMethod, 300 );
+            updateProperty( "SlalomSummaryPointsMethod", value, 300 );
         }
 
-        private String mySlalomSummaryPlcmtMethod = ""; 
         public String SlalomSummaryPlcmtMethod {
             get {
-                if (mySlalomSummaryPlcmtMethod == null) setSlalomSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (mySlalomSummaryPlcmtMethod.Length == 0) setSlalomSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return mySlalomSummaryPlcmtMethod;
+                String curReturnValue = getPropertyByName("SlalomSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setSlalomSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomSummaryPlcmtMethod( value ); }
         }
         public void setSlalomSummaryPlcmtMethod(String value) {
-            mySlalomSummaryPlcmtMethod = value;
-            updateProperty( "SlalomSummaryPlcmtMethod", mySlalomSummaryPlcmtMethod, 300 );
+            updateProperty( "SlalomSummaryPlcmtMethod", value, 300 );
         }
 
-        private String mySlalomSummaryPlcmtOrg = ""; 
         public String SlalomSummaryPlcmtOrg {
             get {
-                if (mySlalomSummaryPlcmtOrg == null) setSlalomSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (mySlalomSummaryPlcmtOrg.Length == 0) setSlalomSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return mySlalomSummaryPlcmtOrg;
+                String curReturnValue = getPropertyByName("SlalomSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setSlalomSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomSummaryPlcmtOrg( value ); }
         }
         public void setSlalomSummaryPlcmtOrg(String value) {
-            mySlalomSummaryPlcmtOrg = value;
-            updateProperty( "SlalomSummaryPlcmtOrg", mySlalomSummaryPlcmtOrg, 300 );
+            updateProperty( "SlalomSummaryPlcmtOrg", value, 300 );
         }
         
-        private String mySlalomSummaryNumPrelim = "";
         public String SlalomSummaryNumPrelim {
-            get { return mySlalomSummaryNumPrelim; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomSummaryNumPrelim");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "0";
+                    setSlalomSummaryNumPrelim(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomSummaryNumPrelim( value ); }
         }
         public void setSlalomSummaryNumPrelim(String value) {
-            mySlalomSummaryNumPrelim = value;
-            updateProperty( "SlalomSummaryNumPrelim", mySlalomSummaryNumPrelim, 300 );
+            updateProperty( "SlalomSummaryNumPrelim", value, 300 );
         }
 
-        private String mySlalomSummaryAwardsNum = "5";
         public String SlalomSummaryAwardsNum {
-            get { return mySlalomSummaryAwardsNum; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomSummaryAwardsNum");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "5";
+                    setSlalomSummaryAwardsNum(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomSummaryAwardsNum( value ); }
         }
         public void setSlalomSummaryAwardsNum(String value) {
-            mySlalomSummaryAwardsNum = value;
-            updateProperty( "SlalomSummaryAwardsNum", mySlalomSummaryAwardsNum, 300 );
+            updateProperty( "SlalomSummaryAwardsNum", value, 300 );
         }
 
-        private String mySlalomScoreSummary_Sort = "";
         public String SlalomScoreSummary_Sort {
-            get { return mySlalomScoreSummary_Sort; }
+            get {
+                String curReturnValue = getPropertyByName("SlalomScoreSummary_Sort");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "";
+                    setSlalomScoreSummary_Sort(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setSlalomScoreSummary_Sort( value ); }
         }
         public void setSlalomScoreSummary_Sort(String value) {
-            mySlalomScoreSummary_Sort = value;
-            updateProperty( "SlalomScoreSummary_Sort", mySlalomScoreSummary_Sort, 300 );
+            updateProperty( "SlalomScoreSummary_Sort", value, 300 );
         }
         #endregion
 
         //-----------------------------------------------------
         #region Slalom methods
-        private String myRunningOrderSortSlalom = "";
         public String RunningOrderSortSlalom {
             get {
-                if (myRunningOrderSortSlalom == null) myRunningOrderSortSlalom = "";
-                if (myRunningOrderSortSlalom.Length == 0) {
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        setRunningOrderSortSlalom("DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC");
+                String curReturnValue = getPropertyByName("RunningOrderSortSlalom");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        setRunningOrderSortSlalom( "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC" );
+                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
+                    setRunningOrderSortSlalom(curReturnValue);
                 }
-                return myRunningOrderSortSlalom;
+                return curReturnValue;
             }
             set { setRunningOrderSortSlalom( value ); }
         }
         public void setRunningOrderSortSlalom(String value) {
-            myRunningOrderSortSlalom = value;
-            updateProperty( "RunningOrderSortSlalom", myRunningOrderSortSlalom, 310 );
+            updateProperty( "RunningOrderSortSlalom", value, 310 );
         }
         #endregion
 
         //-----------------------------------------------------
         #region Slalom Scorebook methods
-        private String mySlalomScorebookDataType = "";
         public String SlalomScorebookDataType {
             get {
-                if (mySlalomScorebookDataType == null) setSlalomScorebookDataType( myMasterSummaryDataType );
-                if (mySlalomScorebookDataType.Length == 0) setSlalomScorebookDataType( myMasterSummaryDataType );
-                return mySlalomScorebookDataType;
+                String curReturnValue = getPropertyByName("SlalomScorebookDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setSlalomScorebookDataType(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomScorebookDataType( value ); }
         }
         public void setSlalomScorebookDataType(String value) {
-            mySlalomScorebookDataType = value;
-            updateProperty( "SlalomScorebookDataType", mySlalomScorebookDataType, 320 );
+            updateProperty( "SlalomScorebookDataType", value, 320 );
         }
 
-        private String mySlalomScorebookPointsMethod = "";
         public String SlalomScorebookPointsMethod {
             get {
-                if (mySlalomScorebookPointsMethod == null) setSlalomScorebookPointsMethod( myMasterSummaryPointsMethod );
-                if (mySlalomScorebookPointsMethod.Length == 0) setSlalomScorebookPointsMethod( myMasterSummaryPointsMethod );
-                return mySlalomScorebookPointsMethod;
+                String curReturnValue = getPropertyByName("SlalomScorebookPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setSlalomScorebookPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomScorebookPointsMethod( value ); }
         }
         public void setSlalomScorebookPointsMethod(String value) {
-            mySlalomScorebookPointsMethod = value;
-            updateProperty( "SlalomScorebookPointsMethod", mySlalomScorebookPointsMethod, 320 );
+            updateProperty( "SlalomScorebookPointsMethod", value, 320 );
         }
 
-        private String mySlalomScorebookPlcmtMethod = "";
         public String SlalomScorebookPlcmtMethod {
             get {
-                if (mySlalomScorebookPlcmtMethod == null) setSlalomScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (mySlalomScorebookPlcmtMethod.Length == 0) setSlalomScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return mySlalomScorebookPlcmtMethod;
+                String curReturnValue = getPropertyByName("SlalomScorebookPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setSlalomScorebookPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomScorebookPlcmtMethod( value ); }
         }
         public void setSlalomScorebookPlcmtMethod(String value) {
-            mySlalomScorebookPlcmtMethod = value;
-            updateProperty( "SlalomScorebookPlcmtMethod", mySlalomScorebookPlcmtMethod, 320 );
+            updateProperty( "SlalomScorebookPlcmtMethod", value, 320 );
         }
 
-        private String mySlalomScorebookPlcmtOrg = "";
         public String SlalomScorebookPlcmtOrg {
             get {
-                if (mySlalomScorebookPlcmtOrg == null) setSlalomScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (mySlalomScorebookPlcmtOrg.Length == 0) setSlalomScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return mySlalomScorebookPlcmtOrg;
+                String curReturnValue = getPropertyByName("SlalomScorebookPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setSlalomScorebookPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setSlalomScorebookPlcmtOrg( value ); }
         }
         public void setSlalomScorebookPlcmtOrg(String value) {
-            mySlalomScorebookPlcmtOrg = value;
-            updateProperty( "SlalomScorebookPlcmtOrg", mySlalomScorebookPlcmtOrg, 320 );
+            updateProperty( "SlalomScorebookPlcmtOrg", value, 320 );
         }
         #endregion  
 
         //-----------------------------------------------------
         #region Trick Summary methods
-        private String myTrickSummaryDataType = ""; //myInstance.MasterSummaryDataType;
+        //private String myTrickSummaryDataType = ""; //myInstance.MasterSummaryDataType;
         public String TrickSummaryDataType {
             get {
-                if (myTrickSummaryDataType == null) setTrickSummaryDataType( myMasterSummaryDataType );
-                if (myTrickSummaryDataType.Length == 0) setTrickSummaryDataType( myMasterSummaryDataType );
-                return myTrickSummaryDataType;
+                String curReturnValue = getPropertyByName("TrickSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "best";
+                    setTrickSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickSummaryDataType( value ); }
         }
         public void setTrickSummaryDataType(String value) {
-            myTrickSummaryDataType = value;
-            updateProperty( "TrickSummaryDataType", myTrickSummaryDataType, 400 );
+            updateProperty( "TrickSummaryDataType", value, 400 );
         }
 
-        private String myTrickSummaryPointsMethod = ""; //myInstance.MasterSummaryPointsMethod;
         public String TrickSummaryPointsMethod {
             get {
-                if (myTrickSummaryPointsMethod == null) setTrickSummaryPointsMethod( myMasterSummaryPointsMethod );
-                if (myTrickSummaryPointsMethod.Length == 0) setTrickSummaryPointsMethod( myMasterSummaryPointsMethod );
-                return myTrickSummaryPointsMethod;
+                String curReturnValue = getPropertyByName("TrickSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setTrickTeamSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickSummaryPointsMethod( value ); }
         }
         public void setTrickSummaryPointsMethod(String value) {
-            myTrickSummaryPointsMethod = value;
-            updateProperty( "TrickSummaryPointsMethod", myTrickSummaryPointsMethod, 400 );
+            updateProperty( "TrickSummaryPointsMethod", value, 400 );
         }
 
-        private String myTrickSummaryPlcmtMethod = ""; //myInstance.MasterSummaryPlcmtMethod;
         public String TrickSummaryPlcmtMethod {
             get {
-                if (myTrickSummaryPlcmtMethod == null) setTrickSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (myTrickSummaryPlcmtMethod.Length == 0) setTrickSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return myTrickSummaryPlcmtMethod;
+                String curReturnValue = getPropertyByName("TrickSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setTrickSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickSummaryPlcmtMethod( value ); }
         }
         public void setTrickSummaryPlcmtMethod(String value) {
-            myTrickSummaryPlcmtMethod = value;
-            updateProperty( "TrickSummaryPlcmtMethod", myTrickSummaryPlcmtMethod, 400 );
+            updateProperty( "TrickSummaryPlcmtMethod", value, 400 );
         }
 
-        private String myTrickSummaryPlcmtOrg = ""; //myInstance.MasterSummaryPlcmtOrg;
         public String TrickSummaryPlcmtOrg {
             get {
-                if (myTrickSummaryPlcmtOrg == null) setTrickSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (myTrickSummaryPlcmtOrg.Length == 0) setTrickSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return myTrickSummaryPlcmtOrg;
+                String curReturnValue = getPropertyByName("TrickSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setTrickSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickSummaryPlcmtOrg( value ); }
         }
         public void setTrickSummaryPlcmtOrg(String value) {
-            myTrickSummaryPlcmtOrg = value;
-            updateProperty( "TrickSummaryPlcmtOrg", myTrickSummaryPlcmtOrg, 400 );
+            updateProperty( "TrickSummaryPlcmtOrg", value, 400 );
         }
 
-        private String myTrickSummaryNumPrelim = "";
         public String TrickSummaryNumPrelim {
-            get { return myTrickSummaryNumPrelim; }
+            get {
+                String curReturnValue = getPropertyByName("TrickSummaryNumPrelim");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "0";
+                    setTrickSummaryNumPrelim(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickSummaryNumPrelim( value ); }
         }
         public void setTrickSummaryNumPrelim(String value) {
-            myTrickSummaryNumPrelim = value;
-            updateProperty( "TrickSummaryNumPrelim", myTrickSummaryNumPrelim, 400 );
+            updateProperty( "TrickSummaryNumPrelim", value, 400 );
         }
 
-        private String myTrickSummaryAwardsNum = "5";
         public String TrickSummaryAwardsNum {
-            get { return myTrickSummaryAwardsNum; }
+            get {
+                String curReturnValue = getPropertyByName("TrickSummaryAwardsNum");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "5";
+                    setTrickSummaryAwardsNum(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickSummaryAwardsNum( value ); }
         }
         public void setTrickSummaryAwardsNum(String value) {
-            myTrickSummaryAwardsNum = value;
-            updateProperty( "TrickSummaryAwardsNum", myTrickSummaryAwardsNum, 400 );
+            updateProperty( "TrickSummaryAwardsNum", value, 400 );
         }
 
-        private String myTrickScoreSummary_Sort = "";
         public String TrickScoreSummary_Sort {
-            get { return myTrickScoreSummary_Sort; }
+            get {
+                String curReturnValue = getPropertyByName("TrickScoreSummary_Sort");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "";
+                    setTrickScoreSummary_Sort(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setTrickScoreSummary_Sort( value ); }
         }
         public void setTrickScoreSummary_Sort(String value) {
-            myTrickScoreSummary_Sort = value;
-            updateProperty( "TrickScoreSummary_Sort", myTrickScoreSummary_Sort, 400 );
+            updateProperty( "TrickScoreSummary_Sort", value, 400 );
         }
 
         #endregion
 
         //-----------------------------------------------------
         #region Trick methods
-        private String myRunningOrderSortTrick = "";
         public String RunningOrderSortTrick {
             get {
-                if (myRunningOrderSortTrick == null) myRunningOrderSortTrick = "";
-                if (myRunningOrderSortTrick.Length == 0) {
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        setRunningOrderSortTrick( "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC" );
+                String curReturnValue = getPropertyByName("RunningOrderSortTrick");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        setRunningOrderSortTrick( "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC" );
+                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
+                    setRunningOrderSortTrick(curReturnValue);
                 }
-                return myRunningOrderSortTrick;
+                return curReturnValue;
             }
             set { setRunningOrderSortTrick( value ); }
         }
         public void setRunningOrderSortTrick(String value) {
-            myRunningOrderSortTrick = value;
-            updateProperty( "RunningOrderSortTrick", myRunningOrderSortTrick, 410 );
+            updateProperty( "RunningOrderSortTrick", value, 410 );
         }
         #endregion
 
         #region Trick Scorebook methods
-        private String myTrickScorebookDataType = "";
         public String TrickScorebookDataType {
             get {
-                if (myTrickScorebookDataType == null) setTrickScorebookDataType( myMasterSummaryDataType );
-                if (myTrickScorebookDataType.Length == 0) setTrickScorebookDataType( myMasterSummaryDataType );
-                return myTrickScorebookDataType;
+                String curReturnValue = getPropertyByName("TrickScorebookDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setTrickScorebookDataType(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickScorebookDataType( value ); }
         }
         public void setTrickScorebookDataType(String value) {
-            myTrickScorebookDataType = value;
-            updateProperty( "TrickScorebookDataType", myTrickScorebookDataType, 420 );
+            updateProperty( "TrickScorebookDataType", value, 420 );
         }
 
-        private String myTrickScorebookPointsMethod = "";
         public String TrickScorebookPointsMethod {
             get {
-                if (myTrickScorebookPointsMethod == null) setTrickScorebookPointsMethod( myMasterSummaryPointsMethod );
-                if (myTrickScorebookPointsMethod.Length == 0) setTrickScorebookPointsMethod( myMasterSummaryPointsMethod );
-                return myTrickScorebookPointsMethod;
+                String curReturnValue = getPropertyByName("TrickScorebookPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setTrickScorebookPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickScorebookPointsMethod( value ); }
         }
         public void setTrickScorebookPointsMethod(String value) {
-            myTrickScorebookPointsMethod = value;
-            updateProperty( "TrickScorebookPointsMethod", myTrickScorebookPointsMethod, 420 );
+            updateProperty( "TrickScorebookPointsMethod", value, 420 );
         }
 
-        private String myTrickScorebookPlcmtMethod = "";
         public String TrickScorebookPlcmtMethod {
             get {
-                if (myTrickScorebookPlcmtMethod == null) setTrickScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (myTrickScorebookPlcmtMethod.Length == 0) setTrickScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return myTrickScorebookPlcmtMethod;
+                String curReturnValue = getPropertyByName("TrickScorebookPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "score";
+                    }
+                    setTrickScorebookPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickScorebookPlcmtMethod( value ); }
         }
         public void setTrickScorebookPlcmtMethod(String value) {
-            myTrickScorebookPlcmtMethod = value;
-            updateProperty( "TrickScorebookPlcmtMethod", myTrickScorebookPlcmtMethod, 420 );
+            updateProperty( "TrickScorebookPlcmtMethod", value, 420 );
         }
 
-        private String myTrickScorebookPlcmtOrg = "";
+        //private String myTrickScorebookPlcmtOrg = "";
         public String TrickScorebookPlcmtOrg {
             get {
-                if (myTrickScorebookPlcmtOrg == null) setTrickScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (myTrickScorebookPlcmtOrg.Length == 0) setTrickScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return myTrickScorebookPlcmtOrg;
+                String curReturnValue = getPropertyByName("TrickScorebookPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setTrickScorebookPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setTrickScorebookPlcmtOrg( value ); }
         }
         public void setTrickScorebookPlcmtOrg(String value) {
-            myTrickScorebookPlcmtOrg = value;
-            updateProperty( "TrickScorebookPlcmtOrg", myTrickScorebookPlcmtOrg, 420 );
+            updateProperty( "TrickScorebookPlcmtOrg", value, 420 );
         }
 #endregion
 
         //-----------------------------------------------------
         #region Jump Summary methods
-        private String myJumpSummaryDataType = ""; //myInstance.MasterSummaryDataType;
         public String JumpSummaryDataType {
             get {
-                if (myJumpSummaryDataType == null) setJumpSummaryDataType( myMasterSummaryDataType );
-                if (myJumpSummaryDataType.Length == 0) setJumpSummaryDataType( myMasterSummaryDataType );
-                return myJumpSummaryDataType;
+                String curReturnValue = getPropertyByName("JumpSummaryDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "best";
+                    setJumpSummaryDataType(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpSummaryDataType( value ); }
         }
         public void setJumpSummaryDataType(String value) {
-            myJumpSummaryDataType = value;
-            updateProperty( "JumpSummaryDataType", myJumpSummaryDataType, 500 );
+            updateProperty( "JumpSummaryDataType", value, 500 );
         }
 
-        private String myJumpSummaryPointsMethod = ""; //myInstance.MasterSummaryPointsMethod;
+        //private String myJumpSummaryPointsMethod = ""; //myInstance.MasterSummaryPointsMethod;
         public String JumpSummaryPointsMethod {
             get {
-                if (myJumpSummaryPointsMethod == null) setJumpSummaryPointsMethod( myMasterSummaryPointsMethod );
-                if (myJumpSummaryPointsMethod.Length == 0) setJumpSummaryPointsMethod( myMasterSummaryPointsMethod );
-                return myJumpSummaryPointsMethod;
+                String curReturnValue = getPropertyByName("JumpSummaryPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setJumpSummaryPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpSummaryPointsMethod( value ); }
         }
         public void setJumpSummaryPointsMethod(String value) {
-            myJumpSummaryPointsMethod = value;
-            updateProperty( "JumpSummaryPointsMethod", myJumpSummaryPointsMethod, 500 );
+            updateProperty( "JumpSummaryPointsMethod", value, 500 );
         }
 
-        private String myJumpSummaryPlcmtMethod = ""; //myInstance.MasterSummaryPlcmtMethod;
         public String JumpSummaryPlcmtMethod {
             get {
-                if (myJumpSummaryPlcmtMethod == null) setJumpSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (myJumpSummaryPlcmtMethod.Length == 0) setJumpSummaryPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return myJumpSummaryPlcmtMethod;
+                String curReturnValue = getPropertyByName("JumpSummaryPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "points";
+                    }
+                    setJumpSummaryPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpSummaryPlcmtMethod( value ); }
         }
         public void setJumpSummaryPlcmtMethod(String value) {
-            myJumpSummaryPlcmtMethod = value;
-            updateProperty( "JumpSummaryPlcmtMethod", myJumpSummaryPlcmtMethod, 500 );
+            updateProperty( "JumpSummaryPlcmtMethod", value, 500 );
         }
 
-        private String myJumpSummaryPlcmtOrg = ""; //myInstance.MasterSummaryOverallPlcmtOrg;
         public String JumpSummaryPlcmtOrg {
             get {
-                if (myJumpSummaryPlcmtOrg == null) setJumpSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (myJumpSummaryPlcmtOrg.Length == 0) setJumpSummaryPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return myJumpSummaryPlcmtOrg;
+                String curReturnValue = getPropertyByName("JumpSummaryPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setJumpSummaryPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpSummaryPlcmtOrg( value ); }
         }
         public void setJumpSummaryPlcmtOrg(String value) {
-            myJumpSummaryPlcmtOrg = value;
-            updateProperty( "JumpSummaryPlcmtOrg", myJumpSummaryPlcmtOrg, 500 );
+            updateProperty( "JumpSummaryPlcmtOrg", value, 500 );
         }
 
-        private String myJumpSummaryNumPrelim = "";
         public String JumpSummaryNumPrelim {
-            get { return myJumpSummaryNumPrelim; }
+            get {
+                String curReturnValue = getPropertyByName("JumpSummaryNumPrelim");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "0";
+                    setJumpSummaryNumPrelim(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpSummaryNumPrelim( value ); }
         }
         public void setJumpSummaryNumPrelim(String value) {
-            myJumpSummaryNumPrelim = value;
-            updateProperty( "JumpSummaryNumPrelim", myJumpSummaryNumPrelim, 500 );
+            updateProperty( "JumpSummaryNumPrelim", value, 500 );
         }
 
-        private String myJumpSummaryAwardsNum = "5";
         public String JumpSummaryAwardsNum {
-            get { return myJumpSummaryAwardsNum; }
+            get {
+                String curReturnValue = getPropertyByName("JumpSummaryAwardsNum");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "5";
+                    setJumpSummaryAwardsNum(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpSummaryAwardsNum( value ); }
         }
         public void setJumpSummaryAwardsNum(String value) {
-            myJumpSummaryAwardsNum = value;
-            updateProperty( "JumpSummaryAwardsNum", myJumpSummaryAwardsNum, 500 );
+            updateProperty( "JumpSummaryAwardsNum", value, 500 );
         }
 
-        private String myJumpScoreSummary_Sort = "";
         public String JumpScoreSummary_Sort {
-            get { return myJumpScoreSummary_Sort; }
+            get {
+                String curReturnValue = getPropertyByName("JumpScoreSummary_Sort");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "";
+                    setJumpScoreSummary_Sort(curReturnValue);
+                }
+                return curReturnValue;
+            }
             set { setJumpScoreSummary_Sort( value ); }
         }
         public void setJumpScoreSummary_Sort(String value) {
-            myJumpScoreSummary_Sort = value;
-            updateProperty( "JumpScoreSummary_Sort", myJumpScoreSummary_Sort, 500 );
+            updateProperty( "JumpScoreSummary_Sort", value, 500 );
         }
 
         #endregion
 
         //-----------------------------------------------------
         #region Jump methods
-        private String myRunningOrderSortJump = "";
         public String RunningOrderSortJump {
             get {
-                if (myRunningOrderSortJump == null) myRunningOrderSortJump = "";
-                if (myRunningOrderSortJump.Length == 0) {
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        setRunningOrderSortJump( "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC" );
+                String curReturnValue = getPropertyByName("RunningOrderSortJump");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        setRunningOrderSortJump( "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC" );
+                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
+                    setRunningOrderSortJump(curReturnValue);
                 }
-                return myRunningOrderSortJump;
+                return curReturnValue;
             }
             set { setRunningOrderSortJump( value ); }
         }
         public void setRunningOrderSortJump(String value) {
-            myRunningOrderSortJump = value;
-            updateProperty( "RunningOrderSortJump", myRunningOrderSortJump, 510 );
+            updateProperty( "RunningOrderSortJump", value, 510 );
         }
 
         //JumpEntryNumJudges
-        private String myJumpEntryNumJudges = "0";
         public String JumpEntryNumJudges {
             get {
-                if (myJumpEntryNumJudges == null) myJumpEntryNumJudges = "0";
-                return myJumpEntryNumJudges;
+                String curReturnValue = getPropertyByName("JumpEntryNumJudges");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "0";
+                    setJumpEntryNumJudges(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpEntryNumJudges( value ); }
         }
         public void setJumpEntryNumJudges(String value) {
-            myJumpEntryNumJudges = value;
-            updateProperty( "JumpEntryNumJudges", myJumpEntryNumJudges, 510 );
+            updateProperty( "JumpEntryNumJudges", value, 510 );
         }
         #endregion
 
         #region Jump Scorebook methods
-        private String myJumpScorebookDataType = "";
         public String JumpScorebookDataType {
             get {
-                if (myJumpScorebookDataType == null) setJumpScorebookDataType( myMasterSummaryDataType );
-                if (myJumpScorebookDataType.Length == 0) setJumpScorebookDataType( myMasterSummaryDataType );
-                return myJumpScorebookDataType;
+                String curReturnValue = getPropertyByName("JumpScorebookDataType");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "score";
+                    }
+                    setJumpScorebookDataType(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpScorebookDataType( value ); }
         }
         public void setJumpScorebookDataType(String value) {
-            myJumpScorebookDataType = value;
-            updateProperty( "JumpScorebookDataType", myJumpScorebookDataType, 520 );
+            updateProperty( "JumpScorebookDataType", value, 520 );
         }
 
-        private String myJumpScorebookPointsMethod = "";
         public String JumpScorebookPointsMethod {
             get {
-                if (myJumpScorebookPointsMethod == null) setJumpScorebookPointsMethod( myMasterSummaryPointsMethod );
-                if (myJumpScorebookPointsMethod.Length == 0) setJumpScorebookPointsMethod( myMasterSummaryPointsMethod );
-                return myJumpScorebookPointsMethod;
+                String curReturnValue = getPropertyByName("JumpScorebookPointsMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "plcmt";
+                    } else {
+                        curReturnValue = "nops";
+                    }
+                    setJumpScorebookPointsMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpScorebookPointsMethod( value ); }
         }
         public void setJumpScorebookPointsMethod(String value) {
-            myJumpScorebookPointsMethod = value;
-            updateProperty( "JumpScorebookPointsMethod", myJumpScorebookPointsMethod, 520 );
+            updateProperty( "JumpScorebookPointsMethod", value, 520 );
         }
 
-        private String myJumpScorebookPlcmtMethod = "";
         public String JumpScorebookPlcmtMethod {
             get {
-                if (myJumpScorebookPlcmtMethod == null) setJumpScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                if (myJumpScorebookPlcmtMethod.Length == 0) setJumpScorebookPlcmtMethod( myMasterSummaryPlcmtMethod );
-                return myJumpScorebookPlcmtMethod;
+                String curReturnValue = getPropertyByName("JumpScorebookPlcmtMethod");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "score";
+                    } else {
+                        curReturnValue = "score";
+                    }
+                    setJumpScorebookPlcmtMethod(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpScorebookPlcmtMethod( value ); }
         }
         public void setJumpScorebookPlcmtMethod(String value) {
-            myJumpScorebookPlcmtMethod = value;
-            updateProperty( "JumpScorebookPlcmtMethod", myJumpScorebookPlcmtMethod, 520 );
+            updateProperty( "JumpScorebookPlcmtMethod", value, 520 );
         }
 
-        private String myJumpScorebookPlcmtOrg = "";
         public String JumpScorebookPlcmtOrg {
             get {
-                if (myJumpScorebookPlcmtOrg == null) setJumpScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                if (myJumpScorebookPlcmtOrg.Length == 0) setJumpScorebookPlcmtOrg( myMasterSummaryPlcmtOrg );
-                return myJumpScorebookPlcmtOrg;
+                String curReturnValue = getPropertyByName("JumpScorebookPlcmtOrg");
+                if ( curReturnValue.Length == 0 ) {
+                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
+                        curReturnValue = "div";
+                    } else {
+                        curReturnValue = "div";
+                    }
+                    setJumpScorebookPlcmtOrg(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setJumpScorebookPlcmtOrg( value ); }
         }
         public void setJumpScorebookPlcmtOrg(String value) {
-            myJumpScorebookPlcmtOrg = value;
-            updateProperty( "JumpScorebookPlcmtOrg", myJumpScorebookPlcmtOrg, 520 );
+            updateProperty( "JumpScorebookPlcmtOrg", value, 520 );
         }
         #endregion
 
         #region OfficialWorkRecord methods
-        private String myOfficialWorkRecordSort = "";
         public String OfficialWorkRecordSort {
             get {
-                if (myOfficialWorkRecordSort == null) myOfficialWorkRecordSort = "";
-                return myJumpSummaryDataType;
+                String curReturnValue = getPropertyByName("OfficialWorkRecordSort");
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = "";
+                    setOfficialWorkRecordSort(curReturnValue);
+                }
+                return curReturnValue;
             }
             set { setOfficialWorkRecordSort( value ); }
         }
         public void setOfficialWorkRecordSort(String value) {
-            myOfficialWorkRecordSort = value;
-            updateProperty( "OfficialWorkRecordSort", myOfficialWorkRecordSort, 610 );
+            updateProperty( "OfficialWorkRecordSort", value, 610 );
         }
         #endregion
+
+        private String getPropertyByName(String inKey) {
+            String curReturnValue = "";
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT PropKey, PropValue ");
+            curSqlStmt.Append("FROM TourProperties ");
+            curSqlStmt.Append("WHERE SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' ");
+            curSqlStmt.Append("  AND PropKey = '" + inKey + "' ");
+            curSqlStmt.Append("Order by PropOrder, PropKey, PropValue ");
+            DataTable curDataTable = getData(curSqlStmt.ToString());
+            if ( curDataTable.Rows.Count > 0 ) {
+                curReturnValue = (String)curDataTable.Rows[0]["PropValue"];
+            } else {
+                curReturnValue = "";
+            }
+            return curReturnValue;
+        }
 
         private void updateProperty(String inKey, String inValue, Int16 inOrder) {
             try {

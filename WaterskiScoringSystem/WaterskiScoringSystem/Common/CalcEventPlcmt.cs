@@ -1367,7 +1367,7 @@ namespace WaterskiScoringSystem.Common {
             DataTable curPlcmtResults = inResults;
             String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "";
             int curIdx = 0, curPlcmtPos = 1;
-            Decimal curScore = 0, prevScore = 0;
+            Decimal curScore = 0, prevScore = -1;
 
             if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
                 #region Calculate placement for all tournament participants
@@ -1391,6 +1391,7 @@ namespace WaterskiScoringSystem.Common {
                         curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
                     }
                 }
+
                 curPlcmtResults.DefaultView.Sort = curSortCmd;
                 curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
                 foreach (DataRow curRow in curPlcmtResults.Rows) {
@@ -1448,7 +1449,7 @@ namespace WaterskiScoringSystem.Common {
                             }
                         }
 
-                        if (curScore == prevScore && curIdx > 0) {
+                        if ( curScore == prevScore && curIdx > 0 ) {
                             curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
                             if (curPlcmt.Contains( "T" )) {
                             } else {
@@ -1463,6 +1464,7 @@ namespace WaterskiScoringSystem.Common {
                         curPlcmtPos++;
                     } else {
                         curPlcmt = "";
+                        curScore = -1;
                     }
                     curRow[inPlcmtName] = curPlcmt;
                     curIdx++;
@@ -1474,7 +1476,7 @@ namespace WaterskiScoringSystem.Common {
                 curPlcmtPos = 1;
                 curIdx = 0;
                 curScore = 0;
-                prevScore = 0;
+                prevScore = -1;
                 prevGroup = "";
                 curGroup = "";
                 if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
@@ -1587,6 +1589,7 @@ namespace WaterskiScoringSystem.Common {
                         curPlcmtPos++;
                     } else {
                         curPlcmt = "";
+                        curScore = -1;
                     }
                     curRow[inPlcmtName] = curPlcmt;
                     curIdx++;

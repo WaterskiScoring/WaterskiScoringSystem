@@ -362,6 +362,7 @@ namespace WaterskiScoringSystem.Admin {
             }
             if (editCity_Validation()) {
                 curCity = editCity.Text;
+                curCity = curCity.Replace("'", "''");
             } else {
                 curValidStatus = false;
             }

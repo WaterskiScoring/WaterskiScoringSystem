@@ -202,7 +202,7 @@ namespace WaterskiScoringSystem.Tools {
         private Boolean writeHeader( StreamWriter outBuffer ) {
             StringBuilder outLine = new StringBuilder( "" );
 
-            outLine.Append( myTourRow["Name"].ToString().ToUpper().PadRight( 28, ' ' ) );
+            outLine.Append( myTourRow["Name"].ToString().ToUpper().PadRight( 33, ' ' ) );
             outLine.Append( " SLALOM       TRICKS   JUMPING   OVERALL  " );
             outBuffer.WriteLine( outLine.ToString() );
 
@@ -223,10 +223,10 @@ namespace WaterskiScoringSystem.Tools {
             }
 
             outLine.Append( curDivName.PadRight( 20, ' ' ) );
-            outLine.Append( " ST   BYS/PASS PLC    PTS PLC   FT PLC  POINTS PLC" );
+            outLine.Append( " ST TEAM  BYS/PASS PLC    PTS PLC   FT PLC  POINTS PLC" );
             outBuffer.WriteLine( outLine.ToString() );
 
-            outLine = new StringBuilder( "-------------------- --  ----/---- ---   ---- ---  --- ---  ------ ---" );
+            outLine = new StringBuilder( "-------------------- -- ---- ----/---- ---   ---- ---  --- ---  ------ ---" );
             outBuffer.WriteLine( outLine.ToString() );
             return true;
         }
@@ -237,6 +237,7 @@ namespace WaterskiScoringSystem.Tools {
 
             try {
                 outLine.Append( inRow["SkierName"].ToString().PadRight( 20, ' ' ) );
+                outLine.Append( " " + inRow["State"].ToString().PadRight(1, ' '));
                 if ( isObjectEmpty( inRow["TeamSlalom"] ) ) {
                 } else {
                     if ( inRow["TeamSlalom"].ToString().Length > 0 ) {
@@ -259,7 +260,7 @@ namespace WaterskiScoringSystem.Tools {
                         }
                     }
                 }
-                outLine.Append( curTeamCode.PadLeft( 3, ' ' ) );
+                outLine.Append( curTeamCode.PadLeft( 5, ' ' ) );
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error writing skier info to Scorebook: " + "\n\nError: " + ex.Message );
             }
@@ -272,7 +273,7 @@ namespace WaterskiScoringSystem.Tools {
             String curEmptyValue = "", curValue = "";
             Int16 curRound = 0;
 
-            outLine.Append( curEmptyValue.PadRight( 2, ' ' ) );
+            outLine.Append( curEmptyValue.PadRight( 1, ' ' ) );
             bool isRoundScored = true;
             try {
                 if ( inScoreSummary == null ) {

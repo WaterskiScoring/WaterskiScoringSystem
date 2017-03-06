@@ -95,13 +95,10 @@ namespace WaterskiScoringSystem.Jump {
             ScoreList.Add(new Common.ScoreEntry("Jump", 0, "", 0));
             TimeInTolImg.DisplayIndex = 16;
 
-            myCheckEventRecord = new CheckEventRecord();
-
             jumpRecapDataGridView.AutoGenerateColumns = false;
 
             //RampHeightTextBox.Visible = false;
             //BoatSpeedTextBox.Visible = false;
-
         }
 
         public Int16 NumJudges {
@@ -312,6 +309,9 @@ namespace WaterskiScoringSystem.Jump {
                             roundActiveSelect.SelectList_LoadHorztl( myTourRow["JumpRounds"].ToString(), roundActiveSelect_Click );
                             roundActiveSelect.RoundValue = "1";
                             roundSelect.RoundValue = "1";
+
+                            //Instantiate object for checking for records
+                            myCheckEventRecord = new CheckEventRecord(myTourRow);
 
                             //Load jump speed selection list
                             JumpSpeedSelect.SelectList_Load( JumpSpeedSelect_Change );
@@ -904,8 +904,8 @@ namespace WaterskiScoringSystem.Jump {
                                 transmitExternalScoreboard( curSanctionId, curMemberId, curAgeGroup, curTeamCode, curRound, curPassNum, curStatus, curResults, curScoreFeet, curScoreMeters );
 
                                 #region Check to see if score is equal to or great than divisions current record score
-                                String curCheckRecordMsg = myCheckEventRecord.checkRecordJump( curAgeGroup, scoreFeetTextBox.Text, scoreMetersTextBox.Text );
-                                if (curCheckRecordMsg == null) curCheckRecordMsg = "";
+                                String curCheckRecordMsg = myCheckEventRecord.checkRecordJump( curAgeGroup, scoreFeetTextBox.Text, scoreMetersTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"]);
+                                if ( curCheckRecordMsg == null) curCheckRecordMsg = "";
                                 if (curCheckRecordMsg.Length > 1) {
                                     MessageBox.Show( curCheckRecordMsg );
                                 }
@@ -5399,9 +5399,11 @@ namespace WaterskiScoringSystem.Jump {
         private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, Round, S.EventClass, COALESCE(E.TeamCode, '') as TeamCode" );
-            curSqlStmt.Append( ", ScoreFeet, ScoreMeters , NopsScore, Rating, BoatSpeed, RampHeight, Status, Boat, Note " );
+            curSqlStmt.Append( ", ScoreFeet, ScoreMeters , NopsScore, Rating, BoatSpeed, RampHeight, Status, Boat, Note" );
+            curSqlStmt.Append(", Gender, SkiYearAge ");
             curSqlStmt.Append( "FROM JumpScore S " );
-            curSqlStmt.Append( "     INNER JOIN EventReg E ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup " );
+            curSqlStmt.Append( "  INNER JOIN EventReg E ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND E.Event = 'Jump'" );
+            curSqlStmt.Append( "  INNER JOIN TourReg T ON S.SanctionId = T.SanctionId AND S.MemberId = T.MemberId AND S.AgeGroup = T.AgeGroup ");
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND S.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "  AND S.AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() + " " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, S.MemberId" );

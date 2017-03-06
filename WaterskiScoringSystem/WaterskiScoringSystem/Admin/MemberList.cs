@@ -62,10 +62,6 @@ namespace WaterskiScoringSystem.Admin {
 
             filterDialogForm = new Common.FilterDialogForm();
             filterDialogForm.ColumnList = dataGridView.Columns;
-
-            myMemberListDataTable = getMemberList();
-            myViewIdx = 0;
-            loadDataGridView();
         }
 
         private void MemberList_FormClosed( object sender, FormClosedEventArgs e ) {
@@ -93,65 +89,17 @@ namespace WaterskiScoringSystem.Admin {
             Cursor.Current = Cursors.WaitCursor;
             int curRowIdx = myViewIdx;
 
-            dataGridView.Rows.Clear();
             myMemberListDataTable.DefaultView.Sort = mySortCommand;
             myMemberListDataTable.DefaultView.RowFilter = myFilterCommand;
-            DataTable curDataTable = myMemberListDataTable.DefaultView.ToTable();
-
-            if ( curDataTable.Rows.Count > 0 ) {
-                DataGridViewRow curViewRow;
-                int curViewIdx = 0;
-                foreach ( DataRow curDataRow in curDataTable.Rows ) {
-                    winStatusMsg.Text = "Loading information for " + (String)curDataRow["FirstName"] + " " + (String)curDataRow["LastName"];
-
-                    curViewIdx = dataGridView.Rows.Add();
-                    curViewRow = dataGridView.Rows[curViewIdx];
-
-                    curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
-                    curViewRow.Cells["FirstName"].Value = (String)curDataRow["FirstName"];
-                    curViewRow.Cells["LastName"].Value = (String)curDataRow["LastName"];
-                    try {
-                        curViewRow.Cells["City"].Value = (String)curDataRow["City"];
-                    } catch {
-                        curViewRow.Cells["City"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["State"].Value = (String)curDataRow["State"];
-                    } catch {
-                        curViewRow.Cells["State"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["Federation"].Value = (String)curDataRow["Federation"];
-                    } catch {
-                        curViewRow.Cells["Federation"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["SkiYearAge"].Value = ((Byte)curDataRow["SkiYearAge"]).ToString();
-                    } catch {
-                        curViewRow.Cells["SkiYearAge"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["MemberStatus"].Value = (String)curDataRow["MemberStatus"];
-                    } catch {
-                        curViewRow.Cells["MemberStatus"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["UpdateDate"].Value = ((DateTime)curDataRow["UpdateDate"]).ToString("MM/dd/yy HH:mm");
-                    } catch {
-                        curViewRow.Cells["UpdateDate"].Value = "";
-                    }
-                }
-                myViewIdx = curRowIdx;
-                dataGridView.CurrentCell = dataGridView.Rows[myViewIdx].Cells["MemberId"];
-                int curRow = myViewIdx + 1;
-                RowStatusLabel.Text = "Row " + curRow.ToString() + " of " + dataGridView.Rows.Count.ToString();
-            }
+            myMemberListDataTable = myMemberListDataTable.DefaultView.ToTable();
+            dataGridView.DataSource = myMemberListDataTable;
             winStatusMsg.Text = "Members retrieved";
             Cursor.Current = Cursors.Default;
         }
 
         private void navRefresh_Click( object sender, EventArgs e ) {
             myMemberListDataTable = getMemberList();
+            myViewIdx = 0;
             loadDataGridView();
         }
 
@@ -278,7 +226,7 @@ namespace WaterskiScoringSystem.Admin {
                     }
 
                     if ( curResults ) {
-                        loadDataGridView();
+                        navRefresh_Click(null, null);
                     }
 
                 } catch ( Exception excp ) {
@@ -309,7 +257,7 @@ namespace WaterskiScoringSystem.Admin {
                     sqlStmt.CommandText = "Delete MemberList ";
                     int rowsProc = sqlStmt.ExecuteNonQuery();
                     MessageBox.Show( rowsProc + " members removed" );
-                    dataGridView.Rows.Clear();
+                    navRefresh_Click(null, null);
                 } catch (Exception excp) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }

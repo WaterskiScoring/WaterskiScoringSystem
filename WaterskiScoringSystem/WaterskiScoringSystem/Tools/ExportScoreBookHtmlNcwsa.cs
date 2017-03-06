@@ -268,7 +268,10 @@ namespace WaterskiScoringSystem.Tools {
             outLine.Append("\n .ReportTitle {Width: 100%; Text-Align:Center; margin-left: auto; margin-right: auto; FONT-SIZE:1.3em; FONT-WEIGHT:bold;}");
             outLine.Append("\n .SectionTitle {Width: 100%; Text-Align:Center; margin-left: auto; margin-right: auto; FONT-SIZE:1.15em; FONT-WEIGHT:bold;}");
             outLine.Append("\n .SubTitle {Width: 100%; Text-Align:Center; margin-left: auto; margin-right: auto; FONT-SIZE:1.1em; FONT-WEIGHT:normal;}");
+            outLine.Append("\n .ExtraSkierNote {Width: 100%; Text-Align:Center; margin-left: auto; margin-right: auto; FONT-SIZE:.75em; FONT-WEIGHT:normal;}");
             outLine.Append("\n .MainContent {Text-Align:Center; margin-left: auto; margin-right: auto; }");
+            outLine.Append("\n .LineSep {Width: 100%; FONT-SIZE:.05em; BACKGROUND-COLOR:LightGray;}");
+            outLine.Append("\n .ExtraSkier {vertical-align: super; font-size: smaller; Color: Blue;}");
             outLine.Append("\n .DataGridView {Text-Align:Center; Border: #AAAAAA .15em solid; margin-left: auto; margin-right: auto; }");
             outLine.Append("\n th {Text-Align:Center; Border:#DDDDDD .1em solid; Margin:0pt; Padding:2px 5px 2px 5px; Font-Size:.8em; Font-Weight:Bold;}");
             outLine.Append("\n td {Text-Align:Center; Border:#DDDDDD .1em solid; Margin:0pt; Padding:2px 5px 2px 5px; Font-Family:Verdana,Helvetica,sans-serif; Font-Size:.8em; Font-Weight:normal;}");
@@ -466,6 +469,7 @@ namespace WaterskiScoringSystem.Tools {
             outLine.Append("\n<div Class=\"SectionTitle\">");
             outLine.Append(curSectionTitle + " Team Skier Details");
             outLine.Append("</div>");
+            outLine.Append("\n<div class=\"ExtraSkierNote\"><span class=\"ExtraSkier\" style=\"FONT-SIZE:1.25em;\">**</span> team skiers not included in team total</div>");
             outLine.Append("\n<div class=\"MainContent\">");
             outLine.Append("\n<Table Class=\"DataGridView\">");
             outBuffer.WriteLine(outLine.ToString());
@@ -628,6 +632,87 @@ namespace WaterskiScoringSystem.Tools {
                             }
                             outLine.Append( "\n</tr>" );
                             outBuffer.WriteLine( outLine.ToString() );
+                        } else {
+                            if ( myNumPerTeam == curSkierIdx ) {
+                                outLine = new StringBuilder("");
+                                outLine.Append("\n<tr><td class=\"LineSep\" colspan=\"99\">&nbsp;</td></tr>");
+                                outBuffer.WriteLine(outLine.ToString());
+                            }
+
+                            outLine = new StringBuilder("");
+                            outLine.Append("\n<tr>");
+                            if ( curSlalomTeamSkierList.Length > curSkierIdx ) {
+                                outLine.Append("\n<td class=\"DataLeft\">" + (String) curSlalomTeamSkierList[curSkierIdx]["SkierName"] + "<span class=\"ExtraSkier\">**</span></td>");
+                                try {
+                                    outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curSlalomTeamSkierList[curSkierIdx]["FinalPassScore"] ).ToString("0.00") + "</td>");
+                                } catch {
+                                    outLine.Append("\n<td>&nbsp;</td>");
+                                }
+                                try {
+                                    outLine.Append("\n<td class=\"DataRight\">" + (String) curSlalomTeamSkierList[curSkierIdx]["FinalLenOff"] + "</td>");
+                                } catch {
+                                    outLine.Append("\n<td>&nbsp;</td>");
+                                }
+                                try {
+                                    outLine.Append("\n<td class=\"DataRight\">" + (String) curSlalomTeamSkierList[curSkierIdx]["FinalLen"] + "</td>");
+                                } catch {
+                                    outLine.Append("\n<td>&nbsp;</td>");
+                                }
+                                try {
+                                    outLine.Append("\n<td class=\"DataRight\">" + ( (Byte) curSlalomTeamSkierList[curSkierIdx]["FinalSpeedMph"] ).ToString() + "</td>");
+                                } catch {
+                                    outLine.Append("\n<td>&nbsp;</td>");
+                                }
+                                try {
+                                    outLine.Append("\n<td class=\"DataRight\">" + ( (Byte) curSlalomTeamSkierList[curSkierIdx]["FinalSpeedKph"] ).ToString() + "</td>");
+                                } catch {
+                                    outLine.Append("\n<td>&nbsp;</td>");
+                                }
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curSlalomTeamSkierList[curSkierIdx]["ScoreSlalom"] ).ToString("##0.00") + "</td>");
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curSlalomTeamSkierList[curSkierIdx]["PointsSlalom"] ).ToString("###0.00") + "</td>");
+                                outLine.Append("\n<td>" + (String) curSlalomTeamSkierList[curSkierIdx]["PlcmtSlalom"] + "</td>");
+
+                            } else {
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                            }
+                            if ( curTrickTeamSkierList.Length > curSkierIdx ) {
+                                outLine.Append("\n<td class=\"DataLeft\">" + (String) curTrickTeamSkierList[curSkierIdx]["SkierName"] + "<span class=\"ExtraSkier\">**</span></td>");
+                                if ( curTrickTeamSkierList[curSkierIdx]["ScoreTrick"].GetType() == System.Type.GetType("System.Int32") ) {
+                                    outLine.Append("\n<td class=\"DataRight\">" + ( (Int32) curTrickTeamSkierList[curSkierIdx]["ScoreTrick"] ).ToString("##,##0") + "</td>");
+                                } else {
+                                    outLine.Append("\n<td class=\"DataRight\">" + ( (Int16) curTrickTeamSkierList[curSkierIdx]["ScoreTrick"] ).ToString("##,##0") + "</td>");
+                                }
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curTrickTeamSkierList[curSkierIdx]["PointsTrick"] ).ToString("###0.00") + "</td>");
+                                outLine.Append("\n<td>" + (String) curTrickTeamSkierList[curSkierIdx]["PlcmtTrick"] + "</td>");
+                            } else {
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                            }
+                            if ( curJumpTeamSkierList.Length > curSkierIdx ) {
+                                outLine.Append("\n<td class=\"DataLeft\">" + (String) curJumpTeamSkierList[curSkierIdx]["SkierName"] + "<span class=\"ExtraSkier\">**</span></td>");
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curJumpTeamSkierList[curSkierIdx]["ScoreMeters"] ).ToString("##0.0") + "</td>");
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curJumpTeamSkierList[curSkierIdx]["ScoreFeet"] ).ToString("##0") + "</td>");
+                                outLine.Append("\n<td class=\"DataRight\">" + ( (Decimal) curJumpTeamSkierList[curSkierIdx]["PointsJump"] ).ToString("###0.00") + "</td>");
+                                outLine.Append("\n<td>" + (String) curJumpTeamSkierList[curSkierIdx]["PlcmtJump"] + "</td>");
+                            } else {
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                                outLine.Append("\n<td>&nbsp;</td>");
+                            }
+                            outLine.Append("\n</tr>");
+                            outBuffer.WriteLine(outLine.ToString());
                         }
                     }
 
@@ -1236,6 +1321,7 @@ namespace WaterskiScoringSystem.Tools {
 
         private Boolean writeTeamCombinedSkierDetail(String curSectionTitle, StreamWriter outBuffer) {
             /*
+            */
             StringBuilder outLine = new StringBuilder("");
 
             outLine = new StringBuilder("");
@@ -1289,7 +1375,7 @@ namespace WaterskiScoringSystem.Tools {
 
             int curSkierIdx = 0, curSkierIdxMax = 0;
             String curTeamCode = "", prevTeamCode = "";
-            foreach (DataRow curRow in myTeamCombinedDataTable.Rows) {
+            foreach (DataRow curRow in myTeamDataTable.Rows) {
                 curTeamCode = (String)curRow["TeamCode"];
                 if (!(curTeamCode.Equals(prevTeamCode))) {
                     outLine = new StringBuilder("");
@@ -1453,7 +1539,7 @@ namespace WaterskiScoringSystem.Tools {
             outLine.Append("\n</Table>");
             outLine.Append("\n</div>");
             outBuffer.WriteLine(outLine.ToString());
-            */
+
             return true;
         }
 

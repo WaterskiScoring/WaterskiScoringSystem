@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Tournament;
+using ValidationLibrary.Trick;
 
 namespace WaterskiScoringSystem.Trick {
     public partial class ScoreCalc : Form {
@@ -59,6 +60,7 @@ namespace WaterskiScoringSystem.Trick {
         private FilterDialogForm filterDialogForm;
         private EventGroupSelect eventGroupSelect;
         private CalcNops appNopsCalc;
+        private Validation myTrickValidation;
         private List<Common.ScoreEntry> ScoreList = new List<Common.ScoreEntry>();
         private PrintDocument myPrintDoc;
         private DataGridViewPrinter myPrintDataGrid;
@@ -69,8 +71,12 @@ namespace WaterskiScoringSystem.Trick {
 
         public ScoreCalc() {
             InitializeComponent();
+
             appNopsCalc = CalcNops.Instance;
             appNopsCalc.LoadDataForTour();
+
+            myTrickValidation = new Validation();
+
             ScoreList.Add( new Common.ScoreEntry( "Trick", 0, "", 0 ) );
             mySpecialFlipList.Add( "BFLB" );
             mySpecialFlipList.Add( "RBFLB" );
@@ -127,7 +133,6 @@ namespace WaterskiScoringSystem.Trick {
 
             eventGroupSelect = new EventGroupSelect();
             skierDoneReasonDialogForm = new SkierDoneReason();
-            myCheckEventRecord = new CheckEventRecord();
 
             // Retrieve data from database
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -158,6 +163,9 @@ namespace WaterskiScoringSystem.Trick {
                             EventRunPerfLabel.Text = "Event Duration:\n" + "Mins Per Skier:\n" + " Mins Per Pass:";
                             EventRunPerfData.Text = "";
 
+                            //Instantiate object for checking for records
+                            myCheckEventRecord = new CheckEventRecord(myTourRow);
+
                             //Retrieve trick list
                             myTourClass = myTourRow["Class"].ToString().ToUpper();
                             myTourRuleCode = (String)myTourRow["Rules"];
@@ -175,6 +183,9 @@ namespace WaterskiScoringSystem.Trick {
 
                             myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
                             myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
+
+                            myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
+                            myTrickValidation.TrickListDataTable = myTrickListDataTable;
 
                             //Load round selection list based on number of rounds specified for the tournament
                             roundSelect.SelectList_Load( myTourRow["TrickRounds"].ToString(), roundSelect_Click );
@@ -539,7 +550,7 @@ namespace WaterskiScoringSystem.Trick {
                     }
 
                     #region Check to see if score is equal to or great than divisions current record score
-                    String curCheckRecordMsg = myCheckEventRecord.checkRecordTrick( curAgeGroup, scoreTextBox.Text );
+                    String curCheckRecordMsg = myCheckEventRecord.checkRecordTrick( curAgeGroup, scoreTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"]);
                     if ( curCheckRecordMsg == null ) curCheckRecordMsg = "";
                     if ( curCheckRecordMsg.Length > 1 ) {
                         MessageBox.Show( curCheckRecordMsg );
@@ -2324,7 +2335,7 @@ namespace WaterskiScoringSystem.Trick {
                         curViewRow.Cells[curColPrefix + "TypeCode"].Value = "";
                     } else {
                         curNumSkis = (Byte)curDataRow["Skis"];
-                        curRuleNum = (Int16)( (Byte)curTrickRow["RuleNum"] + ( ( curNumSkis * 100 ) ) );
+                        curRuleNum = (Int16)( (Int16) curTrickRow["RuleNum"] + ( ( curNumSkis * 100 ) ) );
                         if ( ( (String)curDataRow["Code"] ).Substring( 0, 1 ).Equals( "R" ) ) curRuleNum = (Int16)( curRuleNum + 200 );
                         curViewRow.Cells[curColPrefix + "StartPos"].Value = ( (Byte)curTrickRow["StartPos"] ).ToString();
                         curViewRow.Cells[curColPrefix + "NumTurns"].Value = ( (Byte)curTrickRow["NumTurns"] ).ToString();
@@ -2334,6 +2345,74 @@ namespace WaterskiScoringSystem.Trick {
                 }
             }
             isLoadInProg = false;
+        }
+
+        private DataTable getTrickPassValues( DataGridView inPassView) {
+            String curColPrefix = inPassView.Name.Substring(0, 5);
+
+            DataTable curDataTable = myPass1DataTable.Clone();
+            DataColumn curCol = new DataColumn();
+            curCol.ColumnName = "StartPos";
+            curCol.DataType = System.Type.GetType("System.Byte");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            curCol = new DataColumn();
+            curCol.ColumnName = "NumTurns";
+            curCol.DataType = System.Type.GetType("System.Byte");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            curCol = new DataColumn();
+            curCol.ColumnName = "TypeCode";
+            curCol.DataType = System.Type.GetType("System.Byte");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            curCol = new DataColumn();
+            curCol.ColumnName = "RuleNum";
+            curCol.DataType = System.Type.GetType("System.Int16");
+            curCol.AllowDBNull = false;
+            curCol.ReadOnly = false;
+            curCol.DefaultValue = 0;
+            curDataTable.Columns.Add(curCol);
+
+            foreach ( DataGridViewRow curViewRow in inPassView.Rows ) {
+                DataRow curDataRow = curDataTable.NewRow();
+                curDataRow["PK"] = Int64.Parse( (String)curViewRow.Cells[curColPrefix + "PK"].Value );
+
+                curDataRow["SanctionId"] = curViewRow.Cells[curColPrefix + "SanctionId"].Value;
+                curDataRow["MemberId"] = curViewRow.Cells[curColPrefix + "MemberId"].Value;
+                curDataRow["AgeGroup"] = curViewRow.Cells[curColPrefix + "AgeGroup"].Value;
+                curDataRow["Results"] = curViewRow.Cells[curColPrefix + "Results"].Value;
+                curDataRow["Code"] = curViewRow.Cells[curColPrefix + "Code"].Value;
+
+                curDataRow["Skis"] = this.myTrickValidation.validateNumSkis((String) curViewRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
+
+                curDataRow["Round"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "Round"].Value);
+                curDataRow["PassNum"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "PassNum"].Value);
+                curDataRow["Seq"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "Seq"].Value);
+
+                String curValue = (String) curViewRow.Cells[curColPrefix + "Points"].Value;
+                curDataRow["Score"] = Int16.Parse((String) curViewRow.Cells[curColPrefix + "Points"].Value);
+
+                if ( (String) curViewRow.Cells[curColPrefix + "StartPos"].Value != null ) {
+                    curDataRow["StartPos"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "StartPos"].Value);
+                    curDataRow["NumTurns"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "NumTurns"].Value);
+                    curDataRow["TypeCode"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "TypeCode"].Value);
+                    curDataRow["RuleNum"] = Int16.Parse((String) curViewRow.Cells[curColPrefix + "RuleNum"].Value);
+                }
+
+                curDataTable.Rows.Add(curDataRow);
+            }
+
+            return curDataTable;
         }
 
         private void setEventRegRowStatus( String inStatus) {
@@ -2655,16 +2734,29 @@ namespace WaterskiScoringSystem.Trick {
 
             if ( !( isLoadInProg ) ) {
                 if ( curColName.Equals( "Results" ) ) {
-                    if ( e.FormattedValue.ToString().Equals( "Fall" )
-                        || e.FormattedValue.ToString().Equals( "End" )
-                        ) {
-                        isPassEnded = true;
-                    } else {
-                        if ( e.RowIndex > 1 && e.FormattedValue.ToString().Equals( "OOC" ) ) {
+                    if ( this.myTrickValidation.validateResultStatus(e.FormattedValue.ToString(), this.myTourRules) ) {
+                        if ( e.FormattedValue.ToString().Equals("Fall")
+                            || e.FormattedValue.ToString().Equals("End")
+                            ) {
                             isPassEnded = true;
+                        } else {
+                            if ( e.RowIndex > 1 && e.FormattedValue.ToString().Equals("OOC") ) {
+                                isPassEnded = true;
+                            }
                         }
+                        e.Cancel = false;
+                    } else {
+                        MessageBox.Show(this.myTrickValidation.ValidationMessage);
+                        e.Cancel = true;
                     }
                 } else if ( curColName.Equals( "Skis" ) ) {
+                    if ( this.myTrickValidation.validateNumSkis(e.FormattedValue.ToString(), this.myTourRules) >= 0 ) {
+                        e.Cancel = false;
+                    } else {
+                        MessageBox.Show(this.myTrickValidation.ValidationMessage);
+                        e.Cancel = true;
+                    }
+                    /*
                     if ( e.FormattedValue.ToString().Length > 0 ) {
                         if ( e.FormattedValue.ToString().Equals( "1" )
                             || e.FormattedValue.ToString().Equals( "2" )
@@ -2682,6 +2774,7 @@ namespace WaterskiScoringSystem.Trick {
                             e.Cancel = true;
                         }
                     }
+                    */
                 } else if ( curColName.Equals( "Code" ) ) {
                     if ( e.FormattedValue.ToString().Length > 0 ) {
                         if (e.RowIndex > 0) {
@@ -2708,10 +2801,18 @@ namespace WaterskiScoringSystem.Trick {
                             } else {
                                 if ( !( e.FormattedValue.ToString().ToUpper().Equals( myOrigCodeValue.ToUpper() ) ) ) {
                                     DataGridViewRow curPassRow = curPassView.Rows[e.RowIndex];
+                                    curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
                                     if ( curPassRow.Cells[curColPrefix + "Skis"].Value == null ) {
                                         e.Cancel = true;
                                     } else {
                                         Int16 curNumSkis = 0;
+                                        if ( this.myTrickValidation.validateNumSkis((String)curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules) >= 0 ) {
+                                            curNumSkis = this.myTrickValidation.NumSkis;
+                                        } else {
+                                            MessageBox.Show(this.myTrickValidation.ValidationMessage);
+                                            e.Cancel = true;
+                                        }
+                                        /*
                                         try {
                                             //curNumSkis = Convert.ToByte( curPassRow.Cells[curColPrefix + "Skis"].Value );
                                             String curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
@@ -2724,7 +2825,10 @@ namespace WaterskiScoringSystem.Trick {
                                             }
                                         } catch {
                                             curNumSkis = 0;
+                                            MessageBox.Show("Number of skis has not been properly set");
+                                            e.Cancel = false;
                                         }
+                                        */
                                     }
                                 }
                             }
@@ -2759,7 +2863,7 @@ namespace WaterskiScoringSystem.Trick {
                                     && !(isObjectEmpty(curPassRow.Cells[curColPrefix + "Code"].Value))
                                     ) {
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
-                                    curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix );
+                                    curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
                                     curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
                                     curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
                                     if ( isLastRow ) {
@@ -2776,7 +2880,7 @@ namespace WaterskiScoringSystem.Trick {
                                     isDataModified = true;
                                 }
                                 curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
-                                curPassRow.Cells[curColPrefix + "Points"].Value = 0;
+                                curPassRow.Cells[curColPrefix + "Points"].Value = "0";
 
                                 curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = Color.Red;
                                 curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = Color.LightBlue;
@@ -2812,9 +2916,9 @@ namespace WaterskiScoringSystem.Trick {
                             } else {
                                 isDataModified = true;
                                 if ( ( curPassRow.Cells[curColPrefix + "Results"].Value ).ToString().ToUpper().Equals( "CREDIT" ) ) {
-                                    curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix );
+                                    curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
                                 } else {
-                                    curPassRow.Cells[curColPrefix + "Points"].Value = 0;
+                                    curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                 }
                                 curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                 if ( isLastRow ) {
@@ -2833,6 +2937,7 @@ namespace WaterskiScoringSystem.Trick {
                     if ( !( isObjectEmpty( curPassRow.Cells[e.ColumnIndex].Value ) ) ) {
                         String curValue = ((String)curPassRow.Cells[e.ColumnIndex].Value).ToUpper();
                         if ( curValue.Equals( myOrigCodeValue.ToUpper() ) ) {
+                            #region No change to trick code but checking other fields to see if they have an impact on the trick code validation
                             curPassRow.Cells[e.ColumnIndex].Value = curValue.ToUpper();
                             if ( !( isObjectEmpty( curPassRow.Cells[curColPrefix + "Skis"].Value ) )
                                 && !( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) )
@@ -2896,15 +3001,10 @@ namespace WaterskiScoringSystem.Trick {
                                     }
                                 }
                             }
+                            #endregion
                         } else {
+                            #region Trick code has been changed therefore perform validation
                             isDataModified = true;
-                            /*
-                            if ( curPassView.Name.Equals( "Pass1DataGridView" ) ) {
-                                if ( curPassRow.Index == 0 ) {
-                                    checkForOverall();
-                                }
-                            }
-                            */
                             curPassRow.Cells[e.ColumnIndex].Value = curValue.ToUpper();
                             if ( !(isObjectEmpty(curPassRow.Cells[curColPrefix + "Skis"].Value))
                                 && !(isObjectEmpty(curPassRow.Cells[curColPrefix + "Results"].Value))
@@ -2961,12 +3061,12 @@ namespace WaterskiScoringSystem.Trick {
                                     if ( checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix ) ) {
                                         isTrickValid = true;
                                         if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "CREDIT" ) ) {
-                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix );
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
                                         } else {
-                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix );
-                                            //int curPoints = 0;
-                                            //Int32.TryParse((String)curPassRow.Cells[curColPrefix + "Points"].Value, out curPoints );
-                                            if ( ( Int16 ) curPassRow.Cells[curColPrefix + "Points"].Value > 0 ) {
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
+                                            int curPoints = 0;
+                                            Int32.TryParse((String)curPassRow.Cells[curColPrefix + "Points"].Value, out curPoints );
+                                            if ( curPoints > 0 ) {
                                                 curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
                                             }
                                         }
@@ -2983,6 +3083,8 @@ namespace WaterskiScoringSystem.Trick {
                             }
                             myOrigCodeValue = (String)curPassRow.Cells[e.ColumnIndex].Value;
                         }
+                        #endregion
+
                         if ( isPassEnded ) {
                             isDataModified = true;
                             Timer curTimerObj = new Timer();
@@ -3047,7 +3149,7 @@ namespace WaterskiScoringSystem.Trick {
             inPassRow.Cells[curColPrefix + "Seq"].Value = curSeqNum;
             inPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
             inPassRow.Cells[curColPrefix + "PassNum"].Value = curPassNum;
-            inPassRow.Cells[curColPrefix + "Points"].Value = 0;
+            inPassRow.Cells[curColPrefix + "Points"].Value = "0";
             inPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
         }
 
@@ -3093,7 +3195,66 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
         
-        private bool checkTrickCode( DataGridView inPassView, int inPassRowIdx, String inCode, Int16 inNumSkis, String inColPrefix ) {
+        private bool checkTrickCode ( DataGridView inPassView, int inPassRowIdx, String inCode, Int16 inNumSkis, String inColPrefix ) {
+            String curSkierClass = (String) ( (ListItem) scoreEventClass.SelectedItem ).ItemValue;
+            int curIdx = inPassRowIdx;
+            DataRow[] prevTrickRows = new DataRow[0];
+
+            if ( curIdx > 0 ) {
+                if ( curIdx > 1 ) {
+                    prevTrickRows = new DataRow[2];
+                } else {
+                    prevTrickRows = new DataRow[1];
+                }
+
+                curIdx--;
+                //NumSkis, NumTurns, PK, Points, RuleCode, RuleNum, StartPos, TrickCode, TypeCode
+
+
+                prevTrickRows[0] = myTrickListDataTable.NewRow();
+                prevTrickRows[0]["TrickCode"] = (String) inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
+                prevTrickRows[0]["NumSkis"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value.ToString());
+                prevTrickRows[0]["Points"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Points"].Value.ToString());
+                if ( (String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value != null ) {
+                    prevTrickRows[0]["StartPos"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value);
+                    prevTrickRows[0]["NumTurns"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value);
+                    prevTrickRows[0]["TypeCode"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value);
+                    prevTrickRows[0]["RuleNum"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
+                }
+
+
+                if ( curIdx > 0 ) {
+                    curIdx--;
+                    //NumSkis, NumTurns, PK, Points, RuleCode, RuleNum, StartPos, TrickCode, TypeCode
+                    prevTrickRows[1] = myTrickListDataTable.NewRow();
+                    prevTrickRows[1]["TrickCode"] = (String) inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
+                    prevTrickRows[1]["Points"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Points"].Value.ToString());
+                    if ( (String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value != null ) {
+                        prevTrickRows[1]["StartPos"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value);
+                        prevTrickRows[1]["NumTurns"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value);
+                        prevTrickRows[1]["TypeCode"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value);
+                        prevTrickRows[1]["RuleNum"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
+                        prevTrickRows[1]["NumSkis"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value.ToString());
+                    }
+                }
+            }
+
+            /*
+              Note: If return code is true than use method UpdatedTrickCode to retrieve the trick code as modified by the validation processing
+                    If return code is false then use method ValidationMessage to retrieve the message associated with the reason it failed validation
+            */
+            curIdx = inPassRowIdx;
+            bool returnStatus = myTrickValidation.validateTrickCode(inCode, inNumSkis, curSkierClass, prevTrickRows);
+            if ( returnStatus ) {
+                inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value = myTrickValidation.UpdatedTrickCode;
+            } else {
+                MessageBox.Show(myTrickValidation.ValidationMessage);
+            }
+
+            return returnStatus;
+        }
+
+        private bool checkTrickCode_Bak( DataGridView inPassView, int inPassRowIdx, String inCode, Int16 inNumSkis, String inColPrefix ) {
             bool returnStatus = false;
             Int16 curNumTurns, curStartPos, curTypeCodeValue, curRuleNum;
             Int16 prevStartPos, prevNumTurns, prevTypeCodeValue, prevRuleNum;
@@ -3134,6 +3295,7 @@ namespace WaterskiScoringSystem.Trick {
                                     + "\n Trick Code " + curCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
                                 returnStatus = false;
                             } else {
+                                //Check to ensure 360 multiples tricks has an appropriate starting position on the previous 2 tricks
                                 curStartPos = (Byte)curTrickRow["StartPos"];
                                 curNumTurns = (Byte)curTrickRow["NumTurns"];
                                 curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
@@ -3147,7 +3309,6 @@ namespace WaterskiScoringSystem.Trick {
                             }
                         } else {
                             if (curIdx > 0) {
-                                //Check to ensure 360 multiples tricks has an appropriate starting position on the previous 2 tricks
                                 if (inCode.Length > 1) {
                                     curCode = inCode;
                                 } else {
@@ -3173,12 +3334,12 @@ namespace WaterskiScoringSystem.Trick {
                                         + "\n Trick Code " + curCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
                                     returnStatus = false;
                                 } else {
+                                    //Check to see if starting position of previous trick is appropriate
                                     curStartPos = (Byte)curTrickRow["StartPos"];
                                     curNumTurns = (Byte)curTrickRow["NumTurns"];
                                     curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                    curRuleNum = (Int16)( (Byte)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
+                                    curRuleNum = (Int16)( (Int16)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
                                     
-                                    //Check to see if starting position of previous trick is appropriate
                                     if (( ( prevStartPos + prevNumTurns ) % 2 ) == 0) {
                                         if (curStartPos == 0) {
                                             //Check to see if starting position of 2nd previous trick is also appropriate
@@ -3238,7 +3399,7 @@ namespace WaterskiScoringSystem.Trick {
                                         curStartPos = (Byte)curTrickRow["StartPos"];
                                         curNumTurns = (Byte)curTrickRow["NumTurns"];
                                         curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                        curRuleNum = (Int16)( (Byte)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
+                                        curRuleNum = (Int16)( (Int16) curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
 
                                         //Check to see if starting position of previous trick is appropriate
                                         if ( (( (( prevStartPos + prevNumTurns ) % 2 ) == 0) && (curStartPos == 0))
@@ -3345,7 +3506,74 @@ namespace WaterskiScoringSystem.Trick {
             return returnStatus;
         }
 
-        private Int16 calcPoints(DataGridView inPassView, DataGridViewRow inPassRow, String inColPrefix) {
+        private Int16 calcPoints( DataGridView inPassView, DataGridViewRow inPassRow, String inColPrefix ) {
+            DataTable curPass1DataTable, curPass2DataTable;
+            DataRow curViewRow;
+
+            curPass1DataTable = getTrickPassValues(Pass1DataGridView);
+            curPass2DataTable = getTrickPassValues(Pass2DataGridView);
+            String curSkierEventClass = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value;
+            if ( inColPrefix.Equals("Pass1") ) {
+                curViewRow = curPass1DataTable.Rows[inPassRow.Index];
+            } else {
+                curViewRow = curPass2DataTable.Rows[inPassRow.Index];
+            }
+
+            //calcPoints( DataTable inPass1DataTable, DataTable inPass2DataTable, DataRow inViewRow, int inRowIdx, String inColPrefix, String inSkierClass )
+            Int16 returnPoints = myTrickValidation.calcPoints( curPass1DataTable, curPass2DataTable, curViewRow, inPassRow.Index, inColPrefix, curSkierEventClass );
+            if ( returnPoints < 0 ) {
+                returnPoints = 0;
+                MessageBox.Show(myTrickValidation.ValidationMessage);
+            } else {
+                //Update row on DataGridView using curViewRow which should have been updated
+                inPassRow.Cells[inColPrefix + "Code"].Value = curViewRow["Code"];
+                inPassRow.Cells[inColPrefix + "Results"].Value = curViewRow["Results"];
+                inPassRow.Cells[inColPrefix + "StartPos"].Value = curViewRow["StartPos"].ToString();
+                inPassRow.Cells[inColPrefix + "NumTurns"].Value = curViewRow["NumTurns"].ToString();
+                inPassRow.Cells[inColPrefix + "TypeCode"].Value = curViewRow["TypeCode"].ToString();
+                inPassRow.Cells[inColPrefix + "RuleNum"].Value = curViewRow["RuleNum"].ToString();
+                inPassRow.Cells[inColPrefix + "Points"].Value = returnPoints.ToString();
+
+                int passScore = 0;
+                int curViewIdx = 0;
+                foreach ( DataRow curDataRow in curPass1DataTable.Rows ) {
+                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value = curDataRow["Results"];
+                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Points"].Value = ( (Int16) curDataRow["Score"] ).ToString();
+                    passScore += (Int16) curDataRow["Score"];
+                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1PointsTotal"].Value = passScore.ToString();
+
+                    if ( !( Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value.ToString().ToUpper().Equals("CREDIT") ) ) {
+                        Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.ForeColor = Color.Red;
+                        Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.BackColor = Color.LightBlue;
+                    }
+
+                    curViewIdx++;
+                }
+                passScore = 0;
+                curViewIdx = 0;
+                foreach ( DataRow curDataRow in curPass2DataTable.Rows ) {
+                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value = curDataRow["Results"];
+                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Points"].Value = ( (Int16) curDataRow["Score"] ).ToString();
+                    passScore += (Int16) curDataRow["Score"];
+                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2PointsTotal"].Value = passScore.ToString();
+
+                    if ( !( Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value.ToString().ToUpper().Equals("CREDIT") ) ) {
+                        Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.ForeColor = Color.Red;
+                        Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.BackColor = Color.LightBlue;
+                    }
+
+                    curViewIdx++;
+                }
+
+                if ( myTrickValidation.ValidationMessage.Length > 0 ) {
+                    MessageBox.Show(myTrickValidation.ValidationMessage);
+                }
+            }
+
+            return returnPoints;
+        }
+
+        private Int16 calcPoints_Bak(DataGridView inPassView, DataGridViewRow inPassRow, String inColPrefix) {
             DataRow curTrickRow;
             Int16 retPoints = 0, curRuleNum = 0, curNumTurns = 0, curStartPos = 0, curTypeCodeValue = 0;
             Int16 prevStartPos, prevNumTurns, prev0NumTurns, prevTypeCodeValue, prevRuleNum, tempRuleNum;
@@ -3376,7 +3604,7 @@ namespace WaterskiScoringSystem.Trick {
                                 curStartPos = (Byte)curTrickRow["StartPos"];
                                 curNumTurns = (Byte)curTrickRow["NumTurns"];
                                 curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                curRuleNum = (Int16)( (Byte)curTrickRow["RuleNum"] + ( ( curNumSkis * 100 ) + 200 ) );
+                                curRuleNum = (Int16)( (Int16) curTrickRow["RuleNum"] + ( ( curNumSkis * 100 ) + 200 ) );
 
                                 inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
                                 inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
@@ -3408,7 +3636,7 @@ namespace WaterskiScoringSystem.Trick {
                                     curStartPos = (Byte)curTrickRow["StartPos"];
                                     curNumTurns = (Byte)curTrickRow["NumTurns"];
                                     curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                    curRuleNum = (Int16)((Byte)curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
+                                    curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
 
                                     inPassRow.Cells[inColPrefix + "Code"].Value = curCode;
                                     inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
@@ -3471,7 +3699,7 @@ namespace WaterskiScoringSystem.Trick {
                                     } else {
                                         curStartPos = (Byte)curTrickRow["StartPos"];
                                         curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                        curRuleNum = (Int16)((Byte)curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
+                                        curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
                                         curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
 
                                         inPassRow.Cells[inColPrefix + "Code"].Value = curCode;
@@ -3506,7 +3734,7 @@ namespace WaterskiScoringSystem.Trick {
                         curStartPos = (Byte)curTrickRow["StartPos"];
                         curNumTurns = (Byte)curTrickRow["NumTurns"];
                         curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                        curRuleNum = (Int16)((Byte)curTrickRow["RuleNum"] + (curNumSkis * 100));
+                        curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + (curNumSkis * 100));
 
                         inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
                         inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
@@ -3691,17 +3919,17 @@ namespace WaterskiScoringSystem.Trick {
                     if ( inColPrefix.Equals("Pass1") && curViewRow.Index > 0 ) {
                         if ( Pass1DataGridView.Rows[curViewRow.Index - 1].Cells[inColPrefix + "Results"].Value.ToString().Equals("Repeat") ) {
                         } else {
-                            curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                            curViewRow.Cells[inColPrefix + "Points"].Value = "0";
                             curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
                         }
                     } else if ( inColPrefix.Equals("Pass2") && curViewRow.Index > 0 ) {
                         if ( Pass2DataGridView.Rows[curViewRow.Index - 1].Cells[inColPrefix + "Results"].Value.ToString().Equals("Repeat") ) {
                         } else {
-                            curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                            curViewRow.Cells[inColPrefix + "Points"].Value = "0";
                             curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
                         }
                     } else {
-                        curViewRow.Cells[inColPrefix + "Points"].Value = 0;
+                        curViewRow.Cells[inColPrefix + "Points"].Value = "0";
                         curViewRow.Cells[inColPrefix + "Results"].Value = "Repeat";
                     }
                 } else {
@@ -4180,6 +4408,7 @@ namespace WaterskiScoringSystem.Trick {
                 listApprovedBoatsDataGridView.Rows.Add( 1 );
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["BoatCode"].Value = curRow["ListCode"].ToString();
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["BoatModelApproved"].Value = curRow["CodeValue"].ToString();
+
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["HullStatus"].Value = boatSpecList[0].ToString();
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["EngineSpec"].Value = boatSpecList[1].ToString();
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["FuelDel"].Value = boatSpecList[2].ToString();
@@ -4256,12 +4485,14 @@ namespace WaterskiScoringSystem.Trick {
 
         private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append("SELECT PK, SanctionId, MemberId, AgeGroup, Round, EventClass, ");
-            curSqlStmt.Append( " Score, ScorePass1, ScorePass2, NopsScore, Rating, Boat, Status, Note" );
-            curSqlStmt.Append( " FROM TrickScore " );
-            curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() );
-            curSqlStmt.Append( " ORDER BY SanctionId, MemberId" );
+            curSqlStmt.Append("SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, S.Round, S.EventClass");
+            curSqlStmt.Append(", S.Score, S.ScorePass1, S.ScorePass2, S.NopsScore, S.Rating, S.Boat, S.Status, S.Note");
+            curSqlStmt.Append(", Gender, SkiYearAge ");
+            curSqlStmt.Append( "FROM TrickScore S " );
+            curSqlStmt.Append( "  INNER JOIN TourReg T ON S.SanctionId = T.SanctionId AND S.MemberId = T.MemberId AND S.AgeGroup = T.AgeGroup ");
+            curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND S.MemberId = '" + inMemberId + "' " );
+            curSqlStmt.Append("  AND S.AgeGroup = '" + inAgeGroup + "' AND S.Round = " + inRound.ToString() + " ");
+            curSqlStmt.Append("ORDER BY S.SanctionId, S.MemberId");
             myScoreDataTable = getData( curSqlStmt.ToString() );
         }
         

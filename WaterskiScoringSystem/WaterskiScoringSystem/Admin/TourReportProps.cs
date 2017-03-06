@@ -354,6 +354,24 @@ namespace WaterskiScoringSystem.Admin {
                 }
             }
 
+            //myRunningOrderSortSlalom
+            curPropKey = "RunningOrderSortSlalom";
+            curFindRows = curDataTable.Select("PropKey = '" + curPropKey + "'");
+            if ( curFindRows.Length > 0 ) {
+                curPropValue = (String) curFindRows[0]["PropValue"];
+            } else {
+            }
+
+            //myRunningOrderSortTrick
+            //myRunningOrderSortJump
+            //mySlalomScoreSummary_Sort
+            //myTrickScoreSummary_Sort
+            //myJumpScoreSummary_Sort
+            //myTeamSummary_NumPerTeam
+            //mySlalomTeamSummary_NumPerTeam
+            //myTrickTeamSummary_NumPerTeam
+            //myJumpTeamSummary_NumPerTeam
+
             isDataLoadActive = false;
         }
 

@@ -755,3 +755,13 @@ Update SlalomScore set EventClass = 'F' Where EventClass = 'N';
 Update TrickScore set EventClass = 'F' Where EventClass = 'N';
 Update JumpScore set EventClass = 'F' Where EventClass = 'N';
 
+
+//------------------------------------------------------------
+## v3.51
+ALTER TABLE [TrickList] ALTER COLUMN RuleNum smallint;
+
+//------------------------------------------------------------
+## v4.04
+ALTER TABLE [SlalomScore] ADD COLUMN CompletedSpeedMph tinyint;
+ALTER TABLE [SlalomScore] ADD COLUMN CompletedSpeedKph tinyint;
+

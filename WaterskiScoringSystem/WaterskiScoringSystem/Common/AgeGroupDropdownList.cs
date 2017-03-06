@@ -14,6 +14,11 @@ namespace WaterskiScoringSystem.Common {
         private ArrayList myDropdownList = new ArrayList();
         private DataTable myDataTable;
         private DataTable myIwwfDivDataTable;
+        private String myRuleType = "all";
+        private String myTourClass = "";
+        private String myFed = "";
+        private DataRow myClassERow = null;
+        private DataRow myTourClassRow = null;
 
         //Class instantiation method
         public AgeGroupDropdownList() {
@@ -29,26 +34,27 @@ namespace WaterskiScoringSystem.Common {
         private void AgeGroupDropdownList_Load( DataRow inTourRow ) {
             // Loads data 
             bool isIntlTour = false;
-            String curRuleType = "all", curTourClass = "", curFed = "";
+            myRuleType = "all";
+            myTourClass = "";
+            myFed = "";
             DataRow[] curFindRow;
-            DataRow curClassERow, curTourClassRow;
             StringBuilder curSelectStmt = new StringBuilder( "" );
             StringBuilder curWhereStmt = new StringBuilder( "" );
 
             if ( inTourRow != null ) {
-                curRuleType = (String)inTourRow["Rules"];
-                curTourClass = (String)inTourRow["Class"];
-                curFed = (String)inTourRow["Federation"];
+                myRuleType = (String)inTourRow["Rules"];
+                myTourClass = (String)inTourRow["Class"];
+                myFed = (String)inTourRow["Federation"];
 
                 curSelectStmt.Append( "SELECT ListCode, CodeValue, ListCodeNum, SortSeq FROM CodeValueList WHERE ListName = 'ClassTour' ORDER BY SortSeq" );
                 DataTable curTourClassDataTable = getData( curSelectStmt.ToString() );
                 curFindRow = curTourClassDataTable.Select( "ListCode = 'E'" );
                 if ( curFindRow.Length > 0 ) {
-                    curClassERow = curFindRow[0];
-                    curFindRow = curTourClassDataTable.Select( "ListCode = '" + curTourClass + "'" );
+                    myClassERow = curFindRow[0];
+                    curFindRow = curTourClassDataTable.Select( "ListCode = '" + myTourClass + "'" );
                     if ( curFindRow.Length > 0 ) {
-                        curTourClassRow = curFindRow[0];
-                        if ( (Decimal)curClassERow["ListCodeNum"] < (Decimal)curTourClassRow["ListCodeNum"] ) {
+                        myTourClassRow = curFindRow[0];
+                        if ( (Decimal)myClassERow["ListCodeNum"] < (Decimal)myTourClassRow["ListCodeNum"] ) {
                             isIntlTour = true;
                         }
                     }
@@ -59,7 +65,7 @@ namespace WaterskiScoringSystem.Common {
             curSelectStmt.Append( "SELECT Distinct ListCode as Division, CodeValue as DivisionName");
             curSelectStmt.Append( ", MinValue as AgeBegin, MaxValue as AgeEnd, SortSeq ");
             curSelectStmt.Append( "FROM CodeValueList " );
-            if ( curRuleType.ToLower().Equals( "awsa" ) ) {
+            if ( myRuleType.ToLower().Equals( "awsa" ) ) {
                 if ( isIntlTour ) {
                     curWhereStmt.Append( "WHERE ListName LIKE '%AgeGroup' ");
                     curWhereStmt.Append( "  AND ListName != 'NcwsaAgeGroup' " );
@@ -69,16 +75,16 @@ namespace WaterskiScoringSystem.Common {
                     curWhereStmt.Append( "WHERE ListName = 'AWSAAgeGroup' " );
                     curWhereStmt.Append( "Order by SortSeq, CodeValue " );
                 }
-            } else if ( curRuleType.ToLower().Equals( "iwwf" ) ) {
+            } else if ( myRuleType.ToLower().Equals( "iwwf" ) ) {
                 curWhereStmt.Append( "WHERE ListName = 'IwwfAgeGroup' " );
                 curWhereStmt.Append( "Order by SortSeq, CodeValue " );
-            } else if ( curRuleType.ToLower().Equals( "can" ) ) {
+            } else if ( myRuleType.ToLower().Equals( "can" ) ) {
                 curWhereStmt.Append( "WHERE ListName = 'CWSAAgeGroup' ");
                 curWhereStmt.Append( "Order by SortSeq, CodeValue " );
-            } else if (curRuleType.ToLower().Equals( "awwf" )) {
+            } else if (myRuleType.ToLower().Equals( "awwf" )) {
                 curWhereStmt.Append( "WHERE ListName = 'AWWFAgeGroup' " );
                 curWhereStmt.Append( "Order by SortSeq, CodeValue " );
-            } else if (curRuleType.ToLower().Equals( "ncwsa" )) {
+            } else if (myRuleType.ToLower().Equals( "ncwsa" )) {
                 if (isIntlTour) {
                     curWhereStmt.Append( "WHERE ListName LIKE '%AgeGroup' " );
                     //curWhereStmt.Append( "WHERE ListName in ('AWSAAgeGroup', 'IwwfAgeGroup', 'NcwsaAgeGroup') " );
@@ -118,8 +124,8 @@ namespace WaterskiScoringSystem.Common {
             }
 
             myIwwfDivDataTable = null;
-            if ( (curRuleType.ToLower().Equals( "awsa" ) && isIntlTour)
-                || curRuleType.ToLower().Equals( "iwwf" ) ) {
+            if ( (myRuleType.ToLower().Equals( "awsa" ) && isIntlTour)
+                || myRuleType.ToLower().Equals( "iwwf" ) ) {
                 curSelectStmt = new StringBuilder( "" );
                 curSelectStmt.Append( "SELECT Distinct ListCode as Division, CodeValue as DivisionName" );
                 curSelectStmt.Append( ", MinValue as AgeBegin, MaxValue as AgeEnd, SortSeq " );
@@ -265,6 +271,105 @@ namespace WaterskiScoringSystem.Common {
             return curDropdownList;
         }
 
+        public ArrayList getComparableDivListForAge( String inDiv, Int16 inAge, String inGender, String inEvent ) {
+            ArrayList curDropdownList = new ArrayList();
+
+            Int16 curMaxSpeed = 0;
+            Decimal curRampMax = 0;
+            if ( inEvent.Equals("Slalom") ) {
+                DataTable curDataTable = getMaxSlalomSpeedData(inDiv);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curMaxSpeed = Convert.ToInt16((Decimal) curDataTable.Rows[0]["MaxValue"]);
+                }
+            }
+            if ( inEvent.Equals("Jump") ) {
+                DataTable curDataTable = getMaxJumpSpeedData(inDiv);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curMaxSpeed = Convert.ToInt16((Decimal) curDataTable.Rows[0]["MaxValue"]);
+                }
+                curDataTable = getRampMaxData(inDiv);
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRampMax = (Decimal) curDataTable.Rows[0]["MaxValue"];
+                }
+            }
+
+            // Select for age groups that are comparable to the currently specified division 
+            bool isIntlTour = false;
+            StringBuilder curSqlStmt = new StringBuilder("");
+
+            curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT AG.ListName, AG.ListCode as Division, AG.CodeValue as DivisionName");
+            curSqlStmt.Append(", AG.MinValue as AgeBegin, AG.MaxValue as AgeEnd, AG.SortSeq ");
+            if ( inEvent.Equals("Slalom") ) {
+                curSqlStmt.Append(", SP.MaxValue as KPH, SP.MinValue as MPH ");
+            }
+            if ( inEvent.Equals("Jump") ) {
+                curSqlStmt.Append(", SP.MaxValue as KPH, SP.MinValue as MPH ");
+                curSqlStmt.Append(", RM.MaxValue as RampHeight, RM.MinValue as RampAngle ");
+            }
+            curSqlStmt.Append("FROM CodeValueList AG ");
+            if ( inEvent.Equals("Slalom") ) {
+                curSqlStmt.Append("INNER JOIN CodeValueList SP ON SP.ListName like '%SlalomMax' AND SP.ListCode = AG.ListCode ");
+            }
+            if ( inEvent.Equals("Jump") ) {
+                curSqlStmt.Append("INNER JOIN CodeValueList SP ON SP.ListName like '%JumpMax' AND SP.ListCode = AG.ListCode ");
+                curSqlStmt.Append("INNER JOIN CodeValueList RM ON RM.ListName like '%RampMax' AND RM.ListCode = AG.ListCode ");
+            }
+            curSqlStmt.Append("Where " + inAge + " >= AG.MinValue ");
+            curSqlStmt.Append("And " + inAge + " <= AG.MaxValue ");
+            if ( inEvent.Equals("Slalom") ) {
+                curSqlStmt.Append("And " + curMaxSpeed + " = SP.MaxValue ");
+            }
+            if ( inEvent.Equals("Jump") ) {
+                curSqlStmt.Append("And " + curMaxSpeed + " = SP.MaxValue ");
+                curSqlStmt.Append("And " + curRampMax + " = RM.MaxValue ");
+            }
+            if ( myRuleType.ToLower().Equals("awsa") ) {
+                if ( isIntlTour ) {
+                    curSqlStmt.Append("And AG.ListName LIKE '%AgeGroup' ");
+                    curSqlStmt.Append("And AG.ListName != 'NcwsaAgeGroup' ");
+                    curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+                } else {
+                    curSqlStmt.Append("And AG.ListName = 'AWSAAgeGroup' ");
+                    curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+                }
+            } else if ( myRuleType.ToLower().Equals("iwwf") ) {
+                curSqlStmt.Append("And AG.ListName = 'IwwfAgeGroup' ");
+                curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+            } else if ( myRuleType.ToLower().Equals("can") ) {
+                curSqlStmt.Append("And AG.ListName = 'CWSAAgeGroup' ");
+                curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+            } else if ( myRuleType.ToLower().Equals("awwf") ) {
+                curSqlStmt.Append("And AG.ListName = 'AWWFAgeGroup' ");
+                curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+            } else if ( myRuleType.ToLower().Equals("ncwsa") ) {
+                if ( isIntlTour ) {
+                    curSqlStmt.Append("And AG.ListName LIKE '%AgeGroup' ");
+                    curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+                } else {
+                    curSqlStmt.Append("And AG.ListName in ('AWSAAgeGroup', 'NcwsaAgeGroup') ");
+                    curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+                }
+            } else {
+                curSqlStmt.Append("And AG.ListName LIKE '%AgeGroup' ");
+                curSqlStmt.Append("Order by AG.SortSeq, AG.CodeValue ");
+            }
+
+            DataTable curDivDataTable = getData(curSqlStmt.ToString());
+
+            String curListCode, curCodeValue;
+            foreach ( DataRow curRow in curDivDataTable.Rows ) {
+                if ( ( (String) curRow["Division"] ).Equals(inDiv) ) {
+                    //Bypass if primary division
+                } else if ( inGender == getGenderOfAgeDiv((String) curRow["Division"]) ) {
+                    curListCode = (String) curRow["Division"];
+                    curCodeValue = (String) curRow["DivisionName"];
+                    curDropdownList.Add(curListCode + " (" + curCodeValue + ")");
+                }
+            }
+            return curDropdownList;
+        }
+
         public ArrayList getDivListForAgeIwwf( Int16 inAge, String inDiv ) {
             ArrayList curDropdownList = new ArrayList();
             if (myIwwfDivDataTable != null) {
@@ -289,6 +394,34 @@ namespace WaterskiScoringSystem.Common {
             }
             return curDropdownList;
         }
+
+        private DataTable getMaxSlalomSpeedData( String inAgeGroup ) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
+            curSqlStmt.Append(" FROM CodeValueList");
+            curSqlStmt.Append(" WHERE (ListName like '%SlalomMax' AND ListCode = '" + inAgeGroup + "')");
+            curSqlStmt.Append(" ORDER BY SortSeq");
+            return getData(curSqlStmt.ToString());
+        }
+
+        private DataTable getMaxJumpSpeedData( String inAgeGroup ) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
+            curSqlStmt.Append(" FROM CodeValueList");
+            curSqlStmt.Append(" WHERE (ListName like '%JumpMax' AND ListCode = '" + inAgeGroup + "')");
+            curSqlStmt.Append(" ORDER BY SortSeq");
+            return getData(curSqlStmt.ToString());
+        }
+
+        private DataTable getRampMaxData( String inAgeGroup ) {
+            StringBuilder curSqlStmt = new StringBuilder("");
+            curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
+            curSqlStmt.Append(" FROM CodeValueList");
+            curSqlStmt.Append(" WHERE (ListName like '%RampMax' AND ListCode = '" + inAgeGroup + "')");
+            curSqlStmt.Append(" ORDER BY SortSeq");
+            return getData(curSqlStmt.ToString());
+        }
+
 
         private DataTable getData( String inSelectStmt ) {
             return DataAccess.getDataTable( inSelectStmt );

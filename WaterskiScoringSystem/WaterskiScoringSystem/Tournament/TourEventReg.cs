@@ -16,6 +16,8 @@ namespace WaterskiScoringSystem.Tournament {
         private String mySanctionNum;
         private String myMatchCommand = "";
         private String myMatchCommandPrev = "";
+        private char[] myTabDelim = new char[] { '\t' };
+        private char[] mySingleQuoteDelim = new char[] { '\'' };
         private DataTable myClassToEventDataTable = null;
 
         private ListSkierClass mySkierClassList;
@@ -473,14 +475,14 @@ namespace WaterskiScoringSystem.Tournament {
                             curSqlStmt.Append( ") Values (" );
                             curSqlStmt.Append( "'" + inMemberId + "'" );
                             curSqlStmt.Append( ", '" + mySanctionNum + "'" );
-                            curSqlStmt.Append( ", '" + curLastName + ", " + curFirstName + "'" );
+                            curSqlStmt.Append( ", '" + stringReplace(curLastName, mySingleQuoteDelim, "''") + ", " + stringReplace(curFirstName, mySingleQuoteDelim, "''") + "'" );
                             curSqlStmt.Append( ", '" + inAgeGroup + "'" );
                             curSqlStmt.Append( ", '" + curReadyToSki + "'" );
                             curSqlStmt.Append( ", '" + inTrickBoat + "'" );
                             curSqlStmt.Append( ", " + curJumpHeight );
                             curSqlStmt.Append( ", '" + curFed + "'" );
                             curSqlStmt.Append( ", '" + curGender + "'" );
-                            curSqlStmt.Append( ", '" + curCity + "'" );
+                            curSqlStmt.Append( ", '" + stringReplace(curCity, mySingleQuoteDelim, "''") + "'" );
                             curSqlStmt.Append( ", '" + curState + "'" );
                             curSqlStmt.Append( ", " + curSkiYearAge );
                             curSqlStmt.Append( ", '" + inPreRegNote + "'" );
@@ -994,6 +996,27 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM Tournament " );
             curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' " );
             return getData( curSqlStmt.ToString() );
+        }
+
+        private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
+            StringBuilder curNewValue = new StringBuilder("");
+
+            String[] curValues = inValue.Split(inCurValue);
+            if ( curValues.Length > 1 ) {
+                int curCount = 0;
+                foreach ( String curValue in curValues ) {
+                    curCount++;
+                    if ( curCount < curValues.Length ) {
+                        curNewValue.Append(curValue + inReplValue);
+                    } else {
+                        curNewValue.Append(curValue);
+                    }
+                }
+            } else {
+                curNewValue.Append(inValue);
+            }
+
+            return curNewValue.ToString();
         }
 
         private DataTable getData( String inSelectStmt ) {
