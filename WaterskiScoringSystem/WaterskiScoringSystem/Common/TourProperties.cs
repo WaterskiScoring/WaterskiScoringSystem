@@ -36,11 +36,19 @@ namespace WaterskiScoringSystem.Common {
                 foreach (DataRow curRow in curDataTable.Rows) {
                     if (( (String)curRow["PropKey"] ).ToLower().Equals( "videotags" )) {
                     } else {
-                        curClassType.InvokeMember( "set" + (String)curRow["PropKey"]
-                            , BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod
-                            , null
-                            , curTourProperties
-                            , new Object[] { (String)curRow["PropValue"] } );
+                        if ( curRow["PropValue"] == System.DBNull.Value ) {
+                            curClassType.InvokeMember("set" + (String) curRow["PropKey"]
+                                , BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod
+                                , null
+                                , curTourProperties
+                                , new Object[] { "" });
+                        } else {
+                            curClassType.InvokeMember("set" + (String) curRow["PropKey"]
+                                , BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod
+                                , null
+                                , curTourProperties
+                                , new Object[] { (String) curRow["PropValue"] });
+                        }
                     }
                 }
                 return true;

@@ -459,7 +459,11 @@ namespace WaterskiScoringSystem.Jump {
             ResizeWide.Visible = false;
             ResizeWide.Enabled = false;
 
-            TourEventRegDataGridView.Width = 455;
+            if ( TeamCode.Visible ) {
+                TourEventRegDataGridView.Width = 540;
+            } else {
+                TourEventRegDataGridView.Width = 490;
+            }
         }
 
         private void navSaveItem_Click(object sender, EventArgs e) {
@@ -1902,6 +1906,16 @@ namespace WaterskiScoringSystem.Jump {
                             curViewRow.Cells["RankingScore"].Value = ( (Decimal)curDataRow["RankingScore"] ).ToString( "###0.0" );
                         } catch {
                             curViewRow.Cells["RankingScore"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["HCapBase"].Value = ( (Decimal) curDataRow["HCapBase"] ).ToString("###0.0");
+                        } catch {
+                            curViewRow.Cells["HCapBase"].Value = "";
+                        }
+                        try {
+                            curViewRow.Cells["HCapScore"].Value = ( (Decimal) curDataRow["HCapScore"] ).ToString("###0.0");
+                        } catch {
+                            curViewRow.Cells["HCapScore"].Value = "";
                         }
                         try {
                             curViewRow.Cells["RankingRating"].Value = (String)curDataRow["RankingRating"];
