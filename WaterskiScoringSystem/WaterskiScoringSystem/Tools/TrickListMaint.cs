@@ -117,7 +117,7 @@ namespace WaterskiScoringSystem.Tools {
                         curViewRow.Cells["NumTurns"].Value = ( (byte)curDataRow["NumTurns"] ).ToString();
                         curViewRow.Cells["Points"].Value = ( (Int16)curDataRow["Points"] ).ToString();
                         curViewRow.Cells["RuleCode"].Value = (String)curDataRow["RuleCode"];
-                        curViewRow.Cells["RuleNum"].Value = ( (byte)curDataRow["RuleNum"] ).ToString();
+                        curViewRow.Cells["RuleNum"].Value = ( (Int16) curDataRow["RuleNum"] ).ToString();
                         curViewRow.Cells["StartPos"].Value = ( (byte)curDataRow["StartPos"] ).ToString();
                         curViewRow.Cells["TrickCode"].Value = (String)curDataRow["TrickCode"];
                         curViewRow.Cells["TypeCode"].Value = ( (byte)curDataRow["TypeCode"] ).ToString();

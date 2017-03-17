@@ -716,15 +716,17 @@ namespace WaterskiScoringSystem.Common {
                             newSkierScoreRow["PassScore"] = 0;
                         }
                         try {
-                            Decimal[] curLastPassData = getSlalomLastPass( curSkierDetailRow[0], curSkierRow, curRoundName );
-                            newSkierScoreRow["Speed"] = Convert.ToByte( curLastPassData[0] );
-                            newSkierScoreRow["LineLength"] = 23M - curLastPassData[1];
+                            newSkierScoreRow["Speed"] = (byte) curSkierDetailRow[0]["FinalSpeedKph"];
+                            Decimal curFinalLineLength = Convert.ToDecimal(( (String) curSkierDetailRow[0]["FinalLen"] ).Substring(0, ( (String) curSkierDetailRow[0]["FinalLen"] ).Length - 1));
+                            if ( inRules.ToLower().Equals("iwwf") && curFinalLineLength == 23M ) {
+                                newSkierScoreRow["LineLength"] = 23M - 18.25M;
+                            } else {
+                                newSkierScoreRow["LineLength"] = 23M - curFinalLineLength;
+                            }
                         } catch {
                             newSkierScoreRow["Speed"] = 0;
                             if (inRules.ToLower().Equals( "iwwf" )) {
-                                newSkierScoreRow["LineLength"] = 18.25M;
-                            } else {
-                                newSkierScoreRow["LineLength"] = 23M;
+                                newSkierScoreRow["LineLength"] = 23M - 18.25M;
                             }
                         }
                     } catch {
@@ -2438,57 +2440,6 @@ namespace WaterskiScoringSystem.Common {
             }
 
             return curReturnScore;
-        }
-
-        private Decimal[] getSlalomLastPass(DataRow curSkierDetailRow, DataRow curSkierRow, String curRoundName) {
-            Decimal[] curReturnData = { 0M, 0M };
-            Byte curMaxSpeed = 0, curStartSpeed = 0;
-            Decimal curStartLen = 0M;
-
-            String curMemberId = (String)curSkierRow["MemberId"];
-            String curAgeGroup = (String)curSkierRow["AgeGroup"];
-            String curRound = "1";
-            try {
-                if (curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" )) {
-                    curRound = ( (Byte)curSkierRow[curRoundName] ).ToString();
-                } else if (curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int16" )) {
-                    curRound = ( (Int16)curSkierRow[curRoundName] ).ToString();
-                } else if (curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int32" )) {
-                    curRound = ( (int)curSkierRow[curRoundName] ).ToString();
-                } else {
-                    curRound = "1";
-                }
-            } catch {
-                curRound = "1";
-            }
-            curMaxSpeed = (Byte)curSkierDetailRow["MaxSpeed"];
-            curStartSpeed = (Byte)curSkierDetailRow["StartSpeed"];
-            curStartLen = Convert.ToDecimal( ( (String)curSkierDetailRow["StartLen"] ).Substring( 0, ( (String)curSkierDetailRow["StartLen"] ).Length - 1 ) );
-
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Select MemberId, AgeGroup, Round, PassNum, SkierRunNum, Score, CodeValue, MinValue, MaxValue, CodeDesc " );
-            curSqlStmt.Append( "FROM SlalomRecap" );
-            curSqlStmt.Append( "  INNER JOIN CodeValueList ON ListName = 'SlalomPass" + curMaxSpeed.ToString() + "' AND ListCodeNum = PassNum " );
-            curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' " );
-            curSqlStmt.Append( "  AND AgeGroup = '" + curAgeGroup + "' AND Round = " + curRound + " " );
-            curSqlStmt.Append( "ORDER BY MemberId, Round, PassNum" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            try {
-                if (curDataTable.Rows.Count > 0) {
-                    int curIdx = curDataTable.Rows.Count - 1;
-                    Decimal curReturnScore = (Decimal)curDataTable.Rows[curIdx]["Score"];
-                    Decimal curReturnSpeed = (Decimal)curDataTable.Rows[curIdx]["MaxValue"];
-                    Decimal curReturnRopeLen = (Decimal)curDataTable.Rows[curIdx]["MinValue"];
-                    if (curReturnRopeLen > curStartLen) {
-                        curReturnRopeLen = curStartLen;
-                    }
-                    curReturnData[0] = curReturnSpeed;
-                    curReturnData[1] = curReturnRopeLen;
-                }
-            } catch {
-            }
-
-            return curReturnData;
         }
 
         private Int16 getTrickRunoffScore( String inMemberId, String inAgeGroup ) {

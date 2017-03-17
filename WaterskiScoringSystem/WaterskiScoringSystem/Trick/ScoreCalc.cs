@@ -298,7 +298,11 @@ namespace WaterskiScoringSystem.Trick {
             ResizeWide.Visible = false;
             ResizeWide.Enabled = false;
 
-            TourEventRegDataGridView.Width = 500;
+            if ( TeamCode.Visible ) {
+                TourEventRegDataGridView.Width = 565;
+            } else {
+                TourEventRegDataGridView.Width = 515;
+            }
         }
 
         private void navSaveItem_Click(object sender, EventArgs e) {
