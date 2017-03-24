@@ -909,7 +909,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23568	NCWSARecords	CM-S		491	College Men - Slalom		117.500	3.5 buoys at 10.25m @ 58 kph (41 off @ 36 mph) 10/3/2011 Will Asher  
 00000	NCWSARecords	CM-T		492	College Men - Trick		7050	5/17/2014 Dylan Schaffer
 00000	NCWSARecords	CM-J		493	College Men - Jump		195	(59.5m) 10/14/2015 Zack Worden
-00000	NCWSARecords	CW-S		501	College Women - Slalom		105		3 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/1/2014 Manon Costard 10/1/2015 Samantha Dumala
+00000	NCWSARecords	CW-S		501	College Women - Slalom		105	3 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/1/2014 Manon Costard 10/1/2015 Samantha Dumala
 00000	NCWSARecords	CW-T		502	College Women - Trick		5960	10/7/2015 Erika Lang
 23573	NCWSARecords	CW-J		503	College Women - Jump		157.000	(47.9m) 10/1/2011 Lauren Morgan
 22596	NcwsaSlalomMax	CM		44	58kph, 36mph	36.000	58.000	

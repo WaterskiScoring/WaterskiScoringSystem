@@ -2723,7 +2723,9 @@ namespace WaterskiScoringSystem.Jump {
                         myModCellValue = "";
                     } else {
                         if ( curValue != myOrigCellValue ) {
-                            if ( curValue.ToUpper().Equals( "OK" ) ) {
+                            if ( curValue.ToUpper().Equals("OK") ) {
+                                myModCellValue = "";
+                            } else if ( curValue.ToUpper().Equals("NONE") ) {
                                 myModCellValue = "";
                             } else {
                                 try {
@@ -4942,8 +4944,12 @@ namespace WaterskiScoringSystem.Jump {
                 if ( curTimeOrigValue.ToUpper().Equals( "OK" ) ) {
                     curTimeOrigValue = curActualTime.ToString( "#0.00" );
                     myRecapRow.Cells["BoatSplitTimeRecap"].Value = curTimeOrigValue;
+                } else if ( curTimeOrigValue.ToUpper().Equals("NONE") ) {
+                    curTimeOrigValue = .01m.ToString("#0.00");
+                    myRecapRow.Cells["BoatSplitTimeRecap"].Value = curTimeOrigValue;
                 }
-                if (curTimeOrigValue.Length == 1) {
+
+                if ( curTimeOrigValue.Length == 1) {
                     curTimeOrigValue = "0" + curTimeOrigValue;
                 }
                 if (curTimeOrigValue.Length == 2) {
@@ -5012,6 +5018,9 @@ namespace WaterskiScoringSystem.Jump {
                 curTimeOrigValue = myRecapRow.Cells["BoatSplitTime2Recap"].Value.ToString();
                 if ( curTimeOrigValue.ToUpper().Equals( "OK" ) ) {
                     curTimeOrigValue = curActualTime.ToString( "#0.00" );
+                    myRecapRow.Cells["BoatSplitTime2Recap"].Value = curTimeOrigValue;
+                } else if ( curTimeOrigValue.ToUpper().Equals("NONE") ) {
+                    curTimeOrigValue = .01m.ToString("#0.00");
                     myRecapRow.Cells["BoatSplitTime2Recap"].Value = curTimeOrigValue;
                 }
                 if ( curTimeOrigValue.Length == 1 ) {
@@ -5084,6 +5093,9 @@ namespace WaterskiScoringSystem.Jump {
                 curTimeOrigValue = myRecapRow.Cells["BoatEndTimeRecap"].Value.ToString();
                 if ( curTimeOrigValue.ToUpper().Equals( "OK" ) ) {
                     curTimeOrigValue = curActualTime.ToString( "#0.00" );
+                    myRecapRow.Cells["BoatEndTimeRecap"].Value = curTimeOrigValue;
+                } else if ( curTimeOrigValue.ToUpper().Equals("NONE") ) {
+                    curTimeOrigValue = .01m.ToString("#0.00");
                     myRecapRow.Cells["BoatEndTimeRecap"].Value = curTimeOrigValue;
                 }
                 if ( curTimeOrigValue.Length == 1 ) {
