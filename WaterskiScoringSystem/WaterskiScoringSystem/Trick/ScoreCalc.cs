@@ -184,6 +184,7 @@ namespace WaterskiScoringSystem.Trick {
                             myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
                             myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
 
+                            myTrickValidation.TourRules = myTourRules;
                             myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
                             myTrickValidation.TrickListDataTable = myTrickListDataTable;
 
@@ -640,12 +641,9 @@ namespace WaterskiScoringSystem.Trick {
                 if ( curPK < 0 ) {String curMemberId = (String)inViewRow.Cells[inPassPrefix + "MemberId"].Value;
                     String curAgeGroup = (String)inViewRow.Cells[inPassPrefix + "AgeGroup"].Value;
                     String curCode = (String)inViewRow.Cells[inPassPrefix + "Code"].Value;
-                    String curSkis = (String)inViewRow.Cells[inPassPrefix + "Skis"].Value;
-                    if ( curSkis.ToLower().Equals("wb") || curSkis.ToLower().Equals("w") ) {
-                        curSkis = "0";
-                    } else if ( curSkis.ToLower().Equals("kb") || curSkis.ToLower().Equals("k") ) {
-                        curSkis = "9";
-                    }
+                    this.myTrickValidation.validateNumSkis((String) inViewRow.Cells[inPassPrefix + "Skis"].Value, this.myTourRules);
+                    String curSkis = this.myTrickValidation.NumSkis.ToString();
+
                     String curResults = (String)inViewRow.Cells[inPassPrefix + "Results"].Value;
                     if ( curCode.Length > 0 && curSkis.Length > 0 && curResults.Length > 0 ) {
                         byte curRound = Convert.ToByte( inViewRow.Cells[inPassPrefix + "Round"].Value );
@@ -687,14 +685,9 @@ namespace WaterskiScoringSystem.Trick {
                     curNote = "";
                 }
                 String curSkis = "";
-                try {
-                    curSkis = inViewRow.Cells[inPassPrefix + "Skis"].Value.ToString();
-                    if ( curSkis.ToLower().Equals( "wb" ) || curSkis.ToLower().Equals( "w" ) ) {
-                        curSkis = "0";
-                    } else if ( curSkis.ToLower().Equals("kb") || curSkis.ToLower().Equals("k") ) {
-                        curSkis = "9";
-                    }
-                } catch {
+                if ( this.myTrickValidation.validateNumSkis((String) inViewRow.Cells[inPassPrefix + "Skis"].Value, this.myTourRules) >= 0 ) {
+                    curSkis = this.myTrickValidation.NumSkis.ToString();
+                } else {
                     curSkis = "0";
                 }
 
@@ -797,14 +790,7 @@ namespace WaterskiScoringSystem.Trick {
                             || isObjectEmpty( curPassRow.Cells[curColPrefix + "Code"].Value )
                             ) {
                         } else {
-                            curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                curNumSkis = 0;
-                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                curNumSkis = 9;
-                            } else {
-                                curNumSkis = Convert.ToByte( curValue );
-                            }
+                            curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                             curTrickCode = (String)curPassRow.Cells[curColPrefix + "Code"].Value;
                             if ( curTrickCode.Equals( "END" ) || curTrickCode.Equals( "HORN" ) ) {
                                 if ( deleteTrickPass( curPassRow.Cells["Pass1PK"].Value.ToString() ) ) {
@@ -880,14 +866,7 @@ namespace WaterskiScoringSystem.Trick {
                                 || isObjectEmpty( curPassRow.Cells[curColPrefix + "Code"].Value )
                                 ) {
                             } else {
-                                curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                    curNumSkis = 0;
-                                } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                    curNumSkis = 9;
-                                } else {
-                                    curNumSkis = Convert.ToByte( curValue );
-                                }
+                                curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                                 curTrickCode = (String)curPassRow.Cells[curColPrefix + "Code"].Value;
                                 if ( curTrickCode.Equals( "END" ) || curTrickCode.Equals( "HORN" ) ) {
                                     if ( deleteTrickPass( curPassRow.Cells["Pass2PK"].Value.ToString() ) ) {
@@ -1146,19 +1125,8 @@ namespace WaterskiScoringSystem.Trick {
                         newRowSeqNum = Convert.ToInt16( (String)curPassRow.Cells[curColSeq].Value );
                         curRound = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "Round"].Value );
                         curPassNum = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "PassNum"].Value );
-                        try {
-                            curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                curNumSkis = 0;
-                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                curNumSkis = 9;
-                            } else {
-                                curNumSkis = Convert.ToByte( curValue );
-                            }
-                        } catch ( Exception excp ) {
-                            curNumSkis = 1;
-                            //MessageBox.Show( "Error attempting to insert a new row.  Current row has some invalid data \n" + excp.Message );
-                        }
+                        curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
+                        if ( curNumSkis  < 0) curNumSkis = 1;
 
                         if ( inInsertAbove ) {
                             curMsg = "Insert Above";
@@ -1177,14 +1145,7 @@ namespace WaterskiScoringSystem.Trick {
                             curPassRow = inPassView.Rows[curLastIdx];
                             newRowSeqNum = Convert.ToInt16( (String)curPassRow.Cells[curColSeq].Value );
                             newRowSeqNum++;
-                            curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                curNumSkis = 0;
-                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                curNumSkis = 9;
-                            } else {
-                                curNumSkis = Convert.ToByte( curValue );
-                            }
+                            curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                             curRound = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "Round"].Value );
                             curPassNum = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "PassNum"].Value );
                         }
@@ -1212,14 +1173,7 @@ namespace WaterskiScoringSystem.Trick {
                             curPassRow = inPassView.Rows[curLastIdx];
                             newRowSeqNum = Convert.ToInt16( (String)curPassRow.Cells[curColSeq].Value );
                             newRowSeqNum++;
-                            curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                curNumSkis = 0;
-                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                curNumSkis = 9;
-                            } else {
-                                curNumSkis = Convert.ToByte( curValue );
-                            }
+                            curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                             curRound = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "Round"].Value );
                             curPassNum = Convert.ToInt16( (String)curPassRow.Cells[curColPrefix + "PassNum"].Value );
                         }
@@ -2760,25 +2714,6 @@ namespace WaterskiScoringSystem.Trick {
                         MessageBox.Show(this.myTrickValidation.ValidationMessage);
                         e.Cancel = true;
                     }
-                    /*
-                    if ( e.FormattedValue.ToString().Length > 0 ) {
-                        if ( e.FormattedValue.ToString().Equals( "1" )
-                            || e.FormattedValue.ToString().Equals( "2" )
-                            ) {
-                            e.Cancel = false;
-                        } else if ( myTourRules.ToLower().Equals("ncwsa")
-                            && (e.FormattedValue.ToString().ToLower().Equals( "wb" )
-                            || e.FormattedValue.ToString().ToLower().Equals( "w" )
-                            || e.FormattedValue.ToString().ToLower().Equals("kb")
-                            || e.FormattedValue.ToString().ToLower().Equals("k")
-                            ) ) {
-                            e.Cancel = false;
-                        } else {
-                            MessageBox.Show( "Number of skis must equal 1 or 2 or (WB or KB for NCWSA)" );
-                            e.Cancel = true;
-                        }
-                    }
-                    */
                 } else if ( curColName.Equals( "Code" ) ) {
                     if ( e.FormattedValue.ToString().Length > 0 ) {
                         if (e.RowIndex > 0) {
@@ -2816,23 +2751,6 @@ namespace WaterskiScoringSystem.Trick {
                                             MessageBox.Show(this.myTrickValidation.ValidationMessage);
                                             e.Cancel = true;
                                         }
-                                        /*
-                                        try {
-                                            //curNumSkis = Convert.ToByte( curPassRow.Cells[curColPrefix + "Skis"].Value );
-                                            String curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                                                curNumSkis = 0;
-                                            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                                                curNumSkis = 9;
-                                            } else {
-                                                curNumSkis = Convert.ToByte( curValue );
-                                            }
-                                        } catch {
-                                            curNumSkis = 0;
-                                            MessageBox.Show("Number of skis has not been properly set");
-                                            e.Cancel = false;
-                                        }
-                                        */
                                     }
                                 }
                             }
@@ -2953,14 +2871,7 @@ namespace WaterskiScoringSystem.Trick {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                     Int16 curNumSkis = 0;
-                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                    if ( curValueNumSkis.ToLower().Equals("wb") || curValueNumSkis.ToLower().Equals("w") ) {
-                                        curNumSkis = 0;
-                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
-                                        curNumSkis = 9;
-                                    } else {
-                                        curNumSkis = Convert.ToByte(curValueNumSkis);
-                                    }
+                                    curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                                     checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix );
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
@@ -2986,15 +2897,7 @@ namespace WaterskiScoringSystem.Trick {
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                     isPassEnded = true;
                                 } else {
-                                    Int16 curNumSkis = 0;
-                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                    if ( curValueNumSkis.ToLower().Equals( "wb" ) || curValueNumSkis.ToLower().Equals( "w" ) ) {
-                                        curNumSkis = 0;
-                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
-                                        curNumSkis = 9;
-                                    } else {
-                                        curNumSkis = Convert.ToByte( curValueNumSkis );
-                                    }
+                                    Int16 curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                                     if ( checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix ) ) {
                                         isTrickValid = true;
                                     } else {
@@ -3006,6 +2909,7 @@ namespace WaterskiScoringSystem.Trick {
                                 }
                             }
                             #endregion
+
                         } else {
                             #region Trick code has been changed therefore perform validation
                             isDataModified = true;
@@ -3016,18 +2920,12 @@ namespace WaterskiScoringSystem.Trick {
                                 if ( curValue.Equals( "END" ) || curValue.Equals( "HORN" ) ) {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                     isPassEnded = true;
+
                                 } else if (curValue.Equals( "FALL" )) {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "0";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
-                                    Int16 curNumSkis = 0;
-                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                    if ( curValueNumSkis.ToLower().Equals("wb") || curValueNumSkis.ToLower().Equals("w") ) {
-                                        curNumSkis = 0;
-                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
-                                        curNumSkis = 9;
-                                    } else {
-                                        curNumSkis = Convert.ToByte(curValueNumSkis);
-                                    }
+
+                                    Int16 curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                                     checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix );
                                     if (curPassRow.Index == 0) {
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
@@ -3048,35 +2946,37 @@ namespace WaterskiScoringSystem.Trick {
                                     } else {
                                         isPassEnded = true;
                                     }
+
                                 } else if (curValue.Equals( "NSP" )) {
                                     curPassRow.Cells[curColPrefix + "Points"].Value = "-1";
                                     curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                     isPassEnded = true;
+
                                 } else {
                                     Int16 curNumSkis = 0;
-                                    String curValueNumSkis = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                                    if ( curValueNumSkis.ToLower().Equals( "wb" ) || curValueNumSkis.ToLower().Equals( "w" ) ) {
-                                        curNumSkis = 0;
-                                    } else if ( curValueNumSkis.ToLower().Equals("kb") || curValueNumSkis.ToLower().Equals("k") ) {
-                                        curNumSkis = 9;
-                                    } else {
-                                        curNumSkis = Convert.ToByte( curValueNumSkis );
-                                    }
-                                    if ( checkTrickCode( curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix ) ) {
-                                        isTrickValid = true;
-                                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "CREDIT" ) ) {
-                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
-                                        } else {
-                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints( curPassView, curPassRow, curColPrefix ).ToString();
-                                            int curPoints = 0;
-                                            Int32.TryParse((String)curPassRow.Cells[curColPrefix + "Points"].Value, out curPoints );
-                                            if ( curPoints > 0 ) {
-                                                curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                                    if ( this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules) >= 0 ) {
+                                        curNumSkis = this.myTrickValidation.NumSkis;
+                                        if ( checkTrickCode(curPassView, curPassRow.Index, curValue.ToUpper(), curNumSkis, curColPrefix) ) {
+                                            isTrickValid = true;
+                                            if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("CREDIT") ) {
+                                                curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(curPassView, curPassRow, curColPrefix).ToString();
+                                            } else {
+                                                curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(curPassView, curPassRow, curColPrefix).ToString();
+                                                int curPoints = 0;
+                                                Int32.TryParse((String) curPassRow.Cells[curColPrefix + "Points"].Value, out curPoints);
+                                                if ( curPoints > 0 ) {
+                                                    curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                                                }
                                             }
+                                            curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
+                                            curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
+                                            curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
+                                        } else {
+                                            isTrickValid = false;
+                                            curPassRow.Cells[curColPrefix + "Results"].Value = "Unresolved";
+                                            curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = Color.Red;
+                                            curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = Color.LightBlue;
                                         }
-                                        curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
-                                        curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
-                                        curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
                                     } else {
                                         isTrickValid = false;
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Unresolved";
@@ -3123,14 +3023,7 @@ namespace WaterskiScoringSystem.Trick {
 
             if (curNewIdx > 0) {
                 DataGridViewRow curPassRow = (DataGridViewRow)inPassView.Rows[curNewIdx - 1];
-                String curValue = curPassRow.Cells[curColPrefix + "Skis"].Value.ToString();
-                if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                    curNumSkis = 0;
-                } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                    curNumSkis = 9;
-                } else {
-                    curNumSkis = Convert.ToByte( curValue );
-                }
+                curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                 curRound = Convert.ToInt16( curPassRow.Cells[curColPrefix + "Round"].Value);
                 curPassNum = Convert.ToInt16( curPassRow.Cells[curColPrefix + "PassNum"].Value);
                 curSeqNum = Convert.ToInt16( curPassRow.Cells[curColPrefix + "Seq"].Value );
@@ -3213,11 +3106,9 @@ namespace WaterskiScoringSystem.Trick {
 
                 curIdx--;
                 //NumSkis, NumTurns, PK, Points, RuleCode, RuleNum, StartPos, TrickCode, TypeCode
-
-
                 prevTrickRows[0] = myTrickListDataTable.NewRow();
                 prevTrickRows[0]["TrickCode"] = (String) inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                prevTrickRows[0]["NumSkis"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value.ToString());
+                prevTrickRows[0]["NumSkis"] = this.myTrickValidation.validateNumSkis((String) inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value, this.myTourRules);
                 prevTrickRows[0]["Points"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Points"].Value.ToString());
                 if ( (String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value != null ) {
                     prevTrickRows[0]["StartPos"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value);
@@ -3238,7 +3129,7 @@ namespace WaterskiScoringSystem.Trick {
                         prevTrickRows[1]["NumTurns"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value);
                         prevTrickRows[1]["TypeCode"] = Convert.ToInt16((String) inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value);
                         prevTrickRows[1]["RuleNum"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
-                        prevTrickRows[1]["NumSkis"] = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value.ToString());
+                        prevTrickRows[1]["NumSkis"] = this.myTrickValidation.validateNumSkis((String) inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value, this.myTourRules);
                     }
                 }
             }
@@ -3255,258 +3146,6 @@ namespace WaterskiScoringSystem.Trick {
                 MessageBox.Show(myTrickValidation.ValidationMessage);
             }
 
-            return returnStatus;
-        }
-
-        private bool checkTrickCode_Bak( DataGridView inPassView, int inPassRowIdx, String inCode, Int16 inNumSkis, String inColPrefix ) {
-            bool returnStatus = false;
-            Int16 curNumTurns, curStartPos, curTypeCodeValue, curRuleNum;
-            Int16 prevStartPos, prevNumTurns, prevTypeCodeValue, prevRuleNum;
-            String curCode, prevCode;
-            int curIdx = inPassRowIdx;
-            DataRow curTrickRow;
-            String curSkierClass = (String)( (ListItem)scoreEventClass.SelectedItem ).ItemValue;
-
-            if ( inCode != null && inCode.Length > 0 ) {
-                if ( inCode.ToUpper().Equals( "R" ) || inCode.Substring( 0, 1 ).ToUpper().Equals( "R" ) ) {
-                    #region Determine actual trick code for reverse code
-                    if ( curIdx > 0 ) {
-                        curIdx--;
-                        prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                        prevStartPos = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value );
-                        prevNumTurns = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value );
-                        prevTypeCodeValue = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value );
-                        prevRuleNum = Convert.ToInt16( inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString() );
-
-                        //Check to determine if the number of turns in the trick are an odd or even number indicating starting and stoping position
-                        if (( prevNumTurns % 2 ) == 0) {
-                            if (inCode.Length > 1) {
-                                curCode = inCode;
-                            } else {
-                                if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
-                                    if (myAllowedRepeatReverseList.Contains(prevCode)) {
-                                        curCode = prevCode;
-                                    } else {
-                                        curCode = inCode + prevCode;
-                                    }
-                                } else {
-                                    curCode = inCode + prevCode;
-                                }
-                            }
-                            curTrickRow = getTrickRow( curCode, inNumSkis, curSkierClass );
-                            if (curTrickRow == null) {
-                                MessageBox.Show( "Invalid trick code for number of skis "
-                                    + "\n Trick Code " + curCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
-                                returnStatus = false;
-                            } else {
-                                //Check to ensure 360 multiples tricks has an appropriate starting position on the previous 2 tricks
-                                curStartPos = (Byte)curTrickRow["StartPos"];
-                                curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                if (curStartPos == prevStartPos) {
-                                    returnStatus = true;
-                                } else {
-                                    MessageBox.Show( "Trick sequence is not possible "
-                                        + curCode + " following " + prevCode + " is not possible" );
-                                    returnStatus = false;
-                                }
-                            }
-                        } else {
-                            if (curIdx > 0) {
-                                if (inCode.Length > 1) {
-                                    curCode = inCode;
-                                } else {
-                                    DataRow curClassRow = getClassRow(curSkierClass);
-                                    if ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
-                                        curCode = inCode + (String)inPassView.Rows[curIdx - 1].Cells[inColPrefix + "Code"].Value;
-                                    } else {
-                                        prevCode = (String)inPassView.Rows[curIdx - 1].Cells[inColPrefix + "Code"].Value;
-                                        if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
-                                            if (myAllowedRepeatReverseList.Contains( prevCode )) {
-                                                curCode = prevCode;
-                                            } else {
-                                                curCode = inCode + prevCode;
-                                            }
-                                        } else {
-                                            curCode = inCode + prevCode;
-                                        }
-                                    }
-                                }
-                                curTrickRow = getTrickRow( curCode, inNumSkis, curSkierClass );
-                                if (curTrickRow == null) {
-                                    MessageBox.Show( "Invalid trick code for number of skis "
-                                        + "\n Trick Code " + curCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
-                                    returnStatus = false;
-                                } else {
-                                    //Check to see if starting position of previous trick is appropriate
-                                    curStartPos = (Byte)curTrickRow["StartPos"];
-                                    curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                    curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                    curRuleNum = (Int16)( (Int16)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
-                                    
-                                    if (( ( prevStartPos + prevNumTurns ) % 2 ) == 0) {
-                                        if (curStartPos == 0) {
-                                            //Check to see if starting position of 2nd previous trick is also appropriate
-                                            curIdx--;
-                                            prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                                            prevStartPos = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value );
-                                            prevNumTurns = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value );
-                                            if (curStartPos == prevStartPos) {
-                                                returnStatus = true;
-                                            } else {
-                                                MessageBox.Show( "Trick sequence is not possible " + curCode + " following " + prevCode + " is not possible" );
-                                                returnStatus = false;
-                                            }
-                                        } else {
-                                            MessageBox.Show( "Trick sequence is not possible " + inCode + " following " + prevCode + " is not possible" );
-                                            returnStatus = false;
-                                        }
-                                    } else {
-                                        if (curStartPos == 0) {
-                                            MessageBox.Show( "Trick sequence is not possible " + inCode + " following " + prevCode + " is not possible" );
-                                            returnStatus = false;
-                                        } else {
-                                            if (curRuleNum == prevRuleNum) {
-                                                if (curNumTurns > 2) {
-                                                    MessageBox.Show( "This type of reverse trick can not have more than 360 degrees" );
-                                                    returnStatus = false;
-                                                } else {
-                                                    returnStatus = true;
-                                                    //MessageBox.Show( "Reverse trick" );
-                                                }
-                                            } else {
-                                                //Check to see if starting position of 2nd previous trick is also appropriate
-                                                curIdx--;
-                                                prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                                                prevStartPos = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value );
-                                                prevNumTurns = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value );
-                                                if (curStartPos == prevStartPos) {
-                                                    returnStatus = true;
-                                                } else {
-                                                    MessageBox.Show( "Trick sequence is not possible "
-                                                        + curCode + " following " + prevCode + " is not possible" );
-                                                    returnStatus = false;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                if (inCode.Length > 1) {
-                                    curCode = inCode;
-                                    curTrickRow = getTrickRow( curCode, inNumSkis, curSkierClass );
-                                    if (curTrickRow == null) {
-                                        MessageBox.Show( "Trick sequence is not possible "
-                                            + "\n Use of reverse code but second trick can't be a reverse of trick " + prevCode );
-                                        returnStatus = false;
-                                    } else {
-                                        curStartPos = (Byte)curTrickRow["StartPos"];
-                                        curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                        curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                        curRuleNum = (Int16)( (Int16) curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
-
-                                        //Check to see if starting position of previous trick is appropriate
-                                        if ( (( (( prevStartPos + prevNumTurns ) % 2 ) == 0) && (curStartPos == 0))
-                                            || ( ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 1 ) && ( curStartPos == 1 ) )
-                                            ) {
-                                            if (curRuleNum == prevRuleNum) {
-                                                if (curNumTurns > 2) {
-                                                    MessageBox.Show( "This type of reverse trick can not have more than 360 degrees" );
-                                                    returnStatus = false;
-                                                } else {
-                                                    returnStatus = true;
-                                                    //MessageBox.Show( "Reverse trick" );
-                                                }
-                                            } else {
-                                                MessageBox.Show( "Trick sequence is not possible "
-                                                    + "\n Use of reverse code but second trick can't be a reverse of trick " + prevCode );
-                                                returnStatus = false;
-                                            }
-                                        } else {
-                                            MessageBox.Show( "Trick sequence is not possible "
-                                                + inCode + " following " + prevCode + " is not possible" );
-                                            returnStatus = false;
-                                        }
-                                    }
-                                } else {
-                                    MessageBox.Show( "Trick sequence is not possible "
-                                        + "\n Use of reverse code but second trick can't be a reverse of trick " + prevCode );
-                                    returnStatus = false;
-                                }
-                            }
-                        }
-                    } else {
-                        MessageBox.Show( "Reverse code not logical as first trick in a pass"
-                            + "\n Trick Code " + inCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
-                        returnStatus = false;
-                    }
-                    #endregion
-                } else {
-                    #region Analyze trick code
-					curTrickRow = getTrickRow( inCode, inNumSkis, curSkierClass );
-					if (curTrickRow == null) {
-                        MessageBox.Show( "Invalid trick code for number of skis "
-                            + "\n Trick Code " + inCode + " on " + inNumSkis.ToString() + " ski(s) is not valid" );
-                        returnStatus = false;
-                    } else {
-                        curStartPos = (Byte)curTrickRow["StartPos"];
-                        curNumTurns = (Byte)curTrickRow["NumTurns"];
-                        curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-
-                        if ( curIdx > 0 ) {
-                            if (curIdx == 1 && inCode.ToUpper().Equals( "FALL" ) 
-                                && ((String)inPassView.Rows[curIdx - 1].Cells[inColPrefix + "Code"].Value).ToUpper().Equals( "FALL" )) {
-                                returnStatus = true;
-                            } else {
-                                curIdx--;
-                                prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                                prevStartPos = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value );
-                                prevNumTurns = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value );
-                                prevTypeCodeValue = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value );
-
-                                if (prevCode.ToUpper().Equals( "FALL" )) {
-                                    if (curStartPos == 0) {
-                                        returnStatus = true;
-                                    } else {
-                                        MessageBox.Show( "Trick sequence is not possible "
-                                            + inCode + " following " + prevCode + " is not possible" );
-                                        returnStatus = false;
-                                    }
-                                } else if (( ( prevStartPos + prevNumTurns ) % 2 ) == 0) {
-                                    if (curStartPos == 0) {
-                                        returnStatus = true;
-                                    } else {
-                                        MessageBox.Show( "Trick sequence is not possible "
-                                            + inCode + " following " + prevCode + " is not possible" );
-                                        returnStatus = false;
-                                    }
-                                } else {
-                                    if (curStartPos == 1) {
-                                        returnStatus = true;
-                                    } else {
-                                        if (prevCode.ToUpper().Equals( "FALL" )) {
-                                            returnStatus = true;
-                                        } else {
-                                            MessageBox.Show( "Trick sequence is not possible "
-                                                + inCode + " following " + prevCode + " is not possible" );
-                                            returnStatus = false;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            if ( curStartPos == 0 ) {
-                                returnStatus = true;
-                            } else {
-                                MessageBox.Show( "Trick sequence is not possible "
-                                    + "\n First trick can not be one that starts from the back position" );
-                                returnStatus = false;
-                            }
-                        }
-                    }
-                    #endregion
-                }
-            }
             return returnStatus;
         }
 
@@ -3575,324 +3214,6 @@ namespace WaterskiScoringSystem.Trick {
             }
 
             return returnPoints;
-        }
-
-        private Int16 calcPoints_Bak(DataGridView inPassView, DataGridViewRow inPassRow, String inColPrefix) {
-            DataRow curTrickRow;
-            Int16 retPoints = 0, curRuleNum = 0, curNumTurns = 0, curStartPos = 0, curTypeCodeValue = 0;
-            Int16 prevStartPos, prevNumTurns, prev0NumTurns, prevTypeCodeValue, prevRuleNum, tempRuleNum;
-            Int16 curNumSkis;
-            String prevCode;
-            int curIdx = inPassRow.Index;
-            String curCode = (String)inPassRow.Cells[inColPrefix + "Code"].Value;
-            String curSkierClass = (String)( (ListItem)scoreEventClass.SelectedItem ).ItemValue;
-            String curValue = inPassRow.Cells[inColPrefix + "Skis"].Value.ToString();
-            if ( curValue.ToLower().Equals( "wb" ) || curValue.ToLower().Equals( "w" ) ) {
-                curNumSkis = 0;
-            } else if ( curValue.ToLower().Equals("kb") || curValue.ToLower().Equals("k") ) {
-                curNumSkis = 9;
-            } else {
-                curNumSkis = Convert.ToByte( curValue );
-            }
-
-            #region Determine points for current trick code
-            if ( curCode.Length > 0 ) {
-                if ( curCode.ToUpper().Equals( "R" ) || curCode.Substring( 0, 1 ).ToUpper().Equals( "R" ) ) {
-                    #region Determine trick associated with reverse reference
-                    if ( curIdx > 0 ) {
-                        if (curCode.Length > 1) {
-                            curTrickRow = getTrickRow( curCode, curNumSkis, curSkierClass );
-                            if (curTrickRow == null) {
-                                curRuleNum = 0;
-                            } else {
-                                curStartPos = (Byte)curTrickRow["StartPos"];
-                                curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                curRuleNum = (Int16)( (Int16) curTrickRow["RuleNum"] + ( ( curNumSkis * 100 ) + 200 ) );
-
-                                inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
-                                inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
-                                inPassRow.Cells[inColPrefix + "RuleNum"].Value = curRuleNum.ToString();
-                                inPassRow.Cells[inColPrefix + "TypeCode"].Value = curTypeCodeValue.ToString();
-                            }
-                        } else {
-                            curTrickRow = null;
-                        }
-
-                        curIdx--;
-                        prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                        prevRuleNum = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
-                        prevStartPos = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value);
-                        prevNumTurns = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value);
-                        prevTypeCodeValue = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value);
-
-                        if ((prevNumTurns % 2) == 0) {
-                            //Determine reverse trick when previous trick had an even number of 180 degree turns
-                            if (curCode.Length == 1) {
-                                if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
-                                    curCode = prevCode;
-                                } else {
-                                    curCode = curCode + prevCode;
-                                }
-                                curTrickRow = getTrickRow( curCode, curNumSkis, curSkierClass );
-                                if (curTrickRow == null) {
-                                } else {
-                                    curStartPos = (Byte)curTrickRow["StartPos"];
-                                    curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                    curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                                    curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
-
-                                    inPassRow.Cells[inColPrefix + "Code"].Value = curCode;
-                                    inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
-                                    inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
-                                    inPassRow.Cells[inColPrefix + "RuleNum"].Value = curRuleNum.ToString();
-                                    inPassRow.Cells[inColPrefix + "TypeCode"].Value = curTypeCodeValue.ToString();
-                                }
-                            }
-
-                            if (curStartPos == prevStartPos) {
-                                if (curCode.ToUpper().Equals( prevCode.ToUpper() )) {
-                                    retPoints = (Int16)curTrickRow["Points"];
-                                } else if (prevRuleNum == ( curRuleNum - 200 )) {
-                                    retPoints = (Int16)curTrickRow["Points"];
-                                } else {
-                                    MessageBox.Show( "Points not allowed "
-                                        + "\n Current trick " + curCode + " not an appropriate reverse for " + prevCode );
-                                }
-                            } else {
-                                MessageBox.Show("Points not allowed "
-                                    + "\n Current trick " + curCode + " not an appropriate reverse for " + prevCode);
-                            }
-                        } else {
-                            //Determine reverse trick when previous trick had an odd number of 180 degree turns
-                            if ( ( (Int16)( curRuleNum - 200 ) ) == prevRuleNum ) {
-                                if (((prevStartPos + prevNumTurns) % 2) == 0) {
-                                    if (curStartPos == 0) {
-                                        retPoints = (Int16)curTrickRow["Points"];
-                                    } else {
-                                        MessageBox.Show("Points not allowed "
-                                            + "\n Current trick " + curCode + " not an appropriate reverse for " + prevCode);
-                                    }
-                                } else {
-                                    if (curStartPos == 1) {
-                                        retPoints = (Int16)curTrickRow["Points"];
-                                    } else {
-                                        MessageBox.Show("Points not allowed "
-                                            + "\n Current trick " + curCode + " not an appropriate reverse for " + prevCode);
-                                    }
-                                }
-                            } else {
-                                if (curIdx > 0) {
-                                    prev0NumTurns = prevNumTurns;
-                                    curIdx--;
-                                    prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                                    prevStartPos = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value);
-                                    prevRuleNum = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
-                                    prevNumTurns = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value);
-                                    prevTypeCodeValue = Convert.ToInt16((String)inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value);
-                                    if (prevCode.Substring( 0, 1 ).Equals( "R" )) {
-                                        curCode = prevCode;
-                                    } else {
-                                        if (curCode.Length > 1) {
-                                        } else {
-                                            curCode = curCode + prevCode;
-                                        }
-                                    }
-                                    curTrickRow = getTrickRow( curCode, curNumSkis, curSkierClass );
-                                    if (curTrickRow == null) {
-                                    } else {
-                                        curStartPos = (Byte)curTrickRow["StartPos"];
-                                        curNumTurns = (Byte)curTrickRow["NumTurns"];
-                                        curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + ((curNumSkis * 100) + 200));
-                                        curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-
-                                        inPassRow.Cells[inColPrefix + "Code"].Value = curCode;
-                                        inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
-                                        inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
-                                        inPassRow.Cells[inColPrefix + "RuleNum"].Value = curRuleNum.ToString();
-                                        inPassRow.Cells[inColPrefix + "TypeCode"].Value = curTypeCodeValue.ToString();
-
-                                        if (curStartPos == prevStartPos && prev0NumTurns == 1) {
-                                            if (curCode.ToUpper().Equals( prevCode.ToUpper() )) {
-                                                retPoints = (Int16)curTrickRow["Points"];
-                                            } else if (prevRuleNum == ( curRuleNum - 200 )) {
-                                                retPoints = (Int16)curTrickRow["Points"];
-                                            } else {
-                                                MessageBox.Show("Points not allowed "
-                                                    + "\n Current trick " + curCode + " not an appropriate reverse for " + prevCode);
-                                            }
-                                        } else {
-                                            MessageBox.Show("Points not allowed for " + curCode
-                                                + "\n More than 180 degrees has occurred between a trick and its reverse");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-                } else {
-                    curTrickRow = getTrickRow( curCode, curNumSkis, curSkierClass );
-                    if (curTrickRow == null) {
-                    } else {
-                        curStartPos = (Byte)curTrickRow["StartPos"];
-                        curNumTurns = (Byte)curTrickRow["NumTurns"];
-                        curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-                        curRuleNum = (Int16)((Int16) curTrickRow["RuleNum"] + (curNumSkis * 100));
-
-                        inPassRow.Cells[inColPrefix + "StartPos"].Value = curStartPos.ToString();
-                        inPassRow.Cells[inColPrefix + "NumTurns"].Value = curNumTurns.ToString();
-                        inPassRow.Cells[inColPrefix + "RuleNum"].Value = curRuleNum.ToString();
-                        inPassRow.Cells[inColPrefix + "TypeCode"].Value = curTypeCodeValue.ToString();
-
-                        if (curIdx > 0) {
-                            curIdx--;
-                            prevCode = (String)inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value;
-                            prevNumTurns = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "NumTurns"].Value );
-                            prevStartPos = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "StartPos"].Value );
-                            prevTypeCodeValue = Convert.ToInt16( (String)inPassView.Rows[curIdx].Cells[inColPrefix + "TypeCode"].Value );
-                            try {
-                                prevRuleNum = Convert.ToInt16( inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString() );
-                            } catch {
-                                prevRuleNum = 0;
-                            }
-
-                            if (prevCode.ToUpper().Equals( "FALL" )) {
-                                if (curStartPos == 0) {
-                                    retPoints = (Int16)curTrickRow["Points"];
-                                }
-                            } else if (( ( prevStartPos + prevNumTurns ) % 2 ) == 0) {
-                                if (curStartPos == 0) {
-                                    retPoints = (Int16)curTrickRow["Points"];
-                                }
-                            } else {
-                                if (curStartPos == 1) {
-                                    retPoints = (Int16)curTrickRow["Points"];
-                                }
-                            }
-                        } else {
-                            retPoints = (Int16)curTrickRow["Points"];
-                        }
-                    }
-                }
-            }
-            #endregion
-
-            #region Determine if trick has previously been successfully performed
-            if ( retPoints > 0 ) {
-                //Search previous tricks on active pass to determine if trick successfully performed previously
-                curIdx = inPassRow.Index - 1;
-                if ( curCode.ToLower().Equals( "t5b" ) ) {
-                    if ( inPassRow.Index > 0 ) {
-                        prevCode = inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value.ToString();
-                        if ( prevCode.ToLower().Equals( "t7f" ) || prevCode.ToLower().Equals( "t7" ) ) {
-                            curIdx = -1;
-                        }
-                    }
-                }
-                while ( curIdx >= 0 ) {
-                    try {
-                        tempRuleNum = Convert.ToInt16( inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString() );
-                        retPoints = checkForRepeat( curRuleNum, tempRuleNum, inPassView.Rows[curIdx], inPassRow, inColPrefix, retPoints );
-                        if ( retPoints == 0 ) break;
-                    } catch {
-                    }
-                    curIdx--;
-                }
-
-                //If second pass is active then check first pass to determine if trick successfully performed previously
-                if ( inColPrefix.Equals( "Pass2" ) ) {
-                    curIdx = 0;
-                    while (curIdx < Pass1DataGridView.Rows.Count) {
-                        if ( !( isObjectEmpty( Pass1DataGridView.Rows[curIdx].Cells["Pass1RuleNum"].Value ) ) ) {
-                            try {
-                                tempRuleNum = Convert.ToInt16( Pass1DataGridView.Rows[curIdx].Cells["Pass1RuleNum"].Value.ToString() );
-                                retPoints = checkForRepeat( curRuleNum, tempRuleNum, Pass1DataGridView.Rows[curIdx], inPassRow, "Pass1", retPoints );
-                                if ( retPoints == 0 ) break;
-                            } catch (Exception ex ) {
-                                MessageBox.Show("Exception encountered calculating points: \n" + ex.Message);
-                            }
-                        }
-                        curIdx++;
-                    }
-                }
-            }
-            #endregion
-
-            #region Determine if subsequent tricks are a repeat of current trick
-            if ( retPoints > 0 ) {
-                //Check for repeats on active pass
-                curIdx = inPassRow.Index + 1;
-                while ( curIdx < inPassView.Rows.Count ) {
-                    if ( !(isObjectEmpty(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value)) ){
-                        tempRuleNum = Convert.ToInt16(inPassView.Rows[curIdx].Cells[inColPrefix + "RuleNum"].Value.ToString());
-                        retPoints = checkForRepeat( curRuleNum, tempRuleNum, inPassView.Rows[curIdx], inPassRow, inColPrefix, retPoints );
-                        if ( retPoints == 0 ) break;
-                    }
-                    curIdx++;
-                }
-                //if first pass is active check for repeats on second pass already done on first pass
-                if ( inColPrefix.Equals("Pass1") ) {
-                    curIdx = 0;
-                    while (curIdx < (Pass2DataGridView.Rows.Count)) {
-                        if ( !(isObjectEmpty(Pass2DataGridView.Rows[curIdx].Cells["Pass2RuleNum"].Value)) ) {
-                            tempRuleNum = Convert.ToInt16(Pass2DataGridView.Rows[curIdx].Cells["Pass2RuleNum"].Value.ToString());
-                            retPoints = checkForRepeat( curRuleNum, tempRuleNum, Pass2DataGridView.Rows[curIdx], inPassRow, "Pass2", retPoints );
-                            if ( retPoints == 0 ) break;
-                        }
-                        curIdx++;
-                    }
-                }
-            }
-            #endregion
-
-            #region Determine if maxinum number of flips have previously been accomplished
-            if ( curTypeCodeValue == 1 ) {
-                String curResults = "";
-                Int16 tempTypeCode, curFlipCount = 0;
-
-                if ( inColPrefix.Equals( "Pass2" ) ) {
-                    curIdx = inPassRow.Index - 1;
-                    while ( curIdx >= 0 ) {
-                        try {
-                            tempTypeCode = Convert.ToInt16( Pass2DataGridView.Rows[curIdx].Cells["Pass2TypeCode"].Value.ToString() );
-                            if ( tempTypeCode == 1 ) {
-                                curResults = Pass2DataGridView.Rows[curIdx].Cells["Pass2Results"].Value.ToString();
-                                if ( curResults.Equals( "Credit" ) ) curFlipCount++;
-                            }
-                        } catch {
-                        }
-                        curIdx--;
-                    }
-                }
-
-                if ( inColPrefix.Equals( "Pass1" ) ) {
-                    curIdx = inPassRow.Index - 1;
-                } else {
-                    curIdx = Pass1DataGridView.Rows.Count - 1;
-                }
-                while ( curIdx >= 0 ) {
-                    try {
-                        tempTypeCode = Convert.ToInt16( Pass1DataGridView.Rows[curIdx].Cells["Pass1TypeCode"].Value.ToString() );
-                        if ( tempTypeCode == 1 ) {
-                            curResults = Pass1DataGridView.Rows[curIdx].Cells["Pass1Results"].Value.ToString();
-                            if ( curResults.Equals( "Credit" ) ) curFlipCount++;
-                        }
-                    } catch {
-                    }
-                    curIdx--;
-                }
-                if ( curFlipCount >= 6 ) {
-                    String curSkierEventClass = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value;
-                    if (( mySkierClassList.compareClassChange( curSkierEventClass, "L" ) <= 0 ) || myTourRules.ToLower().Equals( "iwwf" )) {
-                        retPoints = 0;
-                        inPassRow.Cells[inColPrefix + "Results"].Value = "Repeat";
-                        MessageBox.Show( "The maximum of 6 flips for IWWF have previously been completed.  No credit is given for more than 6 flips." );
-                    }
-                }
-            }
-            #endregion
-            return retPoints;
         }
 
         private Int16 checkForRepeat( Int16 curRuleNum, Int16 tempRuleNum, DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints ) {

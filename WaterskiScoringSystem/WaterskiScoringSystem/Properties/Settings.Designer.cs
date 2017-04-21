@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4.0.0.3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.0.0.5")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4.0.0.3 3/24/2017")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.0.0.5 4/18/2017")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2193,6 +2193,42 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["LoadVideosFile_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SlalomPassDetailExport_Width {
+            get {
+                return ((int)(this["SlalomPassDetailExport_Width"]));
+            }
+            set {
+                this["SlalomPassDetailExport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SlalomPassDetailExport_Height {
+            get {
+                return ((int)(this["SlalomPassDetailExport_Height"]));
+            }
+            set {
+                this["SlalomPassDetailExport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point SlalomPassDetailExport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["SlalomPassDetailExport_Location"]));
+            }
+            set {
+                this["SlalomPassDetailExport_Location"] = value;
             }
         }
     }

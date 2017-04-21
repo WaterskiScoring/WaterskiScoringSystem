@@ -97,6 +97,7 @@
             this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+            this.navSlalomPassDetailExport = new System.Windows.Forms.ToolStripMenuItem();
             this.appMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -342,7 +343,8 @@
             this.navSlalomSummary,
             this.toolStripMenuItem4,
             this.navSlalomScorebook,
-            this.navSlalomTeamSummary});
+            this.navSlalomTeamSummary,
+            this.navSlalomPassDetailExport});
             this.navSlalom.Name = "navSlalom";
             this.navSlalom.Size = new System.Drawing.Size(55, 20);
             this.navSlalom.Text = "&Slalom";
@@ -350,35 +352,35 @@
             // navSlalomEntry
             // 
             this.navSlalomEntry.Name = "navSlalomEntry";
-            this.navSlalomEntry.Size = new System.Drawing.Size(167, 22);
+            this.navSlalomEntry.Size = new System.Drawing.Size(169, 22);
             this.navSlalomEntry.Text = "Score &Entry";
             this.navSlalomEntry.Click += new System.EventHandler(this.navSlalomEntry_Click);
             // 
             // navSlalomRunningOrder
             // 
             this.navSlalomRunningOrder.Name = "navSlalomRunningOrder";
-            this.navSlalomRunningOrder.Size = new System.Drawing.Size(167, 22);
+            this.navSlalomRunningOrder.Size = new System.Drawing.Size(169, 22);
             this.navSlalomRunningOrder.Text = "&Running Order";
             this.navSlalomRunningOrder.Click += new System.EventHandler(this.navSlalomRunningOrder_Click);
             // 
             // navSlalomSummary
             // 
             this.navSlalomSummary.Name = "navSlalomSummary";
-            this.navSlalomSummary.Size = new System.Drawing.Size(167, 22);
+            this.navSlalomSummary.Size = new System.Drawing.Size(169, 22);
             this.navSlalomSummary.Text = "&Summary";
             this.navSlalomSummary.Click += new System.EventHandler(this.navSlalomSummary_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(167, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(169, 22);
             this.toolStripMenuItem4.Text = "&Awards Summary";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.navSlalomSummaryAwards_Click);
             // 
             // navSlalomScorebook
             // 
             this.navSlalomScorebook.Name = "navSlalomScorebook";
-            this.navSlalomScorebook.Size = new System.Drawing.Size(167, 22);
+            this.navSlalomScorebook.Size = new System.Drawing.Size(169, 22);
             this.navSlalomScorebook.Text = "Scorebook";
             this.navSlalomScorebook.Visible = false;
             this.navSlalomScorebook.Click += new System.EventHandler(this.navSlalomScorebook_Click);
@@ -386,7 +388,7 @@
             // navSlalomTeamSummary
             // 
             this.navSlalomTeamSummary.Name = "navSlalomTeamSummary";
-            this.navSlalomTeamSummary.Size = new System.Drawing.Size(167, 22);
+            this.navSlalomTeamSummary.Size = new System.Drawing.Size(169, 22);
             this.navSlalomTeamSummary.Text = "&Team Summary";
             this.navSlalomTeamSummary.Click += new System.EventHandler(this.navSlalomTeamSummary_Click);
             // 
@@ -680,6 +682,14 @@
             this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
             this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
             // 
+            // navSlalomPassDetailExport
+            // 
+            this.navSlalomPassDetailExport.AccessibleName = "";
+            this.navSlalomPassDetailExport.Name = "navSlalomPassDetailExport";
+            this.navSlalomPassDetailExport.Size = new System.Drawing.Size(169, 22);
+            this.navSlalomPassDetailExport.Text = "Slalom Pass Detail";
+            this.navSlalomPassDetailExport.Click += new System.EventHandler(this.navSlalomPassDetailExport_Click);
+            // 
             // SystemMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -777,6 +787,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem navLoadVideoFiles;
+        private System.Windows.Forms.ToolStripMenuItem navSlalomPassDetailExport;
     }
 }
 

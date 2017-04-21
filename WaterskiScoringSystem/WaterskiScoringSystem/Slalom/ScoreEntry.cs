@@ -818,7 +818,12 @@ namespace WaterskiScoringSystem.Slalom {
                         }
 
                         try {
-                            if ( Convert.ToDecimal( curScoreRecap ) <= 0M ) {
+                            if ( Convert.ToDecimal( curScoreRecap ) < 0M ) {
+                                /*
+                                * I don't know why I did this but it created a problem when it was checking for less than or equal to zero.
+                                * For example, when a skier missed the entrace gates the final pass score is showing as 6 but should be zero
+                                * The final score is correct but the final pass buoys was being set to 6
+                                */
                                 if ( myRecapRow.Index > 0 ) {
                                     curScoreRecap = "6";
                                     curPassNum = Convert.ToInt16( curScorePassNum );
@@ -2191,6 +2196,11 @@ namespace WaterskiScoringSystem.Slalom {
 
         private void nextPassWithOption() {
             Int16 curMaxSpeed = SlalomSpeedSelect.MaxValue;
+            String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
+            DataTable curMaxSpeedDataTable = getMaxSpeedOrigData(curAgeGroup);
+            if ( curMaxSpeedDataTable.Rows.Count > 0 ) {
+                curMaxSpeed = Convert.ToInt16((Decimal) curMaxSpeedDataTable.Rows[0]["MaxValue"]);
+            }
             Int16 curSpeed = Convert.ToInt16((Decimal) myPassRow["MaxValue"]);
             if ( curSpeed < curMaxSpeed ) {
                 int curRowIdx = slalomRecapDataGridView.Rows.Count - 1;
@@ -4219,7 +4229,7 @@ namespace WaterskiScoringSystem.Slalom {
                                             myRecapRow.Cells["ScoreRecap"].Value = prevPassScore.ToString( "#.00" );
                                         } else {
                                             if ( ( (String) slalomRecapDataGridView.Rows[curIdx].Cells["RerideReasonRecap"].Value ).ToLower().Contains("slow")
-                                                && ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] )
+                                                && ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] )
                                                 ) {
                                                 curPassScore = prevPassScore;
                                             } else {
@@ -4234,7 +4244,7 @@ namespace WaterskiScoringSystem.Slalom {
                                                 curPassScore = inScore;
                                             }
                                         } else if ( ( (String) slalomRecapDataGridView.Rows[curIdx].Cells["RerideReasonRecap"].Value ).ToLower().Contains("slow") 
-                                                    && ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] )
+                                                    && ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] )
                                                 ) {
                                             prevPassScore = Convert.ToDecimal((String) slalomRecapDataGridView.Rows[curIdx].Cells["ScoreRecap"].Value);
                                             if ( prevPassScore < inScore ) {
@@ -4918,7 +4928,6 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append(" ORDER BY SortSeq");
             return getData(curSqlStmt.ToString());
         }
-
 
         private DataTable getMinSpeedData( String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );

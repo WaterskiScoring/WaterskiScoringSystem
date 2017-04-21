@@ -23,6 +23,9 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.Windows.Forms.Label TourStatsLabel6;
+            System.Windows.Forms.Label TourStatsLabel5;
+            System.Windows.Forms.Label TourStatsLabel4;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -36,9 +39,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EventRunStats));
-            System.Windows.Forms.Label TourStatsLabel6;
-            System.Windows.Forms.Label TourStatsLabel5;
-            System.Windows.Forms.Label TourStatsLabel4;
             this.scoreSummaryDataGridView = new System.Windows.Forms.DataGridView();
             this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -79,6 +79,42 @@
             this.winNavStrip.SuspendLayout();
             this.winStatus.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // TourStatsLabel6
+            // 
+            TourStatsLabel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            TourStatsLabel6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TourStatsLabel6.Location = new System.Drawing.Point(835, 59);
+            TourStatsLabel6.Margin = new System.Windows.Forms.Padding(0);
+            TourStatsLabel6.Name = "TourStatsLabel6";
+            TourStatsLabel6.Size = new System.Drawing.Size(74, 54);
+            TourStatsLabel6.TabIndex = 121;
+            TourStatsLabel6.Text = "Number of Rides Per Event";
+            TourStatsLabel6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TourStatsLabel5
+            // 
+            TourStatsLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            TourStatsLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TourStatsLabel5.Location = new System.Drawing.Point(762, 59);
+            TourStatsLabel5.Margin = new System.Windows.Forms.Padding(0);
+            TourStatsLabel5.Name = "TourStatsLabel5";
+            TourStatsLabel5.Size = new System.Drawing.Size(74, 54);
+            TourStatsLabel5.TabIndex = 122;
+            TourStatsLabel5.Text = "Number of Skiers Per Event";
+            TourStatsLabel5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TourStatsLabel4
+            // 
+            TourStatsLabel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            TourStatsLabel4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TourStatsLabel4.Location = new System.Drawing.Point(650, 59);
+            TourStatsLabel4.Margin = new System.Windows.Forms.Padding(0);
+            TourStatsLabel4.Name = "TourStatsLabel4";
+            TourStatsLabel4.Size = new System.Drawing.Size(113, 54);
+            TourStatsLabel4.TabIndex = 123;
+            TourStatsLabel4.Text = "Events";
+            TourStatsLabel4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // scoreSummaryDataGridView
             // 
@@ -476,42 +512,6 @@
             this.SlalomStatLabel.TabIndex = 115;
             this.SlalomStatLabel.Text = "Slalom";
             this.SlalomStatLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TourStatsLabel6
-            // 
-            TourStatsLabel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TourStatsLabel6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            TourStatsLabel6.Location = new System.Drawing.Point(835, 59);
-            TourStatsLabel6.Margin = new System.Windows.Forms.Padding(0);
-            TourStatsLabel6.Name = "TourStatsLabel6";
-            TourStatsLabel6.Size = new System.Drawing.Size(74, 54);
-            TourStatsLabel6.TabIndex = 121;
-            TourStatsLabel6.Text = "Number of Rides Per Event";
-            TourStatsLabel6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // TourStatsLabel5
-            // 
-            TourStatsLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TourStatsLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            TourStatsLabel5.Location = new System.Drawing.Point(762, 59);
-            TourStatsLabel5.Margin = new System.Windows.Forms.Padding(0);
-            TourStatsLabel5.Name = "TourStatsLabel5";
-            TourStatsLabel5.Size = new System.Drawing.Size(74, 54);
-            TourStatsLabel5.TabIndex = 122;
-            TourStatsLabel5.Text = "Number of Skiers Per Event";
-            TourStatsLabel5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // TourStatsLabel4
-            // 
-            TourStatsLabel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            TourStatsLabel4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            TourStatsLabel4.Location = new System.Drawing.Point(650, 59);
-            TourStatsLabel4.Margin = new System.Windows.Forms.Padding(0);
-            TourStatsLabel4.Name = "TourStatsLabel4";
-            TourStatsLabel4.Size = new System.Drawing.Size(113, 54);
-            TourStatsLabel4.TabIndex = 123;
-            TourStatsLabel4.Text = "Events";
-            TourStatsLabel4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // EventRunStats
             // 
