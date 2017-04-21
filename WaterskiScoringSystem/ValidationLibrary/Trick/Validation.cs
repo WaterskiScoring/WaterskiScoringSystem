@@ -97,7 +97,7 @@ namespace ValidationLibrary.Trick {
                     || inNumSkis.Equals("2")
                     ) {
                     Int16.TryParse(inNumSkis, out curNumSkis);
-                } else if ( myTourRules.ToLower().Equals("ncwsa")
+                } else if ( inTourRules.ToLower().Equals("ncwsa")
                     && ( inNumSkis.ToLower().Equals("wb")
                     || inNumSkis.ToLower().Equals("w")
                     || inNumSkis.ToLower().Equals("kb")

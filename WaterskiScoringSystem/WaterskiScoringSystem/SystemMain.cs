@@ -583,6 +583,16 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
+        private void navSlalomPassDetailExport_Click( object sender, EventArgs e ) {
+            SlalomPassDetailExport curForm = new SlalomPassDetailExport();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
         private void navTrickSummary_Click(object sender, EventArgs e) {
             TrickSummary curForm = new TrickSummary();
             mdiStatusMsg.Text = curForm.Name + " opening";
