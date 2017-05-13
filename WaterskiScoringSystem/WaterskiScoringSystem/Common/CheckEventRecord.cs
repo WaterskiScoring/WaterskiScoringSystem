@@ -59,6 +59,7 @@ namespace WaterskiScoringSystem.Common {
                             curReturnMsg.Append("\n" + curRecordScore.ToString("##0.00") + " buoys");
                             curReturnMsg.Append("\nRecord information " + curRecordInfo);
                         }
+                        curReturnMsg.Append("\n\nNote: Records can't be set with a speed greater than the historical division maximum");
                     }
                 }
             }
