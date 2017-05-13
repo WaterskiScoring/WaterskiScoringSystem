@@ -815,9 +815,15 @@ namespace ValidationLibrary.Trick {
                                     retPoints = 0;
                                 }
                             } else {
-                                inCheckedRow["Score"] = 0;
-                                inCheckedRow["Results"] = "Repeat";
-                                retPoints = 0;
+                                if ( ( (String) inCheckedRow["Code"] ).ToLower().Equals("t5b")
+                                    && ( ( (String) inViewRow["Code"] ).ToLower().Equals("t7f") || ( (String) inViewRow["Code"] ).ToLower().Equals("t7") )
+                                    ) {
+                                    retPoints = inActivePoints;
+                                } else {
+                                    inCheckedRow["Score"] = 0;
+                                    inCheckedRow["Results"] = "Repeat";
+                                    retPoints = 0;
+                                }
                             }
                         } else {
                             if ( inColPrefix.Equals("Pass1") ) {
@@ -840,7 +846,7 @@ namespace ValidationLibrary.Trick {
                                     // prevStartPos = (Byte) activePassDataTable.Rows[curIdx]["StartPos"];
                                     // prevNumTurns = (Byte) activePassDataTable.Rows[curIdx]["NumTurns"];
                                     Int16 curNumTurns = (Byte) inViewRow["NumTurns"];
-                                    if ( ( ( curNumTurns % 2 ) == 0 ) && ( (inRowViewIdx - 1) == inRowCheckedIdx ) ) {
+                                    if ( ( ( curNumTurns % 2 ) == 0 ) && ( (inRowViewIdx - 1) == inRowCheckedIdx ) && ( inRowCheckedIdx > 0 ) ) {
                                         Int16 curRuleNum = (Int16)inViewRow["RuleNum"];
                                         Int16 prevRuleNum = (Int16) activePassDataTable.Rows[inRowCheckedIdx - 1]["RuleNum"];
                                         if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[inRowCheckedIdx - 1]["Score"] == 0 ) {
@@ -851,7 +857,7 @@ namespace ValidationLibrary.Trick {
                                         }
 
                                     } else {
-                                        if ( ( ( curNumTurns % 2 ) > 0 ) && ( ( inRowViewIdx - 2 ) == inRowCheckedIdx ) ) {
+                                        if ( ( ( curNumTurns % 2 ) > 0 ) && ( ( inRowViewIdx - 2 ) == inRowCheckedIdx ) && (inRowCheckedIdx > 1) ) {
                                             Int16 curRuleNum = (Int16) inViewRow["RuleNum"];
                                             Int16 prevRuleNum = (Int16) activePassDataTable.Rows[inRowCheckedIdx - 2]["RuleNum"];
                                             if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[inRowCheckedIdx - 2]["Score"] == 0 ) {
@@ -875,7 +881,6 @@ namespace ValidationLibrary.Trick {
                             } else {
                                 inCheckedRow["Score"] = 0;
                                 inCheckedRow["Results"] = "Repeat";
-                                retPoints = 0;
                             }
                         } else {
                             if ( inColPrefix.Equals("Pass1") ) {

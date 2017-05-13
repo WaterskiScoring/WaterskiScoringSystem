@@ -347,7 +347,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22589	AWSASlalomMax	WB		28	55kph, 34mph	34	55	
 22590	AWSASlalomMax	OM		29	58kph, 36mph	36	58	
 22591	AWSASlalomMax	OW		30	55kph, 34mph	34	55	
-22592	AWSASlalomMax	MM		40	55kph, 34mph	36	58	
+22592	AWSASlalomMax	MM		40	55kph, 34mph	34	55	
 22593	AWSASlalomMax	MW		41	55kph, 34mph	34	55	
 22594	AWSASlalomMax	NM		42	58kph, 36mph	36	58	
 22595	AWSASlalomMax	NW		43	55kph, 34mph	34	55	
@@ -381,7 +381,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSASlalomMaxDiv	WB		28	43kph, 26mph	26	43	
 00000	AWSASlalomMaxDiv	OM		29	58kph, 36mph	36	58	
 00000	AWSASlalomMaxDiv	OW		30	55kph, 34mph	34	55	
-00000	AWSASlalomMaxDiv	MM		40	55kph, 34mph	36	58	
+00000	AWSASlalomMaxDiv	MM		40	55kph, 34mph	34	55	
 00000	AWSASlalomMaxDiv	MW		41	55kph, 34mph	34	55	
 00000	AWSASlalomMaxDiv	NM		42	58kph, 36mph	36	58	
 00000	AWSASlalomMaxDiv	NW		43	55kph, 34mph	34	55	

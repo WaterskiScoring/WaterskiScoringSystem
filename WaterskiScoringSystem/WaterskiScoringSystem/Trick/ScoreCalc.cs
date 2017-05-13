@@ -324,7 +324,15 @@ namespace WaterskiScoringSystem.Trick {
                         } else {
                             if ( Pass1DataGridView.Rows.Count > 0 ) {
                                 if ( isObjectEmpty( Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value ) ) {
-                                    setEventRegRowStatus( "1-TBD" );
+                                    if ( Pass2DataGridView.Rows.Count > 0 ) {
+                                        if ( isObjectEmpty(Pass2DataGridView.Rows[0].Cells["Pass2Code"].Value) ) {
+                                            setEventRegRowStatus("1-TBD");
+                                        } else {
+                                            setEventRegRowStatus("2-InProg");
+                                        }
+                                    } else {
+                                        setEventRegRowStatus("2-InProg");
+                                    }
                                 } else {
                                     if ( myTourRuleCode.ToLower().Equals( "ncwsa" ) ) {
                                         setEventRegRowStatus( "4-Done" );
@@ -547,6 +555,7 @@ namespace WaterskiScoringSystem.Trick {
                             curSqlStmt.Append( " )" );
                         }
                     }
+
                     int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
                     curReturnStatus = true;
@@ -555,10 +564,16 @@ namespace WaterskiScoringSystem.Trick {
                     }
 
                     #region Check to see if score is equal to or great than divisions current record score
-                    String curCheckRecordMsg = myCheckEventRecord.checkRecordTrick( curAgeGroup, scoreTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"]);
-                    if ( curCheckRecordMsg == null ) curCheckRecordMsg = "";
-                    if ( curCheckRecordMsg.Length > 1 ) {
-                        MessageBox.Show( curCheckRecordMsg );
+                    if ( curSanctionId.Length > 1
+                        && curMemberId.Length > 1
+                        ) {
+                        if ( !(( (String) myScoreRow["Status"] ).Equals("TBD")) ) {
+                            String curCheckRecordMsg = myCheckEventRecord.checkRecordTrick(curAgeGroup, scoreTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"]);
+                            if ( curCheckRecordMsg == null ) curCheckRecordMsg = "";
+                            if ( curCheckRecordMsg.Length > 1 ) {
+                                MessageBox.Show(curCheckRecordMsg);
+                            }
+                        }
                     }
                     #endregion
 
@@ -806,8 +821,8 @@ namespace WaterskiScoringSystem.Trick {
                                             if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                                 if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                     Pass1DataGridView.Rows.Remove( curPassRow );
-                                                    //curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                                 } else {
+                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                     break;
                                                 }
@@ -817,26 +832,34 @@ namespace WaterskiScoringSystem.Trick {
                                         if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                             if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 Pass1DataGridView.Rows.Remove( curPassRow );
-                                                //curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                             } else {
+                                                curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
+                                                break;
+                                            }
+                                        } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
+                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            } else {
+                                                curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
+                                                MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
                                                 break;
                                             }
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
                                             if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                             } else {
+                                                curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                 break;
                                             }
                                         } else {
                                             try {
                                                 curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
-                                                curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                             } catch {
                                                 curPass1Score += 0;
                                             }
                                         }
                                     }
+                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                 } else {
                                     if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                         if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
@@ -882,6 +905,7 @@ namespace WaterskiScoringSystem.Trick {
                                                 if ( curPassRow.Index == ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                     curPass2Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                                 } else {
+                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                     break;
                                                 }
@@ -892,24 +916,33 @@ namespace WaterskiScoringSystem.Trick {
                                                     Pass2DataGridView.Rows.Remove( curPassRow );
                                                     //curPass2Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                                 } else {
+                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
+                                                    break;
+                                                }
+                                            } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
+                                                if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                                } else {
+                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
+                                                    MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
                                                     break;
                                                 }
                                             } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
                                                 if ( curPassRow.Index == ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                 } else {
+                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                     break;
                                                 }
                                             } else {
                                                 try {
                                                     curPass2Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
-                                                    curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                                 } catch {
                                                     curPass2Score += 0;
                                                 }
                                             }
                                         }
+                                        curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                     } else {
                                         curReadyToScore = false;
                                         setEventRegRowStatus( "Error" );
