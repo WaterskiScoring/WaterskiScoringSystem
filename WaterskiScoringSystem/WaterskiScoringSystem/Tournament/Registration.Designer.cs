@@ -24,8 +24,8 @@ namespace WaterskiScoringSystem.Tournament {
         /// </summary>
         private void InitializeComponent() {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registration));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -33,6 +33,7 @@ namespace WaterskiScoringSystem.Tournament {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tourRegDataGridView = new System.Windows.Forms.DataGridView();
             this.winStatus = new System.Windows.Forms.StatusStrip();
             this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
@@ -58,6 +59,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ReadyToSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ReadyForPlcmt = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.SlalomReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.TrickReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.JumpReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -103,6 +105,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.SkierName,
             this.AgeGroup,
             this.ReadyToSki,
+            this.ReadyForPlcmt,
             this.SlalomReg,
             this.TrickReg,
             this.JumpReg,
@@ -120,24 +123,24 @@ namespace WaterskiScoringSystem.Tournament {
             this.PK,
             this.SanctionId,
             this.Updated});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.tourRegDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
-            this.tourRegDataGridView.Location = new System.Drawing.Point(5, 55);
-            this.tourRegDataGridView.Name = "tourRegDataGridView";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.tourRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.tourRegDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
+            this.tourRegDataGridView.Location = new System.Drawing.Point(5, 55);
+            this.tourRegDataGridView.Name = "tourRegDataGridView";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.tourRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.tourRegDataGridView.RowHeadersWidth = 31;
             this.tourRegDataGridView.Size = new System.Drawing.Size(1073, 408);
             this.tourRegDataGridView.TabIndex = 1;
@@ -402,6 +405,7 @@ namespace WaterskiScoringSystem.Tournament {
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle4.NullValue = false;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ReadyToSki.DefaultCellStyle = dataGridViewCellStyle4;
             this.ReadyToSki.FalseValue = "N";
             this.ReadyToSki.HeaderText = "Ready Ski?";
@@ -410,6 +414,22 @@ namespace WaterskiScoringSystem.Tournament {
             this.ReadyToSki.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.ReadyToSki.TrueValue = "Y";
             this.ReadyToSki.Width = 40;
+            // 
+            // ReadyForPlcmt
+            // 
+            this.ReadyForPlcmt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.NullValue = false;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ReadyForPlcmt.DefaultCellStyle = dataGridViewCellStyle5;
+            this.ReadyForPlcmt.FalseValue = "N";
+            this.ReadyForPlcmt.HeaderText = "For Plcmt?";
+            this.ReadyForPlcmt.Name = "ReadyForPlcmt";
+            this.ReadyForPlcmt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ReadyForPlcmt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ReadyForPlcmt.TrueValue = "Y";
+            this.ReadyForPlcmt.Width = 40;
             // 
             // SlalomReg
             // 
@@ -474,10 +494,10 @@ namespace WaterskiScoringSystem.Tournament {
             // EntryDue
             // 
             this.EntryDue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Format = "C2";
-            dataGridViewCellStyle5.NullValue = null;
-            this.EntryDue.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "C2";
+            dataGridViewCellStyle6.NullValue = null;
+            this.EntryDue.DefaultCellStyle = dataGridViewCellStyle6;
             this.EntryDue.HeaderText = "Fee Due";
             this.EntryDue.Name = "EntryDue";
             this.EntryDue.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -486,10 +506,10 @@ namespace WaterskiScoringSystem.Tournament {
             // EntryPaid
             // 
             this.EntryPaid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "C2";
-            dataGridViewCellStyle6.NullValue = null;
-            this.EntryPaid.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Format = "C2";
+            dataGridViewCellStyle7.NullValue = null;
+            this.EntryPaid.DefaultCellStyle = dataGridViewCellStyle7;
             this.EntryPaid.HeaderText = "Amt Paid";
             this.EntryPaid.Name = "EntryPaid";
             this.EntryPaid.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -506,10 +526,10 @@ namespace WaterskiScoringSystem.Tournament {
             // JumpHeight
             // 
             this.JumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.Format = "N1";
-            dataGridViewCellStyle7.NullValue = null;
-            this.JumpHeight.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.Format = "N1";
+            dataGridViewCellStyle8.NullValue = null;
+            this.JumpHeight.DefaultCellStyle = dataGridViewCellStyle8;
             this.JumpHeight.HeaderText = "Jump Hgt";
             this.JumpHeight.Name = "JumpHeight";
             this.JumpHeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -633,6 +653,7 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyToSki;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyForPlcmt;
         private System.Windows.Forms.DataGridViewCheckBoxColumn SlalomReg;
         private System.Windows.Forms.DataGridViewCheckBoxColumn TrickReg;
         private System.Windows.Forms.DataGridViewCheckBoxColumn JumpReg;

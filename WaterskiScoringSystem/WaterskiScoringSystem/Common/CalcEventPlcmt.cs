@@ -1367,16 +1367,16 @@ namespace WaterskiScoringSystem.Common {
              * Analyze results and determine skier placment within age division
              * ******************************************************* */
             DataTable curPlcmtResults = inResults;
-            String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "";
+            String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", curReadyForPlcmt = "";
             int curIdx = 0, curPlcmtPos = 1;
             Decimal curScore = 0, prevScore = -1;
 
             if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
                 #region Calculate placement for all tournament participants
                 if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "Round" + inEvent + " ASC, ";
+                    curSortCmd = "Round" + inEvent + " ASC, ReadyForPlcmt" + inEvent + " DESC, ";
                 } else if (inDataType.ToLower().Equals( "final" )) {
-                    curSortCmd = "Round" + inEvent + " DESC, ";
+                    curSortCmd = "Round" + inEvent + " DESC, ReadyForPlcmt" + inEvent + " DESC, ";
                 } else {
                     curSortCmd = "";
                 }
@@ -1424,52 +1424,61 @@ namespace WaterskiScoringSystem.Common {
                         prevScore = -1;
                     }
 
-                    if (Convert.ToInt32( curRound ) > 0) {
-                        if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                            try {
-                                if (inEvent.ToLower().Equals( "jump" )) {
-                                    curScore = (Decimal)( curRow["ScoreFeet"] );
-                                } else {
-                                    if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" )) {
-                                        curScore = (Decimal)( curRow["Score" + inEvent] );
-                                    } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                                        curScore = (Int16)( curRow["Score" + inEvent] );
-                                    } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                                        curScore = (int)( curRow["Score" + inEvent] );
+                    curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
+                    if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
+                    if ( curReadyForPlcmt.Equals("Y") ) {
+                        if ( Convert.ToInt32(curRound) > 0 ) {
+                            if ( inPlcmtMethod.ToLower().Equals("score") ) {
+                                try {
+                                    if ( inEvent.ToLower().Equals("jump") ) {
+                                        curScore = (Decimal) ( curRow["ScoreFeet"] );
                                     } else {
-                                        curScore = 0;
+                                        if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Decimal") ) {
+                                            curScore = (Decimal) ( curRow["Score" + inEvent] );
+                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int16") ) {
+                                            curScore = (Int16) ( curRow["Score" + inEvent] );
+                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int32") ) {
+                                            curScore = (int) ( curRow["Score" + inEvent] );
+                                        } else {
+                                            curScore = 0;
+                                        }
                                     }
+                                } catch {
+                                    curScore = 0;
                                 }
-                            } catch {
-                                curScore = 0;
-                            }
-                        } else {
-                            try {
-                                curScore = (Decimal)( curRow["Points" + inEvent] );
-                            } catch {
-                                curScore = 0;
-                            }
-                        }
-
-                        if ( curScore == prevScore && curIdx > 0 ) {
-                            curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
-                            if (curPlcmt.Contains( "T" )) {
                             } else {
-                                curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+                                try {
+                                    curScore = (Decimal) ( curRow["Points" + inEvent] );
+                                } catch {
+                                    curScore = 0;
+                                }
                             }
+
+                            if ( curScore == prevScore && curIdx > 0 ) {
+                                curPlcmt = (String) curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
+                                if ( curPlcmt.Contains("T") ) {
+                                } else {
+                                    curPlcmt = curPlcmt.Substring(0, 3) + "T";
+                                    curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+                                }
+                            } else {
+                                curPlcmt = curPlcmtPos.ToString("##0").PadLeft(3, ' ');
+                                curPlcmt += " ";
+                            }
+                            curRow[inPlcmtName] = curPlcmt;
+                            curPlcmtPos++;
                         } else {
-                            curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                            curPlcmt += " ";
+                            curPlcmt = "";
+                            curScore = -1;
                         }
                         curRow[inPlcmtName] = curPlcmt;
-                        curPlcmtPos++;
+                        curIdx++;
+
                     } else {
+                        curRow[inPlcmtName] = "  999 ";
                         curPlcmt = "";
                         curScore = -1;
                     }
-                    curRow[inPlcmtName] = curPlcmt;
-                    curIdx++;
                 }
                 #endregion
 
@@ -1482,13 +1491,13 @@ namespace WaterskiScoringSystem.Common {
                 prevGroup = "";
                 curGroup = "";
                 if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
-                    curSortCmd = "AgeGroup ASC, ";
+                    curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
                 } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                    curSortCmd = "AgeGroup ASC, EventGroup ASC, ";
+                    curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
                 } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                    curSortCmd = "EventGroup ASC, ";
+                    curSortCmd = "EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
                 } else {
-                    curSortCmd = "AgeGroup ASC, ";
+                    curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
                 }
                 if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
                     curSortCmd += "Round" + inEvent + " ASC, ";
@@ -1550,51 +1559,60 @@ namespace WaterskiScoringSystem.Common {
                         prevScore = -1;
                     }
 
-                    if (Convert.ToInt32( curRound ) > 0) {
-                        if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                            try {
-                                if (inEvent.ToLower().Equals( "jump" )) {
-                                    curScore = (Decimal)( curRow["ScoreFeet"] );
-                                } else {
-                                    if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" )) {
-                                        curScore = (Decimal)( curRow["Score" + inEvent] );
-                                    } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                                        curScore = (Int16)( curRow["Score" + inEvent] );
-                                    } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                                        curScore = (int)( curRow["Score" + inEvent] );
+                    curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
+                    if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
+                    if ( curReadyForPlcmt.Equals("Y") ) {
+                        if ( Convert.ToInt32(curRound) > 0 ) {
+                            if ( inPlcmtMethod.ToLower().Equals("score") ) {
+                                try {
+                                    if ( inEvent.ToLower().Equals("jump") ) {
+                                        curScore = (Decimal) ( curRow["ScoreFeet"] );
                                     } else {
-                                        curScore = 0;
+                                        if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Decimal") ) {
+                                            curScore = (Decimal) ( curRow["Score" + inEvent] );
+                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int16") ) {
+                                            curScore = (Int16) ( curRow["Score" + inEvent] );
+                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int32") ) {
+                                            curScore = (int) ( curRow["Score" + inEvent] );
+                                        } else {
+                                            curScore = 0;
+                                        }
                                     }
+                                } catch {
+                                    curScore = 0;
                                 }
-                            } catch {
-                                curScore = 0;
-                            }
-                        } else {
-                            try {
-                                curScore = (Decimal)( curRow["Points" + inEvent] );
-                            } catch {
-                                curScore = 0;
-                            }
-                        }
-
-                        if (curScore == prevScore && curIdx > 0) {
-                            curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
-                            if (curPlcmt.Contains( "T" )) {
                             } else {
-                                curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+                                try {
+                                    curScore = (Decimal) ( curRow["Points" + inEvent] );
+                                } catch {
+                                    curScore = 0;
+                                }
                             }
+
+                            if ( curScore == prevScore && curIdx > 0 ) {
+                                curPlcmt = (String) curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
+                                if ( curPlcmt.Contains("T") ) {
+                                } else {
+                                    curPlcmt = curPlcmt.Substring(0, 3) + "T";
+                                    curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+                                }
+                            } else {
+                                curPlcmt = curPlcmtPos.ToString("##0").PadLeft(3, ' ');
+                                curPlcmt += " ";
+                            }
+                            curPlcmtPos++;
                         } else {
-                            curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                            curPlcmt += " ";
+                            curPlcmt = "";
+                            curScore = -1;
                         }
-                        curPlcmtPos++;
+                        curRow[inPlcmtName] = curPlcmt;
+                        curIdx++;
+
                     } else {
+                        curRow[inPlcmtName] = "  999 ";
                         curPlcmt = "";
                         curScore = -1;
                     }
-                    curRow[inPlcmtName] = curPlcmt;
-                    curIdx++;
 
                 }
                 #endregion

@@ -80,7 +80,7 @@ namespace WaterskiScoringSystem.Tournament {
             isLoadInProg = true;
             myTourProperties = TourProperties.Instance;
 
-            String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "RankingScore", "RankingRating", "JumpHeight", "HCapBase", "HCapScore" };
+            String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt", "RankingScore", "RankingRating", "JumpHeight", "HCapBase", "HCapScore" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -274,6 +274,11 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["EventGroup"].Value = "";
                         }
                         try {
+                            curViewRow.Cells["ReadyForPlcmt"].Value = (String) curDataRow["ReadyForPlcmt"];
+                        } catch {
+                            curViewRow.Cells["ReadyForPlcmt"].Value = "";
+                        }
+                        try {
                             curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
                         } catch {
                             curViewRow.Cells["EventClass"].Value = "";
@@ -450,6 +455,11 @@ namespace WaterskiScoringSystem.Tournament {
                             curPrintRow.Cells["PrintEventClass"].Value = (String)curTeamRow["EventClass"];
                         } catch {
                             curPrintRow.Cells["PrintEventClass"].Value = "";
+                        }
+                        try {
+                            curPrintRow.Cells["PrintReadyForPlcmt"].Value = (String) curTeamRow["ReadyForPlcmt"];
+                        } catch {
+                            curPrintRow.Cells["PrintReadyForPlcmt"].Value = "";
                         }
                         try {
                             curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16)curTeamRow["RunOrder"] ).ToString( "##0" );
@@ -659,7 +669,7 @@ namespace WaterskiScoringSystem.Tournament {
                     String curUpdateStatus = (String)curViewRow.Cells["Updated"].Value;
                     if ( curUpdateStatus.ToUpper().Equals( "Y" ) ) {
                         try {
-                            String curEventGroup, curTeamCode, curEventClass, curRankingRating;
+                            String curEventGroup, curTeamCode, curEventClass, curRankingRating, curReadyForPlcmt;
                             Decimal curHCapBase, curHCapScore, curRankingScore;
                             Int16 curRunOrder;
                             Int64 curPK = Convert.ToInt64( (String)curViewRow.Cells["PK"].Value );
@@ -673,6 +683,11 @@ namespace WaterskiScoringSystem.Tournament {
                                 curEventGroup = (String)curViewRow.Cells["EventGroup"].Value;
                             } catch {
                                 curEventGroup = "";
+                            }
+                            try {
+                                curReadyForPlcmt = (String) curViewRow.Cells["ReadyForPlcmt"].Value;
+                            } catch {
+                                curReadyForPlcmt = "";
                             }
                             try {
                                 curTeamCode = (String)curViewRow.Cells["TeamCode"].Value;
@@ -715,6 +730,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curSqlStmt.Append( "EventGroup = '" + curEventGroup + "'" );
                             curSqlStmt.Append( ", TeamCode = '" + curTeamCode + "'" );
                             curSqlStmt.Append( ", EventClass = '" + curEventClass + "'" );
+                            curSqlStmt.Append(", ReadyForPlcmt = '" + curReadyForPlcmt + "'");
                             curSqlStmt.Append( ", RankingRating = '" + curRankingRating + "'" );
                             curSqlStmt.Append( ", HCapBase = " + curHCapBase.ToString() );
                             curSqlStmt.Append( ", HCapScore = " + curHCapScore.ToString() );
@@ -1436,6 +1452,7 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( curColName.Equals( "EventGroup" )
                         || curColName.Equals("TeamCode")
                         || curColName.Equals("EventClass")
+                        || curColName.Equals("ReadyForPlcmt")
                         || curColName.Equals( "RankingRating" )
                         || curColName.Equals( "TrickBoat" )
                         || curColName.Equals( "JumpHeight" )
@@ -1592,6 +1609,7 @@ namespace WaterskiScoringSystem.Tournament {
                 } else if ( curColName.Equals( "EventGroup" )
                     || curColName.Equals( "TeamCode" )
                     || curColName.Equals( "EventClass" )
+                    || curColName.Equals("ReadyForPlcmt")
                     || curColName.Equals( "RankingRating" )
                     || curColName.Equals( "TrickBoat" )
                     || curColName.Equals( "JumpHeight" )
@@ -1888,7 +1906,7 @@ namespace WaterskiScoringSystem.Tournament {
 
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.Rotation, " );
-            curSqlStmt.Append( "E.TeamCode, COALESCE(E.EventClass, '" + myTourEventClass + "') as EventClass" );
+            curSqlStmt.Append( "E.TeamCode, COALESCE(E.EventClass, '" + myTourEventClass + "') as EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
             curSqlStmt.Append( ", E.RankingScore, E.RankingRating, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
             curSqlStmt.Append( ", HCapBase, HcapScore, T.State, T.City " );
             if (slalomButton.Checked) {

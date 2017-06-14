@@ -307,7 +307,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curValidStatus = false;
             }
             if (editFederation_Validation()) {
-                curFed = editFederation.Text;
+                curFed = (String)editFederation.SelectedValue;
             } else {
                 curValidStatus = false;
             }
@@ -425,9 +425,9 @@ namespace WaterskiScoringSystem.Tournament {
                 editState.Text = "";
             }
             try {
-                editFederation.Text = (String)myMemberViewRow.Cells["Federation"].Value;
+                editFederation.SelectedValue = (String)myMemberViewRow.Cells["Federation"].Value;
             } catch {
-                editFederation.Text = "";
+                editFederation.SelectedValue = "";
             }
             try {
                 editMemberStatus.Text = (String)myMemberViewRow.Cells["MemberStatus"].Value;
@@ -509,9 +509,9 @@ namespace WaterskiScoringSystem.Tournament {
                         editState.Text = "";
                     }
                     try {
-                        editFederation.Text = (String)curDataRow["Federation"];
+                        editFederation.SelectedValue = (String)curDataRow["Federation"];
                     } catch {
-                        editFederation.Text = "";
+                        editFederation.SelectedValue = "";
                     }
                     try {
                         if ( ((String)curDataRow["ReadyToSki"]).Equals("Y") ) {

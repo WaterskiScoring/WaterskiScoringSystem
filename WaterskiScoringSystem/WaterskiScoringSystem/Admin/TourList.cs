@@ -1003,7 +1003,7 @@ namespace WaterskiScoringSystem.Admin {
                 curViewRow.Cells["TourClass"].Value = "";
             }
             try {
-                curViewRow.Cells["TourFederation"].Value = editFederation.SelectedValue;
+                curViewRow.Cells["TourFederation"].Value = (String)editFederation.SelectedValue;
             } catch {
                 curViewRow.Cells["TourFederation"].Value = "";
             }

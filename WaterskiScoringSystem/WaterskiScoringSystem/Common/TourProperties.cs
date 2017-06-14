@@ -704,9 +704,9 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName("RunningOrderSortSlalom");
                 if ( curReturnValue.Length == 0 ) {
                     if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
                     setRunningOrderSortSlalom(curReturnValue);
                 }
@@ -927,9 +927,9 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName("RunningOrderSortTrick");
                 if ( curReturnValue.Length == 0 ) {
                     if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
                     setRunningOrderSortTrick(curReturnValue);
                 }
@@ -1150,9 +1150,9 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName("RunningOrderSortJump");
                 if ( curReturnValue.Length == 0 ) {
                     if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     } else {
-                        curReturnValue = "EventGroup ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     }
                     setRunningOrderSortJump(curReturnValue);
                 }
