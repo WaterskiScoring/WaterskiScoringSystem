@@ -193,6 +193,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curTourRegRow = getTourMemberRow( mySanctionNum, inMemberId, inAgeDiv );
                     if (curTourRegRow != null) {
                         curTourEventRegDataTable = getDataBySkierEvent( mySanctionNum, inMemberId, inAgeDiv, inEvent );
+                        String curReadyForPlcmt = (String)curTourRegRow["ReadyForPlcmt"];
+
                         if ( inEventClass.Trim().Length > 0 ) {
                             if (validSkierClass( inEventClass, (String)myTourRow["Class"] )) {
                                 curEventClass = inEventClass;
@@ -269,8 +271,8 @@ namespace WaterskiScoringSystem.Tournament {
                         if ( curTourEventRegDataTable.Rows.Count == 0 ) {
                             curSqlStmt.Append( "Insert EventReg (" );
                             curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, TeamCode, EventClass" );
-                            curSqlStmt.Append( ", RunOrder, RankingScore, RankingRating, AgeGroup" );
-                            curSqlStmt.Append( ",HCapBase, HCapScore, LastUpdateDate" );
+                            curSqlStmt.Append( ", RunOrder, RankingScore, RankingRating, AgeGroup, ReadyForPlcmt" );
+                            curSqlStmt.Append( ", HCapBase, HCapScore, LastUpdateDate" );
                             curSqlStmt.Append( ") Values (" );
                             curSqlStmt.Append( "'" + mySanctionNum + "'" );
                             curSqlStmt.Append( ", '" + inMemberId + "'" );
@@ -282,6 +284,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curSqlStmt.Append( ", " + curRankingScore );
                             curSqlStmt.Append( ", '" + curRankingRating + "'" );
                             curSqlStmt.Append( ", '" + inAgeDiv + "'" );
+                            curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
                             curSqlStmt.Append( ", " + curHCapBase );
                             curSqlStmt.Append( ", " + curHCapScore );
                             curSqlStmt.Append( ", GETDATE() )" );
@@ -389,7 +392,7 @@ namespace WaterskiScoringSystem.Tournament {
             String curMethodName = "Tournament:TourEventReg:addTourReg";
             String curMsg = "";
             Boolean returnStatus = false;
-            String curReadyToSki = "", curJumpHeight = "0", curFed = "", curCity = "", curState = "", curGender = "";
+            String curReadyToSki = "", curReadyForPlcmt = "", curJumpHeight = "0", curFed = "", curCity = "", curState = "", curGender = "";
             String curFirstName = "", curLastName = "";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             Int16 curSkiYearAge = 0;
@@ -413,6 +416,7 @@ namespace WaterskiScoringSystem.Tournament {
                             } catch {
                                 curReadyToSki = "N";
                             }
+                            curReadyForPlcmt = curReadyToSki;
 
                             try {
                                 if ( inJumpHeight.Length == 0 ) {
@@ -470,7 +474,7 @@ namespace WaterskiScoringSystem.Tournament {
                             }
                             curSqlStmt = new StringBuilder( "" );
                             curSqlStmt.Append( "Insert TourReg (" );
-                            curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, TrickBoat, JumpHeight " );
+                            curSqlStmt.Append(" MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight ");
                             curSqlStmt.Append( " , Federation, Gender, City, State, SkiYearAge, Notes, LastUpdateDate" );
                             curSqlStmt.Append( ") Values (" );
                             curSqlStmt.Append( "'" + inMemberId + "'" );
@@ -478,6 +482,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curSqlStmt.Append( ", '" + stringReplace(curLastName, mySingleQuoteDelim, "''") + ", " + stringReplace(curFirstName, mySingleQuoteDelim, "''") + "'" );
                             curSqlStmt.Append( ", '" + inAgeGroup + "'" );
                             curSqlStmt.Append( ", '" + curReadyToSki + "'" );
+                            curSqlStmt.Append(", '" + curReadyForPlcmt + "'");
                             curSqlStmt.Append( ", '" + inTrickBoat + "'" );
                             curSqlStmt.Append( ", " + curJumpHeight );
                             curSqlStmt.Append( ", '" + curFed + "'" );
@@ -927,7 +932,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable getDataBySkierEvent( String inSanctionId, String inMemberId, String inAgeGroup, String inEvent ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT E.PK, E.SanctionId, E.MemberId, E.AgeGroup, E.Event, E.EventGroup, E.RunOrder, E.TeamCode, " );
-            curSqlStmt.Append( " E.EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore, R.SkierName " );
+            curSqlStmt.Append(" E.EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore, R.SkierName ");
             curSqlStmt.Append( " FROM EventReg E" );
             curSqlStmt.Append( "      INNER JOIN TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup" );
             curSqlStmt.Append( " WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "'" );
@@ -938,8 +943,8 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT PK, MemberId, SanctionId, SkierName, AgeGroup, " );
-            curSqlStmt.Append( " EntryDue, EntryPaid, PaymentMethod, ReadyToSki, AwsaMbrshpPaymt, " );
+            curSqlStmt.Append("SELECT PK, MemberId, SanctionId, SkierName, AgeGroup, COALESCE(ReadyForPlcmt, 'N') as ReadyForPlcmt, ");
+            curSqlStmt.Append(" EntryDue, EntryPaid, PaymentMethod, ReadyToSki, ReadyForPlcmt, AwsaMbrshpPaymt, ");
             curSqlStmt.Append( " AwsaMbrshpComment, Weight, TrickBoat, JumpHeight, Notes" );
             curSqlStmt.Append( " FROM TourReg " );
             curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );

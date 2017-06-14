@@ -338,7 +338,7 @@ namespace WaterskiScoringSystem.Slalom {
                 }
 
                 if ( curEventClass.Length > 0 && curRound > 0 ) {
-                    if ( h2hScoreButton.Checked || finalScoreButton.Checked ) {
+                    if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
                         if ( curRound > curNumPrelimRounds) {
                             isShowRow = true;
                         } else {

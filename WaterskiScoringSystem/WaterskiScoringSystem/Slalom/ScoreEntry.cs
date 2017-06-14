@@ -4034,7 +4034,7 @@ namespace WaterskiScoringSystem.Slalom {
                                             break;
                                         }
                                     } else {
-                                        if ( inScore < 6 && myRecapRow.Index > 0 ) {
+                                        if ( (inScore < 6 && myRecapRow.Index > 0) || ( inScore == 6 && myRecapRow.Index > 0 && !isExitGatesGood() ) ) {
                                             Int16 tempPassNum = Convert.ToInt16((String) tempRecapRow.Cells["PassNumRecap"].Value);
                                             DataRow tempPassRow = getPassRow(tempPassNum);
                                             Int16 tempSpeedKph = Convert.ToInt16((Decimal) tempPassRow["MaxValue"]);
@@ -4052,7 +4052,7 @@ namespace WaterskiScoringSystem.Slalom {
                             DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = " + curPassLineLength);
                             curLineSortSeq = (int) curLineRow[0]["SortSeq"] - 1;
 
-                            if ( inScore < 6 && myRecapRow.Index > 0 ) {
+                            if ( ( inScore < 6 && myRecapRow.Index > 0 ) || ( inScore == 6 && myRecapRow.Index > 0 && !isExitGatesGood() ) ) {
                                 int prevIdx = myRecapRow.Index - 1;
                                 prevRerideInd = (String) slalomRecapDataGridView.Rows[prevIdx].Cells["RerideRecap"].Value;
 
@@ -4855,7 +4855,7 @@ namespace WaterskiScoringSystem.Slalom {
                 if (curIdx == 0) {
                     curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.EventGroup,  O.RunOrder, E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append(", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.HCapBase");
-                    curSqlStmt.Append( ", E.HCapScore, COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
+                    curSqlStmt.Append(", E.HCapScore, COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
                     curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                     curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
@@ -4865,7 +4865,7 @@ namespace WaterskiScoringSystem.Slalom {
                 } else {
                     curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup,  E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append(", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore");
-                    curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
+                    curSqlStmt.Append(", COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
                     curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                     curSqlStmt.Append( "     LEFT OUTER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );

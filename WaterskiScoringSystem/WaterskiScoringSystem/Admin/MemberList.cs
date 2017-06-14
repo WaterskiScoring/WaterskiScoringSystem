@@ -294,5 +294,8 @@ namespace WaterskiScoringSystem.Admin {
             return curReturnValue;
         }
 
+        private void dataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
+
+        }
     }
 }

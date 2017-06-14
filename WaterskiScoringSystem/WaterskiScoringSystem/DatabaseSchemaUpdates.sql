@@ -765,3 +765,12 @@ ALTER TABLE [TrickList] ALTER COLUMN RuleNum smallint;
 ALTER TABLE [SlalomScore] ADD COLUMN CompletedSpeedMph tinyint;
 ALTER TABLE [SlalomScore] ADD COLUMN CompletedSpeedKph tinyint;
 
+//------------------------------------------------------------
+## v4.09
+Update TourReg Set ReadyForPlcmt = 'Y' Where ReadyForPlcmt is null;
+
+//------------------------------------------------------------
+## v4.10
+ALTER TABLE [EventReg] ADD COLUMN ReadyForPlcmt nchar(1);
+Update EventReg Set ReadyForPlcmt = 'Y' Where ReadyForPlcmt is null;
+Update EventReg Set ReadyForPlcmt = 'N' Where EventGroup = 'RL';

@@ -393,22 +393,21 @@ namespace WaterskiScoringSystem.Tools {
                     String tmpPlcmt = "";
                     String curPlcmt = (String)curScoreRow["PlcmtSlalom"];
                     try {
-                        tmpEventGroup = (String)curScoreRow["EventGroupSlalom"];
-                    } catch {
-                        tmpEventGroup = "";
-                    }
-                    if ( tmpEventGroup.ToLower().Trim().Equals( "rl" ) ) {
-                        tmpPlcmt = "    ";
-                    } else {
-                        if ( curPlcmt.Length > 0 ) {
-                            if ( curPlcmt.Substring( curPlcmt.Length - 1, 1 ).Equals( "T" ) ) {
-                                tmpPlcmt = curPlcmt.PadLeft( 4, ' ' );
+                        if ( ( (String) curScoreRow["ReadyForPlcmtSlalom"] ).ToLower().Equals("y") ) {
+                            if ( curPlcmt.Length > 0 ) {
+                                if ( curPlcmt.Substring(curPlcmt.Length - 1, 1).Equals("T") ) {
+                                    tmpPlcmt = curPlcmt.PadLeft(4, ' ');
+                                } else {
+                                    tmpPlcmt = curPlcmt.PadLeft(3, ' ') + " ";
+                                }
                             } else {
-                                tmpPlcmt = curPlcmt.PadLeft( 3, ' ' ) + " ";
+                                tmpPlcmt = "    ";
                             }
                         } else {
                             tmpPlcmt = "    ";
                         }
+                    } catch {
+                        tmpPlcmt = "    ";
                     }
                     curPlcmt = tmpPlcmt;
                     outLine.Append( ",\"" + curPlcmt + "\"" );
@@ -448,22 +447,21 @@ namespace WaterskiScoringSystem.Tools {
                     String tmpPlcmt = "";
                     String curPlcmt = (String)curScoreRow["PlcmtTrick"];
                     try {
-                        tmpEventGroup = (String)curScoreRow["EventGroupTrick"];
-                    } catch {
-                        tmpEventGroup = "";
-                    }
-                    if ( tmpEventGroup.ToLower().Equals( "rl" ) ) {
-                        tmpPlcmt = "    ";
-                    } else {
-                        if ( curPlcmt.Length > 0 ) {
-                            if ( curPlcmt.Substring( curPlcmt.Length - 1, 1 ).Equals( "T" ) ) {
-                                tmpPlcmt = curPlcmt.PadLeft( 4, ' ' );
+                        if ( ( (String) curScoreRow["ReadyForPlcmtTrick"] ).ToLower().Equals("y") ) {
+                            if ( curPlcmt.Length > 0 ) {
+                                if ( curPlcmt.Substring(curPlcmt.Length - 1, 1).Equals("T") ) {
+                                    tmpPlcmt = curPlcmt.PadLeft(4, ' ');
+                                } else {
+                                    tmpPlcmt = curPlcmt.PadLeft(3, ' ') + " ";
+                                }
                             } else {
-                                tmpPlcmt = curPlcmt.PadLeft( 3, ' ' ) + " ";
+                                tmpPlcmt = "    ";
                             }
                         } else {
                             tmpPlcmt = "    ";
                         }
+                    } catch {
+                        tmpPlcmt = "    ";
                     }
                     curPlcmt = tmpPlcmt;
                     outLine.Append( ",\"" + curPlcmt + "\"" );
@@ -503,22 +501,21 @@ namespace WaterskiScoringSystem.Tools {
                     String tmpPlcmt = "";
                     String curPlcmt = (String)curScoreRow["PlcmtJump"];
                     try {
-                        tmpEventGroup = (String)curScoreRow["EventGroupJump"];
-                    } catch {
-                        tmpEventGroup = "";
-                    }
-                    if ( tmpEventGroup.ToLower().Equals( "rl" ) ) {
-                        tmpPlcmt = "    ";
-                    } else {
-                        if ( curPlcmt.Length > 0 ) {
-                            if ( curPlcmt.Substring( curPlcmt.Length - 1, 1 ).Equals( "T" ) ) {
-                                tmpPlcmt = curPlcmt.PadLeft( 4, ' ' );
+                        if ( ( (String) curScoreRow["ReadyForPlcmtJump"] ).ToLower().Equals("y") ) {
+                            if ( curPlcmt.Length > 0 ) {
+                                if ( curPlcmt.Substring(curPlcmt.Length - 1, 1).Equals("T") ) {
+                                    tmpPlcmt = curPlcmt.PadLeft(4, ' ');
+                                } else {
+                                    tmpPlcmt = curPlcmt.PadLeft(3, ' ') + " ";
+                                }
                             } else {
-                                tmpPlcmt = curPlcmt.PadLeft( 3, ' ' ) + " ";
+                                tmpPlcmt = "    ";
                             }
                         } else {
                             tmpPlcmt = "    ";
                         }
+                    } catch {
+                        tmpPlcmt = "    ";
                     }
                     curPlcmt = tmpPlcmt;
                     outLine.Append( ",\"" + curPlcmt + "\"" );

@@ -51,7 +51,7 @@ namespace WaterskiScoringSystem.Tournament {
                 Properties.Settings.Default.TourRegList_Sort = mySortCommand;
             }
 
-            String[] curList = { "SkierName", "AgeGroup", "ReadyToSki", "SlalomReg", "TrickReg", "JumpReg", "SlalomGroup", "TrickGroup", "JumpGroup", "EntryDue", "EntryPaid", "PaymentMethod", "JumpHeight", "TrickBoat", "AwsaMbrshpPaymt" };
+            String[] curList = { "SkierName", "AgeGroup", "ReadyToSki", "ReadyForPlcmt", "SlalomReg", "TrickReg", "JumpReg", "SlalomGroup", "TrickGroup", "JumpGroup", "EntryDue", "EntryPaid", "PaymentMethod", "JumpHeight", "TrickBoat", "AwsaMbrshpPaymt" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -149,6 +149,11 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["ReadyToSki"].Value = (String)curDataRow["ReadyToSki"];
                     } catch {
                         curViewRow.Cells["ReadyToSki"].Value = "";
+                    }
+                    try {
+                        curViewRow.Cells["ReadyForPlcmt"].Value = (String) curDataRow["ReadyForPlcmt"];
+                    } catch {
+                        curViewRow.Cells["ReadyForPlcmt"].Value = "N";
                     }
                     try {
                         curViewRow.Cells["EntryDue"].Value = ( (Decimal)curDataRow["EntryDue"] ).ToString( "###.##" );
@@ -318,7 +323,7 @@ namespace WaterskiScoringSystem.Tournament {
                     ) {
                     try {
                         String curEntryDue, curEntryPaid, curJumpHeight, curTrickBoat, curNotes
-                            , curAwsaMbrshpPaymt, curReadyToSki, curPaymentMethod, curAwsaMbrshpComment;
+                            , curAwsaMbrshpPaymt, curReadyToSki, curReadyForPlcmt, curPaymentMethod, curAwsaMbrshpComment;
 
                         try {
                             curJumpHeight = Convert.ToDecimal( (String)curViewRow.Cells["JumpHeight"].Value).ToString();
@@ -334,6 +339,11 @@ namespace WaterskiScoringSystem.Tournament {
                             curReadyToSki = (String)curViewRow.Cells["ReadyToSki"].Value;
                         } catch {
                             curReadyToSki = "";
+                        }
+                        try {
+                            curReadyForPlcmt = (String) curViewRow.Cells["ReadyForPlcmt"].Value;
+                        } catch {
+                            curReadyForPlcmt = "Y";
                         }
                         try {
                             curEntryDue = Convert.ToDecimal( (String)curViewRow.Cells["EntryDue"].Value).ToString();
@@ -370,10 +380,11 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( "Update TourReg Set " );
                         curSqlStmt.Append( " SanctionId = '" + curSanctionId + "'" );
                         curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
+                        curSqlStmt.Append( ", ReadyForPlcmt = '" + curReadyForPlcmt + "'");
                         curSqlStmt.Append( ", EntryDue = " + curEntryDue );
                         curSqlStmt.Append( ", EntryPaid = " + curEntryPaid );
                         curSqlStmt.Append( ", PaymentMethod = '" + curPaymentMethod + "'" );
-                        curSqlStmt.Append(", Weight = Null" );
+                        curSqlStmt.Append( ", Weight = Null" );
                         curSqlStmt.Append( ", JumpHeight = " + curJumpHeight );
                         curSqlStmt.Append( ", TrickBoat = '" + curTrickBoat + "'" );
                         curSqlStmt.Append( ", AwsaMbrshpPaymt = " + curAwsaMbrshpPaymt);
@@ -773,6 +784,7 @@ namespace WaterskiScoringSystem.Tournament {
                         || curColName.Equals("TrickBoat")
                         || curColName.Equals("Notes")
                         || curColName.Equals("ReadyToSki")
+                        || curColName.Equals("ReadyForPlcmt")
                         || curColName.Equals( "SlalomReg" )
                         || curColName.Equals( "SlalomGroup" )
                         || curColName.Equals( "TrickReg" )
@@ -934,6 +946,7 @@ namespace WaterskiScoringSystem.Tournament {
                         || curColName.Equals("TrickBoat")
                         || curColName.Equals("Notes")
                         || curColName.Equals("ReadyToSki")
+                        || curColName.Equals("ReadyForPlcmt")
                     ) {
                     String curValue = "";
                     if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
@@ -1173,7 +1186,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable getTourRegData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, ");
-            curSqlStmt.Append( "R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment, " );
+            curSqlStmt.Append("R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.ReadyForPlcmt, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment, ");
             curSqlStmt.Append( "R.TrickBoat, R.JumpHeight, R.Notes, " );
             curSqlStmt.Append( "S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup, " );
             curSqlStmt.Append( "T.Event AS TrickEvent, T.EventGroup AS TrickGroup, " );

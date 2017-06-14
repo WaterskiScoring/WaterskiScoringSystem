@@ -273,7 +273,7 @@ namespace WaterskiScoringSystem.Admin {
                 curValidStatus = false;
             }
             if ( editFederation_Validation() ) {
-                curFed = editFederation.Text;
+                curFed = (String)editFederation.SelectedValue;
             } else {
                 curValidStatus = false;
             }
@@ -372,7 +372,7 @@ namespace WaterskiScoringSystem.Admin {
                 curValidStatus = false;
             }
             if ( editFederation_Validation() ) {
-                curFed = editFederation.Text;
+                curFed = (String)editFederation.SelectedValue;
             } else {
                 curValidStatus = false;
             }
@@ -442,7 +442,7 @@ namespace WaterskiScoringSystem.Admin {
             editMemberStatus.Text = "";
             editState.Text = "";
             editCity.Text = "";
-            editFederation.Text = "";
+            editFederation.SelectedValue = "";
             editInsertDateShow.Text = "";
             editUpdateDateShow.Text = "";
 
@@ -519,9 +519,9 @@ namespace WaterskiScoringSystem.Admin {
                         editCity.Text = "";
                     }
                     try {
-                        editFederation.Text = curRow["Federation"].ToString();
+                        editFederation.SelectedValue = curRow["Federation"].ToString();
                     } catch {
-                        editFederation.Text = "";
+                        editFederation.SelectedValue = "";
                     }
                     try {
                         editInsertDateShow.Text = ( (DateTime)curRow["InsertDate"] ).ToString( "MM/dd/yy hh:mm:ss" );

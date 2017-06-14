@@ -3796,7 +3796,8 @@ namespace WaterskiScoringSystem.Trick {
                 if (curIdx == 0) {
                     curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.EventGroup,  O.RunOrder, E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.AgeGroup" );
-                    curSqlStmt.Append( ", E.HCapBase, E.HCapScore, T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
+                    curSqlStmt.Append(", E.HCapBase, E.HCapScore, T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
+                    curSqlStmt.Append( ", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
                     curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                     curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
@@ -3806,7 +3807,8 @@ namespace WaterskiScoringSystem.Trick {
                 } else {
                     curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, E.HCapBase, E.HCapScore" );
-                    curSqlStmt.Append( ", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
+                    curSqlStmt.Append(", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
+                    curSqlStmt.Append(", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
                     curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                     curSqlStmt.Append( "     LEFT OUTER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
