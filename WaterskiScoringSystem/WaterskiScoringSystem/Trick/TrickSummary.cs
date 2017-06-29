@@ -469,7 +469,11 @@ namespace WaterskiScoringSystem.Trick {
 
                     curViewRow.Cells["Event"].Value = "Trick";
                     curViewRow.Cells["EventClass"].Value = (String)curRow["EventClassTrick"];
-                    curViewRow.Cells["PlcmtTrick"].Value = (String)curRow["PlcmtTrick"];
+                    if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                        curViewRow.Cells["PlcmtTrick"].Value = "**";
+                    } else {
+                        curViewRow.Cells["PlcmtTrick"].Value = (String) curRow["PlcmtTrick"];
+                    }
                     try {
                         curViewRow.Cells["TeamCode"].Value = (String)curRow["TeamTrick"];
                         curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamTrick"];

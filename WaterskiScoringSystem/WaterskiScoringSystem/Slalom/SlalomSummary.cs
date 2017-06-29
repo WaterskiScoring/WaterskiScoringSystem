@@ -461,7 +461,11 @@ namespace WaterskiScoringSystem.Slalom {
 
                     curViewRow.Cells["Event"].Value = "Slalom";
                     curViewRow.Cells["EventClass"].Value = (String)curRow["EventClassSlalom"];
-                    curViewRow.Cells["PlcmtSlalom"].Value = (String)curRow["PlcmtSlalom"];
+                    if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                        curViewRow.Cells["PlcmtSlalom"].Value = "**";
+                    } else {
+                        curViewRow.Cells["PlcmtSlalom"].Value = (String) curRow["PlcmtSlalom"];
+                    }
                     try {
                         curViewRow.Cells["TeamCode"].Value = (String)curRow["TeamSlalom"];
                         curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamSlalom"];

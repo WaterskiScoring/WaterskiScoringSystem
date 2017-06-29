@@ -17,6 +17,7 @@ using ValidationLibrary.Trick;
 namespace WaterskiScoringSystem.Trick {
     public partial class ScoreCalc : Form {
         private bool isDataModified = false;
+        private bool isDataModifiedInProgress = false;
         private bool isPassEnded = false;
         private bool isLoadInProg = false;
         private bool isTrickValid = true;
@@ -785,6 +786,7 @@ namespace WaterskiScoringSystem.Trick {
             isLoadInProg = true;
             CalcScoreButton_Click( null, null );
             isLoadInProg = false;
+            isDataModifiedInProgress = false;
         }
 
         private void CalcScoreButton_Click( object sender, EventArgs e ) {
@@ -838,15 +840,13 @@ namespace WaterskiScoringSystem.Trick {
                                                 break;
                                             }
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
-                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
-                                            } else {
+                                            if ( curPassRow.Index > 0 && curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
                                                 break;
                                             }
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
                                             if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
-                                            } else {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                 break;
@@ -921,8 +921,7 @@ namespace WaterskiScoringSystem.Trick {
                                                     break;
                                                 }
                                             } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
-                                                if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
-                                                } else {
+                                                if ( curPassRow.Index > 0 && curPassRow.Index < ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                     curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass2Score.ToString();
                                                     MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
                                                     break;
@@ -2093,7 +2092,7 @@ namespace WaterskiScoringSystem.Trick {
 
         private void DataGridView_Leave( object sender, EventArgs e ) {
             DataGridView curPassView = (DataGridView)sender;
-            if ( isDataModified ) {
+            if ( isDataModified && !(isDataModifiedInProgress) ) {
                 CalcScoreButton_Click( null, null );
             }
             curPassView.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
@@ -2842,6 +2841,7 @@ namespace WaterskiScoringSystem.Trick {
 
                                 if ( isPassEnded ) {
                                     isDataModified = true;
+                                    isDataModifiedInProgress = true;
                                     Timer curTimerObj = new Timer();
                                     curTimerObj.Interval = 15;
                                     curTimerObj.Tick += new EventHandler( calcUpdateScoreTimer );
@@ -2854,6 +2854,7 @@ namespace WaterskiScoringSystem.Trick {
                             String curValue = ((String)curPassRow.Cells[e.ColumnIndex].Value).ToUpper();
                             if ( curValue.Equals( "END" ) || curValue.Equals( "HORN" ) ) {
                                 isDataModified = true;
+                                isDataModifiedInProgress = true;
                                 Timer curTimerObj = new Timer();
                                 curTimerObj.Interval = 15;
                                 curTimerObj.Tick += new EventHandler( calcUpdateScoreTimer );
@@ -3024,6 +3025,7 @@ namespace WaterskiScoringSystem.Trick {
 
                         if ( isPassEnded ) {
                             isDataModified = true;
+                            isDataModifiedInProgress = true;
                             Timer curTimerObj = new Timer();
                             curTimerObj.Interval = 15;
                             curTimerObj.Tick += new EventHandler( calcUpdateScoreTimer );

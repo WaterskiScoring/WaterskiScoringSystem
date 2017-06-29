@@ -464,6 +464,11 @@ namespace WaterskiScoringSystem.Jump {
                     curViewRow.Cells["Event"].Value = "Jump";
                     curViewRow.Cells["EventClass"].Value = (String)curRow["EventClassJump"];
                     curViewRow.Cells["PlcmtJump"].Value = (String)curRow["PlcmtJump"];
+                    if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                        curViewRow.Cells["PlcmtJump"].Value = "**";
+                    } else {
+                        curViewRow.Cells["PlcmtJump"].Value = (String) curRow["PlcmtJump"];
+                    }
                     try {
                         curViewRow.Cells["TeamCode"].Value = (String)curRow["TeamJump"];
                         curViewRow.Cells["TeamCodeNcwsa"].Value = (String)curRow["TeamJump"];

@@ -119,28 +119,30 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( "  And JudgeChief = 'Y'" );
                 curDataTable = getData( curSqlStmt.ToString() );
                 if (curDataTable.Rows.Count <= 0) {
-                    curMsg.Append( "\n Chief judge is not assigned." );
+                    curMsg.Append( "\n Chief Judge is not assigned." );
                 } else {
                     curMemberId = (String)curDataTable.Rows[0]["MemberId"];
+                    if ( curDataTable.Rows.Count > 1 ) {
+                        curMsg.Append("\n More than 1 individual has been marked the Chief Judge.  Please correct unless this was intentional");
+                    }
                 }
                 curSqlStmt = new StringBuilder("SELECT ChiefJudgeMemberId FROM Tournament ");
                 curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
                 curDataTable = getData(curSqlStmt.ToString());
                 if (curDataTable.Rows.Count > 0) {
                     try {
-                        if (curDataTable.Rows[0]["ChiefJudgeMemberId"] == System.DBNull.Value) {
+                        if ( curDataTable.Rows[0]["ChiefJudgeMemberId"] == System.DBNull.Value ) {
                             curValue = "";
                         } else {
-                            curValue = (String)curDataTable.Rows[0]["ChiefJudgeMemberId"];
+                            curValue = (String) curDataTable.Rows[0]["ChiefJudgeMemberId"];
                         }
-                        if (curValue.Length > 1) {
-                        } else {
-                            if (curMemberId.Length > 1) {
-                                curSqlStmt = new StringBuilder( "Update Tournament Set ChiefJudgeMemberId = '" + curMemberId + "' " );
-                                curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                        if ( curValue.Length <= 0 ) {
+                            if ( curMemberId.Length > 1 ) {
+                                curSqlStmt = new StringBuilder("Update Tournament Set ChiefJudgeMemberId = '" + curMemberId + "' ");
+                                curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
+                                int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                             } else {
-                                curMsg.Append( "\n Chief judge is not available in Official Contacts." );
+                                curMsg.Append("\n Chief judge is not available in Official Contacts.");
                             }
                         }
                     } catch {
@@ -157,6 +159,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curMsg.Append( "\n Chief driver is not assigned." );
                 } else {
                     curMemberId = (String)curDataTable.Rows[0]["MemberId"];
+                    if ( curDataTable.Rows.Count > 1 ) {
+                        curMsg.Append("\n More than 1 individual has been marked the Chief Driver.  Please correct unless this was intentional");
+                    }
                 }
                 curSqlStmt = new StringBuilder("SELECT ChiefDriverMemberId FROM Tournament ");
                 curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
@@ -168,14 +173,13 @@ namespace WaterskiScoringSystem.Tournament {
                         } else {
                             curValue = (String)curDataTable.Rows[0]["ChiefDriverMemberId"];
                         }
-                        if (curValue.Length > 1) {
-                        } else {
-                            if (curMemberId.Length > 1) {
-                                curSqlStmt = new StringBuilder( "Update Tournament Set ChiefDriverMemberId = '" + curMemberId + "' " );
-                                curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                        if ( curValue.Length <= 0 ) {
+                            if ( curMemberId.Length > 1 ) {
+                                curSqlStmt = new StringBuilder("Update Tournament Set ChiefDriverMemberId = '" + curMemberId + "' ");
+                                curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
+                                int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                             } else {
-                                curMsg.Append( "\n Chief driver is not available in Official Contacts." );
+                                curMsg.Append("\n Chief driver is not available in Official Contacts.");
                             }
                         }
                     } catch {
@@ -192,6 +196,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curMsg.Append( "\n Chief scorer is not assigned." );
                 } else {
                     curMemberId = (String)curDataTable.Rows[0]["MemberId"];
+                    if ( curDataTable.Rows.Count > 1 ) {
+                        curMsg.Append("\n More than 1 individual has been marked the Chief Scorer.  Please correct unless this was intentional");
+                    }
                 }
                 curSqlStmt = new StringBuilder("SELECT ChiefScorerMemberId FROM Tournament ");
                 curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
@@ -203,14 +210,13 @@ namespace WaterskiScoringSystem.Tournament {
                         } else {
                             curValue = (String)curDataTable.Rows[0]["ChiefScorerMemberId"];
                         }
-                        if (curValue.Length > 1) {
-                        } else {
-                            if (curMemberId.Length > 1) {
-                                curSqlStmt = new StringBuilder( "Update Tournament Set ChiefScorerMemberId = '" + curMemberId + "' " );
-                                curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                        if ( curValue.Length <= 0 ) {
+                            if ( curMemberId.Length > 1 ) {
+                                curSqlStmt = new StringBuilder("Update Tournament Set ChiefScorerMemberId = '" + curMemberId + "' ");
+                                curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
+                                int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                             } else {
-                                curMsg.Append( "\n Chief scorer is not available in Official Contacts." );
+                                curMsg.Append("\n Chief scorer is not available in Official Contacts.");
                             }
                         }
                     } catch {
@@ -273,15 +279,17 @@ namespace WaterskiScoringSystem.Tournament {
                             curValue = "";
                         } else {
                             curValue = (String)curDataTable.Rows[0]["SafetyDirMemberId"];
+                            if ( curDataTable.Rows.Count > 1 ) {
+                                curMsg.Append("\n More than 1 individual has been marked the Chief Safty Director.  Please correct unless this was intentional");
+                            }
                         }
-                        if (curValue.Length > 1) {
-                        } else {
-                            if (curMemberId.Length > 1) {
-                                curSqlStmt = new StringBuilder( "Update Tournament Set SafetyDirMemberId = '" + curMemberId + "' " );
-                                curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                        if ( curValue.Length <= 0 ) {
+                            if ( curMemberId.Length > 1 ) {
+                                curSqlStmt = new StringBuilder("Update Tournament Set SafetyDirMemberId = '" + curMemberId + "' ");
+                                curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
+                                int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                             } else {
-                                curMsg.Append( "\n Chief safety is not available in Official Contacts." );
+                                curMsg.Append("\n Chief safety is not available in Official Contacts.");
                             }
                         }
                     } catch {
@@ -298,7 +306,10 @@ namespace WaterskiScoringSystem.Tournament {
                     curDataTable = getData( curSqlStmt.ToString() );
                     if ( curDataTable.Rows.Count <= 0 ) {
                         curMsg.Append( "\n Chief tech controller is not assigned." );
+                    } else if ( curDataTable.Rows.Count > 1 ) {
+                        curMsg.Append("\n More than 1 individual has been marked the Technical Controller.  Please correct unless this was intentional");
                     }
+
                 } else if ( (Decimal)myClassRow["ListCodeNum"] < (Decimal)myClassCRow["ListCodeNum"] ) {
                     //curEventClass = "N";
                 } else {

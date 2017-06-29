@@ -201,6 +201,11 @@ namespace WaterskiScoringSystem.Tools {
                             curText += "\n  Class: " + (String) curRow["EventClass"] + "  Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
                         }
                     }
+                    if ( curRow["ReadyForPlcmt"] != System.DBNull.Value ) {
+                        if ( ( (String) curRow["ReadyForPlcmt"] ).Equals("N") ) {
+                            curText += " Plcmt: " + (String) curRow["ReadyForPlcmt"];
+                        }
+                    }
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
                     curPosY = curPagePos[1];
                     curPageSkierCount++;

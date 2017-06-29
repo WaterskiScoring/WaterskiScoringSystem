@@ -187,6 +187,11 @@ namespace WaterskiScoringSystem.Tools {
                 } else {
                     curText = (String)curRow["SkierName"] + "\nClass: " + (String)curRow["EventClass"];
                 }
+                if ( curRow["ReadyForPlcmt"] != System.DBNull.Value ) {
+                    if ( ( (String) curRow["ReadyForPlcmt"] ).Equals("N") ) {
+                        curText += " Plcmt: " + (String) curRow["ReadyForPlcmt"];
+                    }
+                }
                 curPagePos = PrintText( curText, curPosXName, curPosY, curTextBoxWidthName, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
 
                 curFindRows = myDivInfoDataTable.Select( "Div = '" + (String)curRow["AgeGroup"] + "'" );
@@ -212,6 +217,11 @@ namespace WaterskiScoringSystem.Tools {
                         curText = (String) curRow["SkierName"] + "\nTeam: " + curTeam;
                     } else {
                         curText = (String)curRow["SkierName"] + "\nClass: " + (String)curRow["EventClass"];
+                    }
+                    if ( curRow["ReadyForPlcmt"] != System.DBNull.Value ) {
+                        if ( ( (String) curRow["ReadyForPlcmt"] ).Equals("N") ) {
+                            curText += " Plcmt: " + (String) curRow["ReadyForPlcmt"];
+                        }
                     }
                     curPagePos = PrintText( curText, curPosXName, curPosY, curTextBoxWidthName, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
 

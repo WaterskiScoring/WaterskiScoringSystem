@@ -4395,7 +4395,7 @@ namespace WaterskiScoringSystem.Slalom {
                 myRecapRow.Cells["Updated"].Value = "Y";
                 //Reset 
                 if ( curSkierPassNum > 1 ) {
-                    if ( inScore > 0M ) {
+                    if ( inScore > 0M || ( inScore == 0M && curTimeGood ) ) {
                         curPassNum = Convert.ToInt16( (String)myRecapRow.Cells["PassNumRecap"].Value );
                         if ( prevPassNum > 0 ) {
                             if ( curPassNum > ( prevPassNum - curPassNumMinSpeed + curPassNumLineAdjust  + 1 ) ) {

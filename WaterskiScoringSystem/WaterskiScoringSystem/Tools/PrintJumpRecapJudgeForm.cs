@@ -192,15 +192,36 @@ namespace WaterskiScoringSystem.Tools {
                             if ( curRow["TeamCode"] != System.DBNull.Value ) {
                                 curTeam = (String) curRow["TeamCode"];
                             }
-                            curText += "\n  Team: " + curTeam
-                                + " Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00")
-                                + " Ramp: " + ( (Decimal) curRow["JumpHeight"] ).ToString("#0.0");
+                            curText += "\n  Team: " + curTeam;
+                            if ( curRow["RankingScore"] != System.DBNull.Value ) {
+                                curText += " Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                            } else {
+                                curText += " Rank: 0";
+                            }
+                            if ( curRow["JumpHeight"] != System.DBNull.Value ) {
+                                curText += " Ramp: " + ( (Decimal) curRow["JumpHeight"] ).ToString("#0.0");
+                            } else {
+                                curText += " Ramp: N/A";
+                            }
                         } else {
-                            curText += "\n  Class: " + (String)curRow["EventClass"]
-                                + " Rank: " + ( (Decimal)curRow["RankingScore"] ).ToString( "##0.00" )
-                                + " Ramp: " + ( (Decimal)curRow["JumpHeight"] ).ToString( "#0.0" );
+                            curText += "\n  Class: " + (String) curRow["EventClass"];
+                            if ( curRow["RankingScore"] != System.DBNull.Value ) {
+                                curText += " Rank: " + ( (Decimal) curRow["RankingScore"] ).ToString("##0.00");
+                            } else {
+                                curText += " Rank: 0";
+                            }
+                            if ( curRow["JumpHeight"] != System.DBNull.Value ) {
+                                curText += " Ramp: " + ( (Decimal) curRow["JumpHeight"] ).ToString("#0.0");
+                            } else {
+                                curText += " Ramp: N/A";
+                            }
                         }
                     } catch {
+                    }
+                    if ( curRow["ReadyForPlcmt"] != System.DBNull.Value ) {
+                        if ( ( (String) curRow["ReadyForPlcmt"] ).Equals("N") ) {
+                            curText += " Plcmt: " + (String) curRow["ReadyForPlcmt"];
+                        }
                     }
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat );
                     curPosX = curPagePos[0] + Convert.ToSingle( 5 );

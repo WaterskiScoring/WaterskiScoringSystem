@@ -127,11 +127,23 @@ namespace WaterskiScoringSystem.Tournament {
 
                         myFilterCmd = "";
                         if (slalomButton.Checked) {
-                            mySortCmd = myTourProperties.RunningOrderSortSlalom;
+                            if ( (Byte) myTourRow["SlalomRounds"] == 0 ) {
+                                MessageBox.Show("Slalom event is not active for this tournament");
+                            } else {
+                                mySortCmd = myTourProperties.RunningOrderSortSlalom;
+                            }
                         } else if (trickButton.Checked) {
-                            mySortCmd = myTourProperties.RunningOrderSortTrick;
+                            if ( (Byte) myTourRow["TrickRounds"] == 0 ) {
+                                MessageBox.Show("Trick event is not active for this tournament");
+                            } else {
+                                mySortCmd = myTourProperties.RunningOrderSortTrick;
+                            }
                         } else if (jumpButton.Checked) {
-                            mySortCmd = myTourProperties.RunningOrderSortJump;
+                            if ( (Byte)myTourRow["JumpRounds"] == 0 ) {
+                                MessageBox.Show("Jump event is not active for this tournament");
+                            } else {
+                                mySortCmd = myTourProperties.RunningOrderSortJump;
+                            }
                         }
 
                         if (ExportLiveWeb.LiveWebLocation.Length > 1) {
@@ -462,7 +474,11 @@ namespace WaterskiScoringSystem.Tournament {
                             curPrintRow.Cells["PrintReadyForPlcmt"].Value = "";
                         }
                         try {
-                            curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16)curTeamRow["RunOrder"] ).ToString( "##0" );
+                            if ( ((String) curTeamRow["ReadyForPlcmt"]).Equals("N") ) {
+                                curPrintRow.Cells["PrintRunOrder"].Value = "**";
+                            } else {
+                                curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16) curTeamRow["RunOrder"] ).ToString("##0");
+                            }
                         } catch {
                             curPrintRow.Cells["PrintRunOrder"].Value = "0";
                         }
