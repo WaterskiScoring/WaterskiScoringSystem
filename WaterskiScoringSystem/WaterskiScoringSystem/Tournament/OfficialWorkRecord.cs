@@ -1433,22 +1433,26 @@ namespace WaterskiScoringSystem.Tournament {
                 DataTable curDataTable = getData(curSqlStmt.ToString());
                 bool isUpdateReqd = false;
                 if ( curDataTable.Rows.Count > 0 ) {
-                    String curMemberId = (String) curDataTable.Rows[0]["ChiefMemberId"];
-                    if ( curMemberId.Trim().Length == 0 ) {
+                    if ( curDataTable.Rows[0]["ChiefMemberId"] == System.DBNull.Value ) {
                         isUpdateReqd = true;
-                    } else if ( curMemberId.Equals(editMemberId.Text) ) {
-                        isUpdateReqd = false;
                     } else {
-                        String dialogMsg = "Primary chief " + inChiefType + " is already assigned, do you want to change that assignment?";
-                        DialogResult msgResp =
-                            MessageBox.Show(dialogMsg, "Change Warning",
-                                MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Warning,
-                                MessageBoxDefaultButton.Button1);
-                        if ( msgResp == DialogResult.Yes ) {
+                        String curMemberId = (String) curDataTable.Rows[0]["ChiefMemberId"];
+                        if ( curMemberId.Trim().Length == 0 ) {
                             isUpdateReqd = true;
-                        } else {
+                        } else if ( curMemberId.Equals(editMemberId.Text) ) {
                             isUpdateReqd = false;
+                        } else {
+                            String dialogMsg = "Primary chief " + inChiefType + " is already assigned, do you want to change that assignment?";
+                            DialogResult msgResp =
+                                MessageBox.Show(dialogMsg, "Change Warning",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Warning,
+                                    MessageBoxDefaultButton.Button1);
+                            if ( msgResp == DialogResult.Yes ) {
+                                isUpdateReqd = true;
+                            } else {
+                                isUpdateReqd = false;
+                            }
                         }
                     }
                 }

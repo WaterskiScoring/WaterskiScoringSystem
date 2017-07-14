@@ -416,7 +416,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append("<td>&nbsp;</td>");
                     }
                     try {
-                        outLine.Append( "<td>" + (String)curRow["PlcmtSlalom"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtSlalom"] ).Length == 0 ) {
+                            outLine.Append("<td>&nbsp;</td>");
+                        } else {
+                            if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) curRow["PlcmtSlalom"] + "</td>");
+                            }
+                        }
                     } catch {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
@@ -426,7 +434,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append("<td>&nbsp;</td>");
                     }
                     try {
-                        outLine.Append( "<td>" + (String)curRow["PlcmtTrick"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtTrick"] ).Length == 0 ) {
+                            outLine.Append("<td>&nbsp;</td>");
+                        } else {
+                            if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) curRow["PlcmtTrick"] + "</td>");
+                            }
+                        }
                     } catch {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
@@ -436,7 +452,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append("<td>&nbsp;</td>");
                     }
                     try {
-                        outLine.Append( "<td>" + (String)curRow["PlcmtJump"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtJump"] ).Length == 0 ) {
+                            outLine.Append("<td>&nbsp;</td>");
+                        } else {
+                            if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) curRow["PlcmtJump"] + "</td>");
+                            }
+                        }
                     } catch {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }

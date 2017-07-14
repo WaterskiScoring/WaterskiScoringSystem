@@ -1606,13 +1606,13 @@ namespace WaterskiScoringSystem.Common {
                             curScore = -1;
                         }
                         curRow[inPlcmtName] = curPlcmt;
-                        curIdx++;
 
                     } else {
                         curRow[inPlcmtName] = "  999 ";
                         curPlcmt = "";
                         curScore = -1;
                     }
+                    curIdx++;
 
                 }
                 #endregion

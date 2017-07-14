@@ -531,12 +531,14 @@ namespace WaterskiScoringSystem.Tools {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         }
                     } else if ( curRound == 2 ) {
-                        if ( inEventScore.Length == 0 ) {
+                        if ( ((String) inEventScore[0]["PlcmtSlalom"]).Length == 0 ) {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         } else {
                             String curPlcmt = (String)inEventScore[0]["PlcmtSlalom"];
                             if ( curPlcmt.Contains( "T" ) ) {
                                 curPlcmt = curPlcmt.Substring( 0, curPlcmt.Length - 1 ).Trim() + "T";
+                            } else if ( curPlcmt.Trim().Equals("999") ) {
+                                curPlcmt = "**";
                             }
                             outLine.Append( " " + curPlcmt.Trim().PadLeft( 4, ' ' ) + " " );
                         }
@@ -652,12 +654,14 @@ namespace WaterskiScoringSystem.Tools {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         }
                     } else if (curRound == 2) {
-                        if ( inEventScore.Length == 0 ) {
+                        if ( ( (String) inEventScore[0]["PlcmtTrick"] ).Length == 0 ) {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         } else {
                             String curPlcmt = (String)inEventScore[0]["PlcmtTrick"];
                             if ( curPlcmt.Contains( "T" ) ) {
                                 curPlcmt = curPlcmt.Substring( 0, curPlcmt.Length - 1 ).Trim() + "T";
+                            } else if ( curPlcmt.Trim().Equals("999") ) {
+                                curPlcmt = "**";
                             }
                             outLine.Append( " " + curPlcmt.Trim().PadLeft( 4, ' ' ) + " " );
                         }
@@ -804,12 +808,14 @@ namespace WaterskiScoringSystem.Tools {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         }
                     } else if ( curRound == 2 ) {
-                        if ( inEventScore.Length == 0 ) {
+                        if ( ( (String) inEventScore[0]["PlcmtJump"] ).Length == 0 ) {
                             outLine.Append( curEmptyValue.PadRight( 6, ' ' ) );
                         } else {
                             String curPlcmt = (String)inEventScore[0]["PlcmtJump"];
                             if ( curPlcmt.Contains( "T" ) ) {
                                 curPlcmt = curPlcmt.Substring( 0, curPlcmt.Length - 1 ).Trim() + "T";
+                            } else if ( curPlcmt.Trim().Equals("999") ) {
+                                curPlcmt = "**";
                             }
                             outLine.Append( " " + curPlcmt.Trim().PadLeft( 4, ' ' ) + " " );
                         }

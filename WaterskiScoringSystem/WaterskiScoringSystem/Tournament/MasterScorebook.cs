@@ -298,14 +298,26 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["PointsSlalom"].Value = (Decimal)curRow["PointsSlalom"];
                         curViewRow.Cells["PlcmtSlalom"].Value = "";
                         if ( curRound == 1 ) {
-                            curViewRow.Cells["PlcmtSlalom"].Value = (String)curRow["PlcmtSlalom"];
+                            if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                                curViewRow.Cells["PlcmtSlalom"].Value = "**";
+                            } else {
+                                curViewRow.Cells["PlcmtSlalom"].Value = (String) curRow["PlcmtSlalom"];
+                            }
                         } else {
                             if (scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value == null) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = (String)curRow["PlcmtSlalom"];
                                 scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassSlalom"].Value = (String)curRow["EventClassSlalom"];
+                                if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = (String) curRow["PlcmtSlalom"];
+                                }
                             } else if ( scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value.ToString().Length == 0 ) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = (String)curRow["PlcmtSlalom"];
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassSlalom"].Value = (String)curRow["EventClassSlalom"];
+                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassSlalom"].Value = (String) curRow["EventClassSlalom"];
+                                if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtSlalom"].Value = (String) curRow["PlcmtSlalom"];
+                                }
                             }
                         }
                         try {
@@ -344,14 +356,26 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["ScoreTrick"].Value = (Int16)curRow["ScoreTrick"];
                         curViewRow.Cells["PointsTrick"].Value = (Decimal)curRow["PointsTrick"];
                         if ( curRound == 1 ) {
-                            curViewRow.Cells["PlcmtTrick"].Value = (String)curRow["PlcmtTrick"];
+                            if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                curViewRow.Cells["PlcmtTrick"].Value = "**";
+                            } else {
+                                curViewRow.Cells["PlcmtTrick"].Value = (String) curRow["PlcmtTrick"];
+                            }
                         } else {
                             if ( scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value == null ) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = (String)curRow["PlcmtTrick"];
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassTrick"].Value = (String)curRow["EventClassTrick"];
+                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassTrick"].Value = (String) curRow["EventClassTrick"];
+                                if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = (String) curRow["PlcmtTrick"];
+                                }
                             } else if ( scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value.ToString().Length == 0 ) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = (String)curRow["PlcmtTrick"];
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassTrick"].Value = (String)curRow["EventClassTrick"];
+                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassTrick"].Value = (String) curRow["EventClassTrick"];
+                                if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtTrick"].Value = (String) curRow["PlcmtTrick"];
+                                }
                             }
                         }
                     }
@@ -387,14 +411,26 @@ namespace WaterskiScoringSystem.Tournament {
                         }
 
                         if ( curRound == 1 ) {
-                            curViewRow.Cells["PlcmtJump"].Value = (String)curRow["PlcmtJump"];
+                            if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                curViewRow.Cells["PlcmtJump"].Value = "**";
+                            } else {
+                                curViewRow.Cells["PlcmtJump"].Value = (String) curRow["PlcmtJump"];
+                            }
                         } else {
                             if ( scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value == null ) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = (String)curRow["PlcmtJump"];
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassJump"].Value = (String)curRow["EventClassJump"];
+                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassJump"].Value = (String) curRow["EventClassJump"];
+                                if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = (String) curRow["PlcmtJump"];
+                                }
                             } else if ( scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value.ToString().Length == 0 ) {
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = (String)curRow["PlcmtJump"];
-                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassJump"].Value = (String)curRow["EventClassJump"];
+                                scoreSummaryDataGridView.Rows[curSmryIdx].Cells["EventClassJump"].Value = (String) curRow["EventClassJump"];
+                                if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = "**";
+                                } else {
+                                    scoreSummaryDataGridView.Rows[curSmryIdx].Cells["PlcmtJump"].Value = (String) curRow["PlcmtJump"];
+                                }
                             }
                         }
                     }

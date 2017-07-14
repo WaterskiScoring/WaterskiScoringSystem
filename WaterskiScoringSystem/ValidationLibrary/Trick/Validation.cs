@@ -677,6 +677,7 @@ namespace ValidationLibrary.Trick {
             #endregion
 
             #region Determine if subsequent tricks are a repeat of current trick
+            /*
             if ( retPoints > 0 ) {
                 //Check for repeats on active pass
                 curIdx = inRowIdx + 1;
@@ -711,6 +712,7 @@ namespace ValidationLibrary.Trick {
                     }
                 }
             }
+            */
             #endregion
 
             #region Determine if maxinum number of flips have previously been accomplished
@@ -773,6 +775,13 @@ namespace ValidationLibrary.Trick {
             Int16 retPoints = inActivePoints;
             if ( curRuleNum == tempRuleNum ) {
                 retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints);
+
+            } else if ( curRuleNum == 105 && tempRuleNum == 305 && ((byte)inViewRow["NumTurns"]) > 2 && ( (byte) inCheckedRow["NumTurns"] ) == 2 ) {
+                //Bypass check
+
+            } else if ( curRuleNum == 205 && tempRuleNum == 405 && ( (byte) inViewRow["NumTurns"] ) > 2 && ( (byte) inCheckedRow["NumTurns"] ) == 2 ) {
+                //Bypass check
+
             } else if ( curRuleNum > 100 && curRuleNum < 200 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
                     if ( inActiveView ) {
@@ -826,13 +835,35 @@ namespace ValidationLibrary.Trick {
                                 }
                             }
                         } else {
-                            if ( inColPrefix.Equals("Pass1") ) {
-                                inCheckedRow["Score"] = 0;
-                                inCheckedRow["Results"] = "Repeat";
+                            if ( ( (Int16) inViewRow["RuleNum"] == 105 && (Int16) inCheckedRow["RuleNum"] == 105 )
+                                || ( (Int16) inViewRow["RuleNum"] == 205 && (Int16) inCheckedRow["RuleNum"] == 205 )
+                                ) {
+                                if ( (byte) inViewRow["NumTurns"] > 2 && (byte) inCheckedRow["NumTurns"] == 2 ) {
+                                    inCheckedRow["Score"] = 0;
+                                    inCheckedRow["Results"] = "Repeat";
+                                } else if ( (byte) inViewRow["NumTurns"] == 2 && (byte) inCheckedRow["NumTurns"] > 2 ) {
+                                    inViewRow["Score"] = 0;
+                                    inViewRow["Results"] = "Repeat";
+                                    retPoints = 0;
+                                } else {
+                                    if ( inColPrefix.Equals("Pass1") ) {
+                                        inCheckedRow["Score"] = 0;
+                                        inCheckedRow["Results"] = "Repeat";
+                                    } else {
+                                        inViewRow["Score"] = 0;
+                                        inViewRow["Results"] = "Repeat";
+                                        retPoints = 0;
+                                    }
+                                }
                             } else {
-                                inViewRow["Score"] = 0;
-                                inViewRow["Results"] = "Repeat";
-                                retPoints = 0;
+                                if ( inColPrefix.Equals("Pass1") ) {
+                                    inCheckedRow["Score"] = 0;
+                                    inCheckedRow["Results"] = "Repeat";
+                                } else {
+                                    inViewRow["Score"] = 0;
+                                    inViewRow["Results"] = "Repeat";
+                                    retPoints = 0;
+                                }
                             }
                         }
                     } else {

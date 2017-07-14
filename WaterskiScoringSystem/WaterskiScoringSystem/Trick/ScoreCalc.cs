@@ -270,7 +270,7 @@ namespace WaterskiScoringSystem.Trick {
 
         private void ScoreCalc_FormClosing(object sender, FormClosingEventArgs e) {
             if (isDataModified) {
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
             }
         }
 
@@ -783,19 +783,57 @@ namespace WaterskiScoringSystem.Trick {
             Timer curTimerObj = (Timer)sender;
             curTimerObj.Stop();
             curTimerObj.Tick -= new EventHandler( calcUpdateScoreTimer );
-            isLoadInProg = true;
-            CalcScoreButton_Click( null, null );
-            isLoadInProg = false;
+            if ( isPassEnded ) {
+                calcScore();
+            } else {
+                CalcScoreButton_Click(null, null);
+            }
             isDataModifiedInProgress = false;
         }
 
         private void CalcScoreButton_Click( object sender, EventArgs e ) {
+            String curColPrefix;
+
+            if ( TourEventRegDataGridView.CurrentRow != null ) {
+                #region Reset all repeat tricks to credit so a recalculation can be performed to account for status edits.
+                isDataModifiedInProgress = true;
+                isLoadInProg = true;
+                if ( Pass1DataGridView.Rows.Count > 0 ) {
+                    curColPrefix = "Pass1";
+                    foreach ( DataGridViewRow curPassRow in Pass1DataGridView.Rows ) {
+                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.Equals("Repeat") ) {
+                            curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                        }
+                    }
+                }
+
+                if ( Pass2DataGridView.Rows.Count > 0 ) {
+                    curColPrefix = "Pass2";
+                    foreach ( DataGridViewRow curPassRow in Pass2DataGridView.Rows ) {
+                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.Equals("Repeat") ) {
+                            curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                        }
+                    }
+                }
+
+                calcScore();
+
+                isLoadInProg = false;
+                isDataModifiedInProgress = false;
+
+                #endregion
+            }
+        }
+
+        private void calcScore() {
             bool curReadyToScore = true;
             int curTotalScore = 0, curPass1Score = 0, curPass2Score = 0;
-            String curColPrefix, curTrickCode, curValue;
+            String curColPrefix, curTrickCode;
             Int16 curNumSkis = 0;
 
             if ( TourEventRegDataGridView.CurrentRow != null ) {
+                Cursor.Current = Cursors.WaitCursor;
+                isLoadInProg = true;
                 String curMemberId = (String)TourEventRegDataGridView.CurrentRow.Cells["MemberId"].Value;
                 String curAgeGroup = (String)TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
 
@@ -815,6 +853,17 @@ namespace WaterskiScoringSystem.Trick {
                                 }
                             } else {
                                 if ( checkTrickCode( Pass1DataGridView, curPassRow.Index, curTrickCode, curNumSkis, curColPrefix ) ) {
+
+                                    isTrickValid = true;
+                                    if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("CREDIT") ) {
+                                        curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(Pass1DataGridView, curPassRow, curColPrefix).ToString();
+                                    } else {
+                                        curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+                                    }
+                                    curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
+                                    curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
+                                    curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
+
                                     if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Points"].Value ) ) {
                                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) ) {
                                             MessageBox.Show( "Empty points and results (shouldn't be able to happen)" );
@@ -832,7 +881,7 @@ namespace WaterskiScoringSystem.Trick {
                                         }
                                     } else {
                                         if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
-                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 Pass1DataGridView.Rows.Remove( curPassRow );
                                             } else {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
@@ -846,7 +895,7 @@ namespace WaterskiScoringSystem.Trick {
                                                 break;
                                             }
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
-                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                 break;
@@ -862,7 +911,7 @@ namespace WaterskiScoringSystem.Trick {
                                     curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                 } else {
                                     if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
-                                        if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                        if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                             Pass1DataGridView.Rows.Remove( curPassRow );
                                             //curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                         } else {
@@ -898,6 +947,17 @@ namespace WaterskiScoringSystem.Trick {
                                 } else if ( curTrickCode.Length == 0 ) {
                                 } else {
                                     if ( checkTrickCode( Pass2DataGridView, curPassRow.Index, curTrickCode, curNumSkis, curColPrefix ) ) {
+
+                                        isTrickValid = true;
+                                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("CREDIT") ) {
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(Pass2DataGridView, curPassRow, curColPrefix).ToString();
+                                        } else {
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+                                        }
+                                        curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
+                                        curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
+                                        curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
+
                                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Points"].Value ) ) {
                                             if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) ) {
                                                 MessageBox.Show( "Empty points and results (shouldn't be able to happen)" );
@@ -953,6 +1013,7 @@ namespace WaterskiScoringSystem.Trick {
                         }
                     }
                 }
+                isLoadInProg = false;
 
                 if ( curReadyToScore ) {
                     isDataModified = true;
@@ -971,6 +1032,8 @@ namespace WaterskiScoringSystem.Trick {
                 } else {
                     MessageBox.Show( "Invalid data has been detected and can not be saved at this time" );
                 }
+
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -1365,7 +1428,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navSort_Click( object sender, EventArgs e ) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1390,7 +1453,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navFilter_Click(object sender, EventArgs e) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1422,7 +1485,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navExport_Click(object sender, EventArgs e) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1793,7 +1856,7 @@ namespace WaterskiScoringSystem.Trick {
             try {
                 if ( isDataModified ) {
                     try {
-                        CalcScoreButton_Click( null, null );
+                        CalcScoreButton_Click (null, null);
                     } catch ( Exception excp ) {
                         MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                     }
@@ -2093,7 +2156,7 @@ namespace WaterskiScoringSystem.Trick {
         private void DataGridView_Leave( object sender, EventArgs e ) {
             DataGridView curPassView = (DataGridView)sender;
             if ( isDataModified && !(isDataModifiedInProgress) ) {
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
             }
             curPassView.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
             curPassView.DefaultCellStyle.ForeColor = Color.Silver;
@@ -2106,7 +2169,7 @@ namespace WaterskiScoringSystem.Trick {
             //if ( isDataModified && ( myEventRegViewIdx != e.RowIndex ) ) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -3471,7 +3534,7 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
                 if (TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "2-InProg" )) {
                     skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
                     if (skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK) {
@@ -3543,7 +3606,7 @@ namespace WaterskiScoringSystem.Trick {
 
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
