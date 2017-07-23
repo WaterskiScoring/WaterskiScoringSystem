@@ -2475,13 +2475,13 @@ namespace WaterskiScoringSystem.Slalom {
                                         Decimal curPassLineTemp = Convert.ToDecimal((String) slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["PassLineLengthRecap"].Value);
                                         if ( curPassLine > curPassLineTemp ) {
                                             curPassLine = curPassLineTemp;
-                                            myPassRow = getPassRow(curSpeed, curPassLine);
-                                            curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
                                         } else {
                                             if ( curPassLine > SlalomLineSelect.CurrentValueNum ) {
                                                 curPassLine = SlalomLineSelect.CurrentValueNum;
                                             }
                                         }
+                                        myPassRow = getPassRow(curSpeed, curPassLine);
+                                        curPassNum = Convert.ToByte((Decimal) myPassRow["ListCodeNum"]);
                                     }
                                 }
                             }

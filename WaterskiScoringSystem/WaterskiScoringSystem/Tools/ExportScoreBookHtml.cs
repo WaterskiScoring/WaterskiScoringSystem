@@ -1253,9 +1253,13 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
                     try {
-                        outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtSlalom"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                            outLine.Append("\n<td class=\"DataRight\">**</td>");
+                        } else {
+                            outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtSlalom"] + "</td>");
+                        }
                     } catch {
-                        outLine.Append( "\n<td>&nbsp;</td>" );
+                        outLine.Append("\n<td>&nbsp;</td>");
                     }
                     outLine.Append( "\n</tr>" );
                     outBuffer.WriteLine( outLine.ToString() );
@@ -1401,7 +1405,11 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
                     try {
-                        outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtTrick"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                            outLine.Append("\n<td class=\"DataRight\">**</td>");
+                        } else {
+                            outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtTrick"] + "</td>");
+                        }
                     } catch {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
@@ -1571,7 +1579,11 @@ namespace WaterskiScoringSystem.Tools {
                             outLine.Append( "\n<td>&nbsp;</td>" );
                         }
                         try {
-                            outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtJump"] + "</td>" );
+                            if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                outLine.Append("\n<td class=\"DataRight\">**</td>");
+                            } else {
+                                outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtJump"] + "</td>");
+                            }
                         } catch {
                             outLine.Append( "\n<td>&nbsp;</td>" );
                         }
