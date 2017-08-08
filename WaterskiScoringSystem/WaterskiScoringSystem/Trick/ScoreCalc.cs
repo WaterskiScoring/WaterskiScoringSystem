@@ -125,7 +125,7 @@ namespace WaterskiScoringSystem.Trick {
             PauseTimerButton.Visible = true;
             StartTimerButton.Location = PauseTimerButton.Location;
 
-            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TrickBoat", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
+            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TrickBoat", "ReadyForPlcmt", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -1501,23 +1501,15 @@ namespace WaterskiScoringSystem.Trick {
                 String[] curSelectCommand = new String[8];
                 String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "TrickScore", "TrickPass", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
 
-                curSelectCommand[0] = "SELECT * FROM TourReg "
-                    + "Where SanctionId = '" + mySanctionNum + "' "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TourReg.SanctionId = EventReg.SanctionId AND TourReg.MemberId = EventReg.MemberId "
-                    + "      AND TourReg.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[0] = curSelectCommand[0] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[0] = curSelectCommand[0] + ") ";
-                    }
+                curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
                 }
 
                 curSelectCommand[1] = "Select * from EventReg ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
+                if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[1] = curSelectCommand[1]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = 'Trick'";
@@ -1535,12 +1527,12 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
                 curSelectCommand[2] = "Select * from EventRunOrder ";
-                if (isObjectEmpty( curFilterCmd )) {
+                if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " ";
                 } else {
-                    if (curFilterCmd.Length > 0) {
+                    if ( curFilterCmd.Length > 0 ) {
                         curSelectCommand[2] = curSelectCommand[2]
                             + " Where SanctionId = '" + mySanctionNum + "'"
                             + " And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " "
@@ -1552,96 +1544,58 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                curSelectCommand[3] = "SELECT * FROM TrickScore "
-                    + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TrickScore.SanctionId = EventReg.SanctionId AND TrickScore.MemberId = EventReg.MemberId "
-                    + "      AND TrickScore.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[3] = curSelectCommand[3] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[3] = curSelectCommand[3] + ") ";
-                    }
+                curSelectCommand[3] = "SELECT XT.* FROM TrickScore XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
                 }
 
-                curSelectCommand[4] = "SELECT * FROM TrickPass "
-                    + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TrickPass.SanctionId = EventReg.SanctionId AND TrickPass.MemberId = EventReg.MemberId "
-                    + "      AND TrickPass.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[4] = curSelectCommand[4] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[4] = curSelectCommand[4] + ") ";
-                    }
-                }
-
-                String tmpFilterCmd = "";
-                String curEventGroup = EventGroupList.SelectedItem.ToString();
-                if ( curEventGroup.ToLower().Equals( "all" ) ) {
-                } else {
-                    tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
-                }
-
-                curSelectCommand[5] = "SELECT * FROM TourReg T "
-                    + "Where SanctionId = '" + mySanctionNum + "' "
-                    + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                    + "    WHERE T.SanctionId = O.SanctionId AND T.MemberId = O.MemberId And O.Event = 'Trick' And O.Round = " + roundActiveSelect.RoundValue + " ";
-                if ( isObjectEmpty( tmpFilterCmd ) ) {
-                    curSelectCommand[5] = curSelectCommand[5] + ") ";
-                } else {
-                    if ( tmpFilterCmd.Length > 0 ) {
-                        curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[5] = curSelectCommand[5] + ") ";
-                    }
+                curSelectCommand[4] = "SELECT XT.* FROM TrickPass XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
                 }
 
                 //----------------------------------------
                 //Export data related to officials
                 //----------------------------------------
-                curSelectCommand[6] = "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                    + "And W.LastUpdateDate is not null "
-                    + "And EXISTS (SELECT 1 FROM EventReg R"
-                    + "    WHERE W.SanctionId = R.SanctionId AND W.MemberId = R.MemberId AND R.Event = 'Trick' ";
-                if (isObjectEmpty( tmpFilterCmd )) {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
+                String tmpFilterCmd = "";
+                String curEventGroup = EventGroupList.SelectedItem.ToString();
+                if ( curEventGroup.ToLower().Equals("all") ) {
                 } else {
-                    if (tmpFilterCmd.Length > 0) {
-                        curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[6] = curSelectCommand[6] + ") ";
-                    }
+                    tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+                }
+
+                //----------------------------------------
+                //Export data related to officials
+                //----------------------------------------
+                curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
+                    + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
+                }
+
+                curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
                 }
                 curSelectCommand[6] = curSelectCommand[6] + "Union "
-                    + "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                    + "And W.LastUpdateDate is not null "
-                    + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                    + "    WHERE W.SanctionId = O.SanctionId AND W.MemberId = O.MemberId And O.Event = 'Trick' And O.Round = " + roundActiveSelect.RoundValue + " ";
-                if (isObjectEmpty( tmpFilterCmd )) {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
-                } else {
-                    if (tmpFilterCmd.Length > 0) {
-                        curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[6] = curSelectCommand[6] + ") ";
-                    }
+                    + "SELECT XT.* FROM OfficialWork XT "
+                    + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
                 }
 
                 curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
                     + " Where SanctionId = '" + mySanctionNum + "' And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " ";
-                if ( isObjectEmpty( tmpFilterCmd ) ) {
-                } else {
-                    if ( tmpFilterCmd.Length > 0 ) {
-                        curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd;
-                    } else {
-                    }
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
                 }
 
                 myExportData.exportData( curTableName, curSelectCommand );

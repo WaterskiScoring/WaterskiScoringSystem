@@ -326,7 +326,7 @@ namespace WaterskiScoringSystem.Tournament {
                                     if (curDivFilter == null) {
                                     } else if (curDivFilter.ToLower().Equals( "all" )) {
                                     } else {
-                                        curSqlStmt.Append( " AND O.AgeGroup = '" + curDivFilter + "' " );
+                                        curSqlStmt.Append( " AND AgeGroup = '" + curDivFilter + "' " );
                                     }
                                     rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                                     Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
@@ -374,7 +374,7 @@ namespace WaterskiScoringSystem.Tournament {
                             if (curDivFilter == null) {
                             } else if (curDivFilter.ToLower().Equals( "all" )) {
                             } else {
-                                curSqlStmt.Append( " AND O.AgeGroup = '" + curDivFilter + "' " );
+                                curSqlStmt.Append( " AND AgeGroup = '" + curDivFilter + "' " );
                             }
                             rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                             Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
@@ -1418,7 +1418,7 @@ namespace WaterskiScoringSystem.Tournament {
             DataTable curDataTable;
             StringBuilder curSqlStmt = new StringBuilder("");
             curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, T.SkierName, O.Event, O.Round, O.EventGroup, O.AgeGroup, O.RunOrder" );
-            curSqlStmt.Append( ", COALESCE(O.RankingScore, E.RankingScore) as RankingScore");
+            curSqlStmt.Append(", COALESCE(O.RankingScore, E.RankingScore) as RankingScore, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
             curSqlStmt.Append( ", E.EventClass, E.TeamCode, T.TrickBoat, T.JumpHeight, T.State, O.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append( ", O.Round as Round" + myEvent + " " );
             curSqlStmt.Append( "FROM EventRunOrder O " );

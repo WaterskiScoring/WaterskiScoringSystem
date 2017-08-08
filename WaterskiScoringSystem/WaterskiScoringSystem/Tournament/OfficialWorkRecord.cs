@@ -721,23 +721,16 @@ namespace WaterskiScoringSystem.Tournament {
             String[] curTableName = { "TourReg", "OfficialWork", "OfficialWorkAsgmt", "MemberList" };
             ExportData myExportData = new ExportData();
 
-            curSelectCommand[0] = "SELECT * FROM TourReg "
-                + "Where SanctionId = '" + mySanctionNum + "' "
-                + "And EXISTS (SELECT 1 FROM OfficialWork "
-                + "    WHERE TourReg.SanctionId = OfficialWork.SanctionId AND TourReg.MemberId = OfficialWork.MemberId ";
-            if ( isObjectEmpty( myFilterCmd ) ) {
-                curSelectCommand[0] = curSelectCommand[0] + ") ";
-            } else {
-                if ( myFilterCmd.Length > 0 ) {
-                    curSelectCommand[0] = curSelectCommand[0] + "And " + myFilterCmd + ") ";
-                } else {
-                    curSelectCommand[0] = curSelectCommand[0] + ") ";
-                }
+            curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+                + "INNER JOIN OfficialWork ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
+                curSelectCommand[0] = curSelectCommand[0] +" And " + myFilterCmd;
             }
 
             curSelectCommand[1] = "Select * from OfficialWork "
                 + "Where SanctionId = '" + mySanctionNum + "' "
-                + "And W.LastUpdateDate is not null ";
+                + "And LastUpdateDate is not null ";
             if ( myFilterCmd != null ) {
                 if ( myFilterCmd.Length > 0 ) {
                     curSelectCommand[1] = curSelectCommand[1] + " And " + myFilterCmd;
@@ -752,23 +745,20 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            curSelectCommand[3] = "Select * from MemberList "
-                + " Where EXISTS (Select 1 From TourReg ";
-            if ( myFilterCmd == null ) {
-                curSelectCommand[3] = curSelectCommand[3]
-                + " Where TourReg.MemberId = MemberList.MemberId And SanctionId = '" + mySanctionNum + "') ";
-            } else {
-                if ( myFilterCmd.Length > 0 ) {
-                    curSelectCommand[3] = curSelectCommand[3]
-                        + "Where TourReg.MemberId = MemberList.MemberId And SanctionId = '" + mySanctionNum + "' "
-                        + "  And " + myFilterCmd + ") ";
-                } else {
-                    curSelectCommand[3] = curSelectCommand[3]
-                        + "Where TourReg.MemberId = MemberList.MemberId And SanctionId = '" + mySanctionNum + "') ";
-                }
+            curSelectCommand[3] = "SELECT XT.* FROM MemberList XT "
+                + "INNER JOIN TourReg ER on XT.MemberId = ER.MemberId "
+                + "Where ER.SanctionId = '" + mySanctionNum + "' ";
+            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
+                curSelectCommand[3] = curSelectCommand[3] + " And " + myFilterCmd;
             }
 
             myExportData.exportData( curTableName, curSelectCommand );
+        }
+
+        private void exportCreditFile_Click( object sender, EventArgs e ) {
+            ExportOfficialWorkFile myExportData = new ExportOfficialWorkFile();
+            myExportData.ExportData();
+            MessageBox.Show("Go to the tournament data directory to view " + mySanctionNum.Trim() + "OD.txt" + " to see current official credit assignments");
         }
 
         private void listTourMemberDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
@@ -1498,7 +1488,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
             return curReturnValue;
         }
-
 
     }
 }

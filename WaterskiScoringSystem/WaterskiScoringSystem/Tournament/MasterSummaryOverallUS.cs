@@ -401,25 +401,30 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["SepOverall"].Value = " ";
                         curViewRow.Cells["ScoreOverall"].Value = curScore;
                         curViewRow.Cells["RoundOverall"].Value = (Int16) curRow["RoundOverall"];
-                        if ( curScore < prevScore ) {
-                            curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
+
+                        if ( ((String)curRow ["ReadyForPlcmt"]).Equals("N") ) {
+                            curViewRow.Cells["OverallPlcmt"].Value = "**";
                         } else {
-                            if ( curPlcmt > 1 ) {
-                                String curValue = "";
-                                if ( scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value == null ) {
-                                    curValue = curPlcmt.ToString();
-                                } else {
-                                    curValue = scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value.ToString();
-                                }
-                                if ( curValue.Contains("T") ) {
-                                    curViewRow.Cells["OverallPlcmt"].Value = curValue;
-                                } else {
-                                    curValue = ( curPlcmt - 1 ).ToString("##0") + "T";
-                                    scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value = curValue;
-                                    curViewRow.Cells["OverallPlcmt"].Value = curValue;
-                                }
-                            } else {
+                            if ( curScore < prevScore ) {
                                 curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
+                            } else {
+                                if ( curPlcmt > 1 ) {
+                                    String curValue = "";
+                                    if ( scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value == null ) {
+                                        curValue = curPlcmt.ToString();
+                                    } else {
+                                        curValue = scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value.ToString();
+                                    }
+                                    if ( curValue.Contains("T") ) {
+                                        curViewRow.Cells["OverallPlcmt"].Value = curValue;
+                                    } else {
+                                        curValue = ( curPlcmt - 1 ).ToString("##0") + "T";
+                                        scoreSummaryDataGridView.Rows[curIdx - 1].Cells["OverallPlcmt"].Value = curValue;
+                                        curViewRow.Cells["OverallPlcmt"].Value = curValue;
+                                    }
+                                } else {
+                                    curViewRow.Cells["OverallPlcmt"].Value = curPlcmt;
+                                }
                             }
                         }
                         prevScore = curScore;

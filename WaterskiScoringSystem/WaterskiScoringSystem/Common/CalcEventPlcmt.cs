@@ -692,26 +692,30 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, SS.MemberId, SS.Round" );
                 DataTable curSkierResultsAll = getData( curSqlStmt.ToString() );
 
-                if (curSkierResultsAll.Rows.Count > 0) {
+                /*
+                Only utilize backup score when data type is best
+                Otherwise bypass using the backup score
+                */
+                if ( curSkierResultsAll.Rows.Count > 0 ) {
                     try {
                         //Retrieve runoff socre
-                        newSkierScoreRow["RunoffScore"] = getSlalomRunoffScore( (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
-                        
+                        newSkierScoreRow["RunoffScore"] = getSlalomRunoffScore((String) curSkierRow["MemberId"], (String) curSkierRow["AgeGroup"]);
+
                         //Retrieve tie score details, related final pass score, line length, final pass speed
-                        curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "' "
-                            + "AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"] );
+                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "' "
+                            + "AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"]);
                         try {
                             newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
                         } catch {
                             newSkierScoreRow["RankingScore"] = 0;
                         }
                         try {
-                            newSkierScoreRow["Score"] = (Decimal)curSkierDetailRow[0][curScoreName];
+                            newSkierScoreRow["Score"] = (Decimal) curSkierDetailRow[0][curScoreName];
                         } catch {
                             newSkierScoreRow["Score"] = 0;
                         }
                         try {
-                            newSkierScoreRow["PassScore"] = (Decimal)curSkierDetailRow[0]["FinalPassScore"];
+                            newSkierScoreRow["PassScore"] = (Decimal) curSkierDetailRow[0]["FinalPassScore"];
                         } catch {
                             newSkierScoreRow["PassScore"] = 0;
                         }
@@ -725,7 +729,7 @@ namespace WaterskiScoringSystem.Common {
                             }
                         } catch {
                             newSkierScoreRow["Speed"] = 0;
-                            if (inRules.ToLower().Equals( "iwwf" )) {
+                            if ( inRules.ToLower().Equals("iwwf") ) {
                                 newSkierScoreRow["LineLength"] = 23M - 18.25M;
                             }
                         }
@@ -735,36 +739,42 @@ namespace WaterskiScoringSystem.Common {
                     //No skier detail so set values to defaults
                 }
 
-                if ( inRounds > 1 ) {
-                    curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String)curSkierRow["MemberId"] + "'"
-                        + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = 1 " );
-                    if (curSkierDetailRow.Length > 0) {
-                        newSkierScoreRow["FirstScore"] = (Decimal)curSkierDetailRow[0][curScoreName];
-                        if ( inDataType.ToLower().Equals("first") || inDataType.ToLower().Equals("final") ) {
-                        } else {
-                            if ( (Byte) newSkierScoreRow["Round"] > 1 ) {
-                                newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-                                for ( Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++ ) {
-                                    curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "'"
-                                        + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString());
-                                    if ( curSkierDetailRow.Length > 0 ) {
-                                        if ( (Byte) newSkierScoreRow["Round"] != curSkierRound ) {
-                                            if ( (Decimal) curSkierDetailRow[0][curScoreName] > (Decimal) newSkierScoreRow["BackupScore"] ) {
-                                                newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+                if ( inDataType.ToLower().Equals("best") ) {
+                    if ( inRounds > 1 ) {
+                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "'"
+                            + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = 1 ");
+                        if ( curSkierDetailRow.Length > 0 ) {
+                            newSkierScoreRow["FirstScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+                            if ( inDataType.ToLower().Equals("first") || inDataType.ToLower().Equals("final") ) {
+                            } else {
+                                if ( (Byte) newSkierScoreRow["Round"] > 1 ) {
+                                    newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+                                    for ( Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++ ) {
+                                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "'"
+                                            + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString());
+                                        if ( curSkierDetailRow.Length > 0 ) {
+                                            if ( (Byte) newSkierScoreRow["Round"] != curSkierRound ) {
+                                                if ( (Decimal) curSkierDetailRow[0][curScoreName] > (Decimal) newSkierScoreRow["BackupScore"] ) {
+                                                    newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            newSkierScoreRow["FirstScore"] = 0;
+                            newSkierScoreRow["BackupScore"] = 0;
                         }
                     } else {
-                        newSkierScoreRow["FirstScore"] = 0;
+                        newSkierScoreRow["FirstScore"] = (Decimal) curSkierRow[curScoreName];
                         newSkierScoreRow["BackupScore"] = 0;
                     }
                 } else {
-                    newSkierScoreRow["FirstScore"] = (Decimal)curSkierRow[curScoreName];
+                    newSkierScoreRow["FirstScore"] = 0;
                     newSkierScoreRow["BackupScore"] = 0;
                 }
+
                 newSkierScoreRow.EndEdit();
             }
 
@@ -1367,7 +1377,7 @@ namespace WaterskiScoringSystem.Common {
              * Analyze results and determine skier placment within age division
              * ******************************************************* */
             DataTable curPlcmtResults = inResults;
-            String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", curReadyForPlcmt = "";
+            String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", prevRound = "", curReadyForPlcmt = "";
             int curIdx = 0, curPlcmtPos = 1;
             Decimal curScore = 0, prevScore = -1;
 
@@ -1400,6 +1410,7 @@ namespace WaterskiScoringSystem.Common {
                     curPlcmt = "";
                     prevGroup = curGroup;
                     prevScore = curScore;
+                    prevRound = curRound;
 
                     try {
                         if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
@@ -1414,13 +1425,16 @@ namespace WaterskiScoringSystem.Common {
                     } catch {
                         curRound = "0";
                     }
-                    if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                        curGroup = curRound;
+                    if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
+                        curGroup += "-" + curRound;
                     } else {
                         curGroup = "";
                     }
                     if (!( curGroup.Equals( prevGroup ) )) {
                         curPlcmtPos = 1;
+                        prevScore = -1;
+                    }
+                    if ( inDataType.ToLower().Equals("final") && !( curRound.Equals(prevRound) ) ) {
                         prevScore = -1;
                     }
 
@@ -1527,6 +1541,7 @@ namespace WaterskiScoringSystem.Common {
                     curPlcmt = "";
                     prevGroup = curGroup;
                     prevScore = curScore;
+                    prevRound = curRound;
 
                     try {
                         if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
@@ -1551,11 +1566,14 @@ namespace WaterskiScoringSystem.Common {
                     } else {
                         curGroup = (String)curRow["AgeGroup"];
                     }
-                    if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
+                    if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h") ) {
                         curGroup += "-" + curRound; 
                     }
                     if ( !( curGroup.Equals( prevGroup ) ) ) {
                         curPlcmtPos = 1;
+                        prevScore = -1;
+                    }
+                    if ( inDataType.ToLower().Equals("final") && !(curRound.Equals(prevRound)) ) {
                         prevScore = -1;
                     }
 

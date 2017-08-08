@@ -112,6 +112,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.editScorerTrickRating = new System.Windows.Forms.TextBox();
             this.editScorerJumpRating = new System.Windows.Forms.TextBox();
             this.RowStatusLabel = new System.Windows.Forms.Label();
+            this.exportCreditFile = new System.Windows.Forms.ToolStripButton();
             noteLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.listTourMemberDataGridView)).BeginInit();
             this.winStatus.SuspendLayout();
@@ -1062,13 +1063,14 @@ namespace WaterskiScoringSystem.Tournament {
             this.navPrint,
             this.navExport,
             this.ExportMemberList,
+            this.exportCreditFile,
             this.navFilter,
             this.navSort,
             this.navSaveItem,
             this.navEditOfficials});
             this.mainNavMenu.Location = new System.Drawing.Point(0, 0);
             this.mainNavMenu.Name = "mainNavMenu";
-            this.mainNavMenu.Size = new System.Drawing.Size(764, 36);
+            this.mainNavMenu.Size = new System.Drawing.Size(764, 38);
             this.mainNavMenu.TabIndex = 83;
             this.mainNavMenu.Text = "toolStrip1";
             // 
@@ -1077,7 +1079,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
             this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navRefresh.Name = "navRefresh";
-            this.navRefresh.Size = new System.Drawing.Size(49, 33);
+            this.navRefresh.Size = new System.Drawing.Size(50, 35);
             this.navRefresh.Text = "Refresh";
             this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
@@ -1087,7 +1089,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
             this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navPrint.Name = "navPrint";
-            this.navPrint.Size = new System.Drawing.Size(33, 33);
+            this.navPrint.Size = new System.Drawing.Size(36, 35);
             this.navPrint.Text = "Print";
             this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navPrint.Click += new System.EventHandler(this.printButton_Click);
@@ -1097,7 +1099,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
             this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navExport.Name = "navExport";
-            this.navExport.Size = new System.Drawing.Size(43, 33);
+            this.navExport.Size = new System.Drawing.Size(44, 35);
             this.navExport.Text = "Export";
             this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -1108,7 +1110,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.ExportMemberList.Image = ((System.Drawing.Image)(resources.GetObject("ExportMemberList.Image")));
             this.ExportMemberList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ExportMemberList.Name = "ExportMemberList";
-            this.ExportMemberList.Size = new System.Drawing.Size(62, 33);
+            this.ExportMemberList.Size = new System.Drawing.Size(65, 35);
             this.ExportMemberList.Text = "Export List";
             this.ExportMemberList.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.ExportMemberList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -1119,7 +1121,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
             this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navFilter.Name = "navFilter";
-            this.navFilter.Size = new System.Drawing.Size(35, 33);
+            this.navFilter.Size = new System.Drawing.Size(37, 35);
             this.navFilter.Text = "Filter";
             this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
@@ -1129,7 +1131,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
             this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navSort.Name = "navSort";
-            this.navSort.Size = new System.Drawing.Size(31, 33);
+            this.navSort.Size = new System.Drawing.Size(32, 35);
             this.navSort.Text = "Sort";
             this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navSort.Click += new System.EventHandler(this.navSort_Click);
@@ -1138,7 +1140,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.navSaveItem.Image = ((System.Drawing.Image)(resources.GetObject("navSaveItem.Image")));
             this.navSaveItem.Name = "navSaveItem";
-            this.navSaveItem.Size = new System.Drawing.Size(35, 33);
+            this.navSaveItem.Size = new System.Drawing.Size(35, 35);
             this.navSaveItem.Text = "Save";
             this.navSaveItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navSaveItem.Click += new System.EventHandler(this.navSaveItem_Click);
@@ -1148,7 +1150,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navEditOfficials.Image = ((System.Drawing.Image)(resources.GetObject("navEditOfficials.Image")));
             this.navEditOfficials.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navEditOfficials.Name = "navEditOfficials";
-            this.navEditOfficials.Size = new System.Drawing.Size(29, 33);
+            this.navEditOfficials.Size = new System.Drawing.Size(31, 35);
             this.navEditOfficials.Text = "Edit";
             this.navEditOfficials.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navEditOfficials.Click += new System.EventHandler(this.navEditOfficials_Click);
@@ -1248,6 +1250,17 @@ namespace WaterskiScoringSystem.Tournament {
             this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
             this.RowStatusLabel.TabIndex = 90;
             this.RowStatusLabel.Text = "Row 1 of 9999";
+            // 
+            // exportCreditFile
+            // 
+            this.exportCreditFile.Image = ((System.Drawing.Image)(resources.GetObject("exportCreditFile.Image")));
+            this.exportCreditFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportCreditFile.Name = "exportCreditFile";
+            this.exportCreditFile.Size = new System.Drawing.Size(100, 35);
+            this.exportCreditFile.Text = "Export Credit File";
+            this.exportCreditFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.exportCreditFile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.exportCreditFile.Click += new System.EventHandler(this.exportCreditFile_Click);
             // 
             // OfficialWorkRecord
             // 
@@ -1416,5 +1429,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.TextBox editScorerJumpRating;
         private System.Windows.Forms.ToolStripButton navEditOfficials;
         private System.Windows.Forms.Label RowStatusLabel;
+        private System.Windows.Forms.ToolStripButton exportCreditFile;
     }
 }

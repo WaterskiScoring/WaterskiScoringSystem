@@ -1619,10 +1619,10 @@ namespace WaterskiScoringSystem.Tools {
             DataTable curDataTable = null;
             if ( curPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                 curEventResults.DefaultView.Sort = "AgeGroup ASC, EventGroup ASC, ScoreOverall DESC";
-                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes'";
+                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes' and EligOverall = 'Yes'";
             } else {
                 curEventResults.DefaultView.Sort = "AgeGroup ASC, ScoreOverall DESC";
-                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes'";
+                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes' and EligOverall = 'Yes'";
             }
             //curEventResults
             curDataTable = curEventResults.DefaultView.ToTable();
