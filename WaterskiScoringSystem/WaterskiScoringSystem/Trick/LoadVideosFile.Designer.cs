@@ -31,11 +31,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadVideosFile));
             this.VideoFolderLocTextbox = new System.Windows.Forms.TextBox();
             this.VideoFileSelectButton = new System.Windows.Forms.Button();
@@ -54,6 +54,12 @@
             this.VideoURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VideoId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.selectedFileDataGridView = new System.Windows.Forms.DataGridView();
+            this.RowStatusLabel = new System.Windows.Forms.Label();
+            this.LiveWebButton = new System.Windows.Forms.Button();
+            this.ExportButton = new System.Windows.Forms.Button();
+            this.ExportLoadedButton = new System.Windows.Forms.Button();
+            this.ReviewButton = new System.Windows.Forms.Button();
+            this.ReviewVideoMatchDataGridView = new System.Windows.Forms.DataGridView();
             this.SelectedFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SelectedSkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SelectedAgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,12 +67,6 @@
             this.SelectedPass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SelectedLoadStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SelectedMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RowStatusLabel = new System.Windows.Forms.Label();
-            this.LiveWebButton = new System.Windows.Forms.Button();
-            this.ExportButton = new System.Windows.Forms.Button();
-            this.ExportLoadedButton = new System.Windows.Forms.Button();
-            this.ReviewButton = new System.Windows.Forms.Button();
-            this.ReviewVideoMatchDataGridView = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.loadedVideoDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedFileDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReviewVideoMatchDataGridView)).BeginInit();
@@ -78,7 +78,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.VideoFolderLocTextbox.Location = new System.Drawing.Point(91, 29);
             this.VideoFolderLocTextbox.Name = "VideoFolderLocTextbox";
-            this.VideoFolderLocTextbox.Size = new System.Drawing.Size(497, 20);
+            this.VideoFolderLocTextbox.Size = new System.Drawing.Size(709, 20);
             this.VideoFolderLocTextbox.TabIndex = 5;
             // 
             // VideoFileSelectButton
@@ -123,7 +123,7 @@
             this.TagsListBox.FormattingEnabled = true;
             this.TagsListBox.Location = new System.Drawing.Point(91, 81);
             this.TagsListBox.Name = "TagsListBox";
-            this.TagsListBox.Size = new System.Drawing.Size(497, 169);
+            this.TagsListBox.Size = new System.Drawing.Size(709, 169);
             this.TagsListBox.TabIndex = 7;
             this.TagsListBox.ThreeDCheckBoxes = true;
             // 
@@ -143,7 +143,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.NewTagTextbox.Location = new System.Drawing.Point(91, 57);
             this.NewTagTextbox.Name = "NewTagTextbox";
-            this.NewTagTextbox.Size = new System.Drawing.Size(497, 20);
+            this.NewTagTextbox.Size = new System.Drawing.Size(709, 20);
             this.NewTagTextbox.TabIndex = 6;
             // 
             // ViewButton
@@ -194,7 +194,7 @@
             this.loadedVideoDataGridView.Location = new System.Drawing.Point(5, 279);
             this.loadedVideoDataGridView.Name = "loadedVideoDataGridView";
             this.loadedVideoDataGridView.RowHeadersVisible = false;
-            this.loadedVideoDataGridView.Size = new System.Drawing.Size(583, 201);
+            this.loadedVideoDataGridView.Size = new System.Drawing.Size(795, 201);
             this.loadedVideoDataGridView.TabIndex = 0;
             this.loadedVideoDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
             // 
@@ -301,76 +301,9 @@
             this.selectedFileDataGridView.Location = new System.Drawing.Point(87, 280);
             this.selectedFileDataGridView.Name = "selectedFileDataGridView";
             this.selectedFileDataGridView.RowHeadersVisible = false;
-            this.selectedFileDataGridView.Size = new System.Drawing.Size(486, 200);
+            this.selectedFileDataGridView.Size = new System.Drawing.Size(698, 200);
             this.selectedFileDataGridView.TabIndex = 13;
             this.selectedFileDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
-            // 
-            // SelectedFileName
-            // 
-            this.SelectedFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SelectedFileName.HeaderText = "File Name";
-            this.SelectedFileName.Name = "SelectedFileName";
-            this.SelectedFileName.ReadOnly = true;
-            this.SelectedFileName.Width = 150;
-            // 
-            // SelectedSkierName
-            // 
-            this.SelectedSkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SelectedSkierName.HeaderText = "Skier";
-            this.SelectedSkierName.Name = "SelectedSkierName";
-            this.SelectedSkierName.ReadOnly = true;
-            this.SelectedSkierName.Width = 125;
-            // 
-            // SelectedAgeGroup
-            // 
-            this.SelectedAgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SelectedAgeGroup.DefaultCellStyle = dataGridViewCellStyle8;
-            this.SelectedAgeGroup.HeaderText = "Div";
-            this.SelectedAgeGroup.Name = "SelectedAgeGroup";
-            this.SelectedAgeGroup.ReadOnly = true;
-            this.SelectedAgeGroup.Width = 35;
-            // 
-            // SelectedRound
-            // 
-            this.SelectedRound.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SelectedRound.DefaultCellStyle = dataGridViewCellStyle9;
-            this.SelectedRound.HeaderText = "RD";
-            this.SelectedRound.Name = "SelectedRound";
-            this.SelectedRound.ReadOnly = true;
-            this.SelectedRound.Width = 30;
-            // 
-            // SelectedPass
-            // 
-            this.SelectedPass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SelectedPass.DefaultCellStyle = dataGridViewCellStyle10;
-            this.SelectedPass.HeaderText = "Pass";
-            this.SelectedPass.Name = "SelectedPass";
-            this.SelectedPass.ReadOnly = true;
-            this.SelectedPass.Width = 30;
-            // 
-            // SelectedLoadStatus
-            // 
-            this.SelectedLoadStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SelectedLoadStatus.HeaderText = "Load Status";
-            this.SelectedLoadStatus.Name = "SelectedLoadStatus";
-            this.SelectedLoadStatus.ReadOnly = true;
-            this.SelectedLoadStatus.Width = 75;
-            // 
-            // SelectedMemberId
-            // 
-            this.SelectedMemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SelectedMemberId.HeaderText = "MemberId";
-            this.SelectedMemberId.Name = "SelectedMemberId";
-            this.SelectedMemberId.ReadOnly = true;
-            this.SelectedMemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SelectedMemberId.Visible = false;
-            this.SelectedMemberId.Width = 75;
             // 
             // RowStatusLabel
             // 
@@ -450,14 +383,81 @@
             this.ReviewVideoMatchDataGridView.Location = new System.Drawing.Point(37, 280);
             this.ReviewVideoMatchDataGridView.Name = "ReviewVideoMatchDataGridView";
             this.ReviewVideoMatchDataGridView.RowHeadersVisible = false;
-            this.ReviewVideoMatchDataGridView.Size = new System.Drawing.Size(536, 200);
+            this.ReviewVideoMatchDataGridView.Size = new System.Drawing.Size(748, 200);
             this.ReviewVideoMatchDataGridView.TabIndex = 0;
+            // 
+            // SelectedFileName
+            // 
+            this.SelectedFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SelectedFileName.HeaderText = "File Name";
+            this.SelectedFileName.Name = "SelectedFileName";
+            this.SelectedFileName.ReadOnly = true;
+            this.SelectedFileName.Width = 150;
+            // 
+            // SelectedSkierName
+            // 
+            this.SelectedSkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SelectedSkierName.HeaderText = "Skier";
+            this.SelectedSkierName.Name = "SelectedSkierName";
+            this.SelectedSkierName.ReadOnly = true;
+            this.SelectedSkierName.Width = 125;
+            // 
+            // SelectedAgeGroup
+            // 
+            this.SelectedAgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SelectedAgeGroup.DefaultCellStyle = dataGridViewCellStyle8;
+            this.SelectedAgeGroup.HeaderText = "Div";
+            this.SelectedAgeGroup.Name = "SelectedAgeGroup";
+            this.SelectedAgeGroup.ReadOnly = true;
+            this.SelectedAgeGroup.Width = 35;
+            // 
+            // SelectedRound
+            // 
+            this.SelectedRound.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SelectedRound.DefaultCellStyle = dataGridViewCellStyle9;
+            this.SelectedRound.HeaderText = "RD";
+            this.SelectedRound.Name = "SelectedRound";
+            this.SelectedRound.ReadOnly = true;
+            this.SelectedRound.Width = 30;
+            // 
+            // SelectedPass
+            // 
+            this.SelectedPass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SelectedPass.DefaultCellStyle = dataGridViewCellStyle10;
+            this.SelectedPass.HeaderText = "Pass";
+            this.SelectedPass.Name = "SelectedPass";
+            this.SelectedPass.ReadOnly = true;
+            this.SelectedPass.Width = 30;
+            // 
+            // SelectedLoadStatus
+            // 
+            this.SelectedLoadStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SelectedLoadStatus.HeaderText = "Load Status";
+            this.SelectedLoadStatus.Name = "SelectedLoadStatus";
+            this.SelectedLoadStatus.ReadOnly = true;
+            this.SelectedLoadStatus.Width = 300;
+            // 
+            // SelectedMemberId
+            // 
+            this.SelectedMemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SelectedMemberId.HeaderText = "MemberId";
+            this.SelectedMemberId.Name = "SelectedMemberId";
+            this.SelectedMemberId.ReadOnly = true;
+            this.SelectedMemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SelectedMemberId.Visible = false;
+            this.SelectedMemberId.Width = 75;
             // 
             // LoadVideosFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 484);
+            this.ClientSize = new System.Drawing.Size(807, 484);
             this.Controls.Add(this.ReviewButton);
             this.Controls.Add(this.ExportLoadedButton);
             this.Controls.Add(this.ExportButton);
@@ -510,6 +510,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoSizeHD;
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoURL;
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoId;
+        private System.Windows.Forms.Button ReviewButton;
+        private System.Windows.Forms.DataGridView ReviewVideoMatchDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedFileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedSkierName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedAgeGroup;
@@ -517,7 +519,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedPass;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedLoadStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedMemberId;
-        private System.Windows.Forms.Button ReviewButton;
-        private System.Windows.Forms.DataGridView ReviewVideoMatchDataGridView;
     }
 }

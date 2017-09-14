@@ -162,7 +162,7 @@
             // TourDivDataGridView
             // 
             this.TourDivDataGridView.AllowUserToAddRows = false;
-            this.TourDivDataGridView.AllowUserToDeleteRows = false;
+            this.TourDivDataGridView.AllowUserToOrderColumns = true;
             this.TourDivDataGridView.AllowUserToResizeColumns = false;
             this.TourDivDataGridView.AllowUserToResizeRows = false;
             this.TourDivDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -193,7 +193,7 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.TourDivDataGridView.DefaultCellStyle = dataGridViewCellStyle4;
-            this.TourDivDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.TourDivDataGridView.ImeMode = System.Windows.Forms.ImeMode.On;
             this.TourDivDataGridView.Location = new System.Drawing.Point(86, 65);
             this.TourDivDataGridView.Name = "TourDivDataGridView";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
@@ -320,7 +320,7 @@
             this.Controls.Add(this.TopNavMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TourDivOrder";
-            this.Text = "TourDivOrder";
+            this.Text = "Division Order";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TourDivOrder_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TourDivOrder_FormClosed);
             this.Load += new System.EventHandler(this.TourDivOrder_Load);

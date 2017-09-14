@@ -222,12 +222,8 @@ namespace WaterskiScoringSystem.Tournament {
             try {
                 if ( myEventRegDataTable.Rows.Count > 0 ) {
                     EventRegDataGridView.Rows.Clear();
-                    myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                    myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                    DataTable curDataTable = myEventRegDataTable.DefaultView.ToTable();
-
                     DataGridViewRow curViewRow;
-                    foreach ( DataRow curDataRow in curDataTable.Rows ) {
+                    foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
                         isDataModified = false;
                         myViewIdx = EventRegDataGridView.Rows.Add();
                         curViewRow = EventRegDataGridView.Rows[myViewIdx];
@@ -388,11 +384,6 @@ namespace WaterskiScoringSystem.Tournament {
             try {
                 if ( myEventRegDataTable.Rows.Count > 0 ) {
                     PrintDataGridView.Rows.Clear();
-                    //PrintDataGridView.AutoGenerateColumns
-                    myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                    myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                    DataTable curDataTable = myEventRegDataTable.DefaultView.ToTable();
-
                     if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
                         PrintEventRotation.Visible = true;
                         PrintEventGroup.Visible = false;
@@ -420,7 +411,7 @@ namespace WaterskiScoringSystem.Tournament {
                         PrintJumpHeight.Visible = true;
                     }
 
-                    foreach ( DataRow curTeamRow in curDataTable.Rows ) {
+                    foreach ( DataRow curTeamRow in myEventRegDataTable.Rows ) {
                         curPrintIdx = PrintDataGridView.Rows.Add();
                         curPrintRow = PrintDataGridView.Rows[curPrintIdx];
 
@@ -859,21 +850,15 @@ namespace WaterskiScoringSystem.Tournament {
             String[] curSelectCommand = new String[5];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "DivOrder", "OfficialWork" };
 
-            curSelectCommand[0] = "SELECT * FROM TourReg "
-                + "Where SanctionId = '" + mySanctionNum + "' "
-                + "And EXISTS (SELECT 1 FROM EventReg " 
-                + "    WHERE TourReg.SanctionId = EventReg.SanctionId AND TourReg.MemberId = EventReg.MemberId "
-                + "      AND TourReg.AgeGroup = EventReg.AgeGroup AND EventReg.Event = '" + curEvent  + "' ";
-            if ( isObjectEmpty( myFilterCmd ) ) {
-                curSelectCommand[0] = curSelectCommand[0] + ") ";
-            } else {
-                if ( myFilterCmd.Length > 0 ) {
-                    curSelectCommand[0] = curSelectCommand[0] + "And " + myFilterCmd + ") ";
-                } else {
-                    curSelectCommand[0] = curSelectCommand[0] + ") ";
-                }
+            curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+                + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = '" + curEvent + "' "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
+                curSelectCommand[0] = curSelectCommand[0] + "And " + myFilterCmd + " ";
             }
-            
+
+
+
             curSelectCommand[1] = "Select * from EventReg ";
             if ( isObjectEmpty( myFilterCmd ) ) {
                 curSelectCommand[1] = curSelectCommand[1]
@@ -1748,9 +1733,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintForm.TourRules = myTourRules;
                         curPrintForm.TourName = (String)myTourRow["Name"];
 
-                        myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                        myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                        curPrintForm.ShowDataTable = myEventRegDataTable.DefaultView.ToTable();
+                        myEventRegDataTable = getEventRegData();
+                        curPrintForm.ShowDataTable = myEventRegDataTable;
 
                         curPrintForm.Print();
                     } else if (curPrintReport.Equals( "SlalomRecapForm" )) {
@@ -1761,9 +1745,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintForm.TourRules = myTourRules;
                         curPrintForm.TourName = (String)myTourRow["Name"];
 
-                        myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                        myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                        curPrintForm.ShowDataTable = myEventRegDataTable.DefaultView.ToTable();
+                        myEventRegDataTable = getEventRegData();
+                        curPrintForm.ShowDataTable = myEventRegDataTable;
 
                         curPrintForm.Print();
                     }
@@ -1776,9 +1759,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curPrintForm.TourRules = myTourRules;
                 curPrintForm.TourName = (String)myTourRow["Name"];
 
-                myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                curPrintForm.ShowDataTable = myEventRegDataTable.DefaultView.ToTable();
+                myEventRegDataTable = getEventRegData();
+                curPrintForm.ShowDataTable = myEventRegDataTable;
 
                 curPrintForm.Print();
             } else if (trickButton.Checked) {
@@ -1800,10 +1782,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintForm.NumJudges = 4;
                 }
 
-
-                myEventRegDataTable.DefaultView.Sort = mySortCmd;
-                myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
-                curPrintForm.ShowDataTable = myEventRegDataTable.DefaultView.ToTable();
+                myEventRegDataTable = getEventRegData();
+                curPrintForm.ShowDataTable = myEventRegDataTable;
 
                 curPrintForm.Print();
             }
@@ -1937,7 +1917,10 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     LEFT OUTER JOIN CodeValueList L ON L.ListCode = E.EventClass AND ListName = 'Class' " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + curEvent + "'" );
 
-            return getData( curSqlStmt.ToString() );
+            DataTable curDataTable = getData(curSqlStmt.ToString());
+            curDataTable.DefaultView.Sort = mySortCmd;
+            curDataTable.DefaultView.RowFilter = myFilterCmd;
+            return curDataTable.DefaultView.ToTable();
         }
 
         private DataTable getSlalomDivMaxMinSpeed() {

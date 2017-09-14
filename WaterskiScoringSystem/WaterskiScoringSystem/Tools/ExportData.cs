@@ -71,13 +71,16 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder inReturnMessage = new StringBuilder( "" );
 
             if ( outBuffer != null ) {
+                String curMsg = "Exporting selected data for " + inTableName.Length + " data types";
                 myProgressInfo = new ProgressWindow();
-                myProgressInfo.setProgessMsg( "Exporting selected data for " + inTableName.Length + " data types" );
+                myProgressInfo.setProgessMsg(curMsg);
                 myProgressInfo.Show();
                 myProgressInfo.Refresh();
                 myProgressInfo.setProgressMax( inTableName.Length );
 
                 for ( int idx = 0; idx < inTableName.Length; idx++ ) {
+                    myProgressInfo.setProgessMsg(curMsg + ": " + inTableName[idx] + "Inprogress " + "|");
+                    myProgressInfo.Refresh();
                     returnStatus = exportData( inTableName[idx], inSelectStmt[idx], outBuffer, false, inReturnMessage );
 
                     myProgressInfo.setProgressValue( idx + 1 );

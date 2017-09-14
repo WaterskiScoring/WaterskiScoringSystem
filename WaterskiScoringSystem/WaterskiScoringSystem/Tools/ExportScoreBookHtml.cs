@@ -738,8 +738,12 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if ( curRound == 1 ) {
-                        if ( inEventScore.Length > 0 ) {
-                            outLine.Append( "<td>" + (String)inEventScore[0]["PlcmtSlalom"] + "</td>" );
+                        if ( ((String) inEventScore[0]["PlcmtSlalom"]).Length > 0 ) {
+                            if ( ( (String) inEventScore[0]["PlcmtSlalom"]).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inEventScore[0]["PlcmtSlalom"] + "</td>");
+                            }
                         } else {
                             outLine.Append( "<td>&nbsp;</td>" );
                         }
@@ -828,10 +832,14 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if ( curRound == 1 ) {
-                        if ( inEventScore.Length > 0 ) {
-                            outLine.Append( "<td>" + (String)inEventScore[0]["PlcmtTrick"] + "</td>" );
+                        if ( ( (String) inEventScore[0]["PlcmtTrick"] ).Length > 0 ) {
+                            if ( ( (String) inEventScore[0]["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inEventScore[0]["PlcmtTrick"] + "</td>");
+                            }
                         } else {
-                            outLine.Append( "<td>&nbsp;</td>" );
+                            outLine.Append("<td>&nbsp;</td>");
                         }
                     } else {
                         outLine.Append( "<td>&nbsp;</td>" );
@@ -927,20 +935,6 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     outLine.Append( "<td>" + " " + curValue + "</td>" );
 
-                    /*
-                    String curScoreBackup = "";
-                    try {
-                        curScoreBackup = getSkierBackupJump( (String)inScoreSummary["SanctionId"], (String)inScoreSummary["MemberId"], curRound, (String)inScoreSummary["AgeGroup"] );
-                        if ( curScoreBackup.Length > 0 ) {
-                            outLine.Append( "<td>" + curScoreBackup + "</td>" );
-                        } else {
-                            outLine.Append( "<td>&nbsp;</td>" );
-                        }
-                    } catch {
-                        outLine.Append( "<td>&nbsp;</td>" );
-                    }
-                     */
-
                     try {
                         outLine.Append( "<td>" + ( (Decimal)inScoreSummary["ScoreFeet"] ).ToString( "##0" ) + "</td>" );
                     } catch {
@@ -952,10 +946,14 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if ( curRound == 1 ) {
-                        if ( inEventScore.Length > 0 ) {
-                            outLine.Append( "<td>" + (String)inEventScore[0]["PlcmtJump"] + "</td>" );
+                        if ( ( (String) inEventScore[0]["PlcmtJump"] ).Length > 0 ) {
+                            if ( ( (String) inEventScore[0]["PlcmtJump"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inEventScore[0]["PlcmtJump"] + "</td>");
+                            }
                         } else {
-                            outLine.Append( "<td>&nbsp;</td>" );
+                            outLine.Append("<td>&nbsp;</td>");
                         }
                     } else {
                         outLine.Append( "<td>&nbsp;</td>" );
@@ -1255,9 +1253,13 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
                     try {
-                        outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtSlalom"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                            outLine.Append("\n<td class=\"DataRight\">**</td>");
+                        } else {
+                            outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtSlalom"] + "</td>");
+                        }
                     } catch {
-                        outLine.Append( "\n<td>&nbsp;</td>" );
+                        outLine.Append("\n<td>&nbsp;</td>");
                     }
                     outLine.Append( "\n</tr>" );
                     outBuffer.WriteLine( outLine.ToString() );
@@ -1403,7 +1405,11 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
                     try {
-                        outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtTrick"] + "</td>" );
+                        if ( ( (String) curRow["PlcmtTrick"] ).Trim().Equals("999") ) {
+                            outLine.Append("\n<td class=\"DataRight\">**</td>");
+                        } else {
+                            outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtTrick"] + "</td>");
+                        }
                     } catch {
                         outLine.Append( "\n<td>&nbsp;</td>" );
                     }
@@ -1573,7 +1579,11 @@ namespace WaterskiScoringSystem.Tools {
                             outLine.Append( "\n<td>&nbsp;</td>" );
                         }
                         try {
-                            outLine.Append( "\n<td class=\"DataRight\">" + (String)curRow["PlcmtJump"] + "</td>" );
+                            if ( ( (String) curRow["PlcmtJump"] ).Trim().Equals("999") ) {
+                                outLine.Append("\n<td class=\"DataRight\">**</td>");
+                            } else {
+                                outLine.Append("\n<td class=\"DataRight\">" + (String) curRow["PlcmtJump"] + "</td>");
+                            }
                         } catch {
                             outLine.Append( "\n<td>&nbsp;</td>" );
                         }
@@ -1609,10 +1619,10 @@ namespace WaterskiScoringSystem.Tools {
             DataTable curDataTable = null;
             if ( curPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                 curEventResults.DefaultView.Sort = "AgeGroup ASC, EventGroup ASC, ScoreOverall DESC";
-                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes'";
+                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes' and EligOverall = 'Yes'";
             } else {
                 curEventResults.DefaultView.Sort = "AgeGroup ASC, ScoreOverall DESC";
-                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes'";
+                curEventResults.DefaultView.RowFilter = "QualifyOverall = 'Yes' and EligOverall = 'Yes'";
             }
             //curEventResults
             curDataTable = curEventResults.DefaultView.ToTable();

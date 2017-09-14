@@ -57,7 +57,9 @@ namespace WaterskiScoringSystem.Tournament {
             CheckForChiefOfficials();
             CheckBoatUse();
 
-            if ( ( (String) myTourRow["Name"] ).Contains("Alumni") ) {
+            // Disabling the Alumni functionality at this time 8/8/17.  
+            // Do not want it used inadvertently
+            if ( ( (String) myTourRow["Name"] ).Contains("##Alumni##") ) {
                 String curMsg = "This has been recognized as a collegiate alumni tournament  "
                     + "\nSlalom scores for these tournaments have been adjust for tournament scoring purposes"
                     + "\nYou will need to have the scores adjusted to submit them to the AWSA Ranking List"

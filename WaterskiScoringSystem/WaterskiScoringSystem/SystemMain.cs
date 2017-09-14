@@ -854,8 +854,18 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
+        private void logRecoveryUtilityToolStripMenuItem_Click( object sender, EventArgs e ) {
+            LogRecoveryUtility curForm = new LogRecoveryUtility();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
         private void loadDataFromLog_Click(object sender, EventArgs e) {
-            LogLoadForm curForm = new LogLoadForm();
+            LogRecoveryUtility curForm = new LogRecoveryUtility();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
             // Set the Parent Form and display requested form

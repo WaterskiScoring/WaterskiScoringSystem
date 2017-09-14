@@ -289,8 +289,8 @@ namespace WaterskiScoringSystem.Tools {
                 if (curDataTable.Rows.Count > 0) {
                     curRow = curDataTable.Rows[0];
                     setCellValue(23, "B", transformName( curRow["SkierName"].ToString() ));
-                    setCellValue(23, "F", transformName( curRow["MemberId"].ToString() ));
-                    setCellValue(29, "B", transformName( curRow["City"].ToString() ) + ", " + transformName( curRow["State"].ToString() ));
+                    setCellValue(23, "F", curRow["MemberId"].ToString() );
+                    setCellValue(29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
                     if (inEvent.Equals( "Slalom" )) {
                         String curValue = curRow["Score"].ToString()
                             + " : " + curRow["FinalPassScore"].ToString()
@@ -309,20 +309,30 @@ namespace WaterskiScoringSystem.Tools {
                         setCellValue( 14, "G", curValue );
                         //S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed
                     } else {
-                        setCellValue( 14, "G", transformName( curRow["Score"].ToString() ) );
+                        setCellValue( 14, "G", curRow["Score"].ToString() );
                     }
-                    setCellValue(16, "C", transformName( curRow["LastUpdateDate"].ToString() ));
+                    setCellValue(16, "C", curRow["LastUpdateDate"].ToString() );
 
                     try {
-                        setCellValue(34, "B", transformName( curRow["BoatModel"].ToString() ));
+                        setCellValue(34, "B", curRow["BoatModel"].ToString() );
                     } catch {
                     }
                     try {
-                        setCellValue(35, "B", transformName( curRow["ModelYear"].ToString() ));
+                        setCellValue(35, "B", curRow["ModelYear"].ToString() );
                     } catch {
                     }
                     try {
-                        setCellValue(35, "F", transformName( curRow["SpeedControlVersion"].ToString() ));
+                        String curValue = curRow["SpeedControlVersion"].ToString();
+                        if ( curValue.Contains("-") ) {
+                            String[] curAttrList = curValue.Split('-');
+                            setCellValue(34, "F", curAttrList[0]);
+                            setCellValue(35, "F", curAttrList[1]);
+                        } else {
+                            setCellValue(34, "F", curRow["SpeedControlVersion"].ToString());
+                            setCellValue(35, "F", curRow["SpeedControlVersion"].ToString());
+                        }
+
+
                     } catch {
                     }
 

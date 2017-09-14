@@ -125,7 +125,7 @@ namespace WaterskiScoringSystem.Trick {
             PauseTimerButton.Visible = true;
             StartTimerButton.Location = PauseTimerButton.Location;
 
-            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TrickBoat", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
+            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TrickBoat", "ReadyForPlcmt", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -270,7 +270,7 @@ namespace WaterskiScoringSystem.Trick {
 
         private void ScoreCalc_FormClosing(object sender, FormClosingEventArgs e) {
             if (isDataModified) {
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
             }
         }
 
@@ -783,19 +783,57 @@ namespace WaterskiScoringSystem.Trick {
             Timer curTimerObj = (Timer)sender;
             curTimerObj.Stop();
             curTimerObj.Tick -= new EventHandler( calcUpdateScoreTimer );
-            isLoadInProg = true;
-            CalcScoreButton_Click( null, null );
-            isLoadInProg = false;
+            if ( isPassEnded ) {
+                calcScore();
+            } else {
+                CalcScoreButton_Click(null, null);
+            }
             isDataModifiedInProgress = false;
         }
 
         private void CalcScoreButton_Click( object sender, EventArgs e ) {
+            String curColPrefix;
+
+            if ( TourEventRegDataGridView.CurrentRow != null ) {
+                #region Reset all repeat tricks to credit so a recalculation can be performed to account for status edits.
+                isDataModifiedInProgress = true;
+                isLoadInProg = true;
+                if ( Pass1DataGridView.Rows.Count > 0 ) {
+                    curColPrefix = "Pass1";
+                    foreach ( DataGridViewRow curPassRow in Pass1DataGridView.Rows ) {
+                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.Equals("Repeat") ) {
+                            curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                        }
+                    }
+                }
+
+                if ( Pass2DataGridView.Rows.Count > 0 ) {
+                    curColPrefix = "Pass2";
+                    foreach ( DataGridViewRow curPassRow in Pass2DataGridView.Rows ) {
+                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.Equals("Repeat") ) {
+                            curPassRow.Cells[curColPrefix + "Results"].Value = "Credit";
+                        }
+                    }
+                }
+
+                calcScore();
+
+                isLoadInProg = false;
+                isDataModifiedInProgress = false;
+
+                #endregion
+            }
+        }
+
+        private void calcScore() {
             bool curReadyToScore = true;
             int curTotalScore = 0, curPass1Score = 0, curPass2Score = 0;
-            String curColPrefix, curTrickCode, curValue;
+            String curColPrefix, curTrickCode;
             Int16 curNumSkis = 0;
 
             if ( TourEventRegDataGridView.CurrentRow != null ) {
+                Cursor.Current = Cursors.WaitCursor;
+                isLoadInProg = true;
                 String curMemberId = (String)TourEventRegDataGridView.CurrentRow.Cells["MemberId"].Value;
                 String curAgeGroup = (String)TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
 
@@ -815,6 +853,17 @@ namespace WaterskiScoringSystem.Trick {
                                 }
                             } else {
                                 if ( checkTrickCode( Pass1DataGridView, curPassRow.Index, curTrickCode, curNumSkis, curColPrefix ) ) {
+
+                                    isTrickValid = true;
+                                    if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("CREDIT") ) {
+                                        curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(Pass1DataGridView, curPassRow, curColPrefix).ToString();
+                                    } else {
+                                        curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+                                    }
+                                    curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
+                                    curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
+                                    curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
+
                                     if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Points"].Value ) ) {
                                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) ) {
                                             MessageBox.Show( "Empty points and results (shouldn't be able to happen)" );
@@ -832,7 +881,7 @@ namespace WaterskiScoringSystem.Trick {
                                         }
                                     } else {
                                         if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
-                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 Pass1DataGridView.Rows.Remove( curPassRow );
                                             } else {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
@@ -846,7 +895,7 @@ namespace WaterskiScoringSystem.Trick {
                                                 break;
                                             }
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
-                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                                 MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
                                                 break;
@@ -862,7 +911,7 @@ namespace WaterskiScoringSystem.Trick {
                                     curPassRow.Cells[curColPrefix + "PointsTotal"].Value = curPass1Score.ToString();
                                 } else {
                                     if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
-                                        if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                        if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                             Pass1DataGridView.Rows.Remove( curPassRow );
                                             //curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                         } else {
@@ -898,6 +947,17 @@ namespace WaterskiScoringSystem.Trick {
                                 } else if ( curTrickCode.Length == 0 ) {
                                 } else {
                                     if ( checkTrickCode( Pass2DataGridView, curPassRow.Index, curTrickCode, curNumSkis, curColPrefix ) ) {
+
+                                        isTrickValid = true;
+                                        if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("CREDIT") ) {
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = calcPoints(Pass2DataGridView, curPassRow, curColPrefix).ToString();
+                                        } else {
+                                            curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+                                        }
+                                        curPassRow.Cells[curColPrefix + "Code"].Style.ForeColor = SystemColors.ControlText;
+                                        curPassRow.Cells[curColPrefix + "Code"].Style.BackColor = SystemColors.Window;
+                                        curPassRow.Cells[curColPrefix + "Updated"].Value = "Y";
+
                                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Points"].Value ) ) {
                                             if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) ) {
                                                 MessageBox.Show( "Empty points and results (shouldn't be able to happen)" );
@@ -953,6 +1013,7 @@ namespace WaterskiScoringSystem.Trick {
                         }
                     }
                 }
+                isLoadInProg = false;
 
                 if ( curReadyToScore ) {
                     isDataModified = true;
@@ -971,6 +1032,8 @@ namespace WaterskiScoringSystem.Trick {
                 } else {
                     MessageBox.Show( "Invalid data has been detected and can not be saved at this time" );
                 }
+
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -1365,7 +1428,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navSort_Click( object sender, EventArgs e ) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1390,7 +1453,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navFilter_Click(object sender, EventArgs e) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1422,7 +1485,7 @@ namespace WaterskiScoringSystem.Trick {
         private void navExport_Click(object sender, EventArgs e) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -1438,23 +1501,15 @@ namespace WaterskiScoringSystem.Trick {
                 String[] curSelectCommand = new String[8];
                 String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "TrickScore", "TrickPass", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
 
-                curSelectCommand[0] = "SELECT * FROM TourReg "
-                    + "Where SanctionId = '" + mySanctionNum + "' "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TourReg.SanctionId = EventReg.SanctionId AND TourReg.MemberId = EventReg.MemberId "
-                    + "      AND TourReg.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[0] = curSelectCommand[0] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[0] = curSelectCommand[0] + ") ";
-                    }
+                curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
                 }
 
                 curSelectCommand[1] = "Select * from EventReg ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
+                if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[1] = curSelectCommand[1]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = 'Trick'";
@@ -1472,12 +1527,12 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
                 curSelectCommand[2] = "Select * from EventRunOrder ";
-                if (isObjectEmpty( curFilterCmd )) {
+                if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " ";
                 } else {
-                    if (curFilterCmd.Length > 0) {
+                    if ( curFilterCmd.Length > 0 ) {
                         curSelectCommand[2] = curSelectCommand[2]
                             + " Where SanctionId = '" + mySanctionNum + "'"
                             + " And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " "
@@ -1489,96 +1544,58 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                curSelectCommand[3] = "SELECT * FROM TrickScore "
-                    + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TrickScore.SanctionId = EventReg.SanctionId AND TrickScore.MemberId = EventReg.MemberId "
-                    + "      AND TrickScore.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[3] = curSelectCommand[3] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[3] = curSelectCommand[3] + ") ";
-                    }
+                curSelectCommand[3] = "SELECT XT.* FROM TrickScore XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
                 }
 
-                curSelectCommand[4] = "SELECT * FROM TrickPass "
-                    + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                    + "And EXISTS (SELECT 1 FROM EventReg "
-                    + "    WHERE TrickPass.SanctionId = EventReg.SanctionId AND TrickPass.MemberId = EventReg.MemberId "
-                    + "      AND TrickPass.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Trick' ";
-                if ( isObjectEmpty( curFilterCmd ) ) {
-                    curSelectCommand[4] = curSelectCommand[4] + ") ";
-                } else {
-                    if ( curFilterCmd.Length > 0 ) {
-                        curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[4] = curSelectCommand[4] + ") ";
-                    }
-                }
-
-                String tmpFilterCmd = "";
-                String curEventGroup = EventGroupList.SelectedItem.ToString();
-                if ( curEventGroup.ToLower().Equals( "all" ) ) {
-                } else {
-                    tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
-                }
-
-                curSelectCommand[5] = "SELECT * FROM TourReg T "
-                    + "Where SanctionId = '" + mySanctionNum + "' "
-                    + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                    + "    WHERE T.SanctionId = O.SanctionId AND T.MemberId = O.MemberId And O.Event = 'Trick' And O.Round = " + roundActiveSelect.RoundValue + " ";
-                if ( isObjectEmpty( tmpFilterCmd ) ) {
-                    curSelectCommand[5] = curSelectCommand[5] + ") ";
-                } else {
-                    if ( tmpFilterCmd.Length > 0 ) {
-                        curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[5] = curSelectCommand[5] + ") ";
-                    }
+                curSelectCommand[4] = "SELECT XT.* FROM TrickPass XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+                if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                    curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
                 }
 
                 //----------------------------------------
                 //Export data related to officials
                 //----------------------------------------
-                curSelectCommand[6] = "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                    + "And W.LastUpdateDate is not null "
-                    + "And EXISTS (SELECT 1 FROM EventReg R"
-                    + "    WHERE W.SanctionId = R.SanctionId AND W.MemberId = R.MemberId AND R.Event = 'Trick' ";
-                if (isObjectEmpty( tmpFilterCmd )) {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
+                String tmpFilterCmd = "";
+                String curEventGroup = EventGroupList.SelectedItem.ToString();
+                if ( curEventGroup.ToLower().Equals("all") ) {
                 } else {
-                    if (tmpFilterCmd.Length > 0) {
-                        curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[6] = curSelectCommand[6] + ") ";
-                    }
+                    tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+                }
+
+                //----------------------------------------
+                //Export data related to officials
+                //----------------------------------------
+                curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
+                    + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
+                }
+
+                curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
+                    + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
                 }
                 curSelectCommand[6] = curSelectCommand[6] + "Union "
-                    + "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                    + "And W.LastUpdateDate is not null "
-                    + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                    + "    WHERE W.SanctionId = O.SanctionId AND W.MemberId = O.MemberId And O.Event = 'Trick' And O.Round = " + roundActiveSelect.RoundValue + " ";
-                if (isObjectEmpty( tmpFilterCmd )) {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
-                } else {
-                    if (tmpFilterCmd.Length > 0) {
-                        curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                    } else {
-                        curSelectCommand[6] = curSelectCommand[6] + ") ";
-                    }
+                    + "SELECT XT.* FROM OfficialWork XT "
+                    + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                    + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
                 }
 
                 curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
                     + " Where SanctionId = '" + mySanctionNum + "' And Event = 'Trick' And Round = " + roundActiveSelect.RoundValue + " ";
-                if ( isObjectEmpty( tmpFilterCmd ) ) {
-                } else {
-                    if ( tmpFilterCmd.Length > 0 ) {
-                        curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd;
-                    } else {
-                    }
+                if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                    curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
                 }
 
                 myExportData.exportData( curTableName, curSelectCommand );
@@ -1793,7 +1810,7 @@ namespace WaterskiScoringSystem.Trick {
             try {
                 if ( isDataModified ) {
                     try {
-                        CalcScoreButton_Click( null, null );
+                        CalcScoreButton_Click (null, null);
                     } catch ( Exception excp ) {
                         MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                     }
@@ -2093,7 +2110,7 @@ namespace WaterskiScoringSystem.Trick {
         private void DataGridView_Leave( object sender, EventArgs e ) {
             DataGridView curPassView = (DataGridView)sender;
             if ( isDataModified && !(isDataModifiedInProgress) ) {
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
             }
             curPassView.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
             curPassView.DefaultCellStyle.ForeColor = Color.Silver;
@@ -2106,7 +2123,7 @@ namespace WaterskiScoringSystem.Trick {
             //if ( isDataModified && ( myEventRegViewIdx != e.RowIndex ) ) {
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
@@ -3471,7 +3488,7 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                CalcScoreButton_Click( null, null );
+                CalcScoreButton_Click (null, null);
                 if (TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "2-InProg" )) {
                     skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
                     if (skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK) {
@@ -3543,7 +3560,7 @@ namespace WaterskiScoringSystem.Trick {
 
             if ( isDataModified ) {
                 try {
-                    CalcScoreButton_Click( null, null );
+                    CalcScoreButton_Click (null, null);
                 } catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }

@@ -469,7 +469,8 @@ namespace WaterskiScoringSystem.Tools {
 
             try {
                 if (myRound > 1) {
-                    if (myEvent.ToLower().Equals( "trick" )) {
+                    Cursor.Current = Cursors.WaitCursor;
+                    if ( myEvent.ToLower().Equals( "trick" )) {
                         if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
                             curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
                         } else {
@@ -623,7 +624,6 @@ namespace WaterskiScoringSystem.Tools {
                             curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
 
                         }
-                        Cursor.Current = Cursors.Default;
                         try {
                             int curRowPos = curIdx + 1;
                             RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + previewDataGridView.Rows.Count.ToString();
@@ -634,6 +634,7 @@ namespace WaterskiScoringSystem.Tools {
                         curIdx = 0;
                         previewDataGridView.CurrentCell = previewDataGridView.Rows[curIdx].Cells["previewSkierName"];
                     }
+                    Cursor.Current = Cursors.Default;
                 }
             } catch (Exception excp) {
                 MessageBox.Show( "Error attempting to prepare for head to head selection \n" + excp.Message );
@@ -658,6 +659,7 @@ namespace WaterskiScoringSystem.Tools {
             DataTable curDataTable = null;
 
             try {
+                Cursor.Current = Cursors.WaitCursor;
                 int curMaxGroups = Convert.ToInt32( myNumSkiers ) >> 1;
 
                 if (myEvent.ToLower().Equals( "trick" )) {
@@ -860,7 +862,7 @@ namespace WaterskiScoringSystem.Tools {
                     curIdx = 0;
                     previewDataGridView.CurrentCell = previewDataGridView.Rows[curIdx].Cells["previewSkierName"];
                 }
-            
+
             } catch (Exception excp) {
                 MessageBox.Show( "Error attempting to prepare for head to head selection \n" + excp.Message );
             }
@@ -879,6 +881,7 @@ namespace WaterskiScoringSystem.Tools {
 
                 previewDataGridView.Rows.Clear();
                 if (curDataTable.Rows.Count > 0) {
+                    Cursor.Current = Cursors.WaitCursor;
                     DataGridViewRow curViewRow;
                     foreach (DataRow curDataRow in curDataTable.Rows) {
                         curIdx = previewDataGridView.Rows.Add();

@@ -269,7 +269,7 @@ namespace WaterskiScoringSystem.Jump {
             PauseTimerButton.Visible = true;
             StartTimerButton.Location = PauseTimerButton.Location;
 
-            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
+            String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "ReadyForPlcmt", "TeamCode", "EventClass", "RankingScore", "RankingRating", "HCapBase", "HCapScore", "Status" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -1302,23 +1302,15 @@ namespace WaterskiScoringSystem.Jump {
                 curFilterCmd = curFilterCmd.Replace( "Div =", "AgeGroup =" );
             }
 
-            curSelectCommand[0] = "SELECT * FROM TourReg "
-                + "Where SanctionId = '" + mySanctionNum + "' "
-                + "And EXISTS (SELECT 1 FROM EventReg "
-                + "    WHERE TourReg.SanctionId = EventReg.SanctionId AND TourReg.MemberId = EventReg.MemberId "
-                + "      AND TourReg.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Jump' ";
-            if ( isObjectEmpty( curFilterCmd ) ) {
-                curSelectCommand[0] = curSelectCommand[0] + ") ";
-            } else {
-                if ( curFilterCmd.Length > 0 ) {
-                    curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + ") ";
-                } else {
-                    curSelectCommand[0] = curSelectCommand[0] + ") ";
-                }
+            curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+                + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+            if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
 
             curSelectCommand[1] = "Select * from EventReg ";
-            if ( isObjectEmpty( curFilterCmd ) ) {
+            if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[1] = curSelectCommand[1]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = 'Jump'";
@@ -1336,12 +1328,12 @@ namespace WaterskiScoringSystem.Jump {
             }
 
             curSelectCommand[2] = "Select * from EventRunOrder ";
-            if (isObjectEmpty( curFilterCmd )) {
+            if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[2] = curSelectCommand[2]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = 'Jump' And Round = " + roundActiveSelect.RoundValue + " ";
             } else {
-                if (curFilterCmd.Length > 0) {
+                if ( curFilterCmd.Length > 0 ) {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = 'Jump' And Round = " + roundActiveSelect.RoundValue + " "
@@ -1353,34 +1345,18 @@ namespace WaterskiScoringSystem.Jump {
                 }
             }
 
-            curSelectCommand[3] = "SELECT * FROM JumpScore "
-                + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                + "And EXISTS (SELECT 1 FROM EventReg "
-                + "    WHERE JumpScore.SanctionId = EventReg.SanctionId AND JumpScore.MemberId = EventReg.MemberId "
-                + "      AND JumpScore.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Jump' ";
-            if ( isObjectEmpty( curFilterCmd ) ) {
-                curSelectCommand[3] = curSelectCommand[3] + ") ";
-            } else {
-                if ( curFilterCmd.Length > 0 ) {
-                    curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + ") ";
-                } else {
-                    curSelectCommand[3] = curSelectCommand[3] + ") ";
-                }
+            curSelectCommand[3] = "SELECT XT.* FROM JumpScore XT "
+                + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+            if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
             }
 
-            curSelectCommand[4] = "SELECT * FROM JumpRecap "
-                + "Where SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " "
-                + "And EXISTS (SELECT 1 FROM EventReg "
-                + "    WHERE JumpRecap.SanctionId = EventReg.SanctionId AND JumpRecap.MemberId = EventReg.MemberId "
-                + "      AND JumpRecap.AgeGroup = EventReg.AgeGroup AND EventReg.Event = 'Jump' ";
-            if ( isObjectEmpty( curFilterCmd ) ) {
-                curSelectCommand[4] = curSelectCommand[4] + ") ";
-            } else {
-                if ( curFilterCmd.Length > 0 ) {
-                    curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + ") ";
-                } else {
-                    curSelectCommand[4] = curSelectCommand[4] + ") ";
-                }
+            curSelectCommand[4] = "SELECT XT.* FROM JumpRecap XT "
+                + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
+            if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
             }
 
             //----------------------------------------
@@ -1388,64 +1364,39 @@ namespace WaterskiScoringSystem.Jump {
             //----------------------------------------
             String tmpFilterCmd = "";
             String curEventGroup = EventGroupList.SelectedItem.ToString();
-            if ( curEventGroup.ToLower().Equals( "all" ) ) {
+            if ( curEventGroup.ToLower().Equals("all") ) {
             } else {
                 tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
-            }
-
-            curSelectCommand[5] = "SELECT * FROM TourReg T "
-                + "Where SanctionId = '" + mySanctionNum + "' "
-                + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                + "    WHERE T.SanctionId = O.SanctionId AND T.MemberId = O.MemberId And O.Event = 'Jump' And O.Round = " + roundActiveSelect.RoundValue + " ";
-            if ( isObjectEmpty( tmpFilterCmd ) ) {
-                curSelectCommand[5] = curSelectCommand[5] + ") ";
-            } else {
-                if ( tmpFilterCmd.Length > 0 ) {
-                    curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + ") ";
-                } else {
-                    curSelectCommand[5] = curSelectCommand[5] + ") ";
-                }
             }
 
             //----------------------------------------
             //Export data related to officials
             //----------------------------------------
-            curSelectCommand[6] = "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                + "And W.LastUpdateDate is not null "
-                + "And EXISTS (SELECT 1 FROM EventReg R"
-                + "    WHERE W.SanctionId = R.SanctionId AND W.MemberId = R.MemberId AND R.Event = 'Jump' ";
-            if (isObjectEmpty( tmpFilterCmd )) {
-                curSelectCommand[6] = curSelectCommand[6] + ") ";
-            } else {
-                if (tmpFilterCmd.Length > 0) {
-                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                } else {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
-                }
+            curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
+                + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' ";
+            if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
+            }
+
+            curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
+                + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+            if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
             }
             curSelectCommand[6] = curSelectCommand[6] + "Union "
-                + "Select * from OfficialWork W Where SanctionId = '" + mySanctionNum + "' "
-                + "And W.LastUpdateDate is not null "
-                + "And EXISTS (SELECT 1 FROM OfficialWorkAsgmt O "
-                + "    WHERE W.SanctionId = O.SanctionId AND W.MemberId = O.MemberId And O.Event = 'Jump' And O.Round = " + roundActiveSelect.RoundValue + " ";
-            if (isObjectEmpty( tmpFilterCmd )) {
-                curSelectCommand[6] = curSelectCommand[6] + ") ";
-            } else {
-                if (tmpFilterCmd.Length > 0) {
-                    curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + ") ";
-                } else {
-                    curSelectCommand[6] = curSelectCommand[6] + ") ";
-                }
+                + "SELECT XT.* FROM OfficialWork XT "
+                + "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round = " + roundActiveSelect.RoundValue + " "
+                + "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
+            if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
             }
-            
+
             curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
                 + " Where SanctionId = '" + mySanctionNum + "' And Event = 'Jump' And Round = " + roundActiveSelect.RoundValue + " ";
-            if ( isObjectEmpty( tmpFilterCmd ) ) {
-            } else {
-                if ( tmpFilterCmd.Length > 0 ) {
-                    curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd;
-                } else {
-                }
+            if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
+                curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
             }
 
             myExportData.exportData( curTableName, curSelectCommand );

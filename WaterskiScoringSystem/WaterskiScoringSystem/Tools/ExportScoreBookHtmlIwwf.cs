@@ -627,7 +627,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if (curRound == 1) {
-                        outLine.Append( "<td>" + (String)inScoreSummary["PlcmtSlalom"] + "</td>" );
+                        if ( ( (String) inScoreSummary["PlcmtSlalom"] ).Length > 0 ) {
+                            if ( ( (String) inScoreSummary["PlcmtSlalom"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inScoreSummary["PlcmtSlalom"] + "</td>");
+                            }
+                        } else {
+                            outLine.Append("<td>&nbsp;</td>");
+                        }
                     } else {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
@@ -701,7 +709,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if (curRound == 1) {
-                        outLine.Append( "<td>" + (String)inScoreSummary["PlcmtTrick"] + "</td>" );
+                        if ( ( (String) inScoreSummary["PlcmtTrick"] ).Length > 0 ) {
+                            if ( ( (String) inScoreSummary["PlcmtTrick"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inScoreSummary["PlcmtTrick"] + "</td>");
+                            }
+                        } else {
+                            outLine.Append("<td>&nbsp;</td>");
+                        }
                     } else {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
@@ -794,7 +810,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
                     if (curRound == 1) {
-                        outLine.Append( "<td>" + (String)inScoreSummary["PlcmtJump"] + "</td>" );
+                        if ( ( (String) inScoreSummary["PlcmtJump"] ).Length > 0 ) {
+                            if ( ( (String) inScoreSummary["PlcmtJump"] ).Trim().Equals("999") ) {
+                                outLine.Append("<td>**</td>");
+                            } else {
+                                outLine.Append("<td>" + (String) inScoreSummary["PlcmtJump"] + "</td>");
+                            }
+                        } else {
+                            outLine.Append("<td>&nbsp;</td>");
+                        }
                     } else {
                         outLine.Append( "<td>&nbsp;</td>" );
                     }
