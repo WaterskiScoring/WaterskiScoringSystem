@@ -1426,7 +1426,7 @@ namespace WaterskiScoringSystem.Common {
                         curRound = "0";
                     }
                     if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
-                        curGroup += "-" + curRound;
+                        curGroup = curRound;
                     } else {
                         curGroup = "";
                     }

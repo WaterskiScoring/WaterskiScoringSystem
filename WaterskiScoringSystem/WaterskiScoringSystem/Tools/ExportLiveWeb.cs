@@ -110,7 +110,7 @@ namespace WaterskiScoringSystem.Tools {
 
                 myProgressInfo.Close();
             } catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
             }
@@ -199,7 +199,7 @@ namespace WaterskiScoringSystem.Tools {
                 returnStatus = true;
             } catch (Exception ex) {
                 returnStatus = false;
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
             }
 
@@ -287,7 +287,7 @@ namespace WaterskiScoringSystem.Tools {
                 returnStatus = true;
             } catch (Exception ex) {
                 returnStatus = false;
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
             }
 
@@ -403,7 +403,7 @@ namespace WaterskiScoringSystem.Tools {
                 returnStatus = true;
             } catch (Exception ex) {
                 returnStatus = false;
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
             }
 
@@ -495,7 +495,7 @@ namespace WaterskiScoringSystem.Tools {
 
                 myProgressInfo.Close();
             } catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
             }

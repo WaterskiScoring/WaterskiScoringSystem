@@ -235,6 +235,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.safetyRadioTextBox = new System.Windows.Forms.TextBox();
             this.safetyPfdTextBox = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             InstructionLabel1 = new System.Windows.Forms.Label();
             medAccptCheckLabel = new System.Windows.Forms.Label();
             commAvailLabel = new System.Windows.Forms.Label();
@@ -467,7 +468,7 @@ namespace WaterskiScoringSystem.Tournament {
             // safetyPfdLabel
             // 
             safetyPfdLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            safetyPfdLabel.Location = new System.Drawing.Point(5, 668);
+            safetyPfdLabel.Location = new System.Drawing.Point(5, 683);
             safetyPfdLabel.Margin = new System.Windows.Forms.Padding(0);
             safetyPfdLabel.Name = "safetyPfdLabel";
             safetyPfdLabel.Size = new System.Drawing.Size(600, 20);
@@ -477,7 +478,7 @@ namespace WaterskiScoringSystem.Tournament {
             // safetyRadioLabel
             // 
             safetyRadioLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            safetyRadioLabel.Location = new System.Drawing.Point(5, 692);
+            safetyRadioLabel.Location = new System.Drawing.Point(5, 707);
             safetyRadioLabel.Margin = new System.Windows.Forms.Padding(0);
             safetyRadioLabel.Name = "safetyRadioLabel";
             safetyRadioLabel.Size = new System.Drawing.Size(600, 20);
@@ -487,7 +488,7 @@ namespace WaterskiScoringSystem.Tournament {
             // safetyVolunteersLabel
             // 
             safetyVolunteersLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            safetyVolunteersLabel.Location = new System.Drawing.Point(5, 716);
+            safetyVolunteersLabel.Location = new System.Drawing.Point(5, 731);
             safetyVolunteersLabel.Margin = new System.Windows.Forms.Padding(0);
             safetyVolunteersLabel.Name = "safetyVolunteersLabel";
             safetyVolunteersLabel.Size = new System.Drawing.Size(600, 32);
@@ -498,7 +499,7 @@ namespace WaterskiScoringSystem.Tournament {
             // safetyBoatsLabel
             // 
             safetyBoatsLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            safetyBoatsLabel.Location = new System.Drawing.Point(5, 752);
+            safetyBoatsLabel.Location = new System.Drawing.Point(5, 767);
             safetyBoatsLabel.Margin = new System.Windows.Forms.Padding(0);
             safetyBoatsLabel.Name = "safetyBoatsLabel";
             safetyBoatsLabel.Size = new System.Drawing.Size(600, 20);
@@ -508,7 +509,7 @@ namespace WaterskiScoringSystem.Tournament {
             // firstAidAreaLabel
             // 
             firstAidAreaLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            firstAidAreaLabel.Location = new System.Drawing.Point(5, 804);
+            firstAidAreaLabel.Location = new System.Drawing.Point(5, 819);
             firstAidAreaLabel.Margin = new System.Windows.Forms.Padding(0);
             firstAidAreaLabel.Name = "firstAidAreaLabel";
             firstAidAreaLabel.Size = new System.Drawing.Size(600, 20);
@@ -518,7 +519,7 @@ namespace WaterskiScoringSystem.Tournament {
             // spineBoardLabel
             // 
             spineBoardLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            spineBoardLabel.Location = new System.Drawing.Point(21, 852);
+            spineBoardLabel.Location = new System.Drawing.Point(21, 867);
             spineBoardLabel.Margin = new System.Windows.Forms.Padding(0);
             spineBoardLabel.Name = "spineBoardLabel";
             spineBoardLabel.Size = new System.Drawing.Size(575, 20);
@@ -528,7 +529,7 @@ namespace WaterskiScoringSystem.Tournament {
             // safetyCidLabel
             // 
             safetyCidLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            safetyCidLabel.Location = new System.Drawing.Point(21, 876);
+            safetyCidLabel.Location = new System.Drawing.Point(21, 891);
             safetyCidLabel.Margin = new System.Windows.Forms.Padding(0);
             safetyCidLabel.Name = "safetyCidLabel";
             safetyCidLabel.Size = new System.Drawing.Size(575, 20);
@@ -538,7 +539,7 @@ namespace WaterskiScoringSystem.Tournament {
             // firstAidKitLabel
             // 
             firstAidKitLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            firstAidKitLabel.Location = new System.Drawing.Point(21, 900);
+            firstAidKitLabel.Location = new System.Drawing.Point(21, 915);
             firstAidKitLabel.Margin = new System.Windows.Forms.Padding(0);
             firstAidKitLabel.Name = "firstAidKitLabel";
             firstAidKitLabel.Size = new System.Drawing.Size(575, 20);
@@ -548,7 +549,7 @@ namespace WaterskiScoringSystem.Tournament {
             // refuelGroundedLabel
             // 
             refuelGroundedLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            refuelGroundedLabel.Location = new System.Drawing.Point(21, 613);
+            refuelGroundedLabel.Location = new System.Drawing.Point(21, 628);
             refuelGroundedLabel.Margin = new System.Windows.Forms.Padding(0);
             refuelGroundedLabel.Name = "refuelGroundedLabel";
             refuelGroundedLabel.Size = new System.Drawing.Size(575, 20);
@@ -558,7 +559,7 @@ namespace WaterskiScoringSystem.Tournament {
             // refuelSignsPostedLabel
             // 
             refuelSignsPostedLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            refuelSignsPostedLabel.Location = new System.Drawing.Point(21, 589);
+            refuelSignsPostedLabel.Location = new System.Drawing.Point(21, 604);
             refuelSignsPostedLabel.Margin = new System.Windows.Forms.Padding(0);
             refuelSignsPostedLabel.Name = "refuelSignsPostedLabel";
             refuelSignsPostedLabel.Size = new System.Drawing.Size(575, 20);
@@ -568,7 +569,7 @@ namespace WaterskiScoringSystem.Tournament {
             // refuelFireExtnLabel
             // 
             refuelFireExtnLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            refuelFireExtnLabel.Location = new System.Drawing.Point(4, 565);
+            refuelFireExtnLabel.Location = new System.Drawing.Point(4, 580);
             refuelFireExtnLabel.Margin = new System.Windows.Forms.Padding(0);
             refuelFireExtnLabel.Name = "refuelFireExtnLabel";
             refuelFireExtnLabel.Size = new System.Drawing.Size(600, 20);
@@ -578,7 +579,7 @@ namespace WaterskiScoringSystem.Tournament {
             // towerFloorSafeLabel
             // 
             towerFloorSafeLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            towerFloorSafeLabel.Location = new System.Drawing.Point(21, 541);
+            towerFloorSafeLabel.Location = new System.Drawing.Point(21, 556);
             towerFloorSafeLabel.Margin = new System.Windows.Forms.Padding(0);
             towerFloorSafeLabel.Name = "towerFloorSafeLabel";
             towerFloorSafeLabel.Size = new System.Drawing.Size(575, 20);
@@ -588,7 +589,7 @@ namespace WaterskiScoringSystem.Tournament {
             // towerLadderSafeLabel
             // 
             towerLadderSafeLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            towerLadderSafeLabel.Location = new System.Drawing.Point(21, 517);
+            towerLadderSafeLabel.Location = new System.Drawing.Point(21, 532);
             towerLadderSafeLabel.Margin = new System.Windows.Forms.Padding(0);
             towerLadderSafeLabel.Name = "towerLadderSafeLabel";
             towerLadderSafeLabel.Size = new System.Drawing.Size(575, 20);
@@ -608,7 +609,7 @@ namespace WaterskiScoringSystem.Tournament {
             // towerStableLabel
             // 
             towerStableLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            towerStableLabel.Location = new System.Drawing.Point(21, 493);
+            towerStableLabel.Location = new System.Drawing.Point(21, 508);
             towerStableLabel.Margin = new System.Windows.Forms.Padding(0);
             towerStableLabel.Name = "towerStableLabel";
             towerStableLabel.Size = new System.Drawing.Size(575, 20);
@@ -618,7 +619,7 @@ namespace WaterskiScoringSystem.Tournament {
             // firstAidEquipLabel
             // 
             firstAidEquipLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            firstAidEquipLabel.Location = new System.Drawing.Point(5, 828);
+            firstAidEquipLabel.Location = new System.Drawing.Point(5, 843);
             firstAidEquipLabel.Margin = new System.Windows.Forms.Padding(0);
             firstAidEquipLabel.Name = "firstAidEquipLabel";
             firstAidEquipLabel.Size = new System.Drawing.Size(600, 20);
@@ -629,7 +630,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             SafetyFacilitiesLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             SafetyFacilitiesLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            SafetyFacilitiesLabel.Location = new System.Drawing.Point(2, 780);
+            SafetyFacilitiesLabel.Location = new System.Drawing.Point(2, 795);
             SafetyFacilitiesLabel.Margin = new System.Windows.Forms.Padding(0);
             SafetyFacilitiesLabel.Name = "SafetyFacilitiesLabel";
             SafetyFacilitiesLabel.Size = new System.Drawing.Size(762, 144);
@@ -640,7 +641,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             SafetyBoatLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             SafetyBoatLabel.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            SafetyBoatLabel.Location = new System.Drawing.Point(2, 644);
+            SafetyBoatLabel.Location = new System.Drawing.Point(2, 659);
             SafetyBoatLabel.Margin = new System.Windows.Forms.Padding(0);
             SafetyBoatLabel.Name = "SafetyBoatLabel";
             SafetyBoatLabel.Size = new System.Drawing.Size(762, 132);
@@ -654,7 +655,7 @@ namespace WaterskiScoringSystem.Tournament {
             SafetyFacilityLabel.Location = new System.Drawing.Point(2, 220);
             SafetyFacilityLabel.Margin = new System.Windows.Forms.Padding(0);
             SafetyFacilityLabel.Name = "SafetyFacilityLabel";
-            SafetyFacilityLabel.Size = new System.Drawing.Size(762, 420);
+            SafetyFacilityLabel.Size = new System.Drawing.Size(762, 435);
             SafetyFacilityLabel.TabIndex = 0;
             SafetyFacilityLabel.Text = "B. SAFETY OF ON-SITE FACILITIES:";
             // 
@@ -682,7 +683,7 @@ namespace WaterskiScoringSystem.Tournament {
             // ChiefSafetySigLabel
             // 
             ChiefSafetySigLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            ChiefSafetySigLabel.Location = new System.Drawing.Point(0, 950);
+            ChiefSafetySigLabel.Location = new System.Drawing.Point(0, 965);
             ChiefSafetySigLabel.Margin = new System.Windows.Forms.Padding(0);
             ChiefSafetySigLabel.Name = "ChiefSafetySigLabel";
             ChiefSafetySigLabel.Size = new System.Drawing.Size(181, 16);
@@ -693,7 +694,7 @@ namespace WaterskiScoringSystem.Tournament {
             // ChiefJudgeSigLabel
             // 
             ChiefJudgeSigLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            ChiefJudgeSigLabel.Location = new System.Drawing.Point(407, 950);
+            ChiefJudgeSigLabel.Location = new System.Drawing.Point(407, 965);
             ChiefJudgeSigLabel.Margin = new System.Windows.Forms.Padding(0);
             ChiefJudgeSigLabel.Name = "ChiefJudgeSigLabel";
             ChiefJudgeSigLabel.Size = new System.Drawing.Size(164, 16);
@@ -1344,7 +1345,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.ReportTabControl.Location = new System.Drawing.Point(5, 30);
             this.ReportTabControl.Name = "ReportTabControl";
             this.ReportTabControl.SelectedIndex = 0;
-            this.ReportTabControl.Size = new System.Drawing.Size(836, 999);
+            this.ReportTabControl.Size = new System.Drawing.Size(836, 1027);
             this.ReportTabControl.TabIndex = 9;
             // 
             // ReportPage1
@@ -2062,6 +2063,7 @@ namespace WaterskiScoringSystem.Tournament {
             // ReportPage2
             // 
             this.ReportPage2.AutoScroll = true;
+            this.ReportPage2.Controls.Add(this.label4);
             this.ReportPage2.Controls.Add(this.ChiefSafetyDirApprovalCheckBox);
             this.ReportPage2.Controls.Add(this.ChiefJudgeApprovalCheckBox);
             this.ReportPage2.Controls.Add(this.pictureBox1);
@@ -2137,7 +2139,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.ReportPage2.Location = new System.Drawing.Point(4, 26);
             this.ReportPage2.Name = "ReportPage2";
             this.ReportPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.ReportPage2.Size = new System.Drawing.Size(828, 969);
+            this.ReportPage2.Size = new System.Drawing.Size(828, 997);
             this.ReportPage2.TabIndex = 1;
             this.ReportPage2.Text = "Report Page 2";
             this.ReportPage2.UseVisualStyleBackColor = true;
@@ -2149,7 +2151,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.ChiefSafetyDirApprovalCheckBox.Checked = true;
             this.ChiefSafetyDirApprovalCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ChiefSafetyDirApprovalCheckBox.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefSafetyDirApprovalCheckBox.Location = new System.Drawing.Point(184, 948);
+            this.ChiefSafetyDirApprovalCheckBox.Location = new System.Drawing.Point(184, 963);
             this.ChiefSafetyDirApprovalCheckBox.Name = "ChiefSafetyDirApprovalCheckBox";
             this.ChiefSafetyDirApprovalCheckBox.Size = new System.Drawing.Size(176, 20);
             this.ChiefSafetyDirApprovalCheckBox.TabIndex = 168;
@@ -2163,7 +2165,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.ChiefJudgeApprovalCheckBox.Checked = true;
             this.ChiefJudgeApprovalCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ChiefJudgeApprovalCheckBox.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefJudgeApprovalCheckBox.Location = new System.Drawing.Point(625, 948);
+            this.ChiefJudgeApprovalCheckBox.Location = new System.Drawing.Point(625, 963);
             this.ChiefJudgeApprovalCheckBox.Name = "ChiefJudgeApprovalCheckBox";
             this.ChiefJudgeApprovalCheckBox.Size = new System.Drawing.Size(136, 20);
             this.ChiefJudgeApprovalCheckBox.TabIndex = 167;
@@ -2186,7 +2188,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.ChiefJudgeDateTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ChiefJudgeDateTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefJudgeDateTextBox.Location = new System.Drawing.Point(689, 929);
+            this.ChiefJudgeDateTextBox.Location = new System.Drawing.Point(689, 944);
             this.ChiefJudgeDateTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.ChiefJudgeDateTextBox.Name = "ChiefJudgeDateTextBox";
             this.ChiefJudgeDateTextBox.ReadOnly = true;
@@ -2197,7 +2199,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.ChiefSafetyDateTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ChiefSafetyDateTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefSafetyDateTextBox.Location = new System.Drawing.Point(281, 929);
+            this.ChiefSafetyDateTextBox.Location = new System.Drawing.Point(281, 944);
             this.ChiefSafetyDateTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.ChiefSafetyDateTextBox.Name = "ChiefSafetyDateTextBox";
             this.ChiefSafetyDateTextBox.ReadOnly = true;
@@ -2208,7 +2210,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.ChiefJudgeSigTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ChiefJudgeSigTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefJudgeSigTextBox.Location = new System.Drawing.Point(410, 929);
+            this.ChiefJudgeSigTextBox.Location = new System.Drawing.Point(410, 944);
             this.ChiefJudgeSigTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.ChiefJudgeSigTextBox.Name = "ChiefJudgeSigTextBox";
             this.ChiefJudgeSigTextBox.ReadOnly = true;
@@ -2219,7 +2221,7 @@ namespace WaterskiScoringSystem.Tournament {
             // 
             this.ChiefSafetySigTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ChiefSafetySigTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChiefSafetySigTextBox.Location = new System.Drawing.Point(2, 929);
+            this.ChiefSafetySigTextBox.Location = new System.Drawing.Point(2, 944);
             this.ChiefSafetySigTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.ChiefSafetySigTextBox.Name = "ChiefSafetySigTextBox";
             this.ChiefSafetySigTextBox.ReadOnly = true;
@@ -2237,7 +2239,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.refuelGroundedCLB.Location = new System.Drawing.Point(610, 614);
+            this.refuelGroundedCLB.Location = new System.Drawing.Point(610, 629);
             this.refuelGroundedCLB.Margin = new System.Windows.Forms.Padding(0);
             this.refuelGroundedCLB.MultiColumn = true;
             this.refuelGroundedCLB.Name = "refuelGroundedCLB";
@@ -2256,7 +2258,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.refuelSignsPostedCLB.Location = new System.Drawing.Point(610, 590);
+            this.refuelSignsPostedCLB.Location = new System.Drawing.Point(610, 605);
             this.refuelSignsPostedCLB.Margin = new System.Windows.Forms.Padding(0);
             this.refuelSignsPostedCLB.MultiColumn = true;
             this.refuelSignsPostedCLB.Name = "refuelSignsPostedCLB";
@@ -2275,7 +2277,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.refuelFireExtnCLB.Location = new System.Drawing.Point(610, 566);
+            this.refuelFireExtnCLB.Location = new System.Drawing.Point(610, 581);
             this.refuelFireExtnCLB.Margin = new System.Windows.Forms.Padding(0);
             this.refuelFireExtnCLB.MultiColumn = true;
             this.refuelFireExtnCLB.Name = "refuelFireExtnCLB";
@@ -2294,7 +2296,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.towerFloorSafeCLB.Location = new System.Drawing.Point(610, 542);
+            this.towerFloorSafeCLB.Location = new System.Drawing.Point(610, 557);
             this.towerFloorSafeCLB.Margin = new System.Windows.Forms.Padding(0);
             this.towerFloorSafeCLB.MultiColumn = true;
             this.towerFloorSafeCLB.Name = "towerFloorSafeCLB";
@@ -2313,7 +2315,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.towerLadderSafeCLB.Location = new System.Drawing.Point(610, 518);
+            this.towerLadderSafeCLB.Location = new System.Drawing.Point(610, 533);
             this.towerLadderSafeCLB.Margin = new System.Windows.Forms.Padding(0);
             this.towerLadderSafeCLB.MultiColumn = true;
             this.towerLadderSafeCLB.Name = "towerLadderSafeCLB";
@@ -2332,7 +2334,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.towerStableCLB.Location = new System.Drawing.Point(610, 494);
+            this.towerStableCLB.Location = new System.Drawing.Point(610, 509);
             this.towerStableCLB.Margin = new System.Windows.Forms.Padding(0);
             this.towerStableCLB.MultiColumn = true;
             this.towerStableCLB.Name = "towerStableCLB";
@@ -2370,7 +2372,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.firstAidKitCLB.Location = new System.Drawing.Point(615, 901);
+            this.firstAidKitCLB.Location = new System.Drawing.Point(615, 916);
             this.firstAidKitCLB.Margin = new System.Windows.Forms.Padding(0);
             this.firstAidKitCLB.MultiColumn = true;
             this.firstAidKitCLB.Name = "firstAidKitCLB";
@@ -2389,7 +2391,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.safetyCidCLB.Location = new System.Drawing.Point(615, 877);
+            this.safetyCidCLB.Location = new System.Drawing.Point(615, 892);
             this.safetyCidCLB.Margin = new System.Windows.Forms.Padding(0);
             this.safetyCidCLB.MultiColumn = true;
             this.safetyCidCLB.Name = "safetyCidCLB";
@@ -2408,7 +2410,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.spineBoardCLB.Location = new System.Drawing.Point(615, 853);
+            this.spineBoardCLB.Location = new System.Drawing.Point(615, 868);
             this.spineBoardCLB.Margin = new System.Windows.Forms.Padding(0);
             this.spineBoardCLB.MultiColumn = true;
             this.spineBoardCLB.Name = "spineBoardCLB";
@@ -2427,7 +2429,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.firstAidAreaCLB.Location = new System.Drawing.Point(615, 805);
+            this.firstAidAreaCLB.Location = new System.Drawing.Point(615, 820);
             this.firstAidAreaCLB.Margin = new System.Windows.Forms.Padding(0);
             this.firstAidAreaCLB.MultiColumn = true;
             this.firstAidAreaCLB.Name = "firstAidAreaCLB";
@@ -2446,7 +2448,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.safetyBoatsCLB.Location = new System.Drawing.Point(610, 753);
+            this.safetyBoatsCLB.Location = new System.Drawing.Point(610, 768);
             this.safetyBoatsCLB.Margin = new System.Windows.Forms.Padding(0);
             this.safetyBoatsCLB.MultiColumn = true;
             this.safetyBoatsCLB.Name = "safetyBoatsCLB";
@@ -2465,7 +2467,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.safetyVolunteersCLB.Location = new System.Drawing.Point(610, 716);
+            this.safetyVolunteersCLB.Location = new System.Drawing.Point(610, 731);
             this.safetyVolunteersCLB.Margin = new System.Windows.Forms.Padding(0);
             this.safetyVolunteersCLB.MultiColumn = true;
             this.safetyVolunteersCLB.Name = "safetyVolunteersCLB";
@@ -2484,7 +2486,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.safetyRadioCLB.Location = new System.Drawing.Point(610, 693);
+            this.safetyRadioCLB.Location = new System.Drawing.Point(610, 708);
             this.safetyRadioCLB.Margin = new System.Windows.Forms.Padding(0);
             this.safetyRadioCLB.MultiColumn = true;
             this.safetyRadioCLB.Name = "safetyRadioCLB";
@@ -2503,7 +2505,7 @@ namespace WaterskiScoringSystem.Tournament {
             "Yes",
             "No",
             "N/A"});
-            this.safetyPfdCLB.Location = new System.Drawing.Point(610, 669);
+            this.safetyPfdCLB.Location = new System.Drawing.Point(610, 684);
             this.safetyPfdCLB.Margin = new System.Windows.Forms.Padding(0);
             this.safetyPfdCLB.MultiColumn = true;
             this.safetyPfdCLB.Name = "safetyPfdCLB";
@@ -3175,6 +3177,16 @@ namespace WaterskiScoringSystem.Tournament {
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(4, 491);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(63, 16);
+            this.label4.TabIndex = 169;
+            this.label4.Text = "7. Towers";
+            // 
             // SafetyCheckList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -3382,5 +3394,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.Label TrickStatLabel;
         private System.Windows.Forms.Label JumpStatLabel;
         private System.Windows.Forms.Label TotalStatLabel;
+        private System.Windows.Forms.Label label4;
     }
 }

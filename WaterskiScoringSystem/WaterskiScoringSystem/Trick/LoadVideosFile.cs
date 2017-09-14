@@ -425,18 +425,23 @@ namespace WaterskiScoringSystem.Trick {
                             } else {
                                 if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
                                     if ( curResponseDataList.ContainsKey("embed_code") ) {
+                                        bool curResults = false;
                                         foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
                                             if ( curEntry.Key.Equals("embed_code") ) {
-                                                bool curResults = updateSkierScoreVideoUrl(curSkierVideoEntry, (String) curEntry.Value);
+                                                curResults = updateSkierScoreVideoUrl(curSkierVideoEntry, (String) curEntry.Value);
                                                 if ( curResults) {
                                                     curViewRow.Cells["SelectedLoadStatus"].Value = "Video load complete";
                                                 } else {
                                                     curViewRow.Cells["SelectedLoadStatus"].Value = "Error encountered attaching video URL to skier";
                                                 }
-                                            } else {
-                                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed, API response not recognized";
+                                                break;
                                             }
                                         }
+
+                                        if ( !curResults ) {
+                                            curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed, API response not recognized";
+                                        }
+
                                     } else if ( curResponseDataList.ContainsKey("Error") ) {
                                         curViewRow.Cells["SelectedLoadStatus"].Value = curResponseDataList["Error"].ToString();
                                     }
@@ -474,7 +479,7 @@ namespace WaterskiScoringSystem.Trick {
         private bool searchForMatchingSkier(SkierVideoEntry inSkierVideoEntry) {
             String curMethodName = "searchForMatchingSkier";
             String curNumValue = "";
-            Int16 curPass = 0, curRound = 0;
+            Int16 curPass = 1, curRound = 1;
             if (myTrickRounds == 1) curRound = myTrickRounds;
 
             int curDelimIdx = Path.GetFileName( inSkierVideoEntry.VideoFileName ).LastIndexOf( '.' );
@@ -487,99 +492,60 @@ namespace WaterskiScoringSystem.Trick {
                 /*
                  * Search list of all skiers to determine if the parsed file name can be matched to a skier
                  */
-                curFindSkiers = myFullSkierDataTable.Select(String.Format("SkierName like '%{0}%' AND SkierName like '%{0}%'", curFileNameNodes[0], curFileNameNodes[1]));
+                String curFilter = String.Format("SkierName like '%{0}%' AND SkierName like '%{1}%'", curFileNameNodes[0], curFileNameNodes[1]);
+                curFindSkiers = myFullSkierDataTable.Select(curFilter);
+                if ( curFindSkiers.Length == 0 ) {
+                    curFilter = String.Format("SkierName like '%{0}%' AND SkierName like '%{1}%'", curFileNameNodes[1], curFileNameNodes[2]);
+                    curFindSkiers = myFullSkierDataTable.Select(curFilter);
+                }
+                if ( curFindSkiers.Length == 0 ) {
+                    curFilter = String.Format("SkierName like '%{0}%' OR SkierName like '%{1}%' OR SkierName like '%{2}%'", curFileNameNodes[0], curFileNameNodes[1], curFileNameNodes[2]);
+                    curFindSkiers = myFullSkierDataTable.Select(curFilter);
+                }
 
-                /*
-                 * Parse file name in an attempt to identify the round and pass the video file represents
-                 */
-                int curIdx = 0;
-                foreach (String curEntry in curFileNameNodes) {
-                    if (curIdx > 1) {
-                        if (curEntry.Substring( 0, 1 ).ToLower().Equals( "p" )) {
-                            try {
-                                curNumValue = Regex.Match( curEntry, @"\d+" ).Value;
-                                if (curNumValue.Length > 0) {
-                                    curPass = Int16.Parse( curNumValue );
-                                } else {
-                                    curIdx++;
-                                    if (curIdx <= curFileNameNodes.Length) {
-                                        curNumValue = Regex.Match( curFileNameNodes[curIdx], @"\d+" ).Value;
-                                        if (curNumValue.Length > 0) {
-                                            curPass = Int16.Parse( curNumValue );
-                                            if (curPass > 2) {
-                                                curPass = 0;
-                                            }
-                                        } else {
-                                            curPass = 0;
-                                            curIdx--;
-                                        }
-                                    } else {
-                                        curPass = 0;
-                                        curIdx--;
-                                    }
+                //Find Round Number
+                foreach ( String curEntry in curFileNameNodes ) {
+                    if ( curEntry.ToLower().StartsWith("r")
+                        || curEntry.ToLower().StartsWith("rd")
+                        || curEntry.ToLower().StartsWith("round")
+                        ) {
+                        try {
+                            curNumValue = Regex.Match(curEntry, @"\d+").Value;
+                            if ( curNumValue.Length > 0 ) {
+                                Int16 tempRound = Int16.Parse(curNumValue);
+                                if ( tempRound > 0 &&  tempRound <= myTrickRounds ) {
+                                    curRound = tempRound;
                                 }
-                            } catch (Exception ex) {
-                                curPass = 0;
-                                MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
                             }
-                        } else {
-                            try {
-                                curNumValue = Regex.Match( curEntry, @"\d+" ).Value;
-                                if (curNumValue.Length > 0) {
-                                    curPass = Int16.Parse( curNumValue );
-                                } else {
-                                    curIdx++;
-                                    if (curIdx <= curFileNameNodes.Length) {
-                                        curNumValue = Regex.Match( curFileNameNodes[curIdx], @"\d+" ).Value;
-                                        if (curNumValue.Length > 0) {
-                                            curPass = Int16.Parse( curNumValue );
-                                            if (curPass > 2) {
-                                                curPass = 0;
-                                            }
-                                        } else {
-                                            curPass = 0;
-                                            curIdx--;
-                                        }
-                                    } else {
-                                        curPass = 0;
-                                        curIdx--;
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                curPass = 0;
-                                MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
-                            }
-                        }
-                        if (curEntry.Substring( 0, 1 ).ToLower().Equals( "r" )) {
-                            try {
-                                curNumValue = Regex.Match( curEntry, @"\d+" ).Value;
-                                if (curNumValue.Length > 0) {
-                                    curRound = Int16.Parse( curNumValue );
-                                } else {
-                                    curIdx++;
-                                    if (curIdx <= curFileNameNodes.Length) {
-                                        curNumValue = Regex.Match( curFileNameNodes[curIdx], @"\d+" ).Value;
-                                        if (curNumValue.Length > 0) {
-                                            curRound = Int16.Parse( curNumValue );
-                                        } else {
-                                            curRound = 0;
-                                            curIdx--;
-                                        }
-                                    } else {
-                                        curRound = 0;
-                                        curIdx--;
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                curRound = 0;
-                                MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
-                            }
+                        } catch ( Exception ex ) {
+                            MessageBox.Show(curMethodName + ":Error encountered\n\nError: " + ex.Message);
                         }
                     }
-                    curIdx++;
+                }
+
+                //Find Pass Number
+                foreach ( String curEntry in curFileNameNodes ) {
+                    if ( curEntry.ToLower().Equals("p1")
+                        || curEntry.ToLower().Equals("p2")
+                        || curEntry.ToLower().Equals("pass1")
+                        || curEntry.ToLower().Equals("pass2")
+                        ) {
+                        try {
+                            curNumValue = Regex.Match(curEntry, @"\d+").Value;
+                            if ( curNumValue.Length > 0 ) {
+                                curPass = Int16.Parse(curNumValue);
+                                if ( curPass < 1 || curPass > 2 ) {
+                                    curPass = 1;
+                                }
+                            }
+                        } catch ( Exception ex ) {
+                            MessageBox.Show(curMethodName + ":Error encountered\n\nError: " + ex.Message);
+                        }
+                    }
                 }
             }
 
+            if ( curRound == 0 ) curRound = 1;
             if ( curFindSkiers != null && curFindSkiers.Length == 1 && curRound > 0 && curPass > 0 ) {
                 //Use record found by filtered search
                 inSkierVideoEntry.MemberId = (String) curFindSkiers[0]["MemberId"];

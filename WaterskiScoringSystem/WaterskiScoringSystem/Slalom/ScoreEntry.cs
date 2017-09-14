@@ -4897,8 +4897,10 @@ namespace WaterskiScoringSystem.Slalom {
 
         private DataTable getMinSpeedData( String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            
-            if ( ((String)myTourRow["Name"]).Contains("Alumni") ) {
+
+            // Disabling the Alumni functionality at this time 8/8/17.  
+            // Do not want it used inadvertently
+            if ( ((String)myTourRow["Name"]).Contains("##Alumni##") ) {
                 curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
                 curSqlStmt.Append(" FROM CodeValueList");
                 curSqlStmt.Append(" WHERE ListName = 'AlumniMinSlalom' AND ListCode = '" + inAgeGroup + "'");

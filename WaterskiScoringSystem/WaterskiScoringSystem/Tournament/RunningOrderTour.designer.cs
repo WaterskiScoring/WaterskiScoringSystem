@@ -168,7 +168,6 @@ namespace WaterskiScoringSystem.Tournament {
             dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.EventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle10;
-            this.EventRegDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.EventRegDataGridView.Location = new System.Drawing.Point(5, 115);
             this.EventRegDataGridView.MultiSelect = false;
             this.EventRegDataGridView.Name = "EventRegDataGridView";

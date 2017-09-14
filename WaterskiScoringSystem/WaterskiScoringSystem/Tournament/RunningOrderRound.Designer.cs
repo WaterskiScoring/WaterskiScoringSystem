@@ -109,7 +109,7 @@
             // 
             this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
             this.navSave.Name = "navSave";
-            this.navSave.Size = new System.Drawing.Size(35, 33);
+            this.navSave.Size = new System.Drawing.Size(35, 35);
             this.navSave.Text = "Save";
             this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navSave.Click += new System.EventHandler(this.navSave_Click);
@@ -134,7 +134,7 @@
             this.navExportRunorder.Image = ((System.Drawing.Image)(resources.GetObject("navExportRunorder.Image")));
             this.navExportRunorder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navExportRunorder.Name = "navExportRunorder";
-            this.navExportRunorder.Size = new System.Drawing.Size(61, 33);
+            this.navExportRunorder.Size = new System.Drawing.Size(65, 35);
             this.navExportRunorder.Text = "Run Order";
             this.navExportRunorder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExportRunorder.ToolTipText = "Export visible data to a tab delimited text file";
@@ -145,7 +145,7 @@
             this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
             this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navRefresh.Name = "navRefresh";
-            this.navRefresh.Size = new System.Drawing.Size(49, 33);
+            this.navRefresh.Size = new System.Drawing.Size(50, 35);
             this.navRefresh.Text = "Refresh";
             this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
@@ -155,7 +155,7 @@
             this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
             this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navExport.Name = "navExport";
-            this.navExport.Size = new System.Drawing.Size(43, 33);
+            this.navExport.Size = new System.Drawing.Size(44, 35);
             this.navExport.Text = "Export";
             this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -172,7 +172,7 @@
             this.navExportRunorder});
             this.TopNavMenu.Location = new System.Drawing.Point(0, 0);
             this.TopNavMenu.Name = "TopNavMenu";
-            this.TopNavMenu.Size = new System.Drawing.Size(441, 36);
+            this.TopNavMenu.Size = new System.Drawing.Size(441, 38);
             this.TopNavMenu.TabIndex = 13;
             this.TopNavMenu.Text = "toolStrip1";
             this.TopNavMenu.Click += new System.EventHandler(this.navRefresh_Click);
@@ -182,7 +182,7 @@
             this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
             this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navPrint.Name = "navPrint";
-            this.navPrint.Size = new System.Drawing.Size(33, 33);
+            this.navPrint.Size = new System.Drawing.Size(36, 35);
             this.navPrint.Text = "Print";
             this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navPrint.Click += new System.EventHandler(this.navPrint_Click);
@@ -192,7 +192,7 @@
             this.navPrintFormButton.Image = ((System.Drawing.Image)(resources.GetObject("navPrintFormButton.Image")));
             this.navPrintFormButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navPrintFormButton.Name = "navPrintFormButton";
-            this.navPrintFormButton.Size = new System.Drawing.Size(65, 33);
+            this.navPrintFormButton.Size = new System.Drawing.Size(72, 35);
             this.navPrintFormButton.Text = "Print Forms";
             this.navPrintFormButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.navPrintFormButton.ToolTipText = "Export visible data to a tab delimited text file";
@@ -471,7 +471,6 @@
             dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.EventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle22;
-            this.EventRegDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.EventRegDataGridView.Location = new System.Drawing.Point(5, 107);
             this.EventRegDataGridView.Name = "EventRegDataGridView";
             dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;

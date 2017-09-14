@@ -5248,6 +5248,7 @@ namespace WaterskiScoringSystem.Common {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
+            curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom");
             curSqlStmt.Append( ", SS.Round, SS.Score, SS.NopsScore, SS.Rating, MaxSpeed, StartSpeed, StartLen, Status" );
             curSqlStmt.Append(", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore");
             curSqlStmt.Append(", COALESCE(CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(CompletedSpeedKph, 0) as CompletedSpeedKph ");
@@ -5397,6 +5398,7 @@ namespace WaterskiScoringSystem.Common {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
+            curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtTrick");
             curSqlStmt.Append( ", SS.Round, SS.Rating, '' as BoatCode, SS.Score, SS.NopsScore, SS.ScorePass1, SS.ScorePass2 " );
             curSqlStmt.Append( "FROM TrickScore AS SS " );
             curSqlStmt.Append( "  INNER JOIN TourReg as TR ON SS.SanctionId = TR.SanctionId AND SS.MemberId = TR.MemberId AND SS.AgeGroup = TR.AgeGroup " );
@@ -5544,6 +5546,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, SS.BoatSpeed, SS.RampHeight" );
             curSqlStmt.Append( ", ER.AgeGroup,  ER.EventGroup, SS.Round, SS.ScoreFeet, SS.ScoreMeters, SS.NopsScore, SS.Rating" );
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
+            curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtJump");
             curSqlStmt.Append( ", ER.TeamCode, ER.EventClass, '' as BoatCode " );
             curSqlStmt.Append( "FROM JumpScore AS SS " );
             curSqlStmt.Append( "  INNER JOIN TourReg as TR ON  SS.SanctionId = TR.SanctionId AND SS.MemberId = TR.MemberId AND SS.AgeGroup = TR.AgeGroup " );
@@ -5694,6 +5697,9 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( ", RS.EventGroup AS SlalomGroup, RT.EventGroup AS TrickGroup, RJ.EventGroup AS JumpGroup" );
                 curSqlStmt.Append( ", RS.EventClass AS SlalomClass, RT.EventClass AS TrickClass, RJ.EventClass AS JumpClass" );
                 curSqlStmt.Append( ", T.AgeGroup as AgeGroup, RS.AgeGroup AS SlalomAgeGroup, RT.AgeGroup AS TrickAgeGroup, RJ.AgeGroup AS JumpAgeGroup " );
+                curSqlStmt.Append( ", COALESCE(RS.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom" );
+                curSqlStmt.Append( ", COALESCE(RT.ReadyForPlcmt, 'N') as ReadyForPlcmtTrick") ;
+                curSqlStmt.Append( ", COALESCE(RJ.ReadyForPlcmt, 'N') as ReadyForPlcmtJump " );
                 curSqlStmt.Append( "FROM TourReg AS T " );
                 curSqlStmt.Append( "  LEFT OUTER JOIN EventReg AS RS ON T.SanctionId = RS.SanctionId AND T.MemberId = RS.MemberId AND T.AgeGroup = RS.AgeGroup AND RS.Event = 'Slalom'" );
                 curSqlStmt.Append( "  LEFT OUTER JOIN EventReg AS RT ON T.SanctionId = RT.SanctionId AND T.MemberId = RT.MemberId AND T.AgeGroup = RT.AgeGroup AND RT.Event = 'Trick'" );
