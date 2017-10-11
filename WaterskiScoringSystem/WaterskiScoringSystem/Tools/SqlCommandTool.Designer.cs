@@ -54,7 +54,7 @@
             this.SqlcommandTextBox.Multiline = true;
             this.SqlcommandTextBox.Name = "SqlcommandTextBox";
             this.SqlcommandTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.SqlcommandTextBox.Size = new System.Drawing.Size(476, 80);
+            this.SqlcommandTextBox.Size = new System.Drawing.Size(476, 76);
             this.SqlcommandTextBox.TabIndex = 1;
             // 
             // MessageLabel
@@ -63,9 +63,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MessageLabel.AutoSize = true;
             this.MessageLabel.BackColor = System.Drawing.SystemColors.Info;
+            this.MessageLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MessageLabel.Location = new System.Drawing.Point(5, 95);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(0, 13);
+            this.MessageLabel.Size = new System.Drawing.Size(2, 15);
             this.MessageLabel.TabIndex = 4;
             // 
             // ExecButton

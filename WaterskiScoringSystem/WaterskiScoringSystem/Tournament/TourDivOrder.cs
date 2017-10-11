@@ -111,7 +111,11 @@ namespace WaterskiScoringSystem.Tournament {
                 checkModifyPrompt();
                 if ( isDataModified ) {
                     e.Cancel = true;
+                } else {
+                    e.Cancel = false;
                 }
+            } else {
+                e.Cancel = false;
             }
         }
 

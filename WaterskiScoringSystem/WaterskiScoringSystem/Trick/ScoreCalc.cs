@@ -272,6 +272,8 @@ namespace WaterskiScoringSystem.Trick {
             if (isDataModified) {
                 CalcScoreButton_Click (null, null);
             }
+
+            e.Cancel = false;
         }
 
         private void DataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
@@ -1494,9 +1496,12 @@ namespace WaterskiScoringSystem.Trick {
                 MessageBox.Show( "Data has been modified.  Request cannot be completed." );
             } else {
                 String curFilterCmd = myFilterCmd;
-                if (curFilterCmd.Contains( "Div =" )) {
-                    curFilterCmd = curFilterCmd.Replace( "Div =", "AgeGroup =" );
+                if ( curFilterCmd.Contains("Div =") ) {
+                    curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
+                } else if ( curFilterCmd.Contains("AgeGroup =") ) {
+                    curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
                 }
+
                 ExportData myExportData = new ExportData();
                 String[] curSelectCommand = new String[8];
                 String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "TrickScore", "TrickPass", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
@@ -1508,7 +1513,7 @@ namespace WaterskiScoringSystem.Trick {
                     curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
                 }
 
-                curSelectCommand[1] = "Select * from EventReg ";
+                curSelectCommand[1] = "Select * from EventReg XT ";
                 if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[1] = curSelectCommand[1]
                         + " Where SanctionId = '" + mySanctionNum + "'"
@@ -1526,7 +1531,7 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                curSelectCommand[2] = "Select * from EventRunOrder ";
+                curSelectCommand[2] = "Select * from EventRunOrder XT ";
                 if ( isObjectEmpty(curFilterCmd) ) {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"

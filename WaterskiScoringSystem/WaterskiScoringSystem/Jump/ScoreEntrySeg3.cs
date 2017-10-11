@@ -1248,11 +1248,19 @@ namespace WaterskiScoringSystem.Jump {
 
                 }
 
-                if ( checkRoundContinue() ) {
+                if ( jumpRecapDataGridView.Rows.Count > 0 ) {
+                    if ( checkRoundContinue() ) {
+                        isAddRecapRowInProg = true;
+                        Timer curTimerObj = new Timer();
+                        curTimerObj.Interval = 15;
+                        curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+                        curTimerObj.Start();
+                    }
+                } else {
                     isAddRecapRowInProg = true;
                     Timer curTimerObj = new Timer();
                     curTimerObj.Interval = 15;
-                    curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+                    curTimerObj.Tick += new EventHandler(addRecapRowTimer);
                     curTimerObj.Start();
                 }
             }
@@ -1299,8 +1307,10 @@ namespace WaterskiScoringSystem.Jump {
             String[] curSelectCommand = new String[8];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "JumpScore", "JumpRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
             String curFilterCmd = myFilterCmd;
-            if (curFilterCmd.Contains( "Div =" )) {
-                curFilterCmd = curFilterCmd.Replace( "Div =", "AgeGroup =" );
+            if ( curFilterCmd.Contains("Div =") ) {
+                curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
+            } else if ( curFilterCmd.Contains("AgeGroup =") ) {
+                curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
             }
 
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
@@ -1310,7 +1320,7 @@ namespace WaterskiScoringSystem.Jump {
                 curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
 
-            curSelectCommand[1] = "Select * from EventReg ";
+            curSelectCommand[1] = "Select * from EventReg XT ";
             if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[1] = curSelectCommand[1]
                     + " Where SanctionId = '" + mySanctionNum + "'"
@@ -1328,7 +1338,7 @@ namespace WaterskiScoringSystem.Jump {
                 }
             }
 
-            curSelectCommand[2] = "Select * from EventRunOrder ";
+            curSelectCommand[2] = "Select * from EventRunOrder XT ";
             if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[2] = curSelectCommand[2]
                     + " Where SanctionId = '" + mySanctionNum + "'"
@@ -3186,12 +3196,16 @@ namespace WaterskiScoringSystem.Jump {
             String curSkierStatus = "";
             DataGridView curView = jumpRecapDataGridView;
 
-            if ( isObjectEmpty( scoreFeetTextBox.Text )
+            //if ( curRow.Cells["ResultsRecap"].Value.Equals( "Pass" ) ) {
+
+            if ( ( myRecapRow.Cells["ResultsRecap"].Value.Equals("Jump") || myRecapRow.Cells["ResultsRecap"].Value.Equals("fall") )
+                && (
+                isObjectEmpty( scoreFeetTextBox.Text )
                 || isObjectEmpty( scoreMetersTextBox.Text )
                 || isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value)
                 || isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value)
                 || isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value)
-                ) {
+                ) ) {
                 curReturnValue = false;
             
             } else {
