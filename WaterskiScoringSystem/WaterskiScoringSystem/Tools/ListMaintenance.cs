@@ -47,6 +47,7 @@ namespace WaterskiScoringSystem.Tools {
                     MessageBox.Show("Error attempting to save changes \n" + excp.Message);
                 }
             }
+            e.Cancel = false;
         }
 
         private void ListMaintenance_FormClosed(object sender, FormClosedEventArgs e) {

@@ -544,12 +544,8 @@ namespace WaterskiScoringSystem.Tools {
             curExcelRow++;
             curExcelRow++;
             setCellValue( curExcelRow, "A", "1. Ski: " );
-            setCellValue( curExcelRow, "C", "Width:" );
-            setColumnBorders( new object[2] { "D" + curExcelRow.ToString(), "D" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "F", "Length:" );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "I", "Ratio:" );
-            setCellValue( curExcelRow, "J", "=D" + curExcelRow.ToString() + " / G" + curExcelRow.ToString() );
+            curExcelRow++;
+            setCellValue(curExcelRow, "B", "Do the skis meet the requirements of AWSA Rule 8.3 ?");
             setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
             curExcelRow++;
             curExcelRow++;

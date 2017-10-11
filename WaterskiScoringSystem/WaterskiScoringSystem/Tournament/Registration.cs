@@ -299,10 +299,13 @@ namespace WaterskiScoringSystem.Tournament {
             if ( isDataModified ) {
                 try {
                     navSave_Click(null, null);
+                    e.Cancel = false;
                 } catch ( Exception excp ) {
                     e.Cancel = true;
                     MessageBox.Show("Error attempting to save changes \n" + excp.Message);
                 }
+            } else {
+                e.Cancel = false;
             }
         }
 

@@ -133,8 +133,10 @@ namespace WaterskiScoringSystem.Admin {
                     } else if ( msgResp == DialogResult.No ) {
                         e.Cancel = false;
                     } else {
-                        e.Cancel = true;
+                        e.Cancel = false;
                     }
+                } else {
+                    e.Cancel = false;
                 }
             } catch ( Exception excp ) {
                 String dialogMsg = "Error attempting to save changes "
@@ -150,7 +152,7 @@ namespace WaterskiScoringSystem.Admin {
                 } else if ( msgResp == DialogResult.No ) {
                     e.Cancel = false;
                 } else {
-                    e.Cancel = true;
+                    e.Cancel = false;
                 }
             }
         }

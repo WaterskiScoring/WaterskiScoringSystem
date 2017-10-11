@@ -296,13 +296,9 @@ namespace WaterskiScoringSystem.Tools {
                         MessageBoxIcon.Warning,
                         MessageBoxDefaultButton.Button1);
                 if (msgResp == DialogResult.Yes) {
-                    try {
-                    } catch (Exception excp) {
-                        e.Cancel = true;
-                        MessageBox.Show("Error attempting to save changes \n" + excp.Message);
-                    }
-                } else if (msgResp == DialogResult.No) {
                     e.Cancel = true;
+                } else if (msgResp == DialogResult.No) {
+                    e.Cancel = false;
                 } else {
                     e.Cancel = false;
                 }

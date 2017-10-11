@@ -433,6 +433,7 @@ namespace WaterskiScoringSystem.Jump {
             if (isDataModified) {
                 saveScore();
             }
+            e.Cancel = false;
         }
 
         private void DataGridView_DataError( object sender, DataGridViewDataErrorEventArgs e ) {
@@ -1247,11 +1248,19 @@ namespace WaterskiScoringSystem.Jump {
 
                 }
 
-                if ( checkRoundContinue() ) {
+                if ( jumpRecapDataGridView.Rows.Count > 0 ) {
+                    if ( checkRoundContinue() ) {
+                        isAddRecapRowInProg = true;
+                        Timer curTimerObj = new Timer();
+                        curTimerObj.Interval = 15;
+                        curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+                        curTimerObj.Start();
+                    }
+                } else {
                     isAddRecapRowInProg = true;
                     Timer curTimerObj = new Timer();
                     curTimerObj.Interval = 15;
-                    curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+                    curTimerObj.Tick += new EventHandler(addRecapRowTimer);
                     curTimerObj.Start();
                 }
             }
@@ -1298,8 +1307,10 @@ namespace WaterskiScoringSystem.Jump {
             String[] curSelectCommand = new String[8];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "JumpScore", "JumpRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
             String curFilterCmd = myFilterCmd;
-            if (curFilterCmd.Contains( "Div =" )) {
-                curFilterCmd = curFilterCmd.Replace( "Div =", "AgeGroup =" );
+            if ( curFilterCmd.Contains("Div =") ) {
+                curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
+            } else if ( curFilterCmd.Contains("AgeGroup =") ) {
+                curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
             }
 
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
@@ -1309,7 +1320,7 @@ namespace WaterskiScoringSystem.Jump {
                 curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
 
-            curSelectCommand[1] = "Select * from EventReg ";
+            curSelectCommand[1] = "Select * from EventReg XT ";
             if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[1] = curSelectCommand[1]
                     + " Where SanctionId = '" + mySanctionNum + "'"
@@ -1327,7 +1338,7 @@ namespace WaterskiScoringSystem.Jump {
                 }
             }
 
-            curSelectCommand[2] = "Select * from EventRunOrder ";
+            curSelectCommand[2] = "Select * from EventRunOrder XT ";
             if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[2] = curSelectCommand[2]
                     + " Where SanctionId = '" + mySanctionNum + "'"
@@ -2784,6 +2795,7 @@ namespace WaterskiScoringSystem.Jump {
                     }
                     #endregion
                 }
+            
             } else {
                 String curColName = curView.Columns[e.ColumnIndex].Name;
                 if (curColName.StartsWith("Meter")) {
@@ -2828,106 +2840,64 @@ namespace WaterskiScoringSystem.Jump {
                         MessageBox.Show( "Meter value must be numeric" );
                     }
                     #endregion
+                
                 } else if ( curColName.Equals("BoatSplitTimeRecap") ) {
-                    #region Validate BoatSplitTime (52M segment)
-                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
+                    // Validate BoatSplitTime (52M segment) if entered
+                    if ( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) {
+                        myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+                        return;
+                    } else {
                         skierPassMsg.Text = "";
                         SplitTimeFormat();
-                        if ( (String)myRecapRow.Cells["BoatSplitTimeRecap"].Value != myOrigCellValue ) {
-                            myOrigCellValue = (String)myRecapRow.Cells["BoatSplitTimeRecap"].Value;
-                            isDataModified = true;
-                            myRecapRow.Cells["Updated"].Value = "Y";
-                            if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) ) ) {
-                                if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" ) ) {
-                                    TimeValidate();
-                                    if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                        checkRoundCalcSkierScore();
-                                    }
-                                } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" ) ) {
-                                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) ) ) {
-                                        TimeValidate();
-                                        if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                            checkRoundCalcSkierScore();
-                                        }
-                                    }
-                                } else {
-                                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) ) ) {
-                                        TimeValidate();
-                                    }
-                                }
-                            }
+                        if ( (String) myRecapRow.Cells["BoatSplitTimeRecap"].Value != myOrigCellValue ) {
+                            myOrigCellValue = (String) myRecapRow.Cells["BoatSplitTimeRecap"].Value;
+
+                            /*
+                            * If all 3 times have been entered then they will be validated
+                            * Also if scores available determine if score for round should be updated.
+                            */
+                            checkNeedTimeValidate();
                         }
                     }
-                    #endregion
+
                 } else if ( curColName.Equals( "BoatSplitTime2Recap" ) ) {
-                    #region Validate BoatSplitTime2 (82M segment after year 11, 30M segment previously)
-                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) ) ) {
+                    // Validate BoatSplitTime2 (82M segment) if entered
+                    if ( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) ) {
+                        myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+                        return;
+                    } else {
+                        skierPassMsg.Text = "";
                         Split2TimeFormat();
-                        if ( (String)myRecapRow.Cells["BoatSplitTime2Recap"].Value != myOrigCellValue ) {
-                            myOrigCellValue = (String)myRecapRow.Cells["BoatSplitTime2Recap"].Value;
-                            isDataModified = true;
-                            myRecapRow.Cells["Updated"].Value = "Y";
-                            if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
-                                if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" ) ) {
-                                    TimeValidate();
-                                    if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                        checkRoundCalcSkierScore();
-                                    }
-                                } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" ) ) {
-                                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) ) ) {
-                                        TimeValidate();
-                                        if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                            checkRoundCalcSkierScore();
-                                        }
-                                    }
-                                } else {
-                                    if ( !( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) ) ) {
-                                        TimeValidate();
-                                        if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                            checkRoundCalcSkierScore();
-                                        }
-                                    }
-                                }
-                            }
+                        if ( (String) myRecapRow.Cells["BoatSplitTime2Recap"].Value != myOrigCellValue ) {
+                            myOrigCellValue = (String) myRecapRow.Cells["BoatSplitTime2Recap"].Value;
+
+                            /*
+                            * If all 3 times have been entered then they will be validated
+                            * Also if scores available determine if score for round should be updated.
+                            */
+                            checkNeedTimeValidate();
                         }
                     }
-                    #endregion
+
                 } else if ( curColName.Equals( "BoatEndTimeRecap" ) ) {
-                    #region Validate BoatEndTime (41M segment)
-                    if ( !( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) ) {
+                    // Validate BoatEndTime (41M segment) if entered
+                    if ( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) {
+                        myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+                        return;
+                    } else {
+                        skierPassMsg.Text = "";
                         EndTimeFormat();
-                        if ( (String)myRecapRow.Cells["BoatEndTimeRecap"].Value != myOrigCellValue ) {
-                            myOrigCellValue = (String)myRecapRow.Cells["BoatEndTimeRecap"].Value;
-                            isDataModified = true;
-                            myRecapRow.Cells["Updated"].Value = "Y";
-                            if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
-                                TimeValidate();
-                                if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" ) ) {
-                                    checkRoundCalcSkierScore();
-                                }
-                            }
-                        }
-                        if ( myNumJudges > 0 ) {
-                            if ( isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) ) {
-                                if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                    if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" )) {
-                                        if ( !( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) ) ) {
-                                            checkRoundCalcSkierScore();
-                                        }
-                                    } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" )) {
-                                        if ( !( isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
-                                            checkRoundCalcSkierScore();
-                                        }
-                                    }
-                                }
-                            } else {
-                                if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-                                    checkRoundCalcSkierScore();
-                                }
-                            }
+                        if ( (String) myRecapRow.Cells["BoatEndTimeRecap"].Value != myOrigCellValue ) {
+                            myOrigCellValue = (String) myRecapRow.Cells["BoatEndTimeRecap"].Value;
+
+                            /*
+                            * If all 3 times have been entered then they will be validated
+                            * Also if scores available determine if score for round should be updated.
+                            */
+                            checkNeedTimeValidate();
                         }
                     }
-                    #endregion
+
                 } else if ( curColName.Equals( "ScoreFeetRecap" ) ) {
                     #region Validate ScoreFeet attribute
                     if ( myNumJudges == 0 ) {
@@ -2936,7 +2906,11 @@ namespace WaterskiScoringSystem.Jump {
                                 myOrigCellValue = (String)myRecapRow.Cells["ScoreFeetRecap"].Value;
                                 isDataModified = true;
                                 myRecapRow.Cells["Updated"].Value = "Y";
-                                if ( !( isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) ) ) {
+                                if ( !( isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) )
+                                    && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) )
+                                    && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) )
+                                    && !( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) )
+                                    ) {
                                     if ( (Decimal)myClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) {
                                         TimeValidate();
                                     }
@@ -2946,6 +2920,7 @@ namespace WaterskiScoringSystem.Jump {
                         }
                     }
                     #endregion
+
                 } else if ( curColName.Equals( "ScoreMetersRecap" ) ) {
                     #region Validate ScoreMeters attribute
                     if (myNumJudges == 0) {
@@ -2958,6 +2933,7 @@ namespace WaterskiScoringSystem.Jump {
                                         checkRoundCalcSkierScore();
                                     }
                                 }
+                            
                             } else {
                                 myOrigCellValue = (String)myRecapRow.Cells["ScoreMetersRecap"].Value;
                                 isRecapRowEnterHandled = true;
@@ -2969,6 +2945,7 @@ namespace WaterskiScoringSystem.Jump {
                                     checkRoundCalcSkierScore();
                                 }
                             }
+                        
                         } else {
                             Decimal curScore = Convert.ToDecimal( (String)myRecapRow.Cells[e.ColumnIndex].Value );
                             if ( myModCellValue.Length > 0 ) {
@@ -2979,10 +2956,15 @@ namespace WaterskiScoringSystem.Jump {
                                 if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
                                     if ( !( isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
                                         if ( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreFeetRecap"].Value ) > 0
-                                            && Convert.ToDecimal( (String)myRecapRow.Cells["ScoreMetersRecap"].Value ) > 0 ) {
+                                            && Convert.ToDecimal( (String)myRecapRow.Cells["ScoreMetersRecap"].Value ) > 0
+                                            && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) )
+                                            && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) )
+                                            && !( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) )
+                                            ) {
                                             checkRoundCalcSkierScore();
                                         }
                                     }
+                                
                                 } else {
                                     if (checkRoundContinue()) {
                                         isAddRecapRowInProg = true;
@@ -2992,6 +2974,7 @@ namespace WaterskiScoringSystem.Jump {
                                         curTimerObj.Start();
                                     }
                                 }
+                            
                             } else {
                                 myOrigCellValue = (String)myRecapRow.Cells["ScoreMetersRecap"].Value;
                                 isRecapRowEnterHandled = true;
@@ -2999,7 +2982,12 @@ namespace WaterskiScoringSystem.Jump {
                                 myRecapRow.Cells["Updated"].Value = "Y";
                                 if ( !( isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
                                     if ( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreFeetRecap"].Value ) > 0
-                                        && Convert.ToDecimal( (String)myRecapRow.Cells["ScoreMetersRecap"].Value ) > 0 ) {
+                                        && Convert.ToDecimal( (String)myRecapRow.Cells["ScoreMetersRecap"].Value ) > 0 
+                                        && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) )
+                                        && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) )
+                                        && !( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) )
+                                        ) {
+
                                         if ( (Decimal)myClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) {
                                             TimeValidate();
                                         }
@@ -3010,6 +2998,7 @@ namespace WaterskiScoringSystem.Jump {
                         }
                     }
                     #endregion
+
                 } else if ( curColName.Equals( "RerideRecap" ) ) {
                     #region Validate reride attribute
                     if ( (String)myRecapRow.Cells["RerideRecap"].Value != myOrigCellValue ) {
@@ -3031,6 +3020,7 @@ namespace WaterskiScoringSystem.Jump {
                                     myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
                                 }
                                 checkRoundCalcSkierScore("Y");
+                            
                             } else {
                                 isDataModified = true;
                                 myRecapRow.Cells["Updated"].Value = "Y";
@@ -3039,6 +3029,7 @@ namespace WaterskiScoringSystem.Jump {
                                 myRecapRow.Cells["RerideRecap"].Value = "N";
                                 checkRoundCalcSkierScore();
                             }
+                        
                         } else {
                             isDataModified = true;
                             myRecapRow.Cells["Updated"].Value = "Y";
@@ -3046,6 +3037,7 @@ namespace WaterskiScoringSystem.Jump {
                         }
                     }
                     #endregion
+                
                 } else if ( curColName.Equals( "ResultsRecap" ) ) {
                     #region Validate Results attribute
                     if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Jump" )
@@ -3127,6 +3119,51 @@ namespace WaterskiScoringSystem.Jump {
             }
         }
 
+        /*
+         * Method used when a time entry attribute for a pass has been modified
+         * Check all 3 time attributes and validate the times if all have been entered
+        */
+        private void checkNeedTimeValidate() {
+            isDataModified = true;
+            myRecapRow.Cells["Updated"].Value = "Y";
+
+            // BoatSplitTime (52M segment)
+                if ( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) ) return;
+
+            // BoatSplitTime2 (82M segment)
+            if ( isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) ) return;
+
+            if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals("Pass") ) {
+                // Validate times
+                TimeValidate();
+
+                // Check to determine if score for round should be update
+                checkRoundCalcSkierScore();
+
+            } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals("Fall") ) {
+                // BoatEndTime (41M segment)
+                if ( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
+
+                // Validate times
+                TimeValidate();
+
+                // Check to determine if score for round should be update
+                checkRoundCalcSkierScore();
+
+            } else {
+                if ( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
+
+                // Validate times
+                TimeValidate();
+
+                // If feet and meters have been entered then check to determine if score for round should be update
+                if ( isObjectEmpty(myRecapRow.Cells["ScoreFeetRecap"].Value) ) return;
+                if ( isObjectEmpty(myRecapRow.Cells["ScoreMetersRecap"].Value) ) return;
+                checkRoundCalcSkierScore();
+
+            }
+        }
+
         private void checkRoundCalcSkierScore() {
             checkRoundCalcSkierScore("");
         }
@@ -3159,9 +3196,18 @@ namespace WaterskiScoringSystem.Jump {
             String curSkierStatus = "";
             DataGridView curView = jumpRecapDataGridView;
 
-            if ( isObjectEmpty( scoreFeetTextBox.Text )
-                || isObjectEmpty( scoreMetersTextBox.Text ) ) {
-                curReturnValue = true;
+            //if ( curRow.Cells["ResultsRecap"].Value.Equals( "Pass" ) ) {
+
+            if ( ( myRecapRow.Cells["ResultsRecap"].Value.Equals("Jump") || myRecapRow.Cells["ResultsRecap"].Value.Equals("fall") )
+                && (
+                isObjectEmpty( scoreFeetTextBox.Text )
+                || isObjectEmpty( scoreMetersTextBox.Text )
+                || isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value)
+                || isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value)
+                || isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value)
+                ) ) {
+                curReturnValue = false;
+            
             } else {
                 Decimal skierScoreFeet = Convert.ToDecimal( scoreFeetTextBox.Text );
                 Decimal skierScoreMeters = Convert.ToDecimal( scoreMetersTextBox.Text );
@@ -3187,6 +3233,7 @@ namespace WaterskiScoringSystem.Jump {
                                 curAcptPassCount++;
                                 MessageBox.Show( "Reride request must have a reason when times are in tolerance" );
                             }
+                        
                         } else {
                             if ( curRow.Cells["ResultsRecap"].Value.ToString().Equals( "Jump" ) ) {
                                 if (curRow.Cells["ScoreProtRecap"].Value.ToString().Equals( "Y" )) {
@@ -3199,6 +3246,7 @@ namespace WaterskiScoringSystem.Jump {
                                             curRow.Cells["ScoreProtRecap"].Value = "N";
                                         }
                                     }
+                                
                                 } else {
                                     if (curRow.Cells["ScoreFeetRecap"].Value.ToString().Length > 0
                                         && curRow.Cells["ScoreMetersRecap"].Value.ToString().Length > 0
@@ -3212,6 +3260,7 @@ namespace WaterskiScoringSystem.Jump {
                                             if (skierScoreMeters > scoreMeters) {
                                                 curAcptPassCount++;
                                             }
+                                        
                                         } else {
                                             try {
                                                 scoreFeet = Convert.ToDecimal( curRow.Cells["ScoreFeetRecap"].Value.ToString() );
@@ -3226,6 +3275,7 @@ namespace WaterskiScoringSystem.Jump {
                                 }
                             }
                         }
+                    
                     } else {
                         curAcptPassCount++;
                     }
@@ -3235,6 +3285,7 @@ namespace WaterskiScoringSystem.Jump {
                     if ( jumpRecapDataGridView.Rows.Count == 0 ) {
                         curSkierStatus = "1-TBD";
                         curReturnValue = true;
+                    
                     } else {
                         curSkierStatus = "2-InProg";
                         DataGridViewRow curRow = jumpRecapDataGridView.Rows[jumpRecapDataGridView.Rows.Count - 1];
@@ -3244,6 +3295,7 @@ namespace WaterskiScoringSystem.Jump {
                             && !( isObjectEmpty( curRow.Cells["BoatEndTimeRecap"].Value ) )
                             ) {
                             curReturnValue = true;
+                        
                         } else {
                             if ( curRow.Cells["ResultsRecap"].Value.Equals( "Fall" ) ) {
                                 if ( !( isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) )
@@ -3262,6 +3314,7 @@ namespace WaterskiScoringSystem.Jump {
                             }
                         }
                     }
+                
                 } else {
                     if ( curGoodPassCount < 3 ) {
                         curSkierStatus = "2-InProg";

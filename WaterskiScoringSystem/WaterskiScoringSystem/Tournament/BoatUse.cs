@@ -88,8 +88,10 @@ namespace WaterskiScoringSystem.Tournament {
                 } else if (msgResp == DialogResult.No) {
                     e.Cancel = true;
                 } else {
-                    e.Cancel = true;
+                    e.Cancel = false;
                 }
+            } else {
+                e.Cancel = false;
             }
         }
 

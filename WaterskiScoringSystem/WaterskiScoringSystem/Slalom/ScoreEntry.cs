@@ -432,9 +432,11 @@ namespace WaterskiScoringSystem.Slalom {
             if ( isDataModified ) {
                 saveScore();
             }
+
+            e.Cancel = false;
         }
 
-        private void DataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
+    private void DataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             MessageBox.Show("Error happened " + e.Context.ToString() + "\n Exception Message: " + e.Exception.Message);
             if ((e.Exception) is ConstraintException) {
                 DataGridView view = (DataGridView)sender;
@@ -2644,8 +2646,10 @@ namespace WaterskiScoringSystem.Slalom {
             String[] curSelectCommand = new String[8];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "SlalomScore", "SlalomRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
             String curFilterCmd = myFilterCmd;
-            if (curFilterCmd.Contains( "Div =" )) {
-                curFilterCmd = curFilterCmd.Replace( "Div =", "AgeGroup =" );
+            if ( curFilterCmd.Contains("Div =") ) {
+                curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
+            } else if ( curFilterCmd.Contains("AgeGroup =") ) {
+                curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
             }
 
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
@@ -2655,39 +2659,39 @@ namespace WaterskiScoringSystem.Slalom {
                 curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
             
-            curSelectCommand[1] = "Select * from EventReg ";
+            curSelectCommand[1] = "Select * from EventReg XT ";
             if ( isObjectEmpty( curFilterCmd ) ) {
                 curSelectCommand[1] = curSelectCommand[1]
-                    + " Where SanctionId = '" + mySanctionNum + "'"
-                    + " And Event = 'Slalom'";
+                    + "Where SanctionId = '" + mySanctionNum + "' "
+                    + "And Event = 'Slalom' ";
             } else {
                 if ( curFilterCmd.Length > 0 ) {
                     curSelectCommand[1] = curSelectCommand[1]
-                        + " Where SanctionId = '" + mySanctionNum + "'"
-                        + " And Event = 'Slalom'"
-                        + " And " + curFilterCmd;
+                        + "Where SanctionId = '" + mySanctionNum + "' "
+                        + "And Event = 'Slalom' "
+                        + "And " + curFilterCmd;
                 } else {
                     curSelectCommand[1] = curSelectCommand[1]
-                        + " Where SanctionId = '" + mySanctionNum + "'"
-                        + " And Event = 'Slalom'";
+                        + "Where SanctionId = '" + mySanctionNum + "' "
+                        + "And Event = 'Slalom'";
                 }
             }
 
-            curSelectCommand[2] = "Select * from EventRunOrder ";
+            curSelectCommand[2] = "Select * from EventRunOrder XT ";
             if (isObjectEmpty( curFilterCmd )) {
                 curSelectCommand[2] = curSelectCommand[2]
-                    + " Where SanctionId = '" + mySanctionNum + "'"
-                    + " And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
+                    + "Where SanctionId = '" + mySanctionNum + "' "
+                    + "And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
             } else {
                 if (curFilterCmd.Length > 0) {
                     curSelectCommand[2] = curSelectCommand[2]
-                        + " Where SanctionId = '" + mySanctionNum + "'"
-                        + " And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " "
-                        + " And " + curFilterCmd;
+                        + "Where SanctionId = '" + mySanctionNum + "' "
+                        + "And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " "
+                        + "And " + curFilterCmd;
                 } else {
                     curSelectCommand[2] = curSelectCommand[2]
-                        + " Where SanctionId = '" + mySanctionNum + "'"
-                        + " And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
+                        + "Where SanctionId = '" + mySanctionNum + "' "
+                        + "And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
                 }
             }
 
@@ -2710,7 +2714,7 @@ namespace WaterskiScoringSystem.Slalom {
             //----------------------------------------
             String tmpFilterCmd = "";
             String curEventGroup = EventGroupList.SelectedItem.ToString();
-            if ( curEventGroup.ToLower().Equals( "all" ) ) {
+            if ( curEventGroup.ToLower().Equals("all") ) {
             } else {
                 tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
             }
@@ -2739,8 +2743,8 @@ namespace WaterskiScoringSystem.Slalom {
                     curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
             }
 
-            curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
-                + " Where SanctionId = '" + mySanctionNum + "' And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
+            curSelectCommand[7] = "Select * from OfficialWorkAsgmt XT "
+                + "Where SanctionId = '" + mySanctionNum + "' And Event = 'Slalom' And Round = " + roundActiveSelect.RoundValue + " ";
             if ( !( isObjectEmpty(tmpFilterCmd) ) && tmpFilterCmd.Length > 0 ) {
                 curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
             }

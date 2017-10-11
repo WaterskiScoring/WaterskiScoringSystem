@@ -173,7 +173,11 @@ namespace WaterskiScoringSystem.Tournament {
                 checkModifyPrompt();
                 if ( isDataModified ) {
                     e.Cancel = true;
+                } else {
+                    e.Cancel = false;
                 }
+            } else {
+                e.Cancel = false;
             }
         }
 
@@ -849,27 +853,31 @@ namespace WaterskiScoringSystem.Tournament {
             ExportData myExportData = new ExportData();
             String[] curSelectCommand = new String[5];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "DivOrder", "OfficialWork" };
+            String curFilterCmd = myFilterCmd;
+            if ( curFilterCmd.Contains("Div =") ) {
+                curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
+            } else if ( curFilterCmd.Contains("AgeGroup =") ) {
+                curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
+            }
 
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
                 + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = '" + curEvent + "' "
                 + "Where XT.SanctionId = '" + mySanctionNum + "' ";
-            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
-                curSelectCommand[0] = curSelectCommand[0] + "And " + myFilterCmd + " ";
+            if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+                curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
 
-
-
-            curSelectCommand[1] = "Select * from EventReg ";
-            if ( isObjectEmpty( myFilterCmd ) ) {
+            curSelectCommand[1] = "Select * from EventReg XT ";
+            if ( isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[1] = curSelectCommand[1]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = '" + curEvent + "'";
             } else {
-                if ( myFilterCmd.Length > 0 ) {
+                if ( curFilterCmd.Length > 0 ) {
                     curSelectCommand[1] = curSelectCommand[1]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = '" + curEvent + "'"
-                        + " And " + myFilterCmd;
+                        + " And " + curFilterCmd;
                 } else {
                     curSelectCommand[1] = curSelectCommand[1]
                         + " Where SanctionId = '" + mySanctionNum + "'"
@@ -877,17 +885,17 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            curSelectCommand[2] = "Select * from EventRunOrder ";
-            if (isObjectEmpty( myFilterCmd )) {
+            curSelectCommand[2] = "Select * from EventRunOrder XT ";
+            if (isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[2] = curSelectCommand[2]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = '" + curEvent + "'";
             } else {
-                if (myFilterCmd.Length > 0) {
+                if ( curFilterCmd.Length > 0) {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"
                         + " And Event = '" + curEvent + "'"
-                        + " And " + myFilterCmd;
+                        + " And " + curFilterCmd;
                 } else {
                     curSelectCommand[2] = curSelectCommand[2]
                         + " Where SanctionId = '" + mySanctionNum + "'"

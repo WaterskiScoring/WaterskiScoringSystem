@@ -224,7 +224,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22542	AWSARampMax	NM		44	5 Foot	0.235	5.000	
 22543	AWSARampMax	NW		45	5 Foot	0.235	5.000	
 00000	AWSARecords	B1-S		11	Boys 1 - Slalom		105	1 bouys at 11.25m @49 kph (35 off @ 30.4 mph) 6/7/2014 Cooper Tate
-00000	AWSARecords	B1-T		12	Boys 1 - Trick		4270	10/1/2016 Jake Abelson
+00000	AWSARecords	B1-T		12	Boys 1 - Trick		6130	7/27/2017 Jake Abelson
 00000	AWSARecords	B2-S		21	Boys 2 - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
 23472	AWSARecords	B2-T		22	Boys 2 - Trick		7870.000	 6/20/2004 Adam Pickos  
 00000	AWSARecords	B2-J		23	Boys 2 - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
@@ -260,7 +260,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	M7-S		131	Mens 7 - Slalom		101	5 bouys at 10.75m @ 52 kph (39 off @ 32.2 mph) 8/30/2014 Steve Rafael
 23504	AWSARecords	M7-T		132	Mens 7 - Trick		3750.000	 8/24/2002 Jerry Hosner  
 00000	AWSARecords	M7-J		133	Mens 7 - Jump		122	(37.1m) 48kph 5ft 8/20/2016 Frankie Dees
-00000	AWSARecords	M8-S		141	Mens 8 - Slalom		92	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/31/2014 Brad Conger 6/28/2015 Jim Kinney
+00000	AWSARecords	M8-S		141	Mens 8 - Slalom		92.25	2.25 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 9/17/2017 Bob Hardeman
 00000	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
 00000	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 8/31/2014 Brad Conger
 00000	AWSARecords	M9-S		151	Mens 9 - Slalom		86.5	2.5 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 4/5/2014 Jerry Hosner
@@ -268,7 +268,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 8/7/2014 Bruce Kunde
 23512	AWSARecords	MA-S		161	Mens 10 - Slalom		73.500	1.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 9/11/2005 Jim Salmas  
 23513	AWSARecords	MA-T		162	Mens 10 - Trick		1600.000	 10/20/2007 Harry Price  
-23514	AWSARecords	MA-J		163	Mens 10 - Jump		47.000	(14.2m) 8/14/2010 Elgin Faulkner  
+00000	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 7/22/2017 Bruce Kunde
 00000	AWSARecords	MB-S		171	Mens 11 - Slalom		46	4 bouys at 23m @ 46 kph (75' @ 28.6 mph) 11/5/2016 Bill Wenner
 23516	AWSARecords	MB-T		172	Mens 11 - Trick		1050.000	10/29/2012 Harry Price
 23517	AWSARecords	MB-J		173	Mens 11 - Jump		22.000	(6.7m) 10/29/2012 Harry Price
@@ -284,13 +284,13 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23527	AWSARecords	W4-S		211	Womens 4 - Slalom		100.500	4.5 buoys at 11.25m @ 55 kph (38 off @ 34.2 mph) 10/4/2009 Jennifer Leachman-LaPoint  
 23528	AWSARecords	W4-T		212	Womens 4 - Trick		5600.000	 7/4/1988 Barbara Cleveland  
 00000	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 10/12/2014 Lori Krueger
-00000	AWSARecords	W5-S		221	Womens 5 - Slalom		96.5	0.5 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/5/2014 Phillipa Shedd
+00000	AWSARecords	W5-S		221	Womens 5 - Slalom		97	1 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/2/2017 Phillipa Shedd
 00000	AWSARecords	W5-T		222	Womens 5 - Trick		5060	8/18/2007 Kay Nichols 9/18/2016 Lydia Robsham
-00000	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.2) 48kph 5ft 10/9/2016 Joy Kelly
-00000	AWSARecords	W6-S		231	Womens 6 - Slalom		90.5	0.5 bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 10/9/2016 Janie Fausold
+00000	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.5) 48kph 5ft 8/9/2017 Joy Kelly
+00000	AWSARecords	W6-S		231	Womens 6 - Slalom		91	1 bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 9/16/2017 Joy Kelley
 23534	AWSARecords	W6-T		232	Womens 6 - Trick		3780.000	 8/11/1998 Thelma Salmas  
 23535	AWSARecords	W6-J		233	Womens 6 - Jump		95.000	(29.1m) 6/23/2012 Leza Harrison
-00000	AWSARecords	W7-S		241	Womens 7 - Slalom		82	4 bouys at 12m @ 49 kph (35 off @ 30.4 mph) 8/27/2016 Leza Harrison
+00000	AWSARecords	W7-S		241	Womens 7 - Slalom		84.5	0.5 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/27/2016 Leza Harrison
 23537	AWSARecords	W7-T		242	Womens 7 - Trick		3330.000	 8/14/2001 Thelma Salmas  
 00000	AWSARecords	W7-J		243	Womens 7 - Jump		85	(25.8m) 45kph 5ft 8/20/2016 Leza Harrison
 23539	AWSARecords	W8-S		251	Womens 8 - Slalom		75.500	3.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 6/14/2008 Margaret Anne Woodard  
