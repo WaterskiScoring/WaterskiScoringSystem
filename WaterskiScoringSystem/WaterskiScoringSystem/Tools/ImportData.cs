@@ -32,8 +32,9 @@ namespace WaterskiScoringSystem.Tools {
         private TourEventReg myTourEventReg;
         private ProgressWindow myProgressInfo;
         private MemberIdValidate myMemberIdValidate;
+		private ImportOfficialRatings myImportOfficialRatings;
 
-        public ImportData() {
+		public ImportData() {
             MatchDialog = new ImportMatchDialogForm();
         }
 
@@ -75,11 +76,11 @@ namespace WaterskiScoringSystem.Tools {
                 String selectStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS"
                     + " WHERE TABLE_NAME = '" + inTableName + "' AND IS_NULLABLE = 'NO' And COLUMN_NAME != 'PK'"
                     + " ORDER BY COLUMN_NAME";
-                DataTable myDataTable = getData( selectStmt );
-                if ( myDataTable != null ) {
+				DataTable curDataTable = DataAccess.getDataTable( selectStmt );
+                if ( curDataTable != null ) {
                     int idx = 0;
-                    inputKeys = new String[myDataTable.Rows.Count];
-                    foreach ( DataRow curRow in myDataTable.Rows ) {
+                    inputKeys = new String[curDataTable.Rows.Count];
+                    foreach ( DataRow curRow in curDataTable.Rows ) {
                         inputKeys[idx] = (String)curRow["COLUMN_NAME"];
                         idx++;
                     }
@@ -105,11 +106,9 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder stmtInsert = new StringBuilder( "" );
             StringBuilder stmtData = new StringBuilder( "" );
             StreamReader myReader = null;
-            SqlCeCommand sqlStmt = null;
-            SqlCeConnection myDbConn = null;
-
             DataTable curDataTable = null;
-            myProgressInfo = new ProgressWindow();
+
+			myProgressInfo = new ProgressWindow();
             ArrayList curFileList = new ArrayList();
 
             if ( inFileName == null ) {
@@ -143,343 +142,306 @@ namespace WaterskiScoringSystem.Tools {
                     curImportConfirmMsg = false;
                 }
 
-                try {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
+				foreach ( String curFileName in curFileList ) {
+					myReader = getImportFile( curFileName );
+					if ( myReader == null ) return;
 
-                    foreach (String curFileName in curFileList) {
-                        myReader = getImportFile( curFileName );
-                        if (myReader != null) {
-                            curInputLineCount = 0;
+					curInputLineCount = 0;
+					while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+						curInputLineCount++;
+						myProgressInfo.setProgressValue( curInputLineCount );
 
-                            while (( inputBuffer = myReader.ReadLine() ) != null) {
-                                curInputLineCount++;
-                                myProgressInfo.setProgressValue( curInputLineCount );
+						rowFound = false;
+						inputCols = inputBuffer.Split( myTabDelim );
 
-                                rowFound = false;
-                                inputCols = inputBuffer.Split( myTabDelim );
+						if ( inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" ) ) {
+							//Display statistics when another table entry is found
+							if ( myTableName != null ) {
+								if ( curImportConfirmMsg ) {
+									MessageBox.Show( "Info: Import data processed for " + myTableName
+										+ "\nRows Read: " + rowsRead
+										+ "\nRows Added: " + rowsAdded
+										+ "\nRows Matched: " + rowsfound
+										+ "\nRows Updated: " + rowsUpdated
+										+ "\nRows Skipped: " + rowsSkipped
+										);
+									rowsRead = 0;
+									rowsfound = 0;
+									rowsAdded = 0;
+									rowsUpdated = 0;
+									rowsSkipped = 0;
+								}
+							}
+							//Check for table name and assume all subsequent records are for this table
+							TableName = inputCols[1];
+							myProgressInfo.setProgessMsg( "Processing " + TableName );
+							myProgressInfo.Refresh();
 
-                                if (inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" )) {
-                                    //Display statistics when another table entry is found
-                                    if (myTableName != null) {
-                                        if (curImportConfirmMsg) {
-                                            MessageBox.Show( "Info: Import data processed for " + myTableName
-                                                + "\nRows Read: " + rowsRead
-                                                + "\nRows Added: " + rowsAdded
-                                                + "\nRows Matched: " + rowsfound
-                                                + "\nRows Updated: " + rowsUpdated
-                                                + "\nRows Skipped: " + rowsSkipped
-                                                );
-                                            rowsRead = 0;
-                                            rowsfound = 0;
-                                            rowsAdded = 0;
-                                            rowsUpdated = 0;
-                                            rowsSkipped = 0;
-                                        }
-                                    }
-                                    //Check for table name and assume all subsequent records are for this table
-                                    TableName = inputCols[1];
-                                    myProgressInfo.setProgessMsg( "Processing " + TableName );
-                                    myProgressInfo.Refresh();
+							inputColNames = null;
+							inputKeys = getTableKeys( TableName );
 
-                                    inputColNames = null;
-                                    inputKeys = getTableKeys( TableName );
-                                } else if (inputColNames == null) {
-                                    //Column names are required and must preceed the data rows
-                                    inputColNames = new string[inputCols.Length];
-                                    for (idx = 0; idx < inputCols.Length; idx++) {
-                                        inputColNames[idx] = inputCols[idx];
-                                    }
-                                } else {
-                                    #region Process data rows for table and columns on input file
-                                    //Process data rows.  Table name and column names are required 
-                                    //before data rows can be processed
-                                    if (myTableName == null) {
-                                        MessageBox.Show( "Error: Table name not provide.  Unable to process import file." );
-                                        break;
-                                    } else if (inputColNames == null) {
-                                        MessageBox.Show( "Error: Column definitions not provide.  Unable to process import file." );
-                                        break;
-                                    } else {
-                                        rowsRead++;
-                                        stmtSelect = new StringBuilder( "" );
-                                        stmtWhere = new StringBuilder( "" );
-                                        sqlStmt = myDbConn.CreateCommand();
+						} else if ( inputColNames == null ) {
+							//Column names are required and must preceed the data rows
+							inputColNames = new string[inputCols.Length];
+							for ( idx = 0; idx < inputCols.Length; idx++ ) {
+								inputColNames[idx] = inputCols[idx];
+							}
 
-                                        if (inputKeys != null) {
-                                            //Use update date if available
-                                            curLastUpdateDateIn = findColValue( "LastUpdateDate", inputColNames, inputCols );
-                                            if (curLastUpdateDateIn == null) curLastUpdateDateIn = "";
+						} else {
+							#region Process data rows for table and columns on input file
+							//Process data rows.  Table name and column names are required 
+							//before data rows can be processed
+							if ( myTableName == null ) {
+								MessageBox.Show( "Error: Table name not provide.  Unable to process import file." );
+								break;
 
-                                            #region Identify key columns if available
-                                            //Use key column data items to see if input row already exists on database
-                                            foreach (string keyName in inputKeys) {
-                                                colValue = findColValue( keyName, inputColNames, inputCols );
-                                                if (colValue == null) colValue = "";
-                                                if (stmtSelect.Length > 1) {
-                                                    stmtSelect.Append( ", " + keyName );
-                                                    stmtWhere.Append( " AND " + keyName + " = '" + colValue + "'" );
-                                                } else {
-                                                    stmtSelect.Append( "Select " );
-                                                    if (curLastUpdateDateIn.Length > 0) {
-                                                        stmtSelect.Append( "LastUpdateDate, " );
-                                                    }
-                                                    stmtSelect.Append( keyName );
-                                                    stmtWhere.Append( " Where  " + keyName + " = '" + colValue + "'" );
-                                                }
-                                            }
+							} else if ( inputColNames == null ) {
+								MessageBox.Show( "Error: Column definitions not provide.  Unable to process import file." );
+								break;
 
-                                            try {
-                                                curMatchCommand = "";
-                                                curDataTable = getData( stmtSelect.ToString() + " From " + myTableName + stmtWhere.ToString() );
-                                                if (curDataTable.Rows.Count > 0) {
-                                                    rowFound = true;
-                                                    rowsfound++;
-                                                    if (!( MatchCommand.ToLower().Equals( "skipall" ) )) {
-                                                        if (curLastUpdateDateIn.Length > 0) {
-                                                            try {
-                                                                curLastUpdateDate = (DateTime)curDataTable.Rows[0]["LastUpdateDate"];
-                                                                curDateValue = Convert.ToDateTime( curLastUpdateDateIn );
-                                                                if (curDateValue > curLastUpdateDate) {
-                                                                    curMatchCommand = "Update";
-                                                                } else {
-                                                                    curMatchCommand = "Skip";
-                                                                }
-                                                            } catch {
-                                                                curMatchCommand = "Update";
-                                                                curLastUpdateDate = Convert.ToDateTime( "01/01/2000" );
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            } catch (Exception ex) {
-                                                String ExcpMsg = ex.Message;
-                                                MessageBox.Show( "Error: Checking " + myTableName + " for import data"
-                                                    + "\n\nError: " + ExcpMsg
-                                                    );
-                                                return;
-                                            }
-                                            #endregion
-                                        }
+							} else {
+								rowsRead++;
+								stmtSelect = new StringBuilder( "" );
+								stmtWhere = new StringBuilder( "" );
 
-                                        stmtInsert = new StringBuilder( "" );
-                                        stmtData = new StringBuilder( "" );
+								if ( inputKeys != null ) {
+									//Use update date if available
+									curLastUpdateDateIn = findColValue( "LastUpdateDate", inputColNames, inputCols );
+									if ( curLastUpdateDateIn == null ) curLastUpdateDateIn = "";
 
-                                        if (rowFound) {
-                                            #region Show information if input data found on database
-                                            //Show information if input data found on database
-                                            //Skip display if previoius display specfied to process all records the same
-                                            if (MatchCommand.Length < 2) {
-                                                if (curMatchCommand.Equals( "" ) || curMatchCommand.ToLower().Equals( "update" )) {
-                                                    curImportDataMatchMsg[0] = "Table: " + myTableName;
-                                                    curImportDataMatchMsg[1] = stmtWhere.ToString();
-                                                    if (curMatchCommand.ToLower().Equals( "update" )) {
-                                                        curImportDataMatchMsg[2] = "Current record date = " + curLastUpdateDate.ToString();
-                                                        curImportDataMatchMsg[3] = " Import record date = " + curLastUpdateDateIn;
-                                                    } else {
-                                                        curImportDataMatchMsg[2] = "";
-                                                        curImportDataMatchMsg[3] = "";
-                                                    }
-                                                    MatchDialog.ImportKeyDataMultiLine = curImportDataMatchMsg;
-                                                    MatchDialog.MatchCommand = MatchCommand;
-                                                    if (MatchDialog.ShowDialog() == DialogResult.OK) {
-                                                        MatchCommand = MatchDialog.MatchCommand;
-                                                    }
-                                                }
-                                            }
+									#region Identify key columns if available
+									//Use key column data items to see if input row already exists on database
+									foreach ( string keyName in inputKeys ) {
+										colValue = findColValue( keyName, inputColNames, inputCols );
+										if ( colValue == null ) colValue = "";
+										if ( stmtSelect.Length > 1 ) {
+											stmtSelect.Append( ", " + keyName );
+											stmtWhere.Append( " AND " + keyName + " = '" + colValue + "'" );
+										} else {
+											stmtSelect.Append( "Select " );
+											if ( curLastUpdateDateIn.Length > 0 ) {
+												stmtSelect.Append( "LastUpdateDate, " );
+											}
+											stmtSelect.Append( keyName );
+											stmtWhere.Append( " Where  " + keyName + " = '" + colValue + "'" );
+										}
+									}
 
-                                            if (curMatchCommand.Equals( "skip" )) {
-                                                rowsSkipped++;
-                                                //Re-initialize dialog response unless specified to process rows
-                                                if (MatchCommand.ToLower().Equals( "skip" )) {
-                                                    MatchCommand = "";
-                                                }
-                                            } else {
-                                                if (MatchCommand.ToLower().Equals( "update" )
-                                                    || MatchCommand.ToLower().Equals( "updateall" )) {
-                                                    //Build update command with input record if specified
-                                                    idx = 0;
-                                                    foreach (string colName in inputColNames) {
-                                                        if (inputKeys.Contains( colName ) || colName.ToLower().Equals( "pk" )) {
-                                                        } else if (colName.Equals( "TimeInTol1" )
-                                                                || colName.Equals( "TimeInTol2" )
-                                                                || colName.Equals( "TimeInTol3" )
-                                                                || colName.Equals( "BoatSplitTimeTol" )
-                                                                || colName.Equals( "BoatSplitTime2Tol" )
-                                                                || colName.Equals( "BoatEndTimeTol" )
-                                                                || ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
-                                                                || ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
-                                                                ) {
-                                                        } else {
-                                                            if (stmtData.Length > 1) {
-                                                                stmtData.Append( ", [" + colName + "] = " );
-                                                            } else {
-                                                                stmtData.Append( "[" + colName + "] = " );
-                                                            }
-                                                            if (inputCols[idx].Length > 0) {
-                                                                String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
-                                                                stmtData.Append( "'" + tempValue + "'" );
-                                                            } else {
-                                                                if (inputKeys.Contains( colName )) {
-                                                                    stmtData.Append( " ''" );
-                                                                } else {
-                                                                    stmtData.Append( " null" );
-                                                                }
-                                                            }
-                                                        }
-                                                        idx++;
-                                                    }
-                                                    try {
-                                                        //Update database with input record if specified
-                                                        //Delete detail if event scores which assumes the detail will also be imported
-                                                        if (myTableName.ToLower().Equals( "slalomscore" )) {
-                                                            sqlStmt.CommandText = "Delete SlalomRecap " + stmtWhere.ToString();
-                                                            int rowsDeleted = sqlStmt.ExecuteNonQuery();
-                                                        } else if (myTableName.ToLower().Equals( "trickscore" )) {
-                                                            sqlStmt.CommandText = "Delete TrickPass " + stmtWhere.ToString();
-                                                            int rowsDeleted = sqlStmt.ExecuteNonQuery();
-                                                        } else if (myTableName.ToLower().Equals( "jumpscore" )) {
-                                                            sqlStmt.CommandText = "Delete JumpRecap " + stmtWhere.ToString();
-                                                            int rowsDeleted = sqlStmt.ExecuteNonQuery();
-                                                        }
-                                                        sqlStmt.CommandText = "Update "
-                                                            + myTableName
-                                                            + " set " + stmtData.ToString()
-                                                            + stmtWhere.ToString();
-                                                        int rowsProc = sqlStmt.ExecuteNonQuery();
-                                                        rowsUpdated++;
-                                                    } catch (Exception ex) {
-                                                        String ExcpMsg = ex.Message;
-                                                        if (sqlStmt != null) {
-                                                            ExcpMsg += "\n" + sqlStmt.CommandText;
-                                                        }
-                                                        MessageBox.Show( "Error: Adding import data to " + myTableName
-                                                            + "\n\nError: " + ExcpMsg
-                                                            );
-                                                        return;
-                                                    }
-                                                    //Re-initialize dialog response unless specified to process rows
-                                                    if (MatchCommand.ToLower().Equals( "update" )) {
-                                                        MatchCommand = "";
-                                                    }
+									curMatchCommand = "";
+									curDataTable = DataAccess.getDataTable( stmtSelect.ToString() + " From " + myTableName + stmtWhere.ToString() );
+									if ( curDataTable == null ) {
+										MessageBox.Show( "Error: Checking " + myTableName + " for import data");
+										return;
+									} else {
+										if ( curDataTable.Rows.Count > 0 ) {
+											rowFound = true;
+											rowsfound++;
+											if ( !( MatchCommand.ToLower().Equals( "skipall" ) ) ) {
+												if ( curLastUpdateDateIn.Length > 0 ) {
+													try {
+														curLastUpdateDate = (DateTime) curDataTable.Rows[0]["LastUpdateDate"];
+														curDateValue = Convert.ToDateTime( curLastUpdateDateIn );
+														if ( curDateValue > curLastUpdateDate ) {
+															curMatchCommand = "Update";
+														} else {
+															curMatchCommand = "Skip";
+														}
+													} catch {
+														curMatchCommand = "Update";
+														curLastUpdateDate = Convert.ToDateTime( "01/01/2000" );
+													}
+												}
+											}
+										}
+									}
+									#endregion
+								}
 
-                                                } else {
-                                                    rowsSkipped++;
-                                                    //Re-initialize dialog response unless specified to process rows
-                                                    if (MatchCommand.ToLower().Equals( "skip" )) {
-                                                        MatchCommand = "";
-                                                    }
-                                                }
-                                            }
-                                            #endregion
-                                        } else {
-                                            #region New data identified and will be added
-                                            //Database record does not exist therefore data is added to database
-                                            //Build insert command
-                                            idx = 0;
-                                            foreach (string colName in inputColNames) {
-                                                if (colName.ToLower().Equals( "pk" )
-                                                    || colName.Equals( "TimeInTol1" )
-                                                    || colName.Equals( "TimeInTol2" )
-                                                    || colName.Equals( "TimeInTol3" )
-                                                    || colName.Equals( "BoatSplitTimeTol" )
-                                                    || colName.Equals( "BoatSplitTime2Tol" )
-                                                    || colName.Equals( "BoatEndTimeTol" )
-                                                    || ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
-                                                    || ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
-                                                    ) {
-                                                } else {
-                                                    if (stmtInsert.Length > 1) {
-                                                        stmtInsert.Append( ", [" + colName + "]" );
-                                                        if (inputCols[idx].Length > 0) {
-                                                            String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
-                                                            stmtData.Append( ", '" + tempValue + "'" );
-                                                        } else {
-                                                            if (inputKeys.Contains( colName )) {
-                                                                stmtData.Append( ", ''" );
-                                                            } else {
-                                                                stmtData.Append( ", null" );
-                                                            }
-                                                        }
-                                                    } else {
-                                                        stmtInsert.Append( "[" + colName + "]" );
-                                                        if (inputCols[idx].Length > 0) {
-                                                            String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
-                                                            stmtData.Append( "'" + tempValue + "'" );
-                                                        } else {
-                                                            if (inputKeys.Contains( colName )) {
-                                                                stmtData.Append( "''" );
-                                                            } else {
-                                                                stmtData.Append( "null" );
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                idx++;
-                                            }
-                                            try {
-                                                sqlStmt.CommandText = "Insert "
-                                                    + myTableName + " (" + stmtInsert.ToString()
-                                                    + ") Values (" + stmtData.ToString() + ")";
-                                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                                                rowsAdded++;
-                                            } catch (Exception ex) {
-                                                rowsSkipped++;
-                                                String ExcpMsg = ex.Message;
-                                                if (sqlStmt != null) {
-                                                    ExcpMsg += "\n" + sqlStmt.CommandText;
-                                                }
-                                                MessageBox.Show( "Error: Adding import data to " + myTableName
-                                                    + "\n\nError: " + ExcpMsg
-                                                    );
-                                            }
-                                            #endregion
-                                        }
-                                    }
-                                    #endregion
-                                }
-                            }
+								stmtInsert = new StringBuilder( "" );
+								stmtData = new StringBuilder( "" );
 
-                            if (inFileName == null) {
-                                if (curImportConfirmMsg) {
-                                    MessageBox.Show( "Info: Import data processed for " + myTableName
-                                        + "\nRows Read: " + rowsRead
-                                        + "\nRows Added: " + rowsAdded
-                                        + "\nRows Matched: " + rowsfound
-                                        + "\nRows Updated: " + rowsUpdated
-                                        + "\nRows Skipped: " + rowsSkipped
-                                        );
-                                } else {
-                                    MessageBox.Show( "Info: Total import data processed"
-                                        + "\nRows Read: " + rowsRead
-                                        + "\nRows Added: " + rowsAdded
-                                        + "\nRows Matched: " + rowsfound
-                                        + "\nRows Updated: " + rowsUpdated
-                                        + "\nRows Skipped: " + rowsSkipped
-                                        );
-                                }
-                                rowsRead = 0;
-                                rowsAdded = 0;
-                                rowsfound = 0;
-                                rowsUpdated = 0;
-                                rowsSkipped = 0;
-                            }
-                        }
-                    }
+								if ( rowFound ) {
+									#region Show information if input data found on database
+									//Show information if input data found on database
+									//Skip display if previoius display specfied to process all records the same
+									if ( MatchCommand.Length < 2 ) {
+										if ( curMatchCommand.Equals( "" ) || curMatchCommand.ToLower().Equals( "update" ) ) {
+											curImportDataMatchMsg[0] = "Table: " + myTableName;
+											curImportDataMatchMsg[1] = stmtWhere.ToString();
+											if ( curMatchCommand.ToLower().Equals( "update" ) ) {
+												curImportDataMatchMsg[2] = "Current record date = " + curLastUpdateDate.ToString();
+												curImportDataMatchMsg[3] = " Import record date = " + curLastUpdateDateIn;
+											} else {
+												curImportDataMatchMsg[2] = "";
+												curImportDataMatchMsg[3] = "";
+											}
+											MatchDialog.ImportKeyDataMultiLine = curImportDataMatchMsg;
+											MatchDialog.MatchCommand = MatchCommand;
+											if ( MatchDialog.ShowDialog() == DialogResult.OK ) {
+												MatchCommand = MatchDialog.MatchCommand;
+											}
+										}
+									}
 
-                } catch (Exception ex) {
-                    String ExcpMsg = ex.Message;
-                    if (sqlStmt != null) {
-                        ExcpMsg += "\n" + sqlStmt.CommandText;
-                    }
-                    MessageBox.Show( "Error: Performing SQL operations" + "\n\nError: " + ExcpMsg );
-                } finally {
-                    myDbConn.Close();
-                    myReader.Close();
-                    myReader.Dispose();
-                }
-                myProgressInfo.Close();
+									if ( curMatchCommand.Equals( "skip" ) ) {
+										rowsSkipped++;
+										//Re-initialize dialog response unless specified to process rows
+										if ( MatchCommand.ToLower().Equals( "skip" ) ) {
+											MatchCommand = "";
+										}
+									} else {
+										if ( MatchCommand.ToLower().Equals( "update" )
+											|| MatchCommand.ToLower().Equals( "updateall" ) ) {
+											//Build update command with input record if specified
+											idx = 0;
+											foreach ( string colName in inputColNames ) {
+												if ( inputKeys.Contains( colName ) || colName.ToLower().Equals( "pk" ) ) {
+												} else if ( colName.Equals( "TimeInTol1" )
+														|| colName.Equals( "TimeInTol2" )
+														|| colName.Equals( "TimeInTol3" )
+														|| colName.Equals( "BoatSplitTimeTol" )
+														|| colName.Equals( "BoatSplitTime2Tol" )
+														|| colName.Equals( "BoatEndTimeTol" )
+														|| ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+														|| ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+														) {
+												} else {
+													if ( stmtData.Length > 1 ) {
+														stmtData.Append( ", [" + colName + "] = " );
+													} else {
+														stmtData.Append( "[" + colName + "] = " );
+													}
+													if ( inputCols[idx].Length > 0 ) {
+														String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
+														stmtData.Append( "'" + tempValue + "'" );
+													} else {
+														if ( inputKeys.Contains( colName ) ) {
+															stmtData.Append( " ''" );
+														} else {
+															stmtData.Append( " null" );
+														}
+													}
+												}
+												idx++;
+											}
+											
+											//Update database with input record if specified
+											//Delete detail if event scores which assumes the detail will also be imported
+											if ( myTableName.ToLower().Equals( "slalomscore" ) ) {
+												int rowsDeleted = DataAccess.ExecuteCommand( "Delete SlalomRecap " + stmtWhere.ToString() );
+
+											} else if ( myTableName.ToLower().Equals( "trickscore" ) ) {
+												int rowsDeleted = DataAccess.ExecuteCommand( "Delete TrickPass " + stmtWhere.ToString() );
+
+											} else if ( myTableName.ToLower().Equals( "jumpscore" ) ) {
+												int rowsDeleted = DataAccess.ExecuteCommand( "Delete JumpRecap " + stmtWhere.ToString() );
+											}
+
+											int rowsProc = DataAccess.ExecuteCommand( "Update " + myTableName + " set " + stmtData.ToString() + stmtWhere.ToString() );
+											// Exit method if error is detected with last update statement (rowsProc less than zero indicate an exception was encountered)
+											if ( rowsProc < 0 ) return;
+											rowsUpdated++;
+
+											//Re-initialize dialog response unless specified to process rows
+											if ( MatchCommand.ToLower().Equals( "update" ) ) {
+												MatchCommand = "";
+											}
+
+										} else {
+											rowsSkipped++;
+											//Re-initialize dialog response unless specified to process rows
+											if ( MatchCommand.ToLower().Equals( "skip" ) ) {
+												MatchCommand = "";
+											}
+										}
+									}
+									#endregion
+								} else {
+									#region New data identified and will be added
+									//Database record does not exist therefore data is added to database
+									//Build insert command
+									idx = 0;
+									foreach ( string colName in inputColNames ) {
+										if ( colName.ToLower().Equals( "pk" )
+											|| colName.Equals( "TimeInTol1" )
+											|| colName.Equals( "TimeInTol2" )
+											|| colName.Equals( "TimeInTol3" )
+											|| colName.Equals( "BoatSplitTimeTol" )
+											|| colName.Equals( "BoatSplitTime2Tol" )
+											|| colName.Equals( "BoatEndTimeTol" )
+											|| ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+											|| ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+											) {
+										} else {
+											if ( stmtInsert.Length > 1 ) {
+												stmtInsert.Append( ", [" + colName + "]" );
+												if ( inputCols[idx].Length > 0 ) {
+													String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
+													stmtData.Append( ", '" + tempValue + "'" );
+												} else {
+													if ( inputKeys.Contains( colName ) ) {
+														stmtData.Append( ", ''" );
+													} else {
+														stmtData.Append( ", null" );
+													}
+												}
+											} else {
+												stmtInsert.Append( "[" + colName + "]" );
+												if ( inputCols[idx].Length > 0 ) {
+													String tempValue = stringReplace( inputCols[idx], mySingleQuoteDelim, "''" );
+													stmtData.Append( "'" + tempValue + "'" );
+												} else {
+													if ( inputKeys.Contains( colName ) ) {
+														stmtData.Append( "''" );
+													} else {
+														stmtData.Append( "null" );
+													}
+												}
+											}
+										}
+										idx++;
+									}
+
+									int rowsProc = DataAccess.ExecuteCommand( "Insert " + myTableName + " (" + stmtInsert.ToString() + ") Values (" + stmtData.ToString() + ")" );
+									// Exit method if error is detected with last update statement (rowsProc less than zero indicate an exception was encountered)
+									if ( rowsProc < 0 ) return;
+									rowsAdded++;
+
+									#endregion
+								}
+							}
+							#endregion
+						}
+					}
+
+					if ( inFileName == null ) {
+						if ( curImportConfirmMsg ) {
+							MessageBox.Show( "Info: Import data processed for " + myTableName
+								+ "\nRows Read: " + rowsRead
+								+ "\nRows Added: " + rowsAdded
+								+ "\nRows Matched: " + rowsfound
+								+ "\nRows Updated: " + rowsUpdated
+								+ "\nRows Skipped: " + rowsSkipped
+								);
+						} else {
+							MessageBox.Show( "Info: Total import data processed"
+								+ "\nRows Read: " + rowsRead
+								+ "\nRows Added: " + rowsAdded
+								+ "\nRows Matched: " + rowsfound
+								+ "\nRows Updated: " + rowsUpdated
+								+ "\nRows Skipped: " + rowsSkipped
+								);
+						}
+						rowsRead = 0;
+						rowsAdded = 0;
+						rowsfound = 0;
+						rowsUpdated = 0;
+						rowsSkipped = 0;
+					}
+
+				}
+
+				myProgressInfo.Close();
             }
         }
 
@@ -494,24 +456,19 @@ namespace WaterskiScoringSystem.Tools {
                     MessageBoxDefaultButton.Button1 );
             if ( msgResp == DialogResult.Yes ) {
                 try {
-                    //Prepare database interaction combonents for processing
-                    SqlCeCommand sqlStmt = null;
-                    SqlCeConnection myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    //Open database connection
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
-                    sqlStmt = myDbConn.CreateCommand();
-                    sqlStmt.CommandText = "Delete MemberList ";
-                    int rowsProc = sqlStmt.ExecuteNonQuery();
+					int rowsProc = DataAccess.ExecuteCommand( "Delete MemberList ");
                     MessageBox.Show( rowsProc + " members removed" );
                     return true;
-                } catch ( Exception excp ) {
+
+				} catch ( Exception excp ) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                     return false;
                 }
-            } else if ( msgResp == DialogResult.No ) {
+
+			} else if ( msgResp == DialogResult.No ) {
                 return false;
-            } else {
+
+			} else {
                 return false;
             }
         }
@@ -561,10 +518,9 @@ namespace WaterskiScoringSystem.Tools {
             string[] inputCols;
             string[] inputColsSaved = null;
             DateTime curFileDate;
-            SqlCeCommand sqlStmt = null;
             StreamReader myReader;
             DialogResult msgResp;
-            int numCk = 0, idxMemberId = 0, idx2010FmtCheck = 18 ;
+            int numCk = 0, idxMemberId = 0;
             int curInputLineCount = 0;
             myTourEventReg = new TourEventReg();
             myMemberIdValidate = new MemberIdValidate();
@@ -581,198 +537,183 @@ namespace WaterskiScoringSystem.Tools {
             String curPath = Properties.Settings.Default.ExportDirectory;
             OpenFileDialog myFileDialog = new OpenFileDialog();
 
-            myFileDialog.InitialDirectory = curPath;
+			myImportOfficialRatings = new ImportOfficialRatings( null );
+
+			myFileDialog.InitialDirectory = curPath;
             myFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             myFileDialog.FilterIndex = 2;
 
             try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    myfileName = myFileDialog.FileName;
-                    if ( myfileName == null ) {
-                        return false;
-                    } else {
-                        myProgressInfo.setProgessMsg( "File selected " + myfileName );
-                        myProgressInfo.Show();
-                        myProgressInfo.Refresh();
+                if ( myFileDialog.ShowDialog() != DialogResult.OK ) return false;
 
-                        //Prepare database interaction combonents for processing
-                        SqlCeConnection myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
+				myfileName = myFileDialog.FileName;
+				if ( myfileName == null ) return false;
 
-                        //Get file date and prepare to read input data
-                        curFileDate = File.GetLastWriteTime( myfileName );
-                        try {
-                            curInputLineCount = 0;
-                            myReader = new StreamReader( myfileName );
-                            while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
-                                curInputLineCount++;
-                            }
-                            myReader.Close();
-                            myProgressInfo.setProgressMin( 1 );
-                            myProgressInfo.setProgressMax( curInputLineCount );
-                        } catch ( Exception ex ) {
-                            MessageBox.Show( "Error: Could not read file" + myFileDialog.FileName + "\n\nError: " + ex.Message );
-                            return false;
-                        }
+				myProgressInfo.setProgessMsg( "File selected " + myfileName );
+				myProgressInfo.Show();
+				myProgressInfo.Refresh();
 
-                        curInputLineCount = 0;
-                        myReader = new StreamReader( myfileName );
-                        try {
-                            //Open database connection
-                            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                            myDbConn.Open();
+				//Get file date and prepare to read input data
+				curFileDate = File.GetLastWriteTime( myfileName );
+				try {
+					curInputLineCount = 0;
+					myReader = new StreamReader( myfileName );
+					while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+						curInputLineCount++;
+					}
+					myReader.Close();
+					myProgressInfo.setProgressMin( 1 );
+					myProgressInfo.setProgressMax( curInputLineCount );
 
-                            #region Process each input file data row
-                            while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
-                                curInputLineCount++;
-                                myProgressInfo.setProgressValue( curInputLineCount );
+				} catch ( Exception ex ) {
+					MessageBox.Show( "Error: Could not read file" + myFileDialog.FileName + "\n\nError: " + ex.Message );
+					return false;
+				}
 
-                                //Initialize SQL statement variable for database processing
-                                sqlStmt = myDbConn.CreateCommand();
+				curInputLineCount = 0;
+				myReader = new StreamReader( myfileName );
+				try {
+					#region Process each input file data row
+					while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+						curInputLineCount++;
+						myProgressInfo.setProgressValue( curInputLineCount );
 
-                                //Check input row to ensure it is a data row
-                                if ( inputBuffer.ToLower().IndexOf( "end-of-list" ) > -1
-                                    || inputBuffer.ToLower().IndexOf( "end of list" ) > -1
-                                    || inputBuffer.ToLower().IndexOf( "end_of_list" ) > -1
-                                    || inputBuffer.ToLower().IndexOf( "endoflist" ) > -1
-                                    ) {
-                                    break;
-                                } else {
-                                    inputCols = inputBuffer.Split( myTabDelim );
-                                    if ( inputCols.Length > 8 ) {
-                                        //Check first line of input file to analyze the file format supplied
-                                        if ( curInputLineCount == 1 && curNcwsa == false ) {
-                                            if ( inputCols.Length > 25 ) {
-                                                if ( inputCols[26].ToLower().IndexOf( "membership status" ) > -1 ) {
-                                                    curTourRegFmt = true;
-                                                } else if ( inputCols[25].ToLower().IndexOf( "membership status" ) > -1 ) {
-                                                    curTourRegFmt = true;
-                                                } else if ( inputCols[12].ToLower().IndexOf( "membership status" ) > -1 ) {
-                                                    curNcwsa = true;
-                                                }
-                                            } else if (inputCols.Length > 12) {
-                                                if (inputCols[12].ToLower().IndexOf( "membership status" ) > -1) {
-                                                    curNcwsa = true;
-                                                }
-                                            }
-                                        } else {
-                                            if ( inputCols[idxMemberId].Trim().Length > 10 ) {
-                                                MemberId = inputCols[idxMemberId].Substring( 0, 3 ) + inputCols[idxMemberId].Substring( 4, 2 ) + inputCols[idxMemberId].Substring( 7, 4 );
-                                            } else {
-                                                MemberId = "---";
-                                            }
+						//Check input row to ensure it is a data row
+						if ( inputBuffer.ToLower().IndexOf( "end-of-list" ) > -1
+							|| inputBuffer.ToLower().IndexOf( "end of list" ) > -1
+							|| inputBuffer.ToLower().IndexOf( "end_of_list" ) > -1
+							|| inputBuffer.ToLower().IndexOf( "endoflist" ) > -1
+							) {
+							break;
 
-                                            //If a valid member id is detected in the first column 
-                                            //assume valid record available for input
-                                            if ( int.TryParse( MemberId.Substring( 0, 3 ), out numCk ) ) {
-                                                curTeamHeaderActive = false;
-                                                if (curNcwsa) {
-                                                    inputColsSaved = new String[inputCols.Length];
-                                                    curReturn = procMemberInput( sqlStmt, inputCols, MemberId, curFileDate, curTourRegFmt, curNcwsa, inputColsSaved );
-                                                } else {
-                                                    curReturn = procMemberInput( sqlStmt, inputCols, MemberId, curFileDate, curTourRegFmt, curNcwsa, null );
-                                                }
-                                                if ( curReturn ) {
-                                                    if (curNcwsa && inputColsSaved != null) {
-                                                        if ( inputColsSaved[0] != null ) {
-                                                            curReturn = procMemberInput( sqlStmt, inputColsSaved, MemberId, curFileDate, curTourRegFmt, curNcwsa, null );
-                                                        }
-                                                    }
-                                                } else {
-                                                    msgResp = MessageBox.Show( "Error encountered on last record./n Do you want to continue processing?", "Warning",
-                                                        MessageBoxButtons.YesNo,
-                                                        MessageBoxIcon.Warning,
-                                                        MessageBoxDefaultButton.Button1 );
-                                                    if ( msgResp == DialogResult.Yes ) {
-                                                        curReturn = true;
-                                                    } else {
-                                                        curReturn = false;
-                                                        break;
-                                                    }
-                                                }
-                                            } else {
-                                                if ( inputCols[idxMemberId].ToLower().Equals( "end-of-list" )
-                                                    || inputCols[idxMemberId].ToLower().Equals( "end of list" )
-                                                    || inputCols[idxMemberId].ToLower().Equals( "end_of_list" )
-                                                    || inputCols[idxMemberId].ToLower().Equals( "endoflist" )
-                                                    ) {
-                                                    break;
-                                                } else if ( ( inputCols[0].ToLower().IndexOf( "team header" ) > -1 )
-                                                    || ( inputCols[0].ToLower().IndexOf( "teamheader" ) > -1 )
-                                                    || ( inputCols[0].ToLower().IndexOf( "team-header" ) > -1 )
-                                                    || ( inputCols[0].ToLower().IndexOf( "team_header" ) > -1 )
-                                                ) {
-                                                    curTeamHeaderActive = true;
-                                                    curReturn = procTeamHeaderInput( sqlStmt, inputCols, inNcwsa );
-                                                } else if ( inputCols[idxMemberId].ToLower().Equals( "tourn name:" ) ) {
-                                                    curTeamHeaderActive = false;
-                                                    String curInputSanctionId = inputCols[6];
-                                                    if ( curInputSanctionId.Length > 6 ) {
-                                                        curInputSanctionId = curInputSanctionId.Substring( 0, 6 );
-                                                    }
-                                                    if ( !( curInputSanctionId.Equals( mySanctionNum ) ) ) {
-                                                        String dialogMsg = "Sanction number on import file is " + inputCols[6]
-                                                            + "\n Current tournament being scored is " + mySanctionNum
-                                                            + "\n\n Do you still want to continue?";
-                                                        msgResp =
-                                                            MessageBox.Show( dialogMsg, "Database Copy",
-                                                            MessageBoxButtons.YesNo,
-                                                            MessageBoxIcon.Question,
-                                                            MessageBoxDefaultButton.Button1 );
-                                                        if ( msgResp == DialogResult.No ) {
-                                                            break;
-                                                        }
-                                                    }
-                                                } else {
-                                                    if ( curTeamHeaderActive ) {
-                                                        curReturn = procTeamHeaderInput( sqlStmt, inputCols, inNcwsa );
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        if ( inputCols.Length > 3 ) {
-                                            if ( ( inputCols[0].ToLower().IndexOf( "team header" ) > -1 )
-                                            || ( inputCols[0].ToLower().IndexOf( "teamheader" ) > -1 )
-                                            || ( inputCols[0].ToLower().IndexOf( "team-header" ) > -1 )
-                                            || ( inputCols[0].ToLower().IndexOf( "team_header" ) > -1 )
-                                            ) {
-                                                curTeamHeaderActive = true;
-                                                curReturn = procTeamHeaderInput( sqlStmt, inputCols, inNcwsa );
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            MessageBox.Show( "Info: Member import processed"
-                                + "\nMember records read: " + myCountMemberInput
-                                + "\nmyCountMemberAdded: " + myCountMemberAdded
-                                + "\nmyCountMemberUpdate: " + myCountMemberUpdate
-                                + "\nmyCountTourRegAdded: " + myCountTourRegAdded
-                                + "\nmyCountSlalomAdded: " + myCountSlalomAdded
-                                + "\nmyCountTrickAdded: " + myCountTrickAdded
-                                + "\nmyCountJumpAdded: " + myCountJumpAdded
-                                );
-                            #endregion
+						} else {
+							inputCols = inputBuffer.Split( myTabDelim );
+							if ( inputCols.Length > 3 ) {
+								//Check first line of input file to analyze the file format supplied
+								// WSTIMS Rel 4.0+ NCWSA Registration Worksheet
+								if ( curInputLineCount == 1 && curNcwsa == false ) {
+									if ( inputCols[0].ToLower().IndexOf( "wstims" ) > -1 && inputCols[0].ToLower().IndexOf( "registration worksheet" ) > -1 ) {
+										if ( inputCols[0].ToLower().IndexOf( "wstims" ) > -1 ) {
+											curNcwsa = true;
+										} else {
+											curTourRegFmt = true;
+										}
+									} else if ( inputCols[0].ToLower().IndexOf( "wstims" ) > -1 && inputCols[0].ToLower().IndexOf( "ncwsa" ) > -1 ) {
+										curNcwsa = true;
+									}
+								}
 
-                        } catch ( Exception ex ) {
-                            String ExcpMsg = ex.Message;
-                            if ( sqlStmt != null ) {
-                                ExcpMsg += "\n" + sqlStmt.CommandText;
-                            }
-                            MessageBox.Show( "Error: Performing SQL operations"
-                                + "\n\nError: " + ExcpMsg
-                                );
-                        } finally {
-                            myDbConn.Close();
-                            myReader.Close();
-                            myReader.Dispose();
-                        }
+								if ( curInputLineCount > 1 ) {
+									if ( inputCols[idxMemberId].Trim().Length > 10 ) {
+										MemberId = inputCols[idxMemberId].Substring( 0, 3 ) + inputCols[idxMemberId].Substring( 4, 2 ) + inputCols[idxMemberId].Substring( 7, 4 );
+									} else {
+										MemberId = "---";
+									}
 
-                    }
-                } else {
-                    return false;
-                }
-            } catch ( Exception ex ) {
+									//If a valid member id is detected in the first column 
+									//assume valid record available for input
+									if ( int.TryParse( MemberId.Substring( 0, 3 ), out numCk ) ) {
+										curTeamHeaderActive = false;
+										if ( curNcwsa ) {
+											inputColsSaved = new String[inputCols.Length];
+											curReturn = procMemberInput( inputCols, MemberId, curFileDate, curTourRegFmt, curNcwsa, inputColsSaved );
+
+										} else {
+											curReturn = procMemberInput( inputCols, MemberId, curFileDate, curTourRegFmt, curNcwsa, null );
+										}
+										if ( curReturn ) {
+											if ( curNcwsa && inputColsSaved != null ) {
+												if ( inputColsSaved[0] != null ) {
+													curReturn = procMemberInput( inputColsSaved, MemberId, curFileDate, curTourRegFmt, curNcwsa, null );
+												}
+											}
+										} else {
+											msgResp = MessageBox.Show( "Error encountered on last record./n Do you want to continue processing?", "Warning",
+												MessageBoxButtons.YesNo,
+												MessageBoxIcon.Warning,
+												MessageBoxDefaultButton.Button1 );
+											if ( msgResp == DialogResult.Yes ) {
+												curReturn = true;
+											} else {
+												curReturn = false;
+												break;
+											}
+										}
+
+									} else {
+										if ( inputCols[idxMemberId].ToLower().Equals( "end-of-list" )
+											|| inputCols[idxMemberId].ToLower().Equals( "end of list" )
+											|| inputCols[idxMemberId].ToLower().Equals( "end_of_list" )
+											|| inputCols[idxMemberId].ToLower().Equals( "endoflist" )
+											) {
+											break;
+
+										} else if ( ( inputCols[0].ToLower().IndexOf( "team header" ) > -1 )
+											|| ( inputCols[0].ToLower().IndexOf( "teamheader" ) > -1 )
+											|| ( inputCols[0].ToLower().IndexOf( "team-header" ) > -1 )
+											|| ( inputCols[0].ToLower().IndexOf( "team_header" ) > -1 )
+											) {
+											curTeamHeaderActive = true;
+											curReturn = procTeamHeaderInput( inputCols, inNcwsa );
+
+										} else if ( inputCols[idxMemberId].ToLower().Equals( "tourn name:" ) ) {
+											curTeamHeaderActive = false;
+											String curInputSanctionId = inputCols[6];
+											if ( curInputSanctionId.Length > 6 ) {
+												curInputSanctionId = curInputSanctionId.Substring( 0, 6 );
+											}
+											if ( !( curInputSanctionId.Equals( mySanctionNum ) ) ) {
+												String dialogMsg = "Sanction number on import file is " + inputCols[6]
+													+ "\n Current tournament being scored is " + mySanctionNum
+													+ "\n\n Do you still want to continue?";
+												msgResp =
+													MessageBox.Show( dialogMsg, "Database Copy",
+													MessageBoxButtons.YesNo,
+													MessageBoxIcon.Question,
+													MessageBoxDefaultButton.Button1 );
+												if ( msgResp == DialogResult.No ) {
+													break;
+												}
+											}
+
+										} else {
+											if ( curTeamHeaderActive ) {
+												curReturn = procTeamHeaderInput( inputCols, inNcwsa );
+											}
+										}
+									}
+								}
+							} else {
+								if ( inputCols.Length > 3 ) {
+									if ( ( inputCols[0].ToLower().IndexOf( "team header" ) > -1 )
+									|| ( inputCols[0].ToLower().IndexOf( "teamheader" ) > -1 )
+									|| ( inputCols[0].ToLower().IndexOf( "team-header" ) > -1 )
+									|| ( inputCols[0].ToLower().IndexOf( "team_header" ) > -1 )
+									) {
+										curTeamHeaderActive = true;
+										curReturn = procTeamHeaderInput( inputCols, inNcwsa );
+									}
+								}
+							}
+						}
+					}
+					MessageBox.Show( "Info: Member import processed"
+						+ "\nMember records read: " + myCountMemberInput
+						+ "\nmyCountMemberAdded: " + myCountMemberAdded
+						+ "\nmyCountMemberUpdate: " + myCountMemberUpdate
+						+ "\nmyCountTourRegAdded: " + myCountTourRegAdded
+						+ "\nmyCountSlalomAdded: " + myCountSlalomAdded
+						+ "\nmyCountTrickAdded: " + myCountTrickAdded
+						+ "\nmyCountJumpAdded: " + myCountJumpAdded
+						);
+					#endregion
+
+				} finally {
+					myReader.Close();
+					myReader.Dispose();
+				}
+
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error: Could not read file" + myFileDialog.FileName + "\n\nError: " + ex.Message );
                 return false;
             }
@@ -780,98 +721,83 @@ namespace WaterskiScoringSystem.Tools {
             return true;
         }
 
-        private bool procMemberInput(SqlCeCommand sqlStmt, string[] inputCols, string MemberId, DateTime curFileDate, bool inTourReg, bool inNcwsa, string[] inputColsSaved) {
+        private bool procMemberInput(string[] inputCols, string MemberId, DateTime curFileDate, bool inTourReg, bool inNcwsa, string[] inputColsSaved) {
             bool newMember = false, curReqstStatus = false, curDataVaid = true;
-            string curEvent, curNote, curScore, ExpireDate, MemberStatus, SkiYearAge, Gender, curOfficialRating;
-            string JudgeSlalomRating = "", JudgeTrickRating = "", JudgeJumpRating = "";
-            string ScorerSlalomRating = "", ScorerTrickRating = "", ScorerJumpRating = "";
-            string DriverSlalomRating = "", DriverTrickRating = "", DriverJumpRating = "";
-            string SafetyOfficialRating = "", TechOfficialRating = "", AnncrOfficialRating = "";
+            string curEvent, curNote, curScore, ExpireDate, MemberStatus, SkiYearAge, Gender, curAppointedOfficialCode;
             string curSqlStmt = "";
             DataTable curDataTable;
-            DataRow curOfficalRatingsRow;
             DateTime lastRecModDate = new DateTime();
             Decimal curSlalom = 0, curTrick = 0, curJump = 0, curOverall = 0, numDecCk = 0;
             long rankingPK = 0;
+			int rowsProc = 0;
             int numCk = 0,
-                idxMemberId = 0,
-                idxLastName = 1,
-                idxFirstName = 2,
+                idxMemberId = 0, idxLastName = 1, idxFirstName = 2,
                 idxTeam = 3,
                 idxAgeGroup = 4,
                 idxSkiYearAge = 5,
-                idxCity = 6,
-                idxState = 7,
-                idxEventSlalom = 8,
-                idxEventTrick = 9,
-                idxEventJump = 10,
-                idxOfficialRatings = 11,
-                idxSlalomRank = 12,
-                idxTrickRank = 13,
-                idxJumpRank = 14,
-                idxSlalomRating = 15,
-                idxTrickRating = 16,
-                idxJumpRating = 17,
-                idxOverallRating = 18,
-                idxTrickBoat = 20,
-                idxJumpHeight = 21,
-                idxMemberStatus = 23,
-                idxNote = 24,
-                idxNote2 = 25,
-                idxSportDiv = 0,
-                idxEventClassSlalom = 0,
-                idxEventClassTrick = 0,
-                idxEventClassJump = 0;
+                idxCity = 6, idxState = 7,
+                idxEventSlalom = 8, idxEventTrick = 9, idxEventJump = 10,
+                idxApptdOfficial = 11,
+                idxSlalomRank = 12, idxTrickRank = 13, idxJumpRank = 14,
+                idxSlalomRating = 15, idxTrickRating = 16, idxJumpRating = 17, idxOverallRating = 18,
+                idxTrickBoat = 19,
+                idxJumpHeight = 20,
+
+				idxEventClassSlalom = 21, idxEventClassTrick = 22, idxEventClassJump = 23,
+				idxMemberStatus = 24, idxNote = 25, idxUpgradeAmt = 26, idxExpireDate = 27,
+
+				idxJudgeSlalomRating = 32, idxJudgeTrickRating = 33, idxJudgeJumpRating = 34,
+				idxDriverSlalomRating = 35, idxDriverTrickRating = 36, idxDriverJumpRating = 37,
+				idxScorerSlalomRating = 38, idxScorerTrickRating = 39, idxScorerJumpRating = 40,
+				idxSafetyRating = 41, idxTechCntlrRating = 42,
+				idxSportDiv = 0
+                ;
 
             try {
                 #region Prepare indexes depending on the type of input file 
                 if ( inTourReg ) {
-                    idxEventClassSlalom = 23;
-                    idxEventClassTrick = 24;
-                    idxEventClassJump = 25;
-                    idxMemberStatus = 26;
-                    if ( inputCols.Length < 27 ) {
+                    if ( inputCols.Length < 28 ) {
                         MessageBox.Show( "Invalid tournament registration record detected. Bypassing record"
                             + "\n" + inputCols[idxMemberId] + " " + inputCols[idxFirstName] + " " + inputCols[idxLastName]
                         );
                         return false;
-                    } else if ( inputCols.Length > 26 ) {
-                        idxNote = 27;
-                        idxNote2 = 0;
-                    } else {
-                        idxNote = 0;
-                        idxNote2 = 0;
                     }
-                } else if ( inNcwsa ) {
+
+				} else if ( inNcwsa ) {
                     idxTrickBoat = 13;
                     idxJumpHeight = 14;
-                    idxSportDiv = 12;
-                    idxMemberStatus = 13;
-                    idxNote = 14;
-                    idxSlalomRank = 0;
+                    idxSportDiv = 16;
+                    idxMemberStatus = 17;
+                    idxNote = 17;
+					idxUpgradeAmt = 18;
+					idxSlalomRank = 0;
                     idxTrickRank = 0;
                     idxJumpRank = 0;
                     idxSlalomRating = 0;
                     idxTrickRating = 0;
                     idxJumpRating = 0;
                     idxOverallRating = 0;
-                    idxNote2 = 0;
-                    if ( inputCols.Length < 11 ) {
+
+					if ( inputCols.Length < 11 ) {
                         MessageBox.Show( "Invalid tournament registration record detected. Bypassing record"
                             + "\n" + inputCols[idxMemberId] + " " + inputCols[idxFirstName] + " " + inputCols[idxLastName]
                         );
                         return false;
-                    } else {
+
+					} else {
                         if ( inputCols.Length < 13 ) {
                             idxMemberStatus = 0;
                         }
                         if ( inputCols.Length < 15 ) {
-                            idxTrickBoat = 0;
-                            idxJumpHeight = 0;
                             idxNote = 0;
-                        }
-                        if ( inputCols.Length < 12 ) {
-                            idxOfficialRatings = 0;
+							idxUpgradeAmt = 0;
+							idxExpireDate = 0;
+							idxSportDiv = 0;
+							idxMemberStatus = 0;
+							idxNote = 0;
+						}
+						if ( inputCols.Length < 12 ) {
+							idxApptdOfficial = 0;
                         }
 
                         //Check for A team or B team designation unless skier is an official or not assigned to a team
@@ -888,7 +814,8 @@ namespace WaterskiScoringSystem.Tools {
                             }
                         }
                     }
-                } else {
+
+				} else {
                     if ( inputCols.Length < 22 ) {
                         MessageBox.Show( "Invalid tournament registration record detected. Bypassing record"
                             + "\n" + inputCols[idxMemberId] + " " + inputCols[idxFirstName] + " " + inputCols[idxLastName]
@@ -899,14 +826,18 @@ namespace WaterskiScoringSystem.Tools {
                             if ( inputCols.Length > 24 ) {
                             } else {
                                 idxNote = 0;
-                                idxNote2 = 0;
-                            }
-                        } else {
+								idxUpgradeAmt = 0;
+								idxExpireDate = 0;
+							}
+						} else {
                             idxMemberStatus = 0;
-                        }
-                    }
+							idxUpgradeAmt = 0;
+							idxExpireDate = 0;
+						}
+					}
                 }
-                //Validate the member id to ensure it is valid
+                
+				//Validate the member id to ensure it is valid
                 if ( myMemberIdValidate.checkMemberId( MemberId) ) {
                 } else {
                     MessageBox.Show( "Invalid member id, checksum validation failed." );
@@ -916,81 +847,23 @@ namespace WaterskiScoringSystem.Tools {
                 #endregion
 
                 curSqlStmt = "Select MemberId, UpdateDate from MemberList Where MemberId = '" + MemberId + "'";
-                curDataTable = getData( curSqlStmt);
-                if ( curDataTable.Rows.Count > 0 ) {
+				curDataTable = DataAccess.getDataTable( curSqlStmt );
+				if ( curDataTable.Rows.Count > 0 ) {
                     lastRecModDate = (DateTime)curDataTable.Rows[0]["UpdateDate"];
-                } else {
+					myCountMemberUpdate++;
+				} else {
                     newMember = true;
-                }
+					myCountMemberAdded++;
+				}
 
-                #region Retrieve and analyze data for processing
-                curOfficialRating = "";
-                if ( idxOfficialRatings > 0 ) {
-                    curOfficialRating = inputCols[idxOfficialRatings].ToUpper().Trim();
-                    if ( curOfficialRating.Length == 4 ) {
-                        DriverSlalomRating = curOfficialRating.Substring( 0, 1 );
-                        DriverTrickRating = curOfficialRating.Substring( 0, 1 );
-                        DriverJumpRating = curOfficialRating.Substring( 0, 1 );
-                        JudgeSlalomRating = curOfficialRating.Substring( 1, 1 );
-                        JudgeTrickRating = curOfficialRating.Substring( 1, 1 );
-                        JudgeJumpRating = curOfficialRating.Substring( 1, 1 );
-                        ScorerSlalomRating = curOfficialRating.Substring( 2, 1 );
-                        ScorerTrickRating = curOfficialRating.Substring( 2, 1 );
-                        ScorerJumpRating = curOfficialRating.Substring( 2, 1 );
-                        SafetyOfficialRating = curOfficialRating.Substring( 3, 1 );
-                        if (DriverSlalomRating == "-") DriverSlalomRating = "";
-                        if (DriverTrickRating == "-") DriverTrickRating = "";
-                        if (DriverJumpRating == "-") DriverJumpRating = "";
-                        if (JudgeSlalomRating == "-") JudgeSlalomRating = "";
-                        if (JudgeTrickRating == "-") JudgeTrickRating = "";
-                        if (JudgeJumpRating == "-") JudgeJumpRating = "";
-                        if (ScorerSlalomRating == "-") ScorerSlalomRating = "";
-                        if (ScorerTrickRating == "-") ScorerTrickRating = "";
-                        if (ScorerJumpRating == "-") ScorerJumpRating = "";
-                        if (SafetyOfficialRating == "-") SafetyOfficialRating = "";
-                    } else {
-                        curOfficialRating = stringReplace(curOfficialRating, mySingleQuoteDelim, "''");
-                        curOfficialRating = curOfficialRating.Trim();
-                        if ( curOfficialRating.Equals( "CJ" )
-                            || curOfficialRating.Equals( "ACJ" )
-                            ) {
-                            JudgeSlalomRating = "R";
-                            JudgeTrickRating = JudgeSlalomRating;
-                            JudgeJumpRating = JudgeSlalomRating;
-                        } else if (curOfficialRating.Equals( "CD" )
-                            || curOfficialRating.Equals( "ACD" )
-                            ) {
-                                DriverSlalomRating = "R";
-                                DriverTrickRating = DriverSlalomRating;
-                                DriverJumpRating = DriverSlalomRating;
-                        } else if (curOfficialRating.Equals( "CC" )
-                            || curOfficialRating.Equals( "ACC" )
-                            ) {
-                                ScorerSlalomRating = "R";
-                                ScorerTrickRating = ScorerSlalomRating;
-                                ScorerJumpRating = ScorerSlalomRating;
-                        } else if (curOfficialRating.Equals( "CS" )
-                            || curOfficialRating.Equals( "ACS" )
-                            ) {
-                            SafetyOfficialRating = "S";
-                        } else if ( curOfficialRating.Equals( "CT" )
-                            || curOfficialRating.Equals( "ACT" )
-                            ) {
-                            TechOfficialRating = "R";
-                        } else if ( curOfficialRating.Equals( "CA" )
-                            || curOfficialRating.Equals( "ACA" )
-                            ) {
-                            AnncrOfficialRating = "R";
-                        } else {
-                            curOfficialRating = "";
-                        }
-                    }
-                } else {
-                    curOfficialRating = "";
-                }
-                
-                //OF in age group indicates an official for the current tournament
-                if ( inputCols[idxAgeGroup].Length > 1 ) {
+				#region Retrieve and analyze data for processing
+				curAppointedOfficialCode = "";
+                if ( idxApptdOfficial > 0 ) {
+					curAppointedOfficialCode = inputCols[idxApptdOfficial].Trim();
+				}
+
+				//OF in age group indicates an official for the current tournament
+				if ( inputCols[idxAgeGroup].Length > 1 ) {
                     Gender = myTourEventReg.getGenderOfAgeDiv( inputCols[idxAgeGroup].ToUpper() );
                 } else {
                     Gender = "";
@@ -1014,23 +887,29 @@ namespace WaterskiScoringSystem.Tools {
                 if ( idxMemberStatus > 0 ) {
                     if ( inputCols[idxMemberStatus].ToLower().Trim().Equals( "yes" ) ) {
                         MemberStatus = "Active";
-                        ExpireDate = "12/31/" + System.DateTime.Now.Year.ToString();
-                    } else if ( inputCols[idxMemberStatus].ToLower().Trim().Equals( "no" ) ) {
+						ExpireDate = inputCols[idxExpireDate];
+
+					} else if ( inputCols[idxMemberStatus].ToLower().Trim().Equals( "no" ) ) {
                         MemberStatus = "Inactive";
-                        ExpireDate = "12/31/" + ( System.DateTime.Now.Year - 1 ).ToString();
-                    } else if ( inputCols[idxMemberStatus] == null ) {
+                        ExpireDate = inputCols[idxExpireDate];
+
+					} else if ( inputCols[idxMemberStatus] == null ) {
                         MemberStatus = "";
                         ExpireDate = "";
-                    } else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "ok to ski" ) > -1 ) {
+
+					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "ok to ski" ) > -1 ) {
                         MemberStatus = "Active";
-                        ExpireDate = "12/31/" + System.DateTime.Now.Year.ToString();
-                    } else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "pre-reg" ) > -1 ) {
+						ExpireDate = inputCols[idxExpireDate];
+
+					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "pre-reg" ) > -1 ) {
                         MemberStatus = "Active";
-                        ExpireDate = "12/31/" + System.DateTime.Now.Year.ToString();
-                    } else if (inputCols[idxMemberStatus].ToLower().IndexOf( "nds evt wvr" ) > -1) {
+						ExpireDate = inputCols[idxExpireDate];
+
+					} else if (inputCols[idxMemberStatus].ToLower().IndexOf( "nds evt wvr" ) > -1) {
                         MemberStatus = "Active";
-                        ExpireDate = "12/31/" + System.DateTime.Now.Year.ToString();
-                    } else {
+						ExpireDate = inputCols[idxExpireDate];
+
+					} else {
                         if (inNcwsa) {
                             if (inputCols[idxEventSlalom].Length > 0 || inputCols[idxEventTrick].Length > 0 || inputCols[idxEventJump].Length > 0) {
                                 MemberStatus = "Active";
@@ -1041,10 +920,11 @@ namespace WaterskiScoringSystem.Tools {
                             }
                         } else {
                             MemberStatus = inputCols[idxMemberStatus];
-                            ExpireDate = "";
-                        }
-                    }
-                } else {
+							ExpireDate = inputCols[idxExpireDate];
+						}
+					}
+
+				} else {
                     if (inNcwsa) {
                         if (inputCols[idxEventSlalom].Length > 0 || inputCols[idxEventTrick].Length > 0 || inputCols[idxEventJump].Length > 0) {
                             MemberStatus = "Active";
@@ -1058,16 +938,17 @@ namespace WaterskiScoringSystem.Tools {
                         ExpireDate = "";
                     }
                 }
-                if (MemberStatus.Length > 12) MemberStatus = MemberStatus.Substring( 0, 12 );
+
+				if (MemberStatus.Length > 12) MemberStatus = MemberStatus.Substring( 0, 12 );
                 try {
                     if ( idxNote > 0 && idxNote < inputCols.Length ) {
                         if ( inputCols[idxNote] == null ) {
                             curNote = "";
                         } else {
                             curNote = stringReplace(inputCols[idxNote], mySingleQuoteDelim, "''");
-                            if ( idxNote2 > 0 && idxNote2 < inputCols.Length ) {
-                                if ( inputCols[idxNote2] != null ) {
-                                    curNote += " " + inputCols[idxNote2];
+                            if ( idxUpgradeAmt > 0 && idxUpgradeAmt < inputCols.Length ) {
+                                if ( inputCols[idxUpgradeAmt] != null ) {
+                                    curNote += " " + inputCols[idxUpgradeAmt];
                                 }
                             }
                         }
@@ -1077,277 +958,49 @@ namespace WaterskiScoringSystem.Tools {
                 } catch {
                     curNote = "";
                 }
-                #endregion
-                myCountMemberInput++;
-                myProgressInfo.setProgessMsg("Processing " + inputCols[idxFirstName] + " " + inputCols[idxLastName]);
-                myProgressInfo.Refresh();
-                if ( newMember ) {
-                    #region Insert new member to databse
-                    sqlStmt.CommandText = "Insert MemberList ("
-                        + "MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, MemberStatus"
-                        + ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating"
-                        + ", DriverSlalomRating, DriverTrickRating, DriverJumpRating"
-                        + ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating"
-                        + ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating"
-                        + ", Note, MemberExpireDate, InsertDate, UpdateDate"
-                        + ") Values ("
-                        + "'" + MemberId + "'"
-                        + ", '" + inputCols[idxLastName] + "'"
-                        +", '" + inputCols[idxFirstName] + "'"
-                        + ", " + SkiYearAge
-                        + ", '" + Gender + "'"
-                        + ", '" + inputCols[idxCity] + "'"
-                        + ", '" + inputCols[idxState] + "'"
-                        + ", '" + MemberStatus + "'"
-                        + ", '" + JudgeSlalomRating + "'"
-                        + ", '" + JudgeTrickRating + "'"
-                        + ", '" + JudgeJumpRating + "'"
-                        + ", '" + DriverSlalomRating + "'"
-                        + ", '" + DriverTrickRating + "'"
-                        + ", '" + DriverJumpRating + "'"
-                        + ", '" + ScorerSlalomRating + "'"
-                        + ", '" + ScorerTrickRating + "'"
-                        + ", '" + ScorerJumpRating + "'"
-                        + ", '" + SafetyOfficialRating + "'"
-                        + ", '" + TechOfficialRating + "'"
-                        + ", '" + AnncrOfficialRating + "'"
-                        + ", '" + curNote + "'"
-                        + ", '" + ExpireDate + "'"
-                        + ", getdate(), getdate() )";
-                    int rowsProc = sqlStmt.ExecuteNonQuery();
-                    myCountMemberAdded++;
-                    #endregion
-                } else {
-                    //Update member record if last update date is older than file date
-                    //if ( curFileDate > lastRecModDate ) {
-                    //}
-                    #region Update member data
-                    sqlStmt.CommandText = "Update MemberList "
-                        + " Set LastName = '" + inputCols[idxLastName] + "'"
-                        + ", FirstName = '" + inputCols[idxFirstName] + "'"
-                        + ", SkiYearAge = " + SkiYearAge
-                        + ", City = '" + inputCols[idxCity] + "'"
-                        + ", State = '" + inputCols[idxState] + "'"
-                        + ", MemberStatus = '" + MemberStatus + "'"
-                        + ", Note = '" + curNote + "'"
-                        + ", MemberExpireDate = '" + ExpireDate + "'"
-                        + ", UpdateDate = getdate()"
-                        + " Where MemberId = '" + MemberId + "'";
-                    int rowsProc = sqlStmt.ExecuteNonQuery();
-                    myCountMemberUpdate++;
+				#endregion
 
-                    //Update member record for officials ratings
-                    sqlStmt.CommandText = "Update MemberList "
-                        + " Set JudgeSlalomRating = '" + JudgeSlalomRating + "'"
-                        + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				#region Insert or update member record and update offical ratings
+				Dictionary<string, object> curOfficalEntry = new Dictionary<string, object>();
+				// inputCols[idxMemberId] + " " + inputCols[idxFirstName] + " " + inputCols[idxLastName]
+				curOfficalEntry.Add( "MemberID", MemberId );
+				curOfficalEntry.Add( "FirstName", inputCols[idxFirstName] );
+				curOfficalEntry.Add( "LastName", inputCols[idxLastName] );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set JudgeTrickRating = '" + JudgeTrickRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				curOfficalEntry.Add( "Federation", "USA" );
+				curOfficalEntry.Add( "MembershipTypeCode", 0 );
+				curOfficalEntry.Add( "ActiveMember", MemberStatus );
+				curOfficalEntry.Add( "MemTypeDesc", "" );
+				curOfficalEntry.Add( "Gender", Gender );
+				curOfficalEntry.Add( "City", inputCols[idxCity] );
+				curOfficalEntry.Add( "State", inputCols[idxState] );
+				curOfficalEntry.Add( "Age", int.Parse( SkiYearAge ) );
+				curOfficalEntry.Add( "EffTo", ExpireDate );
+				curOfficalEntry.Add( "Note", curNote );
+				curOfficalEntry.Add( "CanSki", true );
+				curOfficalEntry.Add( "CanSkiGR", true );
+				curOfficalEntry.Add( "Waiver", 0 );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set JudgeJumpRating = '" + JudgeJumpRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				curOfficalEntry.Add( "JudgeSlalom", inputCols[idxJudgeSlalomRating] );
+				curOfficalEntry.Add( "JudgeTrick", inputCols[idxJudgeTrickRating] );
+				curOfficalEntry.Add( "JudgeJump", inputCols[idxJudgeJumpRating] );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                        + " Set DriverSlalomRating = '" + DriverSlalomRating + "'"
-                        + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				curOfficalEntry.Add( "DriverSlalom", inputCols[idxDriverSlalomRating] );
+				curOfficalEntry.Add( "DriverTrick", inputCols[idxDriverTrickRating] );
+				curOfficalEntry.Add( "DriverJump", inputCols[idxDriverJumpRating] );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                        + " Set DriverTrickRating = '" + DriverTrickRating + "'"
-                        + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				curOfficalEntry.Add( "ScorerSlalom", inputCols[idxScorerSlalomRating] );
+				curOfficalEntry.Add( "ScorerTrick", inputCols[idxScorerTrickRating] );
+				curOfficalEntry.Add( "ScorerJump", inputCols[idxScorerJumpRating] );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                        + " Set DriverJumpRating = '" + DriverJumpRating + "'"
-                        + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				curOfficalEntry.Add( "Safety", inputCols[idxSafetyRating] );
+				curOfficalEntry.Add( "TechController", inputCols[idxTechCntlrRating] );
 
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set ScorerSlalomRating = '" + ScorerSlalomRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
+				myImportOfficialRatings.importMembersAndRating( curOfficalEntry );
+				#endregion
 
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set ScorerTrickRating = '" + ScorerTrickRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
-
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set ScorerJumpRating = '" + ScorerJumpRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
-
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set SafetyOfficialRating = '" + SafetyOfficialRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
-
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set TechOfficialRating = '" + TechOfficialRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
-
-                    sqlStmt.CommandText = "Update MemberList "
-                            + " Set AnncrOfficialRating = '" + AnncrOfficialRating + "'"
-                            + " Where MemberId = '" + MemberId + "'";
-                    rowsProc = sqlStmt.ExecuteNonQuery();
-                    
-                    //Update officials ratings in OfficialsWork record for current tournament if available
-                    String newOfficaValue = null;
-                    curOfficalRatingsRow = null;
-                    curSqlStmt = "Select DISTINCT "
-                        + "JudgeSlalomList.CodeValue AS JudgeSlalomRating, OfficialWork.JudgeSlalomRating AS owJudgeSlalomRating"
-                        + ", JudgeTrickList.CodeValue AS JudgeTrickRating, OfficialWork.JudgeTrickRating AS owJudgeTrickRating"
-                        + ", JudgeJumpList.CodeValue AS JudgeJumpRating, OfficialWork.JudgeJumpRating AS owJudgeJumpRating"
-                        + ", DriverSlalomList.CodeValue AS DriverSlalomRating, OfficialWork.DriverSlalomRating AS owDriverSlalomRating"
-                        + ", DriverTrickList.CodeValue AS DriverTrickRating, OfficialWork.DriverTrickRating AS owDriverTrickRating"
-                        + ", DriverJumpList.CodeValue AS DriverJumpRating, OfficialWork.DriverJumpRating AS owDriverJumpRating"
-                        + ", ScoreSlalomList.CodeValue AS ScorerSlalomRating, OfficialWork.ScorerSlalomRating AS owScorerSlalomRating"
-                        + ", ScoreTrickList.CodeValue AS ScorerTrickRating, OfficialWork.ScorerTrickRating AS owScorerTrickRating"
-                        + ", ScoreJumpList.CodeValue AS ScorerJumpRating, OfficialWork.ScorerJumpRating AS owScorerJumpRating"
-                        + ", SafetyList.CodeValue AS SafetyOfficialRating, OfficialWork.SafetyOfficialRating AS owSafetyOfficialRating"
-                        + ", TechList.CodeValue AS TechOfficialRating, OfficialWork.TechOfficialRating AS owTechOfficialRating"
-                        + ", AnncrList.CodeValue AS AnncrOfficialRating, OfficialWork.AnncrOfficialRating AS owAnncrOfficialRating "
-                        + "From TourReg "
-                        + "  INNER JOIN OfficialWork ON TourReg.MemberId = OfficialWork.MemberId AND TourReg.SanctionId = OfficialWork.SanctionId"
-                        + "  LEFT OUTER JOIN MemberList ON MemberList.MemberId = TourReg.MemberId"
-                        + "  LEFT OUTER JOIN CodeValueList AS JudgeSlalomList ON MemberList.JudgeSlalomRating = JudgeSlalomList.ListCode AND JudgeSlalomList.ListName = 'JudgeRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS JudgeTrickList ON MemberList.JudgeSlalomRating = JudgeTrickList.ListCode AND JudgeTrickList.ListName = 'JudgeRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS JudgeJumpList ON MemberList.JudgeSlalomRating = JudgeJumpList.ListCode AND JudgeJumpList.ListName = 'JudgeRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS DriverSlalomList ON MemberList.DriverSlalomRating = DriverSlalomList.ListCode AND DriverSlalomList.ListName = 'DriverRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS DriverTrickList ON MemberList.DriverSlalomRating = DriverTrickList.ListCode AND DriverTrickList.ListName = 'DriverRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS DriverJumpList ON MemberList.DriverSlalomRating = DriverJumpList.ListCode AND DriverJumpList.ListName = 'DriverRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS ScoreSlalomList ON MemberList.ScorerSlalomRating = ScoreSlalomList.ListCode AND ScoreSlalomList.ListName = 'ScorerRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS ScoreTrickList ON MemberList.ScorerSlalomRating = ScoreTrickList.ListCode AND ScoreTrickList.ListName = 'ScorerRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS ScoreJumpList ON MemberList.ScorerSlalomRating = ScoreJumpList.ListCode AND ScoreJumpList.ListName = 'ScorerRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS SafetyList ON MemberList.SafetyOfficialRating = SafetyList.ListCode AND SafetyList.ListName = 'SafetyRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS TechList ON MemberList.TechOfficialRating = TechList.ListCode AND TechList.ListName = 'TechRating' "
-                        + "  LEFT OUTER JOIN CodeValueList AS AnncrList ON MemberList.AnncrOfficialRating = AnncrList.ListCode AND AnncrList.ListName = 'AnnouncerRating' "
-                        + " Where TourReg.SanctionId = '" + mySanctionNum + "' And TourReg.MemberId = '" + MemberId + "'";
-
-                    curDataTable = getData( curSqlStmt );
-                    if ( curDataTable.Rows.Count > 0 ) {
-                        curOfficalRatingsRow = curDataTable.Rows[0];
-                    }
-
-                    if ( curOfficalRatingsRow != null ) {
-                        newOfficaValue = getOfficalRatingValue ( curOfficalRatingsRow, "JudgeSlalomRating", "owJudgeSlalomRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set JudgeSlalomRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if ( curOfficalRatingsRow != null ) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "JudgeTrickRating", "owJudgeTrickRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set JudgeTrickRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if ( curOfficalRatingsRow != null ) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "JudgeJumpRating", "owJudgeJumpRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set JudgeJumpRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "DriverSlalomRating", "owDriverSlalomRating" );
-                        if (newOfficaValue != null) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set DriverSlalomRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "DriverTrickRating", "owDriverTrickRating" );
-                        if (newOfficaValue != null) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set DriverTrickRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "DriverJumpRating", "owDriverJumpRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set DriverJumpRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "ScorerSlalomRating", "owScorerSlalomRating" );
-                        if (newOfficaValue != null) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set ScorerSlalomRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "ScorerTrickRating", "owScorerTrickRating" );
-                        if (newOfficaValue != null) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set ScorerTrickRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "ScorerJumpRating", "owScorerJumpRating" );
-                        if (newOfficaValue != null) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set ScorerJumpRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if (curOfficalRatingsRow != null) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "SafetyOfficialRating", "owSafetyOfficialRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set SafetyOfficialRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if ( curOfficalRatingsRow != null ) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "TechOfficialRating", "owTechOfficialRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set TechOfficialRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    if ( curOfficalRatingsRow != null ) {
-                        newOfficaValue = getOfficalRatingValue( curOfficalRatingsRow, "AnncrOfficialRating", "owAnncrOfficialRating" );
-                        if ( newOfficaValue != null ) {
-                            sqlStmt.CommandText = "Update OfficialWork "
-                                + "Set AnncrOfficialRating = " + newOfficaValue + " "
-                                + "Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + MemberId + "'";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
-                    #endregion
-                }
-
-                #region Insert or update skier slalom ranking data
-                if ( idxSlalomRank > 0 ) {
+				#region Insert or update skier slalom ranking data
+				if ( idxSlalomRank > 0 ) {
                     curScore = inputCols[idxSlalomRank];
                     if ( curScore.Length > 1 ) {
                         if ( Decimal.TryParse( curScore, out numDecCk ) ) {
@@ -1358,17 +1011,18 @@ namespace WaterskiScoringSystem.Tools {
                             curSqlStmt = "Select PK from SkierRanking "
                                 + "Where MemberId = '" + MemberId + "' "
                                 + "  And Event = '" + curEvent + "'";
-                            curDataTable = getData( curSqlStmt );
-                            if ( curDataTable.Rows.Count > 0 ) {
+							curDataTable = DataAccess.getDataTable( curSqlStmt );
+							if ( curDataTable.Rows.Count > 0 ) {
                                 rankingPK = (Int64)curDataTable.Rows[0]["PK"];
-                                sqlStmt.CommandText = "Update SkierRanking "
+                                curSqlStmt = "Update SkierRanking "
                                     + " Set Score = " + curSlalom.ToString()
                                     + ", Rating = '" + inputCols[idxSlalomRating] + "'"
                                     + ", AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + " Where PK = " + rankingPK;
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            } else {
-                                sqlStmt.CommandText = "Insert SkierRanking ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+							} else {
+                                curSqlStmt = "Insert SkierRanking ("
                                     + "MemberId, Event, Notes, SeqNum, Score, Rating, AgeGroup"
                                     + ") Values ("
                                     + "'" + MemberId + "'"
@@ -1377,17 +1031,17 @@ namespace WaterskiScoringSystem.Tools {
                                     + ", '" + inputCols[idxSlalomRating] + "'"
                                     + ", '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + ")";
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            }
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+							}
 
-                            sqlStmt.CommandText = "Update EventReg "
+							curSqlStmt = "Update EventReg "
                                 + " Set RankingScore = " + curSlalom.ToString()
                                 + ", RankingRating = '" + inputCols[idxSlalomRating] + "'"
                                 + " Where SanctionId = '" + mySanctionNum + "'"
                                 + "   And MemberId = '" + MemberId + "'"
                                 + "   And AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                 + "   And Event = '" + curEvent + "'";
-                            int rowsUpdated = sqlStmt.ExecuteNonQuery();
+							rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
                         }
                     }
                 }
@@ -1406,17 +1060,18 @@ namespace WaterskiScoringSystem.Tools {
                             curSqlStmt = "Select PK from SkierRanking "
                                 + "Where MemberId = '" + MemberId + "' "
                                 + "  And Event = '" + curEvent + "'";
-                            curDataTable = getData( curSqlStmt );
-                            if ( curDataTable.Rows.Count > 0 ) {
+							curDataTable = DataAccess.getDataTable( curSqlStmt );
+							if ( curDataTable.Rows.Count > 0 ) {
                                 rankingPK = (Int64)curDataTable.Rows[0]["PK"];
-                                sqlStmt.CommandText = "Update SkierRanking "
+                                curSqlStmt = "Update SkierRanking "
                                     + " Set Score = " + curTrick.ToString()
                                     + ", Rating = '" + inputCols[idxTrickRating] + "'"
                                     + ", AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + " Where PK = " + rankingPK;
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            } else {
-                                sqlStmt.CommandText = "Insert SkierRanking ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+							} else {
+                                curSqlStmt = "Insert SkierRanking ("
                                     + "MemberId, Event, Notes, SeqNum, Score, Rating, AgeGroup"
                                     + ") Values ("
                                     + "'" + MemberId + "'"
@@ -1425,18 +1080,19 @@ namespace WaterskiScoringSystem.Tools {
                                     + ", '" + inputCols[idxTrickRating] + "'"
                                     + ", '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + ")";
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            }
-                            sqlStmt.CommandText = "Update EventReg "
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+							}
+
+							curSqlStmt = "Update EventReg "
                                 + " Set RankingScore = " + curTrick.ToString()
                                 + ", RankingRating = '" + inputCols[idxSlalomRating] + "'"
                                 + " Where SanctionId = '" + mySanctionNum + "'"
                                 + "   And MemberId = '" + MemberId + "'"
                                 + "   And AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                 + "   And Event = '" + curEvent + "'";
-                            int rowsUpdated = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
+							rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+						}
+					}
                 }
                 #endregion
 
@@ -1453,17 +1109,18 @@ namespace WaterskiScoringSystem.Tools {
                             curSqlStmt = "Select PK from SkierRanking "
                                 + "Where MemberId = '" + MemberId + "' "
                                 + "  And Event = '" + curEvent + "'";
-                            curDataTable = getData( curSqlStmt );
-                            if ( curDataTable.Rows.Count > 0 ) {
+							curDataTable = DataAccess.getDataTable( curSqlStmt );
+							if ( curDataTable.Rows.Count > 0 ) {
                                 rankingPK = (Int64)curDataTable.Rows[0]["PK"];
-                                sqlStmt.CommandText = "Update SkierRanking "
+                                curSqlStmt = "Update SkierRanking "
                                     + " Set Score = " + curJump.ToString()
                                     + ", Rating = '" + inputCols[idxJumpRating] + "'"
                                     + ", AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + " Where PK = " + rankingPK;
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            } else {
-                                sqlStmt.CommandText = "Insert SkierRanking ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+							} else {
+                                curSqlStmt = "Insert SkierRanking ("
                                     + "MemberId, Event, Notes, SeqNum, Score, Rating, AgeGroup"
                                     + ") Values ("
                                     + "'" + MemberId + "'"
@@ -1472,18 +1129,18 @@ namespace WaterskiScoringSystem.Tools {
                                     + ", '" + inputCols[idxJumpRating] + "'"
                                     + ", '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                     + ")";
-                                int rowsProc = sqlStmt.ExecuteNonQuery();
-                            }
-                            sqlStmt.CommandText = "Update EventReg "
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+							}
+							curSqlStmt = "Update EventReg "
                                 + " Set RankingScore = " + curJump.ToString()
                                 + ", RankingRating = '" + inputCols[idxSlalomRating] + "'"
                                 + " Where SanctionId = '" + mySanctionNum + "'"
                                 + "   And MemberId = '" + MemberId + "'"
                                 + "   And AgeGroup = '" + inputCols[idxAgeGroup].ToUpper() + "'"
                                 + "   And Event = '" + curEvent + "'";
-                            int rowsUpdated = sqlStmt.ExecuteNonQuery();
-                        }
-                    }
+							rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+						}
+					}
                 }
                 #endregion
 
@@ -1549,7 +1206,8 @@ namespace WaterskiScoringSystem.Tools {
                 if ( inputCols[idxAgeGroup].ToLower().Equals( "of" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
-                } else {
+
+				} else {
                     if ( inputCols[idxTeam].ToLower().Equals( "off" ) ) {
                         curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                         if ( curReqstStatus ) myCountTourRegAdded++;
@@ -1581,7 +1239,8 @@ namespace WaterskiScoringSystem.Tools {
                             if ( curReqstStatus ) myCountSlalomAdded++;
                         }
                     }
-                    if ( inputCols[idxEventTrick].Trim().Length > 0 ) {
+
+					if ( inputCols[idxEventTrick].Trim().Length > 0 ) {
                         curEventGroup = inputCols[idxEventTrick];
                         if ( inTourReg ) {
                             try {
@@ -1608,7 +1267,8 @@ namespace WaterskiScoringSystem.Tools {
                             if ( curReqstStatus ) myCountTrickAdded++;
                         }
                     }
-                    if ( inputCols[idxEventJump].Trim().Length > 0 ) {
+
+					if ( inputCols[idxEventJump].Trim().Length > 0 ) {
                         curEventGroup = inputCols[idxEventJump];
                         if ( inputCols[idxAgeGroup].ToUpper().Equals( "B1" )
                             || inputCols[idxAgeGroup].ToUpper().Equals( "G1" ) ) {
@@ -1640,78 +1300,109 @@ namespace WaterskiScoringSystem.Tools {
                             }
                         }
                     }
-                    if ( inputCols[idxTeam].Length > 0 ) {
+
+					if ( inputCols[idxTeam].Length > 0 ) {
                         if ( !(inNcwsa) ) {
                             string[] curTeamHeaderCols = { "TeamHeader", inputCols[idxTeam], "", inputCols[idxTeam] };
-                            procTeamHeaderInput( sqlStmt, curTeamHeaderCols, inNcwsa );
+                            procTeamHeaderInput( curTeamHeaderCols, inNcwsa );
                         }
 
                     }
                 }
 
-                if ( curOfficialRating.Equals( "CJ" ) ) {
+				/*
+				 * Mark officials that are indicated as the chief, assistant chief, or appointed official ratings
+				*/
+				if ( curAppointedOfficialCode.Equals( "CJ" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "JudgeChief" );
-                } else if ( curOfficialRating.Equals( "ACJ" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "ACJ" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "JudgeAsstChief" );
-                } else if ( curOfficialRating.Equals( "CD" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "APTJ" ) ) {
+					curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
+					if ( curReqstStatus ) myCountTourRegAdded++;
+					curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "JudgeAppointed" );
+
+				} else if ( curAppointedOfficialCode.Equals( "CD" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "DriverChief" );
-                } else if ( curOfficialRating.Equals( "ACD" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "ACD" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "DriverAsstChief" );
-                } else if ( curOfficialRating.Equals( "CC" )) {
+
+				} else if ( curAppointedOfficialCode.Equals( "APTD" ) ) {
+					curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
+					if ( curReqstStatus ) myCountTourRegAdded++;
+					curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "DriverAppointed" );
+
+				} else if ( curAppointedOfficialCode.Equals( "CC" )) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "ScoreChief" );
-                } else if ( curOfficialRating.Equals( "ACC" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "ACC" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "ScoreAsstChief" );
-                } else if ( curOfficialRating.Equals( "CS" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "APTS" ) ) {
+					curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
+					if ( curReqstStatus ) myCountTourRegAdded++;
+					curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "ScoreAppointed" );
+
+				} else if ( curAppointedOfficialCode.Equals( "CS" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "SafetyChief" );
-                } else if ( curOfficialRating.Equals( "ACS" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "ACS" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "SafetyAsstChief" );
-                } else if (curOfficialRating.Equals("CT")) {
+
+				} else if ( curAppointedOfficialCode.Equals("CT")) {
                     curReqstStatus = myTourEventReg.addTourReg(MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight);
                     if (curReqstStatus) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial(MemberId, "TechChief");
-                } else if (curOfficialRating.Equals("ACT")) {
+
+				} else if ( curAppointedOfficialCode.Equals("ACT")) {
                     curReqstStatus = myTourEventReg.addTourReg(MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight);
                     if (curReqstStatus) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial(MemberId, "TechAsstChief");
-                } else if ( curOfficialRating.Equals( "CA" ) ) {
+
+				} else if ( curAppointedOfficialCode.Equals( "CA" ) ) {
                     curReqstStatus = myTourEventReg.addTourReg( MemberId, inPreRegNote, inputCols[idxAgeGroup].ToUpper(), curTrickBoat, curJumpHeight );
                     if ( curReqstStatus ) myCountTourRegAdded++;
                     curReqstStatus = myTourEventReg.addEventOfficial( MemberId, "AnncrChief" );
                 }
 
-                #endregion
+				#endregion
 
-            } catch ( Exception ex ) {
+				return true;
+
+			} catch ( Exception ex ) {
                 String ExcpMsg = "Error Processing Member "
                     + inputCols[idxMemberId] + " " + inputCols[idxFirstName] + " " + inputCols[idxLastName]
                     + "\n\n " + ex.Message;
                 /*
                 if ( sqlStmt != null ) {
-                    ExcpMsg += "\n\n SQL Statement: " + sqlStmt.CommandText;
+                    ExcpMsg += "\n\n SQL Statement: " + curSqlStmt;
                 }
                  */
                 MessageBox.Show( ExcpMsg );
+				return false;
             }
-            return true;
         }
 
-        private bool procTeamHeaderInput( SqlCeCommand sqlStmt, string[] inputCols, bool inNcwsa ) {
+        private bool procTeamHeaderInput( string[] inputCols, bool inNcwsa ) {
             bool curReturnValue = false;
             String curSqlStmt = "", curTeamName = "", curTeamCode = "", curAgeGroup= "";
              
@@ -1755,40 +1446,41 @@ namespace WaterskiScoringSystem.Tools {
                                 }
                             }
                         }
-                        #endregion
+						#endregion
 
-                        curSqlStmt = "Select PK from TeamList "
+						curSqlStmt = "Select PK from TeamList " 
                             + "Where SanctionId = '" + mySanctionNum + "' "
                             + "  And TeamCode = '" + curTeamCode + "'";
-                        curDataTable = getData( curSqlStmt );
-                        if ( curDataTable.Rows.Count > 0 ) {
+						curDataTable = DataAccess.getDataTable( curSqlStmt );
+						if ( curDataTable.Rows.Count > 0 ) {
                             if ( inputCols.Length > 4 ) {
                                 #region Update team information if a division or group is provided
                                 curTeamPK = (Int64)curDataTable.Rows[0]["PK"];
-                                sqlStmt.CommandText = "Update TeamList "
+								curSqlStmt = "Update TeamList "
                                     + "Set Name = '" + curTeamName + "'"
                                     + ", LastUpdateDate = getdate() "
                                     + "Where PK = " + curTeamPK;
-                                rowsProc = sqlStmt.ExecuteNonQuery();
+                                rowsProc = DataAccess.ExecuteCommand( curSqlStmt);
 
                                 curSqlStmt = "Select PK from TeamOrder "
                                     + "Where SanctionId = '" + mySanctionNum + "' "
                                     + "  And TeamCode = '" + curTeamCode + "'"
                                     + "  And ( AgeGroup = '" + curAgeGroup + "' OR EventGroup = '" + curAgeGroup + "')";
-                                curDataTable = getData( curSqlStmt );
+								curDataTable = DataAccess.getDataTable( curSqlStmt );
                                 if ( curDataTable.Rows.Count > 0 ) {
                                     curOrderPK = (Int64)curDataTable.Rows[0]["PK"];
-                                    sqlStmt.CommandText = "Update TeamOrder "
+									curSqlStmt = "Update TeamOrder "
                                         + "Set SlalomRunOrder = " + curTeamSlalomRunOrder + " "
                                         + ", TrickRunOrder = " + curTeamTrickRunOrder + " "
                                         + ", JumpRunOrder = " + curTeamJumpRunOrder + " "
                                         + "Where PK = " + curOrderPK;
-                                    rowsProc = sqlStmt.ExecuteNonQuery();
-                                    if ( rowsProc > 0 ) curReturnValue = true;
-                                } else {
+									rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+									if ( rowsProc > 0 ) curReturnValue = true;
+
+								} else {
                                     // myAgeDivList.validAgeDiv(inAgeDiv);
                                     if (curAgeGroup.ToUpper().Equals( "M" ) || curAgeGroup.ToUpper().Equals( "W" )) {
-                                        sqlStmt.CommandText = "Insert TeamOrder ("
+										curSqlStmt = "Insert TeamOrder ("
                                             + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                             + ") Values ("
                                             + "'" + mySanctionNum + "'"
@@ -1800,7 +1492,7 @@ namespace WaterskiScoringSystem.Tools {
                                             + ", getdate()"
                                             + ")";
                                     } else {
-                                        sqlStmt.CommandText = "Insert TeamOrder ("
+										curSqlStmt = "Insert TeamOrder ("
                                             + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                             + ") Values ("
                                             + "'" + mySanctionNum + "'"
@@ -1812,13 +1504,13 @@ namespace WaterskiScoringSystem.Tools {
                                             + ", getdate()"
                                             + ")";
                                     }
-                                    rowsProc = sqlStmt.ExecuteNonQuery();
-                                    if ( rowsProc > 0 ) curReturnValue = true;
+									rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+									if ( rowsProc > 0 ) curReturnValue = true;
                                 }
                                 #endregion
                             }
                         } else {
-                            sqlStmt.CommandText = "Insert TeamList ("
+							curSqlStmt = "Insert TeamList ("
                                 + "SanctionId, Name, TeamCode, LastUpdateDate"
                                 + ") Values ("
                                 + "'" + mySanctionNum + "'"
@@ -1826,42 +1518,46 @@ namespace WaterskiScoringSystem.Tools {
                                 + ", '" + curTeamCode + "'"
                                 + ", getdate()"
                                 + ")";
-                            rowsProc = sqlStmt.ExecuteNonQuery();
+							rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
 
-                            if (inNcwsa && ( curAgeGroup.ToUpper().Equals( "CM" ) || curAgeGroup.ToUpper().Equals( "CW" ) )) {
-                                sqlStmt.CommandText = "Insert TeamOrder ("
+							if ( inNcwsa && ( curAgeGroup.ToUpper().Equals( "CM" ) || curAgeGroup.ToUpper().Equals( "CW" ) )) {
+                                curSqlStmt = "Insert TeamOrder ("
                                     + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                     + ") Values ("
                                     + "'" + mySanctionNum + "', '" + curTeamCode + "', 'CM', ''"
                                     + ", " + curTeamSlalomRunOrder + ", " + curTeamTrickRunOrder + ", " + curTeamJumpRunOrder
                                     + ", getdate())";
-                                rowsProc = sqlStmt.ExecuteNonQuery();
-                                sqlStmt.CommandText = "Insert TeamOrder ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+								curSqlStmt = "Insert TeamOrder ("
                                     + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                     + ") Values ("
                                     + "'" + mySanctionNum + "', '" + curTeamCode + "', 'CW', ''"
                                     + ", " + curTeamSlalomRunOrder + ", " + curTeamTrickRunOrder + ", " + curTeamJumpRunOrder
                                     + ", getdate())";
-                                rowsProc = sqlStmt.ExecuteNonQuery();
-                                sqlStmt.CommandText = "Insert TeamOrder ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+								curSqlStmt = "Insert TeamOrder ("
                                     + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                     + ") Values ("
                                     + "'" + mySanctionNum + "', '" + curTeamCode + "', 'BM', ''"
                                     + ", " + curTeamSlalomRunOrder + ", " + curTeamTrickRunOrder + ", " + curTeamJumpRunOrder
                                     + ", getdate())";
-                                rowsProc = sqlStmt.ExecuteNonQuery();
-                                sqlStmt.CommandText = "Insert TeamOrder ("
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+
+								curSqlStmt = "Insert TeamOrder ("
                                     + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                     + ") Values ("
                                     + "'" + mySanctionNum + "', '" + curTeamCode + "', 'BW', ''"
                                     + ", " + curTeamSlalomRunOrder + ", " + curTeamTrickRunOrder + ", " + curTeamJumpRunOrder
                                     + ", getdate())";
-                                rowsProc = sqlStmt.ExecuteNonQuery();
-                                if ( rowsProc > 0 ) curReturnValue = true;
-                            } else {
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+								if ( rowsProc > 0 ) curReturnValue = true;
+
+							} else {
                                 // myAgeDivList.validAgeDiv(inAgeDiv);
                                 if (curAgeGroup.ToUpper().Equals( "M" ) || curAgeGroup.ToUpper().Equals( "W" )) {
-                                    sqlStmt.CommandText = "Insert TeamOrder ("
+                                    curSqlStmt = "Insert TeamOrder ("
                                         + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                         + ") Values ("
                                         + "'" + mySanctionNum + "'"
@@ -1873,7 +1569,7 @@ namespace WaterskiScoringSystem.Tools {
                                         + ", getdate()"
                                         + ")";
                                 } else {
-                                    sqlStmt.CommandText = "Insert TeamOrder ("
+                                    curSqlStmt = "Insert TeamOrder ("
                                         + "SanctionId, TeamCode, AgeGroup, EventGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, LastUpdateDate"
                                         + ") Values ("
                                         + "'" + mySanctionNum + "'"
@@ -1885,8 +1581,8 @@ namespace WaterskiScoringSystem.Tools {
                                         + ", getdate()"
                                         + ")";
                                 }
-                                rowsProc = sqlStmt.ExecuteNonQuery();
-                                if ( rowsProc > 0 ) curReturnValue = true;
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+								if ( rowsProc > 0 ) curReturnValue = true;
                             }
                         }
                     }
@@ -1894,10 +1590,6 @@ namespace WaterskiScoringSystem.Tools {
             }
 
             return curReturnValue;
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 
         private ArrayList getImportFileList() {

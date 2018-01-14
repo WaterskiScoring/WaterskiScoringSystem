@@ -367,6 +367,16 @@ namespace WaterskiScoringSystem {
             myImportData.importData();
         }
 
+        private void navImportOfficialsData_Click( object sender, EventArgs e ) {
+            OfficialImport curForm = new OfficialImport();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
         private void navNopsCalculator_Click( object sender, EventArgs e ) {
             NopsCalcForm curForm = new NopsCalcForm();
             mdiStatusMsg.Text = curForm.Name + " opening";

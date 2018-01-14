@@ -436,11 +436,11 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22625	ClassTour	Q	4.000	16	Q - Cash Prize Non-Record			
 22626	ClassTour	$	6.000	17	Cash Prize			
 22647	DriverRating	 		1	Unrated			
-00000	DriverRating	T 		2	Trained			
-22648	DriverRating	A		3	Assistant			
-22649	DriverRating	R		4	Regular			
-22650	DriverRating	S		5	Senior			
-22651	DriverRating	E		6	Emeritus			
+00000	DriverRating	Trained 		2	Trained			
+22648	DriverRating	Assistant		3	Assistant			
+22649	DriverRating	Regular		4	Regular			
+22650	DriverRating	Senior		5	Senior			
+22651	DriverRating	Emeritus		6	Emeritus			
 22652	EndOfTourReports	F1		1	WWParm.TNY			Tournament parameter file
 22653	EndOfTourReports	F2		2	######-log.log			WSTIMS For Windows log file
 22655	EndOfTourReports	F4		4	######BT.prn			Boat time report
@@ -738,17 +738,17 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23422	IWWFSlalomMin	L3		43	40kph, 24mph	-5.000	40.000	
 23422	IWWFSlalomMin	L4		44	40kph, 24mph	-5.000	40.000	
 22718	JudgeRating	  		1	Unrated			
-22719	JudgeRating	A		2	Assistant			
-22720	JudgeRating	R		3	Regular			
-22721	JudgeRating	S		4	Senior			
-22722	JudgeRating	E		5	Emeritus			
-22723	JudgeRating	P		6	PanAm			
+22719	JudgeRating	Assistant		2	Assistant			
+22720	JudgeRating	Regular		3	Regular			
+22721	JudgeRating	Senior		4	Senior			
+22722	JudgeRating	Emeritus		5	Emeritus			
+22723	JudgeRating	PanAm		6	PanAm			
 22724	JumpBoatTime3Seg	57-R-52M		111	3.31	3.250	3.370	"57kph,35.4mph 52M Segment Record Tolerance"
 22725	JumpBoatTime3Seg	57-R-82M		112	5.18	5.110	5.250	"57kph,35.4mph 82M Segment Record Tolerance"
 22726	JumpBoatTime3Seg	57-R-41M		113	2.40	2.360	2.460	"57kph,35.4mph 41M Segment Record Tolerance"
 22727	JumpBoatTime3Seg	57-R-Balk		115	5.18	5.060	5.250	"57kph,35.4mph Balk Record Tolerance"
 22728	JumpBoatTime3Seg	57-R-41M-RTB		116	2.40	2.360	2.660	"57kph,35.4mph 41M Segment RTB Record Tolerance"
-22729	JumpBoatTime3Seg	54-R-52M		121	3.49	3.430	3.550	"54kph,33.6mph 52M Segment Record Tolerance"
+22729	JumpBoatTime3Seg	5-R-52M		121	3.49	3.430	3.550	"54kph,33.6mph 52M Segment Record Tolerance"
 22730	JumpBoatTime3Seg	54-R-82M		122	5.47	5.390	5.550	"54kph,33.6mph 82M Segment Record Tolerance"
 22731	JumpBoatTime3Seg	54-R-41M		123	2.59	2.540	2.660	"54kph,33.6mph 41M Segment Record Tolerance"
 22732	JumpBoatTime3Seg	54-R-Balk		125	5.47	5.340	5.550	"54kph,33.6mph Balk Record Tolerance"
@@ -946,16 +946,16 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22902	Rules	ncwsa		0	Collegiate			
 22903	Rules	iwwf		0	IWWF			
 22904	SafetyRating	 		1	Unrated			
-22905	SafetyRating	C		2	Coordinator			
-22906	SafetyRating	S		3	State			
-22907	SafetyRating	R		4	Regional			
-22908	SafetyRating	N		5	National			
-22909	SafetyRating	E		6	Emeritus			
+22905	SafetyRating	Coordinator		2	Coordinator			
+22906	SafetyRating	State		3	State			
+22907	SafetyRating	Regional		4	Regional			
+22908	SafetyRating	National		5	National			
+22909	SafetyRating	Emeritus		6	Emeritus			
 22910	ScorerRating	 		1	Unrated			
-22911	ScorerRating	A		2	Assistant			
-22912	ScorerRating	R		3	Regular			
-22913	ScorerRating	S		4	Senior			
-22914	ScorerRating	E		5	Emeritus			
+22911	ScorerRating	Assistant		2	Assistant			
+22912	ScorerRating	Regular		3	Regular			
+22913	ScorerRating	Senior		4	Senior			
+22914	ScorerRating	Emeritus		5	Emeritus			
 22915	SlalomBoatTime	58-C-0		1	1.68	1.640	1.710	Score 0 - 25 or .5
 22916	SlalomBoatTime	58-C-1		2	4.22	4.150	4.280	Score 1 - 1.25 or 1.5
 22917	SlalomBoatTime	58-C-2		3	6.77	6.670	6.840	Score 2 - 2.25 or 2.5
@@ -1412,10 +1412,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23368	TeamPlaceMethod	trials		3	AWSA Team Trials			
 23369	TeamPlaceMethod	ncwsa		4	NCWSA			
 23370	TechRating	 		1	Unrated			
-23371	TechRating	A		2	Assistant			
-23372	TechRating	R		3	Regular			
-23373	TechRating	S		4	Senior			
-23374	TechRating	E		5	Emeritus			
+23372	TechRating	Regular		3	Regular			
+23373	TechRating	Senior		4	Senior			
+23374	TechRating	Emeritus		5	Emeritus			
 23375	TotalCalcMethod	best		1	Best each event			
 23376	TotalCalcMethod	round		2	Best total round			
 23377	TotalCalcMethod	last		3	Last round			
