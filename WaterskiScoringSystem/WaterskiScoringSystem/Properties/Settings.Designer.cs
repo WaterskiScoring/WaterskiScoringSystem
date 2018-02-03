@@ -2231,5 +2231,41 @@ namespace WaterskiScoringSystem.Properties {
                 this["SlalomPassDetailExport_Location"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OfficialImport_Width {
+            get {
+                return ((int)(this["OfficialImport_Width"]));
+            }
+            set {
+                this["OfficialImport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OfficialImport_Height {
+            get {
+                return ((int)(this["OfficialImport_Height"]));
+            }
+            set {
+                this["OfficialImport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point OfficialImport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["OfficialImport_Location"]));
+            }
+            set {
+                this["OfficialImport_Location"] = value;
+            }
+        }
     }
 }

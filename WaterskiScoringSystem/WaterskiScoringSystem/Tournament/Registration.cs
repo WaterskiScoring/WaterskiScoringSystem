@@ -739,14 +739,18 @@ namespace WaterskiScoringSystem.Tournament {
                     bool curResults = removeRow(curViewRow);
                 }
                 loadTourRegView();
-                tourRegDataGridView.CurrentCell = tourRegDataGridView.Rows[myTourRegRowIdx].Cells["SkierName"];
-            } else {
+				if ( tourRegDataGridView.Rows.Count > 0 ) {
+					tourRegDataGridView.CurrentCell = tourRegDataGridView.Rows[myTourRegRowIdx].Cells["SkierName"];
+				}
+			} else {
                 bool curResults = removeRow(tourRegDataGridView.Rows[myTourRegRowIdx]);
                 if ( curResults ) {
                     loadTourRegView();
-                    tourRegDataGridView.CurrentCell = tourRegDataGridView.Rows[myTourRegRowIdx].Cells["SkierName"];
-                }
-            }
+					if ( tourRegDataGridView.Rows.Count > 0 ) {
+						tourRegDataGridView.CurrentCell = tourRegDataGridView.Rows[myTourRegRowIdx].Cells["SkierName"];
+					}
+				}
+			}
         }
 
         private void tourRegDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {

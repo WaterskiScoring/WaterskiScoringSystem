@@ -35,7 +35,7 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '04.13', 4.13, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '04.15', 4.15, 1";
 
                 if (myDatabaseVersion < 2.27M) {
                     MessageBox.Show( "The version on your database is very old or has been corrupted."
@@ -49,7 +49,7 @@ namespace WaterskiScoringSystem.Tools {
                 if ( myDatabaseVersion < curVersion ) {
                     copyDatabaseFile();
                 }
-                if (myDatabaseVersion < 4.10M ) {
+                if (myDatabaseVersion < 4.14M ) {
                     if (openDbConn()) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );
@@ -65,7 +65,7 @@ namespace WaterskiScoringSystem.Tools {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 4.12M ) {
+                if ( myDatabaseVersion < 4.15M ) {
                     if ( openDbConn() ) {
 
                         loadListValues();

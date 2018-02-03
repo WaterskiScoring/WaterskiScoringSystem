@@ -98,7 +98,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " FROM CodeValueList" );
                 curSqlStmt.Append( " WHERE ListName = 'ClassToEvent'" );
                 curSqlStmt.Append( " ORDER BY SortSeq" );
-                myClassToEventDataTable = getData( curSqlStmt.ToString() );
+				
+                myClassToEventDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
             if ( myClassToEventDataTable.Rows.Count == 0 ) {
                 curReturnValue = "C";
@@ -391,181 +392,173 @@ namespace WaterskiScoringSystem.Tournament {
         public bool addTourReg( String inMemberId, String inPreRegNote, String inAgeGroup, String inTrickBoat, String inJumpHeight ) {
             String curMethodName = "Tournament:TourEventReg:addTourReg";
             String curMsg = "";
-            Boolean returnStatus = false;
             String curReadyToSki = "", curReadyForPlcmt = "", curJumpHeight = "0", curFed = "", curCity = "", curState = "", curGender = "";
             String curFirstName = "", curLastName = "";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             Int16 curSkiYearAge = 0;
-            DataRow curMemberRow;
 
-            try {
-                if ( myTourRow == null ) {
-                    return false;
-                } else {
-                    if (getTourMemberRow( mySanctionNum, inMemberId, inAgeGroup ) == null) {
-                        #region Add skier to active tournament for the specified event but bypass if already registered for the event
-                        DataTable curMemberDataTable = getDataMember( inMemberId );
-                        if ( curMemberDataTable.Rows.Count > 0 ) {
-                            curMemberRow = curMemberDataTable.Rows[0];
-                            try {
-                                if ( ( (String)curMemberRow["MemberStatus"] ).ToLower().Equals( "active" ) ) {
-                                    curReadyToSki = "Y";
-                                } else {
-                                    curReadyToSki = "N";
-                                }
-                            } catch {
-                                curReadyToSki = "N";
-                            }
-                            curReadyForPlcmt = curReadyToSki;
+			try {
+				if ( myTourRow == null ) return false;
+				if ( getTourMemberRow( mySanctionNum, inMemberId, inAgeGroup ) != null ) return false;
 
-                            try {
-                                if ( inJumpHeight.Length == 0 ) {
-                                    curJumpHeight = "0";
-                                } else {
-                                    curJumpHeight = inJumpHeight;
-                                }
-                            } catch {
-                                curJumpHeight = "0";
-                            }
-                            try {
-                                curFed = (String)curMemberRow["Federation"];
-                            } catch {
-                                curFed = "";
-                            }
-                            try {
-                                curCity = (String)curMemberRow["City"];
-                            } catch {
-                                curCity = "";
-                            }
-                            try {
-                                curState = (String)curMemberRow["State"];
-                            } catch {
-                                curState = "";
-                            }
-                            try {
-                                curGender = (String)curMemberRow["Gender"];
-                            } catch {
-                                curGender = "";
-                            }
-                            try {
-                                curSkiYearAge = (Byte)curMemberRow["SkiYearAge"];
-                            } catch {
-                                curSkiYearAge = 0;
-                            }
-                            if ( curSkiYearAge < 1 ) {
-                                try {
-                                    Int16 curBirthYear = Convert.ToInt16( Convert.ToDateTime( curMemberRow["DateOfBirth"].ToString() ).ToString( "yy" ));
-                                    Int16 curTourYear = Convert.ToInt16( mySanctionNum.Substring( 0, 2 ) );
-                                    curTourYear += 100;
-                                    curSkiYearAge = Convert.ToInt16(curTourYear - curBirthYear);
-                                } catch {
-                                    curSkiYearAge = 0;
-                                }
-                            }
-                            try {
-                                curLastName = ((String)curMemberRow["LastName"]).Replace( "'", "''" );
-                            } catch {
-                                curLastName = "";
-                            }
-                            try {
-                                curFirstName = ((String)curMemberRow["FirstName"]).Replace( "'", "''" );
-                            } catch {
-                                curFirstName = "";
-                            }
-                            curSqlStmt = new StringBuilder( "" );
-                            curSqlStmt.Append( "Insert TourReg (" );
-                            curSqlStmt.Append(" MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight ");
-                            curSqlStmt.Append( " , Federation, Gender, City, State, SkiYearAge, Notes, LastUpdateDate" );
-                            curSqlStmt.Append( ") Values (" );
-                            curSqlStmt.Append( "'" + inMemberId + "'" );
-                            curSqlStmt.Append( ", '" + mySanctionNum + "'" );
-                            curSqlStmt.Append( ", '" + stringReplace(curLastName, mySingleQuoteDelim, "''") + ", " + stringReplace(curFirstName, mySingleQuoteDelim, "''") + "'" );
-                            curSqlStmt.Append( ", '" + inAgeGroup + "'" );
-                            curSqlStmt.Append( ", '" + curReadyToSki + "'" );
-                            curSqlStmt.Append(", '" + curReadyForPlcmt + "'");
-                            curSqlStmt.Append( ", '" + inTrickBoat + "'" );
-                            curSqlStmt.Append( ", " + curJumpHeight );
-                            curSqlStmt.Append( ", '" + curFed + "'" );
-                            curSqlStmt.Append( ", '" + curGender + "'" );
-                            curSqlStmt.Append( ", '" + stringReplace(curCity, mySingleQuoteDelim, "''") + "'" );
-                            curSqlStmt.Append( ", '" + curState + "'" );
-                            curSqlStmt.Append( ", " + curSkiYearAge );
-                            curSqlStmt.Append( ", '" + inPreRegNote + "'" );
-                            curSqlStmt.Append( ", getdate() )" );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                            Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				DataRow curMemberRow = getMemberRow( inMemberId );
+				if ( curMemberRow == null ) return false;
 
-                            DataRow curOfficialRow = getOfficialWorkRow( inMemberId );
-                            if (curOfficialRow == null) {
-                                curSqlStmt = new StringBuilder( "" );
-                                curSqlStmt.Append( "INSERT INTO OfficialWork " );
-                                curSqlStmt.Append( "(SanctionId, MemberId" );
-                                curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
-                                curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                                curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
-                                curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
-                                curSqlStmt.Append( ") SELECT Distinct " );
-                                curSqlStmt.Append( "  TourReg.SanctionId, TourReg.MemberId" );
-                                curSqlStmt.Append( ", JudgeSlalomList.CodeValue AS JudgeSlalomRatingDesc" );
-                                curSqlStmt.Append( ", JudgeTrickList.CodeValue AS JudgeTrickRatingDesc" );
-                                curSqlStmt.Append( ", JudgeJumpList.CodeValue AS JudgeJumpRatingDesc" );
-                                curSqlStmt.Append( ", ScorerSlalomList.CodeValue AS ScorerSlalomRatingDesc" );
-                                curSqlStmt.Append( ", ScorerTrickList.CodeValue AS ScorerTrickRatingDesc" );
-                                curSqlStmt.Append( ", ScorerJumpList.CodeValue AS ScorerJumpRatingDesc" );
-                                curSqlStmt.Append( ", DriverSlalomList.CodeValue AS DriverSlalomRatingDesc" );
-                                curSqlStmt.Append( ", DriverTrickList.CodeValue AS DriverTrickRatingDesc" );
-                                curSqlStmt.Append( ", DriverJumpList.CodeValue AS DriverJumpRatingDesc" );
-                                curSqlStmt.Append( ", SafetyList.CodeValue AS SafetyOfficialRatingDesc" );
-                                curSqlStmt.Append( ", TechList.CodeValue AS TechOfficialRatingDesc" );
-                                curSqlStmt.Append( ", AnncrList.CodeValue AS AnncrOfficialRatingDesc " );
-                                curSqlStmt.Append( "FROM TourReg " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN MemberList ON MemberList.MemberId = TourReg.MemberId  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS JudgeSlalomList ON MemberList.JudgeSlalomRating = JudgeSlalomList.ListCode AND JudgeSlalomList.ListName = 'JudgeRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS JudgeTrickList ON MemberList.JudgeTrickRating = JudgeTrickList.ListCode AND JudgeTrickList.ListName = 'JudgeRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS JudgeJumpList ON MemberList.JudgeJumpRating = JudgeJumpList.ListCode AND JudgeJumpList.ListName = 'JudgeRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS ScorerSlalomList ON MemberList.ScorerSlalomRating = ScorerSlalomList.ListCode AND ScorerSlalomList.ListName = 'ScorerRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS ScorerTrickList ON MemberList.ScorerTrickRating = ScorerTrickList.ListCode AND ScorerTrickList.ListName = 'ScorerRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS ScorerJumpList ON MemberList.ScorerJumpRating = ScorerJumpList.ListCode AND ScorerJumpList.ListName = 'ScorerRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS DriverSlalomList ON MemberList.DriverSlalomRating = DriverSlalomList.ListCode AND DriverSlalomList.ListName = 'DriverRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS DriverTrickList ON MemberList.DriverTrickRating = DriverTrickList.ListCode AND DriverTrickList.ListName = 'DriverRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS DriverJumpList ON MemberList.DriverJumpRating = DriverJumpList.ListCode AND DriverJumpList.ListName = 'DriverRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS SafetyList ON MemberList.SafetyOfficialRating = SafetyList.ListCode AND SafetyList.ListName = 'SafetyRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS TechList ON MemberList.TechOfficialRating = TechList.ListCode AND TechList.ListName = 'TechRating'  " );
-                                curSqlStmt.Append( "	LEFT OUTER JOIN CodeValueList AS AnncrList ON MemberList.AnncrOfficialRating = AnncrList.ListCode AND AnncrList.ListName = 'AnnouncerRating'  " );
-                                curSqlStmt.Append( "WHERE TourReg.SanctionId = '" + mySanctionNum + "'" );
-                                curSqlStmt.Append( "  AND TourReg.MemberId = '" + inMemberId + "'" );
+				#region Add skier to active tournament for the specified event but bypass if already registered for the event
+				try {
+					if ( ( (String) curMemberRow["MemberStatus"] ).ToLower().Equals( "active" ) ) {
+						curReadyToSki = "Y";
+					} else {
+						curReadyToSki = "N";
+					}
+				} catch {
+					curReadyToSki = "N";
+				}
+				curReadyForPlcmt = curReadyToSki;
 
-                                rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                                if (rowsProc == 0) {
-                                    Log.WriteFile( curMethodName + ":OfficialWork record not added when registering member " + inMemberId + " tournament " + mySanctionNum );
-                                    //MessageBox.Show( curMethodName + ":OfficialWork record not added when registering member " + inMemberId + " tournament " + mySanctionNum );
-                                }
+				try {
+					if ( inJumpHeight.Length == 0 ) {
+						curJumpHeight = "0";
+					} else {
+						curJumpHeight = inJumpHeight;
+					}
+				} catch {
+					curJumpHeight = "0";
+				}
+				try {
+					curFed = (String) curMemberRow["Federation"];
+				} catch {
+					curFed = "";
+				}
+				try {
+					curCity = (String) curMemberRow["City"];
+				} catch {
+					curCity = "";
+				}
+				try {
+					curState = (String) curMemberRow["State"];
+				} catch {
+					curState = "";
+				}
+				try {
+					curGender = (String) curMemberRow["Gender"];
+				} catch {
+					curGender = "";
+				}
+				try {
+					curSkiYearAge = (Byte) curMemberRow["SkiYearAge"];
+				} catch {
+					curSkiYearAge = 0;
+				}
+				if ( curSkiYearAge < 1 ) {
+					try {
+						Int16 curBirthYear = Convert.ToInt16( Convert.ToDateTime( curMemberRow["DateOfBirth"].ToString() ).ToString( "yy" ) );
+						Int16 curTourYear = Convert.ToInt16( mySanctionNum.Substring( 0, 2 ) );
+						curTourYear += 100;
+						curSkiYearAge = Convert.ToInt16( curTourYear - curBirthYear );
+					} catch {
+						curSkiYearAge = 0;
+					}
+				}
+				try {
+					curLastName = ( (String) curMemberRow["LastName"] ).Replace( "'", "''" );
+				} catch {
+					curLastName = "";
+				}
+				try {
+					curFirstName = ( (String) curMemberRow["FirstName"] ).Replace( "'", "''" );
+				} catch {
+					curFirstName = "";
+				}
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Insert TourReg (" );
+				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight " );
+				curSqlStmt.Append( " , Federation, Gender, City, State, SkiYearAge, Notes, LastUpdateDate" );
+				curSqlStmt.Append( ") Values (" );
+				curSqlStmt.Append( "'" + inMemberId + "'" );
+				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
+				curSqlStmt.Append( ", '" + stringReplace( curLastName, mySingleQuoteDelim, "''" ) + ", " + stringReplace( curFirstName, mySingleQuoteDelim, "''" ) + "'" );
+				curSqlStmt.Append( ", '" + inAgeGroup + "'" );
+				curSqlStmt.Append( ", '" + curReadyToSki + "'" );
+				curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
+				curSqlStmt.Append( ", '" + inTrickBoat + "'" );
+				curSqlStmt.Append( ", " + curJumpHeight );
+				curSqlStmt.Append( ", '" + curFed + "'" );
+				curSqlStmt.Append( ", '" + curGender + "'" );
+				curSqlStmt.Append( ", '" + stringReplace( curCity, mySingleQuoteDelim, "''" ) + "'" );
+				curSqlStmt.Append( ", '" + curState + "'" );
+				curSqlStmt.Append( ", " + curSkiYearAge );
+				curSqlStmt.Append( ", '" + inPreRegNote + "'" );
+				curSqlStmt.Append( ", getdate() )" );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
-                            } else {
-                                Log.WriteFile( curMethodName + ":OfficialWork record already exists for member " + inMemberId + " tournament " + mySanctionNum);
-                                //MessageBox.Show( curMethodName + ":OfficialWork record already exists for member " + inMemberId + " tournament " + mySanctionNum );
-                            }
+				DataRow curOfficialRow = getOfficialWorkRow( inMemberId );
+				if ( curOfficialRow == null ) {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "INSERT INTO OfficialWork ( " );
+					curSqlStmt.Append( "SanctionId, MemberId, LastUpdateDate" );
+					curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
+					curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
+					curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
+					curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+					curSqlStmt.Append( ") VALUES ( " );
+					curSqlStmt.Append( "'" + mySanctionNum + "'" );
+					curSqlStmt.Append( ", '" + inMemberId + "'" );
+					curSqlStmt.Append( ", getdate()" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["JudgeSlalomRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["JudgeTrickRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["JudgeJumpRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["DriverSlalomRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["DriverTrickRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["DriverJumpRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["ScorerSlalomRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["ScorerTrickRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["ScorerJumpRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["SafetyOfficialRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["TechOfficialRating"] + "'" );
+					curSqlStmt.Append( ", '" + (String) curMemberRow["AnncrOfficialRating"] + "'" );
+					curSqlStmt.Append( " )" );
 
-                            returnStatus = true;
-                        } else {
-                            returnStatus = false;
-                        }
-                        #endregion
-                    } else {
-                        returnStatus = false;
-                    }
-                }
-            } catch ( Exception ex ) {
-                curMsg = " Exception encountered adding skier to tournament \n" + ex.Message + "\n\n" + curSqlStmt.ToString();
-                MessageBox.Show( curMsg );
-                Log.WriteFile( curMethodName + curMsg );
-                returnStatus = false;
-            }
-            return returnStatus;
-        }
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+					if ( rowsProc == 0 ) {
+						Log.WriteFile( curMethodName + ":OfficialWork record not added when registering member " + inMemberId + " tournament " + mySanctionNum );
+					}
 
-        public bool addEventOfficial( String inMemberId, String inOfficalPosition ) {
+				} else {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Update OfficialWork Set " );
+					curSqlStmt.Append( "JudgeSlalomRating = '" + (String) curMemberRow["JudgeSlalomRating"] + "'" );
+					curSqlStmt.Append( ", JudgeTrickRating = '" + (String) curMemberRow["JudgeTrickRating"] + "'" );
+					curSqlStmt.Append( ", JudgeJumpRating = '" + (String) curMemberRow["JudgeJumpRating"] + "'" );
+					curSqlStmt.Append( ", DriverSlalomRating = '" + (String) curMemberRow["DriverSlalomRating"] + "'" );
+					curSqlStmt.Append( ", DriverTrickRating = '" + (String) curMemberRow["DriverTrickRating"] + "'" );
+					curSqlStmt.Append( ", DriverJumpRating = '" + (String) curMemberRow["DriverJumpRating"] + "'" );
+					curSqlStmt.Append( ", ScorerSlalomRating = '" + (String) curMemberRow["ScorerSlalomRating"] + "'" );
+					curSqlStmt.Append( ", ScorerTrickRating = '" + (String) curMemberRow["ScorerTrickRating"] + "'" );
+					curSqlStmt.Append( ", ScorerJumpRating = '" + (String) curMemberRow["ScorerJumpRating"] + "'" );
+					curSqlStmt.Append( ", SafetyOfficialRating = '" + (String) curMemberRow["SafetyOfficialRating"] + "'" );
+					curSqlStmt.Append( ", TechOfficialRating = '" + (String) curMemberRow["TechOfficialRating"] + "'" );
+					curSqlStmt.Append( ", AnncrOfficialRating = '" + (String) curMemberRow["AnncrOfficialRating"] + "'" );
+					curSqlStmt.Append( ", LastUpdateDate = getdate() " );
+					curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", mySanctionNum, inMemberId ) );
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				}
+
+				return true;
+				#endregion
+
+			} catch ( Exception ex ) {
+				curMsg = " Exception encountered adding skier to tournament \n" + ex.Message + "\n\n" + curSqlStmt.ToString();
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
+				return false;
+			}
+		}
+
+		public bool addEventOfficial( String inMemberId, String inOfficalPosition ) {
             String curMethodName = "Tournament:TourEventReg:addEventOfficial";
             String curMsg = "";
             Boolean returnStatus = false;
@@ -580,13 +573,36 @@ namespace WaterskiScoringSystem.Tournament {
                     curOfficialRow = getOfficialWorkRow( inMemberId );
                     if (curOfficialRow == null) {
                         curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Insert OfficialWork (" );
-                        curSqlStmt.Append( " SanctionId, MemberId, LastUpdateDate" );
-                        curSqlStmt.Append( ") Values (" );
-                        curSqlStmt.Append( "'" + mySanctionNum + "', '" + inMemberId + "', GetDate() )" );
-                        rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                        curOfficialRow = getOfficialWorkRow( inMemberId );
+						curSqlStmt.Append( "INSERT INTO OfficialWork ( " );
+						curSqlStmt.Append( "SanctionId, MemberId" );
+						curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
+						curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
+						curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
+						curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+						curSqlStmt.Append( ") SELECT Distinct " );
+						curSqlStmt.Append( "  TourReg.SanctionId, TourReg.MemberId" );
+						curSqlStmt.Append( ", Coalesce( MemberList.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.JudgeTrickRating, '' ) as JudgeTrickRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.JudgeJumpRating, '' ) as JudgeJumpRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.DriverSlalomRating, '' ) as DriverSlalomRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.DriverTrickRating, '' ) as DriverTrickRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.DriverJumpRating, '' ) as DriverJumpRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.ScorerTrickRating, '' ) as ScorerTrickRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.ScorerJumpRating, '' ) as ScorerJumpRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.TechOfficialRating, '' ) as TechOfficialRating" );
+						curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+						curSqlStmt.Append( "FROM TourReg " );
+						curSqlStmt.Append( "	INNER JOIN MemberList ON MemberList.MemberId = TourReg.MemberId  " );
+						curSqlStmt.Append( "WHERE TourReg.SanctionId = '" + mySanctionNum + "'" );
+						curSqlStmt.Append( "  AND TourReg.MemberId = '" + inMemberId + "'" );
+
+						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+						if ( rowsProc == 0 ) {
+							Log.WriteFile( curMethodName + ":OfficialWork record not added when registering member " + inMemberId + " tournament " + mySanctionNum );
+						}
                     }
 
                     curSqlStmt = new StringBuilder( "" );
@@ -598,7 +614,7 @@ namespace WaterskiScoringSystem.Tournament {
                     rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
-                    if (inOfficalPosition.ToLower().Equals("judgechief") || inOfficalPosition.ToLower().Equals("judgeasstchief")) {
+                    if (inOfficalPosition.ToLower().Equals("judgechief") || inOfficalPosition.ToLower().Equals("judgeasstchief" ) || inOfficalPosition.ToLower().Equals( "judgeappointed" ) ) {
                         if (inOfficalPosition.ToLower().Equals("judgechief")) {
                             curSqlStmt = new StringBuilder("");
                             curSqlStmt.Append("Update Tournament ");
@@ -619,7 +635,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( " And SanctionId = '" + mySanctionNum + "'" );
                         rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                         Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                    } else if (inOfficalPosition.ToLower().Equals("driverchief") || inOfficalPosition.ToLower().Equals("driverasstchief")) {
+
+					} else if (inOfficalPosition.ToLower().Equals("driverchief") || inOfficalPosition.ToLower().Equals("driverasstchief" ) || inOfficalPosition.ToLower().Equals( "driverappointed" ) ) {
                         if (inOfficalPosition.ToLower().Equals("driverchief")) {
                             curSqlStmt = new StringBuilder("");
                             curSqlStmt.Append("Update Tournament ");
@@ -640,7 +657,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( " And SanctionId = '" + mySanctionNum + "'" );
                         rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                         Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                    } else if (inOfficalPosition.ToLower().Equals("scorechief") || inOfficalPosition.ToLower().Equals("scoreasstchief")) {
+
+					} else if (inOfficalPosition.ToLower().Equals("scorechief") || inOfficalPosition.ToLower().Equals("scoreasstchief" ) || inOfficalPosition.ToLower().Equals( "scorerappointed" ) ) {
                         if (inOfficalPosition.ToLower().Equals("scorechief")) {
                             curSqlStmt = new StringBuilder("");
                             curSqlStmt.Append("Update Tournament ");
@@ -661,7 +679,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( " And SanctionId = '" + mySanctionNum + "'" );
                         rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                         Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                    } else if (inOfficalPosition.ToLower().Equals("safetychief") || inOfficalPosition.ToLower().Equals("safetyasstchief")) {
+
+					} else if (inOfficalPosition.ToLower().Equals("safetychief") || inOfficalPosition.ToLower().Equals("safetyasstchief")) {
                         if (inOfficalPosition.ToLower().Equals("safetychief")) {
                             curSqlStmt = new StringBuilder("");
                             curSqlStmt.Append("Update Tournament ");
@@ -682,7 +701,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( " And SanctionId = '" + mySanctionNum + "'" );
                         rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                         Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                    } else if (inOfficalPosition.ToLower().Equals("techchief") || inOfficalPosition.ToLower().Equals("techasstchief")) {
+
+					} else if (inOfficalPosition.ToLower().Equals("techchief") || inOfficalPosition.ToLower().Equals("techasstchief")) {
                         curSqlStmt = new StringBuilder("");
                         curSqlStmt.Append("Update OfficialWork ");
                         curSqlStmt.Append("set TechSlalomCredit = 'Y'");
@@ -729,8 +749,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From SlalomRecap" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -794,8 +814,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From TrickPass" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -859,8 +879,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From JumpRecap" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -938,8 +958,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( " WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "   AND E.AgeGroup = '" + inAgeGroup + "' AND E.Event = '" + inEvent + "'" );
             curSqlStmt.Append( " ORDER BY SkierName " );
-            return getData( curSqlStmt.ToString() );
-        }
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
 
         private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -952,25 +972,42 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "'" );
             }
             curSqlStmt.Append( " ORDER BY SkierName " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if ( curDataTable.Rows.Count > 0 ) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
                 return curDataTable.Rows[0];
             } else {
                 return null;
             }
         }
 
-        private DataTable getDataMember( String inMemberId ) {
+        private DataRow getMemberRow( String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Select MemberId, LastName, FirstName, Address1, Address2, City, State, Federation, Country, Postalcode, " );
-            curSqlStmt.Append( "SkiYearAge, DateOfBirth, Gender, MemberStatus, MemberExpireDate, " );
-            curSqlStmt.Append( "InsertDate, UpdateDate " );
+            curSqlStmt.Append( "Select MemberId, LastName, FirstName, Address1, Address2, City, State, Federation, Country, Postalcode" );
+            curSqlStmt.Append( ", SkiYearAge, DateOfBirth, Gender, MemberStatus, MemberExpireDate" );
+			curSqlStmt.Append( ", Coalesce( JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( JudgeTrickRating, '' ) as JudgeTrickRating" );
+			curSqlStmt.Append( ", Coalesce( JudgeJumpRating, '' ) as JudgeJumpRating" );
+			curSqlStmt.Append( ", Coalesce( ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( ScorerTrickRating, '' ) as ScorerTrickRating" );
+			curSqlStmt.Append( ", Coalesce( ScorerJumpRating, '' ) as ScorerJumpRating" );
+			curSqlStmt.Append( ", Coalesce( DriverSlalomRating, '' ) as DriverSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( DriverTrickRating, '' ) as DriverTrickRating" );
+			curSqlStmt.Append( ", Coalesce( DriverJumpRating, '' ) as DriverJumpRating" );
+			curSqlStmt.Append( ", Coalesce( SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( TechOfficialRating, '' ) as TechOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficialRating" );
+			curSqlStmt.Append( ", InsertDate, UpdateDate " );
             curSqlStmt.Append( "FROM MemberList " );
-            curSqlStmt.Append( " WHERE MemberId = '" + inMemberId + "'" );
-            return getData( curSqlStmt.ToString() );
-        }
+            curSqlStmt.Append( "WHERE MemberId = '" + inMemberId + "'" );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return curDataTable.Rows[0];
+			} else {
+				return null;
+			}
+		}
 
-        private DataRow getOfficialWorkRow( String inMemberId ) {
+		private DataRow getOfficialWorkRow( String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, T.SkierName AS MemberName " );
             curSqlStmt.Append( "FROM OfficialWork O " );
@@ -978,8 +1015,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "        ON O.MemberId = T.MemberId AND O.SanctionId = T.SanctionId " );
             curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "ORDER BY O.SanctionId, O.MemberId, T.SkierName" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if (curDataTable.Rows.Count > 0) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if (curDataTable.Rows.Count > 0) {
                 return curDataTable.Rows[0];
             } else {
                 return null;
@@ -990,7 +1027,7 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT * From SkierRanking Where MemberId = '" + inMemberId + "' ");
             curSqlStmt.Append( "And AgeGroup = '" + inAgeGroup + "' And Event = '" + inEvent + "'" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
         
         private DataTable getTourData( String inSanctionId ) {
@@ -1000,7 +1037,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "    HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct " );
             curSqlStmt.Append( "FROM Tournament " );
             curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
@@ -1024,9 +1061,5 @@ namespace WaterskiScoringSystem.Tournament {
             return curNewValue.ToString();
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-    
     }
 }
