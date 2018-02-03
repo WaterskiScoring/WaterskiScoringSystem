@@ -774,3 +774,95 @@ Update TourReg Set ReadyForPlcmt = 'Y' Where ReadyForPlcmt is null;
 ALTER TABLE [EventReg] ADD COLUMN ReadyForPlcmt nchar(1);
 Update EventReg Set ReadyForPlcmt = 'Y' Where ReadyForPlcmt is null;
 Update EventReg Set ReadyForPlcmt = 'N' Where EventGroup = 'RL';
+
+//------------------------------------------------------------
+## v4.14
+ALTER TABLE [MemberList] ALTER COLUMN JudgeSlalomRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN JudgeTrickRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN JudgeJumpRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN DriverSlalomRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN DriverTrickRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN DriverJumpRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN ScorerSlalomRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN ScorerTrickRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN ScorerJumpRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN SafetyOfficialRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN TechOfficialRating nvarchar(32);
+ALTER TABLE [MemberList] ALTER COLUMN AnncrOfficialRating nvarchar(32);
+
+ALTER TABLE [Tournament] ADD COLUMN SanctionEditCode nvarchar(32);
+
+Update MemberList Set JudgeSlalomRating = 'Assistant'  Where JudgeSlalomRating = 'A';
+Update MemberList Set JudgeSlalomRating = 'Regular'  Where JudgeSlalomRating = 'R';
+Update MemberList Set JudgeSlalomRating = 'Senior'  Where JudgeSlalomRating = 'S';
+Update MemberList Set JudgeSlalomRating = 'Emeritus '  Where JudgeSlalomRating = 'E';
+Update MemberList Set JudgeSlalomRating = 'PanAm'  Where JudgeSlalomRating = 'P';
+
+Update MemberList Set JudgeTrickRating = 'Assistant'  Where JudgeTrickRating = 'A';
+Update MemberList Set JudgeTrickRating = 'Regular'  Where JudgeTrickRating = 'R';
+Update MemberList Set JudgeTrickRating = 'Senior'  Where JudgeTrickRating = 'S';
+Update MemberList Set JudgeTrickRating = 'Emeritus '  Where JudgeTrickRating = 'E';
+Update MemberList Set JudgeTrickRating = 'PanAm'  Where JudgeTrickRating = 'P';
+
+Update MemberList Set JudgeJumpRating = 'Assistant'  Where JudgeJumpRating = 'A';
+Update MemberList Set JudgeJumpRating = 'Regular'  Where JudgeJumpRating = 'R';
+Update MemberList Set JudgeJumpRating = 'Senior'  Where JudgeJumpRating = 'S';
+Update MemberList Set JudgeJumpRating = 'Emeritus '  Where JudgeJumpRating = 'E';
+Update MemberList Set JudgeJumpRating = 'PanAm'  Where JudgeJumpRating = 'P';
+
+Update MemberList Set DriverTrickRating = 'Trained'  Where DriverTrickRating = 'T';	
+Update MemberList Set DriverSlalomRating = 'Trained'  Where DriverSlalomRating = 'T';	
+Update MemberList Set DriverJumpRating = 'Trained'  Where DriverJumpRating = 'T';
+Update MemberList Set DriverTrickRating = 'Assistant'  Where DriverTrickRating = 'A';	
+Update MemberList Set DriverSlalomRating = 'Assistant'  Where DriverSlalomRating = 'A';	
+Update MemberList Set DriverJumpRating = 'Assistant'  Where DriverJumpRating = 'A';
+Update MemberList Set DriverTrickRating = 'Regular'  Where DriverTrickRating = 'R';	
+Update MemberList Set DriverSlalomRating = 'Regular'  Where DriverSlalomRating = 'R';	
+Update MemberList Set DriverJumpRating = 'Regular'  Where DriverJumpRating = 'R';
+Update MemberList Set DriverTrickRating = 'Senior'  Where DriverTrickRating = 'S';
+Update MemberList Set DriverSlalomRating = 'Senior'  Where DriverSlalomRating = 'S';
+Update MemberList Set DriverJumpRating = 'Senior'  Where DriverJumpRating = 'S';
+Update MemberList Set DriverTrickRating = 'Emeritus'  Where DriverTrickRating = 'E';	
+Update MemberList Set DriverSlalomRating = 'Emeritus'  Where DriverSlalomRating = 'E';	
+Update MemberList Set DriverJumpRating = 'Emeritus'  Where DriverJumpRating = 'E';
+
+Update MemberList Set ScorerTrickRating = 'Assistant'  Where ScorerTrickRating = 'A';	
+Update MemberList Set ScorerSlalomRating = 'Assistant'  Where ScorerSlalomRating = 'A';	
+Update MemberList Set ScorerJumpRating = 'Assistant'  Where ScorerJumpRating = 'A';
+Update MemberList Set ScorerTrickRating = 'Regular'  Where ScorerTrickRating = 'R';	
+Update MemberList Set ScorerSlalomRating = 'Regular'  Where ScorerSlalomRating = 'R';	
+Update MemberList Set ScorerJumpRating = 'Regular'  Where ScorerJumpRating = 'R';
+Update MemberList Set ScorerTrickRating = 'Senior'  Where ScorerTrickRating = 'S';	
+Update MemberList Set ScorerSlalomRating = 'Senior'  Where ScorerSlalomRating = 'S';	
+Update MemberList Set ScorerJumpRating = 'Senior'  Where ScorerJumpRating = 'S';
+Update MemberList Set ScorerTrickRating = 'Emeritus'  Where ScorerTrickRating = 'E';	
+Update MemberList Set ScorerSlalomRating = 'Emeritus'  Where ScorerSlalomRating = 'E';	
+Update MemberList Set ScorerJumpRating = 'Emeritus'  Where ScorerJumpRating = 'E';
+
+Update MemberList Set SafetyOfficialRating = 'Coordinator'  Where SafetyOfficialRating= 'C';
+Update MemberList Set SafetyOfficialRating = 'State'  Where SafetyOfficialRating= 'S';
+Update MemberList Set SafetyOfficialRating = 'Regional'  Where SafetyOfficialRating= 'R';
+Update MemberList Set SafetyOfficialRating = 'National'  Where SafetyOfficialRating= 'N';
+Update MemberList Set SafetyOfficialRating = 'Emeritus'  Where SafetyOfficialRating= 'E';
+
+Update MemberList Set TechOfficialRating = 'Assistant'  Where TechOfficialRating = 'A';
+Update MemberList Set TechOfficialRating = 'Regular'  Where TechOfficialRating = 'R';
+Update MemberList Set TechOfficialRating = 'Senior'  Where TechOfficialRating = 'S';
+Update MemberList Set TechOfficialRating = 'Emeritus'  Where TechOfficialRating = 'E';
+
+Update MemberList Set AnncrOfficialRating = 'State'  Where AnncrOfficialRating = 'S';
+Update MemberList Set AnncrOfficialRating = 'Regional'  Where AnncrOfficialRating = 'R';
+Update MemberList Set AnncrOfficialRating = 'National'  Where AnncrOfficialRating = 'N';
+Update MemberList Set AnncrOfficialRating = 'Emeritus'  Where AnncrOfficialRating = 'E';
+
+Update OfficialWork Set JudgeSlalomRating = '' Where JudgeSlalomRating = 'Unrated';
+Update OfficialWork Set JudgeTrickRating = '' Where JudgeTrickRating = 'Unrated';
+Update OfficialWork Set JudgeJumpRating = '' Where JudgeJumpRating = 'Unrated';
+Update OfficialWork Set DriverSlalomRating = '' Where DriverSlalomRating = 'Unrated';
+Update OfficialWork Set DriverTrickRating = '' Where DriverTrickRating = 'Unrated';
+Update OfficialWork Set DriverJumpRating = '' Where DriverJumpRating = 'Unrated';
+Update OfficialWork Set ScorerSlalomRating = '' Where ScorerSlalomRating = 'Unrated';
+Update OfficialWork Set ScorerTrickRating = '' Where ScorerTrickRating = 'Unrated';
+Update OfficialWork Set ScorerJumpRating = '' Where ScorerJumpRating = 'Unrated';
+Update OfficialWork Set SafetyOfficialRating = '' Where SafetyOfficialRating = 'Unrated';
+Update OfficialWork Set TechOfficialRating = '' Where TechOfficialRating = 'Unrated';

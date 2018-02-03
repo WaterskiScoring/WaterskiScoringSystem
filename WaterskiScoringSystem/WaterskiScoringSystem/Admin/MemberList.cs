@@ -24,9 +24,6 @@ namespace WaterskiScoringSystem.Admin {
         private FilterDialogForm filterDialogForm;
         private EditMember myEditMemberDialog;
 
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
-
         public MemberList() {
             InitializeComponent();
         }
@@ -51,9 +48,6 @@ namespace WaterskiScoringSystem.Admin {
                     mySanctionNum = "";
                 }
             }
-
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
 
             myEditMemberDialog = new EditMember();
 
@@ -213,16 +207,14 @@ namespace WaterskiScoringSystem.Admin {
                     curSkierName = (String)curViewRow.Cells["FirstName"].Value + " " + (String)curViewRow.Cells["LastName"].Value;
 
                     try {
-                        myDbConn.Open();
-                        mySqlStmt = myDbConn.CreateCommand();
-                        mySqlStmt.CommandText = "Delete MemberList Where MemberId = '" + curMemberId + "'";
-                        int rowsProc = mySqlStmt.ExecuteNonQuery();
+						StringBuilder curSqlStmt = new StringBuilder( "" );
+						curSqlStmt.Append( "Delete MemberList Where MemberId = '" + curMemberId + "'");
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                         winStatusMsg.Text = "Skier " + curSkierName + " entry removed";
-                    } catch ( Exception excp ) {
+
+					} catch ( Exception excp ) {
                         curResults = false;
                         MessageBox.Show( "Error attempting to remove " + curSkierName + "\n" + excp.Message );
-                    } finally {
-                        myDbConn.Close();
                     }
 
                     if ( curResults ) {
@@ -247,37 +239,40 @@ namespace WaterskiScoringSystem.Admin {
                     MessageBoxDefaultButton.Button1 );
             if (msgResp == DialogResult.Yes) {
                 try {
-                    //Prepare database interaction combonents for processing
-                    //Open database connection
-                    SqlCeCommand sqlStmt = null;
-                    SqlCeConnection myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
-                    sqlStmt = myDbConn.CreateCommand();
-                    sqlStmt.CommandText = "Delete MemberList ";
-                    int rowsProc = sqlStmt.ExecuteNonQuery();
-                    MessageBox.Show( rowsProc + " members removed" );
+					StringBuilder curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Delete MemberList" );
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+					MessageBox.Show( rowsProc + " members removed" );
                     navRefresh_Click(null, null);
-                } catch (Exception excp) {
+
+				} catch (Exception excp) {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
-            } else if (msgResp == DialogResult.No) {
-            } else {
             }
 
         }
 
         private DataTable getMemberList() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, SkiYearAge, State, City, " );
-            curSqlStmt.Append( "Country, DateOfBirth, Federation, Gender, MemberStatus, InsertDate, UpdateDate " );
-            curSqlStmt.Append( "FROM MemberList " );
+            curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, SkiYearAge, Gender" );
+			curSqlStmt.Append( ", State, City, Federation" );
+			curSqlStmt.Append( ", MemberStatus, MemberExpireDate, InsertDate, UpdateDate " );
+			curSqlStmt.Append( ", Coalesce( JudgeSlalomRating, '' ) as JudgeSlalom" );
+			curSqlStmt.Append( ", Coalesce( JudgeTrickRating, '' ) as JudgeTrick" );
+			curSqlStmt.Append( ", Coalesce( JudgeJumpRating, '' ) as JudgeJump" );
+			curSqlStmt.Append( ", Coalesce( DriverSlalomRating, '' ) as DriverSlalom" );
+			curSqlStmt.Append( ", Coalesce( DriverTrickRating, '' ) as DriverTrick" );
+			curSqlStmt.Append( ", Coalesce( DriverJumpRating, '' ) as DriverJump" );
+			curSqlStmt.Append( ", Coalesce( ScorerSlalomRating, '' ) as ScorerSlalom" );
+			curSqlStmt.Append( ", Coalesce( ScorerTrickRating, '' ) as ScorerTrick" );
+			curSqlStmt.Append( ", Coalesce( ScorerJumpRating, '' ) as ScorerJump" );
+			curSqlStmt.Append( ", Coalesce( SafetyOfficialRating, '' ) as SafetyOfficial" );
+			curSqlStmt.Append( ", Coalesce( TechOfficialRating, '' ) as TechController" );
+			curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficial " );
+			curSqlStmt.Append( "FROM MemberList " );
             curSqlStmt.Append( " Order by LastName, FirstName" );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private bool isObjectEmpty( object inObject ) {

@@ -1150,27 +1150,23 @@ namespace WaterskiScoringSystem.Tournament {
             DataTable curDataTable = getData( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count == 0) {
                 curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Select Distinct 'TR' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
-                curSqlStmt.Append( ", JSL.CodeValue AS JudgeSlalomRating, JTL.CodeValue AS JudgeTrickRating, JJL.CodeValue AS JudgeJumpRating" );
-                curSqlStmt.Append( ", SSL.CodeValue AS ScorerSlalomRating, STL.CodeValue AS ScorerTrickRating, SJL.CodeValue AS ScorerJumpRating" );
-                curSqlStmt.Append( ", DSL.CodeValue AS DriverSlalomRating, DTL.CodeValue AS DriverTrickRating, DJL.CodeValue AS DriverJumpRating" );
-                curSqlStmt.Append( ", SL.CodeValue AS SafetyOfficialRating, TL.CodeValue AS TechOfficialRating, AL.CodeValue AS AnncrOfficialRating " );
-                curSqlStmt.Append( "FROM TourReg TR " );
-                curSqlStmt.Append( "LEFT OUTER JOIN MemberList AS ML ON ML.MemberId = TR.MemberId " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JSL ON ML.JudgeSlalomRating = JSL.ListCode AND JSL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JTL ON ML.JudgeTrickRating = JTL.ListCode AND JTL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JJL ON ML.JudgeJumpRating = JJL.ListCode AND JJL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SSL ON ML.ScorerSlalomRating = SSL.ListCode AND SSL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS STL ON ML.ScorerTrickRating = STL.ListCode AND STL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SJL ON ML.ScorerJumpRating = SJL.ListCode AND SJL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DSL ON ML.DriverSlalomRating = DSL.ListCode AND DSL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DTL ON ML.DriverTrickRating = DTL.ListCode AND DTL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DJL ON ML.DriverJumpRating = DJL.ListCode AND DJL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SL ON ML.SafetyOfficialRating = SL.ListCode AND SL.ListName = 'SafetyRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS TL ON ML.TechOfficialRating = TL.ListCode AND TL.ListName = 'TechRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS AL ON ML.AnncrOfficialRating = AL.ListCode AND AL.ListName = 'AnnouncerRating' " );
-                curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
-                curDataTable = getData( curSqlStmt.ToString() );
+				curSqlStmt.Append( "Select Distinct 'TR' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeTrickRating, '' ) as JudgeTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeJumpRating, '' ) as JudgeJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerTrickRating, '' ) as ScorerTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerJumpRating, '' ) as ScorerJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverSlalomRating, '' ) as DriverSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+				curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
+				curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+				curSqlStmt.Append( "FROM TourReg TR " );
+				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
+				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
+				curDataTable = getData( curSqlStmt.ToString() );
             }
 
             if (curDataTable.Rows.Count > 0) {

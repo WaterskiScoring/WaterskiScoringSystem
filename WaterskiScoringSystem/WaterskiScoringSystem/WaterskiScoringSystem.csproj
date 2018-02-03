@@ -14,8 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>WaterskiScoringSystem.Program</StartupObject>
-    <ManifestCertificateThumbprint>48B3F83312D091900AB0B64E77CBFE80B5FBEAFB</ManifestCertificateThumbprint>
-    <ManifestKeyFile>WaterskiScoringSystem_9_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>37A7085533655A91E2AAFC03A256ECE5ED454EC5</ManifestCertificateThumbprint>
+    <ManifestKeyFile>WaterskiScoringSystem_10_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>true</SignManifests>
@@ -179,6 +179,8 @@
     <Compile Include="Common\CalcNops.cs" />
     <Compile Include="Common\CalcScoreSummary.cs" />
     <Compile Include="Common\CheckEventRecord.cs" />
+    <Compile Include="Common\StateDropdownList.cs" />
+    <Compile Include="Common\RegionDropdownList.cs" />
     <Compile Include="Common\FormReportToFile.cs" />
     <Compile Include="Common\ListTourClass.cs" />
     <Compile Include="Common\RampHeightSelect.cs">
@@ -335,6 +337,7 @@
     <Compile Include="Tools\ExportRecordAppData.cs" />
     <Compile Include="Tools\ExportScoreBookHtmlIwwf.cs" />
     <Compile Include="Tools\FolderBrowserLauncher.cs" />
+    <Compile Include="Tools\ImportMember.cs" />
     <Compile Include="Tools\ListMaintenance.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +352,12 @@
     </Compile>
     <Compile Include="Tools\UpgradeDatabase.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tournament\OfficialImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tournament\OfficialImport.Designer.cs">
+      <DependentUpon>OfficialImport.cs</DependentUpon>
     </Compile>
     <Compile Include="Tournament\TourCopySelect.cs">
       <SubType>Form</SubType>
@@ -622,6 +631,9 @@
     <EmbeddedResource Include="Tools\SqlCommandTool.resx">
       <DependentUpon>SqlCommandTool.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tournament\OfficialImport.resx">
+      <DependentUpon>OfficialImport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tournament\TourCopySelect.resx">
       <DependentUpon>TourCopySelect.cs</DependentUpon>
     </EmbeddedResource>
@@ -780,6 +792,7 @@
     </Content>
     <None Include="WaterskiScoringSystem.snk" />
     <None Include="WaterskiScoringSystemCert.snk" />
+    <None Include="WaterskiScoringSystem_10_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_1_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_3_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_4_TemporaryKey.pfx" />

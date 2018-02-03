@@ -33,18 +33,18 @@ namespace WaterskiScoringSystem.Tournament {
             this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JudgeSlalomRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JudgeTrickRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JudgeJumpRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DriverSlalomRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DriverTrickRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DriverJumpRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScorerSlalomRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScorerTrickRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ScorerJumpRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SafetyOfficialRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TechOfficialRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AnncrOfficialRatingDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JudgeSlalomRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JudgeTrickRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JudgeJumpRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DriverSlalomRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DriverTrickRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DriverJumpRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScorerSlalomRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScorerTrickRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScorerJumpRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SafetyOfficialRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TechOfficialRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AnncrOfficialRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.winStatus = new System.Windows.Forms.StatusStrip();
             this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.editPK = new System.Windows.Forms.TextBox();
@@ -152,18 +152,18 @@ namespace WaterskiScoringSystem.Tournament {
             this.SanctionId,
             this.SkierName,
             this.Federation,
-            this.JudgeSlalomRatingDesc,
-            this.JudgeTrickRatingDesc,
-            this.JudgeJumpRatingDesc,
-            this.DriverSlalomRatingDesc,
-            this.DriverTrickRatingDesc,
-            this.DriverJumpRatingDesc,
-            this.ScorerSlalomRatingDesc,
-            this.ScorerTrickRatingDesc,
-            this.ScorerJumpRatingDesc,
-            this.SafetyOfficialRatingDesc,
-            this.TechOfficialRatingDesc,
-            this.AnncrOfficialRatingDesc});
+            this.JudgeSlalomRating,
+            this.JudgeTrickRating,
+            this.JudgeJumpRating,
+            this.DriverSlalomRating,
+            this.DriverTrickRating,
+            this.DriverJumpRating,
+            this.ScorerSlalomRating,
+            this.ScorerTrickRating,
+            this.ScorerJumpRating,
+            this.SafetyOfficialRating,
+            this.TechOfficialRating,
+            this.AnncrOfficialRating});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -225,113 +225,113 @@ namespace WaterskiScoringSystem.Tournament {
             this.Federation.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Federation.Visible = false;
             // 
-            // JudgeSlalomRatingDesc
+            // JudgeSlalomRating
             // 
-            this.JudgeSlalomRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.JudgeSlalomRatingDesc.HeaderText = "Judge Slalom";
-            this.JudgeSlalomRatingDesc.Name = "JudgeSlalomRatingDesc";
-            this.JudgeSlalomRatingDesc.ReadOnly = true;
-            this.JudgeSlalomRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.JudgeSlalomRatingDesc.Width = 55;
+            this.JudgeSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.JudgeSlalomRating.HeaderText = "Judge Slalom";
+            this.JudgeSlalomRating.Name = "JudgeSlalomRating";
+            this.JudgeSlalomRating.ReadOnly = true;
+            this.JudgeSlalomRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.JudgeSlalomRating.Width = 55;
             // 
-            // JudgeTrickRatingDesc
+            // JudgeTrickRating
             // 
-            this.JudgeTrickRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.JudgeTrickRatingDesc.HeaderText = "Judge Trick";
-            this.JudgeTrickRatingDesc.Name = "JudgeTrickRatingDesc";
-            this.JudgeTrickRatingDesc.ReadOnly = true;
-            this.JudgeTrickRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.JudgeTrickRatingDesc.Width = 55;
+            this.JudgeTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.JudgeTrickRating.HeaderText = "Judge Trick";
+            this.JudgeTrickRating.Name = "JudgeTrickRating";
+            this.JudgeTrickRating.ReadOnly = true;
+            this.JudgeTrickRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.JudgeTrickRating.Width = 55;
             // 
-            // JudgeJumpRatingDesc
+            // JudgeJumpRating
             // 
-            this.JudgeJumpRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.JudgeJumpRatingDesc.HeaderText = "Judge Jump";
-            this.JudgeJumpRatingDesc.Name = "JudgeJumpRatingDesc";
-            this.JudgeJumpRatingDesc.ReadOnly = true;
-            this.JudgeJumpRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.JudgeJumpRatingDesc.Width = 55;
+            this.JudgeJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.JudgeJumpRating.HeaderText = "Judge Jump";
+            this.JudgeJumpRating.Name = "JudgeJumpRating";
+            this.JudgeJumpRating.ReadOnly = true;
+            this.JudgeJumpRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.JudgeJumpRating.Width = 55;
             // 
-            // DriverSlalomRatingDesc
+            // DriverSlalomRating
             // 
-            this.DriverSlalomRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DriverSlalomRatingDesc.HeaderText = "Driver Slalom";
-            this.DriverSlalomRatingDesc.Name = "DriverSlalomRatingDesc";
-            this.DriverSlalomRatingDesc.ReadOnly = true;
-            this.DriverSlalomRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DriverSlalomRatingDesc.Width = 55;
+            this.DriverSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DriverSlalomRating.HeaderText = "Driver Slalom";
+            this.DriverSlalomRating.Name = "DriverSlalomRating";
+            this.DriverSlalomRating.ReadOnly = true;
+            this.DriverSlalomRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DriverSlalomRating.Width = 55;
             // 
-            // DriverTrickRatingDesc
+            // DriverTrickRating
             // 
-            this.DriverTrickRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DriverTrickRatingDesc.HeaderText = "Driver Trick";
-            this.DriverTrickRatingDesc.Name = "DriverTrickRatingDesc";
-            this.DriverTrickRatingDesc.ReadOnly = true;
-            this.DriverTrickRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DriverTrickRatingDesc.Width = 55;
+            this.DriverTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DriverTrickRating.HeaderText = "Driver Trick";
+            this.DriverTrickRating.Name = "DriverTrickRating";
+            this.DriverTrickRating.ReadOnly = true;
+            this.DriverTrickRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DriverTrickRating.Width = 55;
             // 
-            // DriverJumpRatingDesc
+            // DriverJumpRating
             // 
-            this.DriverJumpRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DriverJumpRatingDesc.HeaderText = "Driver Jump";
-            this.DriverJumpRatingDesc.Name = "DriverJumpRatingDesc";
-            this.DriverJumpRatingDesc.ReadOnly = true;
-            this.DriverJumpRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DriverJumpRatingDesc.Width = 55;
+            this.DriverJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DriverJumpRating.HeaderText = "Driver Jump";
+            this.DriverJumpRating.Name = "DriverJumpRating";
+            this.DriverJumpRating.ReadOnly = true;
+            this.DriverJumpRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DriverJumpRating.Width = 55;
             // 
-            // ScorerSlalomRatingDesc
+            // ScorerSlalomRating
             // 
-            this.ScorerSlalomRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ScorerSlalomRatingDesc.HeaderText = "Scorer Slalom";
-            this.ScorerSlalomRatingDesc.Name = "ScorerSlalomRatingDesc";
-            this.ScorerSlalomRatingDesc.ReadOnly = true;
-            this.ScorerSlalomRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScorerSlalomRatingDesc.Width = 55;
+            this.ScorerSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ScorerSlalomRating.HeaderText = "Scorer Slalom";
+            this.ScorerSlalomRating.Name = "ScorerSlalomRating";
+            this.ScorerSlalomRating.ReadOnly = true;
+            this.ScorerSlalomRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScorerSlalomRating.Width = 55;
             // 
-            // ScorerTrickRatingDesc
+            // ScorerTrickRating
             // 
-            this.ScorerTrickRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ScorerTrickRatingDesc.HeaderText = "Scorer Trick";
-            this.ScorerTrickRatingDesc.Name = "ScorerTrickRatingDesc";
-            this.ScorerTrickRatingDesc.ReadOnly = true;
-            this.ScorerTrickRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScorerTrickRatingDesc.Width = 55;
+            this.ScorerTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ScorerTrickRating.HeaderText = "Scorer Trick";
+            this.ScorerTrickRating.Name = "ScorerTrickRating";
+            this.ScorerTrickRating.ReadOnly = true;
+            this.ScorerTrickRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScorerTrickRating.Width = 55;
             // 
-            // ScorerJumpRatingDesc
+            // ScorerJumpRating
             // 
-            this.ScorerJumpRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ScorerJumpRatingDesc.HeaderText = "Scorer Jump";
-            this.ScorerJumpRatingDesc.Name = "ScorerJumpRatingDesc";
-            this.ScorerJumpRatingDesc.ReadOnly = true;
-            this.ScorerJumpRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ScorerJumpRatingDesc.Width = 55;
+            this.ScorerJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ScorerJumpRating.HeaderText = "Scorer Jump";
+            this.ScorerJumpRating.Name = "ScorerJumpRating";
+            this.ScorerJumpRating.ReadOnly = true;
+            this.ScorerJumpRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ScorerJumpRating.Width = 55;
             // 
-            // SafetyOfficialRatingDesc
+            // SafetyOfficialRating
             // 
-            this.SafetyOfficialRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.SafetyOfficialRatingDesc.HeaderText = "Safety Rating";
-            this.SafetyOfficialRatingDesc.Name = "SafetyOfficialRatingDesc";
-            this.SafetyOfficialRatingDesc.ReadOnly = true;
-            this.SafetyOfficialRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SafetyOfficialRatingDesc.Width = 55;
+            this.SafetyOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.SafetyOfficialRating.HeaderText = "Safety Rating";
+            this.SafetyOfficialRating.Name = "SafetyOfficialRating";
+            this.SafetyOfficialRating.ReadOnly = true;
+            this.SafetyOfficialRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SafetyOfficialRating.Width = 55;
             // 
-            // TechOfficialRatingDesc
+            // TechOfficialRating
             // 
-            this.TechOfficialRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.TechOfficialRatingDesc.HeaderText = "Tech Rating";
-            this.TechOfficialRatingDesc.Name = "TechOfficialRatingDesc";
-            this.TechOfficialRatingDesc.ReadOnly = true;
-            this.TechOfficialRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TechOfficialRatingDesc.Width = 55;
+            this.TechOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.TechOfficialRating.HeaderText = "Tech Rating";
+            this.TechOfficialRating.Name = "TechOfficialRating";
+            this.TechOfficialRating.ReadOnly = true;
+            this.TechOfficialRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TechOfficialRating.Width = 55;
             // 
-            // AnncrOfficialRatingDesc
+            // AnncrOfficialRating
             // 
-            this.AnncrOfficialRatingDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AnncrOfficialRatingDesc.HeaderText = "Announcer Rating";
-            this.AnncrOfficialRatingDesc.Name = "AnncrOfficialRatingDesc";
-            this.AnncrOfficialRatingDesc.ReadOnly = true;
-            this.AnncrOfficialRatingDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AnncrOfficialRatingDesc.Width = 60;
+            this.AnncrOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AnncrOfficialRating.HeaderText = "Announcer Rating";
+            this.AnncrOfficialRating.Name = "AnncrOfficialRating";
+            this.AnncrOfficialRating.ReadOnly = true;
+            this.AnncrOfficialRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AnncrOfficialRating.Width = 60;
             // 
             // winStatus
             // 
@@ -1411,18 +1411,18 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
         private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeSlalomRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeTrickRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeJumpRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DriverSlalomRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DriverTrickRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DriverJumpRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerSlalomRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerTrickRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerJumpRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SafetyOfficialRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TechOfficialRatingDesc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AnncrOfficialRatingDesc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeSlalomRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeTrickRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JudgeJumpRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DriverSlalomRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DriverTrickRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DriverJumpRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerSlalomRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerTrickRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ScorerJumpRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SafetyOfficialRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TechOfficialRating;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AnncrOfficialRating;
         private System.Windows.Forms.TextBox editDriverTrickRating;
         private System.Windows.Forms.TextBox editDriverJumpRating;
         private System.Windows.Forms.TextBox editScorerTrickRating;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -148,7 +149,7 @@ namespace WaterskiScoringSystem.Tools {
                 curStreamReader = new StreamReader( curResponseStream );
                 String curResponseMessage = curStreamReader.ReadToEnd();
                 if (curResponseMessage.Length > 0) {
-                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( curResponseMessage );
+                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(curResponseMessage);
                 }
             } catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
@@ -159,6 +160,76 @@ namespace WaterskiScoringSystem.Tools {
                 if (curStreamReader != null) curStreamReader.Close();
                 if (curResponseStream != null) curResponseStream.Close();
                 if (curResponse != null) curResponse.Close();
+            }
+
+            return curResponseDataList;
+        }
+
+        public static List<object> getMessageResponseJsonArray( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod ) {
+            String curMethodName = "SendMessageHttp:getMessageResponseJsonArray";
+            HttpWebRequest curRequest = null;
+            StringBuilder curMessageBuffer = new StringBuilder("");
+            HttpWebResponse curResponse = null;
+            Stream curResponseStream = null;
+            StreamReader curStreamReader = null;
+            List<object> curResponseDataList = null;
+
+            try {
+                //Create a request using a URL that can receive a post
+                curRequest = (HttpWebRequest) WebRequest.Create(inUrl);
+
+                //Set the Method property of the request to POST.
+                if ( inPostMethod ) {
+                    curRequest.Method = "POST";
+                } else {
+                    curRequest.Method = "GET";
+                }
+                //Set the ContentType property of the WebRequest.
+                curRequest.ContentType = inContentType;
+                curRequest.KeepAlive = true;
+                curRequest.Timeout = 500000;
+
+                if ( inUserAccount != null ) {
+                    curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
+					inHeaderParams.Add( "AUTHORIZATION", "Basic " + inUserAccount + ":" + inPassword );
+				}
+				if ( inUrl.ToLower().StartsWith("https") ) {
+                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                    ServicePointManager.Expect100Continue = false;
+                }
+
+                //Set header parameters to the WebRequest
+                ( (HttpWebRequest) curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
+                if ( inHeaderParams != null ) {
+                    foreach ( string curKey in inHeaderParams.Keys ) {
+                        curRequest.Headers[curKey] = inHeaderParams[curKey];
+                    }
+                }
+
+                //Send request to upload file
+                curResponse = (HttpWebResponse) curRequest.GetResponse();
+                curResponseStream = curResponse.GetResponseStream();
+                curStreamReader = new StreamReader(curResponseStream);
+                String curResponseMessage = curStreamReader.ReadToEnd();
+                if ( curResponseMessage.Length > 0 ) {
+					if ( curResponseMessage.Equals( "Invalid credentials, unable to complete request" ) ) {
+						MessageBox.Show( curResponseMessage );
+						curResponseDataList = null;
+					} else {
+						curResponseDataList = new JavaScriptSerializer().Deserialize<List<object>>( curResponseMessage );
+					}
+				}
+
+            } catch ( Exception ex ) {
+                MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
+                Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+                curResponseDataList = null;
+
+            } finally {
+                // Clean up the streams.
+                if ( curStreamReader != null ) curStreamReader.Close();
+                if ( curResponseStream != null ) curResponseStream.Close();
+                if ( curResponse != null ) curResponse.Close();
             }
 
             return curResponseDataList;
@@ -744,9 +815,42 @@ namespace WaterskiScoringSystem.Tools {
             return true;
         }
 
-    }
+		/*
+        * Concvert a list of dictionary entries into a data table
+        */
+		public static DataTable convertDictionaryListToDataTable( List<object> curDataList ) {
+			String curMethodName = "ImportOfficialRatings:convertDictionaryListToDataTable: ";
+			DataTable returnDatatTable = new DataTable();
 
-    public class RequestState {
+			if ( curDataList.Count() > 0 ) {
+				Dictionary<string, object> dataHeaderEntry = (Dictionary<string, object>) curDataList.ElementAt( 0 );
+				foreach ( KeyValuePair<String, object> curEntry in dataHeaderEntry ) {
+					returnDatatTable.Columns.Add( curEntry.Key );
+				}
+			}
+
+			foreach ( Dictionary<string, object> curEntry in curDataList ) {
+				DataRow dataRow = returnDatatTable.NewRow();
+
+				foreach ( KeyValuePair<String, object> curEntryAttr in curEntry ) {
+					try {
+						dataRow[curEntryAttr.Key] = curEntryAttr.Value;
+
+					} catch ( Exception ex ) {
+						MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
+						Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+					}
+				}
+
+				returnDatatTable.Rows.Add( dataRow );
+			}
+
+			return returnDatatTable;
+		}
+
+	}
+
+	public class RequestState {
         // This class stores the state of the request. 
         public StringBuilder ReqstData;
         public byte[] InputMsgBuffer;

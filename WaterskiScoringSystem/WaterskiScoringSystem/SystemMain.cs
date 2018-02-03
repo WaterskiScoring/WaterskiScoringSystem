@@ -367,6 +367,12 @@ namespace WaterskiScoringSystem {
             myImportData.importData();
         }
 
+        private void navImportOfficialsData_Click( object sender, EventArgs e ) {
+			ImportMember curImportMember = new ImportMember(null);
+            mdiStatusMsg.Text = "ImportMember opening";
+			curImportMember.importPreRegMembers();
+        }
+
         private void navNopsCalculator_Click( object sender, EventArgs e ) {
             NopsCalcForm curForm = new NopsCalcForm();
             mdiStatusMsg.Text = curForm.Name + " opening";

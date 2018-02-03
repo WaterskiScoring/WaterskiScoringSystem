@@ -208,6 +208,11 @@ namespace WaterskiScoringSystem.Admin {
                         }
                         curSanctionId = (String)curViewRow.Cells["SanctionId"].Value;
                         try {
+                            curViewRow.Cells["SanctionEditCode"].Value = (String) curDataRow["SanctionEditCode"];
+                        } catch {
+                            curViewRow.Cells["SanctionEditCode"].Value = "";
+                        }
+                        try {
                             curViewRow.Cells["TourName"].Value = (String)curDataRow["Name"];
                         } catch {
                             curViewRow.Cells["TourName"].Value = "";
@@ -334,6 +339,11 @@ namespace WaterskiScoringSystem.Admin {
                 editName.Text = (String)curViewRow.Cells["TourName"].Value;
             } catch {
                 editName.Text = "";
+            }
+            try {
+                editSanctionEditCode.Text = (String) curViewRow.Cells["SanctionEditCode"].Value;
+            } catch {
+                editSanctionEditCode.Text = "";
             }
             try {
                 editClass.SelectedValue = (String)curViewRow.Cells["TourClass"].Value;
@@ -551,7 +561,8 @@ namespace WaterskiScoringSystem.Admin {
                         curSqlStmt.Append( "Update Tournament Set " );
                         curSqlStmt.Append( "Name = '" + encodeDataForSql(editName.Text) + "' " );
                         curSqlStmt.Append( ", Class = '" + editClass.SelectedValue + "' " );
-                        curSqlStmt.Append( ", Federation = '" + editFederation.SelectedValue + "' " );
+						curSqlStmt.Append( ", SanctionEditCode = '" + editSanctionEditCode.Text + "' " );
+                        curSqlStmt.Append( ", Federation = '" + editFederation.SelectedValue + "' ");
                         curSqlStmt.Append( ", Rules = '" + editRules.SelectedValue + "' " );
                         curSqlStmt.Append( ", EventDates = '" + encodeDataForSql(editEventDates.Text) + "' " );
                         curSqlStmt.Append( ", EventLocation = '" + encodeDataForSql(editEventLocation.Text) + "' " );
@@ -569,14 +580,15 @@ namespace WaterskiScoringSystem.Admin {
                         curSqlStmt.Append( "Where SanctionId = '" + curViewSanctionId + "' " );
                     } else {
                         curSqlStmt.Append( "Insert Tournament ( " );
-                        curSqlStmt.Append( " SanctionId, Name, Class, Federation, Rules, EventDates, EventLocation, TourDataLoc" );
+                        curSqlStmt.Append( " SanctionId, Name, Class, SanctionEditCode, Federation, Rules, EventDates, EventLocation, TourDataLoc" );
                         curSqlStmt.Append( ", SlalomRounds, JumpRounds, TrickRounds" );
                         curSqlStmt.Append( ", HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct, LastUpdateDate" );
                         curSqlStmt.Append( ") Values ( " );
                         curSqlStmt.Append( "'" + editSanctionId.Text + "'" );
                         curSqlStmt.Append( ", '" + encodeDataForSql(editName.Text) + "' " );
                         curSqlStmt.Append( ", '" + editClass.SelectedValue + "' " );
-                        curSqlStmt.Append( ", '" + editFederation.SelectedValue + "' " );
+						curSqlStmt.Append( ", '" + editSanctionEditCode.Text + "' " );
+						curSqlStmt.Append( ", '" + editFederation.SelectedValue + "' " );
                         curSqlStmt.Append( ", '" + editRules.SelectedValue + "' " );
                         curSqlStmt.Append( ", '" + encodeDataForSql(editEventDates.Text) + "' " );
                         curSqlStmt.Append( ", '" + encodeDataForSql(editEventLocation.Text) + "' " );
@@ -1004,7 +1016,12 @@ namespace WaterskiScoringSystem.Admin {
             } catch {
                 curViewRow.Cells["TourClass"].Value = "";
             }
-            try {
+			try {
+				curViewRow.Cells["SanctionEditCode"].Value = editSanctionEditCode.Text;
+			} catch {
+				curViewRow.Cells["SanctionEditCode"].Value = "";
+			}
+			try {
                 curViewRow.Cells["TourFederation"].Value = (String)editFederation.SelectedValue;
             } catch {
                 curViewRow.Cells["TourFederation"].Value = "";
@@ -1733,7 +1750,7 @@ namespace WaterskiScoringSystem.Admin {
         }
         private DataTable getTourData( String inSanctionId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation, TourDataLoc, LastUpdateDate, " );
+            curSqlStmt.Append("SELECT SanctionId, Name, Class, Federation, TourDataLoc, SanctionEditCode, LastUpdateDate, ");
             curSqlStmt.Append( "    SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation, " );
             curSqlStmt.Append( "    HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct " );
             curSqlStmt.Append( "FROM Tournament " );

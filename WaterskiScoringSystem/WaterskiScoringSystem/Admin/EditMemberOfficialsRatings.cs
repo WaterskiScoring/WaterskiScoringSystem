@@ -86,36 +86,42 @@ namespace WaterskiScoringSystem.Admin {
         private void editMemberDataLoad() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "Select Distinct 'OW' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
-            curSqlStmt.Append( ", OW.JudgeSlalomRating, OW.JudgeTrickRating, OW.JudgeJumpRating" );
-            curSqlStmt.Append( ", OW.DriverSlalomRating, OW.DriverTrickRating, OW.DriverJumpRating" );
-            curSqlStmt.Append( ", OW.ScorerSlalomRating, OW.ScorerTrickRating, OW.ScorerJumpRating" );
-            curSqlStmt.Append( ", OW.SafetyOfficialRating, OW.TechOfficialRating, OW.AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( OW.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( OW.JudgeTrickRating, '' ) as JudgeTrickRating" );
+			curSqlStmt.Append( ", Coalesce( OW.JudgeJumpRating, '' ) as JudgeJumpRating" );
+			curSqlStmt.Append( ", Coalesce( OW.ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( OW.ScorerTrickRating, '' ) as ScorerTrickRating" );
+			curSqlStmt.Append( ", Coalesce( OW.ScorerJumpRating, '' ) as ScorerJumpRating" );
+			curSqlStmt.Append( ", Coalesce( OW.DriverSlalomRating, '' ) as DriverSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( OW.DriverTrickRating, '' ) as DriverTrickRating" );
+			curSqlStmt.Append( ", Coalesce( OW.DriverJumpRating, '' ) as DriverJumpRating" );
+			curSqlStmt.Append( ", Coalesce( OW.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( OW.TechOfficialRating, '' ) as TechOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( OW.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count == 0) {
-                curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Select Distinct 'TR' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
-                curSqlStmt.Append( ", JSL.CodeValue AS JudgeSlalomRating, JTL.CodeValue AS JudgeTrickRating, JJL.CodeValue AS JudgeJumpRating" );
-                curSqlStmt.Append( ", SSL.CodeValue AS ScorerSlalomRating, STL.CodeValue AS ScorerTrickRating, SJL.CodeValue AS ScorerJumpRating" );
-                curSqlStmt.Append( ", DSL.CodeValue AS DriverSlalomRating, DTL.CodeValue AS DriverTrickRating, DJL.CodeValue AS DriverJumpRating" );
-                curSqlStmt.Append( ", SL.CodeValue AS SafetyOfficialRating, TL.CodeValue AS TechOfficialRating, AL.CodeValue AS AnncrOfficialRating " );
-                curSqlStmt.Append( "FROM TourReg TR " );
-                curSqlStmt.Append( "LEFT OUTER JOIN MemberList AS ML ON ML.MemberId = TR.MemberId " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JSL ON ML.JudgeSlalomRating = JSL.ListCode AND JSL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JTL ON ML.JudgeTrickRating = JTL.ListCode AND JTL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS JJL ON ML.JudgeJumpRating = JJL.ListCode AND JJL.ListName = 'JudgeRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SSL ON ML.ScorerSlalomRating = SSL.ListCode AND SSL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS STL ON ML.ScorerTrickRating = STL.ListCode AND STL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SJL ON ML.ScorerJumpRating = SJL.ListCode AND SJL.ListName = 'ScorerRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DSL ON ML.DriverSlalomRating = DSL.ListCode AND DSL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DTL ON ML.DriverTrickRating = DTL.ListCode AND DTL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS DJL ON ML.DriverJumpRating = DJL.ListCode AND DJL.ListName = 'DriverRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS SL ON ML.SafetyOfficialRating = SL.ListCode AND SL.ListName = 'SafetyRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS TL ON ML.TechOfficialRating = TL.ListCode AND TL.ListName = 'TechRating' " );
-                curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS AL ON ML.AnncrOfficialRating = AL.ListCode AND AL.ListName = 'AnnouncerRating' " );
-                curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
+
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Select Distinct 'TR' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeTrickRating, '' ) as JudgeTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.JudgeJumpRating, '' ) as JudgeJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerTrickRating, '' ) as ScorerTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.ScorerJumpRating, '' ) as ScorerJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverSlalomRating, '' ) as DriverSlalomRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
+				curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
+				curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+				curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
+				curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+				curSqlStmt.Append( "FROM TourReg TR " );
+				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
+				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
                 curDataTable = getData( curSqlStmt.ToString() );
             }
 
@@ -129,47 +135,26 @@ namespace WaterskiScoringSystem.Admin {
                     int curDelim = curName.LastIndexOf( "," );
                     editFirstName.Text = curName.Substring( curDelim + 2 );
                     editLastName.Text = curName.Substring( 0, curDelim );
-                } catch {
+
+				} catch {
                     editFirstName.Text = "";
                     editLastName.Text = "";
                 }
-                if (!( isObjectEmpty( curRow["JudgeSlalomRating"] ) )) {
-                    JudgeSlalomRatingSelect.SelectedItem = (String)curRow["JudgeSlalomRating"];
-                }
-                if (!( isObjectEmpty( curRow["JudgeTrickRating"] ) )) {
-                    JudgeTrickRatingSelect.SelectedItem = (String)curRow["JudgeTrickRating"];
-                }
-                if (!( isObjectEmpty( curRow["JudgeJumpRating"] ) )) {
-                    JudgeJumpRatingSelect.SelectedItem = (String)curRow["JudgeJumpRating"];
-                }
-                if (!( isObjectEmpty( curRow["DriverSlalomRating"] ) )) {
-                    DriverSlalomRatingSelect.SelectedItem = (String)curRow["DriverSlalomRating"];
-                }
-                if (!( isObjectEmpty( curRow["DriverTrickRating"] ) )) {
-                    DriverTrickRatingSelect.SelectedItem = (String)curRow["DriverTrickRating"];
-                }
-                if (!( isObjectEmpty( curRow["DriverJumpRating"] ) )) {
-                    DriverJumpRatingSelect.SelectedItem = (String)curRow["DriverJumpRating"];
-                }
-                if (!( isObjectEmpty( curRow["ScorerSlalomRating"] ) )) {
-                    ScorerSlalomRatingSelect.SelectedItem = (String)curRow["ScorerSlalomRating"];
-                }
-                if (!( isObjectEmpty( curRow["ScorerTrickRating"] ) )) {
-                    ScorerTrickRatingSelect.SelectedItem = (String)curRow["ScorerTrickRating"];
-                }
-                if (!( isObjectEmpty( curRow["ScorerJumpRating"] ) )) {
-                    ScorerJumpRatingSelect.SelectedItem = (String)curRow["ScorerJumpRating"];
-                }
-                if (!( isObjectEmpty( curRow["SafetyOfficialRating"] ) )) {
-                    SafetyRatingSelect.SelectedItem = (String)curRow["SafetyOfficialRating"];
-                }
-                if (!( isObjectEmpty( curRow["TechOfficialRating"] ) )) {
-                    TechOfficialRatingSelect.SelectedItem = (String)curRow["TechOfficialRating"];
-                }
-                if (!( isObjectEmpty( curRow["AnncrOfficialRating"] ) )) {
-                    AnncrOfficialRatingSelect.SelectedItem = (String)curRow["AnncrOfficialRating"];
-                }
-            } else {
+
+				JudgeSlalomRatingSelect.SelectedItem = (String) curRow["JudgeSlalomRating"];
+				JudgeTrickRatingSelect.SelectedItem = (String) curRow["JudgeTrickRating"];
+				JudgeJumpRatingSelect.SelectedItem = (String) curRow["JudgeJumpRating"];
+				DriverSlalomRatingSelect.SelectedItem = (String) curRow["DriverSlalomRating"];
+				DriverTrickRatingSelect.SelectedItem = (String) curRow["DriverTrickRating"];
+				DriverJumpRatingSelect.SelectedItem = (String) curRow["DriverJumpRating"];
+				ScorerSlalomRatingSelect.SelectedItem = (String) curRow["ScorerSlalomRating"];
+				ScorerTrickRatingSelect.SelectedItem = (String) curRow["ScorerTrickRating"];
+				ScorerJumpRatingSelect.SelectedItem = (String) curRow["ScorerJumpRating"];
+				SafetyRatingSelect.SelectedItem = (String) curRow["SafetyOfficialRating"];
+				TechOfficialRatingSelect.SelectedItem = (String) curRow["TechOfficialRating"];
+				AnncrOfficialRatingSelect.SelectedItem = (String) curRow["AnncrOfficialRating"];
+
+			} else {
                 MessageBox.Show( "Error: Member data not found" );
             }
         }
