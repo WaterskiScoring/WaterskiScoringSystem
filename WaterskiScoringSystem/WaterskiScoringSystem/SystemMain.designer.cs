@@ -135,18 +135,18 @@
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(100, 6);
 			// 
 			// navClose
 			// 
 			this.navClose.Name = "navClose";
-			this.navClose.Size = new System.Drawing.Size(152, 22);
+			this.navClose.Size = new System.Drawing.Size(103, 22);
 			this.navClose.Text = "&Close";
 			// 
 			// navExit
 			// 
 			this.navExit.Name = "navExit";
-			this.navExit.Size = new System.Drawing.Size(152, 22);
+			this.navExit.Size = new System.Drawing.Size(103, 22);
 			this.navExit.Text = "E&xit";
 			this.navExit.Click += new System.EventHandler(this.navExit_Click);
 			// 
@@ -189,29 +189,29 @@
 			// currentFormatToolStripMenuItem
 			// 
 			this.currentFormatToolStripMenuItem.Name = "currentFormatToolStripMenuItem";
-			this.currentFormatToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.currentFormatToolStripMenuItem.Size = new System.Drawing.Size(275, 22);
 			this.currentFormatToolStripMenuItem.Text = "Standard Registration Template";
 			this.currentFormatToolStripMenuItem.Click += new System.EventHandler(this.navImportFile_Click);
 			// 
 			// collegiateToolStripMenuItem
 			// 
 			this.collegiateToolStripMenuItem.Name = "collegiateToolStripMenuItem";
-			this.collegiateToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+			this.collegiateToolStripMenuItem.Size = new System.Drawing.Size(275, 22);
 			this.collegiateToolStripMenuItem.Text = "Collegiate Registration Template";
 			this.collegiateToolStripMenuItem.Click += new System.EventHandler(this.navImportNcwsaFile_Click);
 			// 
 			// navImportDataWstims
 			// 
 			this.navImportDataWstims.Name = "navImportDataWstims";
-			this.navImportDataWstims.Size = new System.Drawing.Size(270, 22);
+			this.navImportDataWstims.Size = new System.Drawing.Size(275, 22);
 			this.navImportDataWstims.Text = "WSTIMS For Windows";
 			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
 			// 
 			// navImportOfficialsData
 			// 
 			this.navImportOfficialsData.Name = "navImportOfficialsData";
-			this.navImportOfficialsData.Size = new System.Drawing.Size(270, 22);
-			this.navImportOfficialsData.Text = "Import Officials Ratings From USAWS";
+			this.navImportOfficialsData.Size = new System.Drawing.Size(275, 22);
+			this.navImportOfficialsData.Text = "Import Pre-Registrations From USAWS";
 			this.navImportOfficialsData.Click += new System.EventHandler(this.navImportOfficialsData_Click);
 			// 
 			// navTournament
@@ -676,21 +676,21 @@
 			// gettingStartedToolStripMenuItem
 			// 
 			this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.gettingStartedToolStripMenuItem.Text = "&User Guide";
 			this.gettingStartedToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// overviewToolStripMenuItem
 			// 
 			this.overviewToolStripMenuItem.Name = "overviewToolStripMenuItem";
-			this.overviewToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+			this.overviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.overviewToolStripMenuItem.Text = "&Overview";
 			this.overviewToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// navHelpAbout
 			// 
 			this.navHelpAbout.Name = "navHelpAbout";
-			this.navHelpAbout.Size = new System.Drawing.Size(131, 22);
+			this.navHelpAbout.Size = new System.Drawing.Size(152, 22);
 			this.navHelpAbout.Text = "About";
 			this.navHelpAbout.Click += new System.EventHandler(this.navHelpAbout_Click);
 			// 

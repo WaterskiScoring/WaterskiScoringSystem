@@ -85,13 +85,39 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridView.CurrentRow.Selected = true;
                 DataGridViewSelectedRowCollection selectedRows = DataGridView.SelectedRows;
                 foreach ( DataGridViewRow curRow in selectedRows ) {
+					String curMemberIdSelected = (String) curRow.Cells["MemberId"].Value;
+					//String curAgeGroupSelected = (String) curRow.Cells["Div"].Value;
 
 					if ( usawsSearchLoc.Checked ) {
-						ImportOfficialRatings importOfficialRatings = new ImportOfficialRatings( myTourRow );
-                        importOfficialRatings.importMembersAndRating( (Dictionary<string, object>) myResponseDataList[rowIdx] );
+						ImportMember importMember = new ImportMember( myTourRow );
+
+						/*
+						 * Search imported records to find the matching record to the selected skier currently being processed
+						 */
+						foreach ( Dictionary<string, object> curEntry in myResponseDataList ) {
+							String curMemberId = "";
+							if ( curEntry.ContainsKey( "MemberID" ) ) {
+								curMemberId = (String) curEntry["MemberID"];
+							} else {
+								curMemberId = (String) curEntry["MemberId"];
+							}
+							if ( curMemberId.Length == 11 ) {
+								curMemberId = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
+							}
+							/*
+							 * Add or update member information for selected skier using imported data
+							 */
+							if ( curMemberId.Equals( curMemberIdSelected ) ) {
+								importMember.importMemberWithRatings( curEntry );
+								break;
+							}
+						}
 					}
 
-					myEditRegMemberDialog.editMember( (String)curRow.Cells["MemberId"].Value, "" );
+					/*
+					 * Processed selected skier to add to the tournament registration
+					 */
+					myEditRegMemberDialog.editMember( curMemberIdSelected, "" );
                     myEditRegMemberDialog.ShowDialog();
                     curReqstStatus = myEditRegMemberDialog.ReqstStatus;
                     if ( curReqstStatus.Equals( "Added" ) ) {
@@ -122,12 +148,21 @@ namespace WaterskiScoringSystem.Tournament {
 			myResponseDataList = null;
 
 			if ( localSearchLoc.Checked ) {
+				/*
+				 * Search local MemberList table for skiers matching provided search criteria
+				 */
 				myMemberListDataTable = searchMemberList( inputMemberId.Text, inputLastName.Text, inputFirstName.Text, inputState.Text );
 
 			} else {
+				/*
+				 * Search USA Water Ski MemberList for skiers matching provided search criteria
+				 */
 				myMemberListDataTable = sendRequest( inputMemberId.Text, inputLastName.Text, inputFirstName.Text, inputState.Text );
             }
 
+			/*
+			 * Display skiers found matching search criteria
+			 */
 			if ( myMemberListDataTable != null ) {
                 loadDataGridView();
             }
@@ -301,39 +336,39 @@ namespace WaterskiScoringSystem.Tournament {
 							curViewRow.Cells["OffCode"].Value = "";
 						}
 						try {
-							curViewRow.Cells["SlmSco"].Value = (String) curDataRow["SlmSco"];
+							curViewRow.Cells["SlalomRank"].Value = (String) curDataRow["SlalomRank"];
 						} catch {
-							curViewRow.Cells["SlmSco"].Value = "";
+							curViewRow.Cells["SlalomRank"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TrkSco"].Value = (String) curDataRow["TrkSco"];
+							curViewRow.Cells["TrickRank"].Value = (String) curDataRow["TrickRank"];
 						} catch {
-							curViewRow.Cells["TrkSco"].Value = "";
+							curViewRow.Cells["TrickRank"].Value = "";
 						}
 						try {
-							curViewRow.Cells["JmpSco"].Value = (String) curDataRow["JmpSco"];
+							curViewRow.Cells["JumpRank"].Value = (String) curDataRow["JumpRank"];
 						} catch {
-							curViewRow.Cells["JmpSco"].Value = "";
+							curViewRow.Cells["JumpRank"].Value = "";
 						}
 						try {
-							curViewRow.Cells["SlmRat"].Value = (String) curDataRow["SlmRat"];
+							curViewRow.Cells["SlalomRating"].Value = (String) curDataRow["SlalomRating"];
 						} catch {
-							curViewRow.Cells["SlmRat"].Value = "";
+							curViewRow.Cells["SlalomRating"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TrkRat"].Value = (String) curDataRow["TrkRat"];
+							curViewRow.Cells["TrickRating"].Value = (String) curDataRow["TrickRating"];
 						} catch {
-							curViewRow.Cells["TrkRat"].Value = "";
+							curViewRow.Cells["TrickRating"].Value = "";
 						}
 						try {
-							curViewRow.Cells["JmpRat"].Value = (String) curDataRow["JmpRat"];
+							curViewRow.Cells["JumpRating"].Value = (String) curDataRow["JumpRating"];
 						} catch {
-							curViewRow.Cells["JmpRat"].Value = "";
+							curViewRow.Cells["JumpRating"].Value = "";
 						}
 						try {
-							curViewRow.Cells["OvrRat"].Value = (String) curDataRow["OvrRat"];
+							curViewRow.Cells["OverallRating"].Value = (String) curDataRow["OverallRating"];
 						} catch {
-							curViewRow.Cells["OvrRat"].Value = "";
+							curViewRow.Cells["OverallRating"].Value = "";
 						}
 						try {
 							curViewRow.Cells["SlmQfy"].Value = (String) curDataRow["SlmQfy"];

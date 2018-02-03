@@ -98,7 +98,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " FROM CodeValueList" );
                 curSqlStmt.Append( " WHERE ListName = 'ClassToEvent'" );
                 curSqlStmt.Append( " ORDER BY SortSeq" );
-                myClassToEventDataTable = getData( curSqlStmt.ToString() );
+				
+                myClassToEventDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
             if ( myClassToEventDataTable.Rows.Count == 0 ) {
                 curReturnValue = "C";
@@ -748,8 +749,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From SlalomRecap" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -813,8 +814,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From TrickPass" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -878,8 +879,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " Union" );
                 curSqlStmt.Append( " Select PK From JumpRecap" );
                 curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "'" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
-                if ( curDataTable.Rows.Count > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
                     String dialogMsg = "Skier has " + curEvent + " scores!\nDo you still want to remove skier from " + curEvent + " event?";
                     DialogResult msgResp =
                         MessageBox.Show( dialogMsg, "Delete Warning",
@@ -957,8 +958,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( " WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "   AND E.AgeGroup = '" + inAgeGroup + "' AND E.Event = '" + inEvent + "'" );
             curSqlStmt.Append( " ORDER BY SkierName " );
-            return getData( curSqlStmt.ToString() );
-        }
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
 
         private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -971,8 +972,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "'" );
             }
             curSqlStmt.Append( " ORDER BY SkierName " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if ( curDataTable.Rows.Count > 0 ) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
                 return curDataTable.Rows[0];
             } else {
                 return null;
@@ -998,7 +999,7 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
             curSqlStmt.Append( "FROM MemberList " );
             curSqlStmt.Append( "WHERE MemberId = '" + inMemberId + "'" );
-			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return curDataTable.Rows[0];
 			} else {
@@ -1014,8 +1015,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "        ON O.MemberId = T.MemberId AND O.SanctionId = T.SanctionId " );
             curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "ORDER BY O.SanctionId, O.MemberId, T.SkierName" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if (curDataTable.Rows.Count > 0) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if (curDataTable.Rows.Count > 0) {
                 return curDataTable.Rows[0];
             } else {
                 return null;
@@ -1026,7 +1027,7 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT * From SkierRanking Where MemberId = '" + inMemberId + "' ");
             curSqlStmt.Append( "And AgeGroup = '" + inAgeGroup + "' And Event = '" + inEvent + "'" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
         
         private DataTable getTourData( String inSanctionId ) {
@@ -1036,7 +1037,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "    HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct " );
             curSqlStmt.Append( "FROM Tournament " );
             curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
@@ -1060,9 +1061,5 @@ namespace WaterskiScoringSystem.Tournament {
             return curNewValue.ToString();
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-    
     }
 }

@@ -15,7 +15,7 @@ namespace WaterskiScoringSystem.Tournament {
     public partial class OfficialImport : Form {
         private bool isLoadInProg = false;
         private String mySanctionNum;
-        private ImportOfficialRatings importOfficialRatings;
+        private ImportMember importOfficialRatings;
 
         private DataRow myTourRow;
 
@@ -51,7 +51,7 @@ namespace WaterskiScoringSystem.Tournament {
                     DataTable curTourDataTable = getTourData();
                     if ( curTourDataTable.Rows.Count > 0 ) {
                         myTourRow = curTourDataTable.Rows[0];
-                        importOfficialRatings = new ImportOfficialRatings(myTourRow);
+                        importOfficialRatings = new ImportMember(myTourRow);
 
                         myRegionDropdownList = new RegionDropdownList();
                         myStateDropdownList = new StateDropdownList();
@@ -218,7 +218,6 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void ProcessSelectionButton_Click( object sender, EventArgs e ) {
-            importOfficialRatings.importMembersAndRatings(myResponseDataList);
             ProcessSelectionButton.Visible = false;
         }
 
@@ -234,8 +233,9 @@ namespace WaterskiScoringSystem.Tournament {
             ----------------------------------------------------------------------- */
 
             String curContentType = "application/json; charset=UTF-8";
-            String curOfficialExportListUrl = "http://usawaterski.org/admin/GetOfficialExportJson.asp";
-            String curReqstUrl = curOfficialExportListUrl + curQueryString;
+			//String curOfficialExportListUrl = "http://usawaterski.org/admin/GetOfficialExportJson.asp";
+			String curOfficialExportListUrl = "http://usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curReqstUrl = curOfficialExportListUrl + curQueryString;
 			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( (curSanctionEditCode == null) || (curSanctionEditCode.Length == 0 ) ) {
 				MessageBox.Show( "Sanction edit code is required to retrieve officials and ratings.  Enter required value on Tournament Form" );
@@ -268,11 +268,9 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append("LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' ");
-            return getData(curSqlStmt.ToString());
-        }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable(inSelectStmt);
-        }
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
     }
 }

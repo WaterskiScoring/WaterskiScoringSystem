@@ -337,7 +337,7 @@
     <Compile Include="Tools\ExportRecordAppData.cs" />
     <Compile Include="Tools\ExportScoreBookHtmlIwwf.cs" />
     <Compile Include="Tools\FolderBrowserLauncher.cs" />
-    <Compile Include="Tools\ImportOfficialRatings.cs" />
+    <Compile Include="Tools\ImportMember.cs" />
     <Compile Include="Tools\ListMaintenance.cs">
       <SubType>Form</SubType>
     </Compile>

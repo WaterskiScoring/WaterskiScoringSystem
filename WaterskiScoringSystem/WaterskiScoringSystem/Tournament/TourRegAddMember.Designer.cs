@@ -41,6 +41,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.searchLocGroupBox = new System.Windows.Forms.GroupBox();
 			this.usawsSearchLoc = new System.Windows.Forms.RadioButton();
 			this.localSearchLoc = new System.Windows.Forms.RadioButton();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,13 +62,13 @@ namespace WaterskiScoringSystem.Tournament {
 			this.MemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.MembershipRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.CostToUpgrade = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SlmSco = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TrkSco = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.JmpSco = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SlmRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TrkRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.JmpRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.OvrRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SlalomRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TrickRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.JumpRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SlalomRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TrickRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.JumpRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.OverallRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SlmQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrkQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JmpQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -90,7 +91,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ScorerJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Safety = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TechController = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
 			this.searchLocGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -207,13 +207,13 @@ namespace WaterskiScoringSystem.Tournament {
             this.MemCode,
             this.MembershipRate,
             this.CostToUpgrade,
-            this.SlmSco,
-            this.TrkSco,
-            this.JmpSco,
-            this.SlmRat,
-            this.TrkRat,
-            this.JmpRat,
-            this.OvrRat,
+            this.SlalomRank,
+            this.TrickRank,
+            this.JumpRank,
+            this.SlalomRating,
+            this.TrickRating,
+            this.JumpRating,
+            this.OverallRating,
             this.SlmQfy,
             this.TrkQfy,
             this.JmpQfy,
@@ -319,6 +319,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.localSearchLoc.TabStop = true;
 			this.localSearchLoc.Text = "Local";
 			this.localSearchLoc.UseVisualStyleBackColor = true;
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(4, 79);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 0;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
 			// 
 			// MemberId
 			// 
@@ -508,68 +518,68 @@ namespace WaterskiScoringSystem.Tournament {
 			this.CostToUpgrade.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.CostToUpgrade.Width = 60;
 			// 
-			// SlmSco
+			// SlalomRank
 			// 
-			this.SlmSco.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SlmSco.HeaderText = "Slalom Avg";
-			this.SlmSco.Name = "SlmSco";
-			this.SlmSco.ReadOnly = true;
-			this.SlmSco.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SlmSco.Width = 50;
+			this.SlalomRank.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SlalomRank.HeaderText = "Slalom Avg";
+			this.SlalomRank.Name = "SlalomRank";
+			this.SlalomRank.ReadOnly = true;
+			this.SlalomRank.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SlalomRank.Width = 50;
 			// 
-			// TrkSco
+			// TrickRank
 			// 
-			this.TrkSco.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TrkSco.HeaderText = "Trick Avg";
-			this.TrkSco.Name = "TrkSco";
-			this.TrkSco.ReadOnly = true;
-			this.TrkSco.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TrkSco.Width = 50;
+			this.TrickRank.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TrickRank.HeaderText = "Trick Avg";
+			this.TrickRank.Name = "TrickRank";
+			this.TrickRank.ReadOnly = true;
+			this.TrickRank.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TrickRank.Width = 50;
 			// 
-			// JmpSco
+			// JumpRank
 			// 
-			this.JmpSco.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.JmpSco.HeaderText = "Jump Avg";
-			this.JmpSco.Name = "JmpSco";
-			this.JmpSco.ReadOnly = true;
-			this.JmpSco.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.JmpSco.Width = 50;
+			this.JumpRank.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.JumpRank.HeaderText = "Jump Avg";
+			this.JumpRank.Name = "JumpRank";
+			this.JumpRank.ReadOnly = true;
+			this.JumpRank.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.JumpRank.Width = 50;
 			// 
-			// SlmRat
+			// SlalomRating
 			// 
-			this.SlmRat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SlmRat.HeaderText = "Slalom Rating";
-			this.SlmRat.Name = "SlmRat";
-			this.SlmRat.ReadOnly = true;
-			this.SlmRat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SlmRat.Width = 40;
+			this.SlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SlalomRating.HeaderText = "Slalom Rating";
+			this.SlalomRating.Name = "SlalomRating";
+			this.SlalomRating.ReadOnly = true;
+			this.SlalomRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SlalomRating.Width = 40;
 			// 
-			// TrkRat
+			// TrickRating
 			// 
-			this.TrkRat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TrkRat.HeaderText = "Trick Rating";
-			this.TrkRat.Name = "TrkRat";
-			this.TrkRat.ReadOnly = true;
-			this.TrkRat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TrkRat.Width = 40;
+			this.TrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TrickRating.HeaderText = "Trick Rating";
+			this.TrickRating.Name = "TrickRating";
+			this.TrickRating.ReadOnly = true;
+			this.TrickRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TrickRating.Width = 40;
 			// 
-			// JmpRat
+			// JumpRating
 			// 
-			this.JmpRat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.JmpRat.HeaderText = "Jump Rating";
-			this.JmpRat.Name = "JmpRat";
-			this.JmpRat.ReadOnly = true;
-			this.JmpRat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.JmpRat.Width = 40;
+			this.JumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.JumpRating.HeaderText = "Jump Rating";
+			this.JumpRating.Name = "JumpRating";
+			this.JumpRating.ReadOnly = true;
+			this.JumpRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.JumpRating.Width = 40;
 			// 
-			// OvrRat
+			// OverallRating
 			// 
-			this.OvrRat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.OvrRat.HeaderText = "Overall Rating";
-			this.OvrRat.Name = "OvrRat";
-			this.OvrRat.ReadOnly = true;
-			this.OvrRat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.OvrRat.Width = 40;
+			this.OverallRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.OverallRating.HeaderText = "Overall Rating";
+			this.OverallRating.Name = "OverallRating";
+			this.OverallRating.ReadOnly = true;
+			this.OverallRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.OverallRating.Width = 40;
 			// 
 			// SlmQfy
 			// 
@@ -747,16 +757,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.TechController.Name = "TechController";
 			this.TechController.ReadOnly = true;
 			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(4, 79);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
-			this.RowStatusLabel.TabIndex = 0;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
-			// 
 			// TourRegAddMember
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -811,6 +811,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.GroupBox searchLocGroupBox;
 		private System.Windows.Forms.RadioButton usawsSearchLoc;
 		private System.Windows.Forms.RadioButton localSearchLoc;
+		private System.Windows.Forms.Label RowStatusLabel;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
@@ -831,13 +832,13 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemCode;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MembershipRate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn CostToUpgrade;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SlmSco;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TrkSco;
-		private System.Windows.Forms.DataGridViewTextBoxColumn JmpSco;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SlmRat;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TrkRat;
-		private System.Windows.Forms.DataGridViewTextBoxColumn JmpRat;
-		private System.Windows.Forms.DataGridViewTextBoxColumn OvrRat;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomRank;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TrickRank;
+		private System.Windows.Forms.DataGridViewTextBoxColumn JumpRank;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TrickRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn JumpRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn OverallRating;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlmQfy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrkQfy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JmpQfy;
@@ -860,6 +861,5 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScorerJump;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Safety;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TechController;
-		private System.Windows.Forms.Label RowStatusLabel;
 	}
 }
