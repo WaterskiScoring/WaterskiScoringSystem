@@ -66,8 +66,36 @@ namespace WaterskiScoringSystem.Tournament {
             if (myTourProperties.TeamSummaryPointsMethod.ToLower().Equals( "kbase" )) kBasePointsButton.Checked = true;
             if (myTourProperties.TeamSummaryPointsMethod.ToLower().Equals( "ratio" )) ratioPointsButton.Checked = true;
 
-            // Retrieve data from database
-            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			FilterReportButton.Visible = false;
+			FilterReportButton.Enabled = false;
+
+            CategoryGroupBox.Location = new Point( 825, 49 );
+			EventGroupBox.Location = new Point( 825, 85 );
+			if ( plcmtAWSATeamButton.Checked ) {
+				CategoryGroupBox.Visible = true;
+				CategoryGroupBox.Enabled = true;
+				EventGroupBox.Visible = true;
+				EventGroupBox.Enabled = true;
+
+				EventGroupList.Visible = false;
+				EventGroupList.Enabled = false;
+				EventGroupListLabel.Visible = false;
+				EventGroupListLabel.Enabled = false;
+			} else {
+				CategoryGroupBox.Visible = false;
+				CategoryGroupBox.Enabled = false;
+				EventGroupBox.Visible = false;
+				EventGroupBox.Enabled = false;
+
+				EventGroupList.Visible = true;
+				EventGroupList.Enabled = true;
+				EventGroupListLabel.Visible = true;
+				EventGroupListLabel.Enabled = true;
+			}
+
+
+			// Retrieve data from database
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 
             if ( mySanctionNum == null ) {
                 MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
@@ -287,7 +315,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.Cursor = Cursors.Default;
         }
 
-        private void loadGroupList() {
+		private void loadGroupList() {
             if (EventGroupList.DataSource == null) {
                 if (myTourRules.ToLower().Equals( "ncwsa" )) {
                     ArrayList curEventGroupList = new ArrayList();
@@ -791,10 +819,12 @@ namespace WaterskiScoringSystem.Tournament {
             if ( myShowTeam ) {
                 ShowAllButton_Click( null, null );
             }
+			int scoreIdxSlalom = 0, scoreIdxTrick = 1, scoreIdxJump = 2, scoreIdxTotal = 3;
+			Decimal[] awsaTeamTotal = new decimal[4] { 0, 0, 0, 0 };
 
-            DataRow[] curSlalomTeamSkierList;
-            DataRow[] curTrickTeamSkierList;
-            DataRow[] curJumpTeamSkierList;
+			DataRow[] curSlalomTeamSkierList = null;
+            DataRow[] curTrickTeamSkierList = null;
+            DataRow[] curJumpTeamSkierList = null;
             //DataRow[] curFindRows;
             int curTeamPlcmt = 0;
             String curFilterCmd = "", curDiv = "", prevDiv = "";
@@ -847,7 +877,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
             myJumpDataTable.DefaultView.Sort = curSortCmd;
             DataTable curJumpDataTable = myJumpDataTable.DefaultView.ToTable();
-            DataTable curTeamDataTable = myTeamDataTable;
 
             if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
                 PrintPointsSlalom.HeaderText = "NOPS";
@@ -864,7 +893,8 @@ namespace WaterskiScoringSystem.Tournament {
             DataGridViewRow curPrintRow = null;
             PrintDataGridView.Rows.Clear();
             foreach ( DataRow curTeamRow in myTeamDataTable.Rows ) {
-                if ( TeamDiv.Visible && ( divPlcmtButton.Checked || groupPlcmtButton.Checked ) ) {
+				try {
+				if ( TeamDiv.Visible && ( divPlcmtButton.Checked || groupPlcmtButton.Checked ) ) {
                     if ( divPlcmtButton.Checked) {
                         curDiv = (String)curTeamRow["Div"];
                     }
@@ -883,7 +913,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow = PrintDataGridView.Rows[curPrintIdx];
                     curPrintRow.Cells["PrintTeamPlcmt"].Value = curTeamPlcmt.ToString();
                     curPrintRow.Cells["PrintTeamDiv"].Value = (String)curTeamRow["Div"];
-                } else {
+
+				} else {
                     if (curPrintIdx == 0) {
                         curTeamPlcmt = 0;
                     }
@@ -893,7 +924,6 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintTeamPlcmt"].Value = curTeamPlcmt.ToString();
                 }
                 try {
-                    //PrintDataGridView.Rows[curPrintIdx].Height = 60;
                     curPrintRow.Cells["PrintTeam"].Value = (String)curTeamRow["TeamCode"] + "-" + (String)curTeamRow["Name"];
                 } catch {
                     try {
@@ -904,8 +934,19 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 try {
                     if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
-                        curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = ( (Decimal) curTeamRow["TeamScoreSlalom"] ).ToString("##,##0");
-                    } else {
+						if ( CategoryAllButton.Checked && ( EventAllButton.Checked || EventSlalomButton.Checked ) ) {
+							curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = ( (Decimal) curTeamRow["TeamScoreSlalom"] ).ToString( "##,##0" );
+
+						} else {
+							if ( EventSlalomButton.Checked && curTeamPlcmt > 0 ) {
+								curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = awsaTeamTotal[scoreIdxSlalom].ToString( "##,##0" );
+
+							} else {
+								curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = "";
+							}
+						}
+
+					} else {
                         curPrintRow.Cells["PrintPointsSlalom"].Value = ( (Decimal) curTeamRow["TeamScoreSlalom"] ).ToString("##,##0");
                     }
                 } catch {
@@ -918,8 +959,19 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 try {
                     if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
-                        curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = ( (Decimal) curTeamRow["TeamScoreTrick"] ).ToString("##,##0");
-                    } else {
+						if ( CategoryAllButton.Checked && ( EventAllButton.Checked || EventTrickButton.Checked ) ) {
+							curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = ( (Decimal) curTeamRow["TeamScoreTrick"] ).ToString( "##,##0" );
+
+						} else {
+							if ( EventSlalomButton.Checked && curTeamPlcmt > 0 ) {
+								curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = awsaTeamTotal[scoreIdxTrick].ToString( "##,##0" );
+
+							} else {
+								curPrintRow.Cells["PrintPlcmtPointsTrick"].Value = "";
+							}
+						}
+
+					} else {
                         curPrintRow.Cells["PrintPointsTrick"].Value = ( (Decimal) curTeamRow["TeamScoreTrick"] ).ToString("##,##0");
                     }
                 } catch {
@@ -932,8 +984,19 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 try {
                     if ( myTourRules.ToLower().Equals("awsa") && plcmtAWSATeamButton.Checked ) {
-                        curPrintRow.Cells["PrintPlcmtPointsJump"].Value = ( (Decimal) curTeamRow["TeamScoreJump"] ).ToString("##,##0");
-                    } else {
+						if ( CategoryAllButton.Checked && ( EventAllButton.Checked || EventJumpButton.Checked ) ) {
+							curPrintRow.Cells["PrintPlcmtPointsJump"].Value = ( (Decimal) curTeamRow["TeamScoreJump"] ).ToString( "##,##0" );
+
+						} else {
+							if ( EventSlalomButton.Checked && curTeamPlcmt > 0 ) {
+								curPrintRow.Cells["PrintPlcmtPointsJump"].Value = awsaTeamTotal[scoreIdxJump].ToString( "##,##0" );
+
+							} else {
+								curPrintRow.Cells["PrintPlcmtPointsJump"].Value = "";
+							}
+						}
+
+					} else {
                         curPrintRow.Cells["PrintPointsJump"].Value = ( (Decimal) curTeamRow["TeamScoreJump"] ).ToString("##,##0");
                     }
                 } catch {
@@ -945,8 +1008,18 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintPlcmtJump"].Value = "";
                 }
                 try {
-                    curPrintRow.Cells["PrintTeamScoreTotal"].Value = ( (Decimal)curTeamRow["TeamScoreTotal"] ).ToString( "##,##0" );
-                } catch {
+					if ( myTourRules.ToLower().Equals( "awsa" ) && plcmtAWSATeamButton.Checked ) {
+						if ( CategoryAllButton.Checked && ( EventAllButton.Checked || EventJumpButton.Checked ) ) {
+							curPrintRow.Cells["PrintTeamScoreTotal"].Value = ( (Decimal) curTeamRow["TeamScoreTotal"] ).ToString( "##,##0" );
+
+						} else {
+							curPrintRow.Cells["PrintTeamScoreTotal"].Value = "";
+						}
+
+					} else {
+						curPrintRow.Cells["PrintTeamScoreTotal"].Value = ( (Decimal) curTeamRow["TeamScoreTotal"] ).ToString( "##,##0" );
+					}
+				} catch {
                     curPrintRow.Cells["PrintTeamScoreTotal"].Value = "";
                 }
 
@@ -965,13 +1038,26 @@ namespace WaterskiScoringSystem.Tournament {
                     curDivList.Add( "Cat1" );
                     curDivList.Add( "Cat2" );
                     curDivList.Add( "Cat3" );
-                } else {
+
+					awsaTeamTotal = new decimal[4] { 0, 0, 0, 0 };
+
+				} else {
                     curDivList.Add( "" );
                 }
 
                 String curGroupAttrName = "";
                 bool curInsertNewRow = false;
                 foreach (String curDivShow in curDivList) {
+					if ( plcmtAWSATeamButton.Checked
+						&& ( CategoryAllButton.Checked
+							|| ( Category1Button.Checked && curDivShow.Equals( "Cat1" ) )
+							|| ( Category2Button.Checked && curDivShow.Equals( "Cat2" ) )
+							|| ( Category3Button.Checked && curDivShow.Equals( "Cat3" ) )
+						) ) {
+					} else {
+						continue;
+					}
+
                     if (curInsertNewRow) {
                         curPrintIdx = PrintDataGridView.Rows.Add();
                         curPrintRow = PrintDataGridView.Rows[curPrintIdx];
@@ -986,31 +1072,47 @@ namespace WaterskiScoringSystem.Tournament {
                     if (groupPlcmtButton.Checked || plcmtAWSATeamButton.Checked ) {
                         curGroupAttrName = "EventGroup";
                     }
-                    curFilterCmd = "TeamSlalom='" + (String)curTeamRow["TeamCode"] + "'";
-                    if (curGroupAttrName.Length > 0) {
-                        curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
-                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
-                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
-                    }
-                    curSlalomTeamSkierList = curSlalomDataTable.Select( curFilterCmd );
 
-                    curFilterCmd = "TeamTrick='" + (String)curTeamRow["TeamCode"] + "'";
-                    if (curGroupAttrName.Length > 0) {
-                        curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
-                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
-                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
-                    }
-                    curTrickTeamSkierList = curTrickDataTable.Select( curFilterCmd );
+					if ( plcmtAWSATeamButton.Checked && ( EventAllButton.Checked || EventSlalomButton.Checked ) ) {
+						curFilterCmd = "TeamSlalom='" + (String) curTeamRow["TeamCode"] + "'";
+						if ( curGroupAttrName.Length > 0 ) {
+							curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+						} else if ( myTourRules.ToLower().Equals( "ncwsa" ) && plcmtTourButton.Checked ) {
+							curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
+						}
+						curSlalomTeamSkierList = curSlalomDataTable.Select( curFilterCmd );
 
-                    curFilterCmd = "TeamJump='" + (String)curTeamRow["TeamCode"] + "'";
-                    if (curGroupAttrName.Length > 0) {
-                        curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
-                    } else if ( myTourRules.ToLower().Equals("ncwsa") && plcmtTourButton.Checked ) {
-                        curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
+					} else {
+						curSlalomTeamSkierList = new DataRow[0];
                     }
-                    curJumpTeamSkierList = curJumpDataTable.Select( curFilterCmd );
 
-                    curSkierIdxMax = 0;
+					if ( plcmtAWSATeamButton.Checked && ( EventAllButton.Checked || EventTrickButton.Checked ) ) {
+						curFilterCmd = "TeamTrick='" + (String) curTeamRow["TeamCode"] + "'";
+						if ( curGroupAttrName.Length > 0 ) {
+							curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+						} else if ( myTourRules.ToLower().Equals( "ncwsa" ) && plcmtTourButton.Checked ) {
+							curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
+						}
+						curTrickTeamSkierList = curTrickDataTable.Select( curFilterCmd );
+
+					} else {
+						curTrickTeamSkierList = new DataRow[0];
+					}
+
+					if ( plcmtAWSATeamButton.Checked && ( EventAllButton.Checked || EventJumpButton.Checked ) ) {
+						curFilterCmd = "TeamJump='" + (String) curTeamRow["TeamCode"] + "'";
+						if ( curGroupAttrName.Length > 0 ) {
+							curFilterCmd += " AND " + curGroupAttrName + " = '" + curDivShow + "'";
+						} else if ( myTourRules.ToLower().Equals( "ncwsa" ) && plcmtTourButton.Checked ) {
+							curFilterCmd += " AND AgeGroup = '" + curDivShow + "'";
+						}
+						curJumpTeamSkierList = curJumpDataTable.Select( curFilterCmd );
+
+					} else {
+						curJumpTeamSkierList = new DataRow[0];
+					}
+
+					curSkierIdxMax = 0;
                     if (curSlalomTeamSkierList.Length > curTrickTeamSkierList.Length) {
                         if (curSlalomTeamSkierList.Length > curJumpTeamSkierList.Length) {
                             curSkierIdxMax = curSlalomTeamSkierList.Length;
@@ -1026,7 +1128,8 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
                     for (curSkierIdx = 0; curSkierIdx < curSkierIdxMax; curSkierIdx++) {
-                        if (myNumPerTeam > curSkierIdx || myNumPerTeam == 0) {
+							try {
+								if ( myNumPerTeam > curSkierIdx || myNumPerTeam == 0) {
                             curPrintIdx = PrintDataGridView.Rows.Add();
                             curPrintRow = PrintDataGridView.Rows[curPrintIdx];
                             //PrintDataGridView.Rows[curPrintIdx].Height = 30;
@@ -1045,8 +1148,15 @@ namespace WaterskiScoringSystem.Tournament {
                                 curPrintRow.Cells["PrintScoreSlalom"].Value = ( (Decimal)curSlalomTeamSkierList[curSkierIdx]["ScoreSlalom"] ).ToString( "##0.00" );
                                 curPrintRow.Cells["PrintPlcmtSlalom"].Value = (String)curSlalomTeamSkierList[curSkierIdx]["PlcmtSlalom"];
                                 curPrintRow.Cells["PrintPlcmtPointsSlalom"].Value = ( Decimal ) curSlalomTeamSkierList[curSkierIdx]["PlcmtPointsSlalom"];
-                            }
-                            if (curTrickTeamSkierList.Length > curSkierIdx) {
+
+								if ( myTourRules.ToLower().Equals( "awsa" ) && plcmtAWSATeamButton.Checked ) {
+									awsaTeamTotal[scoreIdxSlalom] += (Decimal) curSlalomTeamSkierList[curSkierIdx]["PlcmtPointsSlalom"];
+									awsaTeamTotal[scoreIdxTotal] += (Decimal) curSlalomTeamSkierList[curSkierIdx]["PlcmtPointsSlalom"];
+								}
+
+							}
+
+							if (curTrickTeamSkierList.Length > curSkierIdx) {
                                 if (curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
                                     curPrintRow.Cells["PrintSkierNameTrick"].Value = (String)curTrickTeamSkierList[curSkierIdx]["SkierName"] + " (" + ( String ) curTrickTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
                                 } else {
@@ -1060,8 +1170,15 @@ namespace WaterskiScoringSystem.Tournament {
                                     curPrintRow.Cells["PrintScoreTrick"].Value = ( (Int16)curTrickTeamSkierList[curSkierIdx]["ScoreTrick"] ).ToString( "##,##0" );
                                 }
                                 curPrintRow.Cells["PrintPlcmtTrick"].Value = (String)curTrickTeamSkierList[curSkierIdx]["PlcmtTrick"];
-                            }
-                            if (curJumpTeamSkierList.Length > curSkierIdx) {
+
+								if ( myTourRules.ToLower().Equals( "awsa" ) && plcmtAWSATeamButton.Checked ) {
+									awsaTeamTotal[scoreIdxTrick] += (Decimal) curTrickTeamSkierList[curSkierIdx]["PlcmtPointsTrick"];
+									awsaTeamTotal[scoreIdxTotal] += (Decimal) curTrickTeamSkierList[curSkierIdx]["PlcmtPointsTrick"];
+								}
+
+							}
+
+							if (curJumpTeamSkierList.Length > curSkierIdx) {
                                 if (curDivShow.Length > 0 || plcmtAWSATeamButton.Checked ) {
                                     curPrintRow.Cells["PrintSkierNameJump"].Value = (String)curJumpTeamSkierList[curSkierIdx]["SkierName"] + " (" + ( String ) curJumpTeamSkierList[curSkierIdx]["AgeGroup"] + ")";
                                 } else {
@@ -1077,8 +1194,15 @@ namespace WaterskiScoringSystem.Tournament {
                                     PrintScoreJump.HeaderText = "Feet";
                                     curPrintRow.Cells["PrintScoreJump"].Value = ( (Decimal)curJumpTeamSkierList[curSkierIdx]["ScoreFeet"] ).ToString( "##0" );
                                 }
-                            }
-                        } else {
+
+								if ( myTourRules.ToLower().Equals( "awsa" ) && plcmtAWSATeamButton.Checked ) {
+									awsaTeamTotal[scoreIdxJump] += (Decimal) curJumpTeamSkierList[curSkierIdx]["PlcmtPointsJump"];
+									awsaTeamTotal[scoreIdxTotal] += (Decimal) curJumpTeamSkierList[curSkierIdx]["PlcmtPointsJump"];
+								}
+
+							}
+
+						} else {
                             if ( myNumPerTeam == curSkierIdx ) {
                                 curPrintIdx = PrintDataGridView.Rows.Add();
                                 curPrintRow = PrintDataGridView.Rows[curPrintIdx];
@@ -1132,8 +1256,12 @@ namespace WaterskiScoringSystem.Tournament {
                                 }
                             }
                         }
-                    }
-                }
+							} catch ( Exception ex ) {
+								MessageBox.Show( "Exception processing SkierIdx: " + curSkierIdx + " Message: " + ex.Message );
+
+							}
+						}
+					}
 
                 curPrintIdx = PrintDataGridView.Rows.Add();
                 curPrintRow = PrintDataGridView.Rows[curPrintIdx];
@@ -1141,8 +1269,12 @@ namespace WaterskiScoringSystem.Tournament {
                 PrintDataGridView.Rows[curPrintIdx].Height = 8;
                 prevDiv = curDiv;
 
-            }
-        }
+				} catch ( Exception ex ) {
+					MessageBox.Show( "Exception processing TeamDataTable: " + ex.Message );
+
+				}
+			}
+		}
 
         private void navExport_Click( object sender, EventArgs e ) {
             ExportData myExportData = new ExportData();
@@ -1656,9 +1788,16 @@ namespace WaterskiScoringSystem.Tournament {
             if ( PrintDataGridView.Visible ) {
                 PrintDataGridView.Visible = false;
                 PrintDataGridView.Enabled = false;
-                ViewReportButton.Text = "View Team Results";
+
+				FilterReportButton.Visible = false;
+				FilterReportButton.Enabled = false;
+
+				ViewReportButton.Text = "View Team Results";
             } else {
-                PrintDataGridView.Visible = true;
+				FilterReportButton.Visible = true;
+				FilterReportButton.Enabled = true;
+
+				PrintDataGridView.Visible = true;
                 PrintDataGridView.Enabled = true;
                 PrintDataGridView.Location = TeamSummaryDataGridView.Location;
                 PrintDataGridView.Width = this.Width - 25;
@@ -1667,7 +1806,11 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void plcmtTourButton_CheckedChanged( object sender, EventArgs e ) {
+		private void FilterReportButton_Click( object sender, EventArgs e ) {
+			loadPrintDataGrid();
+		}
+
+		private void plcmtTourButton_CheckedChanged( object sender, EventArgs e ) {
             if ( plcmtTourButton.Checked ) {
                 TeamDiv.Visible = false;
                 EventGroupSlalom.Visible = false;
@@ -1698,10 +1841,30 @@ namespace WaterskiScoringSystem.Tournament {
                 PlcmtPointsSlalom.Visible = true;
                 PlcmtPointsTrick.Visible = true;
                 PlcmtPointsJump.Visible = true;
-            }
-        }
 
-        private void navExportHtml_Click( object sender, EventArgs e ) {
+				CategoryGroupBox.Visible = true;
+				CategoryGroupBox.Enabled = true;
+				EventGroupBox.Visible = true;
+				EventGroupBox.Enabled = true;
+
+				EventGroupList.Visible = false;
+				EventGroupList.Enabled = false;
+				EventGroupListLabel.Visible = false;
+				EventGroupListLabel.Enabled = false;
+			} else {
+				CategoryGroupBox.Visible = false;
+                CategoryGroupBox.Enabled = false;
+				EventGroupBox.Visible = false;
+				EventGroupBox.Enabled = false;
+
+				EventGroupList.Visible = true;
+				EventGroupList.Enabled = true;
+				EventGroupListLabel.Visible = true;
+				EventGroupListLabel.Enabled = true;
+			}
+		}
+
+		private void navExportHtml_Click( object sender, EventArgs e ) {
             ExportData myExportData = new ExportData();
             String printTitle = Properties.Settings.Default.Mdi_Title;
             String printSubtitle = this.Text + " " + mySanctionNum + " held " + myTourRow["EventDates"].ToString();
@@ -1793,6 +1956,5 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-
-    }
+	}
 }

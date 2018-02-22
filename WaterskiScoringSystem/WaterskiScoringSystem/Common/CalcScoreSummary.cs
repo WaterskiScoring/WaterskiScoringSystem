@@ -2798,7 +2798,7 @@ namespace WaterskiScoringSystem.Common {
                     curPlcmtMax = curFindList.Length;
                 }
 
-                if ( curPlcmtMax > 0 && curScore > 0) {
+                if ( curPlcmtMax > 0 && curScore >= 0) {
                     curScore = ( ( ( curPlcmtMax - curPlcmt ) + 1 ) * 10 ) - curTieAdj;
                 }
                 curRow["Points" + inEvent] = curScore;
@@ -2906,7 +2906,7 @@ namespace WaterskiScoringSystem.Common {
                             curPlcmtMax = curFindList.Length;
                         }
 
-                        if ( curScore > 0 && curPlcmtMax > 0 ) {
+                        if ( curScore >= 0 && curPlcmtMax > 0 ) {
                             curScore = ( ( ( curPlcmtMax - curPlcmt ) + 1 ) * 10 ) - curTieAdj;
                         }
                         curRow["Points" + inEvent] = curScore;

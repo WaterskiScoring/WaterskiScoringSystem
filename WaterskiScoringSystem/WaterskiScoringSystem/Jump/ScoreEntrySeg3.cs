@@ -487,7 +487,7 @@ namespace WaterskiScoringSystem.Jump {
             if ( StartTimerButton.Visible ) {
                 StartTimerButton_Click( null, null );
             }
-            if (myRecapRow == null || TourEventRegDataGridView.Rows.Count == 0) {
+            if (myRecapRow == null || myRecapRow.Index < 0 || TourEventRegDataGridView.Rows.Count == 0 ) {
                 isDataModified = false;
             } else {
                 try {
@@ -1235,18 +1235,24 @@ namespace WaterskiScoringSystem.Jump {
                 if (jumpRecapDataGridView.Rows.Count > 0) {
                     int rowIndex = jumpRecapDataGridView.Rows.Count - 1;
                     jumpRecapDataGridView.CurrentCell = jumpRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
-                } else {
-                    Decimal cur1stRampHeight = getSkier1stRoundRampHeight( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value );
-                    if (cur1stRampHeight > 0) {
-                        if (cur1stRampHeight != myJumpHeight) {
-                            MessageBox.Show( " Skier used a ramp height of " + cur1stRampHeight.ToString( "0.0" ) + " in the first round."
-                                + "\n Current ramp height is " + myJumpHeight.ToString( "0.0" )
-                                + "\n Ensure these selections are desired."
-                                );
-                        }
-                    }
 
-                }
+				} else {
+					if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+						MessageBox.Show( "Skier already has a score in this round" );
+						return;
+
+					} else {
+						Decimal cur1stRampHeight = getSkier1stRoundRampHeight( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value, (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value );
+						if ( cur1stRampHeight > 0 ) {
+							if ( cur1stRampHeight != myJumpHeight ) {
+								MessageBox.Show( " Skier used a ramp height of " + cur1stRampHeight.ToString( "0.0" ) + " in the first round."
+									+ "\n Current ramp height is " + myJumpHeight.ToString( "0.0" )
+									+ "\n Ensure these selections are desired."
+									);
+							}
+						}
+					}
+				}
 
                 if ( jumpRecapDataGridView.Rows.Count > 0 ) {
                     if ( checkRoundContinue() ) {
@@ -5440,7 +5446,22 @@ namespace WaterskiScoringSystem.Jump {
             myScoreDataTable = getData( curSqlStmt.ToString() );
         }
 
-        private Decimal getSkier1stRoundRampHeight(String inMemberId, String inAgeGroup) {
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
+			curSqlStmt.Append( "FROM JumpScore " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
+			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private Decimal getSkier1stRoundRampHeight(String inMemberId, String inAgeGroup) {
             Decimal curReturnValue = 0;
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT RampHeight FROM JumpScore " );

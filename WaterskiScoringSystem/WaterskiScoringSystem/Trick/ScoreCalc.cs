@@ -2143,8 +2143,18 @@ namespace WaterskiScoringSystem.Trick {
                     setTrickScoreEntry( myDataView.Rows[e.RowIndex], Convert.ToByte( roundActiveSelect.RoundValue ) );
                     setTrickPassEntry( myDataView.Rows[e.RowIndex], Convert.ToByte( roundActiveSelect.RoundValue ) );
                     isDataModified = false;
-                }
-            }
+
+					if ( myPass1DataTable.Rows.Count == 0 ) {
+						if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+							Pass1DataGridView.Rows.Clear();
+							Pass2DataGridView.Rows.Clear();
+							MessageBox.Show( "Skier already has a score in this round" );
+							return;
+						}
+					}
+
+				}
+			}
         }
 
         public void setTrickScoreEntry( DataGridViewRow inTourEventRegRow, Byte inRound ) {
@@ -3879,8 +3889,23 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append("ORDER BY S.SanctionId, S.MemberId");
             myScoreDataTable = getData( curSqlStmt.ToString() );
         }
-        
-        private DataTable getSkierPassByRound( String inMemberId, String inAgeGroup, int inRound, byte inPass ) {
+
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
+			curSqlStmt.Append( "FROM TrickScore " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
+			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private DataTable getSkierPassByRound( String inMemberId, String inAgeGroup, int inRound, byte inPass ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT PK, SanctionId, MemberId, AgeGroup, Round, PassNum," );
             curSqlStmt.Append( " Seq, Skis, Code, Results, Score, Note" );
