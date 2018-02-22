@@ -436,7 +436,7 @@ namespace WaterskiScoringSystem.Slalom {
             e.Cancel = false;
         }
 
-    private void DataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
+		private void DataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             MessageBox.Show("Error happened " + e.Context.ToString() + "\n Exception Message: " + e.Exception.Message);
             if ((e.Exception) is ConstraintException) {
                 DataGridView view = (DataGridView)sender;
@@ -1304,10 +1304,17 @@ namespace WaterskiScoringSystem.Slalom {
 
             String curMemberId = (String)inTourEventRegRow.Cells["MemberId"].Value;
             String curAgeGroup = (String)inTourEventRegRow.Cells["AgeGroup"].Value;
-            activeSkierName.Text = (String)inTourEventRegRow.Cells["SkierName"].Value;
+			String curSkierEventClass = (String) inTourEventRegRow.Cells["EventClass"].Value;
+			activeSkierName.Text = (String)inTourEventRegRow.Cells["SkierName"].Value;
 
-            Int16 curDefaultStartSpeed = getMaxSpeedOrigData(curAgeGroup);
-            Int16 curMaxSpeed = getMaxSpeedData(curAgeGroup);
+			Int16 curDefaultStartSpeed = getMaxSpeedOrigData( curAgeGroup );
+			Int16 curMaxSpeed = 0;
+			DataRow curClassRow = getClassRow( curSkierEventClass );
+			if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
+				curMaxSpeed = curDefaultStartSpeed;
+			} else {
+				curMaxSpeed = getMaxSpeedData( curAgeGroup );
+			}
 
             SlalomSpeedSelect.MaxValue = curMaxSpeed;
             DataTable curMinSpeedDataTable = getMinSpeedData(curAgeGroup);
@@ -1704,9 +1711,16 @@ namespace WaterskiScoringSystem.Slalom {
                 cellIndex = 0;
                 slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[cellIndex];
             } else {
-                setEventRegRowStatus( "2-InProg" );
-            }
-            myLastPassSelectValue = "";
+				if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+					MessageBox.Show( "Skier already has a score in this round" );
+					return;
+
+				} else {
+					setEventRegRowStatus( "2-InProg" );
+				}
+			}
+
+			myLastPassSelectValue = "";
             addRecapRow();
             setNewRowPos();
         }
@@ -4797,7 +4811,22 @@ namespace WaterskiScoringSystem.Slalom {
             myRecapDataTable = getData( curSqlStmt.ToString() );
         }
 
-        private void getEventRegData(int inRound) {
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
+			curSqlStmt.Append( "FROM SlalomScore " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
+			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private void getEventRegData(int inRound) {
             getEventRegData( "All", inRound );
         }
         private void getEventRegData( String inEventGroup, int inRound ) {
