@@ -117,7 +117,7 @@ namespace WaterskiScoringSystem.Tools {
 						myCountMemberInput++;
 						myProgressInfo.setProgressValue( myCountMemberInput );
 
-						importMemberFromAwsa( curEntry, true, false );
+						importNcwsMemberFromAwsa( curEntry );
 
 						buildNcwsaTeamHeader( curEntry, curTeamHeaderList );
 					}
@@ -988,21 +988,38 @@ namespace WaterskiScoringSystem.Tools {
 			return true;
 		}
 
-		public bool calcNcwsaDiv( Dictionary<string, object> curImportMemberEntry, Dictionary<string, object> curBTeamMemberEntry ) {
-			String curTeamSlalom = "", curTeamTrick = "", curTeamJump = "", bteamAgeGroup = "";
+		public bool importNcwsMemberFromAwsa( Dictionary<string, object> curImportMemberEntry) {
+			String curTeamSlalom = "", curTeamTrick = "", curTeamJump = "";
 			bool curDataValid = true;
 			Int16 numIntCk;
 
-			String inMemberId = (String) curImportMemberEntry["MemberId"];
-			String inAgeGroup = ( (String) curImportMemberEntry["AgeGroup"] ).ToUpper();
+            String inMemberId = "";
+			if ( curImportMemberEntry.ContainsKey( "MemberID" ) ) {
+				inMemberId = (String) curImportMemberEntry["MemberID"];
+			} else {
+				inMemberId = (String) curImportMemberEntry["MemberId"];
+			}
+			if ( inMemberId.Length == 11 ) {
+				inMemberId = inMemberId.Substring( 0, 3 ) + inMemberId.Substring( 4, 2 ) + inMemberId.Substring( 7, 4 );
+			}
+
+			String inAgeGroup = "";
+			if ( curImportMemberEntry.ContainsKey( "AgeGroup" ) ) {
+				inAgeGroup = ( (String) curImportMemberEntry["AgeGroup"] ).ToUpper();
+			} else if ( curImportMemberEntry.ContainsKey( "Div" ) ) {
+				inAgeGroup = ( (String) curImportMemberEntry["Div"] ).ToUpper();
+			}
 			String curTeam = ( (String) curImportMemberEntry["Team"] ).ToUpper();
 
 			String inFirstName = (String)curImportMemberEntry[ "FirstName"];
 			String inLastName = (String)curImportMemberEntry[ "LastName"];
 
-			String inEventGroupSlalom = (String)curImportMemberEntry[ "EventSlalom"];
-			String inEventGroupTrick = (String)curImportMemberEntry[ "EventTrick"];
-			String inEventGroupJump = (String)curImportMemberEntry[ "EventJump"];
+			String inEventGroupSlalom = ((String)curImportMemberEntry[ "EventSlalom"]).Trim();
+			//if ( inEventGroupSlalom.Equals( " " ) || inEventGroupSlalom.Equals( "  " ) ) inEventGroupSlalom = "";
+			String inEventGroupTrick = ((String)curImportMemberEntry[ "EventTrick"] ).Trim();
+			//if ( inEventGroupTrick.Equals( " " ) || inEventGroupTrick.Equals( "  " ) ) inEventGroupTrick = "";
+			String inEventGroupJump = ((String)curImportMemberEntry[ "EventJump"] ).Trim();
+			//if ( inEventGroupJump.Equals( " " ) || inEventGroupJump.Equals( "  " ) ) inEventGroupJump = "";
 
 			//For collegiate divisions determine if data is valid for collegiate tournaments
 			if ( inAgeGroup.ToUpper().Equals( "CM" )
@@ -1127,6 +1144,9 @@ namespace WaterskiScoringSystem.Tools {
 								}
 								#endregion
 							}
+
+							importMemberFromAwsa( curImportMemberEntry, true, true );
+
 						} else {
 							if ( curTeamJump.Equals( "" ) ) {
 								#region Skier registered for trick only
@@ -1140,6 +1160,8 @@ namespace WaterskiScoringSystem.Tools {
 										curImportMemberEntry["AgeGroup"] = "BW";
 									}
 								}
+
+								importMemberFromAwsa( curImportMemberEntry, true, true );
 								#endregion
 
 							} else {
@@ -1157,11 +1179,13 @@ namespace WaterskiScoringSystem.Tools {
 										}
 									}
 
+									importMemberFromAwsa( curImportMemberEntry, true, true );
+
 								} else {
 									// Skier assigned to both A and B team
 									curDataValid = true;
-									curImportMemberEntry = createBTeamEntry( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
-								}
+									createSplitTeamEntries( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump  );
+                                }
 								#endregion
 							}
 						}
@@ -1180,6 +1204,8 @@ namespace WaterskiScoringSystem.Tools {
 										curImportMemberEntry["AgeGroup"] = "BW";
 									}
 								}
+
+								importMemberFromAwsa( curImportMemberEntry, true, true );
 								#endregion
 
 							} else {
@@ -1196,10 +1222,12 @@ namespace WaterskiScoringSystem.Tools {
 										}
 									}
 
+									importMemberFromAwsa( curImportMemberEntry, true, true );
+
 								} else {
 									// Skier assigned to both A and B team
 									curDataValid = true;
-									curImportMemberEntry = createBTeamEntry( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
+									createSplitTeamEntries( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
 								}
 								#endregion
 							}
@@ -1219,10 +1247,12 @@ namespace WaterskiScoringSystem.Tools {
 										}
 									}
 
+									importMemberFromAwsa( curImportMemberEntry, true, true );
+
 								} else {
 									// Skier assigned to both A and B team
 									curDataValid = true;
-									curImportMemberEntry = createBTeamEntry( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
+									createSplitTeamEntries( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
 								}
 								#endregion
 
@@ -1240,23 +1270,23 @@ namespace WaterskiScoringSystem.Tools {
 										}
 									}
 
+									importMemberFromAwsa( curImportMemberEntry, true, true );
+
 								} else {
 									// Skier assigned to both A and B team
 									curDataValid = true;
-									curImportMemberEntry = createBTeamEntry( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
+									createSplitTeamEntries( curImportMemberEntry, inAgeGroup, curTeamSlalom, curTeamTrick, curTeamJump );
 								}
 								#endregion
 							}
-
 						}
 					}
 					#endregion
+
 				}
 				#endregion
 
 			} else {
-				#region Check for rotations for non collegiate divisions because this is used for alumni events
-
 				#region Check slalom event group to validate for appropriate alumni events values
 				if ( inEventGroupSlalom.ToLower().Equals( "of" ) ) {
 					//Skier is an official
@@ -1391,16 +1421,19 @@ namespace WaterskiScoringSystem.Tools {
 					if ( curTeamJump.Length == 1 ) {
 						curImportMemberEntry[ "EventJump"] = curTeamJump + inEventGroupJump.Substring( 1, inEventGroupJump.Length - 1 );
 					}
+
+					importMemberFromAwsa( curImportMemberEntry, true, true );
+
 					#endregion
 				}
-				#endregion
 
 			}
+
 
 			return curDataValid;
 		}
 
-		private Dictionary<string, object> createBTeamEntry( Dictionary<string, object> curImportMemberEntry, String inAgeGroup, String curTeamSlalom, String curTeamTrick, String curTeamJump ) {
+		private void createSplitTeamEntries( Dictionary<string, object> curImportMemberEntry, String inAgeGroup, String curTeamSlalom, String curTeamTrick, String curTeamJump ) {
 			//Clone current attributes to create a second B team entry
 			Dictionary<string, object> curBTeamMemberEntry = new Dictionary<string, object>();
 			foreach ( KeyValuePair<string, object> curEntry in curImportMemberEntry ) {
@@ -1419,21 +1452,28 @@ namespace WaterskiScoringSystem.Tools {
 			curBTeamMemberEntry["AgeGroup"] = bteamAgeGroup;
 
 			if ( curTeamSlalom.Equals( "B" ) ) {
+				curBTeamMemberEntry["EventSlalom"] = curImportMemberEntry["EventSlalom"];
 				curImportMemberEntry["EventSlalom"] = "";
-				curBTeamMemberEntry["EventSlalom"] = curTeamSlalom;
+			} else {
+				curBTeamMemberEntry["EventSlalom"] = "";
 			}
 
 			if ( curTeamTrick.Equals( "B" ) ) {
+				curBTeamMemberEntry["EventTrick"] = curImportMemberEntry["EventTrick"];
 				curImportMemberEntry["EventTrick"] = "";
-				curBTeamMemberEntry["EventTrick"] = curTeamTrick;
+			} else {
+				curBTeamMemberEntry["EventTrick"] = "";
 			}
 
 			if ( curTeamJump.Equals( "B" ) ) {
+				curBTeamMemberEntry["EventJump"] = curImportMemberEntry["EventJump"];
 				curImportMemberEntry["EventJump"] = "";
-				curBTeamMemberEntry["EventJump"] = curTeamJump;
+			} else {
+				curBTeamMemberEntry["EventJump"] = "";
 			}
 
-			return curBTeamMemberEntry;
+			importMemberFromAwsa( curImportMemberEntry, true, true );
+			importMemberFromAwsa( curBTeamMemberEntry, true, true );
 		}
 
 		private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
