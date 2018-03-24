@@ -986,22 +986,7 @@ namespace WaterskiScoringSystem.Tools {
 
 					} else {
 						//Check for A team or B team designation unless skier is an official or not assigned to a team
-						Dictionary<string, object> curBTeamMemberEntry = null;
-						if ( myImportMember.calcNcwsaDiv( curImportMemberEntry, curBTeamMemberEntry ) ) {
-							if ( curBTeamMemberEntry == null ) {
-								return myImportMember.importMemberFromAwsa( curImportMemberEntry, inTourReg, inNcwsa );
-
-							} else {
-								if ( myImportMember.importMemberFromAwsa( curImportMemberEntry, inTourReg, inNcwsa ) ) {
-									return myImportMember.importMemberFromAwsa( curBTeamMemberEntry, inTourReg, inNcwsa );
-								} else {
-									return false;
-								}
-							}
-
-						} else {
-							return false;
-						}
+						return myImportMember.importNcwsMemberFromAwsa( curImportMemberEntry );
 					}
 
 				} else {
@@ -1216,8 +1201,23 @@ namespace WaterskiScoringSystem.Tools {
         }
         
 		private DataRow getTourData() {
+			Decimal curDatabaseVersion = 0M;
+
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation, SanctionEditCode" );
+			curSqlStmt.Append( "SELECT ListName, ListCode, CodeValue as VersionNumText, MinValue as VersionNum " );
+			curSqlStmt.Append( "FROM CodeValueList WHERE ListName = 'DatabaseVersion'");
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				curDatabaseVersion = (decimal) curDataTable.Rows[0]["VersionNum"];
+			} else {
+				curDatabaseVersion = 0M;
+			}
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
+			if ( curDatabaseVersion >= 4.15M ) {
+				curSqlStmt.Append( ", SanctionEditCode" );
+			}
 			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
 			curSqlStmt.Append( ", ContactPhone, ContactEmail, M.LastName + ', ' + M.FirstName AS ContactName " );
 			curSqlStmt.Append( "FROM Tournament T " );
@@ -1225,7 +1225,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
 
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return curDataTable.Rows[0];
 			} else {
