@@ -23,8 +23,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataGridViewPrinter myPrintDataGrid;
         private PrintDocument myPrintDoc;
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
 
         public BoatUse() {
             InitializeComponent();
@@ -49,13 +47,12 @@ namespace WaterskiScoringSystem.Tournament {
             isDataModified = false;
             if ( mySanctionNum == null ) {
                 MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-            } else {
+
+			} else {
                 if ( mySanctionNum.Length < 6 ) {
                     MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                } else {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
 
+				} else {
                     navRefresh_Click( null, null );
                     myViewRowIdx = 0;
                     getApprovedTowboats();
@@ -248,10 +245,10 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, CodeDesc" );
             curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'ApprovedBoats'" );
-            curSqlStmt.Append( " ORDER BY SortSeq" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            curSqlStmt.Append( " ORDER BY SortSeq DESC" );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-            foreach ( DataRow curRow in curDataTable.Rows ) {
+			foreach ( DataRow curRow in curDataTable.Rows ) {
                 String[] boatSpecList = curRow["CodeDesc"].ToString().Split( '|' );
                 listApprovedBoatsDataGridView.Rows.Add( 1 );
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["BoatCodeApproved"].Value = curRow["ListCode"].ToString();
@@ -282,9 +279,6 @@ namespace WaterskiScoringSystem.Tournament {
                 if (curUpdateStatus.ToUpper().Equals( "Y" ) && curSanctionId.Length > 1 ) {
                     if (isDataValid( curViewRow )) {
                         try {
-                            myDbConn.Open();
-                            mySqlStmt = myDbConn.CreateCommand();
-                            mySqlStmt.CommandText = "";
                             String curModelYear = "";
                             try {
                                 curModelYear = Convert.ToInt16( curViewRow.Cells["ModelYear"].Value.ToString() ).ToString();
@@ -370,9 +364,9 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( ", PostEventNotes = '" + curPostEventNotes + "'" );
                                 curSqlStmt.Append( ", Notes = '" + curNotes + "'" );
                                 curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-                                mySqlStmt.CommandText = curSqlStmt.ToString();
-                                rowsProc = mySqlStmt.ExecuteNonQuery();
-                            } else {
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+							} else {
                                 curSqlStmt.Append( "Insert TourBoatUse ( " );
                                 curSqlStmt.Append( "SanctionId, TourBoatSeq, HullId, SlalomUsed, TrickUsed, JumpUsed, SlalomCredit, TrickCredit, JumpCredit" );
                                 curSqlStmt.Append( ", CertOfInsurance, ModelYear, BoatModel, SpeedControlVersion, Owner, InsuranceCompany, PreEventNotes, PostEventNotes, Notes" );
@@ -396,19 +390,17 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( ", '" + curPostEventNotes + "'" );
                                 curSqlStmt.Append( ", '" + curNotes + "'" );
                                 curSqlStmt.Append( ")" );
-                                mySqlStmt.CommandText = curSqlStmt.ToString();
-                                rowsProc = mySqlStmt.ExecuteNonQuery();
-                                if (rowsProc > 0) {
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+								if ( rowsProc > 0) {
                                     UpdateNewRowPk( curSanctionId, curTourBoatSeq, myViewRowIdx );
                                 }
                             }
 
                             winStatusMsg.Text = "Changes successfully saved";
                             isDataModified = false;
-                        } catch (Exception excp) {
+
+						} catch (Exception excp) {
                             MessageBox.Show( "Error attempting to update boat information \n" + excp.Message );
-                        } finally {
-                            myDbConn.Close();
                         }
                     }
                 }
@@ -421,8 +413,8 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT PK FROM TourBoatUse " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND TourBoatSeq = '" + inTourBoatSeq + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if ( curDataTable.Rows.Count > 0 ) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
                 DataRow curRow = curDataTable.Rows[0];
                 Int64 curPk = (Int64)curRow["PK"];
                 tourBoatUseDataGridView.Rows[inViewRowIdx].Cells["PK"].Value = curPk.ToString();
@@ -460,23 +452,18 @@ namespace WaterskiScoringSystem.Tournament {
                         curPK = 0;
                     }
                     if (curPK > 0) {
-                        myDbConn.Open();
-                        mySqlStmt = myDbConn.CreateCommand();
-                        mySqlStmt.CommandText = "";
                         curSqlStmt.Append( "Delete TourBoatUse " );
                         curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                        winStatusMsg.Text = "Changes successfully saved";
+						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						winStatusMsg.Text = "Changes successfully saved";
                     }
                     isDataModified = false;
                     tourBoatUseDataGridView.Rows.RemoveAt( myViewRowIdx );
                     myViewRowIdx--;
                     if (myViewRowIdx < 0) myViewRowIdx = 0;
-                } catch (Exception excp) {
+
+				} catch (Exception excp) {
                     MessageBox.Show( "Error attempting to update boat information \n" + excp.Message );
-                } finally {
-                    myDbConn.Close();
                 }
             }
         }
@@ -716,28 +703,21 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM TourBoatUse U" );
             curSqlStmt.Append( "     Inner Join CodeValueList on ListName = 'ApprovedBoats' AND CodeValue = U.BoatModel " );
             curSqlStmt.Append( "WHERE (U.SanctionId = '" + mySanctionNum + "') and (U.HullId is null or U.HullId = '') " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if (curDataTable.Rows.Count > 0) {
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if (curDataTable.Rows.Count > 0) {
                 int rowsProc = 0;
                 try {
-                    myDbConn.Open();
-                    mySqlStmt = myDbConn.CreateCommand();
-                    mySqlStmt.CommandText = "";
-
                     foreach (DataRow curRow in curDataTable.Rows) {
                         curSqlStmt = new StringBuilder( "" );
                         curSqlStmt.Append( "Update TourBoatUse " );
                         curSqlStmt.Append( "Set HullId = '" + (String)curRow["ListCode"] + "' " );
                         curSqlStmt.Append( "Where PK = " + ((Int64)curRow["PK"]).ToString() );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                        rowsProc = mySqlStmt.ExecuteNonQuery();
-                    }
+						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					}
 
 
-                } catch (Exception excp) {
+				} catch (Exception excp) {
                     MessageBox.Show( "Error attempting to update boat information \n" + excp.Message );
-                } finally {
-                    myDbConn.Close();
                 }
             }
 
@@ -747,8 +727,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", Notes, PostEventNotes, PreEventNotes, SpeedControlVersion, TourBoatSeq " );
             curSqlStmt.Append( "FROM TourBoatUse " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-            myTourBoatUseDataTable = getData( curSqlStmt.ToString() );
-        }
+            myTourBoatUseDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
 
         private DataTable getTourData(String inSanctionId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -769,14 +749,10 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) SD " );
             curSqlStmt.Append( "    ON SD.SanctionId = T.SanctionId AND SD.MemberId = T.SafetyDirMemberId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
 
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty( object inObject ) {
+		private bool isObjectEmpty( object inObject ) {
             bool curReturnValue = false;
             if ( inObject == null ) {
                 curReturnValue = true;
