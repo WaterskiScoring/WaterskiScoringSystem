@@ -292,7 +292,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	M9-S		151	Mens 9 - Slalom		86.5	2.5 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 4/5/2014 Jerry Hosner
 00000	AWSARecords	M9-T		152	Mens 9 - Trick		1990	8/10/2016 Carroll Piercy
 00000	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 8/7/2014 Bruce Kunde
-23512	AWSARecords	MA-S		161	Mens 10 - Slalom		73.500	1.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 9/11/2005 Jim Salmas  
+00000	AWSARecords	MA-S		161	Mens 10 - Slalom		76	4 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 4/7/2018 Jerry Hosner
 23513	AWSARecords	MA-T		162	Mens 10 - Trick		1600.000	 10/20/2007 Harry Price  
 00000	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 7/22/2017 Bruce Kunde
 00000	AWSARecords	MB-S		171	Mens 11 - Slalom		46	4 bouys at 23m @ 46 kph (75' @ 28.6 mph) 11/5/2016 Bill Wenner
@@ -725,8 +725,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22561	IwwfRampMax	L4		84	5 Foot	0.235	5.000	
 23560	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 23561	IwwfRecords	IM-T		392	Intl Men - Trick		12570.000	4/29/2011 Alexi Zharnasek
-00000	IwwfRecords	IM-J		393	Intl Men - Jump		76.2	5/1/2014 Freddy Krueger
-23563	IwwfRecords	IM-O		394	Intl Men Overall		2818.010	 9/29/2002 Jaret Llewellyn  
+00000	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
+00000	IwwfRecords	IM-O		394	Intl Men Overall		2820.790	4/20/2017 Adam Sedlmajer
 00000	IwwfRecords	IW-S		401	Intl Women - Slalom		69.5	3.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Regina Jaquess
 00000	IwwfRecords	IW-T		402	Intl Women - Trick		10610	10/14/2016 Anna Gay
 00000	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
@@ -774,7 +774,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22726	JumpBoatTime3Seg	57-R-41M		113	2.40	2.360	2.460	"57kph,35.4mph 41M Segment Record Tolerance"
 22727	JumpBoatTime3Seg	57-R-Balk		115	5.18	5.060	5.250	"57kph,35.4mph Balk Record Tolerance"
 22728	JumpBoatTime3Seg	57-R-41M-RTB		116	2.40	2.360	2.660	"57kph,35.4mph 41M Segment RTB Record Tolerance"
-22729	JumpBoatTime3Seg	5-R-52M		121	3.49	3.430	3.550	"54kph,33.6mph 52M Segment Record Tolerance"
+22729	JumpBoatTime3Seg	54-R-52M		121	3.49	3.430	3.550	"54kph,33.6mph 52M Segment Record Tolerance"
 22730	JumpBoatTime3Seg	54-R-82M		122	5.47	5.390	5.550	"54kph,33.6mph 82M Segment Record Tolerance"
 22731	JumpBoatTime3Seg	54-R-41M		123	2.59	2.540	2.660	"54kph,33.6mph 41M Segment Record Tolerance"
 22732	JumpBoatTime3Seg	54-R-Balk		125	5.47	5.340	5.550	"54kph,33.6mph Balk Record Tolerance"
@@ -937,7 +937,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	NCWSARecords	CM-J		493	College Men - Jump		195	(59.5m) 10/14/2015 Zack Worden
 00000	NCWSARecords	CW-S		501	College Women - Slalom		105	3 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/1/2014 Manon Costard 10/1/2015 Samantha Dumala
 00000	NCWSARecords	CW-T		502	College Women - Trick		5960	10/7/2015 Erika Lang
-23573	NCWSARecords	CW-J		503	College Women - Jump		157.000	(47.9m) 10/1/2011 Lauren Morgan
+00000	NCWSARecords	CW-J		503	College Women - Jump		159	(48.5m) 10/20/2017 Hanna Straltsova
 22596	NcwsaSlalomMax	CM		44	58kph, 36mph	36.000	58.000	
 22598	NcwsaSlalomMax	BM		44	58kph, 36mph	36.000	58.000	
 22597	NcwsaSlalomMax	CW		45	55kph, 34mph	34.000	55.000	

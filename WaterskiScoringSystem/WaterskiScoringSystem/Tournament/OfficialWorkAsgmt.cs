@@ -37,9 +37,6 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable myOfficialWorkAsgmtDataTable;
         private DataTable myListTourMemberDataTable;
 
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
-
         [System.Runtime.InteropServices.DllImport( "user32.dll" )]
         private static extern IntPtr SendMessage( IntPtr hWnd, int msg, IntPtr wp, IntPtr lp );
 
@@ -89,9 +86,6 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( curTourDataTable.Rows.Count > 0 ) {
                         myTourRow = curTourDataTable.Rows[0];
                         myTourRules = (String)myTourRow["Rules"];
-
-                        myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                        myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
 
                         setEventList();
                         setAsgmtList();
@@ -493,10 +487,6 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( curUpdateStatus.ToUpper().Equals( "Y" ) ) {
                     if (validateRow( myViewRowIdx )) {
                         try {
-                            myDbConn.Open();
-                            mySqlStmt = myDbConn.CreateCommand();
-                            mySqlStmt.CommandText = "";
-
                             String curSanctionId = (String)curViewRow.Cells["SanctionId"].Value;
                             String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
                             String curEvent = curViewRow.Cells["Event"].Value.ToString();
@@ -541,12 +531,12 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( ", EndTime = " + curEndTime );
                                 curSqlStmt.Append( ", Notes = '" + curNotes + "'" );
                                 curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-                                mySqlStmt.CommandText = curSqlStmt.ToString();
-                                rowsProc = mySqlStmt.ExecuteNonQuery();
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                                 if (rowsProc > 0) {
                                     curViewRow.Cells["Updated"].Value = "N";
                                 }
-                            } else {
+
+							} else {
                                 curSqlStmt.Append( "Insert OfficialWorkAsgmt ( " );
                                 curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, Round, WorkAsgmt, StartTime, EndTime, Notes " );
                                 curSqlStmt.Append( ") Values ( " );
@@ -560,13 +550,12 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( "," + curEndTime );
                                 curSqlStmt.Append( ", '" + curNotes + "'" );
                                 curSqlStmt.Append( ")" );
-                                mySqlStmt.CommandText = curSqlStmt.ToString();
-                                rowsProc = mySqlStmt.ExecuteNonQuery();
+								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                                 if (rowsProc > 0) {
                                     curViewRow.Cells["Updated"].Value = "N";
                                     curSqlStmt = new StringBuilder( "" );
                                     curSqlStmt.Append( "Select max(PK) as MaxPK From OfficialWorkAsgmt" );
-                                    DataTable curDataTable = getData( curSqlStmt.ToString() );
+                                    DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                                     if (curDataTable.Rows.Count > 0) {
                                         curPK = (Int64)curDataTable.Rows[0]["MaxPK"];
                                         curViewRow.Cells["PK"].Value = curPK.ToString();
@@ -576,11 +565,10 @@ namespace WaterskiScoringSystem.Tournament {
 
                             winStatusMsg.Text = "Changes successfully saved";
                             isDataModified = false;
-                        } catch (Exception excp) {
+
+						} catch (Exception excp) {
                             curReturn = false;
                             MessageBox.Show( "Error attempting to update skier information \n" + excp.Message );
-                        } finally {
-                            myDbConn.Close();
                         }
                     } else {
                         curReturn = false;
@@ -654,12 +642,13 @@ namespace WaterskiScoringSystem.Tournament {
                         myEventGroupDropdownList.Add( "Men B" );
                         myEventGroupDropdownList.Add( "Women B" );
                         myEventGroupDropdownList.Add( "Non Team" );
-                    } else {
+
+					} else {
                         String curSqlStmt = "SELECT DISTINCT EventGroup FROM EventReg "
                             + "WHERE SanctionId = '" + mySanctionNum + "' "
                             + curEventAttr
                             + "Order by EventGroup";
-                        DataTable curDataTable = getData( curSqlStmt );
+                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
                         foreach ( DataRow curRow in curDataTable.Rows ) {
                             myEventGroupDropdownList.Add( (String)curRow["EventGroup"] );
                         }
@@ -726,7 +715,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName = 'OfficialAsgmt' " );
             curSqlStmt.Append( "ORDER BY CodeValue" );
-            myWorkAsgmtListDataTable = getData( curSqlStmt.ToString() );
+            myWorkAsgmtListDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             foreach ( DataRow curRow in myWorkAsgmtListDataTable.Rows ) {
                 curDropdownList.Add( (String)curRow["CodeValue"] );
             }
@@ -782,17 +771,12 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
                 Int64 curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
 
-                myDbConn.Open();
-                mySqlStmt = myDbConn.CreateCommand();
-                mySqlStmt.CommandText = "";
-
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 if (curPK > 0) {
                     curSqlStmt.Append( "Delete OfficialWorkAsgmt " );
                     curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-                    mySqlStmt.CommandText = curSqlStmt.ToString();
-                    rowsProc = mySqlStmt.ExecuteNonQuery();
-                    if (rowsProc > 0) {
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					if ( rowsProc > 0) {
                         officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
                         winStatusMsg.Text = "Current row deleted";
                         isDataModified = false;
@@ -803,10 +787,8 @@ namespace WaterskiScoringSystem.Tournament {
                     isDataModified = false;
                 }
 
-            } catch ( Exception excp ) {
+			} catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to delete current official assignment \n" + excp.Message );
-            } finally {
-                myDbConn.Close();
             }
         }
 
@@ -1128,16 +1110,12 @@ namespace WaterskiScoringSystem.Tournament {
                                     curSqlStmt.Append( "And EventGroup = '" + curCopyToGroup + "' " );
                                     curSqlStmt.Append( "And Event = '" + myEvent + "' " );
 
-                                    DataTable curDataTable = getData( curSqlStmt.ToString() );
+                                    DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                                     if (curDataTable.Rows.Count > 0) {
                                         if ((int)curDataTable.Rows[0]["OfficialCount"] > 0) {
                                             MessageBox.Show( "Officials already assigned to " + curCopyToGroup + " round " + curCopyToRound );
                                         } else {
                                             try {
-                                                myDbConn.Open();
-                                                mySqlStmt = myDbConn.CreateCommand();
-                                                mySqlStmt.CommandText = "";
-
                                                 curSqlStmt = new StringBuilder( "" );
                                                 curSqlStmt.Append( "Insert OfficialWorkAsgmt ( " );
                                                 curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, Round, WorkAsgmt, StartTime, EndTime, Notes " );
@@ -1147,8 +1125,7 @@ namespace WaterskiScoringSystem.Tournament {
                                                 curSqlStmt.Append( "And Round = " + curRound + " " );
                                                 curSqlStmt.Append( "And EventGroup = '" + curGroup + "' " );
                                                 curSqlStmt.Append( "And Event = '" + myEvent + "' " );
-                                                mySqlStmt.CommandText = curSqlStmt.ToString();
-                                                int rowsProc = mySqlStmt.ExecuteNonQuery();
+												int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                                                 if (rowsProc > 0) {
                                                     MessageBox.Show( "Rows copied = " + rowsProc );
                                                     winStatusMsg.Text = "Changes successfully saved";
@@ -1158,10 +1135,9 @@ namespace WaterskiScoringSystem.Tournament {
                                                     navRefreshByEvent();
                                                 }
                                                 isDataModified = false;
-                                            } catch (Exception excp) {
+
+											} catch (Exception excp) {
                                                 MessageBox.Show( "Error attempting to copy officials information \n" + excp.Message );
-                                            } finally {
-                                                myDbConn.Close();
                                             }
 
                                         }
@@ -1308,7 +1284,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( "  AND O.Round = " + inRound + " " );
             }
             curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourMemberList() {
@@ -1331,7 +1307,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ON MemberList.MemberId = OfficialWork.MemberId " );
             curSqlStmt.Append( "WHERE TourReg.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY TourReg.SkierName, TourReg.MemberId  " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourData() {
@@ -1343,11 +1319,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private bool isObjectEmpty( object inObject ) {
