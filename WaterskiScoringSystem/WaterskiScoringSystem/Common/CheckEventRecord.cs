@@ -28,7 +28,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("FROM CodeValueList ");
             curSqlStmt.Append("WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')");
             curSqlStmt.Append("  AND ListCode = '" + inDiv + "-S' ");
-            DataTable curRecordDataTable = getData(curSqlStmt.ToString());
+            DataTable curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curRecordDataTable.Rows.Count > 0 ) {
                 if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                     Decimal curRecordScore = (Decimal) curRecordDataTable.Rows[0]["MaxValue"];
@@ -73,7 +73,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append(" FROM CodeValueList");
                 curSqlStmt.Append(" WHERE ListName = 'IWWFSlalomMin' AND ListCode = '" + inDiv + "'");
                 curSqlStmt.Append(" ORDER BY SortSeq");
-                DataTable curMinSpeedDataTable = getData(curSqlStmt.ToString());
+                DataTable curMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if ( curMinSpeedDataTable.Rows.Count > 0 ) {
                     curOrigPassNumMinSpeed = Convert.ToInt16((Decimal) curMinSpeedDataTable.Rows[0]["MinValue"]);
                     curOrigPassNumMinSpeed--;
@@ -102,7 +102,7 @@ namespace WaterskiScoringSystem.Common {
                         curSqlStmt.Append(" FROM CodeValueList");
                         curSqlStmt.Append(" WHERE ListName = 'IWWFSlalomMin' AND ListCode = '" + curAgeDiv + "'");
                         curSqlStmt.Append(" ORDER BY SortSeq");
-                        DataTable curMinSpeedDataTable = getData(curSqlStmt.ToString());
+                        DataTable curMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                         if ( curMinSpeedDataTable.Rows.Count > 0 ) {
                             curPassNumMinSpeed = Convert.ToInt16((Decimal) curMinSpeedDataTable.Rows[0]["MinValue"]);
                             curPassNumMinSpeed--;
@@ -113,7 +113,7 @@ namespace WaterskiScoringSystem.Common {
                     curSqlStmt.Append("FROM CodeValueList ");
                     curSqlStmt.Append("WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')");
                     curSqlStmt.Append("  AND ListCode = '" + curAgeDiv + "-S' ");
-                    curRecordDataTable = getData(curSqlStmt.ToString());
+                    curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curRecordDataTable.Rows.Count > 0 ) {
                         if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                             Decimal curRecordScore = (Decimal) curRecordDataTable.Rows[0]["MaxValue"];
@@ -184,7 +184,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')" );
             curSqlStmt.Append( "  AND ListCode = '" + inDiv + "-T' " );
-            DataTable curRecordDataTable = getData( curSqlStmt.ToString() );
+            DataTable curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curRecordDataTable.Rows.Count > 0 ) {
                 if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                     Decimal curRecordScore = (Decimal)curRecordDataTable.Rows[0]["MaxValue"];
@@ -237,7 +237,7 @@ namespace WaterskiScoringSystem.Common {
                     curSqlStmt.Append("FROM CodeValueList ");
                     curSqlStmt.Append("WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')");
                     curSqlStmt.Append("  AND ListCode = '" + curAgeDiv + "-T' ");
-                    curRecordDataTable = getData(curSqlStmt.ToString());
+                    curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curRecordDataTable.Rows.Count > 0 ) {
                         if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                             Decimal curRecordScore = (Decimal) curRecordDataTable.Rows[0]["MaxValue"];
@@ -291,7 +291,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')" );
             curSqlStmt.Append( "  AND ListCode = '" + inDiv + "-J' " );
-            DataTable curRecordDataTable = getData( curSqlStmt.ToString() );
+            DataTable curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curRecordDataTable.Rows.Count > 0 ) {
                 if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                     Decimal curRecordScore = (Decimal)curRecordDataTable.Rows[0]["MaxValue"];
@@ -355,7 +355,7 @@ namespace WaterskiScoringSystem.Common {
                     curSqlStmt.Append("FROM CodeValueList ");
                     curSqlStmt.Append("WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')");
                     curSqlStmt.Append("  AND ListCode = '" + curAgeDiv + "-J' ");
-                    curRecordDataTable = getData(curSqlStmt.ToString());
+                    curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curRecordDataTable.Rows.Count > 0 ) {
                         if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
                             Decimal curRecordScore = (Decimal) curRecordDataTable.Rows[0]["MaxValue"];
@@ -405,11 +405,5 @@ namespace WaterskiScoringSystem.Common {
 
             return curReturnMsg.ToString();
         }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-    
     }
 }
