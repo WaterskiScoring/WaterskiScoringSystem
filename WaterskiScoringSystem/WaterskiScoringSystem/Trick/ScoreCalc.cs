@@ -43,8 +43,9 @@ namespace WaterskiScoringSystem.Trick {
         private String myFilterCmd = "";
         private String myTourRules = "";
         private String myTourClass = "";
+		private String myPrevEventGroup = "";
 
-        private DataTable myTrickListDataTable;
+		private DataTable myTrickListDataTable;
         private DataTable myEventRegDataTable;
         private DataTable myScoreDataTable;
         private DataTable myPass1DataTable;
@@ -67,7 +68,9 @@ namespace WaterskiScoringSystem.Trick {
         private DataGridViewPrinter myPrintDataGrid;
         private SkierDoneReason skierDoneReasonDialogForm;
         private CheckEventRecord myCheckEventRecord;
-        private ArrayList mySpecialFlipList = new ArrayList();
+		private CheckOfficials myCheckOfficials;
+
+		private ArrayList mySpecialFlipList = new ArrayList();
         private String[] myAllowedRepeatReverseList = {"RS", "RTS", "RB", "RF", "RTB", "RTF"};
 
         public ScoreCalc() {
@@ -185,7 +188,14 @@ namespace WaterskiScoringSystem.Trick {
                             myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
                             myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
 
-                            myTrickValidation.TourRules = myTourRules;
+							DataRow curClassRow = getClassRow( myTourClass );
+							if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
+								myCheckOfficials = new CheckOfficials();
+							} else {
+								myCheckOfficials = null;
+							}
+
+							myTrickValidation.TourRules = myTourRules;
                             myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
                             myTrickValidation.TrickListDataTable = myTrickListDataTable;
 
@@ -209,7 +219,7 @@ namespace WaterskiScoringSystem.Trick {
                             //Retrieve list of approved tournament boats
                             getApprovedTowboats();
                             listApprovedBoatsDataGridView.Visible = false;
-                            BoatSelectInfoLabel.Visible = false;
+							approvedBoatSelectGroupBox.Visible = false;
 
                             //Retrieve and load tournament event entries
                             loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
@@ -494,16 +504,8 @@ namespace WaterskiScoringSystem.Trick {
                     curNote = "";
                 }
 
-                try {
-                    if ( TourBoatTextbox.Text.Equals( "--Select--" ) ) {
-                        curBoat = "";
-                    } else {
-                        curBoat = TourBoatTextbox.Text;
-                        curBoat = curBoat.Replace( "'", "''" );
-                    }
-                } catch {
-                    curBoat = "";
-                }
+				curBoat = calcBoatCodeFromDisplay( TourBoatTextbox.Text );
+
                 try {
                     myScoreRow["Status"] = "TBD";
                     String curValue = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value;
@@ -1505,11 +1507,15 @@ namespace WaterskiScoringSystem.Trick {
                 MessageBox.Show( "Data has been modified.  Request cannot be completed." );
             } else {
                 String curFilterCmd = myFilterCmd;
-                if ( curFilterCmd.Contains("Div =") ) {
-                    curFilterCmd = curFilterCmd.Replace("Div =", "XT.AgeGroup =");
-                } else if ( curFilterCmd.Contains("AgeGroup =") ) {
-                    curFilterCmd = curFilterCmd.Replace("AgeGroup =", "XT.AgeGroup =");
-                }
+				if ( curFilterCmd.Contains( "Div =" ) ) {
+					curFilterCmd = curFilterCmd.Replace( "Div =", "XT.AgeGroup =" );
+
+				} else if ( curFilterCmd.Contains( "AgeGroup not in" ) ) {
+					curFilterCmd = curFilterCmd.Replace( "AgeGroup not in", "XT.AgeGroup not in" );
+
+				} else if ( curFilterCmd.Contains( "AgeGroup =" ) ) {
+					curFilterCmd = curFilterCmd.Replace( "AgeGroup =", "XT.AgeGroup =" );
+				}
 
                 ExportData myExportData = new ExportData();
                 String[] curSelectCommand = new String[8];
@@ -2178,7 +2184,15 @@ namespace WaterskiScoringSystem.Trick {
             if ( myScoreDataTable.Rows.Count > 0 ) {
                 myScoreRow = myScoreDataTable.Rows[0];
                 roundSelect.RoundValue = ((Byte)myScoreRow["Round"]).ToString();
-            } else {
+
+				if ( myScoreRow["Boat"] == System.DBNull.Value ) {
+					TourBoatTextbox.Text = "";
+				} else {
+					TourBoatTextbox.Text = setApprovedBoatSelectEntry( (String) myScoreRow["Boat"] );
+					TourBoatTextbox.Select( 0, 0 );
+				}
+
+			} else {
                 myScoreRow = null;
 
                 roundSelect.RoundValue = inRound.ToString();
@@ -2195,8 +2209,16 @@ namespace WaterskiScoringSystem.Trick {
                 newDataRow["ScorePass2"] = 0;
                 newDataRow["NopsScore"] = 0;
                 newDataRow["Rating"] = "";
-                newDataRow["Boat"] = "";
-                newDataRow["Note"] = "";
+
+				TourBoatTextbox.Text = buildBoatModelNameDisplay();
+				TourBoatTextbox.Select( 0, 0 );
+				if ( TourBoatTextbox.Text.Length > 0 ) {
+					newDataRow["Boat"] = calcBoatCodeFromDisplay( TourBoatTextbox.Text );
+				} else {
+					newDataRow["Boat"] = "";
+                }
+
+				newDataRow["Note"] = "";
                 newDataRow.EndEdit();
                 myScoreRow = myScoreDataTable.Rows[0];
             }
@@ -2231,24 +2253,7 @@ namespace WaterskiScoringSystem.Trick {
             } catch {
                 noteTextBox.Text = "";
             }
-            try {
-                TourBoatTextbox.Text = (String)myScoreRow["Boat"];
-                foreach ( DataGridViewRow curBoatRow in listApprovedBoatsDataGridView.Rows ) {
-                    if ( ( (String)curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( TourBoatTextbox.Text.ToUpper() ) ) {
-                        myBoatListIdx = curBoatRow.Index;
-                        break;
-                    }
-                }
-            } catch {
-                TourBoatTextbox.Text = "";
-                foreach ( DataGridViewRow curBoatRow in listApprovedBoatsDataGridView.Rows ) {
-                    if ( ( (String)curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( "UNDEFINED" ) ) {
-                        TourBoatTextbox.Text = (String)curBoatRow.Cells["BoatCode"].Value;
-                        myBoatListIdx = curBoatRow.Index;
-                        break;
-                    }
-                }
-            }
+
             isLoadInProg = false;
         }
 
@@ -2798,8 +2803,23 @@ namespace WaterskiScoringSystem.Trick {
                                     isPassEnded = true;
                                 }
                             }
-                        }
-                        if ( curPassFall ) {
+							if ( myCheckOfficials != null ) {
+								/*
+								 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
+								 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
+								 */
+								String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
+								if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
+									if ( !( myCheckOfficials.checkOfficialAssignments( mySanctionNum, "Jump", curEventGroup, roundSelect.RoundValue ) ) ) {
+										MessageBox.Show( "No officials have been assigned for this event group and round "
+											+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
+									}
+
+									myPrevEventGroup = curEventGroup;
+								}
+							}
+						}
+						if ( curPassFall ) {
                             MessageBox.Show( "No tricks allowed after a fall or trick marked as end" );
                             e.Cancel = false;
                         } else {
@@ -3473,105 +3493,173 @@ namespace WaterskiScoringSystem.Trick {
         }
 
         private void BoatSelectButton_Click( object sender, EventArgs e ) {
-            if ( BoatSelectInfoLabel.Visible ) {
-                BoatSelectInfoLabel.Visible = false;
-                listApprovedBoatsDataGridView.Visible = false;
-            } else {
-                BoatSelectInfoLabel.Visible = true;
-                listApprovedBoatsDataGridView.Visible = true;
-                listApprovedBoatsDataGridView.Focus();
-                listApprovedBoatsDataGridView.CurrentCell = listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"];
-            }
-        }
-
-        private void ForceCompButton_Click( object sender, EventArgs e ) {
-            if (TourEventRegDataGridView.Rows.Count > 0) {
-                if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    if (Pass1DataGridView.Rows.Count == 1) {
-                        if (Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value.ToString().Length == 0) {
-                            skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
-                            if (skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK) {
-                                String curReason = skierDoneReasonDialogForm.ReasonText;
-                                if (curReason.Length > 3) {
-                                    noteTextBox.Text = curReason;
-                                    setEventRegRowStatus( "4-Done", TourEventRegDataGridView.Rows[myEventRegViewIdx] );
-                                    if (saveTrickScore()) isDataModified = false;
-                                    return;
-                                } else {
-                                    MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
-                                }
-                            } else {
-                                MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
-                            }
-                        }
-                    }
-                }
-
-                CalcScoreButton_Click (null, null);
-                if (TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "2-InProg" )) {
-                    skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
-                    if (skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK) {
-                        String curReason = skierDoneReasonDialogForm.ReasonText;
-                        if (curReason.Length > 3) {
-                            noteTextBox.Text = curReason;
-                            setEventRegRowStatus( "4-Done", TourEventRegDataGridView.Rows[myEventRegViewIdx] );
-                            if (saveTrickScore()) isDataModified = false;
-                        } else {
-                            MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
-                        }
-                    } else {
-                        MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
-                    }
-                }
-                return;
-            }
+			if ( approvedBoatSelectGroupBox.Visible ) {
+				approvedBoatSelectGroupBox.Visible = false;
+				listApprovedBoatsDataGridView.Visible = false;
+			} else {
+				approvedBoatSelectGroupBox.Visible = true;
+				listApprovedBoatsDataGridView.Visible = true;
+				listApprovedBoatsDataGridView.Focus();
+				listApprovedBoatsDataGridView.CurrentCell = listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"];
+			}
         }
 
         private void listApprovedBoatsDataGridView_CellContentDoubleClick( object sender, DataGridViewCellEventArgs e ) {
-            myBoatListIdx = e.RowIndex;
-            updateBoatSelect();
-        }
+			if ( e.RowIndex > 0 ) {
+				myBoatListIdx = e.RowIndex;
+				updateBoatSelect();
+			}
+		}
 
-        private void listApprovedBoatsDataGridView_KeyUp( object sender, KeyEventArgs e ) {
-            try {
-                if ( e.KeyCode == Keys.Enter ) {
-                    myBoatListIdx = listApprovedBoatsDataGridView.CurrentCell.RowIndex;
-                    myBoatListIdx--;
-                    updateBoatSelect();
-                }
-            } catch ( Exception exp ) {
-                MessageBox.Show( exp.Message );
-            }
-
-        }
-
-        private void updateBoatSelect() {
+		private void updateBoatSelect() {
             String curMethodName = "Trick:ScoreCalc:updateBoatSelect";
-            String curMsg = "";
-            String curValue = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatCode"].Value;
-            TourBoatTextbox.Text = curValue;
-            TourBoatTextbox.Focus();
+			String curMsg = "";
 
-            if ( myScoreRow != null ) {
-                try {
-                    Int64 curScorePK = (Int64)myScoreRow["PK"];
-                    StringBuilder curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "Update TrickScore Set Boat = '" + TourBoatTextbox.Text + "'" );
-                    curSqlStmt.Append( " Where PK = " + curScorePK.ToString() );
-                    int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                } catch ( Exception excp ) {
-                    curMsg = ":Error attempting to update boat selection \n" + excp.Message;
-                    MessageBox.Show( curMsg );
-                    Log.WriteFile( curMethodName + curMsg );
-                }
-            }
+			TourBoatTextbox.Text = buildBoatModelNameDisplay();
+			TourBoatTextbox.Focus();
+			TourBoatTextbox.Select( 0, 0 );
+			String curBoatCode = calcBoatCodeFromDisplay( TourBoatTextbox.Text );
 
-            listApprovedBoatsDataGridView.Visible = false;
-            BoatSelectInfoLabel.Visible = false;
-        }
+			if ( myScoreRow != null ) {
+				try {
+					Int64 curScorePK = (Int64) myScoreRow["PK"];
 
-        private void navPrintResults_Click( object sender, EventArgs e ) {
+					StringBuilder curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Update TrickScore Set Boat = '" + curBoatCode + "'" );
+					curSqlStmt.Append( " Where PK = " + curScorePK.ToString() );
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+
+				} catch ( Exception excp ) {
+					curMsg = ":Error attempting to update boat selection \n" + excp.Message;
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + curMsg );
+				}
+			}
+
+			listApprovedBoatsDataGridView.Visible = false;
+			approvedBoatSelectGroupBox.Visible = false;
+			Pass1DataGridView.Focus();
+		}
+
+		/* *****************************************************************
+		******************************************************************* */
+		private void selectBoatButton_Click( object sender, EventArgs e ) {
+			myBoatListIdx = listApprovedBoatsDataGridView.CurrentRow.Index;
+            if ( myBoatListIdx > 0 ) {
+				updateBoatSelect();
+			}
+		}
+
+		private void refreshBoatListButton_Click( object sender, EventArgs e ) {
+            getApprovedTowboats();
+			calcBoatCodeFromDisplay( TourBoatTextbox.Text );
+		}
+
+		private String calcBoatCodeFromDisplay( String inBoatModelNameDisplay ) {
+			try {
+				if ( inBoatModelNameDisplay.Equals( "--Select--" ) ) {
+					myBoatListIdx = 0;
+					return "--Select--";
+
+				} else if ( inBoatModelNameDisplay.Equals( "" ) ) {
+					myBoatListIdx = 0;
+					return "--Select--";
+
+				} else {
+					int delimIdx = inBoatModelNameDisplay.IndexOf( " (KEY: " );
+					delimIdx += 7;
+					int lenBoatCode = inBoatModelNameDisplay.Length - delimIdx - 1;
+					String curBoatCode = inBoatModelNameDisplay.Substring( delimIdx, lenBoatCode );
+					curBoatCode = curBoatCode.Replace( "'", "''" );
+					setApprovedBoatSelectEntry( curBoatCode );
+					return curBoatCode;
+				}
+
+			} catch {
+				return "";
+			}
+		}
+
+		private String setApprovedBoatSelectEntry( String inBoatCode ) {
+			if ( inBoatCode.Length > 1 ) {
+				try {
+					foreach ( DataGridViewRow curBoatRow in listApprovedBoatsDataGridView.Rows ) {
+						if ( ( (String) curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( inBoatCode.ToUpper() ) ) {
+							myBoatListIdx = curBoatRow.Index;
+							return buildBoatModelNameDisplay();
+						}
+					}
+
+					myBoatListIdx = 0;
+					return "";
+
+				} catch {
+					return "";
+
+				}
+			} else {
+				return "";
+			}
+		}
+
+		private String buildBoatModelNameDisplay() {
+			if ( myBoatListIdx > 0 ) {
+				String curBoatCode = (String) listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatCode"].Value;
+				String curBoatModelName = (String) listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
+				return curBoatModelName + " (KEY: " + curBoatCode + ")";
+			} else {
+				return "";
+			}
+		}
+
+		/* *****************************************************************
+		******************************************************************* */
+
+		private void ForceCompButton_Click( object sender, EventArgs e ) {
+			if ( TourEventRegDataGridView.Rows.Count > 0 ) {
+				if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+					if ( Pass1DataGridView.Rows.Count == 1 ) {
+						if ( Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value.ToString().Length == 0 ) {
+							skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
+							if ( skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK ) {
+								String curReason = skierDoneReasonDialogForm.ReasonText;
+								if ( curReason.Length > 3 ) {
+									noteTextBox.Text = curReason;
+									setEventRegRowStatus( "4-Done", TourEventRegDataGridView.Rows[myEventRegViewIdx] );
+									if ( saveTrickScore() ) isDataModified = false;
+									return;
+								} else {
+									MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
+								}
+							} else {
+								MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
+							}
+						}
+					}
+				}
+
+				CalcScoreButton_Click( null, null );
+				if ( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "2-InProg" ) ) {
+					skierDoneReasonDialogForm.ReasonText = noteTextBox.Text;
+					if ( skierDoneReasonDialogForm.ShowDialog() == DialogResult.OK ) {
+						String curReason = skierDoneReasonDialogForm.ReasonText;
+						if ( curReason.Length > 3 ) {
+							noteTextBox.Text = curReason;
+							setEventRegRowStatus( "4-Done", TourEventRegDataGridView.Rows[myEventRegViewIdx] );
+							if ( saveTrickScore() ) isDataModified = false;
+						} else {
+							MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
+						}
+					} else {
+						MessageBox.Show( "Reason for forcing turn complete is required, request bypassed" );
+					}
+				}
+				return;
+			}
+		}
+
+		private void navPrintResults_Click( object sender, EventArgs e ) {
             //PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             Font[] saveFonts = new Font[2];
@@ -3788,7 +3876,7 @@ namespace WaterskiScoringSystem.Trick {
         private void getApprovedTowboats() {
             int curIdx = 0;
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, CodeDesc, SortSeq " );
+            curSqlStmt.Append( "SELECT Distinct ListCode, ListCodeNum, CodeValue, CodeDesc, SortSeq " );
             curSqlStmt.Append( "FROM TourBoatUse BU " );
             curSqlStmt.Append( "INNER JOIN CodeValueList BL ON BL.ListCode = BU.HullId " );
             curSqlStmt.Append( "WHERE BL.ListName = 'ApprovedBoats' AND BU.SanctionId = '" + mySanctionNum + "' " );
@@ -3796,10 +3884,11 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, CodeDesc, SortSeq " );
             curSqlStmt.Append( "FROM CodeValueList BL " );
             curSqlStmt.Append( "WHERE ListName = 'ApprovedBoats' AND ListCode IN ('--Select--', 'Unlisted') " );
-            curSqlStmt.Append( "ORDER BY SortSeq " );
+            curSqlStmt.Append( "ORDER BY SortSeq DESC" );
             DataTable curDataTable = getData( curSqlStmt.ToString() );
 
-            foreach ( DataRow curRow in curDataTable.Rows ) {
+			listApprovedBoatsDataGridView.Rows.Clear();
+			foreach ( DataRow curRow in curDataTable.Rows ) {
                 String[] boatSpecList = curRow["CodeDesc"].ToString().Split( '|' );
                 listApprovedBoatsDataGridView.Rows.Add( 1 );
                 listApprovedBoatsDataGridView.Rows[curIdx].Cells["BoatCode"].Value = curRow["ListCode"].ToString();

@@ -36,9 +36,6 @@ namespace WaterskiScoringSystem.Tournament {
         //private DataTable myTourOfficialWorkDataTable;
         private DataTable myTourMemberList;
 
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
-
         public OfficialWorkRecord() {
             InitializeComponent();
         }
@@ -79,9 +76,6 @@ namespace WaterskiScoringSystem.Tournament {
                         myTourRow = curTourDataTable.Rows[0];
                         myTourRules = (String)myTourRow["Rules"];
 
-                        myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                        myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-
                         navRefresh_Click( null, null );
 
                         if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
@@ -94,57 +88,87 @@ namespace WaterskiScoringSystem.Tournament {
                             JudgeSlalomCreditCB.Enabled = false;
                             editJudgeSlalomRating.Visible = false;
                             editJudgeSlalomRating.Enabled = false;
-                            DriverSlalomCreditCB.Visible = false;
+							JudgeSlalomRating.Visible = false;
+
+							DriverSlalomCreditCB.Visible = false;
                             DriverSlalomCreditCB.Enabled = false;
-                            ScoreSlalomCreditCB.Visible = false;
+							DriverSlalomRating.Visible = false;
+							editDriverSlalomRating.Visible = false;
+							editDriverSlalomRating.Enabled = false;
+
+							ScoreSlalomCreditCB.Visible = false;
                             ScoreSlalomCreditCB.Enabled = false;
-                            SafetySlalomCreditCB.Visible = false;
+							ScorerSlalomRating.Visible = false;
+							editScorerSlalomRating.Visible = false;
+							editScorerSlalomRating.Enabled = false;
+
+							SafetySlalomCreditCB.Visible = false;
                             SafetySlalomCreditCB.Enabled = false;
-                            TechSlalomCreditCB.Visible = false;
+
+							TechSlalomCreditCB.Visible = false;
                             TechSlalomCreditCB.Enabled = false;
-                            AnncrSlalomCreditCB.Visible = false;
+
+							AnncrSlalomCreditCB.Visible = false;
                             AnncrSlalomCreditCB.Enabled = false;
-                            JudgeSlalomRating.Visible = false;
-                            DriverSlalomRating.Visible = false;
-                            ScorerSlalomRating.Visible = false;
+
                         }
                         if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) {
                             JudgeTrickCreditCB.Visible = false;
                             JudgeTrickCreditCB.Enabled = false;
                             editJudgeTrickRating.Visible = false;
                             editJudgeTrickRating.Enabled = false;
-                            DriverTrickCreditCB.Visible = false;
-                            DriverTrickCreditCB.Enabled = false;
-                            ScoreTrickCreditCB.Visible = false;
+							JudgeTrickRating.Visible = false;
+
+							DriverTrickCreditCB.Visible = false;
+							DriverTrickRating.Visible = false;
+							editDriverTrickRating.Visible = false;
+							editDriverTrickRating.Enabled = false;
+							DriverTrickCreditCB.Enabled = false;
+
+							ScoreTrickCreditCB.Visible = false;
                             ScoreTrickCreditCB.Enabled = false;
-                            SafetyTrickCreditCB.Visible = false;
+							editScorerTrickRating.Visible = false;
+							editScorerTrickRating.Enabled = false;
+							ScorerTrickRating.Visible = false;
+
+							SafetyTrickCreditCB.Visible = false;
                             SafetyTrickCreditCB.Enabled = false;
-                            TechTrickCreditCB.Visible = false;
+
+							TechTrickCreditCB.Visible = false;
                             TechTrickCreditCB.Enabled = false;
-                            AnncrTrickCreditCB.Visible = false;
+
+							AnncrTrickCreditCB.Visible = false;
                             AnncrTrickCreditCB.Enabled = false;
-                            JudgeTrickRating.Visible = false;
-                            DriverTrickRating.Visible = false;
-                            ScorerTrickRating.Visible = false;
+
                         }
                         if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) {
                             JudgeJumpCreditCB.Visible = false;
                             JudgeJumpCreditCB.Enabled = false;
-                            editJudgeJumpRating.Visible = false;
+							JudgeJumpRating.Visible = false;
+							editJudgeJumpRating.Visible = false;
                             editJudgeJumpRating.Enabled = false;
-                            DriverJumpCreditCB.Visible = false;
+
+							DriverJumpCreditCB.Visible = false;
                             DriverJumpCreditCB.Enabled = false;
-                            ScoreJumpCreditCB.Visible = false;
+							DriverJumpRating.Visible = false;
+							editDriverJumpRating.Visible = false;
+							editDriverJumpRating.Enabled = false;
+
+							ScoreJumpCreditCB.Visible = false;
                             ScoreJumpCreditCB.Enabled = false;
-                            SafetyJumpCreditCB.Visible = false;
+							ScorerJumpRating.Visible = false;
+							editScorerJumpRating.Visible = false;
+							editScorerJumpRating.Enabled = false;
+
+							SafetyJumpCreditCB.Visible = false;
                             SafetyJumpCreditCB.Enabled = false;
-                            TechJumpCreditCB.Visible = false;
+
+							TechJumpCreditCB.Visible = false;
                             TechJumpCreditCB.Enabled = false;
-                            AnncrJumpCreditCB.Visible = false;
+
+							AnncrJumpCreditCB.Visible = false;
                             AnncrJumpCreditCB.Enabled = false;
-                            JudgeJumpRating.Visible = false;
-                            DriverTrickRating.Visible = false;
-                            ScorerTrickRating.Visible = false;
+
                         }
                         #endregion
                     }
@@ -304,10 +328,6 @@ namespace WaterskiScoringSystem.Tournament {
             int rowsProc = 0;
 
             try {
-                myDbConn.Open();
-                mySqlStmt = myDbConn.CreateCommand();
-                mySqlStmt.CommandText = "";
-
                 try {
                     curPK = Convert.ToInt64( editPK.Text );
                 } catch {
@@ -374,8 +394,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", LastUpdateDate = getdate()" );
                     curSqlStmt.Append( ", Note = '" + editNote.Text + "'" );
                     curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-                    mySqlStmt.CommandText = curSqlStmt.ToString();
-                    rowsProc = mySqlStmt.ExecuteNonQuery();
+
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     if ( rowsProc > 0 ) {
                         isDataModified = false;
                         curReturnValue = true;
@@ -451,8 +471,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", getdate()" );
                     curSqlStmt.Append( ", '" + editNote.Text + "'" );
                     curSqlStmt.Append( ")" );
-                    mySqlStmt.CommandText = curSqlStmt.ToString();
-                    rowsProc = mySqlStmt.ExecuteNonQuery();
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     if ( rowsProc > 0 ) {
                         isDataModified = false;
                         curReturnValue = true;
@@ -461,7 +480,7 @@ namespace WaterskiScoringSystem.Tournament {
                         curSqlStmt.Append( "Select PK From OfficialWork " );
                         curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
                         curSqlStmt.Append( "  And MemberId = '" + editMemberId.Text + "'" );
-                        DataTable curDataTable = getData( curSqlStmt.ToString() );
+                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                         if ( curDataTable.Rows.Count > 0 ) {
                             curPK = (Int64)curDataTable.Rows[0]["PK"];
                             editPK.Text = curPK.ToString();
@@ -539,9 +558,6 @@ namespace WaterskiScoringSystem.Tournament {
 			} catch ( Exception excp ) {
                 curReturnValue = false;
                 MessageBox.Show( "Error attempting to update skier official credits \n" + excp.Message );
-
-			} finally {
-                myDbConn.Close();
             }
 
             return curReturnValue;
@@ -1202,7 +1218,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  AND MemberId <> '" + inMemberId + "' " );
             curSqlStmt.Append( "  AND " + inOfficial + " = 'Y' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 return true;
             } else {
@@ -1246,7 +1262,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  AND O.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "ORDER BY T.SkierName, O.MemberId " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 return curDataTable.Rows[0];
             } else {
@@ -1274,7 +1290,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
             curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
         
         private DataTable getTourData() {
@@ -1286,7 +1302,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private Boolean checkAndRemoveChiefOfficial( String inChiefType ) {
@@ -1302,8 +1318,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append(", LastUpdateDate = getdate() ");
                 curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "'");
                 curSqlStmt.Append(" AND " + curChiefOfficalAttrName + " = '" + editMemberId.Text + "' ");
-                mySqlStmt.CommandText = curSqlStmt.ToString();
-                int rowsProc = mySqlStmt.ExecuteNonQuery();
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                 winStatusMsg.Text = "Removal of chief judge successfully saved";
                 return true;
             } catch ( Exception excp ) {
@@ -1322,7 +1337,7 @@ namespace WaterskiScoringSystem.Tournament {
             try {
                 curSqlStmt.Append("Select " + curChiefOfficalAttrName + " as ChiefMemberId From Tournament ");
                 curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
-                DataTable curDataTable = getData(curSqlStmt.ToString());
+                DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
                 bool isUpdateReqd = false;
                 if ( curDataTable.Rows.Count > 0 ) {
                     if ( curDataTable.Rows[0]["ChiefMemberId"] == System.DBNull.Value ) {
@@ -1355,8 +1370,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append(curChiefOfficalAttrName + " = '" + editMemberId.Text + "' ");
                     curSqlStmt.Append(", LastUpdateDate = getdate() ");
                     curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
-                    mySqlStmt.CommandText = curSqlStmt.ToString();
-                    int rowsProc = mySqlStmt.ExecuteNonQuery();
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     if ( rowsProc > 0 ) {
                         MessageBox.Show("Remember to update the contact information for this new chief official");
                         return true;
@@ -1371,10 +1385,6 @@ namespace WaterskiScoringSystem.Tournament {
                 MessageBox.Show("Error updating " + inChiefType + "\n" + excp.Message);
                 return false;
             }
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 
         private bool isObjectEmpty(object inObject) {
