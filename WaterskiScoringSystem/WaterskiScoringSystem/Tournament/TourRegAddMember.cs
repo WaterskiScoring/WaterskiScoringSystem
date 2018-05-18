@@ -16,6 +16,7 @@ namespace WaterskiScoringSystem.Tournament {
     public partial class TourRegAddMember : Form {
         private String mySanctionNum;
         private bool myDataModified;
+		private char[] mySingleQuoteDelim = new char[] { '\'' };
 
 		private DataTable myMemberListDataTable;
 		private DataRow myTourRow = null;
@@ -538,12 +539,15 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficial " );
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
 
+			String curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
+			String curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
+
 			curSqlStmt.Append( "FROM MemberList " );
             if ( inMemberId.Length > 0 ) {
                 curSqlStmt.Append( "Where MemberId = '" + inMemberId + "'" );
             } else {
-                curSqlStmt.Append( "Where LastName like '" + inLastName + "%'" );
-                curSqlStmt.Append( "  And FirstName like '" + inFirstName + "%'" );
+                curSqlStmt.Append( "Where LastName like '" + curLastName + "%'" );
+                curSqlStmt.Append( "  And FirstName like '" + curFirstName + "%'" );
                 if ( inState.Length > 0 ) {
                     curSqlStmt.Append( "  And State = '" + inState + "'" );
                 }
@@ -569,6 +573,8 @@ namespace WaterskiScoringSystem.Tournament {
 				curQueryString.Append( "&MemberId=" + inMemberId );
 			}
 			if ( inFirstName.Length > 0 || inLastName.Length > 0 ) {
+				//String curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
+				//String curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
 				curQueryString.Append( "&FirstName=" + inFirstName + "&LastName=" + inLastName );
 			}
 			if ( inState.Length > 0 ) {
@@ -611,6 +617,27 @@ namespace WaterskiScoringSystem.Tournament {
 			} else {
 				return null;
 			}
+		}
+
+		private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
+			StringBuilder curNewValue = new StringBuilder( "" );
+
+			String[] curValues = inValue.Split( inCurValue );
+			if ( curValues.Length > 1 ) {
+				int curCount = 0;
+				foreach ( String curValue in curValues ) {
+					curCount++;
+					if ( curCount < curValues.Length ) {
+						curNewValue.Append( curValue + inReplValue );
+					} else {
+						curNewValue.Append( curValue );
+					}
+				}
+			} else {
+				curNewValue.Append( inValue );
+			}
+
+			return curNewValue.ToString();
 		}
 
 	}

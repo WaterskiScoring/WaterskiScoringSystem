@@ -43,6 +43,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22358	AnnouncerRating	R	3.000	3	Regional			
 22359	AnnouncerRating	N	4.000	4	National			
 22360	AnnouncerRating	E	5.000	5	Emeritus			
+0	ApprovedBoats	CC200-62-H6-4-19	190001	190001	Ski Nautique 200 PCM H6 (6.2L) 4 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC200-62-H6-3-19	190002	190002	Ski Nautique 200 PCM H6 (6.2L) 3 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
 0	ApprovedBoats	Cen-57-Z0-18-3	180010	180010	Centurion Carbon Pro 5.7L ZO 3 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
 0	ApprovedBoats	Cen-57-Z0-18-4	180011	180011	Centurion Carbon Pro 5.7L ZO 4 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
 0	ApprovedBoats	Cen-60-Z0-18-3	180012	180012	Centurion Carbon Pro 6.0L ZO 3 Blade			2018 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
