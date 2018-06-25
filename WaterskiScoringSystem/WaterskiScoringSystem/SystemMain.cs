@@ -420,7 +420,13 @@ namespace WaterskiScoringSystem {
             curForm.getDatabaseFile( myAppRegKey );
         }
 
-        private void shrinkDatabaseToolStripMenuItem_Click( object sender, EventArgs e ) {
+		private void navDatabaseBackup_Click( object sender, EventArgs e ) {
+			SetDatabaseLocation curForm = new SetDatabaseLocation();
+			curForm.backupDatabaseFile( myAppRegKey );
+
+		}
+
+		private void shrinkDatabaseToolStripMenuItem_Click( object sender, EventArgs e ) {
             ShrinkDatabase curForm = new ShrinkDatabase();
             bool curReturn = curForm.Shrink();
         }

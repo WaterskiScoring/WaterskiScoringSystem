@@ -69,31 +69,36 @@ namespace WaterskiScoringSystem.Tools {
             return curReturn;
         }
 
-        public bool copyDatabaseFile( String inSourDir, String inDestDir, RegistryKey inAppRegKey ) {
-            bool curReturn = false;
-            String curDataDirectory = "", curFileName = null, curDatabaseFileName = "", curSourDir = "";
-            String curDestFileName = "", curDestDatabaseRef = "";
-            String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+		public String getDatabaseFilename() {
+			String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
 
-            String curAttrName, curAttrValue;
-            String[] curAttrEntry;
-            String[] curConnAttrList = curAppConnectString.Split( ';' );
-            for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
-                curAttrEntry = curConnAttrList[idx].Split( '=' );
-                curAttrName = curAttrEntry[0];
-                curAttrValue = curAttrEntry[1];
-                if ( curAttrName.ToLower().Trim().Equals( "data source" ) ) {
-                    int delimPos = curAttrValue.LastIndexOf( '\\' );
-                    if ( delimPos > 0 ) {
-                        curDatabaseFileName = curAttrValue.Substring( delimPos + 1 );
-                    }
-                }
-            }
+			String curAttrName, curAttrValue;
+			String[] curAttrEntry;
+			String[] curConnAttrList = curAppConnectString.Split( ';' );
+			for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
+				curAttrEntry = curConnAttrList[idx].Split( '=' );
+				curAttrName = curAttrEntry[0];
+				curAttrValue = curAttrEntry[1];
+				if ( curAttrName.ToLower().Trim().Equals( "data source" ) ) {
+					int delimPos = curAttrValue.LastIndexOf( '\\' );
+					if ( delimPos > 0 ) {
+						return curAttrValue.Substring( delimPos + 1 );
+					}
+				}
+			}
+
+			return "";
+		}
+
+		public bool copyDatabaseFile( String inSourDir, String inDestDir, RegistryKey inAppRegKey ) {
+            bool curReturn = false;
+            String curDataDirectory = "", curSourDir = "";
+			String curDestDatabaseRef = "", curDestFileName = "";
 
             OpenFileDialog myFileDialog = new OpenFileDialog();
             myFileDialog.InitialDirectory = inDestDir;
-            myFileDialog.FileName = curDatabaseFileName;
-            myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
+            myFileDialog.FileName = getDatabaseFilename();
+			myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
             myFileDialog.FilterIndex = 0;
             myFileDialog.CheckPathExists = false;
             myFileDialog.CheckFileExists = false;
@@ -202,5 +207,58 @@ namespace WaterskiScoringSystem.Tools {
             return curReturn;
         }
 
-    }
+		public bool backupDatabaseFile( RegistryKey inAppRegKey ) {
+			bool curReturn = false;
+			String curBackupDirectory = "";
+
+			String curDataDirectory = "";
+			if ( inAppRegKey.GetValue( "DataDirectory" ) == null ) {
+				try {
+					curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
+				} catch ( Exception ex ) {
+					curDataDirectory = Application.UserAppDataPath;
+				}
+			} else {
+				curDataDirectory = inAppRegKey.GetValue( "DataDirectory" ).ToString();
+			}
+
+			String curDatabaseFilename = getDatabaseFilename();
+
+			FolderBrowserDialog curFolderBrowserDialog = new FolderBrowserDialog();
+			curFolderBrowserDialog.SelectedPath = curDataDirectory;
+			curFolderBrowserDialog.ShowNewFolderButton = true;
+
+			try {
+				if ( curFolderBrowserDialog.ShowDialog() == DialogResult.OK ) {
+					curBackupDirectory = curFolderBrowserDialog.SelectedPath;
+
+					//Declare and instantiate a new process component
+					System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
+
+					//Do not receive an event when the process exits.
+					curOSProcess.EnableRaisingEvents = true;
+
+					String curCmdLine;
+					String curDestCopyFileName = "";
+					String curDatabaseLocation = curDataDirectory + "\\" + curDatabaseFilename;
+
+					curDestCopyFileName = curBackupDirectory + "\\" + curDatabaseFilename + "." + DateTime.Now.ToString( "MMddyyHHmm" ) + ".bak";
+					curCmdLine = "/C copy \"" + curDatabaseLocation + "\" \"" + curDestCopyFileName + "\" \n";
+					System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
+					curOSProcess.Close();
+
+					MessageBox.Show( "Current database " + curDatabaseLocation
+						+ "\nBacked up to " + curDestCopyFileName
+						);
+					curReturn = true;
+                }
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not get database file " + "\n\nError: " + ex.Message );
+			}
+
+			return curReturn;
+		}
+
+	}
 }

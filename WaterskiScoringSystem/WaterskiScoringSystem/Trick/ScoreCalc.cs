@@ -188,7 +188,7 @@ namespace WaterskiScoringSystem.Trick {
                             myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
                             myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
 
-							DataRow curClassRow = getClassRow( myTourClass );
+							DataRow curClassRow = getClassRow( myTourRow["EventScoreClass"].ToString().ToUpper() );
 							if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
 								myCheckOfficials = new CheckOfficials();
 							} else {
@@ -1155,7 +1155,7 @@ namespace WaterskiScoringSystem.Trick {
             curTimerObj.Tick -= new EventHandler( insertTrickTimer );
 
             if ( isLoadInProg ) {
-                MessageBox.Show( "insertTrickTimer LoadInProg" );
+                //MessageBox.Show( "insertTrickTimer LoadInProg" );
             } else {
                 if ( myActiveTrickPass.Equals( "Pass1" ) ) {
                     insertTrick( Pass1DataGridView, false );

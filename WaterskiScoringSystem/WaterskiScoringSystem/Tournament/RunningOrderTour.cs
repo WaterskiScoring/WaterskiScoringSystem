@@ -599,7 +599,7 @@ namespace WaterskiScoringSystem.Tournament {
                         String curSqlStmt = "SELECT DISTINCT EventGroup FROM EventReg "
                             + "WHERE SanctionId = '" + mySanctionNum + "' And Event = '" + inEvent + "' "
                             + "Order by EventGroup";
-                        DataTable curDataTable = getData( curSqlStmt );
+                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
                         foreach (DataRow curRow in curDataTable.Rows) {
                             curEventGroupList.Add( (String)curRow["EventGroup"] );
                         }
@@ -1526,7 +1526,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
                             curSqlStmt.Append( "  AND Event = '" + curEvent + "' " );
                             curSqlStmt.Append( "  AND EventGroup = '" + myOrigItemValue + "' " );
-                            DataTable curDataTable = getData( curSqlStmt.ToString() );
+                            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                             if (curDataTable.Rows.Count > 0) {
                                 int curReturnValue = (int)curDataTable.Rows[0]["GroupCount"];
                                 if (curReturnValue < 2) {
@@ -1536,7 +1536,7 @@ namespace WaterskiScoringSystem.Tournament {
                                     curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
                                     curSqlStmt.Append( "  AND Event = '" + curEvent + "' " );
                                     curSqlStmt.Append( "  AND EventGroup = '" + myOrigItemValue + "' " );
-                                    curDataTable = getData( curSqlStmt.ToString() );
+                                    curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                                     if (curDataTable.Rows.Count > 0) {
                                         curReturnValue = (int)curDataTable.Rows[0]["AsgmtCount"];
                                         if (curReturnValue > 0) {
@@ -1895,7 +1895,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM Tournament T " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getEventRegData() {
@@ -1925,7 +1925,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     LEFT OUTER JOIN CodeValueList L ON L.ListCode = E.EventClass AND ListName = 'Class' " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + curEvent + "'" );
 
-            DataTable curDataTable = getData(curSqlStmt.ToString());
+            DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
             curDataTable.DefaultView.Sort = mySortCmd;
             curDataTable.DefaultView.RowFilter = myFilterCmd;
             return curDataTable.DefaultView.ToTable();
@@ -1938,7 +1938,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "INNER JOIN CodeValueList AS L2 ON L2.ListCode = L1.ListCode AND L2.ListName IN ('AWSASlalomMax', 'IwwfSlalomMax', 'NcwsaSlalomMax') " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS L3 ON L3.ListCode = L1.ListCode AND L3.ListName IN ('IwwfSlalomMin', 'NcwsaSlalomMin') ");
             curSqlStmt.Append( "WHERE L1.ListName LIKE '%AgeGroup' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getJumpDivMaxSpeedRamp() {
@@ -1948,7 +1948,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "INNER JOIN CodeValueList AS L2 ON L2.ListCode = L1.ListCode AND L2.ListName IN ('AWSAJumpMax', 'IwwfJumpMax', 'NcwsaJumpMax') " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS L3 ON L3.ListCode = L1.ListCode AND L3.ListName IN ('AWSARampMax', 'IwwfRampMax', 'NcwsaRampMax') " );
             curSqlStmt.Append( "WHERE L1.ListName LIKE '%AgeGroup' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTrickDivList() {
@@ -1956,11 +1956,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "SELECT L1.ListCode as Div, L1.SortSeq as SortSeq, L1.CodeValue as DivName " );
             curSqlStmt.Append( "FROM CodeValueList AS L1 " );
             curSqlStmt.Append( "WHERE L1.ListName LIKE '%AgeGroup' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private StreamWriter getExportFile( String inFileName ) {

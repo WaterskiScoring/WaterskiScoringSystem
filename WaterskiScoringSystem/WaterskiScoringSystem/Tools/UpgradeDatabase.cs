@@ -35,7 +35,7 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '05.02', 5.02, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '05.03', 5.03, 1";
 
                 if (myDatabaseVersion < 2.27M) {
                     MessageBox.Show( "The version on your database is very old or has been corrupted."
@@ -55,7 +55,7 @@ namespace WaterskiScoringSystem.Tools {
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
-                if (myDatabaseVersion < 4.02M) {
+                if (myDatabaseVersion < 5.03M) {
                     if ( openDbConn() ) {
                         loadTrickList();
                     }
