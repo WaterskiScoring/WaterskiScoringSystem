@@ -155,7 +155,7 @@ namespace WaterskiScoringSystem.Jump {
                     curSqlStmt.Append( "WHERE ListName in ('JumpMeter6Tol', 'JumpTriangle', 'JumpTriangleZero') " );
                     curSqlStmt.Append( "And ListCode = '" + myTourClass + "' " );
                     curSqlStmt.Append( "ORDER BY SortSeq" );
-                    DataTable curTolDataTable = getData( curSqlStmt.ToString() );
+                    DataTable curTolDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curTolDataTable.Rows.Count > 0 ) {
                         DataRow myTolRow = curTolDataTable.Select( "ListName = 'JumpTriangle'" )[0];
                         myMeterDistTol = Convert.ToDecimal( (String)myTolRow["TriangleFeet"] );
@@ -346,7 +346,7 @@ namespace WaterskiScoringSystem.Jump {
                             //Retrieve boat times
                             StringBuilder curSqlStmt = new StringBuilder( "" );
                             curSqlStmt.Append( "SELECT ListCode, CodeValue, MinValue, MaxValue, CodeDesc FROM CodeValueList WHERE ListName = 'JumpBoatTime3Seg' ORDER BY SortSeq" );
-                            myTimesDataTable = getData( curSqlStmt.ToString() );
+                            myTimesDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
                             //Retrieve maximum speeds by age group
                             getMaxSpeedData();
@@ -874,7 +874,7 @@ namespace WaterskiScoringSystem.Jump {
                                     if (curRecapPK < 0) {
                                         curSqlStmt = new StringBuilder( "" );
                                         curSqlStmt.Append( "Select max(PK) as MaxPK From JumpRecap" );
-                                        DataTable curDataTable = getData( curSqlStmt.ToString() );
+                                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                                         if (curDataTable.Rows.Count > 0) {
                                             Int64 curPK = (Int64)curDataTable.Rows[0]["MaxPK"];
                                             myRecapRow.Cells["PKRecap"].Value = curPK.ToString();
@@ -1001,7 +1001,7 @@ namespace WaterskiScoringSystem.Jump {
                 //Determine required number of judges for event
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT ListCode, CodeValue, MaxValue, MinValue, CodeDesc FROM CodeValueList WHERE ListName = 'TrickJudgesNum' ORDER BY SortSeq" );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if ( curDataTable.Rows.Count > 0 ) {
                     int curNumJudges = Convert.ToInt16( (Decimal)curDataTable.Rows[0]["MaxValue"] );
                     //Override to 3 judges for now because 6 meter calculations are not yet supported
@@ -2022,12 +2022,12 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt = "SELECT DISTINCT EventGroup From EventRunOrder "
                 + "WHERE SanctionId = '" + mySanctionNum + "' And Event = 'Jump' And Round = " + inRound.ToString() + " "
                 + "Order by EventGroup";
-            DataTable curDataTable = getData( curSqlStmt );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
             if (curDataTable.Rows.Count == 0) {
                 curSqlStmt = "SELECT DISTINCT EventGroup FROM EventReg "
                     + "WHERE SanctionId = '" + mySanctionNum + "' And Event = 'Jump'"
                     + "Order by EventGroup";
-                curDataTable = getData( curSqlStmt );
+                curDataTable = DataAccess.getDataTable( curSqlStmt );
             }
 
             foreach (DataRow curRow in curDataTable.Rows) {
@@ -3507,7 +3507,7 @@ namespace WaterskiScoringSystem.Jump {
                     curSqlStmt.Append( "GROUP BY R.SkierName, R.AgeGroup, R.MemberId, N.EventsReqd " );
                     curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
                     curSqlStmt.Append( "ORDER BY R.SkierName, R.AgeGroup, R.MemberId, N.EventsReqd " );
-                    DataTable curDataTable = getData( curSqlStmt.ToString() );
+                    DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curDataTable.Rows.Count > 0 ) {
                         curSqlStmt = new StringBuilder("");
                         curSqlStmt.Append("SELECT PK FROM JumpScore ");
@@ -3515,7 +3515,7 @@ namespace WaterskiScoringSystem.Jump {
                         curSqlStmt.Append( "  And MemberId = '" + TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString() + "' " );
                         curSqlStmt.Append( "  And AgeGroup = '" + TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() + "' " );
                         curSqlStmt.Append( "  And Round < " + roundSelect.RoundValue );
-                        DataTable curDataTable2 = getData( curSqlStmt.ToString() );
+                        DataTable curDataTable2 = DataAccess.getDataTable( curSqlStmt.ToString() );
                         if ( curDataTable2.Rows.Count == 0 ) {
                             MessageBox.Show( "This skier participates in overall"
                                 + "\nYou are entering a score in round " + roundSelect.RoundValue
@@ -5459,7 +5459,7 @@ namespace WaterskiScoringSystem.Jump {
                     }
                 }
 
-                myTourEventRegDataTable = getData( curSqlStmt.ToString() );
+                myTourEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 curRowCount = myTourEventRegDataTable.Rows.Count;
                 curIdx++;
             }
@@ -5472,7 +5472,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append("FROM Tournament T ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + inSanctionId + "' ");
-            DataTable curDataTable = getData(curSqlStmt.ToString());
+            DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
             return curDataTable;
         }
 
@@ -5488,7 +5488,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "FROM CodeValueList BL " );
             curSqlStmt.Append( "WHERE ListName = 'ApprovedBoats' AND ListCode IN ('--Select--', 'Unlisted') " );
             curSqlStmt.Append( "ORDER BY SortSeq DESC" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
 			listApprovedBoatsDataGridView.Rows.Clear();
 			foreach ( DataRow curRow in curDataTable.Rows ) {
@@ -5525,7 +5525,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND S.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "  AND S.AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() + " " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, S.MemberId" );
-            myScoreDataTable = getData( curSqlStmt.ToString() );
+            myScoreDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
@@ -5535,7 +5535,7 @@ namespace WaterskiScoringSystem.Jump {
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
 			curSqlStmt.Append( " AND Round = " + inRound + " " );
-			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return true;
 			} else {
@@ -5549,7 +5549,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "SELECT RampHeight FROM JumpScore " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = 1 " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 curReturnValue = (Decimal)curDataTable.Rows[0]["RampHeight"];
             }
@@ -5568,7 +5568,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() + " " );
             curSqlStmt.Append( "ORDER BY SanctionId, MemberId, AgeGroup, Round, PassNum" );
-            myRecapDataTable = getData( curSqlStmt.ToString() );
+            myRecapDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void getMinSpeedData() {
@@ -5576,7 +5576,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "SELECT MIN(SUBSTRING(ListCode, 1, 2)) AS Speed" );
             curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'JumpBoatTime3Seg' AND ListCode LIKE '%-52M'" );
-            myMinSpeedDataTable = getData( curSqlStmt.ToString() );
+            myMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void getMaxSpeedData() {
@@ -5585,7 +5585,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName LIKE '%JumpMax' " );
             curSqlStmt.Append( "ORDER BY SortSeq " );
-            myMaxSpeedDataTable = getData( curSqlStmt.ToString() );
+            myMaxSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void getMaxRampData() {
@@ -5594,7 +5594,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName like '%RampMax' " );
             curSqlStmt.Append( "ORDER BY SortSeq " );
-            myMaxRampDataTable = getData( curSqlStmt.ToString() );
+            myMaxRampDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void getJump3TimesDivData() {
@@ -5603,11 +5603,7 @@ namespace WaterskiScoringSystem.Jump {
             curSqlStmt.Append( "FROM CodeValueList " );
             curSqlStmt.Append( "WHERE ListName = 'IwwfJump3TimesDiv' " );
             curSqlStmt.Append( "ORDER BY SortSeq " );
-            myJump3TimesDivDataTable = getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            myJump3TimesDivDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable buildSummaryDataTable() {

@@ -429,7 +429,7 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                         prevScore = curScore;
                     } else {
-                        MessageBox.Show("Current round is zero for skier " + (String) curRow["SkierName"]);
+                        //MessageBox.Show("Current round is zero for skier " + (String) curRow["SkierName"]);
                     }
                 }
             }
