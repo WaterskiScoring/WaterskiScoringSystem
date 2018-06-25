@@ -869,11 +869,13 @@ namespace WaterskiScoringSystem.Common {
                                 + " And RoundOverall = " + curRound
                                 + " And AgeGroup = '" + curAgeGroup + "'"
                                 ;
-                        } else {
+
+						} else {
                             curFilterCommand = "MemberId = '" + curMemberId + "'"
                                 + " And AgeGroup = '" + curAgeGroup + "'";
                         }
-                        curFindRows = curSummaryDataTable.Select( curFilterCommand );
+
+						curFindRows = curSummaryDataTable.Select( curFilterCommand );
                         if (curFindRows.Length > 0) {
                             curDataRow = curFindRows[0];
                             curDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
@@ -1447,9 +1449,14 @@ namespace WaterskiScoringSystem.Common {
                     curRow["EventGroup"] = curAgeGroup;
                 }
             }
-            #endregion
+			#endregion
 
-            if ( inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+			if ( curRules.ToLower().Equals( "awsa" ) && !(curSanctionId.EndsWith("999")) && !(curSanctionId.EndsWith( "998" ))
+				&& inSlalomDataTable != null && inTrickDataTable  != null && inJumpDataTable != null ) {
+				checkForEliteOverallDragdown( inTourRow, curSummaryDataTable, inDataType, inPlcmtOrg );
+			}
+
+			if ( inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
                 curSortCmd = "AgeGroup ASC, ReadyForPlcmt DESC, SkierName ASC, RoundOverall ASC";
             } else if ( inPlcmtOrg.ToLower().Equals( "agegroupgroup" ) ) {
                 curSortCmd = "AgeGroup ASC, EventGroupOverall ASC, ReadyForPlcmt DESC, SkierName ASC, RoundOverall ASC";
@@ -1486,7 +1493,119 @@ namespace WaterskiScoringSystem.Common {
             return curSummaryDataTable;
         }
 
-        public DataTable buildTourScorebook(String inSanctionId, DataRow inTourRow, DataTable inMemberData, DataTable inSummaryDataTable, DataTable inSlalomDetail, DataTable inTrickDetail, DataTable inJumpDetail) {
+		private void checkForEliteOverallDragdown( DataRow inTourRow, DataTable curSummaryDataTable, String inDataType, String inPlcmtOrg ) {
+			String curFilterCommand = "", curEliteFilterCommand = "";
+			String curSanctionId = "", curMemberId = "", curSkierName = "", curAgeGroup = "";
+			Int16 curRound = 0;
+
+			curEliteFilterCommand = "AgeGroup in ('OM', 'OW', 'MM', 'MW')";
+			DataRow[] curFindEliteRows = curSummaryDataTable.Select( curEliteFilterCommand );
+			if ( curFindEliteRows.Length > 0 ) {
+				foreach ( DataRow curEliteRow in curFindEliteRows ) {
+					curSanctionId = (String) curEliteRow["SanctionId"];
+					curMemberId = (String) curEliteRow["MemberId"];
+					curSkierName = (String) curEliteRow["SkierName"];
+					curAgeGroup = (String) curEliteRow["AgeGroup"];
+					curRound = (Int16) curEliteRow["RoundOverall"];
+
+					if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+						curFilterCommand = "MemberId = '" + curMemberId + "'"
+							+ " And RoundOverall = " + curRound
+							+ " And AgeGroup <> '" + curAgeGroup + "'";
+
+					} else {
+						curFilterCommand = "MemberId = '" + curMemberId + "'"
+							+ " And AgeGroup <> '" + curAgeGroup + "'";
+					}
+					DataRow[] curFindRows = curSummaryDataTable.Select( curFilterCommand );
+					if ( curFindRows.Length > 0 ) {
+						DataRow curDataRow = curFindRows[0];
+
+						if ( ((String) curEliteRow["EventClassSlalom"]).Length > 0 
+							&& ( (String) curDataRow["EventClassSlalom"] ).Length == 0 
+							) {
+                            if ( (Byte) curEliteRow["FinalSpeedKph"] <= getAgeGroupSlalomMaxSpeedKph( (String) curDataRow["AgeGroup"] ) ) {
+								curDataRow["ReadyForPlcmtSlalom"] = (String) curEliteRow["ReadyForPlcmtSlalom"];
+								curDataRow["EventClassSlalom"] = (String) curEliteRow["EventClassSlalom"];
+								curDataRow["TeamSlalom"] = (String) curEliteRow["TeamSlalom"];
+								curDataRow["EventGroupSlalom"] = (String) curEliteRow["EventGroupSlalom"];
+								curDataRow["DivOrderSlalom"] = (Int32) curEliteRow["DivOrderSlalom"];
+								curDataRow["RoundSlalom"] = (Int16) curEliteRow["RoundSlalom"];
+								curDataRow["PlcmtSlalom"] = (String) curEliteRow["PlcmtSlalom"];
+
+								curDataRow["ScoreSlalom"] = (Decimal) curEliteRow["ScoreSlalom"];
+								curDataRow["PointsSlalom"] = (Decimal) curEliteRow["PointsSlalom"];
+								curDataRow["HCapScoreSlalom"] = (Decimal) curEliteRow["HCapScoreSlalom"];
+								curDataRow["HCapBaseSlalom"] = (Decimal) curEliteRow["HCapBaseSlalom"];
+
+								curDataRow["FinalLen"] = (String) curEliteRow["FinalLen"];
+								curDataRow["FinalLenOff"] = (String) curEliteRow["FinalLenOff"];
+								curDataRow["FinalSpeedKph"] = (Byte) curEliteRow["FinalSpeedKph"];
+								curDataRow["FinalSpeedMph"] = (Byte) curEliteRow["FinalSpeedMph"];
+								curDataRow["FinalPassScore"] = (Decimal) curEliteRow["FinalPassScore"];
+								curDataRow["CompletedSpeedMph"] = (Byte) curEliteRow["CompletedSpeedMph"];
+								curDataRow["CompletedSpeedKph"] = (Byte) curEliteRow["CompletedSpeedKph"];
+
+								curDataRow["MaxSpeed"] = (Byte) curEliteRow["MaxSpeed"];
+								curDataRow["StartSpeed"] = (Byte) curEliteRow["StartSpeed"];
+								curDataRow["StartLen"] = (String) curEliteRow["StartLen"];
+							}
+						}
+
+						if ( ( (String) curEliteRow["EventClassTrick"] ).Length > 0
+							&& ( (String) curDataRow["EventClassTrick"] ).Length == 0
+							) {
+							curDataRow["ReadyForPlcmtTrick"] = (String) curEliteRow["ReadyForPlcmtTrick"];
+							curDataRow["EventClassTrick"] = (String) curEliteRow["EventClassTrick"];
+							curDataRow["TeamTrick"] = (String) curEliteRow["TeamTrick"];
+							curDataRow["EventGroupTrick"] = (String) curEliteRow["EventGroupTrick"];
+							curDataRow["DivOrderTrick"] = (Int32) curEliteRow["DivOrderTrick"];
+							curDataRow["RoundTrick"] = (Int16) curEliteRow["RoundTrick"];
+							curDataRow["PlcmtTrick"] = (String) curEliteRow["PlcmtTrick"];
+
+							curDataRow["ScoreTrick"] = (Int16) curEliteRow["ScoreTrick"];
+							curDataRow["Pass1Trick"] = (Int16) curEliteRow["Pass1Trick"];
+							curDataRow["Pass2Trick"] = (Int16) curEliteRow["Pass2Trick"];
+							curDataRow["PointsTrick"] = (Decimal) curEliteRow["PointsTrick"];
+							curDataRow["HCapScoreTrick"] = (Decimal) curEliteRow["HCapScoreTrick"];
+							curDataRow["HCapBaseTrick"] = (Decimal) curEliteRow["HCapBaseTrick"];
+
+						}
+
+						if ( ( (String) curEliteRow["EventClassJump"] ).Length > 0
+							&& ( (String) curDataRow["EventClassJump"] ).Length == 0
+							) {
+							if ( (Decimal) curEliteRow["RampHeight"] <= getAgeGroupMaxRampHeight( (String) curDataRow["AgeGroup"] )
+								&& (Byte) curEliteRow["SpeedKphJump"] <= getAgeGroupJumpMaxSpeedKph( (String) curDataRow["AgeGroup"] )
+								) {
+								curDataRow["ReadyForPlcmtJump"] = (String) curEliteRow["ReadyForPlcmtJump"];
+								curDataRow["EventClassJump"] = (String) curEliteRow["EventClassJump"];
+								curDataRow["TeamJump"] = (String) curEliteRow["TeamJump"];
+								curDataRow["EventGroupJump"] = (String) curEliteRow["EventGroupJump"];
+								curDataRow["DivOrderJump"] = (Int32) curEliteRow["DivOrderJump"];
+								curDataRow["RoundJump"] = (Int16) curEliteRow["RoundJump"];
+								curDataRow["PlcmtJump"] = (String) curEliteRow["PlcmtJump"];
+
+								curDataRow["ScoreFeet"] = (Decimal) curEliteRow["ScoreFeet"];
+								curDataRow["ScoreMeters"] = (Decimal) curEliteRow["ScoreMeters"];
+								curDataRow["PointsJump"] = (Decimal) curEliteRow["PointsJump"];
+								curDataRow["HCapScoreJump"] = (Decimal) curEliteRow["HCapScoreJump"];
+								curDataRow["HCapBaseJump"] = (Decimal) curEliteRow["HCapBaseJump"];
+
+								curDataRow["SpeedKphJump"] = (Byte) curEliteRow["SpeedKphJump"];
+								curDataRow["RampHeight"] = (Decimal) curEliteRow["RampHeight"];
+							}
+						}
+
+						curDataRow["ScoreOverall"] = (Decimal) curDataRow["PointsSlalom"]
+							+ (Decimal) curDataRow["PointsTrick"]
+							+ (Decimal) curDataRow["PointsJump"];
+					}
+				}
+			}
+		}
+
+		public DataTable buildTourScorebook(String inSanctionId, DataRow inTourRow, DataTable inMemberData, DataTable inSummaryDataTable, DataTable inSlalomDetail, DataTable inTrickDetail, DataTable inJumpDetail) {
             String curMemberId, curAgeGroup, curReadyToSki, curReadyForPlcmt;
             Int16 curTourRounds = 0, curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0, curEventCount = 0;
             Decimal curOverallScore = 0;
@@ -5213,7 +5332,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             }
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getSlalomDetailData( String inSanctionId, String inEventGroup, String inDiv ) {
@@ -5267,7 +5386,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
             curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, TR.SkierName, SS.MemberId, SS.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getTrickSummaryData( String inSanctionId, String inDataType, String inRules, String inEventGroup, String inDiv ) {
@@ -5367,7 +5486,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             }
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getTrickDetailData( String inSanctionId, String inEventGroup, String inDiv ) {
@@ -5412,7 +5531,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
             curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, TR.SkierName, SS.MemberId, SS.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getJumpSummaryData( String inSanctionId, String inDataType, String inRules, String inEventGroup, String inDiv ) {
@@ -5514,7 +5633,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             }
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getJumpDetailData( String inSanctionId, String inEventGroup, String inDiv ) {
@@ -5560,7 +5679,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
             curSqlStmt.Append( " ORDER BY SS.SanctionId, ER.AgeGroup, TR.SkierName, SS.MemberId, SS.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getOverallDetailData( String inSanctionId ) {
@@ -5575,7 +5694,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "   INNER JOIN JumpScore AS J ON T.SanctionId = J.SanctionId AND T.MemberId = J.MemberId AND T.AgeGroup = J.AgeGroup AND S.Round = J.Round " );
             curSqlStmt.Append( " WHERE (T.SanctionId = '" + inSanctionId + "')" );
             curSqlStmt.Append( " ORDER BY T.SanctionId, T.AgeGroup, T.SkierName, S.MemberId, S.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getOverallSkierList( String inSanctionId ) {
@@ -5589,7 +5708,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "GROUP BY R.AgeGroup, R.MemberId, N.EventsReqd " );
             curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
             curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count == 0) {
                 curSkiYear--;
                 curSqlStmt = new StringBuilder( "" );
@@ -5601,7 +5720,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "GROUP BY R.AgeGroup, R.MemberId, N.EventsReqd " );
                 curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
                 curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-                curDataTable = getData( curSqlStmt.ToString() );
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
 
             return curDataTable;
@@ -5616,7 +5735,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "  INNER JOIN TeamList T ON T.TeamCode = E.TeamCode " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + inSanctionId + "' AND E.Event = '" + inEvent + "' " );
             curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
             return curDataTable;
         }
@@ -5628,7 +5747,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( " FROM EventReg E INNER JOIN " );
             curSqlStmt.Append( " TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId" );
             curSqlStmt.Append( " WHERE E.SanctionId = '" + inSanctionId + "' AND E.Event = '" + inEvent + "'" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getTeamData(String inSanctionId, String inPlcmtOrg, String inEvent, String inRules) {
@@ -5671,7 +5790,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "Order by T.TeamCode " );
             }
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public DataTable getMemberData( String inSanctionId ) {
@@ -5711,7 +5830,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "  And T.AgeGroup = '" + curDiv + "' " );
             }
                 curSqlStmt.Append( "ORDER BY T.AgeGroup, SkierName" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             return curDataTable;
         }
 
@@ -5745,7 +5864,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "  And ReadyToSki != 'Y' " );
             curSqlStmt.Append( "ORDER BY SS.SanctionId, SS.MemberId, TR.SkierName, ER.AgeGroup, ER.Event, SS.Round" );
 
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             return curDataTable;
         }
         
@@ -5756,7 +5875,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("WHERE SanctionId = '" + inSanctionId + "' ");
             curSqlStmt.Append(" AND MemberId = '" + inMemberId + "' ");
             curSqlStmt.Append(" AND Round = " + inRound + " ");
-            DataTable curDataTable = getData(curSqlStmt.ToString());
+            DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
             if ( curDataTable.Rows.Count > 0 ) {
                 return true;
             } else {
@@ -5844,7 +5963,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( " AND ( (Results = 'Jump' AND Reride = 'N') " );
             curSqlStmt.Append( "        OR ( Results = 'Jump' AND Reride = 'Y' AND ScoreProt = 'Y') ) " );
             curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, ScoreMeters DESC" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 1 ) {
                 return ( (Decimal)curDataTable.Rows[1]["ScoreMeters"] ).ToString( "##.0" );
             } else {
@@ -5858,7 +5977,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "SELECT MinValue, MaxValue" );
             curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'SlalomSpeeds' AND MaxValue = " + inSpeedKph );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 curReturnValue = Convert.ToByte( ( (Decimal)curDataTable.Rows[0]["MinValue"] ).ToString( "00" ) );
             }
@@ -5872,12 +5991,53 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'IwwfOverallAdj'" );
             curSqlStmt.Append( " ORDER BY SortSeq" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
+		private byte getAgeGroupSlalomMaxSpeedKph( String inAgeGroup ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
+			curSqlStmt.Append( "FROM CodeValueList " );
+			curSqlStmt.Append( "WHERE ListName LIKE 'AwsaSlalomMax' " );
+			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
+			curSqlStmt.Append( "ORDER BY SortSeq " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return Convert.ToByte( (Decimal) curDataTable.Rows[0]["MaxValue"] );
+			} else {
+				return 0;
+			}
+		}
+
+		private byte getAgeGroupJumpMaxSpeedKph(String inAgeGroup) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
+			curSqlStmt.Append( "FROM CodeValueList " );
+			curSqlStmt.Append( "WHERE ListName LIKE 'AwsaJumpMax' " );
+			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
+			curSqlStmt.Append( "ORDER BY SortSeq " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return Convert.ToByte( (Decimal) curDataTable.Rows[0]["MaxValue"]);
+			} else {
+				return 0;
+			}
+		}
+
+		private Decimal getAgeGroupMaxRampHeight( String inAgeGroup) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
+			curSqlStmt.Append( "FROM CodeValueList " );
+			curSqlStmt.Append( "WHERE ListName = 'AwsaRampMax' " );
+			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
+			curSqlStmt.Append( "ORDER BY SortSeq " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return (Decimal) curDataTable.Rows[0]["MaxValue"];
+			} else {
+				return 0;
+			}
+		}
 
     }
 }

@@ -147,6 +147,7 @@ namespace WaterskiScoringSystem.Tournament {
         private void SearchButton_Click(object sender, EventArgs e) {
 			myMemberListDataTable = null;
 			myResponseDataList = null;
+			DataGridView.Rows.Clear();
 
 			if ( localSearchLoc.Checked ) {
 				/*
@@ -323,15 +324,6 @@ namespace WaterskiScoringSystem.Tournament {
 							curViewRow.Cells["Div"].Value = "";
 						}
 						try {
-							if ( ((String) curDataRow["Waiver"]).Equals( "1" ) ) {
-								curViewRow.Cells["Waiver"].Value = true;
-							} else {
-								curViewRow.Cells["Waiver"].Value = false;
-							}
-						} catch {
-							curViewRow.Cells["Waiver"].Value = "";
-						}
-						try {
 							curViewRow.Cells["OffCode"].Value = (String) curDataRow["OffCode"];
 						} catch {
 							curViewRow.Cells["OffCode"].Value = "";
@@ -436,12 +428,6 @@ namespace WaterskiScoringSystem.Tournament {
 							curViewRow.Cells["JumpPaid"].Value = "";
 						}
 						try {
-							curEffTo = Convert.ToDateTime( (String) curDataRow["EffTo"] );
-							curViewRow.Cells["EffTo"].Value = curEffTo.ToString( "MM/dd/yy" );
-						} catch {
-							curViewRow.Cells["EffTo"].Value = "";
-						}
-						try {
 							curViewRow.Cells["Memtype"].Value = (String) curDataRow["Memtype"];
 						} catch {
 							curViewRow.Cells["Memtype"].Value = "";
@@ -451,35 +437,100 @@ namespace WaterskiScoringSystem.Tournament {
 						} catch {
 							curViewRow.Cells["MemCode"].Value = "";
 						}
+
+						/*
+						 * Analyze information and determine membership status 
+						 */
+						Boolean curCanSki = false, curCanSkiGR = false, curWaiver = false;
 						try {
-							if ( ((String) curDataRow["ActiveMember"]).ToLower().Equals("true") ) {
-								curViewRow.Cells["MemberStatus"].Value = "Active - " + (String) curDataRow["MemTypeDesc"];
+							if ( ( (String) curDataRow["CanSki"] ).ToUpper().Equals( "TRUE" ) ) {
+								curCanSki = true;
 							} else {
-								curViewRow.Cells["MemberStatus"].Value = "In-Active - " + (String) curDataRow["MemTypeDesc"];
+								curCanSki = false;
 							}
 						} catch {
-							curViewRow.Cells["MemberStatus"].Value = "";
+							curCanSki = false;
 						}
 						try {
-							curViewRow.Cells["MembershipRate"].Value = (String) curDataRow["MembershipRate"];
+							if ( ( (String) curDataRow["CanSki"] ).ToUpper().Equals( "TRUE" ) ) {
+								curCanSkiGR = true;
+							} else {
+								curCanSkiGR = false;
+							}
 						} catch {
-							curViewRow.Cells["MembershipRate"].Value = "";
+							curCanSkiGR = false;
 						}
 						try {
-							curViewRow.Cells["CostToUpgrade"].Value = (String) curDataRow["CostToUpgrade"];
+							if ( ( (String) curDataRow["Waiver"] ).Equals( "1" ) ) {
+								curWaiver = true;
+							} else {
+								curWaiver = false;
+							}
 						} catch {
-							curViewRow.Cells["CostToUpgrade"].Value = "";
+							curWaiver = false;
 						}
+						curViewRow.Cells["Waiver"].Value = curWaiver;
+
 						try {
-							curViewRow.Cells["CanSki"].Value = (String) curDataRow["CanSki"];
+							curEffTo = Convert.ToDateTime( (String) curDataRow["EffTo"] );
+							curViewRow.Cells["EffTo"].Value = curEffTo.ToString( "MM/dd/yy" );
+							if ( curEffTo >= curTourDate && curCanSki && curWaiver ) {
+								curViewRow.Cells["CanSki"].Value = curCanSki;
+								curViewRow.Cells["CanSkiGR"].Value = true;
+								curViewRow.Cells["MembershipRate"].Value = "";
+								curViewRow.Cells["CostToUpgrade"].Value = "";
+
+								try {
+									if ( ( (String) curDataRow["ActiveMember"] ).ToLower().Equals( "true" ) ) {
+										curViewRow.Cells["MemberStatus"].Value = "Active - " + (String) curDataRow["MemTypeDesc"];
+									} else {
+										curViewRow.Cells["MemberStatus"].Value = "In-Active - " + (String) curDataRow["MemTypeDesc"];
+									}
+								} catch {
+									curViewRow.Cells["MemberStatus"].Value = "";
+								}
+
+							} else {
+								curViewRow.Cells["CanSki"].Value = false;
+								curViewRow.Cells["CanSkiGR"].Value = false;
+								try {
+									curViewRow.Cells["MembershipRate"].Value = (String) curDataRow["MembershipRate"];
+								} catch {
+									curViewRow.Cells["MembershipRate"].Value = "";
+								}
+								try {
+									curViewRow.Cells["CostToUpgrade"].Value = (String) curDataRow["CostToUpgrade"];
+								} catch {
+									curViewRow.Cells["CostToUpgrade"].Value = "";
+								}
+
+								if ( curEffTo < curTourDate ) {
+									if ( curCanSki ) {
+										curViewRow.Cells["MemberStatus"].Value = "Needs Renew";
+
+									} else {
+										curViewRow.Cells["MemberStatus"].Value = "Needs Renew/Upgrade";
+									}
+
+								} else {
+									if ( curCanSkiGR ) {
+										curViewRow.Cells["MemberStatus"].Value = "** Grass Roots Only";
+
+									} else if ( curCanSki ) {
+										curViewRow.Cells["MemberStatus"].Value = "Needs Annual Waiver";
+										curViewRow.Cells["MembershipRate"].Value = "";
+										curViewRow.Cells["CostToUpgrade"].Value = "";
+
+									} else {
+										curViewRow.Cells["MemberStatus"].Value = "Needs Upgrade";
+									}
+								}
+
+							}
 						} catch {
-							curViewRow.Cells["CanSki"].Value = "false";
+							curViewRow.Cells["EffTo"].Value = "";
 						}
-						try {
-							curViewRow.Cells["CanSkiGR"].Value = (String) curDataRow["CanSkiGR"];
-						} catch {
-							curViewRow.Cells["CanSkiGR"].Value = false;
-						}
+
 						#endregion
 					}
 				}
@@ -539,17 +590,31 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficial " );
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
 
-			String curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
-			String curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
+			String curLastName = "";
+			if ( inLastName != null ) {
+				curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
+			}
+			String curFirstName = "";
+			if ( inFirstName != null ) {
+				curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
+			}
+			String curState = "";
+			if ( inState != null ) {
+				curState = inState;
+			}
 
 			curSqlStmt.Append( "FROM MemberList " );
             if ( inMemberId.Length > 0 ) {
                 curSqlStmt.Append( "Where MemberId = '" + inMemberId + "'" );
             } else {
-                curSqlStmt.Append( "Where LastName like '" + curLastName + "%'" );
-                curSqlStmt.Append( "  And FirstName like '" + curFirstName + "%'" );
-                if ( inState.Length > 0 ) {
-                    curSqlStmt.Append( "  And State = '" + inState + "'" );
+				if ( curLastName.Length > 0) {
+					curSqlStmt.Append( "Where LastName like '" + curLastName + "%'" );
+				}
+				if ( curFirstName.Length > 0 ) {
+					curSqlStmt.Append( "  And FirstName like '" + curFirstName + "%'" );
+				}
+				if ( curState.Length > 0 ) {
+                    curSqlStmt.Append( "  And State = '" + curState + "'" );
                 }
             }
             curSqlStmt.Append( " Order by LastName, FirstName, SkiYearAge" );
@@ -573,8 +638,6 @@ namespace WaterskiScoringSystem.Tournament {
 				curQueryString.Append( "&MemberId=" + inMemberId );
 			}
 			if ( inFirstName.Length > 0 || inLastName.Length > 0 ) {
-				//String curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
-				//String curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
 				curQueryString.Append( "&FirstName=" + inFirstName + "&LastName=" + inLastName );
 			}
 			if ( inState.Length > 0 ) {

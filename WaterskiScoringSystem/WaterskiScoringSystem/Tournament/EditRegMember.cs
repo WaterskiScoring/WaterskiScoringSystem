@@ -407,9 +407,19 @@ namespace WaterskiScoringSystem.Tournament {
 
 			editMemberId.Text = (String) curDataRow["MemberId"];
 			try {
-				String curSkierName = (String) curDataRow["SkierName"];
-				String curFirstName = (String) curDataRow["FirstName"];
-				String curLastName = (String) curDataRow["LastName"];
+				String curFirstName = "", curLastName = "", curSkierName = "";
+				if ( curDataRow["SkierName"] != System.DBNull.Value ) {
+					curSkierName = (String) curDataRow["SkierName"];
+				}
+				if ( curDataRow["FirstName"] != System.DBNull.Value) {
+					curFirstName = (String) curDataRow["FirstName"];
+				}
+				if ( curDataRow["FirstName"] != System.DBNull.Value ) {
+					curLastName = (String) curDataRow["LastName"];
+				}
+				if ( curSkierName .Length == 0 ) {
+					curSkierName = curLastName + ", " + curFirstName;
+                }
 				if ( curFirstName.Length > 0 && curLastName.Length > 0 ) {
 					editFirstName.Text = curFirstName;
 					editLastName.Text = curLastName;

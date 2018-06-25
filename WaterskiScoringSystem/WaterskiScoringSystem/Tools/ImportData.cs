@@ -793,37 +793,37 @@ namespace WaterskiScoringSystem.Tools {
 				}
 
 				#region Initialize official ratings
+				curImportMemberEntry.Add( "JudgeSlalom", "" );
+				curImportMemberEntry.Add( "JudgeTrick", "" );
+				curImportMemberEntry.Add( "JudgeJump", "" );
+
+				curImportMemberEntry.Add( "DriverSlalom", "" );
+				curImportMemberEntry.Add( "DriverTrick", "" );
+				curImportMemberEntry.Add( "DriverJump", "" );
+
+				curImportMemberEntry.Add( "ScorerSlalom", "" );
+				curImportMemberEntry.Add( "ScorerTrick", "" );
+				curImportMemberEntry.Add( "ScorerJump", "" );
+
+				curImportMemberEntry.Add( "Safety", "" );
+				curImportMemberEntry.Add( "TechController", "" );
+
 				if ( inputCols.Length > 32 ) {
-					curImportMemberEntry.Add( "JudgeSlalom", inputCols[idxJudgeSlalomRating] );
-					curImportMemberEntry.Add( "JudgeTrick", inputCols[idxJudgeTrickRating] );
-					curImportMemberEntry.Add( "JudgeJump", inputCols[idxJudgeJumpRating] );
+					if ( inputCols.Length > idxJudgeSlalomRating ) curImportMemberEntry[ "JudgeSlalom"] = inputCols[idxJudgeSlalomRating];
+					if ( inputCols.Length > idxJudgeTrickRating ) curImportMemberEntry[ "JudgeTrick"] = inputCols[idxJudgeTrickRating];
+					if ( inputCols.Length > idxJudgeJumpRating ) curImportMemberEntry[ "JudgeJump"] = inputCols[idxJudgeJumpRating];
 
-					curImportMemberEntry.Add( "DriverSlalom", inputCols[idxDriverSlalomRating] );
-					curImportMemberEntry.Add( "DriverTrick", inputCols[idxDriverTrickRating] );
-					curImportMemberEntry.Add( "DriverJump", inputCols[idxDriverJumpRating] );
+					if ( inputCols.Length > idxDriverSlalomRating ) curImportMemberEntry[ "DriverSlalom"] = inputCols[idxDriverSlalomRating];
+					if ( inputCols.Length > idxDriverTrickRating ) curImportMemberEntry[ "DriverTrick"] = inputCols[idxDriverTrickRating];
+					if ( inputCols.Length > idxDriverJumpRating ) curImportMemberEntry[ "DriverJump"] = inputCols[idxDriverJumpRating];
 
-					curImportMemberEntry.Add( "ScorerSlalom", inputCols[idxScorerSlalomRating] );
-					curImportMemberEntry.Add( "ScorerTrick", inputCols[idxScorerTrickRating] );
-					curImportMemberEntry.Add( "ScorerJump", inputCols[idxScorerJumpRating] );
+					if ( inputCols.Length > idxScorerSlalomRating ) curImportMemberEntry[ "ScorerSlalom"] = inputCols[idxScorerSlalomRating];
+					if ( inputCols.Length > idxScorerTrickRating ) curImportMemberEntry[ "ScorerTrick"] = inputCols[idxScorerTrickRating];
+					if ( inputCols.Length > idxScorerJumpRating ) curImportMemberEntry[ "ScorerJump"] = inputCols[idxScorerJumpRating];
 
-					curImportMemberEntry.Add( "Safety", inputCols[idxSafetyRating] );
-					curImportMemberEntry.Add( "TechController", inputCols[idxTechCntlrRating] );
+					if ( inputCols.Length > idxSafetyRating ) curImportMemberEntry[ "Safety"] = inputCols[idxSafetyRating];
+					if ( inputCols.Length > idxTechCntlrRating ) curImportMemberEntry[ "TechController"] = inputCols[idxTechCntlrRating];
 
-				} else {
-					curImportMemberEntry.Add( "JudgeSlalom", "" );
-					curImportMemberEntry.Add( "JudgeTrick", "" );
-					curImportMemberEntry.Add( "JudgeJump", "" );
-
-					curImportMemberEntry.Add( "DriverSlalom", "" );
-					curImportMemberEntry.Add( "DriverTrick", "" );
-					curImportMemberEntry.Add( "DriverJump", "" );
-
-					curImportMemberEntry.Add( "ScorerSlalom", "" );
-					curImportMemberEntry.Add( "ScorerTrick", "" );
-					curImportMemberEntry.Add( "ScorerJump", "" );
-
-					curImportMemberEntry.Add( "Safety", "" );
-					curImportMemberEntry.Add( "TechController", "" );
 				}
 				#endregion
 

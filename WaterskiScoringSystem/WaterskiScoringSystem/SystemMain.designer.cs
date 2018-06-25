@@ -100,6 +100,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.navDatabaseBackup = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -564,6 +565,7 @@
             this.navImportData,
             this.navMetricTool,
             this.shrinkDatabaseToolStripMenuItem,
+            this.navDatabaseBackup,
             this.toolStripMenuItem1,
             this.databaseToolToolStripMenuItem,
             this.logRecoveryUtilityToolStripMenuItem,
@@ -676,21 +678,21 @@
 			// gettingStartedToolStripMenuItem
 			// 
 			this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
 			this.gettingStartedToolStripMenuItem.Text = "&User Guide";
 			this.gettingStartedToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// overviewToolStripMenuItem
 			// 
 			this.overviewToolStripMenuItem.Name = "overviewToolStripMenuItem";
-			this.overviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.overviewToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
 			this.overviewToolStripMenuItem.Text = "&Overview";
 			this.overviewToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// navHelpAbout
 			// 
 			this.navHelpAbout.Name = "navHelpAbout";
-			this.navHelpAbout.Size = new System.Drawing.Size(152, 22);
+			this.navHelpAbout.Size = new System.Drawing.Size(131, 22);
 			this.navHelpAbout.Text = "About";
 			this.navHelpAbout.Click += new System.EventHandler(this.navHelpAbout_Click);
 			// 
@@ -707,6 +709,13 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
+			// 
+			// navDatabaseBackup
+			// 
+			this.navDatabaseBackup.Name = "navDatabaseBackup";
+			this.navDatabaseBackup.Size = new System.Drawing.Size(184, 22);
+			this.navDatabaseBackup.Text = "Backup Database";
+			this.navDatabaseBackup.Click += new System.EventHandler(this.navDatabaseBackup_Click);
 			// 
 			// SystemMain
 			// 
@@ -808,6 +817,7 @@
         private System.Windows.Forms.ToolStripMenuItem navSlalomPassDetailExport;
         private System.Windows.Forms.ToolStripMenuItem logRecoveryUtilityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navImportOfficialsData;
-    }
+		private System.Windows.Forms.ToolStripMenuItem navDatabaseBackup;
+	}
 }
 

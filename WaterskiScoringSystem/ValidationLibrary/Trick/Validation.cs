@@ -717,59 +717,145 @@ namespace ValidationLibrary.Trick {
 
             #region Determine if maxinum number of flips have previously been accomplished
             if ( curTypeCodeValue == 1 ) {
-                String curResults = "";
-                Int16 tempTypeCode, curFlipCount = 0;
+				// This validation is only performed for class L and R skiers
+				DataRow curSkierClassRow = mySkierClassDataTable.Select( "ListCode = '" + inSkierClass + "'" )[0];
+				if ( (Decimal) curSkierClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
+					// DataRow inViewRow, int inRowIdx, String inColPrefix
+					if ( inColPrefix.Equals( "Pass1" ) ) inPass1DataTable.Rows[inRowIdx]["Score"] = retPoints;
+					if ( inColPrefix.Equals( "Pass2" ) ) inPass2DataTable.Rows[inRowIdx]["Score"] = retPoints;
+					if ( checkForMaxNumFlips( inPass1DataTable, inPass2DataTable ) ) {
+						if ( inColPrefix.Equals( "Pass1" ) ) {
+							if ( (Int16) inPass1DataTable.Rows[inRowIdx]["Score"] == 0 && (String) inPass1DataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
+								retPoints = 0;
+							}
+						} else {
+							if ( (Int16) inPass2DataTable.Rows[inRowIdx]["Score"] == 0 && (String) inPass2DataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
+								retPoints = 0;
+							}
+						}
 
-                if ( inColPrefix.Equals("Pass2") ) {
-                    curIdx = inRowIdx - 1;
-                    while ( curIdx >= 0 ) {
-                        try {
-                            tempTypeCode = (Int16) inPass2DataTable.Rows[curIdx]["TypeCode"];
-                            if ( tempTypeCode == 1 ) {
-                                curResults = (String)inPass2DataTable.Rows[curIdx]["Results"];
-                                if ( curResults.Equals("Credit") ) curFlipCount++;
-                            }
-                        } catch {
-                        }
-                        curIdx--;
-                    }
-                }
-
-                if ( inColPrefix.Equals("Pass1") ) {
-                    curIdx = inRowIdx - 1;
-                } else {
-                    curIdx = inPass1DataTable.Rows.Count - 1;
-                }
-                while ( curIdx >= 0 ) {
-                    try {
-                        tempTypeCode = (Int16)( (byte) inPass1DataTable.Rows[curIdx]["TypeCode"]);
-                        if ( tempTypeCode == 1 ) {
-                            curResults = (String)inPass1DataTable.Rows[curIdx]["Results"];
-                            if ( curResults.Equals("Credit") ) curFlipCount++;
-                        }
-                    } catch (Exception ex) {
-                        String curMsg = "Exception: " + ex.Message;
-                    }
-                    curIdx--;
-                }
-                if ( curFlipCount >= 6 ) {
-                    DataRow curSkierClassRow = mySkierClassDataTable.Select("ListCode = '" + inSkierClass + "'")[0];
-                    if ( (Decimal) curSkierClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] ) {
-                        inViewRow["Score"] = 0;
-                        inViewRow["Results"] = "No Credit";
-                        myValidationMessage = "The maximum of 6 flips for IWWF have previously been completed.  No credit is given for more than 6 flips.";
-                        retPoints = 0;
-                    }
-                }
-            }
+						if ( inColPrefix.Equals( "Pass1" ) ) inPass1DataTable.Rows[inRowIdx]["Score"] = 0;
+						if ( inColPrefix.Equals( "Pass2" ) ) inPass2DataTable.Rows[inRowIdx]["Score"] = 0;
+					}
+				}
+			}
             #endregion
 
             return retPoints;
         }
 
-        //Int16 curRuleNum, Int16 tempRuleNum, DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints
-        //activePassDataTable, idlePassDataTable
-        private Int16 checkForRepeat( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
+		private Boolean checkForMaxNumFlips( DataTable inPass1DataTable, DataTable inPass2DataTable ) {
+			DataTable curTricksPerformed = buildFlipsPerformed();
+
+			byte curPassNum = 1;
+			for ( byte curIdx = 0; curIdx < inPass1DataTable.Rows.Count; curIdx++ ) {
+				checkViewRowForFlip( curTricksPerformed, inPass1DataTable.Rows[curIdx], curIdx, curPassNum );
+			}
+
+			curPassNum = 2;
+			for ( byte curIdx = 0; curIdx < inPass2DataTable.Rows.Count; curIdx++ ) {
+				checkViewRowForFlip( curTricksPerformed, inPass2DataTable.Rows[curIdx], curIdx, curPassNum );
+			}
+
+			if ( curTricksPerformed.Rows.Count > 6 ) {
+				myValidationMessage = "The maximum of 6 flips for IWWF has been exceeded"
+					+ "\nThe flip(s) with the lowest point value have been marked as repeat";
+
+				curTricksPerformed.DefaultView.Sort = "Points DESC, PassNum ASC, RowIdx ASC";
+				DataTable curTricksPerformedSorted = curTricksPerformed.DefaultView.ToTable();
+				for (byte curIdx = 6; curIdx < curTricksPerformedSorted.Rows.Count; curIdx++ ) {
+					byte curRowIdx = (byte) curTricksPerformedSorted.Rows[curIdx]["RowIdx"];
+					if ( (byte)curTricksPerformedSorted.Rows[curIdx]["PassNum"] == 1 ) {
+						inPass1DataTable.Rows[curRowIdx]["Score"] = 0;
+						inPass1DataTable.Rows[curRowIdx]["Results"] = "Repeat";
+					} else {
+                        inPass2DataTable.Rows[curRowIdx]["Score"] = 0;
+						inPass2DataTable.Rows[curRowIdx]["Results"] = "Repeat";
+					}
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private void checkViewRowForFlip( DataTable curTricksPerformed, DataRow curViewRow, byte curRowIdx, byte curPassNum ) {
+			String curResults = "", curMsg = "";
+			Int16 tempTypeCode = 0;
+
+			try {
+				tempTypeCode = (Int16) ( (byte) curViewRow["TypeCode"] );
+				if ( tempTypeCode == 1 ) {
+					curResults = (String) curViewRow["Results"];
+					if ( curResults.Equals( "Credit" ) ) {
+						DataRowView newFlipRow = curTricksPerformed.DefaultView.AddNew();
+						newFlipRow["TrickCode"] = (String) curViewRow["Code"];
+						newFlipRow["Skis"] = (byte) curViewRow["Skis"];
+						newFlipRow["Points"] = (Int16) curViewRow["Score"];
+						newFlipRow["PassNum"] = curPassNum;
+						newFlipRow["RowIdx"] = curRowIdx;
+						newFlipRow.EndEdit();
+					}
+				}
+			} catch ( Exception ex ) {
+				curMsg = "Exception: " + ex.Message;
+			}
+		}
+
+		private DataTable buildFlipsPerformed() {
+			/* **********************************************************
+             * Build data tabale definition containing the data required to 
+             * resolve placement ties based on initial event score
+             * ******************************************************* */
+			DataTable curDataTable = new DataTable();
+
+			DataColumn curCol = new DataColumn();
+			curCol.ColumnName = "TrickCode";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "Skis";
+			curCol.DataType = System.Type.GetType( "System.Byte" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 0;
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "Points";
+			curCol.DataType = System.Type.GetType( "System.Int16" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 0;
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "PassNum";
+			curCol.DataType = System.Type.GetType( "System.Byte" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 0;
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "RowIdx";
+			curCol.DataType = System.Type.GetType( "System.Byte" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 0;
+			curDataTable.Columns.Add( curCol );
+
+			return curDataTable;
+		}
+
+		//Int16 curRuleNum, Int16 tempRuleNum, DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints
+		//activePassDataTable, idlePassDataTable
+		private Int16 checkForRepeat( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
             , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 curRuleNum, Int16 tempRuleNum, Int16 inActivePoints ) {
 
             Int16 retPoints = inActivePoints;

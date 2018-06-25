@@ -12,7 +12,6 @@ using System.Windows.Forms;
 namespace WaterskiScoringSystem.Common {
     class ListSkierClass {
         private ArrayList myDropdownList = new ArrayList();
-        private SqlCeConnection myDbConn = null;
         private DataTable myDataTable = null;
         private DataTable myTourClassDataTable = null;
         private DataTable myClassToEventDataTable = null;
@@ -21,12 +20,9 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public void ListSkierClassLoad () {
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-            myDbConn.Open();
-            myDataTable = getClassList();
+			myDataTable = getClassList();
 
-            String curListCode, curCodeValue;
+			String curListCode, curCodeValue;
             foreach (DataRow curRow in myDataTable.Rows) {
                 curListCode = curRow["ListCode"].ToString();
                 curCodeValue = curRow["CodeValue"].ToString();
@@ -92,7 +88,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( " FROM CodeValueList" );
                 curSqlStmt.Append( " WHERE ListName = 'ClassToEvent'" );
                 curSqlStmt.Append( " ORDER BY SortSeq" );
-                myClassToEventDataTable = getData( curSqlStmt.ToString() );
+                myClassToEventDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
             if (myClassToEventDataTable.Rows.Count == 0) {
                 curReturnValue = "C";
@@ -113,7 +109,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("FROM CodeValueList ");
             curSqlStmt.Append("WHERE ListName = 'Class' ");
             curSqlStmt.Append("Order by SortSeq ");
-            return getData(curSqlStmt.ToString());
+            return DataAccess.getDataTable( curSqlStmt.ToString());
         }
 
         public DataTable getTourClassList() {
@@ -122,13 +118,8 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("FROM CodeValueList ");
             curSqlStmt.Append("WHERE ListName = 'ClassTour' ");
             curSqlStmt.Append("Order by SortSeq ");
-            return getData(curSqlStmt.ToString());
+            return DataAccess.getDataTable( curSqlStmt.ToString());
         }
 
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-    
     }
 }
