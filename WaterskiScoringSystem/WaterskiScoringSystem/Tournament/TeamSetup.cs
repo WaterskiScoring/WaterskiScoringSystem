@@ -23,7 +23,15 @@ namespace WaterskiScoringSystem.Tournament {
         private int mySlalomRowIdx;
         private int myTrickRowIdx;
         private int myJumpRowIdx;
-        private String myWindowTitle;
+
+		private int myTeamImportIdxTeamCode = 0
+			, myTeamImportIdxTeamName = 1
+			, myTeamImportIdxEvent = 2
+			, myTeamImportIdxDiv = 3
+			, myTeamImportIdxSkierName = 4
+			, myTeamImportIdxMemberId = 5;
+
+		private String myWindowTitle;
         private String mySanctionNum;
         private String myRules;
         private String myOrigItemValue = "";
@@ -2183,13 +2191,15 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navImport_Click( object sender, EventArgs e ) {
-            string inputBuffer, curTeamCode = "", curEvent = "";
+            String inputBuffer, curTeamCode = "", curEvent = "", curDiv = "";
             int curInputLineCount = 0, rowsProc = 0;
             Boolean rowFound = false;
-            string[] inputCols = null, inputColNames = null;
+            String[] inputCols = null, inputColNames = null;
             char[] tabDelim = new char[] { '\t' };
-            int idxTeamCode = 0, idxTeamName = 1, idxEvent = 2, idxDiv = 3, idxEventGroup = 4, idxSkierName = 5, idxRankingScore = 6, idxMemberId = 7;
-            DataTable curDataTable = null;
+			/*
+			*/
+
+			DataTable curDataTable = null;
 
             StringBuilder curSqlStmt = new StringBuilder("");
             StreamReader myReader = null;
@@ -2207,81 +2217,61 @@ namespace WaterskiScoringSystem.Tournament {
                         rowFound = false;
                         inputCols = inputBuffer.Split(tabDelim);
 
-                        if ( inputCols.Length >= 8 ) {
-                            if ( inputCols[idxMemberId].Length > 0 ) {
-                                if ( inputCols[idxMemberId].Length < 9 ) {
-                                    inputCols[idxMemberId] = inputCols[idxMemberId].PadLeft(9, '0' );
-                                }
-
-                                if ( inputCols[idxEvent].Length > 0 ) {
-                                    curEvent = inputCols[idxEvent];
-                                }
-
-                                if ( inputCols[idxTeamCode].Length > 0 ) {
-                                    curTeamCode = inputCols[idxTeamCode];
-
-                                    curSqlStmt = new StringBuilder("");
-                                    curSqlStmt.Append("Select * from TeamList ");
-                                    curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[idxTeamCode] + "'");
-                                    curDataTable = getData(curSqlStmt.ToString());
-                                    if ( curDataTable.Rows.Count > 0 ) {
-                                        curSqlStmt = new StringBuilder("");
-                                        curSqlStmt.Append("Update TeamList Set Name = '" + inputCols[idxTeamName] + "' ");
-                                        curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[idxTeamCode] + "'");
-                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                                    } else {
-                                        curSqlStmt = new StringBuilder("");
-                                        curSqlStmt.Append("Insert TeamList (");
-                                        curSqlStmt.Append("SanctionId, TeamCode, Name, LastUpdateDate");
-                                        curSqlStmt.Append(") Values (");
-                                        curSqlStmt.Append("'" + mySanctionNum + "' ");
-                                        curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "' ");
-                                        if ( inputCols[idxTeamName].Length > 0 ) {
-                                            curSqlStmt.Append(", '" + inputCols[idxTeamName] + "' ");
-                                        } else {
-                                            curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "' ");
-                                        }
-                                        curSqlStmt.Append(", getdate()");
-                                        curSqlStmt.Append(")");
-                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-
-                                        curSqlStmt = new StringBuilder("");
-                                        curSqlStmt.Append("Insert TeamOrder (");
-                                        curSqlStmt.Append("SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, Notes, LastUpdateDate");
-                                        curSqlStmt.Append(") Values (");
-                                        curSqlStmt.Append("'" + mySanctionNum + "' ");
-                                        curSqlStmt.Append(", '" + inputCols[idxTeamCode] + "', '' ");
-                                        curSqlStmt.Append(", 1, 1, 1, 'Import', getdate()");
-                                        curSqlStmt.Append(")");
-                                        rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                                    }
-                                }
-
-                                curSqlStmt = new StringBuilder("");
-                                curSqlStmt.Append("Select SanctionId, MemberId, AgeGroup, EventGroup, Event, TeamCode from EventReg ");
-                                curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
-                                curSqlStmt.Append("And MemberId = '" + inputCols[idxMemberId] + "' ");
-                                curSqlStmt.Append("And AgeGroup = '" + inputCols[idxDiv] + "' ");
-                                curSqlStmt.Append("And Event = '" + curEvent + "' ");
-                                curDataTable = getData(curSqlStmt.ToString());
-                                if ( curDataTable.Rows.Count > 0 ) {
-                                    curSqlStmt = new StringBuilder("");
-                                    curSqlStmt.Append("Update EventReg Set TeamCode = '" + curTeamCode + "' ");
-                                    curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
-                                    curSqlStmt.Append("And MemberId = '" + inputCols[idxMemberId] + "' ");
-                                    curSqlStmt.Append("And AgeGroup = '" + inputCols[idxDiv] + "' ");
-                                    curSqlStmt.Append("And Event = '" + curEvent + "' ");
-                                    rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                                } else {
-                                    MessageBox.Show(String.Format("Skier {1} {0} is not currently registered in Division {2} and Event {3} "
-                                        , inputCols[idxMemberId], inputCols[idxSkierName], inputCols[idxDiv], inputCols[idxEvent]));
-                                }
-
-
-                            } else {
-                                //Assume no data on this line, bypassing record
+                        if ( inputCols.Length >= 6 ) {
+							if ( inputCols[myTeamImportIdxTeamCode].Length > 0 ) {
+								importTeamData( inputCols );
+								curTeamCode = inputCols[myTeamImportIdxTeamCode];
                             }
-                        } else {
+
+							if ( inputCols[myTeamImportIdxEvent].Length > 0 ) {
+								curEvent = inputCols[myTeamImportIdxEvent];
+							}
+							if ( inputCols[myTeamImportIdxDiv].Length > 0 ) {
+								curDiv = inputCols[myTeamImportIdxDiv];
+							}
+
+							String curMemberId = "";
+							if ( inputCols[myTeamImportIdxMemberId].Length > 0 ) {
+								curMemberId = inputCols[myTeamImportIdxMemberId];
+                                if ( curMemberId.Length < 9 ) {
+									curMemberId = curMemberId.PadLeft(9, '0' );
+                                }
+
+							} else {
+								if ( inputCols[myTeamImportIdxSkierName].Length > 0 ) {
+									String curSkierName = inputCols[myTeamImportIdxSkierName];
+									if ( curSkierName.StartsWith( "\"" ) ) {
+										curSkierName = curSkierName.Substring( 1, curSkierName.Length - 2 );
+									}
+
+									curMemberId = searchForRegisteredSkierByName( curSkierName, curDiv, curEvent );
+								}
+							}
+
+							if ( curMemberId.Length > 0 ) {
+								curSqlStmt = new StringBuilder( "" );
+								curSqlStmt.Append( "Select SanctionId, MemberId, AgeGroup, EventGroup, Event, TeamCode from EventReg " );
+								curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+								curSqlStmt.Append( "And MemberId = '" + curMemberId + "' " );
+								curSqlStmt.Append( "And AgeGroup = '" + curDiv + "' " );
+								curSqlStmt.Append( "And Event = '" + curEvent + "' " );
+								curDataTable = getData( curSqlStmt.ToString() );
+								if ( curDataTable.Rows.Count > 0 ) {
+									curSqlStmt = new StringBuilder( "" );
+									curSqlStmt.Append( "Update EventReg Set TeamCode = '" + curTeamCode + "' " );
+									curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+									curSqlStmt.Append( "And MemberId = '" + curMemberId + "' " );
+									curSqlStmt.Append( "And AgeGroup = '" + curDiv + "' " );
+									curSqlStmt.Append( "And Event = '" + curEvent + "' " );
+									rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+								} else {
+									MessageBox.Show( String.Format( "Skier {0} {1} is not currently registered in Division {2} and Event {3} "
+										, inputCols[myTeamImportIdxSkierName], curMemberId, curDiv, curEvent ) );
+								}
+							}
+
+
+						} else {
                             //Assume no data on this line, bypassing record
                         }
                     }
@@ -2301,7 +2291,99 @@ namespace WaterskiScoringSystem.Tournament {
             navRefresh_Click(null, null);
         }
 
-        private StreamReader getImportFile() {
+		private String searchForRegisteredSkierByName( String curSkierName, String curDiv, String curEvent) {
+			String returnMemberId = "";
+
+			/*
+			Search for skier in registration by name
+			*/
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
+			curSqlStmt.Append( "FROM EventReg ER " );
+			curSqlStmt.Append( "INNER JOIN TourReg TR ON ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND ER.AgeGroup = TR.AgeGroup " );
+			curSqlStmt.Append( "WHERE ER.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "AND TR.SkierName = '" + curSkierName + "' " );
+			curSqlStmt.Append( "AND ER.AgeGroup = '" + curDiv + "' " );
+			curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				returnMemberId = (String)curDataTable.Rows[0]["MemberId"];
+
+			} else {
+				/*
+				Begin search using nodes from name provided
+				Will need to provide a select list if more than 1 skier is found matching the search critera
+				*/
+				String[] curNameNodes = curSkierName.Split( ',' );
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
+				curSqlStmt.Append( "FROM EventReg ER " );
+				curSqlStmt.Append( "INNER JOIN TourReg TR ON ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND ER.AgeGroup = TR.AgeGroup " );
+				curSqlStmt.Append( "WHERE ER.SanctionId = '" + mySanctionNum + "' " );
+				curSqlStmt.Append( "AND TR.SkierName like '" + curNameNodes[0] + "%' " );
+				curSqlStmt.Append( "AND ER.AgeGroup = '" + curDiv + "' " );
+				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+				curDataTable = getData( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count == 1 ) {
+					returnMemberId = (String) curDataTable.Rows[0]["MemberId"];
+
+				} else {
+					returnMemberId = "";
+					MessageBox.Show( String.Format( "Skier name {0} not found in available registered entrants in Division {1} and Event {2}"
+					, curSkierName, curDiv, curEvent ) );
+				}
+			}
+
+			return returnMemberId;
+		}
+
+		private void importTeamData( String[] inputCols ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			String curTeamCode = "";
+			int rowsProc = 0;
+
+			curTeamCode = inputCols[myTeamImportIdxTeamCode];
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select * from TeamList " );
+			curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[myTeamImportIdxTeamCode] + "'" );
+			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Update TeamList Set Name = '" + inputCols[myTeamImportIdxTeamName] + "' " );
+				curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' And TeamCode = '" + inputCols[myTeamImportIdxTeamCode] + "'" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			} else {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Insert TeamList (" );
+				curSqlStmt.Append( "SanctionId, TeamCode, Name, LastUpdateDate" );
+				curSqlStmt.Append( ") Values (" );
+				curSqlStmt.Append( "'" + mySanctionNum + "' " );
+				curSqlStmt.Append( ", '" + inputCols[myTeamImportIdxTeamCode] + "' " );
+				if ( inputCols[myTeamImportIdxTeamName].Length > 0 ) {
+					curSqlStmt.Append( ", '" + inputCols[myTeamImportIdxTeamName] + "' " );
+				} else {
+					curSqlStmt.Append( ", '" + inputCols[myTeamImportIdxTeamCode] + "' " );
+				}
+				curSqlStmt.Append( ", getdate()" );
+				curSqlStmt.Append( ")" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Insert TeamOrder (" );
+				curSqlStmt.Append( "SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder, Notes, LastUpdateDate" );
+				curSqlStmt.Append( ") Values (" );
+				curSqlStmt.Append( "'" + mySanctionNum + "' " );
+				curSqlStmt.Append( ", '" + inputCols[myTeamImportIdxTeamCode] + "', '' " );
+				curSqlStmt.Append( ", 1, 1, 1, 'Import', getdate()" );
+				curSqlStmt.Append( ")" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			}
+
+		}
+
+		private StreamReader getImportFile() {
             String curFileName = "", curPath = "";
             OpenFileDialog myFileDialog = new OpenFileDialog();
             StreamReader myReader = null;

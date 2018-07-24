@@ -364,27 +364,27 @@ namespace WaterskiScoringSystem.Tournament {
 							curViewRow.Cells["OverallRating"].Value = "";
 						}
 						try {
-							curViewRow.Cells["SlmQfy"].Value = (String) curDataRow["SlmQfy"];
+							curViewRow.Cells["SlmQfy"].Value = (String) curDataRow["SlalomQfy"];
 						} catch {
 							curViewRow.Cells["SlmQfy"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TrkQfy"].Value = (String) curDataRow["TrkQfy"];
+							curViewRow.Cells["TrkQfy"].Value = (String) curDataRow["TrickQfy"];
 						} catch {
 							curViewRow.Cells["TrkQfy"].Value = "";
 						}
 						try {
-							curViewRow.Cells["JmpQfy"].Value = (String) curDataRow["JmpQfy"];
+							curViewRow.Cells["JmpQfy"].Value = (String) curDataRow["JumpQfy"];
 						} catch {
 							curViewRow.Cells["JmpQfy"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TtrickBoat"].Value = (String) curDataRow["TBoat"];
+							curViewRow.Cells["TtrickBoat"].Value = (String) curDataRow["TtrickBoat"];
 						} catch {
 							curViewRow.Cells["TtrickBoat"].Value = "";
 						}
 						try {
-							curViewRow.Cells["JumpRamp"].Value = (String) curDataRow["JRamp"];
+							curViewRow.Cells["JumpRamp"].Value = (String) curDataRow["JumpHeight"];
 						} catch {
 							curViewRow.Cells["JumpRamp"].Value = "";
 						}
@@ -398,34 +398,19 @@ namespace WaterskiScoringSystem.Tournament {
 							curViewRow.Cells["Prereg"].Value = false;
 						}
 						try {
-							curViewRow.Cells["SlalomClass"].Value = (String) curDataRow["SDiv"];
+							curViewRow.Cells["SlalomClass"].Value = (String) curDataRow["SlalomPaid"];
 						} catch {
 							curViewRow.Cells["SlalomClass"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TrickClass"].Value = (String) curDataRow["TDiv"];
+							curViewRow.Cells["TrickClass"].Value = (String) curDataRow["TrickPaid"];
 						} catch {
 							curViewRow.Cells["TrickClass"].Value = "";
 						}
 						try {
-							curViewRow.Cells["JumpClass"].Value = (String) curDataRow["JDiv"];
+							curViewRow.Cells["JumpClass"].Value = (String) curDataRow["JumpPaid"];
 						} catch {
 							curViewRow.Cells["JumpClass"].Value = "";
-						}
-						try {
-							curViewRow.Cells["SlalomPaid"].Value = (String) curDataRow["SPaid"];
-						} catch {
-							curViewRow.Cells["SlalomPaid"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TrickPaid"].Value = (String) curDataRow["TPaid"];
-						} catch {
-							curViewRow.Cells["TrickPaid"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JumpPaid"].Value = (String) curDataRow["JPaid"];
-						} catch {
-							curViewRow.Cells["JumpPaid"].Value = "";
 						}
 						try {
 							curViewRow.Cells["Memtype"].Value = (String) curDataRow["Memtype"];

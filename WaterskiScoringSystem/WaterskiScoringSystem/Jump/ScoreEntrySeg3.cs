@@ -1244,7 +1244,9 @@ namespace WaterskiScoringSystem.Jump {
                     jumpRecapDataGridView.CurrentCell = jumpRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
 
 				} else {
-					if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+					if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
+						, Convert.ToInt32( roundSelect.RoundValue )
+						, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() ) ) {
 						MessageBox.Show( "Skier already has a score in this round" );
 						return;
 
@@ -5528,13 +5530,16 @@ namespace WaterskiScoringSystem.Jump {
             myScoreDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
 			curSqlStmt.Append( "FROM JumpScore " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
 			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			if ( mySanctionNum.EndsWith( "999" ) || mySanctionNum.EndsWith( "998" ) ) {
+				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
+			}
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return true;

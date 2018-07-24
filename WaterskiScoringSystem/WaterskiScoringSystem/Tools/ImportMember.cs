@@ -299,6 +299,9 @@ namespace WaterskiScoringSystem.Tools {
 					curEventGroup = curEventSlalom;
 					if ( curImportMemberEntry.ContainsKey( "EventClassSlalom" ) ) {
 						curEventClass = (String) curImportMemberEntry["EventClassSlalom"];
+					} else if ( curImportMemberEntry.ContainsKey( "SlalomPaid" ) ) {
+						curEventClass = (String) curImportMemberEntry["SlalomPaid"];
+						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
 					}
 					if ( curEventGroup.Trim().Length > 0 ) {
 						if ( curEventClass.Trim().Length > 0 ) {
@@ -318,6 +321,9 @@ namespace WaterskiScoringSystem.Tools {
 					curEventGroup = curEventTrick;
 					if ( curImportMemberEntry.ContainsKey( "EventClassTrick" ) ) {
 						curEventClass = (String) curImportMemberEntry["EventClassTrick"];
+					} else if ( curImportMemberEntry.ContainsKey( "TrickPaid" ) ) {
+						curEventClass = (String) curImportMemberEntry["TrickPaid"];
+						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
 					}
 					if ( curEventGroup.Trim().Length > 0 ) {
 						if ( curEventClass.Trim().Length > 0 ) {
@@ -337,6 +343,9 @@ namespace WaterskiScoringSystem.Tools {
 					curEventGroup = curEventJump;
 					if ( curImportMemberEntry.ContainsKey( "EventClassJump" ) ) {
 						curEventClass = (String) curImportMemberEntry["EventClassJump"];
+					} else if ( curImportMemberEntry.ContainsKey( "JumpPaid" ) ) {
+						curEventClass = (String) curImportMemberEntry["JumpPaid"];
+						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
 					}
 					if ( curEventGroup.Trim().Length > 0 ) {
 						if ( curAgeGroup.Equals( "B1" )

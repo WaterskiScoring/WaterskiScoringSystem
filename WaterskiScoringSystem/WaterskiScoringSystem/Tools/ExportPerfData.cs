@@ -632,13 +632,16 @@ namespace WaterskiScoringSystem.Tools {
                     }
 
                     try {
-                        Byte curFinalSpeedKph = (Byte) curScoreRow["FinalSpeedKph"];
+						Byte curMaxSpeedKph = (Byte) curScoreRow["MaxSpeed"];
+						Byte curFinalSpeedKph = (Byte) curScoreRow["FinalSpeedKph"];
                         Byte curCompletedSpeedKph = (Byte) curScoreRow["CompletedSpeedKph"];
                         Decimal curFinalPassScore = (Decimal) curScoreRow["FinalPassScore"];
                         if ( curCompletedSpeedKph > 0 ) {
-                            if ( curCompletedSpeedKph != curFinalSpeedKph ) {
-                                curFinalPassScore = curFinalPassScore * -1;
-                            }
+                            if ( curCompletedSpeedKph < curFinalSpeedKph ) {
+								if ( curFinalSpeedKph <= curMaxSpeedKph ) {
+									curFinalPassScore = curFinalPassScore * -1;
+								}
+							}
                         }
                         outLine.Append( "," + curFinalPassScore.ToString( "0.00" ) );
                         if ( curSlalomScore < 6 ) {
