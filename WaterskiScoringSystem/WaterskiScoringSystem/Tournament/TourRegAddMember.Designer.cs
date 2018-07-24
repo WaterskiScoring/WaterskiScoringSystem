@@ -77,9 +77,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SlalomClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SlalomPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TrickPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.JumpPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JudgeSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JudgeTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JudgeJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -222,9 +219,6 @@ namespace WaterskiScoringSystem.Tournament {
             this.SlalomClass,
             this.TrickClass,
             this.JumpClass,
-            this.SlalomPaid,
-            this.TrickPaid,
-            this.JumpPaid,
             this.JudgeSlalom,
             this.JudgeTrick,
             this.JudgeJump,
@@ -653,33 +647,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JumpClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.JumpClass.Width = 50;
 			// 
-			// SlalomPaid
-			// 
-			this.SlalomPaid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SlalomPaid.HeaderText = "Slalom Paid";
-			this.SlalomPaid.Name = "SlalomPaid";
-			this.SlalomPaid.ReadOnly = true;
-			this.SlalomPaid.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SlalomPaid.Width = 50;
-			// 
-			// TrickPaid
-			// 
-			this.TrickPaid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TrickPaid.HeaderText = "Trick Paid";
-			this.TrickPaid.Name = "TrickPaid";
-			this.TrickPaid.ReadOnly = true;
-			this.TrickPaid.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TrickPaid.Width = 50;
-			// 
-			// JumpPaid
-			// 
-			this.JumpPaid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.JumpPaid.HeaderText = "Jump Paid";
-			this.JumpPaid.Name = "JumpPaid";
-			this.JumpPaid.ReadOnly = true;
-			this.JumpPaid.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.JumpPaid.Width = 50;
-			// 
 			// JudgeSlalom
 			// 
 			this.JudgeSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -847,9 +814,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpClass;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomPaid;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TrickPaid;
-		private System.Windows.Forms.DataGridViewTextBoxColumn JumpPaid;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JudgeSlalom;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JudgeTrick;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JudgeJump;

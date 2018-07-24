@@ -2160,7 +2160,9 @@ namespace WaterskiScoringSystem.Trick {
                     isDataModified = false;
 
 					if ( myPass1DataTable.Rows.Count == 0 ) {
-						if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+						if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
+							, Convert.ToInt32( roundSelect.RoundValue )
+							, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() ) ) {
 							Pass1DataGridView.Rows.Clear();
 							Pass2DataGridView.Rows.Clear();
 							MessageBox.Show( "Skier already has a score in this round" );
@@ -3983,13 +3985,16 @@ namespace WaterskiScoringSystem.Trick {
             myScoreDataTable = getData( curSqlStmt.ToString() );
         }
 
-		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
 			curSqlStmt.Append( "FROM TrickScore " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
 			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			if ( mySanctionNum.EndsWith( "999" ) || mySanctionNum.EndsWith( "998" ) ) {
+				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
+			}
 			DataTable curDataTable = getData( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return true;

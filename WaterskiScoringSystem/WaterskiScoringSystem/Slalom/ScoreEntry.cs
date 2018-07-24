@@ -1398,7 +1398,7 @@ namespace WaterskiScoringSystem.Slalom {
                 }
 
 			} else {
-                myScoreRow = null;
+				myScoreRow = null;
                 DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select("ListCodeNum = 18.25");
 
                 SlalomLineSelect.CurrentValue = (String) curLineRow[0]["ListCode"];
@@ -1640,11 +1640,29 @@ namespace WaterskiScoringSystem.Slalom {
                     }
                 }
             } else {
-                scoreEntryBegin();
+				if ( scoreTextBox.Text.Length > 0 ) {
+					try {
+						StringBuilder curSqlStmt = new StringBuilder( "Delete SlalomScore " );
+						curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+						curSqlStmt.Append( " AND MemberId = '" + (String) inTourEventRegRow.Cells["MemberId"].Value + "' " );
+						curSqlStmt.Append( " AND AgeGroup = '" + (String) inTourEventRegRow.Cells["AgeGroup"].Value + "' " );
+						curSqlStmt.Append( " AND Round = '" + inRound + "' " );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						Log.WriteFile( "setSlalomRecapEntry:Found score with no passes.  Deleting score" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+
+						setSlalomScoreEntry( inTourEventRegRow, inRound );
+
+                    } catch ( Exception excp ) {
+						Log.WriteFile( "setSlalomRecapEntry:Error deleting skier score \n" + excp.Message );
+					}
+					myScoreRow = null;
+				}
+
+				scoreEntryBegin();
             }
         }
 
-        private void setEventRegRowStatus( DataGridViewRow curRow ) {
+		private void setEventRegRowStatus( DataGridViewRow curRow ) {
             String curStatus = "", curTimeInTol, curReride, curScoreProt, curMemberId;
             Decimal curScore;
             try {
@@ -1724,7 +1742,9 @@ namespace WaterskiScoringSystem.Slalom {
                 cellIndex = 0;
                 slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[cellIndex];
             } else {
-				if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString(), Convert.ToInt32( roundSelect.RoundValue ) ) ) {
+				if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
+					, Convert.ToInt32( roundSelect.RoundValue )
+					, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() ) ) {
 					MessageBox.Show( "Skier already has a score in this round" );
 					return;
 
@@ -1888,10 +1908,12 @@ namespace WaterskiScoringSystem.Slalom {
                 #region Add new pass when this is the first pass being added
                 scoreEntryInprogress();
                 curPassLine = SlalomLineSelect.CurrentValueNum;
-                curStartSpeed = SlalomSpeedSelect.CurrentValue;
+
+				curStartSpeed = SlalomSpeedSelect.CurrentValue;
                 if ( curMaxSpeed > curStartSpeed ) {
                     curPassLine = Convert.ToDecimal("23.000");
-                } else if ( curStartSpeed > curMaxSpeed ) {
+
+				} else if ( curStartSpeed > curMaxSpeed ) {
                     SlalomSpeedSelect.CurrentValue = curStartSpeed;
                     MessageBox.Show("You have selected a starting speed above the division maximum."
                         + "\n" + "This is allowed although the skier will only be scored at the division maximum speed."
@@ -1906,7 +1928,8 @@ namespace WaterskiScoringSystem.Slalom {
                     String[] curPassAttr = ( (String) myPassRow["CodeValue"] ).Split(',');
                     curStartLenOff = curPassAttr[2];
                     curStartSpeedMph = Convert.ToInt16(curPassAttr[3].Substring(0, 2));
-                } else {
+
+				} else {
                     curPassNum = 0;
                 }
                 curPassLine = SlalomLineSelect.CurrentValueNum;
@@ -2086,32 +2109,28 @@ namespace WaterskiScoringSystem.Slalom {
                                 }
                             } else {
                                 myRecapRow = null;
-                                Int64 curScorePK = 0;
-                                try {
-                                    curScorePK = (Int64)myScoreRow["PK"];
-                                } catch {
-                                    curScorePK = -1;
-                                }
-                                if ( curScorePK > 0 ) {
-                                    try {
-                                        curSqlStmt = new StringBuilder( "Delete SlalomScore Where PK = " + curScorePK.ToString() );
-                                        rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+								try {
+									curSqlStmt = new StringBuilder( "Delete SlalomScore " );
+									curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+									curSqlStmt.Append( " AND MemberId = '" + (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value + "' " );
+									curSqlStmt.Append( " AND AgeGroup = '" + (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value + "' " );
+									curSqlStmt.Append( " AND Round = '" + Convert.ToByte( roundSelect.RoundValue ) + "' " );
+									rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+									Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
-                                        if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                                            String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
-                                            String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
-                                            String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-                                            byte curRound = Convert.ToByte( roundSelect.RoundValue );
-                                            ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
-                                        }
+									if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+										String curEventGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+										String curMemberId = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+										String curAgeGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+										byte curRound = Convert.ToByte( roundSelect.RoundValue );
+										ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
+									}
 
-                                    } catch ( Exception excp ) {
-                                        curMsg = ":Error deleting skier score \n" + excp.Message;
-                                        Log.WriteFile( curMethodName + curMsg );
-                                    }
-                                }
-                                myScoreRow = null;
+								} catch ( Exception excp ) {
+									curMsg = ":Error deleting skier score \n" + excp.Message;
+									Log.WriteFile( curMethodName + curMsg );
+								}
+								myScoreRow = null;
 
                                 SlalomSpeedSelect.CurrentValue = SlalomSpeedSelect.CurrentValue;
                                 SlalomLineSelect.CurrentValue = SlalomLineSelect.CurrentValue;
@@ -4917,13 +4936,16 @@ namespace WaterskiScoringSystem.Slalom {
             myRecapDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-		private Boolean checkForSkierRoundScore( String inMemberId, int inRound ) {
+		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
 			curSqlStmt.Append( "FROM SlalomScore " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
 			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			if ( mySanctionNum.EndsWith("999") || mySanctionNum.EndsWith( "998" ) ) {
+				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
+			}
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return true;
