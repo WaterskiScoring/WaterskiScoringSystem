@@ -122,15 +122,16 @@ namespace WaterskiScoringSystem.Common {
                     if (rbValue > inMaxValue) {
                         myRadio.Visible = false;
                     } else {
-                        if (inMaxValue == 6M) {
-                            if (rbValue < 5.5M) {
-                                myRadio.Visible = false;
-                            } else {
-                                myRadio.Visible = true;
-                            }
-                        } else {
-                            myRadio.Visible = true;
-                        }
+						myRadio.Visible = true;
+						//if ( inMaxValue == 6M) {
+                        //    if (rbValue < 5.5M) {
+                        //        myRadio.Visible = false;
+                        //    } else {
+                        //        myRadio.Visible = true;
+                        //    }
+                        //} else {
+                        //    myRadio.Visible = true;
+                        //}
                     }
                 }
             }

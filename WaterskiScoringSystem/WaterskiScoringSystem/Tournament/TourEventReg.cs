@@ -329,15 +329,13 @@ namespace WaterskiScoringSystem.Tournament {
                                 } catch {
                                     prevHCapScore = "";
                                 }
-                                String [] curMessage = new String[8];
+                                String [] curMessage = new String[6];
                                 curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
                                 curMessage[1] = "is already registered for " + inEvent + " event";
-                                curMessage[2] = "   EventGroup: Current=" + prevEventGroup + " : Import=" + curEventGroup;
-                                curMessage[3] = "   EventClass: Current=" + prevEventClass + " : Import=" + curEventClass;
-                                curMessage[4] = " RankingScore: Current=" + prevRankingScore + " : Import=" + curRankingScore;
-                                curMessage[5] = "RankingRating: Current=" + prevRankingRating + " : Import=" + curRankingRating;
-                                curMessage[6] = "     HCapBase: Current=" + prevHCapBase + " : Import=" + curHCapBase;
-                                curMessage[7] = "    HCapScore: Current=" + prevHCapScore + " : Import=" + curHCapScore;
+                                curMessage[2] = " RankingScore: Current=" + prevRankingScore + " : Import=" + curRankingScore;
+                                curMessage[3] = "RankingRating: Current=" + prevRankingRating + " : Import=" + curRankingRating;
+                                curMessage[4] = "     HCapBase: Current=" + prevHCapBase + " : Import=" + curHCapBase;
+                                curMessage[5] = "    HCapScore: Current=" + prevHCapScore + " : Import=" + curHCapScore;
                                 myMatchDialog.ImportKeyDataMultiLine = curMessage;
 
                                 myMatchDialog.MatchCommand = myMatchCommand;
@@ -349,10 +347,6 @@ namespace WaterskiScoringSystem.Tournament {
                             if ( myMatchCommand.ToLower().Equals( "update" )
                                 || myMatchCommand.ToLower().Equals( "updateall" ) ) {
                                 curSqlStmt.Append( "Update EventReg Set " );
-                                curSqlStmt.Append( "EventGroup = '" + curEventGroup + "', " );
-                                curSqlStmt.Append( "TeamCode = '" + inTeamCode + "', " );
-                                curSqlStmt.Append( "EventClass = '" + curEventClass + "', " );
-                                curSqlStmt.Append( "RunOrder = '1', " );
                                 curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
                                 curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
                                 curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
