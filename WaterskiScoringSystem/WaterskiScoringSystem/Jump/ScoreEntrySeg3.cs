@@ -3094,10 +3094,17 @@ namespace WaterskiScoringSystem.Jump {
                     } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" )
                         && !( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( myOrigCellValue ) )
                         ) {
-                        if ( !( isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value))
-                            && !( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value))
-                            ) {
-                            isDataModified = true;
+						if ( isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+							|| isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+							) {
+							return;
+
+						} else {
+
+							checkNeedTimeValidate();
+
+							/*
+							isDataModified = true;
                             myRecapRow.Cells["Updated"].Value = "Y";
                             TimeValidate();
                             if ( myOrigCellValue.Equals( "Jump" ) ) { CalcDist(); }
@@ -3109,8 +3116,10 @@ namespace WaterskiScoringSystem.Jump {
                                 curTimerObj.Tick += new EventHandler( addRecapRowTimer );
                                 curTimerObj.Start();
                             }
-                        }
-                    } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" )
+							*/
+						}
+
+					} else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" )
                         && !( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( myOrigCellValue ) )
                         ) {
                         if ( !( isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value)) ) {
@@ -3223,19 +3232,30 @@ namespace WaterskiScoringSystem.Jump {
             String curSkierStatus = "";
             DataGridView curView = jumpRecapDataGridView;
 
-            //if ( curRow.Cells["ResultsRecap"].Value.Equals( "Pass" ) ) {
+			//if ( curRow.Cells["ResultsRecap"].Value.Equals( "Pass" ) ) {
 
-            if ( ( myRecapRow.Cells["ResultsRecap"].Value.Equals("Jump") || myRecapRow.Cells["ResultsRecap"].Value.Equals("fall") )
-                && (
-                isObjectEmpty( scoreFeetTextBox.Text )
-                || isObjectEmpty( scoreMetersTextBox.Text )
-                || isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value)
-                || isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value)
-                || isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value)
-                ) ) {
-                curReturnValue = false;
-            
-            } else {
+			if ( myRecapRow.Cells["ResultsRecap"].Value.Equals( "Jump" ) 
+				&& (
+				isObjectEmpty( scoreFeetTextBox.Text )
+				|| isObjectEmpty( scoreMetersTextBox.Text )
+				|| isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+				|| isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
+				|| isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+				) ) {
+				curReturnValue = false;
+
+			} else if ( myRecapRow.Cells["ResultsRecap"].Value.Equals( "fall" )
+				&& (
+				isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+				|| isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
+				|| isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+				) ) {
+				curReturnValue = false;
+
+			} else if ( myRecapRow.Cells["ResultsRecap"].Value.Equals( "Jump" )  && (scoreFeetTextBox.Text.Length == 0 || scoreMetersTextBox.Text.Length == 0 ) ) {
+				curReturnValue = false;
+
+			} else {
                 Decimal skierScoreFeet = Convert.ToDecimal( scoreFeetTextBox.Text );
                 Decimal skierScoreMeters = Convert.ToDecimal( scoreMetersTextBox.Text );
 

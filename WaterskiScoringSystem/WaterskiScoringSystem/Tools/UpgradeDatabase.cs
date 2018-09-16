@@ -27,7 +27,7 @@ namespace WaterskiScoringSystem.Tools {
             if ( curDataTable.Rows.Count > 0 ) {
                 myDatabaseVersion = (decimal)curDataTable.Rows[0]["VersionNum"];
             } else {
-                myDatabaseVersion = 2.20M;
+                myDatabaseVersion = 19.0M;
             }
         }
 
@@ -35,15 +35,7 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '05.10', 5.10, 1";
-
-                if (myDatabaseVersion < 2.27M) {
-                    MessageBox.Show( "The version on your database is very old or has been corrupted."
-                    + "\n You should either use a new default database or contact your application support contact."
-                    + "\n You should be able to export all your tournament data and import it in to a new database if needed."
-                    );
-                    return false;
-                }
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '19.03', 19.03, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
@@ -60,12 +52,12 @@ namespace WaterskiScoringSystem.Tools {
                         loadTrickList();
                     }
                 }
-                if (myDatabaseVersion < 5.04M) {
+                if (myDatabaseVersion < 19.02M) {
                     if ( openDbConn() ) {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 5.10M ) {
+                if ( myDatabaseVersion < 19.03M ) {
                     if ( openDbConn() ) {
                         loadListValues();
                     }

@@ -69,8 +69,8 @@ namespace WaterskiScoringSystem.Trick {
             if ( myTourProperties.TrickSummaryPointsMethod.ToLower().Equals( "ratio" ) ) ratioPointsButton.Checked = true;
             numPrelimTextBox.Text = myTourProperties.TrickSummaryNumPrelim;
 
-            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup"
-                    , "EventClassTrick", "PlcmtTrick", "TeamTrick", "HCapBaseTrick"
+            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup"
+					, "EventClassTrick", "PlcmtTrick", "TeamTrick", "HCapBaseTrick"
                     , "RoundTrick", "ScoreTrick", "Pass1Trick", "Pass2Trick" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;

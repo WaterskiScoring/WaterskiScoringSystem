@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Jump {
             if ( myTourProperties.JumpSummaryPointsMethod.ToLower().Equals( "ratio" ) ) ratioPointsButton.Checked = true;
             numPrelimTextBox.Text = myTourProperties.JumpSummaryNumPrelim;
 
-            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "Event", "EventClassJump"
+            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event", "EventClassJump"
                     , "PlcmtJump", "TeamJump", "HCapBaseJump", "RoundJump", "ScoreMeters", "ScoreFeet", "PointsJump" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;

@@ -143,14 +143,17 @@ namespace WaterskiScoringSystem.Common {
             foreach ( Control myControl in this.Controls ) {
                 if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
                     myRadio = (RadioButtonWithValue)myControl;
-                    if ( myRadio.Checked ) {
-                    } else {
-                        curEntryValue = (String)myRadio.Value;
-                        if ( curEntryValue.Substring( curEntryValue.Length - 1 ).Equals( "M" ) ) {
-                            rbValue = Convert.ToDecimal( curEntryValue.Substring( 0, curEntryValue.Length - 1 ) );
-                        } else {
-                            rbValue = Convert.ToDecimal( curEntryValue );
-                        }
+					curEntryValue = (String) myRadio.Value;
+					if ( curEntryValue.Substring( curEntryValue.Length - 1 ).Equals( "M" ) ) {
+						rbValue = Convert.ToDecimal( curEntryValue.Substring( 0, curEntryValue.Length - 1 ) );
+					} else {
+						rbValue = Convert.ToDecimal( curEntryValue );
+					}
+
+					if ( myRadio.Checked ) {
+						CurrentShowValueNum = rbValue;
+
+					} else {
                         if ( rbValue == inValue ) {
                             CurrentShowValueNum = rbValue;
                             myRadio.ForeColor = Color.White;

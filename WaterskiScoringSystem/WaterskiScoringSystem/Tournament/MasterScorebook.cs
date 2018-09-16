@@ -51,7 +51,7 @@ namespace WaterskiScoringSystem.Tournament {
             myTourProperties = TourProperties.Instance;
 
             bestScoreButton.Checked = true;
-            if (myTourProperties.MasterSummaryDataType.ToLower().Equals( "total" )) totalScoreButton.Checked = true;
+            if (myTourProperties.MasterSummaryDataType.ToLower().Equals( "total" )) finalScoreButton.Checked = true;
             if ( myTourProperties.MasterSummaryDataType.ToLower().Equals( "final" ) ) finalScoreButton.Checked = true;
             if ( myTourProperties.MasterSummaryDataType.ToLower().Equals( "first" ) ) firstScoreButton.Checked = true;
 
@@ -113,9 +113,6 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( bestScoreButton.Checked ) {
                     curDataType = "best";
                     winStatusMsg.Text = curMsg + "- best scores ";
-                } else if ( totalScoreButton.Checked ) {
-                    curDataType = "total";
-                    winStatusMsg.Text = curMsg + "- total scores";
                 } else if ( finalScoreButton.Checked ) {
                     curDataType = "final";
                     winStatusMsg.Text = curMsg + "- final scores";

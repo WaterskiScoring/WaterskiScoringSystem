@@ -40,16 +40,27 @@ namespace WaterskiScoringSystem.Tools {
                         this.MessageLabel.Text = ex.Message;
                     }
                 } else {
-                    try {
-                        //String curTemp = curSqlCmd.Replace("'", "''");
-                        //curSqlCmd = curTemp;
-                        this.dataGridView.Visible = false;
-                        int curRowsProc = DataAccess.ExecuteCommand(curSqlCmd);
-                        this.MessageLabel.Text = String.Format("SQL command completed, {0} rows processed", curRowsProc);
-                    } catch (Exception ex) {
-                        this.MessageLabel.Text = ex.Message;
+					String[] sqlCommandList = curSqlCmd.Split( ';' );
+
+					if ( sqlCommandList.Length > 0 ) {
+						StringBuilder showMsg = new StringBuilder( "" );
+						foreach (String curSqlStmt in sqlCommandList ) {
+							if ( curSqlStmt.Length > 1 ) {
+								try {
+									this.dataGridView.Visible = false;
+									int curRowsProc = DataAccess.ExecuteCommand( curSqlStmt );
+									showMsg.Append( String.Format( "SQL command completed, {0} rows processed \n", curRowsProc ) );
+
+								} catch ( Exception ex ) {
+									this.MessageLabel.Text = ex.Message;
+								}
+							}
+						}
+
+						this.MessageLabel.Text = showMsg.ToString();
                     }
-                }
+
+				}
             } else {
                 MessageLabel.Text = "SQL command is required and not available";
             }

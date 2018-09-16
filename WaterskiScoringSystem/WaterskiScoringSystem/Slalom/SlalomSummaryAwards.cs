@@ -68,7 +68,7 @@ namespace WaterskiScoringSystem.Slalom {
             numAwardsTextBox.Text = myTourProperties.SlalomSummaryAwardsNum;
 
             sortDialogForm = new SortDialogForm();
-            String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "Event"
+            String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event"
                     , "EventClassSlalom", "PlcmtSlalom", "TeamSlalom", "HCapBaseSlalom"
                     , "RoundSlalom", "ScoreSlalom", "PointsSlalom"
                     , "FinalPassNum", "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };
