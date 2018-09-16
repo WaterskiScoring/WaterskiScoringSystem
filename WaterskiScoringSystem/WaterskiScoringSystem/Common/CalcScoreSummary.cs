@@ -3973,7 +3973,7 @@ namespace WaterskiScoringSystem.Common {
                 }
                 */
                 curDiv = ( String ) curRow["AgeGroup"];
-                if ( curDiv.Substring( 0, 1 ).Equals( "M") || curDiv.Equals("OM") || curDiv.Equals("MM") ) {
+                if ( (curDiv.Substring( 0, 1 ).Equals( "M") && !curDiv.Equals( "MW" ) ) || curDiv.Equals("OM") || curDiv.Equals("MM") ) {
                     curCategory = "Cat1";
                 } else if ( curDiv.Substring( 0, 1 ).Equals( "W" ) || curDiv.Equals("OW") || curDiv.Equals("MW") ) {
                     curCategory = "Cat2";

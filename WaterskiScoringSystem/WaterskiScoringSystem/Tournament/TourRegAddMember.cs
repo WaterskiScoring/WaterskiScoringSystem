@@ -165,7 +165,9 @@ namespace WaterskiScoringSystem.Tournament {
 			/*
 			 * Display skiers found matching search criteria
 			 */
-			if ( myMemberListDataTable != null ) {
+			if ( myMemberListDataTable == null ) {
+				MessageBox.Show( "No records found for specified search criteria" );
+			} else { 
                 loadDataGridView();
             }
 		}
@@ -519,6 +521,8 @@ namespace WaterskiScoringSystem.Tournament {
 						#endregion
 					}
 				}
+			} else {
+				MessageBox.Show( "No records found for specified search criteria" );
 			}
             Cursor.Current = Cursors.Default;
         }

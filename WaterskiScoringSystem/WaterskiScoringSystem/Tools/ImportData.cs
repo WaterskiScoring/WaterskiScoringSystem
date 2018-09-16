@@ -945,12 +945,18 @@ namespace WaterskiScoringSystem.Tools {
 						curImportMemberEntry["EffTo"] = inputCols[idxExpireDate];
 						curImportMemberEntry["Waiver"] = 1 ;
 
+					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "needs upgrade" ) > -1 ) {
+						curImportMemberEntry["ActiveMember"] = "Inactive";
+						curImportMemberEntry["EffTo"] = "";
+						curImportMemberEntry["Waiver"] = 0;
+
 					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "pre-reg" ) > -1 ) {
 						curImportMemberEntry["ActiveMember"] =  "Active";
 						curImportMemberEntry["EffTo"] = inputCols[idxExpireDate];
 						curImportMemberEntry["Waiver"] = 1 ;
 
-					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "needs event waiver" ) > -1 ) {
+					} else if ( inputCols[idxMemberStatus].ToLower().IndexOf( "needs event waiver" ) > -1 
+						|| inputCols[idxMemberStatus].ToLower().IndexOf( "needs annual waiver" ) > -1 ) {
 						curImportMemberEntry["ActiveMember"] =  "Active";
 						curImportMemberEntry["EffTo"] = inputCols[idxExpireDate];
 						curImportMemberEntry["Waiver"] = 0;

@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5.0.0.9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.0.1.1")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5.0.0.9 7/23/2018")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.0.1.1 8/16/2018")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));

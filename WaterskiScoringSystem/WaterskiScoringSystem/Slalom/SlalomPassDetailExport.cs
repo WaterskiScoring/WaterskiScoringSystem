@@ -126,7 +126,10 @@ namespace WaterskiScoringSystem.Slalom {
                 } catch {
                     curViewRow.Cells["Driver"].Value = "";
                 }
-                curViewRow.Cells["Score"].Value = ( (Decimal) curRow["Score"] ).ToString("###.00");
+				
+                curViewRow.Cells["RankingScore"].Value = ( (Decimal) curRow["RankingScore"] ).ToString( "###.00" );
+				curViewRow.Cells["Score"].Value = ( (Decimal) curRow["Score"] ).ToString("###.00");
+
                 curViewRow.Cells["SkierRunNum"].Value = ((Int16) curRow["SkierRunNum"]).ToString();
                 curViewRow.Cells["BoatTime"].Value = ( (Decimal) curRow["BoatTime"] ).ToString("#0.00");
                 curViewRow.Cells["PassScore"].Value = ( (Decimal) curRow["PassScore"] ).ToString("#.00");
@@ -201,7 +204,7 @@ namespace WaterskiScoringSystem.Slalom {
 
         private DataTable getSlalomPassData() {
             StringBuilder curSqlStmt = new StringBuilder("");
-            curSqlStmt.Append("SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass ");
+            curSqlStmt.Append( "SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass, E.RankingScore " );
             curSqlStmt.Append(", S.Round, COALESCE(V.CodeValue, S.Boat) as Boat, TD.SkierName as Driver, S.Score ");
             curSqlStmt.Append(",R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes ");
             curSqlStmt.Append(", R.LastUpdateDate   ");
@@ -213,7 +216,7 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append("LEFT OUTER JOIN TourReg TD ON TD.MemberId = A.MemberId AND TD.SanctionId = A.SanctionId ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList V ON V.ListName = 'ApprovedBoats' AND V.ListCode = S.Boat ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom'   ");
-            curSqlStmt.Append("ORDER BY S.Round, S.AgeGroup, T.SkierName, R.SkierRunNum, R.PassNum ");
+            curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum, R.PassNum " );
             return getData(curSqlStmt.ToString());
         }
 
