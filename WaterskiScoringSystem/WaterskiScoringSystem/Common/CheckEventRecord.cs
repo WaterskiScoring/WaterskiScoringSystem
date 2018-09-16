@@ -39,27 +39,32 @@ namespace WaterskiScoringSystem.Common {
                         curScore = 0;
                     }
                     if ( curScore >= curRecordScore ) {
-                        curReturnMsg.Append("Current skier score of " + curScore.ToString("##0.00"));
-                        curReturnMsg.Append("\nMatches or exceeds the " + (String) curRecordDataTable.Rows[0]["CodeValue"] + " division's current record ");
-                        String curRecordInfo = (String) curRecordDataTable.Rows[0]["CodeDesc"];
-                        int curDelim = curRecordInfo.IndexOf('/');
-                        if ( curDelim > 5 ) {
-                            if ( curRecordInfo.Substring(curDelim - 1).Equals(" ") ) {
-                                curDelim--;
-                            } else {
-                                curDelim--;
-                                curDelim--;
-                            }
-                            int curDelim2 = curRecordInfo.IndexOf(' ', curDelim + 1);
-                            curReturnMsg.Append("\n" + curRecordScore.ToString("##0.00") + " buoys, ");
-                            curReturnMsg.Append(" " + curRecordInfo.Substring(0, curDelim));
-                            curReturnMsg.Append("\nRecord set on " + curRecordInfo.Substring(curDelim + 1, curDelim2 - curDelim - 1));
-                            curReturnMsg.Append("\nRecord holder(s) " + curRecordInfo.Substring(curDelim2 + 1));
-                        } else {
-                            curReturnMsg.Append("\n" + curRecordScore.ToString("##0.00") + " buoys");
-                            curReturnMsg.Append("\nRecord information " + curRecordInfo);
-                        }
-                        curReturnMsg.Append("\n\nNote: Records can't be set with a speed greater than the historical division maximum");
+						try {
+							curReturnMsg.Append( "Current skier score of " + curScore.ToString( "##0.00" ) );
+							curReturnMsg.Append( "\nMatches or exceeds the " + (String) curRecordDataTable.Rows[0]["CodeValue"] + " division's current record " );
+							String curRecordInfo = (String) curRecordDataTable.Rows[0]["CodeDesc"];
+							int curDelim = curRecordInfo.IndexOf( '/' );
+							if ( curDelim > 5 ) {
+								if ( curRecordInfo.Substring( curDelim - 1 ).Equals( " " ) ) {
+									curDelim--;
+								} else {
+									curDelim--;
+									curDelim--;
+								}
+								int curDelim2 = curRecordInfo.IndexOf( ' ', curDelim + 1 );
+								curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys, " );
+								curReturnMsg.Append( " " + curRecordInfo.Substring( 0, curDelim ) );
+								curReturnMsg.Append( "\nRecord set on " + curRecordInfo.Substring( curDelim + 1, curDelim2 - curDelim - 1 ) );
+								curReturnMsg.Append( "\nRecord holder(s) " + curRecordInfo.Substring( curDelim2 + 1 ) );
+							} else {
+								curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys" );
+								curReturnMsg.Append( "\nRecord information " + curRecordInfo );
+							}
+							curReturnMsg.Append( "\n\nNote: Records can't be set with a speed greater than the historical division maximum" );
+
+						} catch (Exception ex ) {
+							curReturnMsg = new StringBuilder( "An exception was encountered while formating a message indicating a record has been matched or exceeded." );
+						}
                     }
                 }
             }
@@ -135,35 +140,40 @@ namespace WaterskiScoringSystem.Common {
                                 curScore += curOrigPassNumMinSpeed * -6;
                             }
                             if ( curScore >= curRecordScore ) {
-                                if ( curReturnMsg.Length > 5 ) {
-                                    curReturnMsg.Append("\n\n");
-                                }
-                                curReturnMsg.Append("\n\nCurrent skier score of " + curScore.ToString("##0.00"));
-                                curReturnMsg.Append("\nMatches or exceeds the record for division " + (String) curRecordDataTable.Rows[0]["CodeValue"]
-                                    + ", which the skier is eligible for, current record ");
-                                String curRecordInfo = "";
-                                try {
-                                    curRecordInfo = (String) curRecordDataTable.Rows[0]["CodeDesc"];
-                                } catch {
-                                    curRecordInfo = "No previous record information available";
-                                }
-                                int curDelim = curRecordInfo.IndexOf('/');
-                                if ( curDelim > 5 ) {
-                                    if ( curRecordInfo.Substring(curDelim - 1).Equals(" ") ) {
-                                        curDelim--;
-                                    } else {
-                                        curDelim--;
-                                        curDelim--;
-                                    }
-                                    int curDelim2 = curRecordInfo.IndexOf(' ', curDelim + 1);
-                                    curReturnMsg.Append("\n" + curRecordScore.ToString("##0.00") + " buoys, ");
-                                    curReturnMsg.Append(" " + curRecordInfo.Substring(0, curDelim));
-                                    curReturnMsg.Append("\nRecord set on " + curRecordInfo.Substring(curDelim + 1, curDelim2 - curDelim - 1));
-                                    curReturnMsg.Append("\nRecord holder(s) " + curRecordInfo.Substring(curDelim2 + 1));
-                                } else {
-                                    curReturnMsg.Append("\n" + curRecordScore.ToString("##0.00") + " buoys");
-                                    curReturnMsg.Append("\nRecord information " + curRecordInfo);
-                                }
+								try {
+									if ( curReturnMsg.Length > 5 ) {
+										curReturnMsg.Append( "\n\n" );
+									}
+									curReturnMsg.Append( "\n\nCurrent skier score of " + curScore.ToString( "##0.00" ) );
+									curReturnMsg.Append( "\nMatches or exceeds the record for division " + (String) curRecordDataTable.Rows[0]["CodeValue"]
+										+ ", which the skier is eligible for, current record " );
+									String curRecordInfo = "";
+									try {
+										curRecordInfo = (String) curRecordDataTable.Rows[0]["CodeDesc"];
+									} catch {
+										curRecordInfo = "No previous record information available";
+									}
+									int curDelim = curRecordInfo.IndexOf( '/' );
+									if ( curDelim > 5 ) {
+										if ( curRecordInfo.Substring( curDelim - 1 ).Equals( " " ) ) {
+											curDelim--;
+										} else {
+											curDelim--;
+											curDelim--;
+										}
+										int curDelim2 = curRecordInfo.IndexOf( ' ', curDelim + 1 );
+										curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys, " );
+										curReturnMsg.Append( " " + curRecordInfo.Substring( 0, curDelim ) );
+										curReturnMsg.Append( "\nRecord set on " + curRecordInfo.Substring( curDelim + 1, curDelim2 - curDelim - 1 ) );
+										curReturnMsg.Append( "\nRecord holder(s) " + curRecordInfo.Substring( curDelim2 + 1 ) );
+									} else {
+										curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys" );
+										curReturnMsg.Append( "\nRecord information " + curRecordInfo );
+									}
+
+								} catch ( Exception ex ) {
+									curReturnMsg = new StringBuilder( "An exception was encountered while formating a message indicating a record has been matched or exceeded." );
+								}
                             }
                         }
                     }

@@ -71,7 +71,7 @@ namespace WaterskiScoringSystem.Jump {
             numPrelimTextBox.Text = myTourProperties.JumpSummaryNumPrelim;
             numAwardsTextBox.Text = myTourProperties.JumpSummaryAwardsNum;
 
-            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "Event", "EventClassJump"
+            String[] curList = { "MemberId", "SanctionId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event", "EventClassJump"
                     , "PlcmtJump", "TeamJump", "HCapBaseJump", "RoundJump", "ScoreMeters", "ScoreFeet", "PointsJump" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;

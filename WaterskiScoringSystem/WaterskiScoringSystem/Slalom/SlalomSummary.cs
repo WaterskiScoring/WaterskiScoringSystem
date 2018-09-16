@@ -67,7 +67,7 @@ namespace WaterskiScoringSystem.Slalom {
             if ( myTourProperties.SlalomSummaryPointsMethod.ToLower().Equals( "ratio" ) ) ratioPointsButton.Checked = true;
             numPrelimTextBox.Text = myTourProperties.SlalomSummaryNumPrelim;
 
-            String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "Event"
+            String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event"
                     , "EventClassSlalom", "PlcmtSlalom", "TeamSlalom", "HCapBaseSlalom"
                     , "RoundSlalom", "ScoreSlalom", "PointsSlalom"
                     , "FinalPassNum", "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };

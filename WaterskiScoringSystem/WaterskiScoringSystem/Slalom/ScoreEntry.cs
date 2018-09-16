@@ -2342,16 +2342,17 @@ namespace WaterskiScoringSystem.Slalom {
                 Int16 curPassSpeed = Convert.ToInt16((Decimal) myPassRow["MaxValue"]);
                 myPassRow = getPassRow(curPassSpeed, curPassLine);
                 AddNewRecapRow();
-            } else {
+
+			} else {
                 MessageBox.Show("Line length for pass not available.  Opting up by line length has failed");
             }
 
-        }
+		}
 
-        /*
+		/*
          * Add new slalom pass row to data grid view
          */
-        private void AddNewRecapRow() {
+		private void AddNewRecapRow() {
             if ( myRecapRow != null ) {
                 foreach ( DataGridViewCell curCell in myRecapRow.Cells ) {
                     if ( curCell.Visible && !( curCell.ReadOnly ) ) {
@@ -2535,19 +2536,20 @@ namespace WaterskiScoringSystem.Slalom {
 								}
 							} else {
 								curPassLine = (Decimal) myPassRow["MinValue"];
-								if ( curPassLine > SlalomLineSelect.CurrentValueNum ) {
-									curPassLine = SlalomLineSelect.CurrentValueNum;
+								if ( curPassLine > SlalomLineSelect.CurrentShowValueNum ) {
+									curPassLine = SlalomLineSelect.CurrentShowValueNum;
 								}
 								if ( curPassLine == 0M ) {
-									curPassLine = SlalomLineSelect.CurrentValueNum;
+									curPassLine = SlalomLineSelect.CurrentShowValueNum;
 								}
 								if ( myRecapRow.Index > 0 ) {
 									Decimal curPassLineTemp = Convert.ToDecimal( (String) slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["PassLineLengthRecap"].Value );
-									if ( curPassLine > curPassLineTemp ) {
+									if ( curPassLine < curPassLineTemp ) {
 										curPassLine = curPassLineTemp;
-									} else {
-										if ( curPassLine > SlalomLineSelect.CurrentValueNum ) {
-											curPassLine = SlalomLineSelect.CurrentValueNum;
+										SlalomLineSelect.showCurrentValue( curPassLine );
+                                    } else {
+										if ( curPassLine > SlalomLineSelect.CurrentShowValueNum ) {
+											curPassLine = SlalomLineSelect.CurrentShowValueNum;
 										}
 									}
 									myPassRow = getPassRow( curSpeed, curPassLine );
