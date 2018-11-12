@@ -92,6 +92,11 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navRecalcHcapButton = new System.Windows.Forms.ToolStripButton();
 			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.PrintDataGridView = new System.Windows.Forms.DataGridView();
+			this.printHeaderNote = new System.Windows.Forms.TextBox();
+			this.PrintHeaderLabel = new System.Windows.Forms.Label();
+			this.EventGroupPanel = new System.Windows.Forms.Panel();
+			this.EventGroupFilterLabel = new System.Windows.Forms.Label();
+			this.LiveWebLabel = new System.Windows.Forms.Label();
 			this.PrintCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintGroupCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -103,18 +108,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.PrintTeam = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintRunOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintEventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PrintRankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintReadyForPlcmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintJumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintTrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintHcapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintHCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PrintRankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintRankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.printHeaderNote = new System.Windows.Forms.TextBox();
-			this.PrintHeaderLabel = new System.Windows.Forms.Label();
-			this.EventGroupPanel = new System.Windows.Forms.Panel();
-			this.EventGroupFilterLabel = new System.Windows.Forms.Label();
-			this.LiveWebLabel = new System.Windows.Forms.Label();
+			this.navColumnSelect = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.EventRegDataGridView)).BeginInit();
 			this.TopNavMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -442,7 +443,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.navClassChangeButton,
             this.navLiveWeb,
             this.navEditRound,
-            this.navRecalcHcapButton});
+            this.navRecalcHcapButton,
+            this.navColumnSelect});
 			this.TopNavMenu.Location = new System.Drawing.Point(0, 0);
 			this.TopNavMenu.Name = "TopNavMenu";
 			this.TopNavMenu.Size = new System.Drawing.Size(911, 38);
@@ -625,12 +627,12 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTeam,
             this.PrintRunOrder,
             this.PrintEventClass,
+            this.PrintRankingScore,
             this.PrintReadyForPlcmt,
             this.PrintJumpHeight,
             this.PrintTrickBoat,
             this.PrintHcapBase,
             this.PrintHCapScore,
-            this.PrintRankingScore,
             this.PrintRankingRating});
 			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window;
@@ -650,195 +652,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.PrintDataGridView.TabIndex = 126;
 			this.PrintDataGridView.TabStop = false;
 			this.PrintDataGridView.Visible = false;
-			// 
-			// PrintCount
-			// 
-			this.PrintCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintCount.DefaultCellStyle = dataGridViewCellStyle13;
-			this.PrintCount.HeaderText = "Cnt";
-			this.PrintCount.Name = "PrintCount";
-			this.PrintCount.ReadOnly = true;
-			this.PrintCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintCount.Width = 45;
-			// 
-			// PrintGroupCount
-			// 
-			this.PrintGroupCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintGroupCount.DefaultCellStyle = dataGridViewCellStyle14;
-			this.PrintGroupCount.HeaderText = "Grp Cnt";
-			this.PrintGroupCount.Name = "PrintGroupCount";
-			this.PrintGroupCount.ReadOnly = true;
-			this.PrintGroupCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintGroupCount.Width = 45;
-			// 
-			// PrintEvent
-			// 
-			this.PrintEvent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.PrintEvent.HeaderText = "Event";
-			this.PrintEvent.Name = "PrintEvent";
-			this.PrintEvent.ReadOnly = true;
-			this.PrintEvent.Visible = false;
-			// 
-			// PrintEventGroup
-			// 
-			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.PrintEventGroup.DefaultCellStyle = dataGridViewCellStyle15;
-			this.PrintEventGroup.HeaderText = "Group";
-			this.PrintEventGroup.Name = "PrintEventGroup";
-			this.PrintEventGroup.ReadOnly = true;
-			// 
-			// PrintAgeGroup
-			// 
-			this.PrintAgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintAgeGroup.DefaultCellStyle = dataGridViewCellStyle16;
-			this.PrintAgeGroup.HeaderText = "Div";
-			this.PrintAgeGroup.Name = "PrintAgeGroup";
-			this.PrintAgeGroup.ReadOnly = true;
-			this.PrintAgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintAgeGroup.Width = 35;
-			// 
-			// PrintEventRotation
-			// 
-			this.PrintEventRotation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintEventRotation.DefaultCellStyle = dataGridViewCellStyle17;
-			this.PrintEventRotation.HeaderText = "Rotation";
-			this.PrintEventRotation.Name = "PrintEventRotation";
-			this.PrintEventRotation.ReadOnly = true;
-			this.PrintEventRotation.Width = 86;
-			// 
-			// PrintSkierSep
-			// 
-			this.PrintSkierSep.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle18.BackColor = System.Drawing.Color.Silver;
-			this.PrintSkierSep.DefaultCellStyle = dataGridViewCellStyle18;
-			this.PrintSkierSep.HeaderText = ".";
-			this.PrintSkierSep.Name = "PrintSkierSep";
-			this.PrintSkierSep.ReadOnly = true;
-			this.PrintSkierSep.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierSep.Width = 5;
-			// 
-			// PrintSkierName
-			// 
-			this.PrintSkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle19.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintSkierName.DefaultCellStyle = dataGridViewCellStyle19;
-			this.PrintSkierName.HeaderText = "Skier ";
-			this.PrintSkierName.Name = "PrintSkierName";
-			this.PrintSkierName.ReadOnly = true;
-			this.PrintSkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierName.Width = 51;
-			// 
-			// PrintTeam
-			// 
-			this.PrintTeam.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintTeam.DefaultCellStyle = dataGridViewCellStyle20;
-			this.PrintTeam.HeaderText = "Team";
-			this.PrintTeam.Name = "PrintTeam";
-			this.PrintTeam.ReadOnly = true;
-			this.PrintTeam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintTeam.Width = 49;
-			// 
-			// PrintRunOrder
-			// 
-			this.PrintRunOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintRunOrder.DefaultCellStyle = dataGridViewCellStyle21;
-			this.PrintRunOrder.HeaderText = "Order";
-			this.PrintRunOrder.Name = "PrintRunOrder";
-			this.PrintRunOrder.ReadOnly = true;
-			this.PrintRunOrder.Width = 69;
-			// 
-			// PrintEventClass
-			// 
-			this.PrintEventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintEventClass.DefaultCellStyle = dataGridViewCellStyle22;
-			this.PrintEventClass.HeaderText = "Class";
-			this.PrintEventClass.Name = "PrintEventClass";
-			this.PrintEventClass.ReadOnly = true;
-			this.PrintEventClass.Width = 68;
-			// 
-			// PrintReadyForPlcmt
-			// 
-			this.PrintReadyForPlcmt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintReadyForPlcmt.DefaultCellStyle = dataGridViewCellStyle23;
-			this.PrintReadyForPlcmt.HeaderText = "For Plcmt";
-			this.PrintReadyForPlcmt.Name = "PrintReadyForPlcmt";
-			this.PrintReadyForPlcmt.ReadOnly = true;
-			this.PrintReadyForPlcmt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintReadyForPlcmt.Width = 50;
-			// 
-			// PrintJumpHeight
-			// 
-			this.PrintJumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJumpHeight.DefaultCellStyle = dataGridViewCellStyle24;
-			this.PrintJumpHeight.HeaderText = "Jump Ht";
-			this.PrintJumpHeight.Name = "PrintJumpHeight";
-			this.PrintJumpHeight.ReadOnly = true;
-			this.PrintJumpHeight.Width = 86;
-			// 
-			// PrintTrickBoat
-			// 
-			this.PrintTrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.PrintTrickBoat.HeaderText = "Boat";
-			this.PrintTrickBoat.Name = "PrintTrickBoat";
-			this.PrintTrickBoat.ReadOnly = true;
-			this.PrintTrickBoat.Width = 62;
-			// 
-			// PrintHcapBase
-			// 
-			this.PrintHcapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.PrintHcapBase.HeaderText = "Hcap Base";
-			this.PrintHcapBase.Name = "PrintHcapBase";
-			this.PrintHcapBase.ReadOnly = true;
-			this.PrintHcapBase.Width = 99;
-			// 
-			// PrintHCapScore
-			// 
-			this.PrintHCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.PrintHCapScore.HeaderText = "Handicap";
-			this.PrintHCapScore.Name = "PrintHCapScore";
-			this.PrintHCapScore.ReadOnly = true;
-			this.PrintHCapScore.Width = 92;
-			// 
-			// PrintRankingScore
-			// 
-			this.PrintRankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle25.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintRankingScore.DefaultCellStyle = dataGridViewCellStyle25;
-			this.PrintRankingScore.HeaderText = "NR Score";
-			this.PrintRankingScore.Name = "PrintRankingScore";
-			this.PrintRankingScore.ReadOnly = true;
-			this.PrintRankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintRankingScore.Width = 73;
-			// 
-			// PrintRankingRating
-			// 
-			this.PrintRankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			this.PrintRankingRating.HeaderText = "Rating";
-			this.PrintRankingRating.Name = "PrintRankingRating";
-			this.PrintRankingRating.ReadOnly = true;
-			this.PrintRankingRating.Width = 74;
 			// 
 			// printHeaderNote
 			// 
@@ -894,6 +707,206 @@ namespace WaterskiScoringSystem.Tournament {
 			this.LiveWebLabel.Text = "Live Web Active";
 			this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.LiveWebLabel.Visible = false;
+			// 
+			// PrintCount
+			// 
+			this.PrintCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintCount.DefaultCellStyle = dataGridViewCellStyle13;
+			this.PrintCount.HeaderText = "#";
+			this.PrintCount.Name = "PrintCount";
+			this.PrintCount.ReadOnly = true;
+			this.PrintCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintCount.Width = 45;
+			// 
+			// PrintGroupCount
+			// 
+			this.PrintGroupCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintGroupCount.DefaultCellStyle = dataGridViewCellStyle14;
+			this.PrintGroupCount.HeaderText = "#";
+			this.PrintGroupCount.Name = "PrintGroupCount";
+			this.PrintGroupCount.ReadOnly = true;
+			this.PrintGroupCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintGroupCount.Width = 45;
+			// 
+			// PrintEvent
+			// 
+			this.PrintEvent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.PrintEvent.HeaderText = "Event";
+			this.PrintEvent.Name = "PrintEvent";
+			this.PrintEvent.ReadOnly = true;
+			this.PrintEvent.Visible = false;
+			this.PrintEvent.Width = 69;
+			// 
+			// PrintEventGroup
+			// 
+			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.PrintEventGroup.DefaultCellStyle = dataGridViewCellStyle15;
+			this.PrintEventGroup.HeaderText = "Grp";
+			this.PrintEventGroup.Name = "PrintEventGroup";
+			this.PrintEventGroup.ReadOnly = true;
+			// 
+			// PrintAgeGroup
+			// 
+			this.PrintAgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintAgeGroup.DefaultCellStyle = dataGridViewCellStyle16;
+			this.PrintAgeGroup.HeaderText = "Div";
+			this.PrintAgeGroup.Name = "PrintAgeGroup";
+			this.PrintAgeGroup.ReadOnly = true;
+			this.PrintAgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PrintAgeGroup.Width = 35;
+			// 
+			// PrintEventRotation
+			// 
+			this.PrintEventRotation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintEventRotation.DefaultCellStyle = dataGridViewCellStyle17;
+			this.PrintEventRotation.HeaderText = "Seq";
+			this.PrintEventRotation.Name = "PrintEventRotation";
+			this.PrintEventRotation.ReadOnly = true;
+			this.PrintEventRotation.Width = 58;
+			// 
+			// PrintSkierSep
+			// 
+			this.PrintSkierSep.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle18.BackColor = System.Drawing.Color.Silver;
+			this.PrintSkierSep.DefaultCellStyle = dataGridViewCellStyle18;
+			this.PrintSkierSep.HeaderText = ".";
+			this.PrintSkierSep.Name = "PrintSkierSep";
+			this.PrintSkierSep.ReadOnly = true;
+			this.PrintSkierSep.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PrintSkierSep.Width = 5;
+			// 
+			// PrintSkierName
+			// 
+			this.PrintSkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle19.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintSkierName.DefaultCellStyle = dataGridViewCellStyle19;
+			this.PrintSkierName.HeaderText = "Skier ";
+			this.PrintSkierName.Name = "PrintSkierName";
+			this.PrintSkierName.ReadOnly = true;
+			this.PrintSkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PrintSkierName.Width = 51;
+			// 
+			// PrintTeam
+			// 
+			this.PrintTeam.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintTeam.DefaultCellStyle = dataGridViewCellStyle20;
+			this.PrintTeam.HeaderText = "Team";
+			this.PrintTeam.Name = "PrintTeam";
+			this.PrintTeam.ReadOnly = true;
+			this.PrintTeam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PrintTeam.Width = 49;
+			// 
+			// PrintRunOrder
+			// 
+			this.PrintRunOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintRunOrder.DefaultCellStyle = dataGridViewCellStyle21;
+			this.PrintRunOrder.HeaderText = "Order";
+			this.PrintRunOrder.Name = "PrintRunOrder";
+			this.PrintRunOrder.ReadOnly = true;
+			this.PrintRunOrder.Width = 69;
+			// 
+			// PrintEventClass
+			// 
+			this.PrintEventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintEventClass.DefaultCellStyle = dataGridViewCellStyle22;
+			this.PrintEventClass.HeaderText = "Cls";
+			this.PrintEventClass.Name = "PrintEventClass";
+			this.PrintEventClass.ReadOnly = true;
+			this.PrintEventClass.Width = 54;
+			// 
+			// PrintRankingScore
+			// 
+			this.PrintRankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle23.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintRankingScore.DefaultCellStyle = dataGridViewCellStyle23;
+			this.PrintRankingScore.HeaderText = "Avg";
+			this.PrintRankingScore.Name = "PrintRankingScore";
+			this.PrintRankingScore.ReadOnly = true;
+			this.PrintRankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PrintRankingScore.Width = 39;
+			// 
+			// PrintReadyForPlcmt
+			// 
+			this.PrintReadyForPlcmt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintReadyForPlcmt.DefaultCellStyle = dataGridViewCellStyle24;
+			this.PrintReadyForPlcmt.HeaderText = "Plcmt?";
+			this.PrintReadyForPlcmt.Name = "PrintReadyForPlcmt";
+			this.PrintReadyForPlcmt.ReadOnly = true;
+			this.PrintReadyForPlcmt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintReadyForPlcmt.Width = 50;
+			// 
+			// PrintJumpHeight
+			// 
+			this.PrintJumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintJumpHeight.DefaultCellStyle = dataGridViewCellStyle25;
+			this.PrintJumpHeight.HeaderText = "Ramp";
+			this.PrintJumpHeight.Name = "PrintJumpHeight";
+			this.PrintJumpHeight.ReadOnly = true;
+			this.PrintJumpHeight.Width = 70;
+			// 
+			// PrintTrickBoat
+			// 
+			this.PrintTrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.PrintTrickBoat.HeaderText = "Boat";
+			this.PrintTrickBoat.Name = "PrintTrickBoat";
+			this.PrintTrickBoat.ReadOnly = true;
+			this.PrintTrickBoat.Width = 62;
+			// 
+			// PrintHcapBase
+			// 
+			this.PrintHcapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.PrintHcapBase.HeaderText = "Hcap Base";
+			this.PrintHcapBase.Name = "PrintHcapBase";
+			this.PrintHcapBase.ReadOnly = true;
+			this.PrintHcapBase.Width = 99;
+			// 
+			// PrintHCapScore
+			// 
+			this.PrintHCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.PrintHCapScore.HeaderText = "Handicap";
+			this.PrintHCapScore.Name = "PrintHCapScore";
+			this.PrintHCapScore.ReadOnly = true;
+			this.PrintHCapScore.Width = 92;
+			// 
+			// PrintRankingRating
+			// 
+			this.PrintRankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.PrintRankingRating.HeaderText = "Rating";
+			this.PrintRankingRating.Name = "PrintRankingRating";
+			this.PrintRankingRating.ReadOnly = true;
+			this.PrintRankingRating.Width = 74;
+			// 
+			// navColumnSelect
+			// 
+			this.navColumnSelect.Image = ((System.Drawing.Image)(resources.GetObject("navColumnSelect.Image")));
+			this.navColumnSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navColumnSelect.Name = "navColumnSelect";
+			this.navColumnSelect.Size = new System.Drawing.Size(63, 35);
+			this.navColumnSelect.Text = "Col Select";
+			this.navColumnSelect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navColumnSelect.Click += new System.EventHandler(this.navColumnSelect_Click);
 			// 
 			// RunningOrderTour
 			// 
@@ -958,24 +971,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.Label LiveWebLabel;
         private System.Windows.Forms.ToolStripButton navRecalcHcapButton;
         private System.Windows.Forms.ToolStripButton navSaveAs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintGroupCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintEvent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintAgeGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventRotation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierSep;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeam;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintRunOrder;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventClass;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintReadyForPlcmt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintJumpHeight;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintTrickBoat;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintHcapBase;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintHCapScore;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingScore;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingRating;
         private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
         private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
         private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
@@ -996,5 +991,24 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
         private System.Windows.Forms.DataGridViewTextBoxColumn State;
         private System.Windows.Forms.DataGridViewTextBoxColumn City;
-    }
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintCount;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintGroupCount;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintEvent;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintAgeGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventRotation;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierSep;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintSkierName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintTeam;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintRunOrder;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintEventClass;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintReadyForPlcmt;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintJumpHeight;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintTrickBoat;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintHcapBase;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintHCapScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PrintRankingRating;
+		private System.Windows.Forms.ToolStripButton navColumnSelect;
+	}
 }

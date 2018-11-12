@@ -180,6 +180,12 @@
     <Compile Include="Common\CalcScoreSummary.cs" />
     <Compile Include="Common\CheckEventRecord.cs" />
     <Compile Include="Common\CheckOfficials.cs" />
+    <Compile Include="Common\ColumnSelectDialogcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\ColumnSelectDialogcs.Designer.cs">
+      <DependentUpon>ColumnSelectDialogcs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\StateDropdownList.cs" />
     <Compile Include="Common\RegionDropdownList.cs" />
     <Compile Include="Common\FormReportToFile.cs" />
@@ -499,6 +505,9 @@
     <EmbeddedResource Include="Common\AgeGroupSelect.resx">
       <DependentUpon>AgeGroupSelect.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ColumnSelectDialogcs.resx">
+      <DependentUpon>ColumnSelectDialogcs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\RampHeightSelect.resx">
       <DependentUpon>RampHeightSelect.cs</DependentUpon>

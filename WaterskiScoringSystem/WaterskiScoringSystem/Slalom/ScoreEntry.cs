@@ -1658,6 +1658,8 @@ namespace WaterskiScoringSystem.Slalom {
 					myScoreRow = null;
 				}
 
+				slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells[myStartCellIndex];
+				myOrigCellValue = (String) slalomRecapDataGridView.Rows[myRecapRow.Index].Cells[myStartCellIndex].Value;
 				scoreEntryBegin();
             }
         }
@@ -1961,7 +1963,9 @@ namespace WaterskiScoringSystem.Slalom {
                     slalomRecapDataGridView.Select();
                     slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
                     myRecapRow = slalomRecapDataGridView.Rows[rowIndex];
-                } else {
+					myOrigCellValue = (String) slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
+
+				} else {
                     foreach (DataGridViewRow curViewRow in slalomRecapDataGridView.Rows) {
                         curViewRow.DefaultCellStyle.BackColor = Color.Salmon;
                         foreach (DataGridViewCell curCell in curViewRow.Cells) {
@@ -1977,9 +1981,12 @@ namespace WaterskiScoringSystem.Slalom {
                     int rowIndex = slalomRecapDataGridView.Rows.Count - 1;
                     slalomRecapDataGridView.Select();
                     slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
-                    myRecapRow = slalomRecapDataGridView.Rows[rowIndex];
-                }
-            } else {
+					myOrigCellValue = (String) slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
+					myRecapRow = slalomRecapDataGridView.Rows[rowIndex];
+					//myRecapRow.Cells["Judge1ScoreRecap"].Selected = true;
+
+				}
+			} else {
                 optionUpButton.Enabled = false;
                 deletePassButton.Enabled = false;
                 ForceCompButton.Enabled = false;
@@ -2369,7 +2376,7 @@ namespace WaterskiScoringSystem.Slalom {
             Int16 curPassSpeed = Convert.ToInt16((Decimal) myPassRow["MaxValue"]);
             SlalomSpeedSelect.showCurrentValue(curPassSpeed);
 
-            myRecapRow.Cells["Updated"].Value = "Y";
+            myRecapRow.Cells["Updated"].Value = "N";
             myRecapRow.Cells["PKRecap"].Value = "-1";
             myRecapRow.Cells["SanctionIdRecap"].Value = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SanctionId"].Value.ToString();
             myRecapRow.Cells["MemberIdRecap"].Value = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString();
@@ -3042,7 +3049,8 @@ namespace WaterskiScoringSystem.Slalom {
                         if (curColName.Equals( "ScoreRecap" )) {
                             slalomRecapDataGridView.CurrentCell = myRecapRow.Cells[myStartCellIndex];
                         }
-                        e.Handled = true;
+						this.myOrigCellValue = (String) slalomRecapDataGridView.CurrentCell.Value;
+						e.Handled = true;
 
 					} else if (e.KeyCode == Keys.Escape) {
                         isAddRecapRowInProg = false;
@@ -3125,6 +3133,8 @@ namespace WaterskiScoringSystem.Slalom {
             } else {
                 slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells["BoatTimeRecap"];
             }
+
+			this.myOrigCellValue = (String) slalomRecapDataGridView.CurrentCell.Value;
         }
 
         private void TourEventRegDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {

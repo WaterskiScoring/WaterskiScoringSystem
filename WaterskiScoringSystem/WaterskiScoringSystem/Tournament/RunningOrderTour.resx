@@ -501,6 +501,23 @@
         Y4i4k2b9C8jqMxEclhjwAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="navColumnSelect.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKGSURBVDhPrZLbS9NxGMb9TyICqW4KQqiL8kKKREyUrMlS
+        GIrTNs+6PDZNlzTFOc9jnrJ5nKY5T8tTYBpqHtIySMVUnBYKmocI00+/LVmNXQU98Ny8fJ/PF573dflv
+        KtCNEJlWzMbmHqOzFkq045iMuaRlPrbN9ndXKM+5z8lzR1XUzCFPLWDh8xpWlRaNY27XIk/Jt8+s4eRw
+        f2dAd9c+VjfWb1FUuEpMzBQfhjS86VDRYUimrjjaFh423iVc5OkM6DDtMdCP3UlJs8yPFXC422D34oA3
+        b1s9kfh6OANamrdRqSZISR5GLu8hMLCZudcaeoyJ1NcXUqCvIEOdh/pJLHf8fJ0BtYZN++/9fccoFDP0
+        d+owdppoNr1iwrLD4MoW2hYz/pJYZ0C5ft0O6Oo8JC7+HTW11eiNnbbyDgUvCx4TnGboomxwxhFiLc4a
+        Nncf8bzlO9FCidlaPW2TC2wLob2fsCp4+ACqZyw2yEn0t3LUS/Saj3jR9gODYZeIyEkUGbkYxxeZFwBL
+        Qvi94Jc70DC9hjRe5QjIfPQJpXKIhPg+pNJWAgIMPEhNI6u0iZFjIbgHPd9gdPOY4oZWgkKjHAFJiXMY
+        mw6orNgmX/OVsLBx1Ko4ZAkKlJUmqhbWefZxjdL6FmQREhrLQtGqEv5AYmNmhPXVERJcjUhUjJdXLrVF
+        0eRliQiWirl5O5AbfmKCQ0LQpV9ho/eqcBN/QWSyKTR5G8KeLaQ/XEEs7qJKI2d5WGQ7IKtzol25dP4U
+        UUE+TD89zZeei3SXB6CQ+uAiFwDhYaPcE7dzy1uHu7vSBrCeb7YiQDhfDzzcztpm1g8lftcZKjnDNbdz
+        jl38iy5fcD0Ju7j8Ah5/Dg9UVQZzAAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="PrintCount.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -534,6 +551,9 @@
   <metadata name="PrintEventClass.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="PrintRankingScore.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="PrintReadyForPlcmt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -547,9 +567,6 @@
     <value>True</value>
   </metadata>
   <metadata name="PrintHCapScore.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="PrintRankingScore.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="PrintRankingRating.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
