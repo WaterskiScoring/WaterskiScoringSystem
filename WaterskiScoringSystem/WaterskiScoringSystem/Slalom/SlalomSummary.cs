@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Slalom {
             String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event"
                     , "EventClassSlalom", "PlcmtSlalom", "TeamSlalom", "HCapBaseSlalom"
                     , "RoundSlalom", "ScoreSlalom", "PointsSlalom"
-                    , "FinalPassNum", "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };
+                    , "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -497,11 +497,6 @@ namespace WaterskiScoringSystem.Slalom {
                         curViewRow.Cells["NopsScore"].Value = ( (Decimal)curRow["PointsSlalom"] ).ToString( "###0.0" );
                     } catch {
                         curViewRow.Cells["NopsScore"].Value = 0;
-                    }
-                    try {
-                        curViewRow.Cells["FinalPassNum"].Value = (Byte)curRow["FinalPassNum"];
-                    } catch {
-                        curViewRow.Cells["FinalPassNum"].Value = 0;
                     }
                     try {
                         curViewRow.Cells["FinalSpeedMph"].Value = (Byte)curRow["FinalSpeedMph"];

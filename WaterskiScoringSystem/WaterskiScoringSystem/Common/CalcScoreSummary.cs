@@ -5268,7 +5268,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom");
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass" );
             curSqlStmt.Append( ", COALESCE(SS.Round, 0) as Round, SS.Score, SS.NopsScore, SS.Rating, SS.MaxSpeed, SS.StartSpeed, SS.StartLen, SS.Status" );
-            curSqlStmt.Append(", SS.FinalPassNum, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore");
+            curSqlStmt.Append( ", SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore" );
             curSqlStmt.Append(", COALESCE(SS.CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(SS.CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
@@ -5369,7 +5369,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom");
             curSqlStmt.Append( ", SS.Round, SS.Score, SS.NopsScore, SS.Rating, MaxSpeed, StartSpeed, StartLen, Status" );
-            curSqlStmt.Append(", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore");
+            curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore" );
             curSqlStmt.Append(", COALESCE(CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM SlalomScore SS " );
             curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );

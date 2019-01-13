@@ -256,16 +256,15 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        public String getNextValue( String inValue ) {
+        public Decimal getNextValue( Decimal inValue ) {
             bool curFound = false;
-            String curReturnValue = "";
-            Decimal curValue = Convert.ToDecimal(inValue);
+			Decimal curReturnValue = 23;
             foreach ( DataRow curRow in myDataTable.Rows ) {
                 if ( curFound ) {
-                    curReturnValue = ((Decimal)curRow["ListCodeNum"] ).ToString("00.00");
+                    curReturnValue = (Decimal)curRow["ListCodeNum"];
                     break;
                 } else {
-                    if ( ( (Decimal)curRow["ListCodeNum"] ) == curValue ) {
+                    if ( ( (Decimal)curRow["ListCodeNum"] ) == inValue ) {
                         curFound = true;
                     }
                 }
@@ -305,9 +304,10 @@ namespace WaterskiScoringSystem.Common {
         private void getSlalomLineData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue, SortSeq" );
-            curSqlStmt.Append( " FROM CodeValueList" );
-            curSqlStmt.Append( " WHERE ListName = 'SlalomLines'" );
-            curSqlStmt.Append( " ORDER BY SortSeq" );
+			curSqlStmt.Append( ", MinValue as LineLengthOff, MaxValue as LineLengthMeters, CodeValue as LineLengthOffDesc " );
+			curSqlStmt.Append( "FROM CodeValueList " );
+            curSqlStmt.Append( "WHERE ListName = 'SlalomLines' " );
+            curSqlStmt.Append( "ORDER BY SortSeq" );
             myDataTable = getData( curSqlStmt.ToString() );
         }
 

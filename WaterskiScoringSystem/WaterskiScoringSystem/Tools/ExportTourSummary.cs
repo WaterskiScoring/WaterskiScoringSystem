@@ -1039,7 +1039,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "SELECT S.SanctionId, S.MemberId, TR.SkierName, ER.Event, ER.EventGroup, ER.TeamCode" );
             curSqlStmt.Append( ", ER.EventClass, ER.AgeGroup, S.Round, S.Score, S.NopsScore, S.Rating " );
             curSqlStmt.Append( ", MaxSpeed, StartSpeed, StartLen, Status, '' as BoatCode" );
-            curSqlStmt.Append( ", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
+            curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
             curSqlStmt.Append( "FROM SlalomScore S " );
             curSqlStmt.Append( "  INNER JOIN TourReg TR ON S.SanctionId = TR.SanctionId AND S.MemberId = TR.MemberId AND S.AgeGroup = TR.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON S.SanctionId = ER.SanctionId AND S.MemberId = ER.MemberId AND S.AgeGroup = ER.AgeGroup " );

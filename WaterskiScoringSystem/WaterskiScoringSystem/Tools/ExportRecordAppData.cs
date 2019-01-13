@@ -1255,7 +1255,7 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, AgeGroup as Div, Round, EventClass" );
             curSqlStmt.Append( ", Score, NopsScore, StartLen, StartSpeed, Boat" );
-            curSqlStmt.Append( ", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
+            curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
             curSqlStmt.Append( " FROM SlalomScore " );
             curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound );

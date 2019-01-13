@@ -747,6 +747,7 @@ namespace WaterskiScoringSystem.Common {
 			updateProperty( "RunningOrderColumnFilterSlalom", saveValues.ToString(), 311 );
 		}
 		public void setRunningOrderColumnFilterSlalom( String  propValues ) {
+			if ( propValues.Length <= 1 ) return;
 			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
 			String[] curEntryValues = propValues.Split( ',' );
 			foreach ( String curEntryValue in curEntryValues ) {
@@ -1011,6 +1012,7 @@ namespace WaterskiScoringSystem.Common {
 			updateProperty( "RunningOrderColumnFilterTrick", saveValues.ToString(), 311 );
 		}
 		public void setRunningOrderColumnFilterTrick( String propValues ) {
+			if ( propValues.Length <= 1 ) return;
 			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
 			String[] curEntryValues = propValues.Split( ',' );
 			foreach ( String curEntryValue in curEntryValues ) {
@@ -1290,6 +1292,7 @@ namespace WaterskiScoringSystem.Common {
 			updateProperty( "RunningOrderColumnFilterJump", saveValues.ToString(), 311 );
 		}
 		public void setRunningOrderColumnFilterJump( String propValues ) {
+			if ( propValues.Length <= 1 ) return;
 			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
 			String[] curEntryValues = propValues.Split( ',' );
 			foreach ( String curEntryValue in curEntryValues ) {

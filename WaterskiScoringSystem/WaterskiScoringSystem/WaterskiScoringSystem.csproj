@@ -14,8 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>WaterskiScoringSystem.Program</StartupObject>
-    <ManifestCertificateThumbprint>37A7085533655A91E2AAFC03A256ECE5ED454EC5</ManifestCertificateThumbprint>
-    <ManifestKeyFile>WaterskiScoringSystem_10_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>3183A438C5FD761C9293E95ADA17CB60C0F63AE8</ManifestCertificateThumbprint>
+    <ManifestKeyFile>WaterskiScoringSystem_11_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>true</SignManifests>
@@ -812,6 +812,7 @@
     <None Include="WaterskiScoringSystem.snk" />
     <None Include="WaterskiScoringSystemCert.snk" />
     <None Include="WaterskiScoringSystem_10_TemporaryKey.pfx" />
+    <None Include="WaterskiScoringSystem_11_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_1_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_3_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_4_TemporaryKey.pfx" />
