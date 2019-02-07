@@ -290,15 +290,16 @@ namespace WaterskiScoringSystem.Tools {
                     curRow = curDataTable.Rows[0];
                     setCellValue(23, "B", transformName( curRow["SkierName"].ToString() ));
                     setCellValue(23, "F", curRow["MemberId"].ToString() );
-                    setCellValue(29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
+					setCellValue( 27, "F", curRow["SkiYearAge"].ToString() );
+					setCellValue( 29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
                     if (inEvent.Equals( "Slalom" )) {
                         String curValue = ( (decimal) curRow["Score"]).ToString("#0.00")
                             + " : " + ( (decimal) curRow["FinalPassScore"]).ToString("0.00")
-                            + " @ "+ curRow["FinalLenOff"].ToString()
-                            + " " + ((decimal) curRow["FinalSpeedMPH"]).ToString( "00.0" ) + "mph " 
+                            + " @ "+ (String)curRow["FinalLenOff"]
+                            + " " + curRow["FinalSpeedMPH"].ToString() + "mph " 
                             + " (" 
                             + curRow["FinalSpeedKph"].ToString() + "kph " 
-                            + curRow["FinalLen"].ToString() + "M"
+                            + (String) curRow["FinalLen"] + "M"
                             + ")" ;
                         setCellValue( 14, "G", curValue );
 
@@ -1226,7 +1227,7 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getSkierInfo(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT Distinct E.Event, E.MemberId, T.SkierName, E.AgeGroup as Div, E.TeamCode" );
+            curSqlStmt.Append( "SELECT Distinct E.Event, E.MemberId, T.SkierName, E.AgeGroup as Div, T.SkiYearAge, E.TeamCode" );
             curSqlStmt.Append( ", T.State, T.City, COALESCE(S.EventClass, E.EventClass) as EventClass " );
             curSqlStmt.Append( ", B.BoatModel as BoatModel, B.ModelYear, B.SpeedControlVersion " );
             if (inEvent.Equals( "Slalom" )) {
