@@ -866,3 +866,16 @@ Update OfficialWork Set ScorerTrickRating = '' Where ScorerTrickRating = 'Unrate
 Update OfficialWork Set ScorerJumpRating = '' Where ScorerJumpRating = 'Unrated';
 Update OfficialWork Set SafetyOfficialRating = '' Where SafetyOfficialRating = 'Unrated';
 Update OfficialWork Set TechOfficialRating = '' Where TechOfficialRating = 'Unrated';
+
+//------------------------------------------------------------
+## v19.07
+ALTER TABLE [SlalomRecap] ADD COLUMN  PassSpeedKph tinyint;
+ALTER TABLE [SlalomRecap] DROP COLUMN PassNum;
+ALTER TABLE [SlalomScore] DROP COLUMN FinalPassNum;
+
+Update [SlalomRecap] Set PassSpeedKph = SUBSTRING ( Note, CHARINDEX('kph', Note) - 2, 2 );
+
+## v19.08
+ALTER TABLE EventRunOrder ADD COLUMN  RunOrderGroup nvarchar(12);
+
+Update EventRunOrder Set RunOrderGroup = '';

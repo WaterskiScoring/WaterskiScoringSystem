@@ -164,26 +164,47 @@ namespace WaterskiScoringSystem.Tools {
             String curRoundName = "Round" + myTourEvent;
             String curFilterStmt = "";
             Int16 curSkierRound = 0;
-            if (myTourPlcmtOrg.ToLower().Equals( "div" )) {
-                if (myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Byte" )) {
-                    curSkierRound = Convert.ToInt16( (byte)myShowDataTable.Rows[myRowIdx][curRoundName] );
-                } else if (myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Int16" )) {
-                    curSkierRound = (Int16)myShowDataTable.Rows[myRowIdx][curRoundName];
-                } else {
-                    curSkierRound = Convert.ToInt16( (Int32)myShowDataTable.Rows[myRowIdx][curRoundName] );
-                }
-                if (curSkierRound == Convert.ToInt16( myTourPrelimRounds + 1 )) {
-                    curFilterStmt = "Round" + myTourEvent + " = " + curSkierRound + " AND AgeGroup = '" + (String)myShowDataTable.Rows[myRowIdx]["AgeGroup"] + "' ";
-                    curFindRows = myShowDataTable.Select( curFilterStmt );
-                    if (curFindRows.Length > 0) {
-                        myTourBracketFirst = curFindRows.Length;
-                        myTourBracket = myTourBracketFirst;
-                    } else {
-                        myTourBracketFirst = 0;
-                        myTourBracket = 0;
-                    }
-                }
-            } else {
+			if ( myTourPlcmtOrg.ToLower().Equals( "div" ) ) {
+				if ( myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
+					curSkierRound = Convert.ToInt16( (byte) myShowDataTable.Rows[myRowIdx][curRoundName] );
+				} else if ( myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Int16" ) ) {
+					curSkierRound = (Int16) myShowDataTable.Rows[myRowIdx][curRoundName];
+				} else {
+					curSkierRound = Convert.ToInt16( (Int32) myShowDataTable.Rows[myRowIdx][curRoundName] );
+				}
+				if ( curSkierRound == Convert.ToInt16( myTourPrelimRounds + 1 ) ) {
+					curFilterStmt = "Round" + myTourEvent + " = " + curSkierRound + " AND AgeGroup = '" + (String) myShowDataTable.Rows[myRowIdx]["AgeGroup"] + "' ";
+					curFindRows = myShowDataTable.Select( curFilterStmt );
+					if ( curFindRows.Length > 0 ) {
+						myTourBracketFirst = curFindRows.Length;
+						myTourBracket = myTourBracketFirst;
+					} else {
+						myTourBracketFirst = 0;
+						myTourBracket = 0;
+					}
+				}
+
+			} else if ( myTourPlcmtOrg.ToLower().Equals( "group" ) ) {
+				if ( myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
+					curSkierRound = Convert.ToInt16( (byte) myShowDataTable.Rows[myRowIdx][curRoundName] );
+				} else if ( myShowDataTable.Rows[myRowIdx][curRoundName].GetType() == System.Type.GetType( "System.Int16" ) ) {
+					curSkierRound = (Int16) myShowDataTable.Rows[myRowIdx][curRoundName];
+				} else {
+					curSkierRound = Convert.ToInt16( (Int32) myShowDataTable.Rows[myRowIdx][curRoundName] );
+				}
+				if ( curSkierRound == Convert.ToInt16( myTourPrelimRounds + 1 ) ) {
+					curFilterStmt = "Round" + myTourEvent + " = " + curSkierRound + " AND EventGroup = '" + (String) myShowDataTable.Rows[myRowIdx]["EventGroup"] + "' ";
+					curFindRows = myShowDataTable.Select( curFilterStmt );
+					if ( curFindRows.Length > 0 ) {
+						myTourBracketFirst = curFindRows.Length;
+						myTourBracket = myTourBracketFirst;
+					} else {
+						myTourBracketFirst = 0;
+						myTourBracket = 0;
+					}
+				}
+
+			} else {
                 if (myRowIdx == 0) {
                     curSkierRound = Convert.ToInt16( myTourPrelimRounds + 1);
                     curFilterStmt = "Round" + myTourEvent + " = " + curSkierRound;
@@ -198,7 +219,7 @@ namespace WaterskiScoringSystem.Tools {
                 }
             }
             
-            String curText = "", curDiv = "", prevDiv = "", curGroup = "", prevGroup = "";
+            String curText = "", curDiv = "", prevDiv = "", curRunOrderGroup = "", prevRunOrderGroup = "";
             Int16 curRunOrder = 0;
             Decimal RankingScore = 0;
             StringFormat curTextFormat = new StringFormat();
@@ -211,12 +232,14 @@ namespace WaterskiScoringSystem.Tools {
 
             while (curPageSkierCount <= curPageSkierMax && myRowIdx < myShowDataTable.Rows.Count && !hasMorePages) {
                 curRow = myShowDataTable.Rows[myRowIdx];
-                if (myTourPlcmtOrg.ToLower().Equals( "div" )) {
-                    curDiv = (String)curRow["AgeGroup"];
-                } else {
+				if ( myTourPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curDiv = (String) curRow["AgeGroup"];
+				} else if ( myTourPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curDiv = (String) curRow["EventGroup"];
+				} else {
                     curDiv = "";
                 }
-                curGroup = (String)curRow["EventGroup"];
+				curRunOrderGroup = (String)curRow["RunOrderGroup"];
                 if (curRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" )) {
                     curRound = Convert.ToInt16( (byte)curRow[curRoundName] );
                 } else if (curRow[curRoundName].GetType() == System.Type.GetType( "System.Int16" )) {
@@ -229,16 +252,16 @@ namespace WaterskiScoringSystem.Tools {
                         curPosY = curPosYPageTop;
                         curPosX += curTextBoxWidth + curRoundMargin;
                         myTourBracket = myTourBracket / 2;
-                        prevGroup = "";
+						prevRunOrderGroup = "";
                     }
 
-                    if (curGroup == prevGroup) {
+                    if ( curRunOrderGroup == prevRunOrderGroup ) {
                         if (showRow) {
                             curPosY = (Single)curFindRows[0]["Box2PosY"];
                             myReportBodyFont = myReportBodyRegFont;
                         }
                     } else {
-                        curFindRows = myShowPosDataTable.Select( "BracketSize = " + myTourBracket + " AND EventGroup = '" + curGroup + "'" );
+                        curFindRows = myShowPosDataTable.Select( "BracketSize = " + myTourBracket + " AND RunOrderGroup = '" + curRunOrderGroup + "'" );
                         if (myTourPlcmtMethod.Equals( "RunOrder" )) {
                             myReportBodyFont = myReportBodyRegFont;
                         } else {
@@ -263,7 +286,7 @@ namespace WaterskiScoringSystem.Tools {
                             RankingScore = 0;
                         }
 
-                        curText = (String)curRow["SkierName"] + " (" + (String)curRow["EventGroup"] + "-" + curRunOrder + ")";
+                        curText = (String)curRow["SkierName"] + " (" + (Int16)curRow["RunOrder"] + "-" + curRunOrder + ")";
                         if (myTourPlcmtMethod.Equals( "RunOrder" )) {
                             curText += "\n";
                         } else {
@@ -293,7 +316,7 @@ namespace WaterskiScoringSystem.Tools {
                         }
                         curText += "  Rank: " + RankingScore.ToString( "###0.0" );
                         curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportBodyFont, new SolidBrush( myReportBodyTextColor ), curTextFormat, true );
-                        if (curGroup == prevGroup && myTourBracket > 2) {
+                        if ( curRunOrderGroup == prevRunOrderGroup && myTourBracket > 2) {
                             DrawBoxConnect( new Pen( myReportBodyTextColor ), curPagePos[0], (Single)curFindRows[0]["Box1PosY"], (Single)curFindRows[0]["ConnectHeight"] );
                         }
                         curPageSkierCount++;
@@ -308,7 +331,7 @@ namespace WaterskiScoringSystem.Tools {
                 }
                 if (hasMorePages) break;
                 prevDiv = curDiv;
-                prevGroup = curGroup;
+				prevRunOrderGroup = curRunOrderGroup;
                 prevRound = curRound;
             }
 
@@ -511,7 +534,7 @@ namespace WaterskiScoringSystem.Tools {
             myShowPosDataTable.Columns.Add( curCol );
 
             curCol = new DataColumn();
-            curCol.ColumnName = "EventGroup";
+            curCol.ColumnName = "RunOrderGroup";
             curCol.DataType = System.Type.GetType( "System.String" );
             curCol.AllowDBNull = false;
             curCol.ReadOnly = false;
@@ -548,7 +571,7 @@ namespace WaterskiScoringSystem.Tools {
             #region Bracket of 16 text box positions
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH1";
+            newDataRow["RunOrderGroup"] = "HH1";
             newDataRow["Box1PosY"] = Convert.ToSingle( 81.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 123.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -556,7 +579,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH8";
+            newDataRow["RunOrderGroup"] = "HH8";
             newDataRow["Box1PosY"] = Convert.ToSingle( 171.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 213.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -564,7 +587,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH5";
+            newDataRow["RunOrderGroup"] = "HH5";
             newDataRow["Box1PosY"] = Convert.ToSingle( 261.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 303.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -572,7 +595,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH4";
+            newDataRow["RunOrderGroup"] = "HH4";
             newDataRow["Box1PosY"] = Convert.ToSingle( 351.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 393.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -580,7 +603,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH2";
+            newDataRow["RunOrderGroup"] = "HH2";
             newDataRow["Box1PosY"] = Convert.ToSingle( 441.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 483.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -588,7 +611,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH7";
+            newDataRow["RunOrderGroup"] = "HH7";
             newDataRow["Box1PosY"] = Convert.ToSingle( 531.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 573.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -596,7 +619,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH6";
+            newDataRow["RunOrderGroup"] = "HH6";
             newDataRow["Box1PosY"] = Convert.ToSingle( 621.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 663.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -604,7 +627,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 16;
-            newDataRow["EventGroup"] = "HH3";
+            newDataRow["RunOrderGroup"] = "HH3";
             newDataRow["Box1PosY"] = Convert.ToSingle( 711.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 753.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 42.0 );
@@ -614,7 +637,7 @@ namespace WaterskiScoringSystem.Tools {
             #region Bracket of 8 text box positions
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 8;
-            newDataRow["EventGroup"] = "HH1";
+            newDataRow["RunOrderGroup"] = "HH1";
             newDataRow["Box1PosY"] = Convert.ToSingle( 102.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 192.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 90.0 );
@@ -622,7 +645,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 8;
-            newDataRow["EventGroup"] = "HH4";
+            newDataRow["RunOrderGroup"] = "HH4";
             newDataRow["Box1PosY"] = Convert.ToSingle( 282.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 372.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 90.0 );
@@ -630,7 +653,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 8;
-            newDataRow["EventGroup"] = "HH2";
+            newDataRow["RunOrderGroup"] = "HH2";
             newDataRow["Box1PosY"] = Convert.ToSingle( 462.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 552.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 90.0 );
@@ -638,7 +661,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 8;
-            newDataRow["EventGroup"] = "HH3";
+            newDataRow["RunOrderGroup"] = "HH3";
             newDataRow["Box1PosY"] = Convert.ToSingle( 642.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 732.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 90.0 );
@@ -648,7 +671,7 @@ namespace WaterskiScoringSystem.Tools {
             #region Bracket of 4 text box positions
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 4;
-            newDataRow["EventGroup"] = "HH1";
+            newDataRow["RunOrderGroup"] = "HH1";
             newDataRow["Box1PosY"] = Convert.ToSingle( 147.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 327.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 180.0 );
@@ -656,7 +679,7 @@ namespace WaterskiScoringSystem.Tools {
 
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 4;
-            newDataRow["EventGroup"] = "HH2";
+            newDataRow["RunOrderGroup"] = "HH2";
             newDataRow["Box1PosY"] = Convert.ToSingle( 507.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 687.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 180.0 );
@@ -666,7 +689,7 @@ namespace WaterskiScoringSystem.Tools {
             #region Bracket of 2 text box positions
             newDataRow = myShowPosDataTable.DefaultView.AddNew();
             newDataRow["BracketSize"] = 2;
-            newDataRow["EventGroup"] = "HH1";
+            newDataRow["RunOrderGroup"] = "HH1";
             newDataRow["Box1PosY"] = Convert.ToSingle( 236.0 );
             newDataRow["Box2PosY"] = Convert.ToSingle( 597.0 );
             newDataRow["ConnectHeight"] = Convert.ToSingle( 54.0 );

@@ -156,45 +156,6 @@ namespace WaterskiScoringSystem.Slalom {
             myExportData.exportDataAsHtml(dataGridView, printTitle, printSubtitle, printFooter, "SlalomPassDetailExport.htm");
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
-
-            bool CenterOnPage = true;
-            bool WithTitle = true;
-            bool WithPaging = true;
-            Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
-            Font fontPrintFooter = new Font("Times New Roman", 10);
-
-            curPrintDialog.AllowCurrentPage = true;
-            curPrintDialog.AllowPrintToFile = true;
-            curPrintDialog.AllowSelection = false;
-            curPrintDialog.AllowSomePages = true;
-            curPrintDialog.PrintToFile = false;
-            curPrintDialog.ShowHelp = false;
-            curPrintDialog.ShowNetwork = false;
-            curPrintDialog.UseEXDialog = true;
-            curPrintDialog.PrinterSettings.DefaultPageSettings.Landscape = true;
-
-            if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + this.Text;
-                myPrintDoc = new PrintDocument();
-                myPrintDoc.DocumentName = this.Text;
-                myPrintDoc.DefaultPageSettings.Margins = new Margins(25, 25, 25, 25);
-                myPrintDoc.DefaultPageSettings.Landscape = true;
-                myPrintDataGrid = new DataGridViewPrinter(dataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging);
-
-                myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                myPrintDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
-                curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
-            }
-        }
-
         // The PrintPage action for the PrintDocument control
         private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
             bool more = myPrintDataGrid.DrawDataGridView(e.Graphics);
@@ -216,7 +177,7 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append("LEFT OUTER JOIN TourReg TD ON TD.MemberId = A.MemberId AND TD.SanctionId = A.SanctionId ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList V ON V.ListName = 'ApprovedBoats' AND V.ListCode = S.Boat ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom'   ");
-            curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum, R.PassNum " );
+            curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum " );
             return getData(curSqlStmt.ToString());
         }
 

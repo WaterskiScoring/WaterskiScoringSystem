@@ -1965,9 +1965,12 @@ namespace WaterskiScoringSystem.Jump {
             } else {
                 LiveWebLabel.Visible = false;
             }
-        }
+			if ( isRunOrderByRound( Convert.ToByte( roundSelect.RoundValue ) ) ) {
+				MessageBox.Show( "WARNING \nThis running order is specific for this round" );
+			}
+		}
 
-        private void loadEventGroupList(int inRound) {
+		private void loadEventGroupList(int inRound) {
             isLoadInProg = true;
             if (EventGroupList.DataSource == null) {
                 if (myTourRules.ToLower().Equals( "ncwsa" )) {
@@ -5487,6 +5490,18 @@ namespace WaterskiScoringSystem.Jump {
             }
         }
 
+		private Boolean isRunOrderByRound( int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Jump' AND Round = " + inRound );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( (int) curDataTable.Rows[0]["SkierCount"] > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
         private DataTable getTourData( String inSanctionId ) {
             StringBuilder curSqlStmt = new StringBuilder("");
             curSqlStmt.Append("SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation");

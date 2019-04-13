@@ -14,8 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>WaterskiScoringSystem.Program</StartupObject>
-    <ManifestCertificateThumbprint>37A7085533655A91E2AAFC03A256ECE5ED454EC5</ManifestCertificateThumbprint>
-    <ManifestKeyFile>WaterskiScoringSystem_10_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>3183A438C5FD761C9293E95ADA17CB60C0F63AE8</ManifestCertificateThumbprint>
+    <ManifestKeyFile>WaterskiScoringSystem_11_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>true</SignManifests>
@@ -46,7 +46,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>5.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -180,6 +180,12 @@
     <Compile Include="Common\CalcScoreSummary.cs" />
     <Compile Include="Common\CheckEventRecord.cs" />
     <Compile Include="Common\CheckOfficials.cs" />
+    <Compile Include="Common\ColumnSelectDialogcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\ColumnSelectDialogcs.Designer.cs">
+      <DependentUpon>ColumnSelectDialogcs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\StateDropdownList.cs" />
     <Compile Include="Common\RegionDropdownList.cs" />
     <Compile Include="Common\FormReportToFile.cs" />
@@ -379,6 +385,12 @@
     <Compile Include="Tournament\TourMergeSelect.Designer.cs">
       <DependentUpon>TourMergeSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tournament\TourRegRankEquiv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tournament\TourRegRankEquiv.Designer.cs">
+      <DependentUpon>TourRegRankEquiv.cs</DependentUpon>
+    </Compile>
     <Compile Include="Trick\LoadVideosFile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -499,6 +511,9 @@
     <EmbeddedResource Include="Common\AgeGroupSelect.resx">
       <DependentUpon>AgeGroupSelect.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ColumnSelectDialogcs.resx">
+      <DependentUpon>ColumnSelectDialogcs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\RampHeightSelect.resx">
       <DependentUpon>RampHeightSelect.cs</DependentUpon>
@@ -649,6 +664,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tournament\TourMergeSelect.resx">
       <DependentUpon>TourMergeSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tournament\TourRegRankEquiv.resx">
+      <DependentUpon>TourRegRankEquiv.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Trick\LoadVideosFile.resx">
       <DependentUpon>LoadVideosFile.cs</DependentUpon>
@@ -803,6 +822,7 @@
     <None Include="WaterskiScoringSystem.snk" />
     <None Include="WaterskiScoringSystemCert.snk" />
     <None Include="WaterskiScoringSystem_10_TemporaryKey.pfx" />
+    <None Include="WaterskiScoringSystem_11_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_1_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_3_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_4_TemporaryKey.pfx" />

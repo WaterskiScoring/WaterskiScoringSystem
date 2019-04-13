@@ -1922,9 +1922,12 @@ namespace WaterskiScoringSystem.Trick {
             } else {
                 LiveWebLabel.Visible = false;
             }
-        }
+			if ( isRunOrderByRound( Convert.ToByte( roundSelect.RoundValue ) ) ) {
+				MessageBox.Show( "WARNING \nThis running order is specific for this round" );
+			}
+		}
 
-        private void PauseTimerButton_Click( object sender, EventArgs e ) {
+		private void PauseTimerButton_Click( object sender, EventArgs e ) {
             myEventDelayStartTime = DateTime.Now;
             EventDelayReasonTextBox.Visible = true;
             EventDelayReasonLabel.Visible = true;
@@ -3962,7 +3965,20 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
 
-        private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
+		private Boolean isRunOrderByRound( int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Trick' AND Round = " + inRound );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( (int) curDataTable.Rows[0]["SkierCount"] > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+		private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append("SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, S.Round, S.EventClass");
             curSqlStmt.Append(", S.Score, S.ScorePass1, S.ScorePass2, S.NopsScore, S.Rating, S.Boat, S.Status, S.Note");

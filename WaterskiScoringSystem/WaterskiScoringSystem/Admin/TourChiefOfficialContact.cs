@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -430,5 +428,36 @@ namespace WaterskiScoringSystem.Admin {
 
             return curNewValue.ToString();
         }
-    }
+
+		private void textItem_Validated( object sender, EventArgs e ) {
+			if ( !( ( (TextBox) sender ).Text.Equals( myOrigItemValue ) ) ) {
+				isDataModified = true;
+			}
+		}
+
+		private void textItem_Validating( object sender, System.ComponentModel.CancelEventArgs e ) {
+			if ( ( (TextBox) sender ).Name == "contactEmailTextBox"
+				|| ( (TextBox) sender ).Name == "chiefJudgeEmailTextBox"
+				|| ( (TextBox) sender ).Name == "chiefDriverEmailTextBox"
+				|| ( (TextBox) sender ).Name == "chiefScorerEmailTextBox"
+				|| ( (TextBox) sender ).Name == "safetyDirEmailTextBox"
+				) {
+				String emailAddress = ( (TextBox) sender ).Text.Trim();
+				if ( IsValidEmail( emailAddress ) ) {
+					( (TextBox) sender ).Text = emailAddress;
+				} else {
+					e.Cancel = true;
+					MessageBox.Show( "Email Address is not a valid email" );
+				}
+			}
+		}
+
+		private bool IsValidEmail( String email ) {
+			if ( String.IsNullOrWhiteSpace( email ) ) return false;
+
+			return Regex.IsMatch( email
+				, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"
+				, RegexOptions.IgnoreCase );
+		}
+	}
 }

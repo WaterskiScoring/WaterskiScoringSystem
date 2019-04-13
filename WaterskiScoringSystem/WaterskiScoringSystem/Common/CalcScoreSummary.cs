@@ -77,13 +77,13 @@ namespace WaterskiScoringSystem.Common {
                 curSortCmd = "AgeGroup ASC, ReadyForPlcmtSlalom DESC, SkierName ASC, RoundSlalom ASC";
             } else if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundSlalom ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundSlalom ASC, ReadyForPlcmtSlalom DESC, RunOrderGroup ASC, PlcmtSlalom ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC, RoundSlalom ASC";
                 }
             } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundSlalom ASC, EventGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundSlalom ASC, EventGroup ASC, ReadyForPlcmtSlalom DESC, RunOrderGroup ASC, PlcmtSlalom ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC, RoundSlalom ASC";
                 }
@@ -92,7 +92,7 @@ namespace WaterskiScoringSystem.Common {
                     curSortCmd = "RoundSlalom ASC, EventGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC ";
                 } else {
                     if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                        curSortCmd = "EventGroup ASC, RoundSlalom ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC ";
+                        curSortCmd = "EventGroup ASC, RoundSlalom ASC, ReadyForPlcmtSlalom DESC, RunOrderGroup ASC, PlcmtSlalom ASC, SkierName ASC ";
                     } else {
                         curSortCmd = "EventGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC ";
                     }
@@ -101,7 +101,7 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curSortCmd = "RoundSlalom ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC ";
                 } else if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "RoundSlalom ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC ";
+                    curSortCmd = "RoundSlalom ASC, ReadyForPlcmtSlalom DESC, RunOrderGroup ASC, PlcmtSlalom ASC, SkierName ASC ";
                 } else {
                     curSortCmd = "ReadyForPlcmtSlalom ASC, PlcmtSlalom DESC, SkierName ASC ";
                 }
@@ -291,13 +291,13 @@ namespace WaterskiScoringSystem.Common {
                 curSortCmd = "AgeGroup ASC, ReadyForPlcmtTrick DESC, SkierName ASC, RoundTrick ASC";
             } else if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundTrick ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundTrick ASC, ReadyForPlcmtTrick DESC, RunOrderGroup ASC, PlcmtTrick ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC, RoundTrick ASC";
                 }
             } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundTrick ASC, EventGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundTrick ASC, EventGroup ASC, ReadyForPlcmtTrick DESC, RunOrderGroup ASC, PlcmtTrick ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC, RoundTrick ASC";
                 }
@@ -306,7 +306,7 @@ namespace WaterskiScoringSystem.Common {
                     curSortCmd = "RoundTrick ASC, EventGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
                 } else {
                     if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                        curSortCmd = "EventGroup ASC, RoundTrick ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
+                        curSortCmd = "EventGroup ASC, RoundTrick ASC, ReadyForPlcmtTrick DESC, RunOrderGroup ASC, PlcmtTrick ASC, SkierName ASC ";
                     } else {
                         curSortCmd = "EventGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
                     }
@@ -315,7 +315,7 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curSortCmd = "RoundTrick ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
                 } else if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "RoundTrick ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
+                    curSortCmd = "RoundTrick ASC, ReadyForPlcmtTrick DESC, RunOrderGroup ASC, PlcmtTrick ASC, SkierName ASC ";
                 } else {
                     curSortCmd = "ReadyForPlcmtTrick DESC, PlcmtTrick ASC, SkierName ASC ";
                 }
@@ -517,13 +517,13 @@ namespace WaterskiScoringSystem.Common {
                 curSortCmd = "AgeGroup ASC, ReadyForPlcmtJump DESC, SkierName ASC, RoundJump ASC";
             } else if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundJump ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundJump ASC, ReadyForPlcmtJump DESC, RunOrderGroup ASC, PlcmtJump ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC, RoundJump ASC";
                 }
             } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                 if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "AgeGroup ASC, RoundJump ASC, EventGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC";
+                    curSortCmd = "AgeGroup ASC, RoundJump ASC, EventGroup ASC, ReadyForPlcmtJump DESC, RunOrderGroup ASC, PlcmtJump ASC, SkierName ASC";
                 } else {
                     curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC, RoundJump ASC";
                 }
@@ -532,7 +532,7 @@ namespace WaterskiScoringSystem.Common {
                     curSortCmd = "RoundJump ASC, EventGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
                 } else {
                     if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                        curSortCmd = "EventGroup ASC, RoundJump ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
+                        curSortCmd = "EventGroup ASC, RoundJump ASC, ReadyForPlcmtJump DESC, RunOrderGroup ASC, PlcmtJump ASC, SkierName ASC ";
                     } else {
                         curSortCmd = "EventGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
                     }
@@ -541,7 +541,7 @@ namespace WaterskiScoringSystem.Common {
                 if ( inDataType.ToLower().Equals( "total" ) && curRules.ToLower().Equals( "ncwsa" ) ) {
                     curSortCmd = "RoundJump ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
                 } else if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "RoundJump ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
+                    curSortCmd = "RoundJump ASC, ReadyForPlcmtJump DESC, RunOrderGroup ASC, PlcmtJump ASC, SkierName ASC ";
                 } else {
                     curSortCmd = "ReadyForPlcmtJump DESC, PlcmtJump ASC, SkierName ASC ";
                 }
@@ -681,7 +681,7 @@ namespace WaterskiScoringSystem.Common {
             return buildOverallSummary(inTourRow, inSlalomDataTable, inTrickDataTable, inJumpDataTable, inDataType, "");
         }
         public DataTable buildOverallSummary( DataRow inTourRow, DataTable inSlalomDataTable, DataTable inTrickDataTable, DataTable inJumpDataTable, String inDataType, String inPlcmtOrg ) {
-            String curFilterCommand, curSkierName, curMemberId, curEventGroup, curEventClass, curAgeGroup, curSortCmd, curFinalLenOff, curFinalLen, curStartLen;
+            String curFilterCommand, curSkierName, curMemberId, curEventGroup, curEventClass, curAgeGroup, curRunOrderGroup, curSortCmd, curFinalLenOff, curFinalLen, curStartLen;
             String curState, curFederation, curCity, curReadyToSki, curReadyForPlcmt, curReadyForPlcmtSlalom, curReadyForPlcmtTrick, curReadyForPlcmtJump;
             String curPlcmtSlalom, curPlcmtTrick, curPlcmtJump, curPlcmtOverall, curTeamCode;
             String curScoreName, curPointsName, curRoundName, curGroupName, curTeamName, curOrderName, curClassName, curPass1Name, curPass2Name, curBoatSpeedName;
@@ -775,7 +775,9 @@ namespace WaterskiScoringSystem.Common {
                     }
                     curDivOrder = (int)curRow[curOrderName];
                     curAgeGroup = (String)curRow["AgeGroup"];
-                    if ( curRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
+					curRunOrderGroup = (String) curRow["RunOrderGroup"];
+
+					if ( curRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
                         curRound = Convert.ToInt16( (byte)curRow[curRoundName] );
                     } else if ( curRow[curRoundName].GetType() == System.Type.GetType( "System.Int16" ) ) {
                         curRound = (Int16)curRow[curRoundName];
@@ -878,7 +880,8 @@ namespace WaterskiScoringSystem.Common {
 						curFindRows = curSummaryDataTable.Select( curFilterCommand );
                         if (curFindRows.Length > 0) {
                             curDataRow = curFindRows[0];
-                            curDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
+							curDataRow["RunOrderGroup"] = curRunOrderGroup;
+							curDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
                             curDataRow["ReadyForPlcmtSlalom"] = curReadyForPlcmtSlalom;
                             curDataRow["EventClassSlalom"] = curEventClass;
                             curDataRow["TeamSlalom"] = curTeamCode;
@@ -916,7 +919,8 @@ namespace WaterskiScoringSystem.Common {
                             newDataRow["MemberId"] = curMemberId;
                             newDataRow["SkierName"] = curSkierName;
                             newDataRow["AgeGroup"] = curAgeGroup;
-                            newDataRow["State"] = curState;
+							newDataRow["RunOrderGroup"] = curRunOrderGroup;
+							newDataRow["State"] = curState;
                             newDataRow["Federation"] = curFederation;
                             newDataRow["City"] = curCity;
                             newDataRow["SkiYearAge"] = curSkiYearAge;
@@ -2193,12 +2197,25 @@ namespace WaterskiScoringSystem.Common {
             /*
              * Calculate placements based on head to head match ups
             */
-            if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                curSortCmd = "Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-            } else {
-                curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-            }
-            String curRound = "", prevRound = "", curGroup = "", prevGroup = "", curPlcmt = "";
+			if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+				curSortCmd = "Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+
+			} else if ( inDataType.ToLower().Equals( "h2h" ) ) {
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, RunOrderGroup DESC, " + curScoreAttr + " DESC, SkierName ASC";
+				} else {
+					curSortCmd = " EventGroup" + inEvent + " ASC, Round" + inEvent + " DESC, RunOrderGroup DESC, " + curScoreAttr + " DESC, SkierName ASC";
+				}
+
+			} else {
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+				} else {
+					curSortCmd = " EventGroup" + inEvent + " ASC, Round" + inEvent + " DESC, " + curScoreAttr + " DESC, SkierName ASC";
+				}
+			}
+
+			String curRound = "", prevRound = "", curGroup = "", prevGroup = "", curPlcmt = "";
             int curIdx = 0, curPlcmtPos = 1;
             Decimal curScore = 0, prevScore = -1;
             inFinalScoreDataTable.DefaultView.Sort = curSortCmd;
@@ -2212,9 +2229,26 @@ namespace WaterskiScoringSystem.Common {
                 if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
                     curGroup = (String)curRow["EventGroup" + inEvent];
                 } else {
-                    curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup" + inEvent];
+                    curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup" + inEvent] + "-" + (String) curRow["RunOrderGroup"];
                 }
-                try {
+				if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+					curGroup = (String) curRow["EventGroup" + inEvent];
+
+				} else if ( inDataType.ToLower().Equals( "h2h" ) ) {
+					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+						curGroup = (String) curRow["AgeGroup"] + "-" + (String) curRow["EventGroup" + inEvent] + "-" + (String) curRow["RunOrderGroup"];
+					} else {
+						curGroup = (String) curRow["EventGroup" + inEvent] + "-" + (String) curRow["RunOrderGroup"];
+					}
+
+				} else {
+					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+						curGroup = (String) curRow["AgeGroup"] + "-" + (String) curRow["EventGroup" + inEvent];
+					} else {
+						curGroup = (String) curRow["EventGroup" + inEvent];
+					}
+				}
+				try {
                     if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
                         curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
                     } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
@@ -2277,17 +2311,27 @@ namespace WaterskiScoringSystem.Common {
                 curIdx++;
             }
 
-            /*
+			/*
             Calculate final placements
             */
             if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                //curSortCmd = "Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-                curSortCmd = "Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-            } else {
-                //curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-                curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
-            }
-            curFinalsDataTable.DefaultView.Sort = curSortCmd;
+				curSortCmd = "Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+
+			} else if ( inDataType.ToLower().Equals( "h2h" ) ) {
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, EventGroup" + inEvent + " ASC, RunOrderGroup DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+				} else {
+					curSortCmd = " EventGroup" + inEvent + " ASC, Round" + inEvent + " DESC, RunOrderGroup DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+				}
+
+			} else {
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curSortCmd = " AgeGroup ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+				} else {
+					curSortCmd = " EventGroup" + inEvent + " ASC, Round" + inEvent + " DESC, Plcmt" + inEvent + " ASC, " + curScoreAttr + " DESC, SkierName ASC";
+				}
+			}
+			curFinalsDataTable.DefaultView.Sort = curSortCmd;
             curFinalsDataTable = curFinalsDataTable.DefaultView.ToTable();
 
             /*
@@ -3134,26 +3178,26 @@ namespace WaterskiScoringSystem.Common {
                     curSortCmd = "AgeGroup ASC, SkierName ASC, MemberId ASC, " + curRoundLabel + " ASC";
                 } else if (inPlcmtOrg.ToLower().Equals( "div" )) {
                     if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                        curSortCmd = "AgeGroup ASC, " + curRoundLabel + " ASC, " + curPlcmtLabel + ", SkierName ASC";
+                        curSortCmd = "AgeGroup ASC, " + curRoundLabel + " ASC, RunOrderGroup ASC, " + curPlcmtLabel + ", SkierName ASC";
                     } else {
                         curSortCmd = "AgeGroup ASC, " + curPlcmtLabel + ", SkierName ASC, " + curRoundLabel + " ASC";
                     }
                 } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
                     if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                        curSortCmd = "AgeGroup ASC, EventGroup ASC, " + curRoundLabel + " ASC, " + curPlcmtLabel + ", SkierName ASC";
+                        curSortCmd = "AgeGroup ASC, EventGroup ASC, " + curRoundLabel + " ASC, RunOrderGroup ASC, " + curPlcmtLabel + ", SkierName ASC";
                     } else {
                         curSortCmd = "AgeGroup ASC, EventGroup ASC, " + curPlcmtLabel + ", SkierName ASC, " + curRoundLabel + " ASC";
                     }
                 } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
                     curSortCmd = "EventGroup ASC, " + curPlcmtLabel + ", SkierName ASC ";
                     if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                        curSortCmd = "EventGroup ASC, " + curRoundLabel + " ASC, " + curPlcmtLabel + ", SkierName ASC";
+                        curSortCmd = "EventGroup ASC, " + curRoundLabel + " ASC, RunOrderGroup ASC, " + curPlcmtLabel + ", SkierName ASC";
                     } else {
                         curSortCmd = "EventGroup ASC, " + curPlcmtLabel + ", SkierName ASC, " + curRoundLabel + " ASC";
                     }
                 } else {
                     if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                        curSortCmd = curRoundLabel + " ASC, " + curPlcmtLabel + ", SkierName ASC";
+                        curSortCmd = curRoundLabel + " ASC, RunOrderGroup ASC, " + curPlcmtLabel + ", SkierName ASC";
                     } else {
                         curSortCmd = curPlcmtLabel + ", SkierName ASC, MemberId ASC, " + curRoundLabel + " ASC";
                     }
@@ -4704,7 +4748,15 @@ namespace WaterskiScoringSystem.Common {
             curCol.DefaultValue = "";
             curDataTable.Columns.Add( curCol );
 
-            curCol = new DataColumn();
+			curCol = new DataColumn();
+			curCol.ColumnName = "RunOrderGroup";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
             curCol.ColumnName = "ReadyToSki";
             curCol.DataType = System.Type.GetType( "System.String" );
             curCol.AllowDBNull = false;
@@ -5263,12 +5315,12 @@ namespace WaterskiScoringSystem.Common {
 
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append("SELECT TR.MemberId, TR.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, COALESCE(O.EventGroup, ER.EventGroup) as EventGroup, ER.TeamCode");
-            curSqlStmt.Append(", COALESCE(O.EventGroup, ER.EventGroup) as EventGroupRound, COALESCE(DV.RunOrder, 999) as DivOrder");
+            curSqlStmt.Append( ", COALESCE(O.EventGroup, ER.EventGroup) as EventGroupRound, COALESCE(O.RunOrderGroup, '') as RunOrderGroup, COALESCE(DV.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append( ", TR.SkiYearAge, TR.State, TR.Federation, TR.City" );
             curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom");
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass" );
             curSqlStmt.Append( ", COALESCE(SS.Round, 0) as Round, SS.Score, SS.NopsScore, SS.Rating, SS.MaxSpeed, SS.StartSpeed, SS.StartLen, SS.Status" );
-            curSqlStmt.Append(", SS.FinalPassNum, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore");
+            curSqlStmt.Append( ", SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore" );
             curSqlStmt.Append(", COALESCE(SS.CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(SS.CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
@@ -5306,7 +5358,7 @@ namespace WaterskiScoringSystem.Common {
             } else if ( inDataType.ToLower().Equals( "round" ) ) {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "h2h" )) {
-                curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
+                curSqlStmt.Append( "ORDER BY RunOrderGroup ASC, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "total" )) {
                 if ( inRules.ToLower().Equals( "ncwsa" ) ) {
                     curSqlStmt.Append( "ORDER BY ER.AgeGroup, TR.SkierName, SS.Round " );
@@ -5369,7 +5421,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, COALESCE(DV.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append(", COALESCE(TR.ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmtSlalom");
             curSqlStmt.Append( ", SS.Round, SS.Score, SS.NopsScore, SS.Rating, MaxSpeed, StartSpeed, StartLen, Status" );
-            curSqlStmt.Append(", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore");
+            curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore" );
             curSqlStmt.Append(", COALESCE(CompletedSpeedMph, 0) as CompletedSpeedMph, COALESCE(CompletedSpeedKph, 0) as CompletedSpeedKph ");
             curSqlStmt.Append( "FROM SlalomScore SS " );
             curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
@@ -5460,7 +5512,7 @@ namespace WaterskiScoringSystem.Common {
             } else if (inDataType.ToLower().Equals("round")) {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "h2h" )) {
-                curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
+                curSqlStmt.Append( "ORDER BY RunOrderGroup ASC, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "total" )) {
                 if ( inRules.ToLower().Equals( "ncwsa" ) ) {
                     curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
@@ -5606,7 +5658,7 @@ namespace WaterskiScoringSystem.Common {
             } else if ( inDataType.ToLower().Equals( "round" ) ) {
                 curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "h2h" )) {
-                curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );
+                curSqlStmt.Append( "ORDER BY RunOrderGroup ASC, TR.SkierName, SS.Round " );
             } else if (inDataType.ToLower().Equals( "total" )) {
                 if ( inRules.ToLower().Equals( "ncwsa" ) ) {
                     curSqlStmt.Append( "ORDER BY ER.EventGroup, TR.SkierName, SS.Round " );

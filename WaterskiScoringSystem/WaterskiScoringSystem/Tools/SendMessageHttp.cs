@@ -40,10 +40,14 @@ namespace WaterskiScoringSystem.Tools {
                     curRequest.Method = "GET";
                 }
 
-                // If required by the server, set the credentials.
-                if (inUserAccount != null) {
-                    curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-                }
+				// If required by the server, set the credentials.
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+					} else {
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+					}
+				}
 
                 RequestState curRequestState = null;
                 curRequestState = new RequestState();
@@ -51,7 +55,8 @@ namespace WaterskiScoringSystem.Tools {
                 curRequestState.WebReqst.ContentLength = curRequestState.InputMsgBuffer.Length;
 
                 curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
-            } catch (Exception ex) {
+
+			} catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":getMessage:Exception:" + ex.Message );
                 return false;
             }
@@ -79,10 +84,14 @@ namespace WaterskiScoringSystem.Tools {
                     curRequest.Method = "GET";
                 }
 
-                // If required by the server, set the credentials.
-                if (inUserAccount != null) {
-                    curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-                }
+				// If required by the server, set the credentials.
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+					} else {
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+					}
+				}
 
                 RequestState curRequestState = null;
                 curRequestState = new RequestState();
@@ -127,10 +136,14 @@ namespace WaterskiScoringSystem.Tools {
                 curRequest.KeepAlive = true;
                 curRequest.Timeout = 500000;
 
-                if (inUserAccount != null) {
-                    curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-                }
-                if (inUrl.ToLower().StartsWith( "https" )) {
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+					} else {
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+					}
+				}
+				if (inUrl.ToLower().StartsWith( "https" )) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback( AcceptAllCertifications );
                     ServicePointManager.Expect100Continue = false;
                 }
@@ -175,11 +188,11 @@ namespace WaterskiScoringSystem.Tools {
             List<object> curResponseDataList = null;
 
             try {
-                //Create a request using a URL that can receive a post
-                curRequest = (HttpWebRequest) WebRequest.Create(inUrl);
+				//Create a request using a URL that can receive a post
+				curRequest = (HttpWebRequest) WebRequest.Create( inUrl );
 
-                //Set the Method property of the request to POST.
-                if ( inPostMethod ) {
+				//Set the Method property of the request to POST.
+				if ( inPostMethod ) {
                     curRequest.Method = "POST";
                 } else {
                     curRequest.Method = "GET";
@@ -189,25 +202,29 @@ namespace WaterskiScoringSystem.Tools {
                 curRequest.KeepAlive = true;
                 curRequest.Timeout = 500000;
 
-                if ( inUserAccount != null ) {
-                    curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
-					inHeaderParams.Add( "AUTHORIZATION", "Basic " + inUserAccount + ":" + inPassword );
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+					} else {
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+					}
 				}
 				if ( inUrl.ToLower().StartsWith("https") ) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                     ServicePointManager.Expect100Continue = false;
                 }
 
-                //Set header parameters to the WebRequest
-                ( (HttpWebRequest) curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
-                if ( inHeaderParams != null ) {
+				//Set header parameters to the WebRequest
+				( (HttpWebRequest) curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
+
+				if ( inHeaderParams != null ) {
                     foreach ( string curKey in inHeaderParams.Keys ) {
                         curRequest.Headers[curKey] = inHeaderParams[curKey];
                     }
                 }
 
-                //Send request to upload file
-                curResponse = (HttpWebResponse) curRequest.GetResponse();
+				//Send request to upload file
+				curResponse = (HttpWebResponse) curRequest.GetResponse();
                 curResponseStream = curResponse.GetResponseStream();
                 curStreamReader = new StreamReader(curResponseStream);
                 String curResponseMessage = curStreamReader.ReadToEnd();
@@ -264,9 +281,13 @@ namespace WaterskiScoringSystem.Tools {
                 curRequest.KeepAlive = true;
                 curRequest.Timeout = 500000;
 
-                if (inUserAccount != null) {
-                    curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-                }
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+					} else {
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+					}
+				}
                 if (inUrl.ToLower().StartsWith( "https" )) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback( AcceptAllCertifications );
                     ServicePointManager.Expect100Continue = false;
@@ -633,9 +654,13 @@ namespace WaterskiScoringSystem.Tools {
                         Log.WriteFile( curMethodName + ":Unable to connect to " + curUrl );
                     } else {
                         curRequest.Method = "POST";
-                        if (inUserAccount != null) {
-                            curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-                        }
+						if ( inUserAccount != null ) {
+							if ( inUrl.Contains( "usawaterski" ) ) {
+								curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+							} else {
+								curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+							}
+						}
 
                         // Set the ContentType property of the WebRequest.
                         if (inContentType == null) {

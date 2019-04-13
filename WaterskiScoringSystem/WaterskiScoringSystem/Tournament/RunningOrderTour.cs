@@ -37,16 +37,18 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataRow myTourRow;
         private DataTable myEventRegDataTable;
+		private Dictionary<string, Boolean> myRunningOrderColumnFilter;
 
-        private TourProperties myTourProperties;
+		private TourProperties myTourProperties;
         private SortDialogForm sortDialogForm;
         private FilterDialogForm filterDialogForm;
         private ListSkierClass mySkierClassList;
+		private ColumnSelectDialogcs columnSelectDialogcs;
         private DataGridViewPrinter myPrintDataGrid;
         private PrintDocument myPrintDoc;
-        #endregion
+		#endregion
 
-        public RunningOrderTour() {
+		public RunningOrderTour() {
             isLoadInProg = true;
             InitializeComponent();
             myWindowTitle = this.Text;
@@ -57,16 +59,25 @@ namespace WaterskiScoringSystem.Tournament {
             if (inEvent.Equals( "Slalom" )) {
                 mySortCmd = myTourProperties.RunningOrderSortSlalom;
                 slalomButton.Checked = true;
-            } else if ( inEvent.Equals( "Trick" ) ) {
+
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterSlalom;
+
+			} else if ( inEvent.Equals( "Trick" ) ) {
                 mySortCmd = myTourProperties.RunningOrderSortTrick;
                 trickButton.Checked = true;
-            } else if ( inEvent.Equals( "Jump" ) ) {
+
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterTrick;
+
+			} else if ( inEvent.Equals( "Jump" ) ) {
                 mySortCmd = myTourProperties.RunningOrderSortJump;
                 jumpButton.Checked = true;
-            }
-        }
 
-        private void RunningOrderTour_Load(object sender, EventArgs e) {
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterJump;
+			}
+			getRunningOrderColumnfilter();
+		}
+
+		private void RunningOrderTour_Load(object sender, EventArgs e) {
             if (Properties.Settings.Default.RunningOrder_Width > 0) {
                 this.Width = Properties.Settings.Default.RunningOrder_Width;
             }
@@ -87,10 +98,10 @@ namespace WaterskiScoringSystem.Tournament {
             filterDialogForm = new Common.FilterDialogForm();
             filterDialogForm.ColumnListArray = curList;
 
-            // Retrieve data from database
-            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			// Retrieve data from database
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 
-            if (mySanctionNum == null) {
+			if ( mySanctionNum == null) {
                 MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
                 //this.Close();
             } else {
@@ -215,10 +226,12 @@ namespace WaterskiScoringSystem.Tournament {
             if (slalomButton.Checked) {
                 TrickBoat.Visible = false;
                 JumpHeight.Visible = false;
-            } else if (trickButton.Checked) {
+
+			} else if (trickButton.Checked) {
                 TrickBoat.Visible = true;
                 JumpHeight.Visible = false;
-            } else if (jumpButton.Checked) {
+
+			} else if (jumpButton.Checked) {
                 TrickBoat.Visible = false;
                 JumpHeight.Visible = true;
             }
@@ -385,7 +398,13 @@ namespace WaterskiScoringSystem.Tournament {
             winStatusMsg.Text = "Retrieving tournament entries";
             Cursor.Current = Cursors.WaitCursor;
 
-            try {
+			PrintHcapBase.Visible = false;
+			PrintRankingRating.Visible = false;
+			PrintReadyForPlcmt.Visible = false;
+			PrintRunOrder.Visible = false;
+			PrintHCapScore.Visible = false;
+
+			try {
                 if ( myEventRegDataTable.Rows.Count > 0 ) {
                     PrintDataGridView.Rows.Clear();
                     if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
@@ -407,10 +426,12 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( slalomButton.Checked ) {
                         PrintTrickBoat.Visible = false;
                         PrintJumpHeight.Visible = false;
-                    } else if ( trickButton.Checked ) {
+
+					} else if ( trickButton.Checked ) {
                         PrintTrickBoat.Visible = true;
                         PrintJumpHeight.Visible = false;
-                    } else if ( jumpButton.Checked ) {
+
+					} else if ( jumpButton.Checked ) {
                         PrintTrickBoat.Visible = false;
                         PrintJumpHeight.Visible = true;
                     }
@@ -452,13 +473,16 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintRow.Cells["PrintEvent"].Value = (String)curTeamRow["Event"];
                         curPrintRow.Cells["PrintAgeGroup"].Value = (String)curTeamRow["AgeGroup"];
                         curPrintRow.Cells["PrintEventGroup"].Value = (String) curTeamRow["EventGroup"];
-                        try {
-                            //curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
-                            curPrintRow.Cells["PrintEventRotation"].Value = ( (Int16)curTeamRow["Rotation"] ).ToString() ;
-                        } catch {
-                            curPrintRow.Cells["PrintEventRotation"].Value = "";
-                        }
-                        try {
+						if ( PrintEventRotation.Visible ) {
+							try {
+								curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
+							} catch {
+								curPrintRow.Cells["PrintEventRotation"].Value = "";
+							}
+						} else {
+							curPrintRow.Cells["PrintEventRotation"].Value = "";
+						}
+						try {
                             curPrintRow.Cells["PrintEventClass"].Value = (String)curTeamRow["EventClass"];
                         } catch {
                             curPrintRow.Cells["PrintEventClass"].Value = "";
@@ -771,7 +795,6 @@ namespace WaterskiScoringSystem.Tournament {
         private void navSort_Click(object sender, EventArgs e) {
             replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
             sortDialogForm.SortCommand = mySortCmd;
-            //sortDialogForm.SortCommand = "";
             sortDialogForm.ShowDialog( this );
 
             // Determine if the OK button was clicked on the dialog box.
@@ -840,7 +863,41 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void navExport_Click(object sender, EventArgs e) {
+		private void navColumnSelect_Click( object sender, EventArgs e ) {
+			// Display the form as a modal dialog box.
+			columnSelectDialogcs.ShowDialog( this );
+
+			// Determine if the OK button was clicked on the dialog box.
+			if ( columnSelectDialogcs.DialogResult == DialogResult.OK ) {
+				DataTable curPrintColumnSelectList = columnSelectDialogcs.ColumnList;
+				foreach ( DataGridViewColumn curViewCol in this.PrintDataGridView.Columns ) {
+					foreach ( DataRow curColSelect in curPrintColumnSelectList.Rows ) {
+						if ( ( (String) curColSelect["Name"] ).Equals( (String) curViewCol.Name ) ) {
+							curViewCol.Visible = (Boolean) curColSelect["Visible"];
+
+							if ( myRunningOrderColumnFilter.ContainsKey( (String) curViewCol.Name ) ) {
+								myRunningOrderColumnFilter[(String) curViewCol.Name] = curViewCol.Visible;
+							} else { 
+								myRunningOrderColumnFilter.Add( (String) curViewCol.Name, curViewCol.Visible );
+							}
+							break;
+                        }
+					}
+				}
+				if ( slalomButton.Checked) {
+					this.myTourProperties.RunningOrderColumnFilterSlalom = myRunningOrderColumnFilter;
+
+				} else if ( trickButton.Checked) {
+					this.myTourProperties.RunningOrderColumnFilterTrick = myRunningOrderColumnFilter;
+
+				} else if ( jumpButton.Checked) {
+					this.myTourProperties.RunningOrderColumnFilterJump = myRunningOrderColumnFilter;
+				}
+				winStatusMsg.Text = "Selected columns to view on print";
+			}
+		}
+
+		private void navExport_Click(object sender, EventArgs e) {
             String curEvent = "Slalom";
             if ( slalomButton.Checked ) {
                 curEvent = "Slalom";
@@ -1107,7 +1164,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curEvent = "Jump";
             }
             ExportData myExportData = new ExportData();
-            myExportData.exportData(EventRegDataGridView, curEvent + "RunOrderList.txt");
+            myExportData.exportData( PrintDataGridView, curEvent + "RunOrderList.txt");
         }
 
         private void writeExportFile(StreamWriter outBuffer, StringBuilder outLine, bool inSideBySide) {
@@ -1143,7 +1200,9 @@ namespace WaterskiScoringSystem.Tournament {
 
                     loadGroupSelectList( "Slalom", checkBoxGroup_CheckedChanged );
 
-                    winStatusMsg.Text = "Sorted by " + mySortCmd;
+					getRunningOrderColumnfilter();
+
+					winStatusMsg.Text = "Sorted by " + mySortCmd;
                     myEventRegDataTable = getEventRegData();
                     loadEventRegView();
                 }
@@ -1159,7 +1218,9 @@ namespace WaterskiScoringSystem.Tournament {
 
                     loadGroupSelectList( "Trick", checkBoxGroup_CheckedChanged );
 
-                    winStatusMsg.Text = "Sorted by " + mySortCmd;
+					getRunningOrderColumnfilter();
+
+					winStatusMsg.Text = "Sorted by " + mySortCmd;
                     myEventRegDataTable = getEventRegData();
                     loadEventRegView();
                 }
@@ -1175,7 +1236,9 @@ namespace WaterskiScoringSystem.Tournament {
 
                     loadGroupSelectList( "Jump", checkBoxGroup_CheckedChanged );
 
-                    winStatusMsg.Text = "Sorted by " + mySortCmd;
+					getRunningOrderColumnfilter();
+
+					winStatusMsg.Text = "Sorted by " + mySortCmd;
                     myEventRegDataTable = getEventRegData();
                     loadEventRegView();
                 }
@@ -1523,9 +1586,6 @@ namespace WaterskiScoringSystem.Tournament {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
-            //Font saveShowDefaultCellStyle = PrintDataGridView.DefaultCellStyle.Font;
-            //PrintDataGridView.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
@@ -1549,7 +1609,7 @@ namespace WaterskiScoringSystem.Tournament {
                 myPrintDoc = new PrintDocument();   
                 myPrintDoc.DocumentName = this.Text;
                 myPrintDoc.DefaultPageSettings.Margins = new Margins( 30, 30, 30, 30 );
-                myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
+				myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
                         CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 if (printHeaderNote.Text.Length > 0) {
@@ -1741,7 +1801,70 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnValue;
         }
 
-        private DataTable getTourData(String inSanctionId) {
+		private DataTable buildPrintColumnList() {
+			/* **********************************************************
+             * Build data tabale definition containing the list of columns 
+			 * on the data grid used to print data 
+             * ******************************************************* */
+			DataTable curDataTable = new DataTable();
+
+			DataColumn curCol = new DataColumn();
+			curCol.ColumnName = "Name";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = true;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "Visible";
+			curCol.DataType = System.Type.GetType( "System.Boolean" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 1;
+			curDataTable.Columns.Add( curCol );
+
+			return curDataTable;
+		}
+
+		private void getRunningOrderColumnfilter() {
+			if ( slalomButton.Checked ) {
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterSlalom;
+
+			} else if ( trickButton.Checked ) {
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterTrick;
+
+			} else if ( jumpButton.Checked ) {
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterJump;
+
+			} else {
+				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterSlalom;
+
+			}
+
+			DataRowView newRow;
+			DataTable curPrintColumnSelectList = buildPrintColumnList();
+			foreach ( DataGridViewColumn curCol in this.PrintDataGridView.Columns ) {
+				newRow = curPrintColumnSelectList.DefaultView.AddNew();
+				newRow["Name"] = curCol.Name;
+				if ( myRunningOrderColumnFilter.ContainsKey( curCol.Name ) ) {
+					newRow["Visible"] = myRunningOrderColumnFilter[curCol.Name];
+
+				} else {
+					if ( myRunningOrderColumnFilter.ContainsKey( curCol.Name ) ) {
+						newRow["Visible"] = (bool) myRunningOrderColumnFilter[curCol.Name];
+					} else {
+						newRow["Visible"] = curCol.Visible;
+					}
+				}
+				newRow.EndEdit();
+			}
+			columnSelectDialogcs = new ColumnSelectDialogcs();
+			columnSelectDialogcs.ColumnList = curPrintColumnSelectList;
+
+		}
+
+		private DataTable getTourData(String inSanctionId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation " );
@@ -1870,5 +1993,5 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnValue;
         }
 
-    }
+	}
 }

@@ -439,7 +439,7 @@ namespace WaterskiScoringSystem.Tournament {
 							curCanSki = false;
 						}
 						try {
-							if ( ( (String) curDataRow["CanSki"] ).ToUpper().Equals( "TRUE" ) ) {
+							if ( ( (String) curDataRow["CanSkiGR"] ).ToUpper().Equals( "TRUE" ) ) {
 								curCanSkiGR = true;
 							} else {
 								curCanSkiGR = false;
@@ -615,10 +615,10 @@ namespace WaterskiScoringSystem.Tournament {
 			String curMethodName = "sendRequest";
 			/* -----------------------------------------------------------------------
             * Validate TourID value for scores to be Exported.
-            * http://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
-            * http://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&FirstName=David&LastName=Allen
+            * https://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
+            * https://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&FirstName=David&LastName=Allen
             *
-            *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
+            *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:www.usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
             ----------------------------------------------------------------------- */
 
 			StringBuilder curQueryString = new StringBuilder( "" );
@@ -634,7 +634,7 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			String curContentType = "application/json; charset=UTF-8";
-			String curOfficialExportListUrl = "http://usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curOfficialExportListUrl = "https://usawaterski.org/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curOfficialExportListUrl + curQueryString.ToString();
 			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {

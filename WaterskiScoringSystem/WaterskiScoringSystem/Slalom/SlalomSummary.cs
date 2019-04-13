@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Slalom {
             String[] curList = { "MemberId", "SkierName", "City", "State", "SkiYearAge", "AgeGroup", "EventGroup", "Event"
                     , "EventClassSlalom", "PlcmtSlalom", "TeamSlalom", "HCapBaseSlalom"
                     , "RoundSlalom", "ScoreSlalom", "PointsSlalom"
-                    , "FinalPassNum", "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };
+                    , "FinalSpeedMph", "FinalSpeedKph", "FinalLen", "FinalLenOff", "FinalPassScore" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -210,14 +210,6 @@ namespace WaterskiScoringSystem.Slalom {
                     myTourProperties.SlalomSummaryPlcmtMethod = curPlcmtMethod;
                 }
 
-                if (h2hScoreButton.Checked) {
-                    EventGroup.Visible = true;
-                    if (plcmtTourButton.Checked) {
-                        curPlcmtOrg = "tour";
-                    } else {
-                        curPlcmtOrg = "div";
-                    }
-                }
                 if ( h2hScoreButton.Checked || finalScoreButton.Checked ) {
                     if ( numPrelimTextBox.Text.Length == 0 ) {
                         MessageBox.Show( "Number of preliminary rounds is required for Head to Head reporting" );
@@ -297,14 +289,20 @@ namespace WaterskiScoringSystem.Slalom {
 
         private void loadDataGrid(DataTable inDataTable) {
             Int16 curRound = 0, prevRound = 0;
-            String curEventClass = "";
+            String curEventClass = "", curH2hGroup = "";
             String curReportGroup = "", prevReportGroup = "";
             String curDiv = "", curGroup = "";
             Int16 curNumPrelimRounds = 0;
             DataGridViewRow curViewRow;
             scoreSummaryDataGridView.Rows.Clear();
 
-            try {
+			if ( h2hScoreButton.Checked ) {
+				h2hGroup.Visible = true;
+			} else {
+				h2hGroup.Visible = false;
+			}
+
+			try {
                 curNumPrelimRounds = Convert.ToInt16( numPrelimTextBox.Text );
             } catch {
                 curNumPrelimRounds = 0;
@@ -340,7 +338,13 @@ namespace WaterskiScoringSystem.Slalom {
 
                     #region Determine group, division and any required data breaks
                     curGroup = ( String ) curRow["EventGroup"];
-                    if ( ( (String)curRow["AgeGroup"] ).Length > 2 ) {
+					if ( h2hScoreButton.Checked ) {
+						curH2hGroup = (String)curRow["RunOrderGroup"];
+					} else {
+						curH2hGroup = "";
+					}
+
+					if ( ( (String)curRow["AgeGroup"] ).Length > 2 ) {
                         curDiv = ( (String)curRow["AgeGroup"] ).Substring( 0, 2 );
                     } else {
                         curDiv = (String)curRow["AgeGroup"];
@@ -453,6 +457,8 @@ namespace WaterskiScoringSystem.Slalom {
                     }
 
                     curViewRow.Cells["EventGroup"].Value = curGroup;
+					curViewRow.Cells["h2hGroup"].Value = curH2hGroup;
+					
                     if ( ( (String)curRow["AgeGroup"] ).Length > 2 ) {
                         curViewRow.Cells["AgeGroup"].Value = ( (String)curRow["AgeGroup"] ).Substring( 0, 2 );
                     } else {
@@ -497,11 +503,6 @@ namespace WaterskiScoringSystem.Slalom {
                         curViewRow.Cells["NopsScore"].Value = ( (Decimal)curRow["PointsSlalom"] ).ToString( "###0.0" );
                     } catch {
                         curViewRow.Cells["NopsScore"].Value = 0;
-                    }
-                    try {
-                        curViewRow.Cells["FinalPassNum"].Value = (Byte)curRow["FinalPassNum"];
-                    } catch {
-                        curViewRow.Cells["FinalPassNum"].Value = 0;
                     }
                     try {
                         curViewRow.Cells["FinalSpeedMph"].Value = (Byte)curRow["FinalSpeedMph"];
@@ -817,12 +818,17 @@ namespace WaterskiScoringSystem.Slalom {
                 curFilterCmd = "Round > " + curNumPrelimRounds;
             }
 
-            curSortCmd = "Round ASC";
+            curSortCmd = "";
             if (plcmtTourButton.Checked) {
-            } else {
-                curSortCmd = "AgeGroup ASC, Round ASC";
-            }
-            curSortCmd += ", EventGroup ASC";
+				curSortCmd = "Round ASC, RunOrderGroup ASC";
+			} else if ( plcmtDivButton.Checked ) {
+                curSortCmd = "AgeGroup ASC, Round ASC, RunOrderGroup ASC";
+			} else if ( groupPlcmtButton.Checked ) {
+				curSortCmd = "EventGroup ASC, Round ASC, RunOrderGroup ASC";
+			} else {
+				curSortCmd = "AgeGroup ASC, EventGroupSlalom ASC, Round ASC, RunOrderGroup ASC";
+			}
+
             if (rawScoreButton.Checked) {
                 curSortCmd += ", ScoreSlalom DESC";
             } else if (pointsScoreButton.Checked) {
@@ -834,7 +840,9 @@ namespace WaterskiScoringSystem.Slalom {
 
             if (plcmtDivButton.Checked) {
                 curPlcmtOrg = "div";
-            } else {
+			} else if ( groupPlcmtButton.Checked ) {
+				curPlcmtOrg = "group";
+			} else {
                 curPlcmtOrg = "tour";
             }
 
@@ -873,14 +881,21 @@ namespace WaterskiScoringSystem.Slalom {
 
 
             DataRow[] curFindRows = null;
-            String curMemberId = "", curAgeGroup = "";
+            String curMemberId = "", curAgeGroup = "", curEventGroup = "";
             int curRound = 0;
             foreach (DataRow curRow in curShowDataTable.Rows) {
                 curMemberId = (String)curRow["MemberId"];
                 curAgeGroup = (String)curRow["AgeGroup"];
-                curRound = (Int16)curRow["Round"];
-                curFindRows = curEventRegDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "' AND Round = " + curRound );
-                if (curFindRows.Length > 0) {
+				curEventGroup = (String) curRow["EventGroupSlalom"];
+				curRound = (Int16)curRow["Round"];
+				if ( plcmtDivButton.Checked ) {
+					curFindRows = curEventRegDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "' AND Round = " + curRound );
+				} else if ( groupPlcmtButton.Checked ) {
+					curFindRows = curEventRegDataTable.Select( "MemberId = '" + curMemberId + "' AND EventGroup = '" + curEventGroup + "' AND Round = " + curRound );
+				} else {
+					curFindRows = curEventRegDataTable.Select( "MemberId = '" + curMemberId + "' AND Round = " + curRound );
+				}
+				if ( curFindRows.Length > 0) {
                     try {
                         curRow["RunOrder"] = curFindRows[0]["RunOrder"];
                     } catch {

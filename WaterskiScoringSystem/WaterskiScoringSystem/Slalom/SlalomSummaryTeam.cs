@@ -541,11 +541,6 @@ namespace WaterskiScoringSystem.Slalom {
                             curPrintRow.Cells["PrintSkierPlcmtSlalom"].Value = (String)curTeamSkierList[curSkierIdx]["PlcmtSlalom"];
 
                             try {
-                                curPrintRow.Cells["PrintFinalPassNum"].Value = (Byte)curTeamSkierList[curSkierIdx]["FinalPassNum"];
-                            } catch {
-                                curPrintRow.Cells["PrintFinalPassNum"].Value = 0;
-                            }
-                            try {
                                 curPrintRow.Cells["PrintFinalSpeedMph"].Value = (Byte)curTeamSkierList[curSkierIdx]["FinalSpeedMph"];
                             } catch {
                                 curPrintRow.Cells["PrintFinalSpeedMph"].Value = 0;

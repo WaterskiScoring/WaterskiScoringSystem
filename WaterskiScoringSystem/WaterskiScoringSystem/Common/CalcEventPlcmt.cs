@@ -681,7 +681,7 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
                 curSqlStmt.Append(", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
                 curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
-                curSqlStmt.Append( ", MaxSpeed, StartSpeed, StartLen, Status, FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore " );
+                curSqlStmt.Append( ", MaxSpeed, StartSpeed, StartLen, Status, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore " );
                 curSqlStmt.Append( "FROM SlalomScore SS " );
                 curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
                 curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );

@@ -19,7 +19,7 @@ namespace WaterskiScoringSystem.Trick {
         private String mySanctionNum = null;
         private Int16 myTrickRounds;
         private String myVideoLoadUrl = "https://api.sproutvideo.com/v1/videos";
-        private char[] myCharDelimLimit = new char[] { ' ', '_', '-' };
+        private char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
         private List<String> mySelectedFileList = new List<String>();
         private List<SkierVideoEntry> mySkierVideoList = null;
         private OpenFileDialog myFileDialog = null;
@@ -220,10 +220,8 @@ namespace WaterskiScoringSystem.Trick {
 
         private void ReviewButton_Click( object sender, EventArgs e ) {
             String curMethodName = "ViewButton_Click";
-            ReviewVideoMatchDataGridView.Rows.Clear();
-            ReviewVideoMatchDataGridView.Visible = true;
-            DataGridViewRow curViewRow;
-            int curViewIdx = 0;
+			ReviewVideoMatchDataGridView.DataSource = null;
+			ReviewVideoMatchDataGridView.Visible = true;
 
             //Get all avaialble trick skiers if filtered search found zero skiers
 
@@ -233,7 +231,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append("JOIN TourReg R ON R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup ");
             curSqlStmt.Append("LEFT OUTER JOIN TrickVideo V ON V.SanctionId = S.SanctionId AND V.MemberId = S.MemberId ");
             curSqlStmt.Append("AND V.AgeGroup = S.AgeGroup AND V.Round = S.Round ");
-            curSqlStmt.Append("where S.sanctionid = '16W999' ");
+            curSqlStmt.Append("where S.sanctionid = '" + mySanctionNum + "' ");
             curSqlStmt.Append("Order by S.AgeGroup, R.SkierName, S.Round ");
             DataTable curDataTable = getData(curSqlStmt.ToString());
 
@@ -486,14 +484,33 @@ namespace WaterskiScoringSystem.Trick {
             DataRow[] curFindSkiers = null;
             String curFileName = Path.GetFileName( inSkierVideoEntry.VideoFileName).Substring( 0, curDelimIdx );
 
-            String curFileNameMod = Regex.Replace( curFileName, @"(\p{Lu})", " $1" ).TrimStart();
-            String[] curFileNameNodes = curFileNameMod.Split( myCharDelimLimit, StringSplitOptions.RemoveEmptyEntries );
-            if (curFileNameNodes.Length > 1) {
-                /*
+			//Search for uppercase characters and insert a space to allow the string to be split into nodes by camelcase notation
+			String curFileNameMod = Regex.Replace( curFileName, @"(\p{Lu})", " $1" ).TrimStart();
+			//char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
+			String[] curFileNameNodes = curFileNameMod.Split( myCharDelimLimit, StringSplitOptions.RemoveEmptyEntries );
+
+			if ( curFileNameNodes.Length > 1) {
+				/*
                  * Search list of all skiers to determine if the parsed file name can be matched to a skier
                  */
-                String curFilter = String.Format("SkierName like '%{0}%' AND SkierName like '%{1}%'", curFileNameNodes[0], curFileNameNodes[1]);
-                curFindSkiers = myFullSkierDataTable.Select(curFilter);
+				// Determine if first 2 nodes of file name matches skier name exactly as lastname, firstname
+				String curFilter = String.Format( "SkierName = '{0}, {1}'", curFileNameNodes[0], curFileNameNodes[1] );
+				curFindSkiers = myFullSkierDataTable.Select( curFilter );
+				if ( curFindSkiers.Length == 0 ) {
+					// Determine if first 2 nodes of file name matches skier name exactly as firstname, lastname
+					curFilter = String.Format( "SkierName = '{0}, {1}'", curFileNameNodes[1], curFileNameNodes[0] );
+					curFindSkiers = myFullSkierDataTable.Select( curFilter );
+				}
+				if ( curFindSkiers.Length == 0 ) {
+					// Determine if first 2 nodes of file name has a familia match to the skier name as starts with lastname section and ends with firstname section
+					curFilter = String.Format( "SkierName like '{0}%' AND SkierName like '%{1}'", curFileNameNodes[0], curFileNameNodes[1] );
+					curFindSkiers = myFullSkierDataTable.Select( curFilter );
+				}
+				if ( curFindSkiers.Length == 0 ) {
+					// Determine if first 2 nodes of file name has a familia match to the skier name as starts with firstname section and ends with lastname section
+					curFilter = String.Format( "SkierName like '{0}%' AND SkierName like '%{1}'", curFileNameNodes[1], curFileNameNodes[0] );
+					curFindSkiers = myFullSkierDataTable.Select( curFilter );
+				}
                 if ( curFindSkiers.Length == 0 ) {
                     curFilter = String.Format("SkierName like '%{0}%' AND SkierName like '%{1}%'", curFileNameNodes[1], curFileNameNodes[2]);
                     curFindSkiers = myFullSkierDataTable.Select(curFilter);
@@ -556,9 +573,11 @@ namespace WaterskiScoringSystem.Trick {
             } else {
                 if ( curFindSkiers == null ) {
                     mySkierSelectDialog.SkierMatchList = null;
-                } else if ( curFindSkiers.Length > 1 ) {
+
+				} else if ( curFindSkiers.Length > 1 ) {
                     mySkierSelectDialog.SkierMatchList = curFindSkiers;
-                } else {
+
+				} else {
                     mySkierSelectDialog.SkierMatchList = null;
                 }
 

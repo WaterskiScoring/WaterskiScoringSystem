@@ -290,25 +290,28 @@ namespace WaterskiScoringSystem.Tools {
                     curRow = curDataTable.Rows[0];
                     setCellValue(23, "B", transformName( curRow["SkierName"].ToString() ));
                     setCellValue(23, "F", curRow["MemberId"].ToString() );
-                    setCellValue(29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
+					setCellValue( 27, "F", curRow["SkiYearAge"].ToString() );
+					setCellValue( 29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
                     if (inEvent.Equals( "Slalom" )) {
-                        String curValue = curRow["Score"].ToString()
-                            + " : " + curRow["FinalPassScore"].ToString()
-                            + " @ "+ curRow["FinalLenOff"].ToString()
+                        String curValue = ( (decimal) curRow["Score"]).ToString("#0.00")
+                            + " : " + ( (decimal) curRow["FinalPassScore"]).ToString("0.00")
+                            + " @ "+ (String)curRow["FinalLenOff"]
                             + " " + curRow["FinalSpeedMPH"].ToString() + "mph " 
                             + " (" 
                             + curRow["FinalSpeedKph"].ToString() + "kph " 
-                            + curRow["FinalLen"].ToString() + "M"
+                            + (String) curRow["FinalLen"] + "M"
                             + ")" ;
                         setCellValue( 14, "G", curValue );
-                    } else if (inEvent.Equals( "Jump" )) {
-                        String curValue = curRow["Score"].ToString()
-                            + " feet (" + curRow["ScoreMeters"].ToString() + "M)"
-                            + " @ " + curRow["BoatSpeed"].ToString() + "mph"
-                            + " " + curRow["RampHeight"].ToString() + " ramp";
+
+					} else if (inEvent.Equals( "Jump" )) {
+                        String curValue = ( (decimal) curRow["Score"]).ToString("#00")
+                            + " feet (" + ( (decimal) curRow["ScoreMeters"]).ToString( "00.0" ) + "M)"
+                            + " @ " + curRow["BoatSpeedKph"].ToString() + "kph"
+							+ " ( " + ( (decimal) curRow["BoatSpeedMph"]).ToString( "00.0" ) + "mph)"
+							+ " " + curRow["RampHeight"].ToString() + " ramp";
                         setCellValue( 14, "G", curValue );
-                        //S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed
-                    } else {
+
+					} else {
                         setCellValue( 14, "G", curRow["Score"].ToString() );
                     }
                     setCellValue(16, "C", curRow["LastUpdateDate"].ToString() );
@@ -1224,7 +1227,7 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getSkierInfo(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT Distinct E.Event, E.MemberId, T.SkierName, E.AgeGroup as Div, E.TeamCode" );
+            curSqlStmt.Append( "SELECT Distinct E.Event, E.MemberId, T.SkierName, E.AgeGroup as Div, T.SkiYearAge, E.TeamCode" );
             curSqlStmt.Append( ", T.State, T.City, COALESCE(S.EventClass, E.EventClass) as EventClass " );
             curSqlStmt.Append( ", B.BoatModel as BoatModel, B.ModelYear, B.SpeedControlVersion " );
             if (inEvent.Equals( "Slalom" )) {
@@ -1238,10 +1241,11 @@ namespace WaterskiScoringSystem.Tools {
                 curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                 curSqlStmt.Append( "     INNER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
             } else if (inEvent.Equals( "Jump" )) {
-                curSqlStmt.Append( ", Round, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed, S.LastUpdateDate " );
+                curSqlStmt.Append( ", Round, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph, S.LastUpdateDate " );
                 curSqlStmt.Append( "FROM EventReg E " );
                 curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                 curSqlStmt.Append( "     INNER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+				curSqlStmt.Append( "     INNER JOIN CodeValueList ON ListName = 'JumpSpeeds' AND MaxValue = S.BoatSpeed" );
             }
             curSqlStmt.Append( "     LEFT OUTER JOIN TourBoatUse B ON B.SanctionId = T.SanctionId AND B.HullId = S.Boat " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "' AND E.AgeGroup = '" + inDiv + "' AND E.Event = '" + inEvent + "' " );
@@ -1252,7 +1256,7 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, AgeGroup as Div, Round, EventClass" );
             curSqlStmt.Append( ", Score, NopsScore, StartLen, StartSpeed, Boat" );
-            curSqlStmt.Append( ", FinalPassNum, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
+            curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
             curSqlStmt.Append( " FROM SlalomScore " );
             curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound );
@@ -1307,14 +1311,15 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getSkierJumpRecap(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT R.PassNum, R.LastUpdateDate, R.RampHeight, R.BoatSpeed" );
+            curSqlStmt.Append( "SELECT R.PassNum, R.LastUpdateDate, R.RampHeight, R.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph" );
             curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters, Results" );
             curSqlStmt.Append( ", BoatSplitTime2 as Split82Time, BoatEndTime as Split41Time, BoatSplitTime as Split52Time" );
             curSqlStmt.Append( ", ReturnToBase, ScoreProt, Reride, RerideReason, R.Note as RideNote, S.Note as ScoreNote " );
             curSqlStmt.Append( "FROM JumpScore S " );
-            curSqlStmt.Append( "  Inner Join JumpRecap R on R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup AND R.Round = S.Round " );
+            curSqlStmt.Append( "  INNER JOIN JumpRecap R on R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup AND R.Round = S.Round " );
             curSqlStmt.Append( "             AND R.ScoreFeet = S.ScoreFeet AND R.ScoreMeters = S.ScoreMeters " );
-            curSqlStmt.Append( "WHERE S.SanctionId = '" + inSanctionId + "' AND S.MemberId = '" + inMemberId + "'" );
+			curSqlStmt.Append( "  INNER JOIN CodeValueList ON ListName = 'JumpSpeeds' AND MaxValue = R.BoatSpeed " );
+			curSqlStmt.Append( "WHERE S.SanctionId = '" + inSanctionId + "' AND S.MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "  AND S.AgeGroup = '" + inAgeGroup + "' AND S.Round = " + inRound + " " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, S.MemberId, S.AgeGroup, S.Round, PassNum" );
             return getData( curSqlStmt.ToString() );

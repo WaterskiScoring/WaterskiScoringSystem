@@ -15,11 +15,13 @@ namespace WaterskiScoringSystem.Common {
 
     public partial class SlalomSpeedSelect : UserControl {
         public DataTable myDataTable;
-        private Int16 myMaxSpeed;
-        private Int16 myMinSpeed;
-        private Int16 myShowValueNum = 0;
+		private String myAgeGroup;
+		private Int16 myMaxSpeedKph;
+        private Int16 myMinSpeedKph;
+        private Int16 myShowSpeedKph = 0;
+		private EventHandler myParentEvent;
 
-        public SlalomSpeedSelect() {
+		public SlalomSpeedSelect() {
             InitializeComponent();
         }
 
@@ -27,78 +29,128 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public void SelectList_Load(EventHandler parentEvent) {
-            Decimal curListCode = 0;
-            String curListValue = "";
-            RadioButtonWithValue curRadioButton;
-            int curItemLoc = 1;
-            int curItemSize = 0;
-            getSlalomSpeedList();
+			myDataTable = getSlalomSpeedList();
+			myParentEvent = parentEvent;
+            loadSelectionList();
+		}
 
-            foreach (DataRow curRow in myDataTable.Rows) {
-                curListCode = (Decimal)curRow["ListCodeNum"];
-                curListValue = (String)curRow["CodeValue"] + "/" + (String)curRow["ListCode"];
-                curItemSize = curListValue.Length * 8;
+		public void refreshSelectionList( String inAgeGroup, Int16 inMaxSpeedKph, Int16 inMinSpeedKph ) {
+			this.myMaxSpeedKph = inMaxSpeedKph;
+			this.myMinSpeedKph = inMinSpeedKph;
+			this.myAgeGroup = inAgeGroup;
+            this.Controls.Clear();
+			loadSelectionList();
 
-                curRadioButton = new RadioButtonWithValue();
-                curRadioButton.AutoSize = true;
-                curRadioButton.Location = new System.Drawing.Point(1, curItemLoc);
-                curRadioButton.Name = curListValue;
-                curRadioButton.Size = new System.Drawing.Size(curItemSize, 15);
-                curRadioButton.TabIndex = 0;
-                curRadioButton.TabStop = true;
-                curRadioButton.Text = curListValue;
-                curRadioButton.UseVisualStyleBackColor = true;
-                curRadioButton.Value = curListCode.ToString("00");
-                curItemLoc += 17;
-                curRadioButton.Click += new System.EventHandler(radioButton_Click);
-                if (parentEvent != null) {
-                    curRadioButton.Click += new System.EventHandler(parentEvent);
-                }
-                this.Controls.Add(curRadioButton);
-            }
-        }
+			Int16 rbValue;
+			RadioButtonWithValue curRadio = null;
+			foreach ( Control curControl in this.Controls ) {
+				if ( curControl.GetType() == typeof( RadioButtonWithValue ) ) {
+					curRadio = (RadioButtonWithValue) curControl;
+					rbValue = Convert.ToInt16( (String) curRadio.Value );
+					if ( rbValue > myMaxSpeedKph ) {
+						if ( myAgeGroup.StartsWith( "M" ) ) {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Gray;
+							curRadio.BackColor = Color.Silver;
+						} else if ( ( myAgeGroup.StartsWith( "W" ) ) && ( rbValue < 58 ) ) {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Gray;
+							curRadio.BackColor = Color.Silver;
+						} else {
+							curRadio.Visible = false;
+						}
 
-        private void radioButton_Click(object sender, EventArgs e) {
+					} else if ( rbValue < myMinSpeedKph ) {
+						curRadio.Visible = false;
+
+					} else {
+						curRadio.Visible = true;
+						curRadio.ForeColor = Color.Black;
+						curRadio.BackColor = Color.Silver;
+					}
+				}
+			}
+
+			return;
+		}
+
+		private void loadSelectionList() {
+			Decimal curListCode = 0;
+			String curListValue = "";
+			RadioButtonWithValue curRadioButton;
+			int curItemLoc = 1;
+			int curItemSize = 0;
+
+			foreach ( DataRow curRow in myDataTable.Rows ) {
+				curListCode = (Decimal) curRow["ListCodeNum"];
+				curListValue = (String) curRow["SpeedMphDesc"] + "/" + (String) curRow["SpeedKphDesc"];
+				curItemSize = curListValue.Length * 8;
+
+				curRadioButton = new RadioButtonWithValue();
+				curRadioButton.AutoSize = true;
+				curRadioButton.Location = new System.Drawing.Point( 1, curItemLoc );
+				curRadioButton.Name = curListValue;
+				curRadioButton.Size = new System.Drawing.Size( curItemSize, 15 );
+				curRadioButton.TabIndex = 0;
+				curRadioButton.TabStop = true;
+				curRadioButton.Text = curListValue;
+				curRadioButton.UseVisualStyleBackColor = true;
+				curRadioButton.Value = curListCode.ToString( "00" );
+				curItemLoc += 17;
+				curRadioButton.Click += new System.EventHandler( radioButton_Click );
+				if ( myParentEvent != null ) {
+					curRadioButton.Click += new System.EventHandler( myParentEvent );
+				}
+				this.Controls.Add( curRadioButton );
+			}
+		}
+
+		private void radioButton_Click(object sender, EventArgs e) {
             RadioButtonWithValue myRadio = (RadioButtonWithValue)sender;
             Int16 rbValue = Convert.ToByte( (String)myRadio.Value );
             this.Tag = rbValue.ToString("00");
         }
 
-        public Int16 CurrentValue {
+        public Int16 SelectSpeekKph {
             get {
-                Int16 myValue = 0;
-                RadioButtonWithValue myRadio = null;
-                foreach (Control myControl in this.Controls) {
-                    if (myControl.GetType() == typeof(RadioButtonWithValue)) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        if (myRadio.Checked == true) {
-                            myValue = Convert.ToInt16((String)myRadio.Value);
+				Int16 curValue = 0;
+				RadioButtonWithValue curRadio = null;
+                foreach (Control curControl in this.Controls) {
+                    if (curControl.GetType() == typeof(RadioButtonWithValue)) {
+                        curRadio = (RadioButtonWithValue)curControl;
+                        if (curRadio.Checked == true) {
+							curValue = Convert.ToInt16((String)curRadio.Value);
                             break;
                         }
                     }
                 }
-                return myValue;
+                return curValue;
             }
 
             set {
+				if ( value == 0 ) return;
                 Int16 rbValue = 0;
-                RadioButtonWithValue myRadio = null;
-                foreach (Control myControl in this.Controls) {
-                    if (myControl.GetType() == typeof(RadioButtonWithValue)) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        rbValue = Convert.ToInt16((String)myRadio.Value);
-                        if ( rbValue == value ) {
-                            myRadio.Checked = true;
-                            myRadio.ForeColor = Color.DarkBlue;
-                            myRadio.BackColor = Color.White;
-                            this.Tag = rbValue.ToString();
-                            CurrentShowValueNum = rbValue;
-                        } else if ( rbValue > myMaxSpeed ) {
-                            myRadio.ForeColor = Color.Gray;
-                            myRadio.BackColor = Color.Silver;
-                        } else {
-                            myRadio.ForeColor = Color.Black;
-                            myRadio.BackColor = Color.Silver;
+                foreach (Control curControl in this.Controls) {
+                    if (curControl.GetType() == typeof(RadioButtonWithValue)) {
+						RadioButtonWithValue curRadio = (RadioButtonWithValue)curControl;
+                        rbValue = Convert.ToInt16((String)curRadio.Value);
+						if ( curRadio.Visible == false ) {
+						} else if ( rbValue == value ) {
+                            curRadio.Checked = true;
+							curRadio.ForeColor = Color.DarkBlue;
+							curRadio.BackColor = Color.White;
+							this.Tag = rbValue.ToString();
+                            CurrentShowSpeedKph = rbValue;
+
+						} else if ( rbValue > myMaxSpeedKph ) {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Gray;
+							curRadio.BackColor = Color.Silver;
+
+						} else {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Black;
+							curRadio.BackColor = Color.Silver;
                         }
                     }
                 }
@@ -108,211 +160,120 @@ namespace WaterskiScoringSystem.Common {
 
         public String CurrentValueDesc {
             get {
-                String myValue = "";
-                RadioButtonWithValue myRadio = null;
-                foreach (Control myControl in this.Controls) {
-                    if (myControl.GetType() == typeof(RadioButtonWithValue)) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        if (myRadio.Checked == true) {
-                            myValue = myRadio.Text;
+                String curValue = "";
+                RadioButtonWithValue curRadio = null;
+                foreach (Control curControl in this.Controls) {
+                    if (curControl.GetType() == typeof(RadioButtonWithValue)) {
+                        curRadio = (RadioButtonWithValue)curControl;
+                        if (curRadio.Checked == true) {
+                            curValue = curRadio.Text;
                             break;
                         }
                     }
                 }
-                return myValue;
+                return curValue;
             }
 
             set {
-                String rbValue = null;
-                RadioButtonWithValue myRadio = null;
-                foreach (Control myControl in this.Controls) {
-                    if (myControl.GetType() == typeof(RadioButtonWithValue)) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        if (myRadio.Text.Equals(value)) {
-                            myRadio.Checked = true;
-                            myRadio.ForeColor = Color.DarkBlue;
-                            myRadio.BackColor = Color.White;
-                            rbValue = (String)myRadio.Value;
-                            this.Tag = rbValue;
-                            return;
-                        } else {
-                            myRadio.ForeColor = Color.Black;
-                            myRadio.BackColor = Color.Silver;
-                        }
-                    }
-                }
                 return;
             }
 
         }
 
-        public Int16 CurrentShowValueNum {
-            get { return myShowValueNum; }
-            set { myShowValueNum = value; }
+        public Int16 CurrentShowSpeedKph {
+            get { return myShowSpeedKph; }
+            set {
+				if ( value == 0 ) return;
+				myShowSpeedKph = value;
+			}
         }
 
-        public void showCurrentValue( Int16 inValue ) {
+        public void showActiveValue( Int16 inValue ) {
             Int16 rbValue;
             String curEntryValue = "";
-            RadioButtonWithValue myRadio = null;
-            foreach ( Control myControl in this.Controls ) {
-                if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
-                    myRadio = (RadioButtonWithValue)myControl;
-                    if ( myRadio.Checked ) {
-                    } else {
-                        curEntryValue = (String)myRadio.Value;
+            //RadioButtonWithValue curRadio = null;
+            foreach ( Control curControl in this.Controls ) {
+                if ( curControl.GetType() == typeof( RadioButtonWithValue ) ) {
+					RadioButtonWithValue curRadio = (RadioButtonWithValue)curControl;
+                    if ( curRadio.Checked ) {
+                    } else if ( curRadio.Visible == false ) {
+					} else {
+						curEntryValue = (String)curRadio.Value;
                         rbValue = Convert.ToInt16( curEntryValue );
                         if ( rbValue == inValue ) {
-                            CurrentShowValueNum = rbValue;
-                            myRadio.ForeColor = Color.White;
-                            myRadio.BackColor = Color.Lime;
-                        } else if ( rbValue > myMaxSpeed ) {
-                            myRadio.ForeColor = Color.Gray;
-                            myRadio.BackColor = Color.Silver;
-                        } else {
-                            myRadio.ForeColor = Color.Black;
-                            myRadio.BackColor = Color.Silver;
+                            CurrentShowSpeedKph = rbValue;
+							curRadio.ForeColor = Color.DarkBlue;
+							curRadio.BackColor = Color.Lime;
+
+						} else if ( rbValue > myMaxSpeedKph ) {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Gray;
+							curRadio.BackColor = Color.Silver;
+
+						} else {
+							curRadio.Visible = true;
+							curRadio.ForeColor = Color.Black;
+							curRadio.BackColor = Color.Silver;
                         }
                     }
                 }
             }
+			return;
         }
 
-        public void resetCurrentValue( Int16 inValue ) {
-            Int16 rbValue;
-            String curEntryValue = "";
-            RadioButtonWithValue myRadio = null;
-            foreach ( Control myControl in this.Controls ) {
-                if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
-                    myRadio = (RadioButtonWithValue)myControl;
-                    if ( myRadio.Checked ) {
-                    } else {
-                        curEntryValue = (String)myRadio.Value;
-                        rbValue = Convert.ToInt16( curEntryValue );
-                        if ( rbValue == inValue ) {
-                            myRadio.ForeColor = Color.Black;
-                            myRadio.BackColor = Color.Silver;
-                        }
-                    }
-                }
-            }
-        }
+		public Int16 MaxSpeedKph {
+			get {
+				return myMaxSpeedKph;
+			}
+			set {
+				return;
+			}
+		}
 
-        public Int16 MaxValue {
+		public Int16 MinSpeedKph {
+			get {
+				return myMinSpeedKph;
+			}
+			set {
+				return;
+			}
+		}
+
+		public String NextValue {
             get {
-                return myMaxSpeed;
-            }
-            set {
-                myMaxSpeed = value;
-                Int16 rbValue;
-                RadioButtonWithValue myRadio = null;
-                foreach ( Control myControl in this.Controls ) {
-                    if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        rbValue = Convert.ToInt16( (String)myRadio.Value );
-                        if ( rbValue > myMaxSpeed ) {
-                            myRadio.Visible = true;
-                            myRadio.ForeColor = Color.Gray;
-                            myRadio.BackColor = Color.Silver;
-                        } else if (rbValue < myMinSpeed) {
-                            myRadio.Visible = false;
-                        } else {
-                            myRadio.Visible = true;
-                            myRadio.ForeColor = Color.Black;
-                            myRadio.BackColor = Color.Silver;
-                        }
-                    }
-                }
-                return;
-            }
-        }
-
-        public void resetMaxSpeed() {
-            Int16 rbValue;
-            RadioButtonWithValue myRadio = null;
-            foreach ( Control myControl in this.Controls ) {
-                if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
-                    myRadio = (RadioButtonWithValue)myControl;
-                    rbValue = Convert.ToInt16( (String)myRadio.Value );
-                    if ( myRadio.Checked ) {
-                    } else if ( rbValue > myMaxSpeed ) {
-                        myRadio.Visible = true;
-                        myRadio.ForeColor = Color.Gray;
-                        myRadio.BackColor = Color.Silver;
-                    } else if (rbValue < myMinSpeed) {
-                        myRadio.Visible = false;
-                    } else {
-                        myRadio.Visible = true;
-                    }
-                }
-            }
-        }
-
-        public Int16 MinValue {
-            get {
-                return myMinSpeed;
-            }
-            set {
-                myMinSpeed = value;
-                Int16 rbValue;
-                RadioButtonWithValue myRadio = null;
-                foreach ( Control myControl in this.Controls ) {
-                    if ( myControl.GetType() == typeof( RadioButtonWithValue ) ) {
-                        myRadio = (RadioButtonWithValue)myControl;
-                        rbValue = Convert.ToInt16( (String)myRadio.Value );
-                        if ( rbValue > myMaxSpeed ) {
-                            //myRadio.Visible = false;
-                            myRadio.ForeColor = Color.Gray;
-                            myRadio.BackColor = Color.Silver;
-                        } else if ( rbValue < myMinSpeed ) {
-                            myRadio.Visible = false;
-                        } else {
-                            myRadio.Visible = true;
-                        }
-                    }
-                }
-                return;
-            }
-        }
-
-        public String NextValue {
-            get {
-                String myValue = "";
+                String curValue = "";
                 Boolean setNextValue = false;
-                RadioButtonWithValue myRadio = null;
-                foreach (Control myControl in this.Controls) {
-                    if (myControl.GetType() == typeof(RadioButtonWithValue)) {
-                        myRadio = (RadioButtonWithValue)myControl;
+                RadioButtonWithValue curRadio = null;
+                foreach (Control curControl in this.Controls) {
+                    if (curControl.GetType() == typeof(RadioButtonWithValue)) {
+                        curRadio = (RadioButtonWithValue)curControl;
                         if (setNextValue) {
-                            myRadio.Checked = true;
-                            myRadio.ForeColor = Color.DarkBlue;
-                            myRadio.BackColor = Color.White;
-                            myValue = (String)myRadio.Value;
+                            curRadio.Checked = true;
+                            curRadio.ForeColor = Color.DarkBlue;
+                            curRadio.BackColor = Color.White;
+                            curValue = (String)curRadio.Value;
                             break;
-                        } else {
-                            if (myRadio.Checked == true) {
-                                myRadio.Checked = false;
-                                myRadio.ForeColor = Color.Black;
-                                myRadio.BackColor = Color.DarkGray;
-                                setNextValue = true;
-                            }
-                        }
-                    }
+
+						} else if (curRadio.Checked == true) {
+							curRadio.Checked = false;
+							setNextValue = true;
+						}
+					}
                 }
-                return myValue;
+                return curValue;
             }
         }
 
-        private void getSlalomSpeedList() {
+        private DataTable getSlalomSpeedList() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue" );
-            curSqlStmt.Append( " FROM CodeValueList" );
+            curSqlStmt.Append( "SELECT ListCodeNum, CodeValue as SpeedMphDesc, ListCode as SpeedKphDesc" );
+			curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'SlalomSpeeds'" );
             curSqlStmt.Append( " ORDER BY SortSeq" );
-            myDataTable = getData( curSqlStmt.ToString() );
-        }
+            return getData( curSqlStmt.ToString() );
+		}
 
-        private DataTable getData( String inSelectStmt ) {
+		private DataTable getData( String inSelectStmt ) {
             return DataAccess.getDataTable( inSelectStmt );
         }
 

@@ -698,7 +698,7 @@ namespace WaterskiScoringSystem.Common {
         #endregion
 
         //-----------------------------------------------------
-        #region Slalom methods
+        #region Slalom running order methods
         public String RunningOrderSortSlalom {
             get {
                 String curReturnValue = getPropertyByName("RunningOrderSortSlalom");
@@ -717,11 +717,54 @@ namespace WaterskiScoringSystem.Common {
         public void setRunningOrderSortSlalom(String value) {
             updateProperty( "RunningOrderSortSlalom", value, 310 );
         }
-        #endregion
 
-        //-----------------------------------------------------
-        #region Slalom Scorebook methods
-        public String SlalomScorebookDataType {
+		public Dictionary<string, Boolean> RunningOrderColumnFilterSlalom {
+			get {
+				Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+				String curPropValue = getPropertyByName( "RunningOrderColumnFilterSlalom" );
+				if ( curPropValue.Length == 0 ) {
+					setRunningOrderColumnFilterSlalom( curPropValueList );
+
+				} else {
+					String[] curEntryValues = curPropValue.Split( ',' );
+					foreach (String curEntryValue in curEntryValues ) {
+						String[] curEntryAttrs = curEntryValue.Split( ' ' );
+						Boolean curAttrVisibility = false;
+						if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+						curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+					}
+				}
+				return curPropValueList;
+			}
+			set { setRunningOrderColumnFilterSlalom( value ); }
+		}
+		public void setRunningOrderColumnFilterSlalom( Dictionary<string, Boolean> propList ) {
+			StringBuilder saveValues = new StringBuilder( "" );
+			foreach ( KeyValuePair<string, bool> curEntry in propList ) {
+				if ( saveValues.Length > 1 ) saveValues.Append( "," );
+                saveValues.Append( curEntry.Key + " " + curEntry.Value );
+			}
+			updateProperty( "RunningOrderColumnFilterSlalom", saveValues.ToString(), 311 );
+		}
+		public void setRunningOrderColumnFilterSlalom( String  propValues ) {
+			if ( propValues.Length <= 1 ) return;
+			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+			String[] curEntryValues = propValues.Split( ',' );
+			foreach ( String curEntryValue in curEntryValues ) {
+				String[] curEntryAttrs = curEntryValue.Split( ' ' );
+				Boolean curAttrVisibility = false;
+				if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+				curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+			}
+			setRunningOrderColumnFilterSlalom( curPropValueList );
+        }
+
+
+		#endregion
+
+		//-----------------------------------------------------
+		#region Slalom Scorebook methods
+		public String SlalomScorebookDataType {
             get {
                 String curReturnValue = getPropertyByName("SlalomScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
@@ -921,7 +964,7 @@ namespace WaterskiScoringSystem.Common {
         #endregion
 
         //-----------------------------------------------------
-        #region Trick methods
+        #region Trick running order methods
         public String RunningOrderSortTrick {
             get {
                 String curReturnValue = getPropertyByName("RunningOrderSortTrick");
@@ -940,10 +983,51 @@ namespace WaterskiScoringSystem.Common {
         public void setRunningOrderSortTrick(String value) {
             updateProperty( "RunningOrderSortTrick", value, 410 );
         }
-        #endregion
 
-        #region Trick Scorebook methods
-        public String TrickScorebookDataType {
+		public Dictionary<string, Boolean> RunningOrderColumnFilterTrick {
+			get {
+				Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+				String curPropValue = getPropertyByName( "RunningOrderColumnFilterTrick" );
+				if ( curPropValue.Length == 0 ) {
+					setRunningOrderColumnFilterTrick( curPropValueList );
+				} else {
+					String[] curEntryValues = curPropValue.Split( ',' );
+					foreach ( String curEntryValue in curEntryValues ) {
+						String[] curEntryAttrs = curEntryValue.Split( ' ' );
+						Boolean curAttrVisibility = false;
+						if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+						curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+					}
+				}
+				return curPropValueList;
+			}
+			set { setRunningOrderColumnFilterTrick( value ); }
+		}
+		public void setRunningOrderColumnFilterTrick( Dictionary<string, Boolean> propList ) {
+			StringBuilder saveValues = new StringBuilder( "" );
+			foreach ( KeyValuePair<string, bool> curEntry in propList ) {
+				if ( saveValues.Length > 1 ) saveValues.Append( "," );
+				saveValues.Append( curEntry.Key + " " + curEntry.Value );
+			}
+			updateProperty( "RunningOrderColumnFilterTrick", saveValues.ToString(), 311 );
+		}
+		public void setRunningOrderColumnFilterTrick( String propValues ) {
+			if ( propValues.Length <= 1 ) return;
+			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+			String[] curEntryValues = propValues.Split( ',' );
+			foreach ( String curEntryValue in curEntryValues ) {
+				String[] curEntryAttrs = curEntryValue.Split( ' ' );
+				Boolean curAttrVisibility = false;
+				if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+				curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+			}
+			setRunningOrderColumnFilterTrick( curPropValueList );
+		}
+
+		#endregion
+
+		#region Trick Scorebook methods
+		public String TrickScorebookDataType {
             get {
                 String curReturnValue = getPropertyByName("TrickScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
@@ -1179,10 +1263,51 @@ namespace WaterskiScoringSystem.Common {
         public void setJumpEntryNumJudges(String value) {
             updateProperty( "JumpEntryNumJudges", value, 510 );
         }
-        #endregion
 
-        #region Jump Scorebook methods
-        public String JumpScorebookDataType {
+		public Dictionary<string, Boolean> RunningOrderColumnFilterJump {
+			get {
+				Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+				String curPropValue = getPropertyByName( "RunningOrderColumnFilterJump" );
+				if ( curPropValue.Length == 0 ) {
+					setRunningOrderColumnFilterJump( curPropValueList );
+				} else {
+					String[] curEntryValues = curPropValue.Split( ',' );
+					foreach ( String curEntryValue in curEntryValues ) {
+						String[] curEntryAttrs = curEntryValue.Split( ' ' );
+						Boolean curAttrVisibility = false;
+						if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+						curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+					}
+				}
+				return curPropValueList;
+			}
+			set { setRunningOrderColumnFilterJump( value ); }
+		}
+		public void setRunningOrderColumnFilterJump( Dictionary<string, Boolean> propList ) {
+			StringBuilder saveValues = new StringBuilder( "" );
+			foreach ( KeyValuePair<string, bool> curEntry in propList ) {
+				if ( saveValues.Length > 1 ) saveValues.Append( "," );
+				saveValues.Append( curEntry.Key + " " + curEntry.Value );
+			}
+			updateProperty( "RunningOrderColumnFilterJump", saveValues.ToString(), 311 );
+		}
+		public void setRunningOrderColumnFilterJump( String propValues ) {
+			if ( propValues.Length <= 1 ) return;
+			Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
+			String[] curEntryValues = propValues.Split( ',' );
+			foreach ( String curEntryValue in curEntryValues ) {
+				String[] curEntryAttrs = curEntryValue.Split( ' ' );
+				Boolean curAttrVisibility = false;
+				if ( curEntryAttrs[1].Equals( "True" ) ) curAttrVisibility = true;
+				curPropValueList.Add( curEntryAttrs[0], curAttrVisibility );
+			}
+			setRunningOrderColumnFilterJump( curPropValueList );
+		}
+
+		#endregion
+
+		#region Jump Scorebook methods
+		public String JumpScorebookDataType {
             get {
                 String curReturnValue = getPropertyByName("JumpScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
