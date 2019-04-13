@@ -26,7 +26,7 @@ namespace WaterskiScoringSystem.Slalom {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlalomSummary));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -44,6 +44,7 @@ namespace WaterskiScoringSystem.Slalom {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.navPrintPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
@@ -92,6 +93,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TeamCodeNcwsa = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.h2hGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.FinalSpeedMph = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.FinalLenOff = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -260,6 +262,7 @@ namespace WaterskiScoringSystem.Slalom {
             this.AgeGroup,
             this.TeamCodeNcwsa,
             this.EventGroup,
+            this.h2hGroup,
             this.Round,
             this.FinalSpeedMph,
             this.FinalLenOff,
@@ -272,17 +275,17 @@ namespace WaterskiScoringSystem.Slalom {
             this.HCapBase,
             this.TeamCode,
             this.EventClass});
-			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle20.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle20.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
-			dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.scoreSummaryDataGridView.DefaultCellStyle = dataGridViewCellStyle20;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle21.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle21.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
+			dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.scoreSummaryDataGridView.DefaultCellStyle = dataGridViewCellStyle21;
 			this.scoreSummaryDataGridView.Location = new System.Drawing.Point(12, 144);
-			this.scoreSummaryDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoreSummaryDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.scoreSummaryDataGridView.Name = "scoreSummaryDataGridView";
 			this.scoreSummaryDataGridView.RowHeadersVisible = false;
 			this.scoreSummaryDataGridView.RowTemplate.Height = 28;
@@ -299,9 +302,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.scoresPlcmtGroupBox.Controls.Add(this.totalScoreButton);
 			this.scoresPlcmtGroupBox.Controls.Add(this.bestScoreButton);
 			this.scoresPlcmtGroupBox.Location = new System.Drawing.Point(8, 74);
-			this.scoresPlcmtGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoresPlcmtGroupBox.Margin = new System.Windows.Forms.Padding(4);
 			this.scoresPlcmtGroupBox.Name = "scoresPlcmtGroupBox";
-			this.scoresPlcmtGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoresPlcmtGroupBox.Padding = new System.Windows.Forms.Padding(4);
 			this.scoresPlcmtGroupBox.Size = new System.Drawing.Size(251, 68);
 			this.scoresPlcmtGroupBox.TabIndex = 10;
 			this.scoresPlcmtGroupBox.TabStop = false;
@@ -312,7 +315,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.h2hScoreButton.AutoSize = true;
 			this.h2hScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.h2hScoreButton.Location = new System.Drawing.Point(164, 44);
-			this.h2hScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.h2hScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.h2hScoreButton.Name = "h2hScoreButton";
 			this.h2hScoreButton.Size = new System.Drawing.Size(69, 21);
 			this.h2hScoreButton.TabIndex = 16;
@@ -324,7 +327,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.roundScoreButton.AutoSize = true;
 			this.roundScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.roundScoreButton.Location = new System.Drawing.Point(164, 18);
-			this.roundScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.roundScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.roundScoreButton.Name = "roundScoreButton";
 			this.roundScoreButton.Size = new System.Drawing.Size(71, 21);
 			this.roundScoreButton.TabIndex = 15;
@@ -336,7 +339,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.firstScoreButton.AutoSize = true;
 			this.firstScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.firstScoreButton.Location = new System.Drawing.Point(88, 44);
-			this.firstScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.firstScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.firstScoreButton.Name = "firstScoreButton";
 			this.firstScoreButton.Size = new System.Drawing.Size(56, 21);
 			this.firstScoreButton.TabIndex = 14;
@@ -348,7 +351,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.finalScoreButton.AutoSize = true;
 			this.finalScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.finalScoreButton.Location = new System.Drawing.Point(16, 44);
-			this.finalScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.finalScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.finalScoreButton.Name = "finalScoreButton";
 			this.finalScoreButton.Size = new System.Drawing.Size(59, 21);
 			this.finalScoreButton.TabIndex = 13;
@@ -360,7 +363,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.totalScoreButton.AutoSize = true;
 			this.totalScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.totalScoreButton.Location = new System.Drawing.Point(88, 18);
-			this.totalScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.totalScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.totalScoreButton.Name = "totalScoreButton";
 			this.totalScoreButton.Size = new System.Drawing.Size(61, 21);
 			this.totalScoreButton.TabIndex = 12;
@@ -373,7 +376,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.bestScoreButton.Checked = true;
 			this.bestScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.bestScoreButton.Location = new System.Drawing.Point(16, 18);
-			this.bestScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.bestScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.bestScoreButton.Name = "bestScoreButton";
 			this.bestScoreButton.Size = new System.Drawing.Size(57, 21);
 			this.bestScoreButton.TabIndex = 11;
@@ -386,9 +389,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtMethodGroupBox.Controls.Add(this.pointsScoreButton);
 			this.plcmtMethodGroupBox.Controls.Add(this.rawScoreButton);
 			this.plcmtMethodGroupBox.Location = new System.Drawing.Point(597, 74);
-			this.plcmtMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtMethodGroupBox.Margin = new System.Windows.Forms.Padding(4);
 			this.plcmtMethodGroupBox.Name = "plcmtMethodGroupBox";
-			this.plcmtMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtMethodGroupBox.Padding = new System.Windows.Forms.Padding(4);
 			this.plcmtMethodGroupBox.Size = new System.Drawing.Size(152, 68);
 			this.plcmtMethodGroupBox.TabIndex = 30;
 			this.plcmtMethodGroupBox.TabStop = false;
@@ -399,7 +402,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.pointsScoreButton.AutoSize = true;
 			this.pointsScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.pointsScoreButton.Location = new System.Drawing.Point(8, 44);
-			this.pointsScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.pointsScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.pointsScoreButton.Name = "pointsScoreButton";
 			this.pointsScoreButton.Size = new System.Drawing.Size(68, 21);
 			this.pointsScoreButton.TabIndex = 32;
@@ -412,7 +415,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.rawScoreButton.Checked = true;
 			this.rawScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rawScoreButton.Location = new System.Drawing.Point(8, 18);
-			this.rawScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.rawScoreButton.Margin = new System.Windows.Forms.Padding(4);
 			this.rawScoreButton.Name = "rawScoreButton";
 			this.rawScoreButton.Size = new System.Drawing.Size(97, 21);
 			this.rawScoreButton.TabIndex = 31;
@@ -427,9 +430,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtGroupBox.Controls.Add(this.plcmtTourButton);
 			this.plcmtGroupBox.Controls.Add(this.groupPlcmtButton);
 			this.plcmtGroupBox.Location = new System.Drawing.Point(761, 74);
-			this.plcmtGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtGroupBox.Margin = new System.Windows.Forms.Padding(4);
 			this.plcmtGroupBox.Name = "plcmtGroupBox";
-			this.plcmtGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtGroupBox.Padding = new System.Windows.Forms.Padding(4);
 			this.plcmtGroupBox.Size = new System.Drawing.Size(197, 68);
 			this.plcmtGroupBox.TabIndex = 40;
 			this.plcmtGroupBox.TabStop = false;
@@ -440,7 +443,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtDivGrpButton.AutoSize = true;
 			this.plcmtDivGrpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.plcmtDivGrpButton.Location = new System.Drawing.Point(88, 44);
-			this.plcmtDivGrpButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtDivGrpButton.Margin = new System.Windows.Forms.Padding(4);
 			this.plcmtDivGrpButton.Name = "plcmtDivGrpButton";
 			this.plcmtDivGrpButton.Size = new System.Drawing.Size(93, 21);
 			this.plcmtDivGrpButton.TabIndex = 44;
@@ -452,7 +455,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtDivButton.AutoSize = true;
 			this.plcmtDivButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.plcmtDivButton.Location = new System.Drawing.Point(7, 44);
-			this.plcmtDivButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtDivButton.Margin = new System.Windows.Forms.Padding(4);
 			this.plcmtDivButton.Name = "plcmtDivButton";
 			this.plcmtDivButton.Size = new System.Drawing.Size(49, 21);
 			this.plcmtDivButton.TabIndex = 42;
@@ -464,7 +467,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtTourButton.AutoSize = true;
 			this.plcmtTourButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.plcmtTourButton.Location = new System.Drawing.Point(88, 18);
-			this.plcmtTourButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtTourButton.Margin = new System.Windows.Forms.Padding(4);
 			this.plcmtTourButton.Name = "plcmtTourButton";
 			this.plcmtTourButton.Size = new System.Drawing.Size(98, 21);
 			this.plcmtTourButton.TabIndex = 43;
@@ -477,7 +480,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.groupPlcmtButton.Checked = true;
 			this.groupPlcmtButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupPlcmtButton.Location = new System.Drawing.Point(7, 18);
-			this.groupPlcmtButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.groupPlcmtButton.Margin = new System.Windows.Forms.Padding(4);
 			this.groupPlcmtButton.Name = "groupPlcmtButton";
 			this.groupPlcmtButton.Size = new System.Drawing.Size(69, 21);
 			this.groupPlcmtButton.TabIndex = 41;
@@ -493,9 +496,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PointsMethodGroupBox.Controls.Add(this.plcmtPointsButton);
 			this.PointsMethodGroupBox.Controls.Add(this.nopsPointsButton);
 			this.PointsMethodGroupBox.Location = new System.Drawing.Point(269, 74);
-			this.PointsMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PointsMethodGroupBox.Margin = new System.Windows.Forms.Padding(4);
 			this.PointsMethodGroupBox.Name = "PointsMethodGroupBox";
-			this.PointsMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PointsMethodGroupBox.Padding = new System.Windows.Forms.Padding(4);
 			this.PointsMethodGroupBox.Size = new System.Drawing.Size(317, 68);
 			this.PointsMethodGroupBox.TabIndex = 20;
 			this.PointsMethodGroupBox.TabStop = false;
@@ -506,7 +509,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.ratioPointsButton.AutoSize = true;
 			this.ratioPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ratioPointsButton.Location = new System.Drawing.Point(111, 44);
-			this.ratioPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ratioPointsButton.Margin = new System.Windows.Forms.Padding(4);
 			this.ratioPointsButton.Name = "ratioPointsButton";
 			this.ratioPointsButton.Size = new System.Drawing.Size(98, 21);
 			this.ratioPointsButton.TabIndex = 25;
@@ -518,7 +521,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.handicapPointsButton.AutoSize = true;
 			this.handicapPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.handicapPointsButton.Location = new System.Drawing.Point(111, 18);
-			this.handicapPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.handicapPointsButton.Margin = new System.Windows.Forms.Padding(4);
 			this.handicapPointsButton.Name = "handicapPointsButton";
 			this.handicapPointsButton.Size = new System.Drawing.Size(89, 21);
 			this.handicapPointsButton.TabIndex = 22;
@@ -530,7 +533,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.kBasePointsButton.AutoSize = true;
 			this.kBasePointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.kBasePointsButton.Location = new System.Drawing.Point(7, 44);
-			this.kBasePointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.kBasePointsButton.Margin = new System.Windows.Forms.Padding(4);
 			this.kBasePointsButton.Name = "kBasePointsButton";
 			this.kBasePointsButton.Size = new System.Drawing.Size(97, 21);
 			this.kBasePointsButton.TabIndex = 24;
@@ -555,7 +558,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.nopsPointsButton.Checked = true;
 			this.nopsPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.nopsPointsButton.Location = new System.Drawing.Point(7, 18);
-			this.nopsPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.nopsPointsButton.Margin = new System.Windows.Forms.Padding(4);
 			this.nopsPointsButton.Name = "nopsPointsButton";
 			this.nopsPointsButton.Size = new System.Drawing.Size(68, 21);
 			this.nopsPointsButton.TabIndex = 21;
@@ -578,7 +581,7 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.EventGroupList.FormattingEnabled = true;
 			this.EventGroupList.Location = new System.Drawing.Point(196, 47);
-			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4);
 			this.EventGroupList.Name = "EventGroupList";
 			this.EventGroupList.Size = new System.Drawing.Size(132, 24);
 			this.EventGroupList.TabIndex = 5;
@@ -596,7 +599,7 @@ namespace WaterskiScoringSystem.Slalom {
 			// numPrelimTextBox
 			// 
 			this.numPrelimTextBox.Location = new System.Drawing.Point(1033, 117);
-			this.numPrelimTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.numPrelimTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.numPrelimTextBox.Name = "numPrelimTextBox";
 			this.numPrelimTextBox.Size = new System.Drawing.Size(39, 22);
 			this.numPrelimTextBox.TabIndex = 101;
@@ -697,18 +700,29 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// EventGroup
 			// 
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle7;
 			this.EventGroup.HeaderText = "Group";
 			this.EventGroup.Name = "EventGroup";
 			this.EventGroup.ReadOnly = true;
 			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.Width = 45;
+			this.EventGroup.Width = 50;
+			// 
+			// h2hGroup
+			// 
+			this.h2hGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.h2hGroup.DefaultCellStyle = dataGridViewCellStyle8;
+			this.h2hGroup.HeaderText = "H2H";
+			this.h2hGroup.MaxInputLength = 12;
+			this.h2hGroup.Name = "h2hGroup";
+			this.h2hGroup.Width = 50;
 			// 
 			// Round
 			// 
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.Round.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.Round.DefaultCellStyle = dataGridViewCellStyle9;
 			this.Round.HeaderText = "Rd";
 			this.Round.Name = "Round";
 			this.Round.ReadOnly = true;
@@ -718,8 +732,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// FinalSpeedMph
 			// 
 			this.FinalSpeedMph.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.FinalSpeedMph.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.FinalSpeedMph.DefaultCellStyle = dataGridViewCellStyle10;
 			this.FinalSpeedMph.HeaderText = "Mph";
 			this.FinalSpeedMph.Name = "FinalSpeedMph";
 			this.FinalSpeedMph.ReadOnly = true;
@@ -729,9 +743,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// FinalLenOff
 			// 
 			this.FinalLenOff.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-			this.FinalLenOff.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+			this.FinalLenOff.DefaultCellStyle = dataGridViewCellStyle11;
 			this.FinalLenOff.HeaderText = "Rope";
 			this.FinalLenOff.Name = "FinalLenOff";
 			this.FinalLenOff.ReadOnly = true;
@@ -741,8 +755,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// FinalSpeedKph
 			// 
 			this.FinalSpeedKph.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.FinalSpeedKph.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.FinalSpeedKph.DefaultCellStyle = dataGridViewCellStyle12;
 			this.FinalSpeedKph.HeaderText = "Kph";
 			this.FinalSpeedKph.Name = "FinalSpeedKph";
 			this.FinalSpeedKph.ReadOnly = true;
@@ -752,8 +766,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// FinalLen
 			// 
 			this.FinalLen.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.FinalLen.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.FinalLen.DefaultCellStyle = dataGridViewCellStyle13;
 			this.FinalLen.HeaderText = "Rope";
 			this.FinalLen.Name = "FinalLen";
 			this.FinalLen.ReadOnly = true;
@@ -763,8 +777,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// FinalPassScore
 			// 
 			this.FinalPassScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			this.FinalPassScore.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			this.FinalPassScore.DefaultCellStyle = dataGridViewCellStyle14;
 			this.FinalPassScore.HeaderText = "Buoys";
 			this.FinalPassScore.Name = "FinalPassScore";
 			this.FinalPassScore.ReadOnly = true;
@@ -773,10 +787,10 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// Score
 			// 
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle14.Format = "N2";
-			dataGridViewCellStyle14.NullValue = null;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle14;
+			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle15.Format = "N2";
+			dataGridViewCellStyle15.NullValue = null;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle15;
 			this.Score.HeaderText = "Score";
 			this.Score.Name = "Score";
 			this.Score.ReadOnly = true;
@@ -785,10 +799,10 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// NopsScore
 			// 
-			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle15.Format = "N1";
-			dataGridViewCellStyle15.NullValue = null;
-			this.NopsScore.DefaultCellStyle = dataGridViewCellStyle15;
+			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle16.Format = "N1";
+			dataGridViewCellStyle16.NullValue = null;
+			this.NopsScore.DefaultCellStyle = dataGridViewCellStyle16;
 			this.NopsScore.HeaderText = "Points";
 			this.NopsScore.Name = "NopsScore";
 			this.NopsScore.ReadOnly = true;
@@ -798,10 +812,10 @@ namespace WaterskiScoringSystem.Slalom {
 			// HCapScore
 			// 
 			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle16.Format = "N1";
-			dataGridViewCellStyle16.NullValue = null;
-			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle16;
+			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle17.Format = "N1";
+			dataGridViewCellStyle17.NullValue = null;
+			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle17;
 			this.HCapScore.HeaderText = "HCap";
 			this.HCapScore.Name = "HCapScore";
 			this.HCapScore.ReadOnly = true;
@@ -811,11 +825,11 @@ namespace WaterskiScoringSystem.Slalom {
 			// HCapBase
 			// 
 			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle17.Format = "N1";
-			dataGridViewCellStyle17.NullValue = null;
-			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle17;
+			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle18.Format = "N1";
+			dataGridViewCellStyle18.NullValue = null;
+			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle18;
 			this.HCapBase.HeaderText = "H-Base";
 			this.HCapBase.Name = "HCapBase";
 			this.HCapBase.ReadOnly = true;
@@ -824,8 +838,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// TeamCode
 			// 
-			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.TeamCode.DefaultCellStyle = dataGridViewCellStyle18;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.TeamCode.DefaultCellStyle = dataGridViewCellStyle19;
 			this.TeamCode.HeaderText = "Team";
 			this.TeamCode.Name = "TeamCode";
 			this.TeamCode.ReadOnly = true;
@@ -834,8 +848,8 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// EventClass
 			// 
-			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle19;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle20;
 			this.EventClass.HeaderText = "Class";
 			this.EventClass.Name = "EventClass";
 			this.EventClass.ReadOnly = true;
@@ -860,7 +874,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.Controls.Add(this.winNavStrip);
 			this.Controls.Add(this.winStatus);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "SlalomSummary";
 			this.Text = "Slalom Summary";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ScoreSummary_FormClosed);
@@ -935,6 +949,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCodeNcwsa;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn h2hGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Round;
 		private System.Windows.Forms.DataGridViewTextBoxColumn FinalSpeedMph;
 		private System.Windows.Forms.DataGridViewTextBoxColumn FinalLenOff;

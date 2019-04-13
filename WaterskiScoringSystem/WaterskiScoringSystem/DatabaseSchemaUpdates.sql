@@ -874,3 +874,8 @@ ALTER TABLE [SlalomRecap] DROP COLUMN PassNum;
 ALTER TABLE [SlalomScore] DROP COLUMN FinalPassNum;
 
 Update [SlalomRecap] Set PassSpeedKph = SUBSTRING ( Note, CHARINDEX('kph', Note) - 2, 2 );
+
+## v19.08
+ALTER TABLE EventRunOrder ADD COLUMN  RunOrderGroup nvarchar(12);
+
+Update EventRunOrder Set RunOrderGroup = '';

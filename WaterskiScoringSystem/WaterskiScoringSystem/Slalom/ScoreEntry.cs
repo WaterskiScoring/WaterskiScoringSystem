@@ -1131,6 +1131,11 @@ namespace WaterskiScoringSystem.Slalom {
 			} else {
 				LiveWebLabel.Visible = false;
 			}
+
+			if ( isRunOrderByRound( Convert.ToByte( roundSelect.RoundValue ) ) ) {
+				MessageBox.Show( "WARNING \nThis running order is specific for this round" );
+			}
+
 		}
 
 		private void loadBoatTimeView( Int16 inSpeed ) {
@@ -4967,6 +4972,18 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
+		private Boolean isRunOrderByRound( int inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Slalom' AND Round = " + inRound );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( (int) curDataTable.Rows[0]["SkierCount"] > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		private Boolean isDivisionIntl( String inAgeGroup ) {

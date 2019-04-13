@@ -22,7 +22,8 @@ namespace WaterskiScoringSystem.Tools {
         private String myDataType;
         private String myTourRules = "";
         private String myDivFilter = null;
-        private Int16 myNumSkiers = 0;
+		private String myGroupFilter = null;
+		private Int16 myNumSkiers = 0;
         private Int16 myRound = 0;
         private DataRow myTourRow;
         private CalcScoreSummary myCalcSummary;
@@ -76,7 +77,6 @@ namespace WaterskiScoringSystem.Tools {
             }
             set {
                 myTourRow = value;
-                loadGroupList();
             }
         }
 
@@ -154,7 +154,18 @@ namespace WaterskiScoringSystem.Tools {
             plcmtDivButton.Visible = true;
             plcmtTourButton.Visible = true;
 
-            NumSkiersTextbox.Visible = true;
+			PointsMethodGroupBox.Visible = false;
+			plcmtPointsButton.Visible = false;
+			kBasePointsButton.Visible = false;
+			handicapPointsButton.Checked = false;
+			nopsPointsButton.Checked = true;
+			kBasePointsButton.Checked = false;
+			plcmtPointsButton.Checked = false;
+			ratioPointsButton.Checked = false;
+			plcmtPointsButton.Visible = false;
+			kBasePointsButton.Visible = false;
+
+			NumSkiersTextbox.Visible = true;
 
             h2hNextGroupBox.Visible = false;
             plcmtMethodGroupBox.Visible = true;
@@ -167,14 +178,63 @@ namespace WaterskiScoringSystem.Tools {
             previewDataGridView.Rows.Clear();
         }
 
-        public void getHeadToHeadEntries(String inEvent, Int16 inRound) {
+		public void getPickChooseEntries(String inEvent, Int16 inRound) {
+			myCommand = "Pick";
+			myEvent = inEvent;
+			myRound = inRound;
+			this.Text = myWindowTitle + " " + myRound.ToString() + " - " + myEvent + " - Pick And Choose";
+			setDataSelectOptions();
+
+			h2hNextGroupBox.Visible = false;
+			plcmtMethodGroupBox.Visible = false;
+			plcmtGroupBox.Visible = false;
+			PointsMethodGroupBox.Visible = false;
+
+			EventGroupList.Visible = false;
+			EventGroupListLabel.Visible = false;
+
+			RemoveUnscoredButton.Visible = false;
+			BestScoreButton.Visible = false;
+			LastScoreButton.Visible = false;
+			TotalScoreButton.Visible = false;
+
+			SelectButton.Visible = true;
+			RefreshButton.Visible = true;
+			RefreshButton.Location = RemoveUnscoredButton.Location;
+
+			plcmtDivButton.Visible = true;
+			groupPlcmtButton.Visible = false;
+			plcmtDivGrpButton.Visible = false;
+			plcmtTourButton.Visible = false;
+
+			rawScoreButton.Checked = true;
+
+            PointsMethodGroupBox.Visible = false;
+			kBasePointsButton.Visible = false;
+			handicapPointsButton.Checked = false;
+			handicapPointsButton.Visible = false;
+            nopsPointsButton.Checked = true;
+			nopsPointsButton.Visible = false;
+			kBasePointsButton.Checked = false;
+			kBasePointsButton.Visible = false;
+			plcmtPointsButton.Visible = false;
+			plcmtPointsButton.Checked = false;
+			ratioPointsButton.Checked = false;
+			kBasePointsButton.Visible = false;
+
+			NumSkiersTextbox.Visible = true;
+
+			previewDataGridView.Rows.Clear();
+		}
+
+		public void getHeadToHeadEntries(String inEvent, Int16 inRound) {
             myCommand = "HeadToHead";
             myEvent = inEvent;
             myRound = inRound;
             this.Text = myWindowTitle + " " + myRound.ToString() + " - " + myEvent + " - Head to Head";
             setDataSelectOptions();
 
-            NumSkiersTextbox.Visible = true;
+			NumSkiersTextbox.Visible = true;
             RemoveUnscoredButton.Visible = false;
             BestScoreButton.Visible = true;
             LastScoreButton.Visible = true;
@@ -183,7 +243,7 @@ namespace WaterskiScoringSystem.Tools {
             RefreshButton.Visible = false;
             RefreshButton.Location = RemoveUnscoredButton.Location;
 
-            groupPlcmtButton.Visible = false;
+            groupPlcmtButton.Visible = true;
             plcmtDivGrpButton.Visible = false;
             plcmtDivButton.Visible = true;
             plcmtTourButton.Visible = true;
@@ -191,14 +251,20 @@ namespace WaterskiScoringSystem.Tools {
             if (plcmtDivGrpButton.Checked) plcmtTourButton.Checked = true;
 
             h2hNextGroupBox.Visible = false;
-            PointsMethodGroupBox.Visible = false;
-            plcmtMethodGroupBox.Visible = true;
+
+			PointsMethodGroupBox.Visible = false;
+			plcmtPointsButton.Visible = false;
+			kBasePointsButton.Visible = false;
+			handicapPointsButton.Checked = false;
+			nopsPointsButton.Checked = true;
+			kBasePointsButton.Checked = false;
+			plcmtPointsButton.Checked = false;
+			ratioPointsButton.Checked = false;
+			plcmtPointsButton.Visible = false;
+			kBasePointsButton.Visible = false;
+
+			plcmtMethodGroupBox.Visible = true;
             previewDataGridView.Rows.Clear();
-            if (pointsScoreButton.Checked) {
-                PointsMethodGroupBox.Visible = true;
-            } else {
-                PointsMethodGroupBox.Visible = false;
-            }
 
             if (inRound == 1) {
                 BestScoreButton.Visible = false;
@@ -207,12 +273,16 @@ namespace WaterskiScoringSystem.Tools {
                 RefreshButton.Visible = true;
                 SelectButton.Visible = true;
                 PointsMethodGroupBox.Visible = false;
-                plcmtMethodGroupBox.Visible = false;
             }
 
-        }
+			if ( pointsScoreButton.Checked ) {
+				PointsMethodGroupBox.Visible = true;
+			} else {
+				PointsMethodGroupBox.Visible = false;
+			}
+		}
 
-        public void getHeadToHeadNexEntries(String inEvent, Int16 inRound) {
+		public void getHeadToHeadNexEntries(String inEvent, Int16 inRound) {
             myCommand = "HeadToHeadNext";
             myEvent = inEvent;
             myRound = inRound;
@@ -232,7 +302,7 @@ namespace WaterskiScoringSystem.Tools {
             RefreshButton.Location = RemoveUnscoredButton.Location;
             RefreshButton.Visible = true;
 
-            groupPlcmtButton.Visible = false;
+            groupPlcmtButton.Visible = true;
             plcmtDivGrpButton.Visible = false;
             plcmtDivButton.Visible = true;
             plcmtTourButton.Visible = true;
@@ -241,15 +311,23 @@ namespace WaterskiScoringSystem.Tools {
 
             PointsMethodGroupBox.Visible = false;
             handicapPointsButton.Checked = false;
-            nopsPointsButton.Checked = false;
+            nopsPointsButton.Checked = true;
             kBasePointsButton.Checked = false;
             plcmtPointsButton.Checked = false;
             ratioPointsButton.Checked = false;
+			plcmtPointsButton.Visible = false;
+			kBasePointsButton.Visible = false;
 
-            plcmtMethodGroupBox.Visible = true;
+			plcmtMethodGroupBox.Visible = true;
             h2hNextGroupBox.Visible = true;
-            
-            previewDataGridView.Rows.Clear();
+
+			if ( pointsScoreButton.Checked ) {
+				PointsMethodGroupBox.Visible = true;
+			} else {
+				PointsMethodGroupBox.Visible = false;
+			}
+
+			previewDataGridView.Rows.Clear();
         }
 
         private void setDataSelectOptions() {
@@ -278,8 +356,6 @@ namespace WaterskiScoringSystem.Tools {
             myPointsMethod = Properties.Settings.Default.RunOrderElimPointsMethod;
             if (Properties.Settings.Default.RunOrderElimPointsMethod.ToLower().Equals( "nops" )) {
                 nopsPointsButton.Checked = true;
-            } else if (Properties.Settings.Default.RunOrderElimPointsMethod.ToLower().Equals( "plcmt" )) {
-                plcmtPointsButton.Checked = true;
             } else if (Properties.Settings.Default.RunOrderElimPointsMethod.ToLower().Equals( "kbase" )) {
                 kBasePointsButton.Checked = true;
             } else if (Properties.Settings.Default.RunOrderElimPointsMethod.ToLower().Equals( "hcap" )) {
@@ -295,9 +371,6 @@ namespace WaterskiScoringSystem.Tools {
             if (myTourRules.ToLower().Equals( "iwwf" )) {
                 kBasePointsButton.Checked = true;
                 pointsScoreButton.Checked = true;
-            } else if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                plcmtPointsButton.Checked = true;
-                pointsScoreButton.Checked = true;
             }
 
         }
@@ -308,7 +381,9 @@ namespace WaterskiScoringSystem.Tools {
                 SelectButton.Visible = true;
             } else if (myCommand.Equals( "HeadToHead" )) {
                 loadDataGridViewH2H();
-            } else {
+			} else if ( myCommand.Equals( "Pick" ) ) {
+				loadDataGridViewPick();
+			} else {
                 loadDataGridViewElim();
             }
         }
@@ -428,13 +503,19 @@ namespace WaterskiScoringSystem.Tools {
                 String curName = ((RadioButton)sender).Name;
                 if (curName.Equals( "groupPlcmtButton" )) {
                     myPlcmtOrg = "group";
-                } else if (curName.Equals( "plcmtTourButton" )) {
+					loadGroupList();
+
+				} else if (curName.Equals( "plcmtTourButton" )) {
                     myPlcmtOrg = "tour";
-                } else if (curName.Equals( "plcmtDivButton" )) {
+
+				} else if (curName.Equals( "plcmtDivButton" )) {
                     myPlcmtOrg = "div";
-                } else if (curName.Equals( "plcmtDivGrpButton" )) {
+					loadGroupList();
+
+				} else if (curName.Equals( "plcmtDivGrpButton" )) {
                     myPlcmtOrg = "divgr";
-                } else {
+
+				} else {
                     myPlcmtOrg = "tour";
                 }
                 Properties.Settings.Default.RunOrderElimPlcmtOrg = myPlcmtOrg;
@@ -442,7 +523,10 @@ namespace WaterskiScoringSystem.Tools {
                 if (myPlcmtOrg.ToLower().Equals( "div" )) {
                     EventGroupList.Visible = true;
                     EventGroupListLabel.Visible = true;
-                } else {
+				} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+					EventGroupList.Visible = true;
+					EventGroupListLabel.Visible = true;
+				} else {
                     EventGroupList.Visible = false;
                     EventGroupListLabel.Visible = false;
                 }
@@ -457,202 +541,223 @@ namespace WaterskiScoringSystem.Tools {
             DataTable curDataTable = null;
             DataTable curSummaryDataTable = null;
             DataRow[] curFindRows = null;
-            String curGroupFilter = null;
             myDivFilter = null;
-            if (myPlcmtOrg.ToLower().Equals( "div" )) {
-                myDivFilter = EventGroupList.SelectedItem.ToString();
-                curGroupFilter = "All";
-            } else {
+			myGroupFilter = null;
+			if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+				myDivFilter = EventGroupList.SelectedItem.ToString();
+				myGroupFilter = "All";
+
+			} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+				myGroupFilter = EventGroupList.SelectedItem.ToString();
+				myDivFilter = "All";
+
+			} else {
                 myDivFilter = "All";
-                curGroupFilter = "All";
+				myGroupFilter = "All";
             }
 
             try {
-                if (myRound > 1) {
-                    Cursor.Current = Cursors.WaitCursor;
-                    if ( myEvent.ToLower().Equals( "trick" )) {
-                        if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        } else {
-                            curSummaryDataTable = myCalcSummary.getTrickSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        }
-                        curPlcmtName = "PlcmtTrick";
-                        curRoundName = "RoundTrick";
-                        curGroupName = "EventGroupTrick";
-                        curScoreName = "ScoreTrick";
-                    } else if (myEvent.ToLower().Equals( "jump" )) {
-                        if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        } else {
-                            curSummaryDataTable = myCalcSummary.getJumpSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        }
-                        curPlcmtName = "PlcmtJump";
-                        curRoundName = "RoundJump";
-                        curGroupName = "EventGroupJump";
-                        curScoreName = "ScoreMeters";
-                    } else {
-                        if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        } else {
-                            curSummaryDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, curGroupFilter, myDivFilter );
-                        }
-                        curPlcmtName = "PlcmtSlalom";
-                        curRoundName = "RoundSlalom";
-                        curGroupName = "EventGroupSlalom";
-                        curScoreName = "ScoreSlalom";
-                    }
+				Cursor.Current = Cursors.WaitCursor;
+				if ( myEvent.ToLower().Equals( "trick" ) ) {
+					if ( myRound > 1 ) {
+						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						} else {
+							curSummaryDataTable = myCalcSummary.getTrickSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						}
+					} else {
+						curSummaryDataTable = getEventRegData( myDivFilter, myGroupFilter );
+					}
+					curPlcmtName = "PlcmtTrick";
+					curRoundName = "RoundTrick";
+					curGroupName = "EventGroupTrick";
+					curScoreName = "ScoreTrick";
 
-                    if (myPlcmtOrg.ToLower().Equals( "div" )) {
-                        curSortCmd = "AgeGroup ASC, " + curPlcmtName + " ASC, SkierName ASC";
-                    } else if (myPlcmtOrg.ToLower().Equals( "divgr" )) {
-                        curSortCmd = "AgeGroup ASC, " + curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC, " + curRoundName + " ASC";
-                    } else if (myPlcmtOrg.ToLower().Equals( "group" )) {
-                        curSortCmd = curGroupName + " ASC, " + curPlcmtName + " DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd = curPlcmtName + " ASC, SkierName ASC ";
-                    }
+				} else if ( myEvent.ToLower().Equals( "jump" ) ) {
+					if ( myRound > 1 ) {
+						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						} else {
+							curSummaryDataTable = myCalcSummary.getJumpSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						}
+					} else {
+						curSummaryDataTable = getEventRegData( myDivFilter, myGroupFilter );
+					}
+					curPlcmtName = "PlcmtJump";
+					curRoundName = "RoundJump";
+					curGroupName = "EventGroupJump";
+					curScoreName = "ScoreMeters";
 
-                    if (myDataType.ToLower().Equals( "round" )) {
-                        curSummaryDataTable.DefaultView.Sort = curRoundName + " ASC, " + curSortCmd;
-                        curDataTable = curSummaryDataTable.DefaultView.ToTable();
-                        curDataTable.DefaultView.RowFilter = curRoundName + " = " + ( myRound - 1 ).ToString();
-                        curDataTable = curDataTable.DefaultView.ToTable();
-                    } else {
-                        curSummaryDataTable.DefaultView.Sort = curSortCmd;
-                        curDataTable = curSummaryDataTable.DefaultView.ToTable();
-                    }
+				} else {
+					if ( myRound > 1 ) {
+						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						} else {
+							curSummaryDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+						}
+					} else {
+						curSummaryDataTable = getEventRegData( myDivFilter, myGroupFilter );
+					}
+					curPlcmtName = "PlcmtSlalom";
+					curRoundName = "RoundSlalom";
+					curGroupName = "EventGroupSlalom";
+					curScoreName = "ScoreSlalom";
+				}
 
-                    DataTable curEntriesDataTable = getCurrentRoundEntries( myDivFilter );
-                    int curEntryCount = curEntriesDataTable.Rows.Count;
+				if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curSortCmd = "AgeGroup ASC, " + curPlcmtName + " ASC, SkierName ASC";
+				} else if ( myPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curSortCmd = "AgeGroup ASC, " + curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC, " + curRoundName + " ASC";
+				} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curSortCmd = curGroupName + " ASC, " + curPlcmtName + " DESC, SkierName ASC ";
+				} else {
+					curSortCmd = curPlcmtName + " ASC, SkierName ASC ";
+				}
 
-                    previewDataGridView.Rows.Clear();
-                    if (curDataTable.Rows.Count > 0) {
-                        curGroupNumSkiers = curDataTable.Rows.Count;
-                        DataGridViewRow curViewRow;
-                        foreach (DataRow curDataRow in curDataTable.Rows) {
-                            curIdx = previewDataGridView.Rows.Add();
+				if ( myDataType.ToLower().Equals( "round" ) ) {
+					curSummaryDataTable.DefaultView.Sort = curRoundName + " ASC, " + curSortCmd;
+					curDataTable = curSummaryDataTable.DefaultView.ToTable();
+					curDataTable.DefaultView.RowFilter = curRoundName + " = " + ( myRound - 1 ).ToString();
+					curDataTable = curDataTable.DefaultView.ToTable();
+				} else {
+					curSummaryDataTable.DefaultView.Sort = curSortCmd;
+					curDataTable = curSummaryDataTable.DefaultView.ToTable();
+				}
 
-                            curDiv = (String)curDataRow["AgeGroup"];
-                            curGroup = (String)curDataRow[curGroupName];
-                            curPlcmt = (String)curDataRow[curPlcmtName];
-                            if (myPlcmtOrg.ToLower().Equals( "agegroup" )) {
-                                curReportGroup = curDiv;
-                                curFilterCmd = "AgeGroup = '" + curDiv + "'";
-                            } else if (myPlcmtOrg.ToLower().Equals( "div" )) {
-                                curReportGroup = curDiv;
-                                curFilterCmd = "AgeGroup = '" + curDiv + "'";
-                            } else if (myPlcmtOrg.ToLower().Equals( "divgr" )) {
-                                curReportGroup = curDiv + "-" + curGroup;
-                                curFilterCmd = "AgeGroup = '" + curDiv + "' AND " + curGroupName + " = '" + curGroup + "'";
-                            } else if (myPlcmtOrg.ToLower().Equals( "group" )) {
-                                curReportGroup = curGroup;
-                                curFilterCmd = curGroupName + " = '" + curGroup + "'";
-                            } else {
-                                curReportGroup = "";
-                                curPlcmt = (String)curDataRow[curPlcmtName];
-                                curFilterCmd = "";
-                            }
+				DataTable curEntriesDataTable = getCurrentRoundEntries( myDivFilter, myGroupFilter );
+				int curEntryCount = curEntriesDataTable.Rows.Count;
 
-                            if (curReportGroup != prevReportGroup) {
-                                curFindRows = curDataTable.Select( curFilterCmd );
-                                curGroupNumSkiers = curFindRows.Length;
-                                if (curGroupNumSkiers > myNumSkiers) {
-                                    curRunOrder = myNumSkiers;
-                                } else {
-                                    curRunOrder = curGroupNumSkiers;
-                                }
-                                curSkierSeed = 1;
-                                if (prevReportGroup.Length > 0) {
-                                    curViewRow = previewDataGridView.Rows[curIdx];
-                                    curViewRow.DefaultCellStyle.BackColor = Color.DarkGray;
-                                    previewDataGridView.Rows[curIdx].Height = 4;
-                                    curIdx = previewDataGridView.Rows.Add();
-                                }
-                            } else {
-                                curSkierSeed += 1;
-                                if (curSkierSeed > myNumSkiers) {
-                                    curRunOrder = curGroupNumSkiers - curSkierSeed + myNumSkiers + 1;
-                                } else {
-                                    curRunOrder = myNumSkiers - curSkierSeed + 1;
-                                }
-                            }
-                            if (curPlcmt.Contains( "T" )) {
-                                curNumPlcmt = Convert.ToInt32( curPlcmt.Substring( 0, curPlcmt.IndexOf( "T" ) ) );
-                            } else {
-                                curNumPlcmt = Convert.ToInt32( curPlcmt );
-                            }
-                            prevReportGroup = curReportGroup;
+				previewDataGridView.Rows.Clear();
+				if ( curDataTable.Rows.Count > 0 ) {
+					curGroupNumSkiers = curDataTable.Rows.Count;
+					DataGridViewRow curViewRow;
+					foreach ( DataRow curDataRow in curDataTable.Rows ) {
+						curIdx = previewDataGridView.Rows.Add();
 
-                            curViewRow = previewDataGridView.Rows[curIdx];
-                            if (curEntryCount > 0) {
-                                curFindRows = curEntriesDataTable.Select( "MemberId = '" + (String)curDataRow["MemberId"] + "' AND AgeGroup = '" + (String)curDataRow["AgeGroup"] + "'" );
-                                if (curFindRows.Length > 0) {
-                                    curViewRow.Cells["previewSelected"].Value = true;
-                                } else {
-                                    curViewRow.Cells["previewSelected"].Value = false;
-                                }
-                            } else {
-                                if (curSkierSeed <= myNumSkiers) {
-                                    curViewRow.Cells["previewSelected"].Value = true;
-                                } else {
-                                    if (curSkierSeed < ( myNumSkiers + 1 )) {
-                                        curViewRow = previewDataGridView.Rows[curIdx];
-                                        curViewRow.DefaultCellStyle.BackColor = Color.LightCyan;
-                                        previewDataGridView.Rows[curIdx].Height = 2;
-                                        curIdx = previewDataGridView.Rows.Add();
-                                        curViewRow = previewDataGridView.Rows[curIdx];
-                                        curViewRow.Cells["previewSelected"].Value = false;
-                                    } else {
-                                        curViewRow.Cells["previewSelected"].Value = false;
-                                    }
-                                }
-                            }
-                            curViewRow.Cells["previewSanctionId"].Value = (String)curDataRow["SanctionId"];
-                            curViewRow.Cells["previewMemberId"].Value = (String)curDataRow["MemberId"];
-                            curViewRow.Cells["previewSkierName"].Value = (String)curDataRow["SkierName"];
-                            curViewRow.Cells["previewEvent"].Value = myEvent;
-                            curViewRow.Cells["previewAgeGroup"].Value = (String)curDataRow["AgeGroup"];
-                            curViewRow.Cells["previewRound"].Value = myRound.ToString( "0" );
-                            try {
-                                curViewRow.Cells["previewEventGroup"].Value = curGroup;
-                            } catch {
-                                curViewRow.Cells["previewEventGroup"].Value = "";
-                            }
-                            curViewRow.Cells["previewSeed"].Value = curSkierSeed.ToString();
-                            curViewRow.Cells["previewOrder"].Value = curRunOrder.ToString();
-                            curViewRow.Cells["PreviewScore"].Value = curDataRow[curScoreName].ToString();
-                            curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
+						curDiv = (String) curDataRow["AgeGroup"];
+						curGroup = (String) curDataRow[curGroupName];
+						curPlcmt = (String) curDataRow[curPlcmtName];
+						if ( myPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+							curReportGroup = curDiv;
+							curFilterCmd = "AgeGroup = '" + curDiv + "'";
+						} else if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+							curReportGroup = curDiv;
+							curFilterCmd = "AgeGroup = '" + curDiv + "'";
+						} else if ( myPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+							curReportGroup = curDiv + "-" + curGroup;
+							curFilterCmd = "AgeGroup = '" + curDiv + "' AND " + curGroupName + " = '" + curGroup + "'";
+						} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+							curReportGroup = curGroup;
+							curFilterCmd = curGroupName + " = '" + curGroup + "'";
+						} else {
+							curReportGroup = "";
+							curPlcmt = (String) curDataRow[curPlcmtName];
+							curFilterCmd = "";
+						}
 
-                        }
-                        try {
-                            int curRowPos = curIdx + 1;
-                            RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + previewDataGridView.Rows.Count.ToString();
-                        } catch {
-                            RowStatusLabel.Text = "";
-                        }
+						if ( curReportGroup != prevReportGroup ) {
+							curFindRows = curDataTable.Select( curFilterCmd );
+							curGroupNumSkiers = curFindRows.Length;
+							if ( curGroupNumSkiers > myNumSkiers ) {
+								curRunOrder = myNumSkiers;
+							} else {
+								curRunOrder = curGroupNumSkiers;
+							}
+							curSkierSeed = 1;
+							if ( prevReportGroup.Length > 0 ) {
+								curViewRow = previewDataGridView.Rows[curIdx];
+								curViewRow.DefaultCellStyle.BackColor = Color.DarkGray;
+								previewDataGridView.Rows[curIdx].Height = 4;
+								curIdx = previewDataGridView.Rows.Add();
+							}
+						} else {
+							curSkierSeed += 1;
+							if ( curSkierSeed > myNumSkiers ) {
+								curRunOrder = curGroupNumSkiers - curSkierSeed + myNumSkiers + 1;
+							} else {
+								curRunOrder = myNumSkiers - curSkierSeed + 1;
+							}
+						}
+						if ( curPlcmt.Contains( "T" ) ) {
+							curNumPlcmt = Convert.ToInt32( curPlcmt.Substring( 0, curPlcmt.IndexOf( "T" ) ) );
+						} else {
+							curNumPlcmt = Convert.ToInt32( curPlcmt );
+						}
+						prevReportGroup = curReportGroup;
 
-                        curIdx = 0;
-                        previewDataGridView.CurrentCell = previewDataGridView.Rows[curIdx].Cells["previewSkierName"];
-                    }
-                    Cursor.Current = Cursors.Default;
-                }
-            } catch (Exception excp) {
+						curViewRow = previewDataGridView.Rows[curIdx];
+						if ( curEntryCount > 0 ) {
+							curFindRows = curEntriesDataTable.Select( "MemberId = '" + (String) curDataRow["MemberId"] + "' AND AgeGroup = '" + (String) curDataRow["AgeGroup"] + "'" );
+							if ( curFindRows.Length > 0 ) {
+								curViewRow.Cells["previewSelected"].Value = true;
+							} else {
+								curViewRow.Cells["previewSelected"].Value = false;
+							}
+						} else {
+							if ( curSkierSeed <= myNumSkiers ) {
+								curViewRow.Cells["previewSelected"].Value = true;
+							} else {
+								if ( curSkierSeed < ( myNumSkiers + 1 ) ) {
+									curViewRow = previewDataGridView.Rows[curIdx];
+									curViewRow.DefaultCellStyle.BackColor = Color.LightCyan;
+									previewDataGridView.Rows[curIdx].Height = 2;
+									curIdx = previewDataGridView.Rows.Add();
+									curViewRow = previewDataGridView.Rows[curIdx];
+									curViewRow.Cells["previewSelected"].Value = false;
+								} else {
+									curViewRow.Cells["previewSelected"].Value = false;
+								}
+							}
+						}
+						curViewRow.Cells["previewSanctionId"].Value = (String) curDataRow["SanctionId"];
+						curViewRow.Cells["previewMemberId"].Value = (String) curDataRow["MemberId"];
+						curViewRow.Cells["previewSkierName"].Value = (String) curDataRow["SkierName"];
+						curViewRow.Cells["previewEvent"].Value = myEvent;
+						curViewRow.Cells["previewAgeGroup"].Value = (String) curDataRow["AgeGroup"];
+						curViewRow.Cells["previewRound"].Value = myRound.ToString( "0" );
+						try {
+							curViewRow.Cells["previewEventGroup"].Value = curGroup;
+						} catch {
+							curViewRow.Cells["previewEventGroup"].Value = "";
+						}
+						curViewRow.Cells["previewSeed"].Value = curSkierSeed.ToString();
+						curViewRow.Cells["previewOrder"].Value = curRunOrder.ToString();
+						curViewRow.Cells["PreviewScore"].Value = curDataRow[curScoreName].ToString();
+						curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
+
+					}
+					try {
+						int curRowPos = curIdx + 1;
+						RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + previewDataGridView.Rows.Count.ToString();
+					} catch {
+						RowStatusLabel.Text = "";
+					}
+
+					curIdx = 0;
+					previewDataGridView.CurrentCell = previewDataGridView.Rows[curIdx].Cells["previewSkierName"];
+				}
+				Cursor.Current = Cursors.Default;
+
+			} catch (Exception excp) {
                 MessageBox.Show( "Error attempting to prepare for head to head selection \n" + excp.Message );
             }
         }
 
         private void loadDataGridViewH2H() {
             String curMethodName = "Tournament:RunOrderElimDialogForm:loadDataGridViewH2H";
-            String curGroup = "", curDiv = "", curPlcmt = "", curSortCmd = "", curReportGroup = "", prevReportGroup = "", curNewEventGroup= "";
+            String curGroup = "", curRoGroup = "", curDiv = "", curPlcmt = "", curSortCmd = "", curReportGroup = "", prevReportGroup = "", curNewRoGroup= "";
             String curPlcmtName = "", curRoundName = "", curGroupName = "", curScoreName = "";
-            String curGroupFilter = null;
-            myDivFilter = null;
             if (myPlcmtOrg.ToLower().Equals( "div" )) {
                 myDivFilter = EventGroupList.SelectedItem.ToString();
-                curGroupFilter = "All";
-            } else {
+				myGroupFilter = "All";
+
+			} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+				myGroupFilter = EventGroupList.SelectedItem.ToString();
+				myDivFilter = "All";
+
+			} else {
                 myDivFilter = null;
-                curGroupFilter = null;
+				myGroupFilter = null;
             }
 
             int curIdx = 0, curNumPlcmt = 0, curRunOrder = 0, curNumSkierSelected = 0;
@@ -678,9 +783,11 @@ namespace WaterskiScoringSystem.Tools {
                             curDataTable = myCalcSummary.getTrickSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
                         }
                     } else {
-                        curDataTable = getEventRegData( myDivFilter );
+						curGroupName = "EventGroup";
+						curDataTable = getEventRegData( myDivFilter, myGroupFilter );
                     }
-                } else if (myEvent.ToLower().Equals( "jump" )) {
+
+				} else if (myEvent.ToLower().Equals( "jump" )) {
                     curPlcmtName = "PlcmtJump";
                     curRoundName = "RoundJump";
                     curGroupName = "EventGroupJump";
@@ -696,9 +803,11 @@ namespace WaterskiScoringSystem.Tools {
                             curDataTable = myCalcSummary.getJumpSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
                         }
                     } else {
-                        curDataTable = getEventRegData( myDivFilter );
-                    }
-                } else {
+                        curDataTable = getEventRegData( myDivFilter, myGroupFilter );
+						curGroupName = "EventGroup";
+					}
+
+				} else {
                     curPlcmtName = "PlcmtSlalom";
                     curRoundName = "RoundSlalom";
                     curGroupName = "EventGroupSlalom";
@@ -711,19 +820,20 @@ namespace WaterskiScoringSystem.Tools {
                         if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
                             curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
                         } else {
-                            curDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
+                            curDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
                         }
                     } else {
-                        curDataTable = getEventRegData( myDivFilter );
-                    }
-                }
+                        curDataTable = getEventRegData( myDivFilter, myGroupFilter );
+						curGroupName = "EventGroup";
+					}
+				}
 
                 if (myDataType != null && myDataType.ToLower().Equals( "round" )) {
                     curDataTable.DefaultView.RowFilter = curRoundName + " = " + ( myRound - 1 ).ToString();
                     curDataTable = curDataTable.DefaultView.ToTable();
                 }
 
-                DataTable curEntriesDataTable = getCurrentRoundEntries(myDivFilter);
+                DataTable curEntriesDataTable = getCurrentRoundEntries(myDivFilter, myGroupFilter );
                 int curEntryCount = curEntriesDataTable.Rows.Count;
                 DataRow[] curFindRows = null;
 
@@ -777,7 +887,7 @@ namespace WaterskiScoringSystem.Tools {
                             curFindRows = curEntriesDataTable.Select( "MemberId = '" + (String)curDataRow["MemberId"] + "' AND AgeGroup = '" + (String)curDataRow["AgeGroup"] + "'" );
                             if (curFindRows.Length > 0) {
                                 if (curNumSkierSelected < myNumSkiers) {
-                                    curNewEventGroup = (String)curFindRows[0]["EventGroup"];
+                                    curNewRoGroup = (String)curFindRows[0]["EventGroup"];
                                     curViewRow.Cells["previewSelected"].Value = true;
                                     curNumSkierSelected++;
                                 } else {
@@ -788,10 +898,10 @@ namespace WaterskiScoringSystem.Tools {
                                         curIdx = previewDataGridView.Rows.Add();
                                         curViewRow = previewDataGridView.Rows[curIdx];
 
-                                        curNewEventGroup = (String)curFindRows[0]["EventGroup"];
+                                        curNewRoGroup = (String)curFindRows[0]["EventGroup"];
                                         curViewRow.Cells["previewSelected"].Value = false;
                                     } else {
-                                        curNewEventGroup = (String)curFindRows[0]["EventGroup"];
+                                        curNewRoGroup = (String)curFindRows[0]["EventGroup"];
                                         curViewRow.Cells["previewSelected"].Value = false;
                                     }
                                 }
@@ -803,10 +913,10 @@ namespace WaterskiScoringSystem.Tools {
                                     curIdx = previewDataGridView.Rows.Add();
                                     curViewRow = previewDataGridView.Rows[curIdx];
 
-                                    curNewEventGroup = "";
+                                    curNewRoGroup = "";
                                     curViewRow.Cells["previewSelected"].Value = false;
                                 } else {
-                                    curNewEventGroup = "";
+                                    curNewRoGroup = "";
                                     curViewRow.Cells["previewSelected"].Value = false;
                                 }
                             }
@@ -817,16 +927,16 @@ namespace WaterskiScoringSystem.Tools {
 
                                 if (curRunOrder <= myNumSkiers) {
                                     if (curRunOrder > curMaxGroups) {
-                                        curNewEventGroup = "HH" + ( myNumSkiers - curRunOrder + 1 ).ToString();
+                                        curNewRoGroup = "HH" + ( myNumSkiers - curRunOrder + 1 ).ToString();
                                     } else {
-                                        curNewEventGroup = "HH" + curRunOrder.ToString();
+                                        curNewRoGroup = "HH" + curRunOrder.ToString();
                                     }
                                 } else {
-                                    curNewEventGroup = "";
+                                    curNewRoGroup = "";
                                 }
 
                             } else {
-                                curNewEventGroup = "";
+                                curNewRoGroup = "";
                                 if (curNumPlcmt == ( myNumSkiers + 1 )) {
                                     curViewRow = previewDataGridView.Rows[curIdx];
                                     curViewRow.DefaultCellStyle.BackColor = Color.LightCyan;
@@ -847,11 +957,12 @@ namespace WaterskiScoringSystem.Tools {
                         curViewRow.Cells["previewRound"].Value = myRound.ToString( "0" );
                         curViewRow.Cells["previewSeed"].Value = curRunOrder.ToString();
                         curViewRow.Cells["previewOrder"].Value = curRunOrder.ToString();
-                        curViewRow.Cells["PreviewScore"].Value = curDataRow[curScoreName].ToString();
-                        curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
-                        curViewRow.Cells["previewEventGroup"].Value = curNewEventGroup;
-                    }
-                    Cursor.Current = Cursors.Default;
+						curViewRow.Cells["PreviewScore"].Value = curDataRow[curScoreName].ToString();
+						curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
+                        curViewRow.Cells["previewEventGroup"].Value = curGroup;
+						curViewRow.Cells["previewRunOrderGroup"].Value = curNewRoGroup;
+					}
+					Cursor.Current = Cursors.Default;
                     try {
                         int curRowPos = curIdx + 1;
                         RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + previewDataGridView.Rows.Count.ToString();
@@ -870,11 +981,24 @@ namespace WaterskiScoringSystem.Tools {
 
         private void loadDataGridViewH2HN() {
             String curMethodName = "Tournament:RunOrderElimDialogForm:loadDataGridViewH2HN";
-            String curDiv = "", curReportGroup = "", prevReportGroup = "", curNewEventGroup = "";
+            String curDiv = "", curGroup = "", curReportGroup = "", prevReportGroup = "", curNewRoGroup = "";
             int curIdx = 0, curRunOrder = 0;
             DataTable curDataTable = null;
 
-            try {
+			if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+				myDivFilter = EventGroupList.SelectedItem.ToString();
+				myGroupFilter = "All";
+
+			} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+				myGroupFilter = EventGroupList.SelectedItem.ToString();
+				myDivFilter = "All";
+
+			} else {
+				myDivFilter = null;
+				myGroupFilter = null;
+			}
+
+			try {
                 curDataTable = getEventScoresH2HN();
 
                 int curMaxGroups = Convert.ToInt32( myNumSkiers ) >> 1;
@@ -886,13 +1010,17 @@ namespace WaterskiScoringSystem.Tools {
                     foreach (DataRow curDataRow in curDataTable.Rows) {
                         curIdx = previewDataGridView.Rows.Add();
 
-                        curDiv = (String)curDataRow["AgeGroup"];
-                        if (myPlcmtOrg.ToLower().Equals( "div" )) {
+						curReportGroup = "";
+						curDiv = (String)curDataRow["AgeGroup"];
+						curGroup = (String) curDataRow["EventGroup"];
+						if ( myPlcmtOrg.ToLower().Equals( "div" )) {
                             curReportGroup = curDiv;
-                        } else {
-                            curReportGroup = "";
-                        }
-                        if (curReportGroup != prevReportGroup) {
+
+						} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
+							curReportGroup = curGroup;
+						}
+
+						if ( curReportGroup != prevReportGroup) {
                             curRunOrder = 1;
                             if (prevReportGroup.Length > 0) {
                                 curViewRow = previewDataGridView.Rows[curIdx];
@@ -909,12 +1037,12 @@ namespace WaterskiScoringSystem.Tools {
                         if ((byte)curDataRow["Selected"] == 1) {
                             curViewRow.Cells["previewSelected"].Value = true;
                             if (curRunOrder > curMaxGroups) {
-                                curNewEventGroup = "HH" + ( myNumSkiers - curRunOrder + 1 ).ToString();
+                                curNewRoGroup = "HH" + ( myNumSkiers - curRunOrder + 1 ).ToString();
                             } else {
-                                curNewEventGroup = "HH" + curRunOrder.ToString();
+                                curNewRoGroup = "HH" + curRunOrder.ToString();
                             }
                         } else {
-                            curNewEventGroup = "";
+                            curNewRoGroup = "";
                             curViewRow.Cells["previewSelected"].Value = false;
                         }
 
@@ -926,11 +1054,13 @@ namespace WaterskiScoringSystem.Tools {
 
                         curViewRow.Cells["previewRound"].Value = myRound.ToString( "0" );
                         try {
-                            curViewRow.Cells["previewEventGroup"].Value = curNewEventGroup;
-                        } catch {
+							curViewRow.Cells["previewEventGroup"].Value = curGroup;
+							curViewRow.Cells["previewRunOrderGroup"].Value = curNewRoGroup;
+						} catch {
                             curViewRow.Cells["previewEventGroup"].Value = "";
-                        }
-                        curViewRow.Cells["previewSeed"].Value = ( (Int16)curDataRow["Seed"] ).ToString();
+							curViewRow.Cells["previewRunOrderGroup"].Value = curNewRoGroup;
+						}
+						curViewRow.Cells["previewSeed"].Value = ( (Int16)curDataRow["Seed"] ).ToString();
                         curViewRow.Cells["previewOrder"].Value = ( (Int16)curDataRow["Seed"] ).ToString();
                         curViewRow.Cells["PreviewScore"].Value = curDataRow["Score"].ToString();
 
@@ -953,42 +1083,77 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        private void loadGroupList() {
-            if (EventGroupList.DataSource == null) {
-                if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    ArrayList curEventGroupList = new ArrayList();
-                    curEventGroupList.Add( "All" );
-                    curEventGroupList.Add( "Men A" );
-                    curEventGroupList.Add( "Women A" );
-                    curEventGroupList.Add( "Men B" );
-                    curEventGroupList.Add( "Women B" );
-                    curEventGroupList.Add( "Non Team" );
-                    EventGroupList.DataSource = curEventGroupList;
-                } else {
-                    loadAgeGroupListFromData();
-                }
-            } else {
-                if (( (ArrayList)EventGroupList.DataSource ).Count > 0) {
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    } else {
-                        loadAgeGroupListFromData();
-                    }
-                } else {
-                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                        ArrayList curEventGroupList = new ArrayList();
-                        curEventGroupList.Add( "All" );
-                        curEventGroupList.Add( "Men A" );
-                        curEventGroupList.Add( "Women A" );
-                        curEventGroupList.Add( "Men B" );
-                        curEventGroupList.Add( "Women B" );
-                        curEventGroupList.Add( "Non Team" );
-                        EventGroupList.DataSource = curEventGroupList;
-                    } else {
-                        loadAgeGroupListFromData();
-                    }
-                }
-            }
-        }
+		private void loadDataGridViewPick() {
+			String curMethodName = "Tournament:RunOrderElimDialogForm:loadDataGridViewPick";
+			String curGroup = "", curDiv = "", curPlcmt = "";
+			int curIdx = 0, curGroupNumSkiers = 0;
+			DataTable curDataTable = null;
+
+			try {
+				Cursor.Current = Cursors.WaitCursor;
+				curDataTable = getEventRegData( "All", "All" );
+
+				previewDataGridView.Rows.Clear();
+				if ( curDataTable.Rows.Count > 0 ) {
+					curGroupNumSkiers = curDataTable.Rows.Count;
+					curIdx = 0;
+					DataGridViewRow curViewRow;
+					foreach ( DataRow curDataRow in curDataTable.Rows ) {
+						curIdx = previewDataGridView.Rows.Add();
+						curViewRow = previewDataGridView.Rows[curIdx];
+
+						curDiv = (String) curDataRow["AgeGroup"];
+						curGroup = (String) curDataRow["EventGroup"];
+						curViewRow.Cells["previewSanctionId"].Value = (String) curDataRow["SanctionId"];
+						curViewRow.Cells["previewMemberId"].Value = (String) curDataRow["MemberId"];
+						curViewRow.Cells["previewSkierName"].Value = (String) curDataRow["SkierName"];
+						curViewRow.Cells["previewEvent"].Value = myEvent;
+						curViewRow.Cells["previewAgeGroup"].Value = (String) curDataRow["AgeGroup"];
+						curViewRow.Cells["previewEventGroup"].Value = (String) curDataRow["EventGroup"];
+						curViewRow.Cells["previewRound"].Value = myRound.ToString( "0" );
+						curViewRow.Cells["previewSeed"].Value = curDataRow["RunOrder"].ToString();
+						curViewRow.Cells["previewOrder"].Value = curDataRow["RunOrder"].ToString();
+						curViewRow.Cells["PreviewScore"].Value = curDataRow["RankingScore"].ToString();
+						curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
+						curViewRow.Cells["previewSelected"].Value = true;
+					}
+					try {
+						int curRowPos = curIdx + 1;
+						RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + previewDataGridView.Rows.Count.ToString();
+					} catch {
+						RowStatusLabel.Text = "";
+					}
+
+					curIdx = 0;
+					previewDataGridView.CurrentCell = previewDataGridView.Rows[curIdx].Cells["previewSkierName"];
+				}
+				Cursor.Current = Cursors.Default;
+
+			} catch ( Exception excp ) {
+				MessageBox.Show( "Error attempting to prepare for pick and choose selection \n" + excp.Message );
+			}
+		}
+
+		private void loadGroupList() {
+			if ( groupPlcmtButton.Checked ) {
+				loadEventGroupListFromData();
+
+			} else if ( plcmtDivButton.Checked ) {
+				if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+					ArrayList curEventGroupList = new ArrayList();
+					curEventGroupList.Add( "All" );
+					curEventGroupList.Add( "Men A" );
+					curEventGroupList.Add( "Women A" );
+					curEventGroupList.Add( "Men B" );
+					curEventGroupList.Add( "Women B" );
+					curEventGroupList.Add( "Non Team" );
+					EventGroupList.DataSource = curEventGroupList;
+				} else {
+					loadAgeGroupListFromData();
+				}
+
+			}
+		}
 
         private void loadAgeGroupListFromData() {
             String curGroupValue = "";
@@ -1020,16 +1185,47 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        private void SelectButton_Click(object sender, EventArgs e) {
+		private void loadEventGroupListFromData() {
+			String curGroupValue = "";
+			ArrayList curEventGroupList = new ArrayList();
+			String curSqlStmt = "";
+			curEventGroupList.Add( "All" );
+			curSqlStmt = "SELECT DISTINCT EventGroup FROM EventReg "
+				+ "WHERE SanctionId = '" + (String) myTourRow["SanctionId"] + "' And Event = '" + this.myEvent + "' "
+				+ "Order by EventGroup";
+			DataTable curDataTable = getData( curSqlStmt );
+
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				curEventGroupList.Add( (String) curRow["EventGroup"] );
+			}
+			EventGroupList.DataSource = curEventGroupList;
+			if ( curGroupValue.Length > 0 ) {
+				foreach ( String curValue in (ArrayList) EventGroupList.DataSource ) {
+					if ( curValue.Equals( curGroupValue ) ) {
+						EventGroupList.SelectedItem = curGroupValue;
+						EventGroupList.Text = curGroupValue;
+						return;
+					}
+				}
+				EventGroupList.SelectedItem = "All";
+				EventGroupList.Text = "All";
+			} else {
+				EventGroupList.SelectedItem = "All";
+				EventGroupList.Text = "All";
+			}
+		}
+
+		private void SelectButton_Click(object sender, EventArgs e) {
             if (myCommand.Equals( "HeadToHead" )) {
                 insertHeadToHeadOrder();
             } else if (myCommand.Equals( "HeadToHeadNext" )) {
                 insertHeadToHeadOrder();
             } else if (myCommand.Equals( "Elim" )) {
                 insertElimSelect();
-            } else {
-            }
-        }
+			} else if ( myCommand.Equals( "Pick" ) ) {
+				insertPickAndChooseSelect();
+			}
+		}
 
         private void insertHeadToHeadOrder() {
             String curMethodName = "Tournament:RunningOrderRound:insertHeadToHeadOrder";
@@ -1042,12 +1238,17 @@ namespace WaterskiScoringSystem.Tools {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "Delete EventRunOrder " );
                     curSqlStmt.Append( "WHERE SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND Event = '" + myEvent + "' AND Round = " + myRound.ToString() );
-                    if (myDivFilter != null) {
-                        if (myDivFilter.Length > 0 && !( myDivFilter.ToLower().Equals( "all" ) )) {
-                            curSqlStmt.Append( " AND AgeGroup = '" + myDivFilter + "' " );
-                        }
-                    }
-                    rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					if ( myDivFilter != null ) {
+						if ( myDivFilter.Length > 0 && !( myDivFilter.ToLower().Equals( "all" ) ) ) {
+							curSqlStmt.Append( " AND AgeGroup = '" + myDivFilter + "' " );
+						}
+					}
+					if ( myGroupFilter != null ) {
+						if ( myGroupFilter.Length > 0 && !( myGroupFilter.ToLower().Equals( "all" ) ) ) {
+							curSqlStmt.Append( " AND EventGroup = '" + myDivFilter + "' " );
+						}
+					}
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
                 } catch (Exception excp) {
                     curMsg = "Error attempting to remove existing head to head running order entries before re-adding  \n" + excp.Message;
@@ -1060,13 +1261,14 @@ namespace WaterskiScoringSystem.Tools {
                         if ((bool)curViewRow.Cells["previewSelected"].Value) {
                             curSqlStmt = new StringBuilder( "" );
                             curSqlStmt.Append( "Insert EventRunOrder ( " );
-                            curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
+                            curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, RunOrderGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
                             curSqlStmt.Append( ") Values ( " );
                             curSqlStmt.Append( "'" + (String)curViewRow.Cells["previewSanctionId"].Value + "'" );
                             curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewMemberId"].Value + "'" );
                             curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewAgeGroup"].Value + "'" );
                             curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEventGroup"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewRunOrderGroup"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
                             curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewRound"].Value );
                             curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewSeed"].Value );
                             curSqlStmt.Append( ", " + (String)curViewRow.Cells["PreviewScore"].Value );
@@ -1138,30 +1340,83 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        private DataTable getEventRegData(String inDivFilter) {
+		private void insertPickAndChooseSelect() {
+			String curMethodName = "Tournament:RunningOrderRound:insertPickAndChooseSelect";
+			String curMsg = "";
+			int rowsProc = 0;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			try {
+				try {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Delete EventRunOrder " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + (String) myTourRow["SanctionId"] + "' AND Event = '" + myEvent + "' AND Round = " + myRound.ToString() );
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				} catch ( Exception excp ) {
+					curMsg = "Error attempting to remove existing running order entries before re-adding  \n" + excp.Message;
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + curMsg );
+				}
+
+				foreach ( DataGridViewRow curViewRow in previewDataGridView.Rows ) {
+					if ( curViewRow.Cells["previewSanctionId"].Value != null ) {
+						if ( (bool) curViewRow.Cells["previewSelected"].Value ) {
+							curSqlStmt = new StringBuilder( "" );
+							curSqlStmt.Append( "Insert EventRunOrder ( " );
+							curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
+							curSqlStmt.Append( ") Values ( " );
+							curSqlStmt.Append( "'" + (String) curViewRow.Cells["previewSanctionId"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewMemberId"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewAgeGroup"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewEventGroup"].Value + "'" );
+							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewEvent"].Value + "'" );
+							curSqlStmt.Append( ", " + (String) curViewRow.Cells["previewRound"].Value );
+							curSqlStmt.Append( ", " + (String) curViewRow.Cells["previewOrder"].Value );
+							curSqlStmt.Append( ", " + (String) curViewRow.Cells["PreviewScore"].Value );
+							curSqlStmt.Append( ", GETDATE(), '' " );
+							curSqlStmt.Append( ")" );
+							rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+							Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+						}
+					}
+
+				}
+			} catch ( Exception excp ) {
+				curMsg = "Error attempting to generate head to head running order \n" + excp.Message;
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
+			}
+		}
+
+		private DataTable getEventRegData(String inDivFilter, String inGroupFilter ) {
             String curPlcmtName = "Plcmt" + myEvent;
             String curRoundName = "Round" + myEvent;
             String curGroupName = "EventGroup" + myEvent;
             String curScoreName = "Score" + myEvent;
+			String curPointsName = "Points" + myEvent;
 
-            StringBuilder curSqlStmt = new StringBuilder( "" );
+			StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT E.Event, E.SanctionId, E.MemberId, T.SkierName, E.EventGroup, E.RunOrder, " );
             curSqlStmt.Append( "E.TeamCode, E.EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, '" + myRound.ToString() + "' as Round " );
             curSqlStmt.Append( ", CONVERT(nvarchar(3), E.RunOrder) AS PlcmtGroup, CONVERT(nvarchar(3), E.RunOrder) AS PlcmtTour " );
             curSqlStmt.Append( ", E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
-            curSqlStmt.Append( ", E.RankingScore AS " + curScoreName );
+            curSqlStmt.Append( ", E.RankingScore AS " + curScoreName + ", (E.RankingScore + E.HCapScore) AS " + curPointsName );
             curSqlStmt.Append( ", " + myRound.ToString() + " AS " + curRoundName );
             curSqlStmt.Append( ", '0' AS " + curPlcmtName + ", '' AS " + curGroupName );
             curSqlStmt.Append( " FROM EventReg E " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
             curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND E.Event = '" + myEvent + "' " );
-            if (inDivFilter == null) {
-            } else if (inDivFilter.ToLower().Equals( "all" )) {
+            if (inDivFilter == null || inDivFilter.ToLower().Equals( "all" )) {
             } else {
                 curSqlStmt.Append( " AND E.AgeGroup = '" + inDivFilter + "' " );
             }
-            if (groupPlcmtButton.Checked) {
+			if ( inGroupFilter == null || inGroupFilter.ToLower().Equals( "all" ) ) {
+			} else {
+				curSqlStmt.Append( " AND E.EventGroup = '" + inGroupFilter + "' " );
+			}
+			if ( groupPlcmtButton.Checked) {
                 curSqlStmt.Append( "Order by E.EventGroup, E.RunOrder, E.RankingScore DESC" );
             } else if (plcmtTourButton.Checked) {
                 curSqlStmt.Append( "Order by E.RunOrder, E.RankingScore DESC" );
@@ -1170,7 +1425,7 @@ namespace WaterskiScoringSystem.Tools {
             } else if (plcmtDivGrpButton.Checked) {
                 curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999), E.AgeGroup, E.EventGroup, E.RunOrder, E.RankingScore DESC" );
             } else {
-                curSqlStmt.Append( "Order by E.RunOrder, E.RankingScore DESC" );
+				curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999), E.AgeGroup, E.RunOrder, E.RankingScore DESC" );
             }
 
             return getData( curSqlStmt.ToString() );
@@ -1180,13 +1435,13 @@ namespace WaterskiScoringSystem.Tools {
 
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventClass" );
-            curSqlStmt.Append( ", S.Round, O.EventGroup, O.RunOrder, E.TeamCode, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder" );
+            curSqlStmt.Append( ", S.Round, O.EventGroup, O.RunOrderGroup, O.RunOrder, E.TeamCode, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder" );
             if (myEvent.Equals( "Slalom" )) {
-                curSqlStmt.Append( ", S.Score, S.NopsScore, E.HCapScore " );
+                curSqlStmt.Append( ", S.Score, S.NopsScore, E.HCapScore, S.Score + E.HCapScore as HCapScoreTotal " );
             } else if (myEvent.Equals( "Trick" )) {
-                curSqlStmt.Append( ", S.Score, S.NopsScore, E.HCapScore " );
+                curSqlStmt.Append( ", S.Score, S.NopsScore, E.HCapScore, S.Score + E.HCapScore as HCapScoreTotal " );
             } else if (myEvent.Equals( "Jump" )) {
-                curSqlStmt.Append( ", S.ScoreFeet, S.ScoreMeters as Score, S.NopsScore, E.HCapScore " );
+                curSqlStmt.Append( ", S.ScoreFeet, S.ScoreMeters as Score, S.NopsScore, E.HCapScore, S.ScoreFeet + E.HCapScore as HCapScoreTotal " );
             }
             curSqlStmt.Append( "FROM EventReg E " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
@@ -1202,38 +1457,67 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "WHERE E.SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND E.Event = '" + myEvent + "' " );
             curSqlStmt.Append( "AND S.Round = " + (myRound - 1).ToString() + " ");
 
-            if (plcmtDivButton.Checked) {
-                myDivFilter = null;
-                if (myPlcmtOrg.ToLower().Equals( "div" )) {
-                    myDivFilter = EventGroupList.SelectedItem.ToString();
-                    if (myDivFilter == null) {
-                    } else if (myDivFilter.ToLower().Equals( "all" )) {
-                    } else {
-                        curSqlStmt.Append( "AND E.AgeGroup = '" + EventGroupList.SelectedItem.ToString() + "' " );
-                    }
-                }
-                if (pointsScoreButton.Checked) {
-                    if (handicapPointsButton.Checked) {
-                        if (myEvent.Equals( "Slalom" )) {
-                            curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, (S.Score + E.HCapScore) DESC, O.RunOrder " );
-                        } else if (myEvent.Equals( "Trick" )) {
-                            curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, (S.Score + E.HCapScore) DESC, O.RunOrder " );
-                        } else if (myEvent.Equals( "Jump" )) {
-                            curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, (S.ScoreFeet = E.HCapScore) DESC, (S.ScoreMeters + E.HCapScore) DESC, O.RunOrder " );
-                        }
-                    } else {
-                        curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, S.NopsScore DESC, O.RunOrder " );
-                    }
-                } else {
-                    if (myEvent.Equals( "Slalom" )) {
-                        curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, S.Score DESC, O.RunOrder " );
-                    } else if (myEvent.Equals( "Trick" )) {
-                        curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, S.Score DESC, O.RunOrder " );
-                    } else if (myEvent.Equals( "Jump" )) {
-                        curSqlStmt.Append( "Order by E.AgeGroup, COALESCE(D.RunOrder, 999), O.EventGroup, S.ScoreFeet DESC, S.ScoreMeters DESC, O.RunOrder " );
-                    }
-                }
-            } else {
+			if ( plcmtDivButton.Checked ) {
+				if ( myDivFilter != null ) {
+					if ( myDivFilter.Length > 0 && !( myDivFilter.ToLower().Equals( "all" ) ) ) {
+						curSqlStmt.Append( " AND E.AgeGroup = '" + myDivFilter + "' " );
+					}
+				}
+
+				if ( pointsScoreButton.Checked ) {
+					if ( handicapPointsButton.Checked ) {
+						if ( myEvent.Equals( "Slalom" ) ) {
+							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+						} else if ( myEvent.Equals( "Trick" ) ) {
+							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+						} else if ( myEvent.Equals( "Jump" ) ) {
+							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.ScoreMeters + E.HCapScore) DESC " );
+						}
+					} else {
+						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.NopsScore DESC " );
+					}
+
+				} else {
+					if ( myEvent.Equals( "Slalom" ) ) {
+						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+					} else if ( myEvent.Equals( "Trick" ) ) {
+						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+					} else if ( myEvent.Equals( "Jump" ) ) {
+						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.ScoreFeet DESC, S.ScoreMeters DESC " );
+					}
+				}
+
+			} else if ( groupPlcmtButton.Checked ) {
+				if ( myGroupFilter != null ) {
+					if ( myGroupFilter.Length > 0 && !( myGroupFilter.ToLower().Equals( "all" ) ) ) {
+						curSqlStmt.Append( " AND E.EventGroup = '" + myGroupFilter + "' " );
+					}
+				}
+
+				if ( pointsScoreButton.Checked ) {
+					if ( handicapPointsButton.Checked ) {
+						if ( myEvent.Equals( "Slalom" ) ) {
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+						} else if ( myEvent.Equals( "Trick" ) ) {
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+						} else if ( myEvent.Equals( "Jump" ) ) {
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.ScoreMeters + E.HCapScore) DESC " );
+						}
+					} else {
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.NopsScore DESC " );
+					}
+
+				} else {
+					if ( myEvent.Equals( "Slalom" ) ) {
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+					} else if ( myEvent.Equals( "Trick" ) ) {
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+					} else if ( myEvent.Equals( "Jump" ) ) {
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.ScoreFeet DESC, S.ScoreMeters DESC " );
+					}
+				}
+
+			} else {
                 if (pointsScoreButton.Checked) {
                     if (handicapPointsButton.Checked) {
                         if (myEvent.Equals( "Slalom" )) {
@@ -1246,7 +1530,8 @@ namespace WaterskiScoringSystem.Tools {
                     } else {
                         curSqlStmt.Append( "Order by O.EventGroup, S.NopsScore DESC, O.RunOrder " );
                     }
-                } else {
+
+				} else {
                     if (myEvent.Equals( "Slalom" )) {
                         curSqlStmt.Append( "Order by O.EventGroup, S.Score DESC, O.RunOrder " );
                     } else if (myEvent.Equals( "Trick" )) {
@@ -1268,8 +1553,16 @@ namespace WaterskiScoringSystem.Tools {
                 Int16 curDivCount = 0, curDivSkierCount = 0, curDivSkierCountMax = 0, curBracket = 1;
                 String curDiv = "", prevDiv = "";
                 if (pointsScoreButton.Checked) {
-                    curScoreAttr = "NopsScore";
-                } else {
+					if ( nopsPointsButton.Checked || kBasePointsButton.Checked ) {
+						curScoreAttr = "NopsScore";
+					} else if ( ratioPointsButton.Checked ) {
+						curScoreAttr = "HCapScoreTotal";
+					} else if ( handicapPointsButton.Checked ) {
+						curScoreAttr = "HCapScoreTotal";
+					} else {
+						curScoreAttr = "NopsScore";
+					}
+				} else {
                     curScoreAttr = "Score";
                 }
 
@@ -1280,10 +1573,10 @@ namespace WaterskiScoringSystem.Tools {
                     curIdxSkier2 += 2;
 
                     if (myEvent.Equals( "Trick" ) && rawScoreButton.Checked) {
-                        if ((Int16)curDataRowSkier1[curScoreAttr] > (Int16)curDataRowSkier1[curScoreAttr]) {
+                        if ((Int16)curDataRowSkier1[curScoreAttr] > (Int16)curDataRowSkier2[curScoreAttr]) {
                             curDataRow1 = curDataRowSkier1;
                             curDataRow2 = curDataRowSkier2;
-                        } else if ((Int16)curDataRowSkier1[curScoreAttr] < (Int16)curDataRowSkier1[curScoreAttr]) {
+                        } else if ((Int16)curDataRowSkier1[curScoreAttr] < (Int16)curDataRowSkier2[curScoreAttr]) {
                             curDataRow1 = curDataRowSkier2;
                             curDataRow2 = curDataRowSkier1;
                         } else {
@@ -1291,10 +1584,10 @@ namespace WaterskiScoringSystem.Tools {
                             curDataRow2 = curDataRowSkier2;
                         }
                     } else {
-                        if ((Decimal)curDataRowSkier1[curScoreAttr] > (Decimal)curDataRowSkier1[curScoreAttr]) {
+                        if ((Decimal)curDataRowSkier1[curScoreAttr] > (Decimal)curDataRowSkier2[curScoreAttr]) {
                             curDataRow1 = curDataRowSkier1;
                             curDataRow2 = curDataRowSkier2;
-                        } else if ((Decimal)curDataRowSkier1[curScoreAttr] < (Decimal)curDataRowSkier1[curScoreAttr]) {
+                        } else if ((Decimal)curDataRowSkier1[curScoreAttr] < (Decimal)curDataRowSkier2[curScoreAttr]) {
                             curDataRow1 = curDataRowSkier2;
                             curDataRow2 = curDataRowSkier1;
                         } else {
@@ -1308,18 +1601,14 @@ namespace WaterskiScoringSystem.Tools {
                     newSkierScoreRow["MemberId"] = (String)curDataRow1["MemberId"];
                     newSkierScoreRow["SkierName"] = (String)curDataRow1["SkierName"];
                     newSkierScoreRow["AgeGroup"] = (String)curDataRow1["AgeGroup"];
-                    newSkierScoreRow["Event"] = (String)curDataRow1["Event"];
+					newSkierScoreRow["EventGroup"] = (String) curDataRow1["EventGroup"];
+					newSkierScoreRow["RunOrderGroup"] = (String) curDataRow1["RunOrderGroup"];
+					newSkierScoreRow["Event"] = (String)curDataRow1["Event"];
                     newSkierScoreRow["Round"] = (Byte)curDataRow1["Round"];
                     newSkierScoreRow["Seed"] = (Int16)curDataRow1["RunOrder"];
 
-                    if (pointsScoreButton.Checked && handicapPointsButton.Checked) {
-                        if (myEvent.Equals( "Slalom" )) {
-                            newSkierScoreRow["Score"] = (Decimal)curDataRow2["Score"] + (Decimal)curDataRow1["HCapScore"];
-                        } else if (myEvent.Equals( "Trick" )) {
-                            newSkierScoreRow["Score"] = (Int16)curDataRow2["Score"] + (Decimal)curDataRow1["HCapScore"];
-                        } else if (myEvent.Equals( "Jump" )) {
-                            newSkierScoreRow["Score"] = (Decimal)curDataRow2["ScoreFeet"] + (Decimal)curDataRow1["HCapScore"];
-                        }
+                    if (pointsScoreButton.Checked) {
+						newSkierScoreRow["Score"] = (Decimal) curDataRow1["HCapScoreTotal"];
                     } else {
                         if (myEvent.Equals( "Trick" )) {
                             newSkierScoreRow["Score"] = Convert.ToDecimal( (Int16)curDataRow1["Score"] );
@@ -1342,18 +1631,14 @@ namespace WaterskiScoringSystem.Tools {
                     newSkierScoreRow["MemberId"] = (String)curDataRow2["MemberId"];
                     newSkierScoreRow["SkierName"] = (String)curDataRow2["SkierName"];
                     newSkierScoreRow["AgeGroup"] = (String)curDataRow2["AgeGroup"];
-                    newSkierScoreRow["Event"] = (String)curDataRow2["Event"];
+					newSkierScoreRow["EventGroup"] = (String) curDataRow2["EventGroup"];
+					newSkierScoreRow["RunOrderGroup"] = (String) curDataRow2["RunOrderGroup"];
+					newSkierScoreRow["Event"] = (String)curDataRow2["Event"];
                     newSkierScoreRow["Round"] = (Byte)curDataRow2["Round"];
                     newSkierScoreRow["Seed"] = (Int16)curDataRow2["RunOrder"];
-                    if (handicapPointsButton.Checked) {
-                        if (myEvent.Equals( "Slalom" )) {
-                            newSkierScoreRow["Score"] = (Decimal)curDataRow2["Score"] + (Decimal)curDataRow2["HCapScore"];
-                        } else if (myEvent.Equals( "Trick" )) {
-                            newSkierScoreRow["Score"] = (Int16)curDataRow2["Score"] + (Decimal)curDataRow2["HCapScore"];
-                        } else if (myEvent.Equals( "Jump" )) {
-                            newSkierScoreRow["Score"] = (Decimal)curDataRow2["ScoreFeet"] + (Decimal)curDataRow2["HCapScore"];
-                        }
-                    } else {
+					if ( pointsScoreButton.Checked ) {
+						newSkierScoreRow["Score"] = (Decimal) curDataRow2["HCapScoreTotal"];
+					} else {
                         if (myEvent.Equals( "Trick" )) {
                             newSkierScoreRow["Score"] = Convert.ToDecimal( (Int16)curDataRow2["Score"] );
                         } else {
@@ -1397,16 +1682,21 @@ namespace WaterskiScoringSystem.Tools {
                 //NumSkiersTextbox.Text = myNumSkiers.ToString();
 
                 if (reseedButton.Checked) {
-                    if (plcmtDivButton.Checked) {
-                        curPlcmtTable.DefaultView.Sort = "AgeGroup DESC, Selected DESC, Seed ASC";
-                    } else {
+					if ( plcmtDivButton.Checked ) {
+						curPlcmtTable.DefaultView.Sort = "AgeGroup DESC, Selected DESC, Seed ASC";
+					} else if ( groupPlcmtButton.Checked ) {
+						curPlcmtTable.DefaultView.Sort = "EventGroup DESC, Selected DESC, Seed ASC";
+					} else {
                         curPlcmtTable.DefaultView.Sort = "Selected DESC, Seed ASC";
                     }
-                } else if (bracketButton.Checked) {
+
+				} else if (bracketButton.Checked) {
                     if (plcmtDivButton.Checked) {
-                        curPlcmtTable.DefaultView.Sort = "AgeGroup DESC, Selected DESC, Bracket ASC, Seed ASC";
-                    } else {
-                        curPlcmtTable.DefaultView.Sort = "Selected DESC, Bracket ASC, Seed ASC";
+                        curPlcmtTable.DefaultView.Sort = "AgeGroup DESC, Selected DESC, Bracket DESC, Seed ASC";
+					} else if ( groupPlcmtButton.Checked ) {
+						curPlcmtTable.DefaultView.Sort = "EventGroup DESC, Selected DESC, Bracket DESC, Seed ASC";
+					} else {
+                        curPlcmtTable.DefaultView.Sort = "Selected DESC, Bracket DESC, Seed ASC";
                     }
                 }
                 return curPlcmtTable.DefaultView.ToTable();
@@ -1415,7 +1705,7 @@ namespace WaterskiScoringSystem.Tools {
             return curPlcmtTable;
         }
 
-        private DataTable getCurrentRoundEntries(String inDivFilter) {
+        private DataTable getCurrentRoundEntries(String inDivFilter, String inGroupFilter ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT EO.PK, EO.SanctionId, EO.MemberId, EO.AgeGroup, EO.EventGroup, EO.Event, EO.Round, EO.RunOrder, TR.SkierName " );
             curSqlStmt.Append( "FROM EventRunOrder AS EO " );
@@ -1426,7 +1716,11 @@ namespace WaterskiScoringSystem.Tools {
             } else {
                 curSqlStmt.Append( " AND EO.AgeGroup = '" + inDivFilter + "' " );
             }
-            return getData( curSqlStmt.ToString() );
+			if ( inGroupFilter == null || inGroupFilter.ToLower().Equals( "all" ) ) {
+			} else {
+				curSqlStmt.Append( " AND EO.EventGroup = '" + inGroupFilter + "' " );
+			}
+			return getData( curSqlStmt.ToString() );
         }
 
         private DataTable getData(String inSelectStmt) {
@@ -1472,7 +1766,23 @@ namespace WaterskiScoringSystem.Tools {
             curCol.DefaultValue = "";
             curDataTable.Columns.Add( curCol );
 
-            curCol = new DataColumn();
+			curCol = new DataColumn();
+			curCol.ColumnName = "EventGroup";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "RunOrderGroup";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
             curCol.ColumnName = "Event";
             curCol.DataType = System.Type.GetType( "System.String" );
             curCol.AllowDBNull = false;

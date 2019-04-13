@@ -177,7 +177,7 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append("LEFT OUTER JOIN TourReg TD ON TD.MemberId = A.MemberId AND TD.SanctionId = A.SanctionId ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList V ON V.ListName = 'ApprovedBoats' AND V.ListCode = S.Boat ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom'   ");
-            curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum, R.PassNum " );
+            curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum " );
             return getData(curSqlStmt.ToString());
         }
 

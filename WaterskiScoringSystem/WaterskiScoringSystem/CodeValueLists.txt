@@ -533,10 +533,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22715	Federation	sui		33	Switzerland			
 22716	Federation	swe		34	Sweden			
 22717	Federation	ven		35	Venezuela			
-22441	IwwfAgeGroup	JB		61	Intl Junior Boys	1.000	12.000	
-22442	IwwfAgeGroup	JG		62	Intl Junior Girls	1.000	12.000	
-22443	IwwfAgeGroup	IB		63	Intl Boys	1.000	16.000	
-22444	IwwfAgeGroup	IG		64	Intl Girls	1.000	16.000	
+22441	IwwfAgeGroup	YB		61	Intl Boys U10	1.000	9.000	
+22442	IwwfAgeGroup	YG		62	Intl Girls U10	1.000	9.000	
+22441	IwwfAgeGroup	JB		63	Intl Junior Boys	1.000	13.000	
+22442	IwwfAgeGroup	JG		64	Intl Junior Girls	1.000	13.000	
+22443	IwwfAgeGroup	IB		65	Intl Boys	1.000	16.000	
+22444	IwwfAgeGroup	IG		66	Intl Girls	1.000	16.000	
 22445	IwwfAgeGroup	IM		71	Intl Men	1.000	99.000	
 22446	IwwfAgeGroup	IW		72	Intl Women	1.000	99.000	
 22447	IwwfAgeGroup	JM		73	Intl Junior Men	1.000	20.000	
@@ -645,10 +647,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22509	IwwfJump3TimesDiv	IW	2.000	4	45.0 meters	45.000	45.000	Open Women 45 meters or greater
 22510	IwwfJump3TimesDiv	JM	3.000	5	38.0 meters	38.000	38.000	Junior Men 38 meters or greater
 22511	IwwfJump3TimesDiv	JW	4.000	6	38.0 meters	38.000	38.000	Junior Wowen 38 meters or greater
-22492	IwwfJumpMax	JB		51	45kph, 28.0mph	28.000	45.000	
-22493	IwwfJumpMax	JG		52	45kph, 28.0mph	28.000	45.000	
-22494	IwwfJumpMax	IB		53	51kph, 31.7mph	31.700	51.000	
-22495	IwwfJumpMax	IG		54	51kph, 31.7mph	31.700	51.000	
+22492	IwwfJumpMax	YB		51	42kph, 26.0mph	26.100	42.000	
+22493	IwwfJumpMax	YG		52	42kph, 26.0mph	26.100	42.000	
+22492	IwwfJumpMax	JB		53	45kph, 28.0mph	29.800	48.000	
+22493	IwwfJumpMax	JG		54	45kph, 28.0mph	28.000	45.000	
+22494	IwwfJumpMax	IB		55	51kph, 31.7mph	31.700	51.000	
+22495	IwwfJumpMax	IG		56	51kph, 31.7mph	31.700	51.000	
 22496	IwwfJumpMax	IM		61	57kph, 35.4mph	35.400	57.000	
 22497	IwwfJumpMax	IW		62	54kph, 33.6mph	33.600	54.000	
 22498	IwwfJumpMax	JM		63	57kph, 35.4mph	35.400	57.000	
@@ -661,58 +665,66 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22504	IwwfJumpMax	L2		82	51kph, 31.7mph	31.700	51.000	
 22505	IwwfJumpMax	L3		83	48kph, 29.8mph	29.800	48.000	
 22505	IwwfJumpMax	L4		84	48kph, 29.8mph	29.800	48.000	
-23427	IwwfOverallAdj	JB-S		11	-00	0.000	0.000	Overall Adjustment for Slalom
-23441	IwwfOverallAdj	JB-T		12	-00	0.000	0.000	Overall Adjustment for Trick
-23455	IwwfOverallAdj	JB-J		13	-10	-10.000	-10.000	Overall Adjustment for Jump
-23428	IwwfOverallAdj	JG-S		21	-00	0.000	0.000	Overall Adjustment for Slalom
-23442	IwwfOverallAdj	JG-T		22	-00	0.000	0.000	Overall Adjustment for Trick
-23456	IwwfOverallAdj	JG-J		23	-7	-7.000	-7.000	Overall Adjustment for Jump
-23429	IwwfOverallAdj	IB-S		31	-18	-18.000	-18.000	Overall Adjustment for Slalom
-23443	IwwfOverallAdj	IB-T		32	-00	0.000	0.000	Overall Adjustment for Trick
-23457	IwwfOverallAdj	IB-J		33	-20	-20.000	-20.000	Overall Adjustment for Jump
-23430	IwwfOverallAdj	IG-S		41	-18	-18.000	-18.000	Overall Adjustment for Slalom
-23444	IwwfOverallAdj	IG-T		42	-00	0.000	0.000	Overall Adjustment for Trick
-23458	IwwfOverallAdj	IG-J		43	-13	-13.000	-13.000	Overall Adjustment for Jump
-23431	IwwfOverallAdj	IM-S		51	-24	-24.000	-24.000	Overall Adjustment for Slalom
-23445	IwwfOverallAdj	IM-T		52	-00	0.000	0.000	Overall Adjustment for Trick
-23459	IwwfOverallAdj	IM-J		53	-25	-25.000	-25.000	Overall Adjustment for Jump
-23432	IwwfOverallAdj	IW-S		61	-24	-24.000	-24.000	Overall Adjustment for Slalom
-23446	IwwfOverallAdj	IW-T		62	-00	0.000	0.000	Overall Adjustment for Trick
-23460	IwwfOverallAdj	IW-J		63	-17	-17.000	-17.000	Overall Adjustment for Jump
-23433	IwwfOverallAdj	JM-S		71	-24	-24.000	-24.000	Overall Adjustment for Slalom
-23447	IwwfOverallAdj	JM-T		72	-00	0.000	0.000	Overall Adjustment for Trick
-23461	IwwfOverallAdj	JM-J		73	-25	-25.000	-25.000	Overall Adjustment for Jump
-23434	IwwfOverallAdj	JW-S		81	-24	-24.000	-24.000	Overall Adjustment for Slalom
-23448	IwwfOverallAdj	JW-T		82	-00	0.000	0.000	Overall Adjustment for Trick
-23462	IwwfOverallAdj	JW-J		83	-17	-17.000	-17.000	Overall Adjustment for Jump
-23435	IwwfOverallAdj	S1-S		91	-24	-24.000	-24.000	Overall Adjustment for Slalom
-23449	IwwfOverallAdj	S1-T		92	-00	0.000	0.000	Overall Adjustment for Trick
-23463	IwwfOverallAdj	S1-J		93	-10	-10.000	-10.000	Overall Adjustment for Jump
-23436	IwwfOverallAdj	S2-S		101	-18	-18.000	-18.000	Overall Adjustment for Slalom
-23450	IwwfOverallAdj	S2-T		102	-00	0.000	0.000	Overall Adjustment for Trick
-23464	IwwfOverallAdj	S2-J		103	-10	-10.000	-10.000	Overall Adjustment for Jump
-23437	IwwfOverallAdj	S3-S		111	-6	-6.000	-6.000	Overall Adjustment for Slalom
-23451	IwwfOverallAdj	S3-T		112	-0	0.000	0.000	Overall Adjustment for Trick
-23465	IwwfOverallAdj	S3-J		113	-10	-10.000	-10.000	Overall Adjustment for Jump
-23437	IwwfOverallAdj	S4-S		114	-6	-6.000	-6.000	Overall Adjustment for Slalom
-23451	IwwfOverallAdj	S4-T		115	-0	0.000	0.000	Overall Adjustment for Trick
-23465	IwwfOverallAdj	S4-J		116	-10	-10.000	-10.000	Overall Adjustment for Jump
-23438	IwwfOverallAdj	L1-S		121	-18	-18.000	-18.000	Overall Adjustment for Slalom
-23452	IwwfOverallAdj	L1-T		122	-00	0.000	0.000	Overall Adjustment for Trick
-23466	IwwfOverallAdj	L1-J		123	-7	-7.000	-7.000	Overall Adjustment for Jump
-23439	IwwfOverallAdj	L2-S		131	-12	-12.000	-12.000	Overall Adjustment for Slalom
-23453	IwwfOverallAdj	L2-T		132	-00	0.000	0.000	Overall Adjustment for Trick
-23467	IwwfOverallAdj	L2-J		133	-7	-7.000	-7.000	Overall Adjustment for Jump
-23440	IwwfOverallAdj	L3-S		141	-00	0.000	0.000	Overall Adjustment for Slalom
-23454	IwwfOverallAdj	L3-T		142	-00	0.000	0.000	Overall Adjustment for Trick
-23468	IwwfOverallAdj	L3-J		143	-7	-7.000	-7.000	Overall Adjustment for Jump
-23440	IwwfOverallAdj	L4-S		144	-00	0.000	0.000	Overall Adjustment for Slalom
-23454	IwwfOverallAdj	L4-T		145	-00	0.000	0.000	Overall Adjustment for Trick
-23468	IwwfOverallAdj	L4-J		146	-7	-7.000	-7.000	Overall Adjustment for Jump
-22548	IwwfRampMax	JB		51	5 Foot	0.235	5.000	
-22549	IwwfRampMax	JG		52	5 Foot	0.235	5.000	
-22550	IwwfRampMax	IB		53	5.5 Foot	0.255	5.500	
-22551	IwwfRampMax	IG		54	5 Foot	0.235	5.000	
+00000	IwwfOverallAdj	YB-S		11	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	YB-T		12	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	YB-J		13	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	YG-S		21	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	YG-T		22	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	YG-J		23	-7	-7	-7	Overall Adjustment for Jump
+00000	IwwfOverallAdj	JB-S		14	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	JB-T		15	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	JB-J		16	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	JG-S		24	12	12	12	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	JG-T		25	12	12	12	Overall Adjustment for Trick
+00000	IwwfOverallAdj	JG-J		26	-17	-17	-17	Overall Adjustment for Jump
+00000	IwwfOverallAdj	IB-S		31	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	IB-T		32	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	IB-J		33	-20	-20	-20	Overall Adjustment for Jump
+00000	IwwfOverallAdj	IG-S		41	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	IG-T		42	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	IG-J		43	-13	-13	-13	Overall Adjustment for Jump
+00000	IwwfOverallAdj	IM-S		51	12	12	12	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	IM-T		52	12	12	12	Overall Adjustment for Trick
+00000	IwwfOverallAdj	IM-J		53	-25	-25	-25	Overall Adjustment for Jump
+00000	IwwfOverallAdj	IW-S		61	12	12	12	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	IW-T		62	12	12	12	Overall Adjustment for Trick
+00000	IwwfOverallAdj	IW-J		63	-17	-17	-17	Overall Adjustment for Jump
+00000	IwwfOverallAdj	JM-S		71	12	12	12	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	JM-T		72	12	12	12	Overall Adjustment for Trick
+00000	IwwfOverallAdj	JM-J		73	-25	-25	-25	Overall Adjustment for Jump
+00000	IwwfOverallAdj	JW-S		81	12	12	12	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	JW-T		82	12	12	12	Overall Adjustment for Trick
+00000	IwwfOverallAdj	JW-J		83	-17	-17	-17	Overall Adjustment for Jump
+00000	IwwfOverallAdj	S1-S		91	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	S1-T		92	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	S1-J		93	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	S2-S		101	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	S2-T		102	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	S2-J		103	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	S3-S		111	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	S3-T		112	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	S3-J		113	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	S4-S		114	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	S4-T		115	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	S4-J		116	-10	-10	-10	Overall Adjustment for Jump
+00000	IwwfOverallAdj	L1-S		121	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	L1-T		122	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	L1-J		123	-7	-7	-7	Overall Adjustment for Jump
+00000	IwwfOverallAdj	L2-S		131	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	L2-T		132	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	L2-J		133	-7	-7	-7	Overall Adjustment for Jump
+00000	IwwfOverallAdj	L3-S		141	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	L3-T		142	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	L3-J		143	-7	-7	-7	Overall Adjustment for Jump
+00000	IwwfOverallAdj	L4-S		144	0	0	0	Overall Adjustment for Slalom
+00000	IwwfOverallAdj	L4-T		145	0	0	0	Overall Adjustment for Trick
+00000	IwwfOverallAdj	L4-J		146	-7	-7	-7	Overall Adjustment for Jump
+22548	IwwfRampMax	YB		51	5 Foot	0.235	5.000	
+22549	IwwfRampMax	YG		52	5 Foot	0.235	5.000	
+22548	IwwfRampMax	JB		53	5 Foot	0.235	5.000	
+22549	IwwfRampMax	JG		54	5 Foot	0.235	5.000	
+22550	IwwfRampMax	IB		55	5.5 Foot	0.255	5.500	
+22551	IwwfRampMax	IG		56	5 Foot	0.235	5.000	
 22552	IwwfRampMax	IM		61	6 Foot	0.271	6.000	
 22553	IwwfRampMax	IW		62	5.5 Foot	0.255	5.500	
 22554	IwwfRampMax	JM		63	6 Foot	0.271	6.000	
@@ -733,10 +745,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	IwwfRecords	IW-T		402	Intl Women - Trick		10700	5/19/2018 Anna Gay
 00000	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
 23567	IwwfRecords	IW-O		404	Intl Women Overall		3126.520	5/20/2012 Natallia Berdnikava
-22600	IwwfSlalomMax	JB		51	55kph, 34mph	34.000	55.000	
-22601	IwwfSlalomMax	JG		52	52kph, 32mph	32.000	52.000	
-22602	IwwfSlalomMax	IB		53	58kph, 36mph	36.000	58.000	
-22603	IwwfSlalomMax	IG		54	55kph, 34mph	34.000	55.000	
+22600	IwwfSlalomMax	YB		51	49kph, 30mph	30.000	49.000	
+22601	IwwfSlalomMax	YG		52	49kph, 30mph	30.000	49.000	
+22600	IwwfSlalomMax	JB		53	55kph, 34mph	34.000	55.000	
+22601	IwwfSlalomMax	JG		54	52kph, 32mph	32.000	52.000	
+22602	IwwfSlalomMax	IB		55	58kph, 36mph	36.000	58.000	
+22603	IwwfSlalomMax	IG		56	55kph, 34mph	34.000	55.000	
 22604	IwwfSlalomMax	IM		61	58kph, 36mph	36.000	58.000	
 22605	IwwfSlalomMax	IW		62	55kph, 34mph	34.000	55.000	
 22606	IwwfSlalomMax	JM		63	58kph, 36mph	36.000	58.000	
@@ -749,10 +763,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22612	IwwfSlalomMax	L2		82	55kph, 34mph	34.000	55.000	
 22613	IwwfSlalomMax	L3		83	52kph, 32mph	32.000	52.000	
 22613	IwwfSlalomMax	L4		84	49kph, 30mph	30.000	49.000	
-23409	IWWFSlalomMin	JB		11	43kph, 26mph	-6.000	43.000	
-23410	IWWFSlalomMin	JG		12	40kph, 24mph	-5.000	40.000	
-23411	IWWFSlalomMin	IB		13	46kph, 28mph	-7.000	46.000	
-23412	IWWFSlalomMin	IG		14	43kph, 26mph	-6.000	43.000	
+23409	IWWFSlalomMin	YB		11	25kph, 15mph	0.000	25.000	
+23410	IWWFSlalomMin	YG		12	25kph, 15mph	0.000	25.000	
+23409	IWWFSlalomMin	JB		13	43kph, 26mph	-6.000	43.000	
+23410	IWWFSlalomMin	JG		14	40kph, 24mph	-5.000	40.000	
+23411	IWWFSlalomMin	IB		15	46kph, 28mph	-7.000	46.000	
+23412	IWWFSlalomMin	IG		16	43kph, 26mph	-6.000	43.000	
 23413	IWWFSlalomMin	IM		21	46kph, 28mph	-7.000	46.000	
 23414	IWWFSlalomMin	IW		22	43kph, 26mph	-6.000	43.000	
 23415	IWWFSlalomMin	JM		23	46kph, 28mph	-7.000	46.000	

@@ -225,16 +225,16 @@ namespace WaterskiScoringSystem.Tournament {
             String curMethodName = "sendRequest";
             /* -----------------------------------------------------------------------
             * Validate TourID value for scores to be Exported.
-            * http://usawaterski.org/admin/GetOfficialExportJson.asp?MemberId=700040630
-            * http://usawaterski.org/admin/GetOfficialExportJson.asp?SanctionId=18E024
-            * http://usawaterski.org/admin/GetOfficialExportJson.asp?StateList=MA,CT
+            * http://www.usawaterski.org/admin/GetOfficialExportJson.asp?MemberId=700040630
+            * http://www.usawaterski.org/admin/GetOfficialExportJson.asp?SanctionId=18E024
+            * http://www.usawaterski.org/admin/GetOfficialExportJson.asp?StateList=MA,CT
             *
-            *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
+            *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:www.usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
             ----------------------------------------------------------------------- */
 
             String curContentType = "application/json; charset=UTF-8";
-			//String curOfficialExportListUrl = "http://usawaterski.org/admin/GetOfficialExportJson.asp";
-			String curOfficialExportListUrl = "http://usawaterski.org/admin/GetMemberRegExportJson.asp";
+			//String curOfficialExportListUrl = "http://www.usawaterski.org/admin/GetOfficialExportJson.asp";
+			String curOfficialExportListUrl = "http://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curOfficialExportListUrl + curQueryString;
 			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( (curSanctionEditCode == null) || (curSanctionEditCode.Length == 0 ) ) {

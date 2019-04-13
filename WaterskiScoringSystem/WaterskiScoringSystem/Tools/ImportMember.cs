@@ -91,7 +91,7 @@ namespace WaterskiScoringSystem.Tools {
             ----------------------------------------------------------------------- */
 			String curQueryString = "?SanctionId=" + mySanctionNum;
 			String curContentType = "application/json; charset=UTF-8";
-			String curOfficialExportListUrl = "http://usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curOfficialExportListUrl = "http://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curOfficialExportListUrl + curQueryString;
 			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {

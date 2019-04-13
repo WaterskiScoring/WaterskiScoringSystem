@@ -22,7 +22,8 @@ namespace WaterskiScoringSystem.Tournament {
         private int myTourRegRowIdx;
         private DataRow myTourRow;
         private TourRegAddMember myTourRegAddDialog;
-        private SortDialogForm sortDialogForm;
+		private TourRegRankEquiv myTourRegRankEquivDialog;
+		private SortDialogForm sortDialogForm;
         private FilterDialogForm filterDialogForm;
         private TourEventReg myTourEventReg;
         private EditRegMember myEditRegMemberDialog;
@@ -96,8 +97,9 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                         myTourRegAddDialog = new TourRegAddMember();
                         myEditRegMemberDialog = new EditRegMember();
+						myTourRegRankEquivDialog = new TourRegRankEquiv();
 
-                        myTourEventReg = new TourEventReg();
+						myTourEventReg = new TourEventReg();
                         myTourRegRowIdx = 0;
                         loadTourRegView();
                     } else {
@@ -655,7 +657,27 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private bool removeRow( DataGridViewRow curViewRow ) {
+		private void navImportRankEquiv_Click( object sender, EventArgs e ) {
+			// Ensure row focus change processing performed
+			if ( isDataModified ) {
+				try {
+					isDataModified = false;
+					winStatusMsg.Text = "Previous row saved.";
+				} catch ( Exception excp ) {
+					MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+				}
+			}
+
+			// Open dialog for selecting skiers
+			myTourRegRankEquivDialog.ShowDialog( this );
+
+			// Refresh data from database
+			if ( myTourRegRankEquivDialog.isDataModified ) {
+				//loadTourRegView();
+			}
+		}
+
+		private bool removeRow( DataGridViewRow curViewRow ) {
             String curMethodName = "Tournament:Registration:removeRow";
             bool curReturnValue = true;
             String curMsg = "";
@@ -1276,5 +1298,5 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-    }
+	}
 }
