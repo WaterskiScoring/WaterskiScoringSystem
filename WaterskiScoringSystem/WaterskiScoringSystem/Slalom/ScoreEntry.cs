@@ -952,6 +952,9 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( myScoreDataTable.Rows.Count > 0 ) {
 									myScoreRow = myScoreDataTable.Rows[0];
 								}
+								
+								//Send scores and information to any defined external reporting system
+								transmitExternalScoreboard( curSanctionId, curMemberId, curAgeGroup, curRound, curSkierRunNum );
 
 								#region Check to see if score is equal to or great than divisions current record score
 								String curCheckRecordMsg = myCheckEventRecord.checkRecordSlalom( curAgeGroup, scoreTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"] );
@@ -1014,6 +1017,18 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			return curReturn;
+		}
+
+		private void transmitExternalScoreboard( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
+			//, String curStatus
+			//, String curStartLen, String[] curPassAttr, Int16 curSpeedKph, String curRopeLenMetric, String curScoreRecap, decimal curScore ) {
+			String curSkierName = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
+			String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
+
+			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+				String curEventGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+				ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum, curEventGroup );
+			}
 		}
 
 		private void loadTourEventRegView() {
@@ -1814,18 +1829,6 @@ namespace WaterskiScoringSystem.Slalom {
 				myPassRow = getPassRow( curStartSpeedKph, curPassLineLengthMeters );
 
 				AddNewRecapRow();
-
-				if ( ExportLiveScoreboard.ScoreboardLocation.Length > 1 ) {
-					String curStartLenOffDesc = (String) myPassRow["LineLengthOffDesc"];
-					ExportLiveScoreboard.exportCurrentSkierSlalom( mySanctionNum
-						, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
-						, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString()
-						, (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value
-						, Convert.ToByte( roundSelect.RoundValue )
-						, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value.ToString()
-						, SlalomSpeedSelection.CurrentValueDesc, curStartLenOffDesc + "/" + SlalomLineSelect.CurrentValue
-						, 0, 0, null );
-				}
 				#endregion
 			}
 		}
@@ -2661,10 +2664,6 @@ namespace WaterskiScoringSystem.Slalom {
 			loadTourEventRegView();
 		}
 
-		private void navScoreboard_Click( object sender, EventArgs e ) {
-			String curPath = ExportLiveScoreboard.getCheckScoreboardLocation();
-		}
-
 		private void navLiveWeb_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.
 			ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
@@ -2677,15 +2676,8 @@ namespace WaterskiScoringSystem.Slalom {
 					ExportLiveWeb.exportTourData( mySanctionNum );
 					LiveWebLabel.Visible = true;
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" ) ) {
-					ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" ) ) {
-					ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
-
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" ) ) {
 					ExportLiveWeb.LiveWebLocation = "";
-					ExportLiveTwitter.TwitterLocation = "";
 					LiveWebLabel.Visible = false;
 
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) ) {
@@ -2700,22 +2692,6 @@ namespace WaterskiScoringSystem.Slalom {
 						} catch {
 						}
 					}
-					if ( ExportLiveTwitter.TwitterLocation.Length > 1 ) {
-						if ( slalomRecapDataGridView.Rows.Count > 0 ) {
-							StringBuilder curTwitterMessage = new StringBuilder( "" );
-							String curAgeGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-							String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
-							curTwitterMessage.Append( mySanctionNum + " " + curAgeGroup + " " + activeSkierName.Text );
-							if ( curTeamCode.Length > 0 ) {
-								curTwitterMessage.Append( " Team: " + curTeamCode );
-							}
-							curTwitterMessage.Append( " Score: " + scoreTextBox.Text );
-							curTwitterMessage.Append( " Pass: " + slalomRecapDataGridView.Rows[slalomRecapDataGridView.Rows.Count - 1].Cells["ScoreRecap"].Value + " buoys" );
-							curTwitterMessage.Append( " " + ActivePassDesc.Text );
-							curTwitterMessage.Append( " REPOST UNOFFICIAL" );
-							ExportLiveTwitter.sendMessage( curTwitterMessage.ToString() );
-						}
-					}
 
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" ) ) {
 					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
@@ -2724,7 +2700,7 @@ namespace WaterskiScoringSystem.Slalom {
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
 							ExportLiveWeb.exportCurrentSkiers( "Slalom", mySanctionNum, curRound, curEventGroup );
 						} catch {
-							MessageBox.Show( "Exception encounter sending message to twitter" );
+							MessageBox.Show( "Exception encounter sending message to LiveWeb" );
 						}
 					}
 				}

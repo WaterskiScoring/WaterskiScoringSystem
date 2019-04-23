@@ -388,22 +388,6 @@ namespace WaterskiScoringSystem.Trick {
                             byte curRound = Convert.ToByte( roundSelect.RoundValue );
                             ExportLiveWeb.exportCurrentSkierTrick( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
                         }
-                        if (ExportLiveTwitter.TwitterLocation.Length > 1) {
-                            if ( (myTourRules.ToLower().Equals("ncwsa") && Pass1DataGridView.Rows.Count > 0 )
-                                || ( !(myTourRules.ToLower().Equals( "ncwsa" )) && Pass1DataGridView.Rows.Count > 0 && Pass2DataGridView.Rows.Count > 0 )
-                                ) {
-                                StringBuilder curTwitterMessage = new StringBuilder( "" );
-                                String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-                                String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
-                                curTwitterMessage.Append( mySanctionNum + " " + curAgeGroup + " " + activeSkierName.Text );
-                                if (curTeamCode.Length > 0) {
-                                    curTwitterMessage.Append( " Team: " + curTeamCode );
-                                }
-                                curTwitterMessage.Append( " Score: " + scoreTextBox.Text + " Pass 1: " + scorePass1.Text + " Pass 2: " + scorePass2.Text );
-                                curTwitterMessage.Append( " UNOFFICIAL " + DateTime.Now );
-                                ExportLiveTwitter.sendMessage( curTwitterMessage.ToString() );
-                            }
-                        }
                     }
                 }
             } catch ( Exception excp ) {
@@ -1670,13 +1654,8 @@ namespace WaterskiScoringSystem.Trick {
                     ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
                     ExportLiveWeb.exportTourData( mySanctionNum );
                     LiveWebLabel.Visible = true;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
                 } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
                     ExportLiveWeb.LiveWebLocation = "";
-                    ExportLiveTwitter.TwitterLocation = "";
                     LiveWebLabel.Visible = false;
                 } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" )) {
                     if (ExportLiveWeb.LiveWebLocation.Length > 1) {
@@ -1687,22 +1666,6 @@ namespace WaterskiScoringSystem.Trick {
                             byte curRound = Convert.ToByte( roundSelect.RoundValue );
                             ExportLiveWeb.exportCurrentSkierTrick( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
                         } catch {
-                        }
-                    }
-                    if (ExportLiveTwitter.TwitterLocation.Length > 1) {
-                        if (( myTourRules.ToLower().Equals( "ncwsa" ) && Pass1DataGridView.Rows.Count > 0 )
-                            || ( !( myTourRules.ToLower().Equals( "ncwsa" ) ) && Pass1DataGridView.Rows.Count > 0 && Pass2DataGridView.Rows.Count > 0 )
-                            ) {
-                            StringBuilder curTwitterMessage = new StringBuilder( "" );
-                            String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-                            String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
-                            curTwitterMessage.Append( mySanctionNum + " " + curAgeGroup + " " + activeSkierName.Text );
-                            if (curTeamCode.Length > 0) {
-                                curTwitterMessage.Append( " Team: " + curTeamCode );
-                            }
-                            curTwitterMessage.Append( " Score: " + scoreTextBox.Text + " Pass 1: " + scorePass1.Text + " Pass 2: " + scorePass2.Text );
-                            curTwitterMessage.Append( " REPOST UNOFFICIAL" );
-                            ExportLiveTwitter.sendMessage( curTwitterMessage.ToString() );
                         }
                     }
                 } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {

@@ -775,7 +775,11 @@ namespace WaterskiScoringSystem.Common {
                     }
                     curDivOrder = (int)curRow[curOrderName];
                     curAgeGroup = (String)curRow["AgeGroup"];
-					curRunOrderGroup = (String) curRow["RunOrderGroup"];
+					try {
+						curRunOrderGroup = (String) curRow["RunOrderGroup"];
+					} catch {
+						curRunOrderGroup = "";
+					}
 
 					if ( curRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
                         curRound = Convert.ToInt16( (byte)curRow[curRoundName] );

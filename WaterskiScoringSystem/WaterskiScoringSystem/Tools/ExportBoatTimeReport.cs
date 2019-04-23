@@ -99,8 +99,8 @@ namespace WaterskiScoringSystem.Tools {
                     myTimesDataTable = getData( curSqlStmt.ToString() );
 
                     DataTable curSpeedByPassDataTable, curBoatTimeResults;
-                    Int16 curMaxSpeed, curPassNum;
-                    Decimal curBoatTime, curScore, curSpeed, curActualTime;
+                    Int16 curMaxSpeed, curSpeedKph;
+                    Decimal curBoatTime, curScore, curPassLineLengthKph, curActualTime;
                     String curSkierName, curSpeedDesc, curTimeKey, curTimeKeyScore, curEventClass, curRunTime;
                     DataRow[] curTimeRowsFound;
 
@@ -156,11 +156,6 @@ namespace WaterskiScoringSystem.Tools {
                                     curScore = 0;
                                 }
                                 try {
-                                    curPassNum = ( (Byte)curRow["PassNum"] );
-                                } catch {
-                                    curPassNum = 0;
-                                }
-                                try {
                                     curEventClass = ( (String)curRow["EventClass"] );
                                 } catch {
                                     curEventClass = "";
@@ -177,13 +172,21 @@ namespace WaterskiScoringSystem.Tools {
                                 } catch {
                                 }
                                 try {
-                                    curMaxSpeed = ( (Byte)curRow["MaxSpeed"] );
-                                    curSpeedByPassDataTable = getSpeedByPass( curMaxSpeed, curPassNum );
+									curMaxSpeed = ( (Byte) curRow["MaxSpeed"] );
+									try {
+										curSpeedKph = ( (Byte) curRow["PassSpeedKph"] );
+										curPassLineLengthKph = ( (Decimal) curRow["PassLineLengthKph"] );
+									} catch (Exception ex ) {
+										String msg = ex.Message;
+										curSpeedKph = 0;
+										curPassLineLengthKph = 0;
+                                    }
+
+									curSpeedByPassDataTable = getSpeedByPass( curMaxSpeed, curSpeedKph, curPassLineLengthKph );
                                     if ( curSpeedByPassDataTable.Rows.Count > 0 ) {
                                         curSpeedDesc = (String)curSpeedByPassDataTable.Rows[0]["CodeValue"];
-                                        curSpeed = (Decimal)curSpeedByPassDataTable.Rows[0]["MaxValue"];
                                         curTimeKeyScore = curScore.ToString( "0.00" );
-                                        curTimeKey = curSpeed.ToString( "00" ) + "-" + getTimeClass(curEventClass) + "-" + curTimeKeyScore.Substring( 0, 1 );
+                                        curTimeKey = curSpeedKph.ToString( "00" ) + "-" + getTimeClass(curEventClass) + "-" + curTimeKeyScore.Substring( 0, 1 );
                                         curTimeRowsFound = myTimesDataTable.Select( "ListCode = '" + curTimeKey + "'" );
                                         if ( curTimeRowsFound.Length > 0 ) {
                                             myTimeRow = curTimeRowsFound[0];
@@ -192,15 +195,15 @@ namespace WaterskiScoringSystem.Tools {
                                         }
                                         curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
                                     } else {
-                                        curSpeed = 0;
                                         curActualTime = 0;
                                         curSpeedDesc = "";
                                         myTimeRow = null;
                                     }
 
-                                } catch {
+                                } catch (Exception ex) {
                                     curActualTime = 0;
-                                    curSpeed = 0;
+									curPassLineLengthKph = 0;
+									curSpeedKph = 0;
                                     curMaxSpeed = 0;
                                     curSpeedDesc = "";
                                     myTimeRow = null;
@@ -214,8 +217,8 @@ namespace WaterskiScoringSystem.Tools {
                                     outLine.Append( curRunTime ); //Time HHMM (4)
                                     outLine.Append( " " + curSkierName.PadRight( 15, ' ' ) ); //Skier Name (15)
                                 }
-                                outLine.Append( curPassNum.ToString( "#0" ).PadLeft( 2, ' ' ) ); //Pass Number (2) 
-                                outLine.Append( " " + curSpeed.ToString( "00" ) ); //Boat Speed KM (2)
+                                outLine.Append( " 0"); //Pass Number (2) 
+                                outLine.Append( " " + curSpeedKph.ToString( "00" ) ); //Boat Speed KM (2)
                                 outLine.Append( " " + curEventClass.PadRight(2, ' ') ); //Skier Event Class (2)
                                 outLine.Append( " " + curScore.ToString( "#.00" ).PadLeft( 5, ' ' ) ); //Score for Pass (4)
                                 outLine.Append( " " + graphTimeDiff( "1", curBoatTime, curActualTime, curSummaryTable, curStatsTable, curScore.ToString( "#" ) ) );
@@ -931,29 +934,32 @@ namespace WaterskiScoringSystem.Tools {
             return getData( curSqlStmt.ToString() );
         }
         
-        private DataTable getSpeedByPass( Int16 inMaxSpeed, Int16 inPassNum ) {
+        private DataTable getSpeedByPass( Int16 inMaxSpeed, Int16 inSpeedKph, Decimal inLineLengthKph ) {
             String curListName = "SlalomPass" + ( Convert.ToInt16( inMaxSpeed ) ).ToString();
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT ListName, ListCodeNum, CodeValue, MinValue, MaxValue, SortSeq " );
-            curSqlStmt.Append( " FROM CodeValueList " );
-            curSqlStmt.Append( " WHERE ListName = '" + curListName + "' AND ListCodeNum = " + inPassNum.ToString( "#0" ) );
+            curSqlStmt.Append( "FROM CodeValueList " );
+			curSqlStmt.Append( "WHERE ListName = '" + curListName + "' " );
+            curSqlStmt.Append( "AND MaxValue = " + inSpeedKph.ToString( "#0" ) + " " );
+			curSqlStmt.Append( "AND MinValue = " + inLineLengthKph.ToString( "#0.00" ) + " " );
             curSqlStmt.Append( " Order by SortSeq " );
             return getData( curSqlStmt.ToString() );
         }
 
         private DataTable getSlalomBoatTimeResults( String inSanctionId, Int16 inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT S.SanctionId, S.MemberId, S.AgeGroup, T.SkierName, " );
-            curSqlStmt.Append( " E.Event, E.EventGroup, E.TeamCode, E.EventClass, " );
-            curSqlStmt.Append( " S.Round, S.MaxSpeed, S.StartSpeed, S.StartLen, S.Score, S.Boat, " );
-            curSqlStmt.Append( " R.PassNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.ScoreProt, R.Reride, " );
-            curSqlStmt.Append( " R.RerideReason, R.Note AS PassNotes, S.PK as ScorePK, R.PK as PassPK, R.LastUpdateDate " );
-            curSqlStmt.Append( " FROM SlalomScore S" );
-            curSqlStmt.Append( " INNER JOIN SlalomRecap R ON S.MemberId = R.MemberId AND S.SanctionId = R.SanctionId AND S.AgeGroup = R.AgeGroup AND S.Round = R.Round " );
-            curSqlStmt.Append( " INNER JOIN TourReg T ON S.MemberId = T.MemberId AND S.SanctionId = T.SanctionId AND S.AgeGroup = T.AgeGroup " );
-            curSqlStmt.Append( " INNER JOIN EventReg E ON S.MemberId = E.MemberId AND S.SanctionId = E.SanctionId AND S.AgeGroup = T.AgeGroup " );
-            curSqlStmt.Append( " WHERE S.SanctionId = '" + inSanctionId + "' AND S.Round = " + inRound.ToString() + " AND E.Event = 'Slalom' " );
-            curSqlStmt.Append( " ORDER BY S.PK, R.PK " );
+            curSqlStmt.Append( "SELECT S.SanctionId, S.MemberId, S.AgeGroup, T.SkierName" );
+            curSqlStmt.Append( ", E.Event, E.EventGroup, E.TeamCode, E.EventClass" );
+            curSqlStmt.Append( ", S.Round, S.MaxSpeed, S.StartSpeed, S.StartLen, S.Score, S.Boat" );
+            curSqlStmt.Append( ", R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.ScoreProt, R.Reride" );
+			curSqlStmt.Append( ", R.PassLineLength as PassLineLengthKph, PassSpeedKph" );
+            curSqlStmt.Append( ", R.RerideReason, R.Note AS PassNotes, S.PK as ScorePK, R.PK as PassPK, R.LastUpdateDate " );
+            curSqlStmt.Append( "FROM SlalomScore S " );
+            curSqlStmt.Append( "INNER JOIN SlalomRecap R ON S.MemberId = R.MemberId AND S.SanctionId = R.SanctionId AND S.AgeGroup = R.AgeGroup AND S.Round = R.Round " );
+            curSqlStmt.Append( "INNER JOIN TourReg T ON S.MemberId = T.MemberId AND S.SanctionId = T.SanctionId AND S.AgeGroup = T.AgeGroup " );
+            curSqlStmt.Append( "INNER JOIN EventReg E ON S.MemberId = E.MemberId AND S.SanctionId = E.SanctionId AND S.AgeGroup = T.AgeGroup " );
+            curSqlStmt.Append( "WHERE S.SanctionId = '" + inSanctionId + "' AND S.Round = " + inRound.ToString() + " AND E.Event = 'Slalom' " );
+            curSqlStmt.Append( "ORDER BY S.PK, R.PK " );
             return getData( curSqlStmt.ToString() );
         }
 

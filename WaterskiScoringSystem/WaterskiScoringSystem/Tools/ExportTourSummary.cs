@@ -526,7 +526,7 @@ namespace WaterskiScoringSystem.Tools {
             myOutBuffer.WriteLine( outLine.ToString() );
 
             outLine = new StringBuilder( "" );
-            outLine.Append( " PassNum" );
+            outLine.Append( " SkierRunNum" );
             outLine.Append( " | Note" );
             outLine.Append( " | Score" );
             outLine.Append( " | Judge1Score" );
@@ -578,7 +578,7 @@ namespace WaterskiScoringSystem.Tools {
                         #region write detail records
                         try {
                             outLine = new StringBuilder( "" );
-                            outLine.Append( " | " + curRowDetail["PassNum"].ToString() );
+                            outLine.Append( " | " + curRowDetail["SkierRunNum"].ToString() );
                             outLine.Append( " | " + curRowDetail["Note"].ToString() );
                             try {
                                 outLine.Append( " | " + ( (Decimal)curRowDetail["Score"] ).ToString( "##.00" ) );
@@ -1050,15 +1050,15 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getSlalomDetail() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round, PassNum, SkierRunNum" );
+            curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round, SkierRunNum" );
             curSqlStmt.Append( ", Judge1Score, Judge2Score, Judge3Score, Judge4Score, Judge5Score" );
             curSqlStmt.Append( ", EntryGate1, EntryGate2, EntryGate3" );
             curSqlStmt.Append( ", ExitGate1, ExitGate2, ExitGate3" );
-            curSqlStmt.Append( ", BoatTime, Score, PassLineLength" );
+            curSqlStmt.Append( ", BoatTime, Score, PassLineLength, PassSpeedKph" );
             curSqlStmt.Append( ", Reride, RerideReason, TimeInTol, ScoreProt, Note" );
             curSqlStmt.Append( " FROM SlalomRecap " );
             curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "'" );
-            curSqlStmt.Append( " ORDER BY SanctionId, AgeGroup, MemberId, Round, SkierRunNum, PassNum" );
+            curSqlStmt.Append( " ORDER BY SanctionId, AgeGroup, MemberId, Round, SkierRunNum" );
             return getData( curSqlStmt.ToString() );
         }
 

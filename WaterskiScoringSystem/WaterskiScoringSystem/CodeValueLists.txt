@@ -251,67 +251,67 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22541	AWSARampMax	MW		43	5 Foot	0.235	5.000	
 22542	AWSARampMax	NM		44	5 Foot	0.235	5.000	
 22543	AWSARampMax	NW		45	5 Foot	0.235	5.000	
-00000	AWSARecords	B1-S		11	Boys 1 - Slalom		105	1 bouys at 11.25m @49 kph (35 off @ 30.4 mph) 6/7/2014 Cooper Tate
+00000	AWSARecords	B1-S		11	Boys 1 - Slalom		105	1 bouys at 11.25m @49 kph (38 off @ 30.4 mph) 6/7/2014 Cooper Tate
 00000	AWSARecords	B1-T		12	Boys 1 - Trick		6130	7/27/2017 Jake Abelson
 00000	AWSARecords	B2-S		21	Boys 2 - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
-00000	AWSARecords	B2-T		22	Boys 2 - Trick		8250.000	8/11/2018 Jake Abelson
+00000	AWSARecords	B2-T		22	Boys 2 - Trick		8580.000	10/6/2018 Jake Abelson
 00000	AWSARecords	B2-J		23	Boys 2 - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 23474	AWSARecords	B3-S		31	Boys 3 - Slalom		117.000	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 23475	AWSARecords	B3-T		32	Boys 3 - Trick		10430.000	 7/18/2009 Adam Pickos  
-00000	AWSARecords	B3-J		33	Boys 3 - Jump		193	(58.8m) 5/17/2015 Taylor Garcia
-23477	AWSARecords	G1-S		41	Girls 1 - Slalom		80.000	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)
+00000	AWSARecords	B3-J		33	Boys 3 - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
+23477	AWSARecords	G1-S		41	Girls 1 - Slalom		80.000	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 23478	AWSARecords	G1-T		42	Girls 1 - Trick		5340.000	7/24/2011 Neilly Ross
 00000	AWSARecords	G2-S		51	Girls 2 - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin
 00000	AWSARecords	G2-T		52	Girls 2 - Trick		7170.000	6/28/2014 Brooke Baldwin
-23481	AWSARecords	G2-J		53	Girls 2 - Jump		120.0	6/22/2008 Brittany Greenwood  
+23481	AWSARecords	G2-J		53	Girls 2 - Jump		120.0	5 45kph 6/22/2008 Brittany Greenwood  
 00000	AWSARecords	G3-S		61	Girls 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Brooke Baldwin
 00000	AWSARecords	G3-T		62	Girls 3 - Trick		10610	10/14/2016 Anna Gay
-23484	AWSARecords	G3-J		63	Girls 3 - Jump		154.000	(46.9m) 4/25/2010 Lauren Morgan
-23485	AWSARecords	M1-S		71	Mens 1 - Slalom		122.000	2 buoy at 9.75m @ 58 kph (43 off @ 36 mph) 6/2/2013 Nate Smith 
+23484	AWSARecords	G3-J		63	Girls 3 - Jump		154.000	(46.9m) 5 51kph 4/25/2010 Lauren Morgan
+00000	AWSARecords	M1-S		71	Mens 1 - Slalom		122.50	2.5 buoy at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 00000	AWSARecords	M1-T		72	Mens 1 - Trick		11620	6/12/2016 Adam Pickos
-23487	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 10/5/2013 Zack Worden
+23487	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 5.5 57kph 10/5/2013 Zack Worden
 23488	AWSARecords	M2-S		81	Mens 2 - Slalom		122.000	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish  
 23489	AWSARecords	M2-T		82	Mens 2 - Trick		12090.000	4/30/2011 Jimmy Seimers
-23490	AWSARecords	M2-J		83	Mens 2 - Jump		216.000	 9/24/2002 Mark Lane  
+23490	AWSARecords	M2-J		83	Mens 2 - Jump		216.000	5.5 57kph 9/24/2002 Mark Lane  
 00000	AWSARecords	M3-S		91	Mens 3 - Slalom		115.25	1.25 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 9/16/2012 Jeff Rodgers
 23492	AWSARecords	M3-T		92	Mens 3 - Trick		12070.000	 7/17/2005 Russell Gay  
 00000	AWSARecords	M3-J		93	Mens 3 - Jump		200	(61.1) 57kph 5ft 7/30/2016 Scot Ellis
 00000	AWSARecords	M4-S		101	Mens 4 - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
 00000	AWSARecords	M4-T		102	Mens 4 - Trick		11470.000	10/24/2014 Russell Gay
-00000	AWSARecords	M4-J		103	Mens 4 - Jump		182	(55.4m) 54kph 5ft 9/24/2016 Danny Zeisler
+00000	AWSARecords	M4-J		103	Mens 4 - Jump		191	(58.2M) 5 54kph 7/7/2018 Scot Ellis
 00000	AWSARecords	M5-S		111	Mens 5 - Slalom		111.5	3.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/6/2015 Greg Badal
 00000	AWSARecords	M5-T		112	Mens 5 - Trick		6080	5/12/2018 Marc Bedsole
-00000	AWSARecords	M5-J		113	Mens 5 - Jump		157	(47.8) 7/19/2014 Mitch Grau
-23500	AWSARecords	M6-S		121	Mens 6 - Slalom		109	1 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 10/12/2013 Kris LaPoint
+00000	AWSARecords	M5-J		113	Mens 5 - Jump		157	(47.8M) 5 51kph 7/19/2014 Mitch Grau
+00000	AWSARecords	M6-S		121	Mens 6 - Slalom		110.00	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley
 00000	AWSARecords	M6-T		122	Mens 6 - Trick		4830	8/22/2014 Don Parsons
-00000	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 9/27/2014 Frankie Dees
-00000	AWSARecords	M7-S		131	Mens 7 - Slalom		101	5 bouys at 10.75m @ 52 kph (39 off @ 32.2 mph) 9/3/2017 Steve Rafael 11/5/2017 Jack Everett 6/30/2018 Ed Hickey
+00000	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 10/12/2014 Frankie Dees
+00000	AWSARecords	M7-S		131	Mens 7 - Slalom		103.00	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey
 23504	AWSARecords	M7-T		132	Mens 7 - Trick		3750.000	 8/24/2002 Jerry Hosner  
 00000	AWSARecords	M7-J		133	Mens 7 - Jump		136	(41.5m) 51kph 5ft 9/8/2018 Frankie Dees
 00000	AWSARecords	M8-S		141	Mens 8 - Slalom		95	5 bouys at 11.25m @ 52 kph (38 off @ 32 mph) 10/13/2018 Jeff Wiswall
 00000	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
-00000	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 8/31/2014 Brad Conger
+00000	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 5 48kph 8/31/2014 Brad Conger
 00000	AWSARecords	M9-S		151	Mens 9 - Slalom		88	4 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/25/2018 Jim Kinney
 00000	AWSARecords	M9-T		152	Mens 9 - Trick		1990	8/10/2016 Carroll Piercy
-00000	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 8/7/2014 Bruce Kunde
+00000	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 5 48kph 8/7/2014 Bruce Kunde
 00000	AWSARecords	MA-S		161	Mens 10 - Slalom		77	5 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 8/25/2018 Don Fournier
 23513	AWSARecords	MA-T		162	Mens 10 - Trick		1600.000	 10/20/2007 Harry Price  
-00000	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 7/22/2017 Bruce Kunde
+00000	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
 00000	AWSARecords	MB-S		171	Mens 11 - Slalom		46	4 bouys at 23m @ 46 kph (75' @ 28.6 mph) 11/5/2016 Bill Wenner
 23516	AWSARecords	MB-T		172	Mens 11 - Trick		1050.000	10/29/2012 Harry Price
-23517	AWSARecords	MB-J		173	Mens 11 - Jump		22.000	(6.7m) 10/29/2012 Harry Price
+23517	AWSARecords	MB-J		173	Mens 11 - Jump		22.000	(6.7m) 5 39kph 10/29/2012 Harry Price
 23518	AWSARecords	W1-S		181	Womens 1 - Slalom		109.000	1 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/3/2009 Regina Jaquess  
-00000	AWSARecords	W1-T		182	Womens 1 - Trick		10700	5/19/2018 Anna Gay
+00000	AWSARecords	W1-T		182	Womens 1 - Trick		10850	10/6/2018 Erika Lang
 00000	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
 00000	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
 23522	AWSARecords	W2-T		192	Womens 2 - Trick		8990.000	 10/2/2010 Mandy Nightingale  
-23523	AWSARecords	W2-J		193	Womens 2 - Jump		158.000	 10/6/1996 Brenda Baldwin  
+23523	AWSARecords	W2-J		193	Womens 2 - Jump		158.000	 5 54kph 10/6/1996 Brenda Baldwin  
 00000	AWSARecords	W3-S		201	Womens 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 8/30/2014 April Coble-Eller
 23525	AWSARecords	W3-T		202	Womens 3 - Trick		6450.000	 7/25/2010 Sally Montavon  
-23526	AWSARecords	W3-J		203	Womens 3 - Jump		155.000	 10/6/2007 Brenda Baldwin  
+23526	AWSARecords	W3-J		203	Womens 3 - Jump		155.000	 5 51kph 10/6/2007 Brenda Baldwin  
 23527	AWSARecords	W4-S		211	Womens 4 - Slalom		100.500	4.5 buoys at 11.25m @ 55 kph (38 off @ 34.2 mph) 10/4/2009 Jennifer Leachman-LaPoint  
 23528	AWSARecords	W4-T		212	Womens 4 - Trick		5600.000	 7/4/1988 Barbara Cleveland  
-00000	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 10/12/2014 Lori Krueger
+00000	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 40.4 5 51kph 10/12/2014 Lori Krueger
 00000	AWSARecords	W5-S		221	Womens 5 - Slalom		97	1 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/2/2017 Phillipa Shedd
 00000	AWSARecords	W5-T		222	Womens 5 - Trick		5060	8/18/2007 Kay Nichols 9/18/2016 Lydia Robsham
 00000	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.5) 48kph 5ft 8/9/2017 Joy Kelly
@@ -323,10 +323,10 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	W7-J		243	Womens 7 - Jump		85	(25.8m) 45kph 5ft 8/20/2016 Leza Harrison
 23539	AWSARecords	W8-S		251	Womens 8 - Slalom		75.500	3.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 6/14/2008 Margaret Anne Woodard  
 23540	AWSARecords	W8-T		252	Womens 8 - Trick		2270.000	 5/14/2006 Thelma Salmas  
-23541	AWSARecords	W8-J		253	Womens 8 - Jump		57.000	 7/9/2006 Thelma Salmas  
+23541	AWSARecords	W8-J		253	Womens 8 - Jump		57.000	5 45kph 7/9/2006 Thelma Salmas  
 23542	AWSARecords	W9-S		261	Womens 9 - Slalom		68	2 bouys at 13.00m @ 46 kph (32 off @ 28.6 mph) 9/22/2013 Maria Walsh
 23543	AWSARecords	W9-T		262	Womens 9 - Trick		1670.000	 10/20/2007 Artis Price  
-23544	AWSARecords	W9-J		263	Womens 9 - jump		45.000	 8/16/1990 Lucille Borgen  
+23544	AWSARecords	W9-J		263	Womens 9 - jump		45.000	5 45kph 8/16/1990 Lucille Borgen  
 23545	AWSARecords	WA-S		271	Womens 10 - Slalom		56.000	2 buoys at 16m @ 46 kph (22 off @ 28.6 mph) 9/15/2007 Francis Woofenden  
 23546	AWSARecords	WA-T		272	Womens 10 - Trick		1220.000	 10/11/2009 Artis Price  
 23547	AWSARecords	WA-J		273	Womens 10 - Jump		0.000	 none none  
@@ -335,13 +335,13 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 23550	AWSARecords	WB-J		283	Womens 11 - Jump		0.000	 none none  
 23551	AWSARecords	OM-S		291	Open Men - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 23552	AWSARecords	OM-T		292	Open Men - Trick		12090.000	4/30/2011 Jimmy Siemers
-00000	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3) 5/1/2014 Freddy Krueger
+00000	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3M) 6 57kph 5/1/2014 Freddy Krueger
 00000	AWSARecords	OW-S		301	Open Womens - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
-00000	AWSARecords	OW-T		302	Open Womens - Trick		10700	5/19/2018 Anna Gay
-00000	AWSARecords	OW-J		303	Open Women - Jump		188	(57.4m) 10/16/2016 Alex Lauretano
+00000	AWSARecords	OW-T		302	Open Womens - Trick		10850	10/6/2018 Erika Lang
+00000	AWSARecords	OW-J		303	Open Women - Jump		188	(57.4m) 5.5 54kph 10/16/2016 Alex Lauretano
 00000	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
 23558	AWSARecords	MM-T		312	Master Men - Trick		11570.000	 5/8/2010 Russell Gay  
-23559	AWSARecords	MM-J		313	Master Men - Jump		215.000	(65.5m) 4/9/2011 Scot Ellis
+23559	AWSARecords	MM-J		313	Master Men - Jump		215.000	(65.5m) 5.5 57kph 4/9/2011 Scot Ellis
 00000	AWSARecords	MW-S		321	Master Women-Slalom		109.0	1 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 8/10/2015 BENCHMARK
 00000	AWSARecords	MW-T		322	Master Women-Trick		6450.000	8/10/2015 BENCHMARK
 00000	AWSARecords	MW-J		323	Master Women-Jump		155	8/10/2015 BENCHMARK
@@ -744,7 +744,15 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	IwwfRecords	IW-S		401	Intl Women - Slalom		69.5	3.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Regina Jaquess
 00000	IwwfRecords	IW-T		402	Intl Women - Trick		10700	5/19/2018 Anna Gay
 00000	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
-23567	IwwfRecords	IW-O		404	Intl Women Overall		3126.520	5/20/2012 Natallia Berdnikava
+09000	IwwfRecords	IW-O		404	Intl Women Overall		3126.520	5/20/2012 Natallia Berdnikava
+00000	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		00.0	3.5 at 10.75 @ 58kph 1/1/2019 Initial benchmark
+00000	IwwfRecords	JM-T		412	Intl Junior Men - Trick		11260	11260 4/18/2019 Felipe Franco Belmont
+00000	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 1/1/2019 Initial benchmark
+00000	IwwfRecords	JM-O		414	Intl Junior Men Overall		2200.95	 1/1/2019 Initial benchmark
+00000	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		00.0	2 @ 10.75 55 kph 1/1/2019 Initial benchmark
+00000	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10440	 1/1/2019 Initial benchmark
+00000	IwwfRecords	JW-J		423	Intl Junior Women - Jump		46.0	5ft (1.5m)at 51 kph max 1/1/2019 Initial benchmark
+00000	IwwfRecords	JW-O		424	Intl Junior Women Overall		2685.26	 1/1/2019 Initial benchmark
 22600	IwwfSlalomMax	YB		51	49kph, 30mph	30.000	49.000	
 22601	IwwfSlalomMax	YG		52	49kph, 30mph	30.000	49.000	
 22600	IwwfSlalomMax	JB		53	55kph, 34mph	34.000	55.000	
