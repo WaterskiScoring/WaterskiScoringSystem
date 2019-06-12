@@ -729,7 +729,8 @@ namespace WaterskiScoringSystem.Tournament {
         private void ExportMemberList_Click( object sender, EventArgs e ) {
             if ( isDataModified ) { navSaveItem_Click( null, null ); }
             ExportData myExportData = new ExportData();
-            myExportData.exportData( listTourMemberDataGridView );
+            //myExportData.exportData( listTourMemberDataGridView );
+			myExportData.exportData( getOfficialListForExport() );
         }
 
         private void navExport_Click( object sender, EventArgs e ) {
@@ -1292,8 +1293,35 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
-        
-        private DataTable getTourData() {
+
+		private DataTable getOfficialListForExport() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT distinct TR.SanctionId, TR.MemberId, TR.SkierName, ML.Federation" );
+			curSqlStmt.Append( ", TR.AgeGroup, ERS.EventGroup as SlalomEventGroup, ERT.EventGroup as TrickEventGroup, ERJ.EventGroup as JumpEventGroup" );
+			curSqlStmt.Append( ", Coalesce( O.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( O.JudgeTrickRating, '' ) as JudgeTrickRating" );
+			curSqlStmt.Append( ", Coalesce( O.JudgeJumpRating, '' ) as JudgeJumpRating" );
+			curSqlStmt.Append( ", Coalesce( O.ScorerSlalomRating, '' ) as ScorerSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( O.ScorerTrickRating, '' ) as ScorerTrickRating" );
+			curSqlStmt.Append( ", Coalesce( O.ScorerJumpRating, '' ) as ScorerJumpRating" );
+			curSqlStmt.Append( ", Coalesce( O.DriverSlalomRating, '' ) as DriverSlalomRating" );
+			curSqlStmt.Append( ", Coalesce( O.DriverTrickRating, '' ) as DriverTrickRating" );
+			curSqlStmt.Append( ", Coalesce( O.DriverJumpRating, '' ) as DriverJumpRating" );
+			curSqlStmt.Append( ", Coalesce( O.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( O.TechOfficialRating, '' ) as TechOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( "FROM OfficialWork O " );
+			curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERS ON ERS.MemberId = O.MemberId AND ERS.SanctionId = O.SanctionId AND ERS.AgeGroup = TR.AgeGroup and ERS.Event = 'Slalom' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERT ON ERT.MemberId = O.MemberId AND ERT.SanctionId = O.SanctionId AND ERT.AgeGroup = TR.AgeGroup and ERS.Event = 'Trick' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERJ ON ERJ.MemberId = O.MemberId AND ERJ.SanctionId = O.SanctionId AND ERJ.AgeGroup = TR.AgeGroup and ERS.Event = 'Jump' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
+			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
+		private DataTable getTourData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );

@@ -1411,8 +1411,12 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("Order by PropOrder, PropKey, PropValue ");
             DataTable curDataTable = getData(curSqlStmt.ToString());
             if ( curDataTable.Rows.Count > 0 ) {
-                curReturnValue = (String)curDataTable.Rows[0]["PropValue"];
-            } else {
+				if ( curDataTable.Rows[0]["PropValue"] == System.DBNull.Value ) {
+					curReturnValue = "";
+				} else {
+					curReturnValue = (String) curDataTable.Rows[0]["PropValue"];
+				}
+			} else {
                 curReturnValue = "";
             }
             return curReturnValue;

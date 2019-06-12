@@ -459,5 +459,9 @@ namespace WaterskiScoringSystem.Admin {
 				, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"
 				, RegexOptions.IgnoreCase );
 		}
+
+		private void contactNameSelect_SelectedIndexChanged( object sender, EventArgs e ) {
+			isDataModified = true;
+		}
 	}
 }

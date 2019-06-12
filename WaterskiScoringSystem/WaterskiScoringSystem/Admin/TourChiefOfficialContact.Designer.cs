@@ -403,9 +403,9 @@ namespace WaterskiScoringSystem.Admin {
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 728);
+			this.winStatus.Location = new System.Drawing.Point(0, 723);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(791, 22);
+			this.winStatus.Size = new System.Drawing.Size(807, 22);
 			this.winStatus.TabIndex = 189;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -727,6 +727,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactNameSelect.Name = "contactNameSelect";
 			this.contactNameSelect.Size = new System.Drawing.Size(200, 25);
 			this.contactNameSelect.TabIndex = 217;
+			this.contactNameSelect.SelectedIndexChanged += new System.EventHandler(this.contactNameSelect_SelectedIndexChanged);
 			// 
 			// label11
 			// 

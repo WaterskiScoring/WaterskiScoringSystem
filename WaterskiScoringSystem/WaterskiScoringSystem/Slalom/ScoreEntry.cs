@@ -1020,8 +1020,6 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void transmitExternalScoreboard( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
-			//, String curStatus
-			//, String curStartLen, String[] curPassAttr, Int16 curSpeedKph, String curRopeLenMetric, String curScoreRecap, decimal curScore ) {
 			String curSkierName = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
 			String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 
@@ -2283,8 +2281,9 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( slalomRecapDataGridView.Rows.Count == 0 ) return;
 
 			bool curOptAllow = true;
-			curMaxSpeedKph = SlalomSpeedSelection.MaxSpeedKph;
 			String curAgeGroup = (String) myRecapRow.Cells["AgeGroupRecap"].Value;
+			curMaxSpeedKph = SlalomSpeedSelection.MaxSpeedKph;
+			Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( curAgeGroup );
 
 			if ( !( isObjectEmpty( (String) myRecapRow.Cells["ScoreRecap"].Value ) ) ) {
 				#region Check for next action when a score is detected in current pass
@@ -2327,7 +2326,7 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( OptUpDialogForm.ShowDialog() == DialogResult.OK ) {
 						String curResponse = OptUpDialogForm.Response;
 						if ( curResponse.Equals( "speed" ) ) {
-							if ( curPassSpeedKph < curMaxSpeedKph ) {
+							if ( curPassSpeedKph < curMaxSpeedKphDiv ) {
 								curOptUpType = "next";
 							} else {
 								curOptUpType = curResponse;
@@ -2384,7 +2383,6 @@ namespace WaterskiScoringSystem.Slalom {
 					curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
 					curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
 
-					Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( curAgeGroup );
 					if ( curPassSpeedKph >= curMaxSpeedKphDiv ) {
 						SlalomLineSelect.resetCurrentValue( curPassLineLengthMeters );
 						curPassLineLengthMeters = Convert.ToDecimal( (String) slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["PassLineLengthRecap"].Value );

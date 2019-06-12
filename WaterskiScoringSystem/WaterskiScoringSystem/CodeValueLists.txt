@@ -43,8 +43,28 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22358	AnnouncerRating	R	3.000	3	Regional			
 22359	AnnouncerRating	N	4.000	4	National			
 22360	AnnouncerRating	E	5.000	5	Emeritus			
-0	ApprovedBoats	CC200-62-H6-4-19	190001	190001	Ski Nautique PCM H6 (6.2L) 4 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
-0	ApprovedBoats	CC200-62-H6-3-19	190002	190002	Ski Nautique PCM H6 (6.2L) 3 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC000-60-ZR4-19	190001	190001	Ski Nautique PCM ZR4 (6.0L) 4 Blade			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC000-62-H6-3-19	190002	190002	Ski Nautique PCM H6 (6.2L) 3 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC000-53-H5-4-19	190003	190003	Ski Nautique PCM H5 (5.3L) 4 Blade			2019 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC000-53-H5-3-19	190004	190004	Ski Nautique PCM H5 (5.3L) 3 Blade			2019 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC200-60-ZR4-19	190005	190005	Ski Nautique 200 PCM ZR4 (6.0L) AC654			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-61-ZR4-19	190006	190006	Ski Nautique 200 PCM ZR4 (6.0L) AC668			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC200-60-ZR43-19	190007	190007	Ski Nautique 200 PCM ZR4 (6.0L) AC1458			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-19-4	190030	190030	MasterCraft ProStar MV8 5.7L 4 Blade			2019 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-19-3	190031	190031	MasterCraft ProStar MV8 5.7L 3 Blade			2019 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-19-4	190032	190032	MasterCraft ProStar MV8 6.2L 4 Blade			2019 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-19-3	190033	190033	MasterCraft ProStar MV8 6.2L 3 Blade			2019 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-STD	190020	190020	Malibu Response TXi 6.2L STD Indmar			2019 | Indmar Raptor 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-HO1	190021	190021	Malibu Response TXi 6.2L HO Indmar 13x11.5			2019 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-HO2	190022	190022	Malibu Response TXi 6.2L HO Indmar 13x12			2019 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-409-19	190023	190023	Malibu Response TXi 6.0L Crusader 409 13x12			2019 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-409-19	190024	190024	Malibu Response TXi 6.0L Crusader 409 13x11.5			2019 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-450-19	190025	190025	Malibu Response TXi 6.0L Crusader 450 13x12			2019 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-450-19	190026	190026	Malibu Response TXi 6.0L Crusader 450 13x11.5			2019 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-53-19-MON	190027	190027	Malibu Response TXi 5.3L STD Monsoon			2019 | Monsoon 5.3L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M525	190028	190028	Malibu Response TXi 6.2L STD Monsoon AC525			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M515	190029	190029	Malibu Response TXi 6.2L STD Monsoon AC515			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M330	190029	190029	Malibu Response TXi 6.2L STD Monsoon OJ330			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:OJ330, 3, 13 x 11.5 Nibral | ZO-R
 0	ApprovedBoats	Cen-57-Z0-18-3	180010	180010	Centurion Carbon Pro 5.7L ZO 3 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
 0	ApprovedBoats	Cen-57-Z0-18-4	180011	180011	Centurion Carbon Pro 5.7L ZO 4 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
 0	ApprovedBoats	Cen-60-Z0-18-3	180012	180012	Centurion Carbon Pro 6.0L ZO 3 Blade			2018 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
@@ -254,7 +274,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	AWSARecords	B1-S		11	Boys 1 - Slalom		105	1 bouys at 11.25m @49 kph (38 off @ 30.4 mph) 6/7/2014 Cooper Tate
 00000	AWSARecords	B1-T		12	Boys 1 - Trick		6130	7/27/2017 Jake Abelson
 00000	AWSARecords	B2-S		21	Boys 2 - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
-00000	AWSARecords	B2-T		22	Boys 2 - Trick		8580.000	10/6/2018 Jake Abelson
+00000	AWSARecords	B2-T		22	Boys 2 - Trick		8850	5/22/2019 Jake Abelson
 00000	AWSARecords	B2-J		23	Boys 2 - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 23474	AWSARecords	B3-S		31	Boys 3 - Slalom		117.000	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 23475	AWSARecords	B3-T		32	Boys 3 - Trick		10430.000	 7/18/2009 Adam Pickos  
@@ -509,13 +529,14 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22692	Federation	can		8	Canada			
 22693	Federation	chl		9	Chili			
 22694	Federation	col		10	Columbia			
-22695	Federation	den		11	Denmark			
+00000	Federation	cze		11	Czech Republic			
+22695	Federation	den		12	Denmark			
 22696	Federation	fin		13	Finland			
 22697	Federation	fra		14	France			
 22698	Federation	ger		15	Germany			
 22699	Federation	gbr		16	Great Britain			
 22700	Federation	gre		17	Greece			
-22700	Federation	ina		17	Indonesia			
+22700	Federation	ina		18	Indonesia			
 22701	Federation	irl		19	Ireland			
 22702	Federation	ita		20	Italy			
 22703	Federation	jpn		21	Japan			
@@ -746,7 +767,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 00000	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
 09000	IwwfRecords	IW-O		404	Intl Women Overall		3126.520	5/20/2012 Natallia Berdnikava
 00000	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		00.0	3.5 at 10.75 @ 58kph 1/1/2019 Initial benchmark
-00000	IwwfRecords	JM-T		412	Intl Junior Men - Trick		11260	11260 4/18/2019 Felipe Franco Belmont
+00000	IwwfRecords	JM-T		412	Intl Junior Men - Trick		11430	3/17/2019 Patricio Font
 00000	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 1/1/2019 Initial benchmark
 00000	IwwfRecords	JM-O		414	Intl Junior Men Overall		2200.95	 1/1/2019 Initial benchmark
 00000	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		00.0	2 @ 10.75 55 kph 1/1/2019 Initial benchmark

@@ -372,7 +372,7 @@ namespace WaterskiScoringSystem.Tournament {
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error retrieving tournament entries \n" + ex.Message );
             }
-            Cursor.Current = Cursors.Default;
+             Cursor.Current = Cursors.Default;
             try {
                 int curRowPos = myViewIdx + 1;
                 RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + EventRegDataGridView.Rows.Count.ToString();

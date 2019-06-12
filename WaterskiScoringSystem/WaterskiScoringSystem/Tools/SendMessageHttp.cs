@@ -725,53 +725,63 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private static void GetRequestStreamCallback(IAsyncResult inAsyncResult) {
-            Stream curDataStream = null;
-            RequestState curRequestState = (RequestState)inAsyncResult.AsyncState;
-
-            if (curRequestState.InputMsgBuffer.Length > 0) {
-                curDataStream = curRequestState.WebReqst.EndGetRequestStream( inAsyncResult );
-                curDataStream.Write( curRequestState.InputMsgBuffer, 0, curRequestState.InputMsgBuffer.Length );
-                curDataStream.Close();
-            }
-            
-            // Start the asynchronous operation to get the response
-            curRequestState.WebReqst.BeginGetResponse( new AsyncCallback( GetRespCallBack ), curRequestState );
-        }
+			RequestState curRequestState = null;
+            try {
+				curRequestState = (RequestState) inAsyncResult.AsyncState;
+				if ( curRequestState.InputMsgBuffer.Length > 0 ) {
+					using ( Stream curDataStream = curRequestState.WebReqst.EndGetRequestStream( inAsyncResult ) ) {
+						curDataStream.Write( curRequestState.InputMsgBuffer, 0, curRequestState.InputMsgBuffer.Length );
+						curDataStream.Close();
+					}
+				}
+			} finally {
+				// Start the asynchronous operation to get the response
+				if ( curRequestState != null ) {
+					curRequestState.WebReqst.BeginGetResponse( new AsyncCallback( GetRespCallBack ), curRequestState );
+				}
+			}
+		}
 
         private static void GetRespCallBack(IAsyncResult inAsyncResult) {
             String curMethodName = "SendMessageHttp:GetRespCallBack";
-            try {
-                // Set the State of request to asynchronous.
-                RequestState curRequestState = (RequestState)inAsyncResult.AsyncState;
+			RequestState curRequestState = null;
+			try {
+				// Set the State of request to asynchronous.
+				curRequestState = (RequestState) inAsyncResult.AsyncState;
 
-                // End the Asynchronous response.
-                curRequestState.WebResp = curRequestState.WebReqst.EndGetResponse( inAsyncResult );
-                String curMsg = ( (HttpWebResponse)curRequestState.WebResp).StatusDescription;
-                if (curMsg.Equals( "OK" )) {
-                } else {
-                    Log.WriteFile( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
-                    MessageBox.Show( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
-                }
+				// End the Asynchronous response.
+				curRequestState.WebResp = curRequestState.WebReqst.EndGetResponse( inAsyncResult );
+				String curMsg = ( (HttpWebResponse) curRequestState.WebResp ).StatusDescription;
+				if ( !( curMsg.Equals( "OK" ) ) ) {
+					Log.WriteFile( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
+					MessageBox.Show( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
+					return;
+				}
 
-                // Read the response into a 'Stream' object.
-                // Open the stream using a StreamReader for easy access.
-                // Read the content.
-                curRequestState.WebRespStream = curRequestState.WebResp.GetResponseStream();
-                StreamReader curReader = new StreamReader( curRequestState.WebRespStream );
-                StringBuilder responseFromServer = new StringBuilder(curReader.ReadToEnd());
-                Log.WriteFile( curMethodName + ":responseFromServer:" + responseFromServer.ToString() );
-                //showServerResp( responseFromServer.ToString() );
+				// Read the response into a 'Stream' object.
+				// Open the stream using a StreamReader for easy access.
+				// Read the content.
+				curRequestState.WebRespStream = curRequestState.WebResp.GetResponseStream();
+				StringBuilder responseFromServer = new StringBuilder( "" );
+				using ( StreamReader curReader = new StreamReader( curRequestState.WebRespStream ) ) {
+					responseFromServer = new StringBuilder( curReader.ReadToEnd() );
+				}
+				if ( responseFromServer.Length > 0 ) {
+					Log.WriteFile( curMethodName + ":responseFromServer:" + responseFromServer.ToString() );
+				}
 
-                curRequestState.WebRespStream.Close();
-                curReader.Close();
-                curRequestState.WebResp.Close();
-                myManualResetEvent.Set();
+			} catch ( Exception ex ) {
+				MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
 
-            } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-            }
-        }
+			} finally {
+				if ( curRequestState != null ) {
+					curRequestState.WebRespStream.Close();
+					curRequestState.WebResp.Close();
+				}
+				myManualResetEvent.Set();
+			}
+		}
 
         private static bool showServerResp(String inMsg) {
             // Display the content.

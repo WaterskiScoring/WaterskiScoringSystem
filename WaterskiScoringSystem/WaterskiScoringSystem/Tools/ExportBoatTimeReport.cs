@@ -768,7 +768,7 @@ namespace WaterskiScoringSystem.Tools {
             String curReturnValue = "";
             int curDiff, curPadLeft, curPadRight;
 
-            if ( inBoatTime > 0M || inActualTime > 0M ) {
+            if ( inBoatTime > 0M && inActualTime > 0M ) {
                 curDiff = Convert.ToInt32( ( inBoatTime * 100 ) - ( inActualTime * 100 ) );
                 if ( curDiff < 0 ) {
                     if ( ( curDiff * -1 ) > 10 ) {
