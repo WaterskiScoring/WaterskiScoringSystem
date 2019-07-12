@@ -446,6 +446,7 @@ namespace WaterskiScoringSystem.Admin {
 				if ( IsValidEmail( emailAddress ) ) {
 					( (TextBox) sender ).Text = emailAddress;
 				} else {
+					if ( String.IsNullOrWhiteSpace( emailAddress ) ) return;
 					e.Cancel = true;
 					MessageBox.Show( "Email Address is not a valid email" );
 				}

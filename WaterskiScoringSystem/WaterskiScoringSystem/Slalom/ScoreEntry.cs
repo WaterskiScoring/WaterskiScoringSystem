@@ -3673,6 +3673,9 @@ namespace WaterskiScoringSystem.Slalom {
 									}
 								}
 								myRecapRow.Cells["BoatTimeRecap"].Value = newValue;
+								myRecapRow.Cells["RerideRecap"].Value = "N";
+								myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+								myRecapRow.Cells["RerideReasonRecap"].Value = "";
 							}
 						}
 						Decimal curBoatTime = Convert.ToDecimal( myRecapRow.Cells["BoatTimeRecap"].Value.ToString() );

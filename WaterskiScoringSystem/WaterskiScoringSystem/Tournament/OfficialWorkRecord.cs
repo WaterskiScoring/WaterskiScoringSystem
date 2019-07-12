@@ -1313,8 +1313,8 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "FROM OfficialWork O " );
 			curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
 			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERS ON ERS.MemberId = O.MemberId AND ERS.SanctionId = O.SanctionId AND ERS.AgeGroup = TR.AgeGroup and ERS.Event = 'Slalom' " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERT ON ERT.MemberId = O.MemberId AND ERT.SanctionId = O.SanctionId AND ERT.AgeGroup = TR.AgeGroup and ERS.Event = 'Trick' " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERJ ON ERJ.MemberId = O.MemberId AND ERJ.SanctionId = O.SanctionId AND ERJ.AgeGroup = TR.AgeGroup and ERS.Event = 'Jump' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERT ON ERT.MemberId = O.MemberId AND ERT.SanctionId = O.SanctionId AND ERT.AgeGroup = TR.AgeGroup and ERT.Event = 'Trick' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERJ ON ERJ.MemberId = O.MemberId AND ERJ.SanctionId = O.SanctionId AND ERJ.AgeGroup = TR.AgeGroup and ERJ.Event = 'Jump' " );
 			curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
 			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );

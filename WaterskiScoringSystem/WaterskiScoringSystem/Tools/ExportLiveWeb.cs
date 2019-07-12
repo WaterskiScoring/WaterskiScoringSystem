@@ -421,7 +421,51 @@ namespace WaterskiScoringSystem.Tools {
             ProgressWindow myProgressInfo = new ProgressWindow();
 
             try {
-                curSqlStmt.Append( "Select TR.SanctionId, TR.MemberId, TR.SkierName, TR.AgeGroup, ER.EventGroup, " + inRound + " as Round " );
+				/*
+				Submit clean up request before sending new data
+				*/
+				curXml = new StringBuilder( "" );
+				curXml.Append( "<LiveWebRequest>" );
+
+				if ( inRound > 0 ) {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Select Distinct * from EventRunOrder " );
+					curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' " );
+					curSqlStmt.Append( "And Event = '" + inEvent + "' And Round = " + inRound );
+					curXml.Append( exportData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup", "Round" }, curSqlStmt.ToString(), "Delete" ) );
+
+				} else {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "SELECT Distinct SanctionId, Event, EventGroup FROM EventReg " );
+					curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' AND Event = '" + inEvent + "' " );
+					if ( inEventGroup != null ) {
+						if ( inEventGroup.Equals( "All" ) ) {
+						} else if ( inEventGroup.ToUpper().Equals( "MEN A" ) ) {
+							curSqlStmt.Append( "And AgeGroup = 'CM' " );
+						} else if ( inEventGroup.ToUpper().Equals( "WOMEN A" ) ) {
+							curSqlStmt.Append( "And AgeGroup = 'CW' " );
+						} else if ( inEventGroup.ToUpper().Equals( "MEN B" ) ) {
+							curSqlStmt.Append( "And AgeGroup = 'BM' " );
+						} else if ( inEventGroup.ToUpper().Equals( "WOMEN B" ) ) {
+							curSqlStmt.Append( "And AgeGroup = 'BW' " );
+						} else if ( inEventGroup.ToUpper().Equals( "NON TEAM" ) ) {
+							curSqlStmt.Append( "And AgeGroup not in ('CM', 'CW', 'BM', 'BW') " );
+						} else {
+							curSqlStmt.Append( "AND EventGroup = '" + inEventGroup + "' " );
+						}
+					}
+					curSqlStmt.Append( "Order by SanctionId, Event, EventGroup" );
+					curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+				}
+				curXml.Append( "</LiveWebRequest>" );
+				SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				returnStatus = true;
+
+				/*
+				Send updated and new data
+				*/
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Select TR.SanctionId, TR.MemberId, TR.SkierName, TR.AgeGroup, ER.EventGroup, " + inRound + " as Round " );
                 curSqlStmt.Append( "From TourReg TR " );
                 curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId " );
                 curSqlStmt.Append( "      AND TR.AgeGroup = ER.AgeGroup AND ER.Event = '" + inEvent + "' " );

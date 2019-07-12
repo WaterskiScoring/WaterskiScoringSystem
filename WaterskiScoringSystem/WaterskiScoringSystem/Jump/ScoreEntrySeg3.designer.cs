@@ -190,10 +190,6 @@
 			this.scoreMetersLabel = new System.Windows.Forms.Label();
 			this.scoreEventClass = new System.Windows.Forms.ComboBox();
 			this.TeamCodeTextBox = new System.Windows.Forms.TextBox();
-			this.RampHeightSelect = new WaterskiScoringSystem.Common.RampHeightSelect();
-			this.JumpSpeedSelect = new WaterskiScoringSystem.Common.JumpSpeedSelect();
-			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.LiveWebLabel = new System.Windows.Forms.Label();
 			this.ResizeNarrow = new System.Windows.Forms.Label();
 			this.ResizeWide = new System.Windows.Forms.Label();
@@ -201,6 +197,10 @@
 			this.BoatSelectInfoLabel = new System.Windows.Forms.Label();
 			this.refreshBoatListButton = new System.Windows.Forms.Button();
 			this.selectBoatButton = new System.Windows.Forms.Button();
+			this.RampHeightSelect = new WaterskiScoringSystem.Common.RampHeightSelect();
+			this.JumpSpeedSelect = new WaterskiScoringSystem.Common.JumpSpeedSelect();
+			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
+			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -395,7 +395,7 @@
 			this.scoreFeetTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.scoreFeetTextBox.ForeColor = System.Drawing.Color.White;
 			this.scoreFeetTextBox.Location = new System.Drawing.Point(368, 325);
-			this.scoreFeetTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoreFeetTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.scoreFeetTextBox.Name = "scoreFeetTextBox";
 			this.scoreFeetTextBox.ReadOnly = true;
 			this.scoreFeetTextBox.Size = new System.Drawing.Size(79, 30);
@@ -408,7 +408,7 @@
 			this.scoreMetersTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.scoreMetersTextBox.ForeColor = System.Drawing.Color.White;
 			this.scoreMetersTextBox.Location = new System.Drawing.Point(476, 325);
-			this.scoreMetersTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoreMetersTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.scoreMetersTextBox.Name = "scoreMetersTextBox";
 			this.scoreMetersTextBox.ReadOnly = true;
 			this.scoreMetersTextBox.Size = new System.Drawing.Size(79, 30);
@@ -418,7 +418,7 @@
 			// noteTextBox
 			// 
 			this.noteTextBox.Location = new System.Drawing.Point(740, 137);
-			this.noteTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.noteTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.noteTextBox.Name = "noteTextBox";
 			this.noteTextBox.Size = new System.Drawing.Size(481, 22);
 			this.noteTextBox.TabIndex = 30;
@@ -429,7 +429,7 @@
 			this.nopsScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.nopsScoreTextBox.ForeColor = System.Drawing.Color.White;
 			this.nopsScoreTextBox.Location = new System.Drawing.Point(584, 325);
-			this.nopsScoreTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.nopsScoreTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.nopsScoreTextBox.Name = "nopsScoreTextBox";
 			this.nopsScoreTextBox.ReadOnly = true;
 			this.nopsScoreTextBox.Size = new System.Drawing.Size(99, 30);
@@ -495,7 +495,7 @@
 			dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.jumpRecapDataGridView.DefaultCellStyle = dataGridViewCellStyle15;
 			this.jumpRecapDataGridView.Location = new System.Drawing.Point(368, 423);
-			this.jumpRecapDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.jumpRecapDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.jumpRecapDataGridView.Name = "jumpRecapDataGridView";
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
@@ -890,7 +890,7 @@
 			// deletePassButton
 			// 
 			this.deletePassButton.Location = new System.Drawing.Point(456, 390);
-			this.deletePassButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.deletePassButton.Margin = new System.Windows.Forms.Padding(4);
 			this.deletePassButton.Name = "deletePassButton";
 			this.deletePassButton.Size = new System.Drawing.Size(100, 28);
 			this.deletePassButton.TabIndex = 36;
@@ -901,7 +901,7 @@
 			// addPassButton
 			// 
 			this.addPassButton.Location = new System.Drawing.Point(368, 390);
-			this.addPassButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.addPassButton.Margin = new System.Windows.Forms.Padding(4);
 			this.addPassButton.Name = "addPassButton";
 			this.addPassButton.Size = new System.Drawing.Size(80, 28);
 			this.addPassButton.TabIndex = 35;
@@ -969,7 +969,7 @@
 			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.TourEventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle25;
 			this.TourEventRegDataGridView.Location = new System.Drawing.Point(7, 155);
-			this.TourEventRegDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.TourEventRegDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.TourEventRegDataGridView.MultiSelect = false;
 			this.TourEventRegDataGridView.Name = "TourEventRegDataGridView";
 			this.TourEventRegDataGridView.ReadOnly = true;
@@ -1321,7 +1321,7 @@
 			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle31;
 			this.listBoatTimesDataGridView.GridColor = System.Drawing.SystemColors.Control;
 			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(740, 169);
-			this.listBoatTimesDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.listBoatTimesDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.listBoatTimesDataGridView.MultiSelect = false;
 			this.listBoatTimesDataGridView.Name = "listBoatTimesDataGridView";
 			this.listBoatTimesDataGridView.ReadOnly = true;
@@ -1412,7 +1412,7 @@
 			this.RampHeightTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.RampHeightTextBox.ForeColor = System.Drawing.SystemColors.Highlight;
 			this.RampHeightTextBox.Location = new System.Drawing.Point(625, 255);
-			this.RampHeightTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.RampHeightTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.RampHeightTextBox.Name = "RampHeightTextBox";
 			this.RampHeightTextBox.Size = new System.Drawing.Size(59, 24);
 			this.RampHeightTextBox.TabIndex = 0;
@@ -1428,7 +1428,7 @@
 			this.BoatSpeedTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.BoatSpeedTextBox.ForeColor = System.Drawing.SystemColors.Highlight;
 			this.BoatSpeedTextBox.Location = new System.Drawing.Point(672, 255);
-			this.BoatSpeedTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.BoatSpeedTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.BoatSpeedTextBox.Name = "BoatSpeedTextBox";
 			this.BoatSpeedTextBox.Size = new System.Drawing.Size(59, 24);
 			this.BoatSpeedTextBox.TabIndex = 0;
@@ -1441,7 +1441,7 @@
 			this.JumpCalcMetersCB.AutoSize = true;
 			this.JumpCalcMetersCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.JumpCalcMetersCB.Location = new System.Drawing.Point(700, 42);
-			this.JumpCalcMetersCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.JumpCalcMetersCB.Margin = new System.Windows.Forms.Padding(4);
 			this.JumpCalcMetersCB.Name = "JumpCalcMetersCB";
 			this.JumpCalcMetersCB.Size = new System.Drawing.Size(107, 24);
 			this.JumpCalcMetersCB.TabIndex = 0;
@@ -1457,7 +1457,7 @@
 			this.JumpCalcVideoCB.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.JumpCalcVideoCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.JumpCalcVideoCB.Location = new System.Drawing.Point(580, 42);
-			this.JumpCalcVideoCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.JumpCalcVideoCB.Margin = new System.Windows.Forms.Padding(4);
 			this.JumpCalcVideoCB.Name = "JumpCalcVideoCB";
 			this.JumpCalcVideoCB.Size = new System.Drawing.Size(100, 24);
 			this.JumpCalcVideoCB.TabIndex = 0;
@@ -1501,7 +1501,7 @@
 			this.listApprovedBoatsDataGridView.DefaultCellStyle = dataGridViewCellStyle42;
 			this.listApprovedBoatsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(368, 471);
-			this.listApprovedBoatsDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.listApprovedBoatsDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
 			dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control;
@@ -1614,7 +1614,7 @@
 			this.BoatSelectButton.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.BoatSelectButton.Image = global::WaterskiScoringSystem.Properties.Resources.arrow_down;
 			this.BoatSelectButton.Location = new System.Drawing.Point(696, 358);
-			this.BoatSelectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.BoatSelectButton.Margin = new System.Windows.Forms.Padding(4);
 			this.BoatSelectButton.Name = "BoatSelectButton";
 			this.BoatSelectButton.Size = new System.Drawing.Size(22, 25);
 			this.BoatSelectButton.TabIndex = 25;
@@ -1625,7 +1625,7 @@
 			// 
 			this.TourBoatTextbox.BackColor = System.Drawing.Color.FloralWhite;
 			this.TourBoatTextbox.Location = new System.Drawing.Point(451, 362);
-			this.TourBoatTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.TourBoatTextbox.Margin = new System.Windows.Forms.Padding(4);
 			this.TourBoatTextbox.Name = "TourBoatTextbox";
 			this.TourBoatTextbox.ReadOnly = true;
 			this.TourBoatTextbox.Size = new System.Drawing.Size(245, 22);
@@ -1652,7 +1652,7 @@
 			this.EventDelayReasonTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventDelayReasonTextBox.ForeColor = System.Drawing.Color.Black;
 			this.EventDelayReasonTextBox.Location = new System.Drawing.Point(845, 123);
-			this.EventDelayReasonTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.EventDelayReasonTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.EventDelayReasonTextBox.MaxLength = 128;
 			this.EventDelayReasonTextBox.Name = "EventDelayReasonTextBox";
 			this.EventDelayReasonTextBox.Size = new System.Drawing.Size(416, 24);
@@ -1663,7 +1663,7 @@
 			// 
 			this.StartTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.play;
 			this.StartTimerButton.Location = new System.Drawing.Point(1036, 82);
-			this.StartTimerButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.StartTimerButton.Margin = new System.Windows.Forms.Padding(4);
 			this.StartTimerButton.Name = "StartTimerButton";
 			this.StartTimerButton.Size = new System.Drawing.Size(31, 31);
 			this.StartTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1675,7 +1675,7 @@
 			// 
 			this.PauseTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.pause;
 			this.PauseTimerButton.Location = new System.Drawing.Point(1036, 58);
-			this.PauseTimerButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PauseTimerButton.Margin = new System.Windows.Forms.Padding(4);
 			this.PauseTimerButton.Name = "PauseTimerButton";
 			this.PauseTimerButton.Size = new System.Drawing.Size(31, 31);
 			this.PauseTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1761,7 +1761,7 @@
 			// 
 			this.ForceCompButton.AutoSize = true;
 			this.ForceCompButton.Location = new System.Drawing.Point(564, 390);
-			this.ForceCompButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ForceCompButton.Margin = new System.Windows.Forms.Padding(4);
 			this.ForceCompButton.Name = "ForceCompButton";
 			this.ForceCompButton.Size = new System.Drawing.Size(93, 28);
 			this.ForceCompButton.TabIndex = 37;
@@ -1775,7 +1775,7 @@
 			this.RefreshLabel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
 			this.RefreshLabel1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.RefreshLabel1.ForeColor = System.Drawing.Color.Firebrick;
-			this.RefreshLabel1.Location = new System.Drawing.Point(7, 42);
+			this.RefreshLabel1.Location = new System.Drawing.Point(7, 45);
 			this.RefreshLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.RefreshLabel1.Name = "RefreshLabel1";
 			this.RefreshLabel1.Size = new System.Drawing.Size(295, 17);
@@ -1786,7 +1786,7 @@
 			// 
 			this.EventGroupList.FormattingEnabled = true;
 			this.EventGroupList.Location = new System.Drawing.Point(260, 80);
-			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4);
 			this.EventGroupList.Name = "EventGroupList";
 			this.EventGroupList.Size = new System.Drawing.Size(99, 24);
 			this.EventGroupList.TabIndex = 10;
@@ -1832,7 +1832,7 @@
 			this.scoreEventClass.ForeColor = System.Drawing.SystemColors.HotTrack;
 			this.scoreEventClass.FormattingEnabled = true;
 			this.scoreEventClass.Location = new System.Drawing.Point(691, 73);
-			this.scoreEventClass.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoreEventClass.Margin = new System.Windows.Forms.Padding(4);
 			this.scoreEventClass.MaxLength = 24;
 			this.scoreEventClass.Name = "scoreEventClass";
 			this.scoreEventClass.Size = new System.Drawing.Size(132, 25);
@@ -1848,7 +1848,7 @@
 			this.TeamCodeTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.TeamCodeTextBox.ForeColor = System.Drawing.SystemColors.Highlight;
 			this.TeamCodeTextBox.Location = new System.Drawing.Point(672, 281);
-			this.TeamCodeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.TeamCodeTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.TeamCodeTextBox.Name = "TeamCodeTextBox";
 			this.TeamCodeTextBox.Size = new System.Drawing.Size(59, 24);
 			this.TeamCodeTextBox.TabIndex = 104;
@@ -1857,67 +1857,13 @@
 			this.TeamCodeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.TeamCodeTextBox.Visible = false;
 			// 
-			// RampHeightSelect
-			// 
-			this.RampHeightSelect.BackColor = System.Drawing.Color.Silver;
-			this.RampHeightSelect.CurrentValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            131072});
-			this.RampHeightSelect.Location = new System.Drawing.Point(623, 137);
-			this.RampHeightSelect.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-			this.RampHeightSelect.Name = "RampHeightSelect";
-			this.RampHeightSelect.Size = new System.Drawing.Size(108, 111);
-			this.RampHeightSelect.TabIndex = 17;
-			// 
-			// JumpSpeedSelect
-			// 
-			this.JumpSpeedSelect.BackColor = System.Drawing.Color.Silver;
-			this.JumpSpeedSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.JumpSpeedSelect.CurrentValue = ((short)(0));
-			this.JumpSpeedSelect.CurrentValueDesc = "";
-			this.JumpSpeedSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.JumpSpeedSelect.Location = new System.Drawing.Point(459, 137);
-			this.JumpSpeedSelect.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-			this.JumpSpeedSelect.Name = "JumpSpeedSelect";
-			this.JumpSpeedSelect.Size = new System.Drawing.Size(159, 153);
-			this.JumpSpeedSelect.TabIndex = 16;
-			this.JumpSpeedSelect.Tag = "";
-			// 
-			// roundActiveSelect
-			// 
-			this.roundActiveSelect.AutoScroll = true;
-			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundActiveSelect.Location = new System.Drawing.Point(7, 80);
-			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-			this.roundActiveSelect.Name = "roundActiveSelect";
-			this.roundActiveSelect.RoundValue = "";
-			this.roundActiveSelect.Size = new System.Drawing.Size(245, 54);
-			this.roundActiveSelect.TabIndex = 11;
-			this.roundActiveSelect.Tag = "";
-			// 
-			// roundSelect
-			// 
-			this.roundSelect.AutoScroll = true;
-			this.roundSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundSelect.Location = new System.Drawing.Point(365, 134);
-			this.roundSelect.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-			this.roundSelect.Name = "roundSelect";
-			this.roundSelect.RoundValue = "";
-			this.roundSelect.Size = new System.Drawing.Size(88, 98);
-			this.roundSelect.TabIndex = 15;
-			this.roundSelect.Tag = "";
-			// 
 			// LiveWebLabel
 			// 
 			this.LiveWebLabel.AutoSize = true;
 			this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
 			this.LiveWebLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
-			this.LiveWebLabel.Location = new System.Drawing.Point(377, 42);
+			this.LiveWebLabel.Location = new System.Drawing.Point(377, 45);
 			this.LiveWebLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.LiveWebLabel.Name = "LiveWebLabel";
 			this.LiveWebLabel.Size = new System.Drawing.Size(109, 17);
@@ -1961,9 +1907,9 @@
 			this.approvedBoatSelectGroupBox.Controls.Add(this.refreshBoatListButton);
 			this.approvedBoatSelectGroupBox.Controls.Add(this.selectBoatButton);
 			this.approvedBoatSelectGroupBox.Location = new System.Drawing.Point(367, 425);
-			this.approvedBoatSelectGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.approvedBoatSelectGroupBox.Margin = new System.Windows.Forms.Padding(4);
 			this.approvedBoatSelectGroupBox.Name = "approvedBoatSelectGroupBox";
-			this.approvedBoatSelectGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.approvedBoatSelectGroupBox.Padding = new System.Windows.Forms.Padding(4);
 			this.approvedBoatSelectGroupBox.Size = new System.Drawing.Size(816, 46);
 			this.approvedBoatSelectGroupBox.TabIndex = 108;
 			this.approvedBoatSelectGroupBox.TabStop = false;
@@ -1986,7 +1932,7 @@
 			this.refreshBoatListButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.refreshBoatListButton.ForeColor = System.Drawing.Color.White;
 			this.refreshBoatListButton.Location = new System.Drawing.Point(695, 10);
-			this.refreshBoatListButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.refreshBoatListButton.Margin = new System.Windows.Forms.Padding(4);
 			this.refreshBoatListButton.Name = "refreshBoatListButton";
 			this.refreshBoatListButton.Size = new System.Drawing.Size(113, 28);
 			this.refreshBoatListButton.TabIndex = 2;
@@ -2001,13 +1947,67 @@
 			this.selectBoatButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.selectBoatButton.ForeColor = System.Drawing.Color.White;
 			this.selectBoatButton.Location = new System.Drawing.Point(8, 10);
-			this.selectBoatButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.selectBoatButton.Margin = new System.Windows.Forms.Padding(4);
 			this.selectBoatButton.Name = "selectBoatButton";
 			this.selectBoatButton.Size = new System.Drawing.Size(113, 28);
 			this.selectBoatButton.TabIndex = 1;
 			this.selectBoatButton.Text = "Select Boat";
 			this.selectBoatButton.UseVisualStyleBackColor = false;
 			this.selectBoatButton.Click += new System.EventHandler(this.selectBoatButton_Click);
+			// 
+			// RampHeightSelect
+			// 
+			this.RampHeightSelect.BackColor = System.Drawing.Color.Silver;
+			this.RampHeightSelect.CurrentValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            131072});
+			this.RampHeightSelect.Location = new System.Drawing.Point(623, 137);
+			this.RampHeightSelect.Margin = new System.Windows.Forms.Padding(5);
+			this.RampHeightSelect.Name = "RampHeightSelect";
+			this.RampHeightSelect.Size = new System.Drawing.Size(108, 111);
+			this.RampHeightSelect.TabIndex = 17;
+			// 
+			// JumpSpeedSelect
+			// 
+			this.JumpSpeedSelect.BackColor = System.Drawing.Color.Silver;
+			this.JumpSpeedSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.JumpSpeedSelect.CurrentValue = ((short)(0));
+			this.JumpSpeedSelect.CurrentValueDesc = "";
+			this.JumpSpeedSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.JumpSpeedSelect.Location = new System.Drawing.Point(459, 137);
+			this.JumpSpeedSelect.Margin = new System.Windows.Forms.Padding(5);
+			this.JumpSpeedSelect.Name = "JumpSpeedSelect";
+			this.JumpSpeedSelect.Size = new System.Drawing.Size(159, 153);
+			this.JumpSpeedSelect.TabIndex = 16;
+			this.JumpSpeedSelect.Tag = "";
+			// 
+			// roundActiveSelect
+			// 
+			this.roundActiveSelect.AutoScroll = true;
+			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundActiveSelect.Location = new System.Drawing.Point(7, 80);
+			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(5);
+			this.roundActiveSelect.Name = "roundActiveSelect";
+			this.roundActiveSelect.RoundValue = "";
+			this.roundActiveSelect.Size = new System.Drawing.Size(245, 54);
+			this.roundActiveSelect.TabIndex = 11;
+			this.roundActiveSelect.Tag = "";
+			// 
+			// roundSelect
+			// 
+			this.roundSelect.AutoScroll = true;
+			this.roundSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundSelect.Location = new System.Drawing.Point(365, 134);
+			this.roundSelect.Margin = new System.Windows.Forms.Padding(5);
+			this.roundSelect.Name = "roundSelect";
+			this.roundSelect.RoundValue = "";
+			this.roundSelect.Size = new System.Drawing.Size(88, 98);
+			this.roundSelect.TabIndex = 15;
+			this.roundSelect.Tag = "";
 			// 
 			// ScoreEntrySeg3
 			// 
@@ -2074,7 +2074,7 @@
 			this.Controls.Add(this.roundSelect);
 			this.Controls.Add(roundLabel);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ScoreEntrySeg3";
 			this.Text = "Jump Score Entry - 3 Segment Timing";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScoreEntry_FormClosing);
