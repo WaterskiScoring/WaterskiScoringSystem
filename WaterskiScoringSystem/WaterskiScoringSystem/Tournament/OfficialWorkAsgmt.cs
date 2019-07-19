@@ -469,8 +469,10 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( saveOfficialWorkAsgmt( myViewRowIdx ) ) {
                     isDataModified = false;
                     isSetMemberActive = false;
-                    navAddNewItem_Click( null, null );
-                }
+					if ( myViewRowIdx == ( officialWorkAsgmtDataGridView.Rows.Count - 1) ) {
+						navAddNewItem_Click( null, null );
+					}
+				}
             } catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
             }
@@ -1027,7 +1029,19 @@ namespace WaterskiScoringSystem.Tournament {
             assignMemberOfficial( (DataGridView)sender, e.RowIndex );
         }
 
-        private void assignMemberOfficial( DataGridView inView, int inRowIdx ) {
+		private void officialWorkAsgmtDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView) sender;
+
+			if ( curView.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0 ) {
+				curView.Rows[e.RowIndex].Cells["EndTime"].Value = DateTime.Now.ToString( "MM/dd/yy hh:mm tt" );
+				curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+
+				isDataModified = true;
+				SendKeys.Send( "{TAB}" );
+			}
+		}
+
+		private void assignMemberOfficial( DataGridView inView, int inRowIdx ) {
             if ( !(isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdTour"].Value) ) ) {
                 String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdTour"].Value;
                 String curSkierName = (String)inView.Rows[inRowIdx].Cells["SkierNameTour"].Value;
@@ -1048,32 +1062,29 @@ namespace WaterskiScoringSystem.Tournament {
 
         private int findMemberRow(String inValue) {
             String curMemberName = "";
-            int curReturnIdx = 0;
             int curColIdx = listTourMemberDataGridView.Columns["SkierNameTour"].Index;
 
             if ( inValue.Length > 0 ) {
                 int curIdx = 0;
                 foreach ( DataGridViewRow curRow in listTourMemberDataGridView.Rows ) {
                     curMemberName = (String)curRow.Cells[curColIdx].Value;
+					if ( curMemberName == null ) return curIdx - 1; 
                     if ( curMemberName.Length > inValue.Length ) {
                         if ( curMemberName.StartsWith( inValue, true, null ) ) {
-                            curReturnIdx = curIdx;
-                            break;
+                            return curIdx;
                         } else if ( curMemberName.CompareTo(inValue) >= 0 ) {
-                            curReturnIdx = curIdx;
-                            break;
+                            return curIdx;
                         }
                     } else {
                         if ( curMemberName.CompareTo( inValue ) >= 0 ) {
-                            curReturnIdx = curIdx;
-                            break;
-                        }
-                    }
+							return curIdx;
+						}
+					}
                     curIdx++;
                 }
             }
 
-            return curReturnIdx;
+            return listTourMemberDataGridView.Rows.Count - 2;
         }
 
         private void navCopyItem_Click(object sender, EventArgs e) {
@@ -1336,5 +1347,5 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnValue;
         }
 
-    }
+	}
 }

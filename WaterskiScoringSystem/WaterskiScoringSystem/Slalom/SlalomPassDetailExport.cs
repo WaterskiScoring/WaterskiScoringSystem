@@ -135,7 +135,7 @@ namespace WaterskiScoringSystem.Slalom {
                 curViewRow.Cells["PassScore"].Value = ( (Decimal) curRow["PassScore"] ).ToString("#.00");
                 curViewRow.Cells["TimeInTol"].Value = (String) curRow["TimeInTol"];
                 curViewRow.Cells["PassNotes"].Value = (String) curRow["PassNotes"];
-                curViewRow.Cells["LastUpdateDate"].Value = ( (DateTime) curRow["LastUpdateDate"] ).ToString("MM/dd/yy HH:mm:ss");
+                curViewRow.Cells["LastUpdateDate"].Value = ( (DateTime) curRow["LastUpdateDate"] ).ToString("yyyy/MM/dd HH:mm:ss");
             }
 
         }

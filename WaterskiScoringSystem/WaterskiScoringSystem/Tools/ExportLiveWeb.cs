@@ -455,7 +455,11 @@ namespace WaterskiScoringSystem.Tools {
 						}
 					}
 					curSqlStmt.Append( "Order by SanctionId, Event, EventGroup" );
-					curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+					if ( inEventGroup.Equals( "All" ) ) {
+						curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+					} else {
+						curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+					}
 				}
 				curXml.Append( "</LiveWebRequest>" );
 				SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );

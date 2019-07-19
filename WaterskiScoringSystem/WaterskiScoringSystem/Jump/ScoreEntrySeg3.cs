@@ -3069,14 +3069,7 @@ namespace WaterskiScoringSystem.Jump {
                             isDataModified = true;
                             myRecapRow.Cells["Updated"].Value = "Y";
                             TimeValidate();
-                            saveScore();
-                            if ( checkRoundContinue() ) {
-                                isAddRecapRowInProg = true;
-                                Timer curTimerObj = new Timer();
-                                curTimerObj.Interval = 15;
-                                curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-                                curTimerObj.Start();
-                            }
+							checkRoundCalcSkierScore();
                         }
                     }
                     #endregion
@@ -3199,8 +3192,9 @@ namespace WaterskiScoringSystem.Jump {
 				curReturnValue = false;
 
 			} else {
-                Decimal skierScoreFeet = Convert.ToDecimal( scoreFeetTextBox.Text );
-                Decimal skierScoreMeters = Convert.ToDecimal( scoreMetersTextBox.Text );
+				decimal skierScoreFeet = 0, skierScoreMeters = 0;
+				Decimal.TryParse( scoreFeetTextBox.Text, out skierScoreFeet );
+				Decimal.TryParse( scoreMetersTextBox.Text, out skierScoreMeters );
 
                 foreach ( DataGridViewRow curRow in jumpRecapDataGridView.Rows ) {
                     if ( curRow.Cells["TimeInTolRecap"].Value.ToString().Equals( "Y" ) ) {

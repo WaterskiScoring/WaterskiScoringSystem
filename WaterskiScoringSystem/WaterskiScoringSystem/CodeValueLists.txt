@@ -490,7 +490,6 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22650	DriverRating	Senior		5	Senior			
 22651	DriverRating	Emeritus		6	Emeritus			
 22652	EndOfTourReports	F1		1	WWParm.TNY			Tournament parameter file
-22653	EndOfTourReports	F2		2	######-log.log			WSTIMS For Windows log file
 22655	EndOfTourReports	F4		4	######BT.prn			Boat time report
 22656	EndOfTourReports	F5		5	######*.sbk			Scorebook
 22657	EndOfTourReports	F6		6	######*.wsp			Water Ski Performance file for ranking list

@@ -853,44 +853,35 @@ namespace ValidationLibrary.Trick {
 			return curDataTable;
 		}
 
-		//Int16 curRuleNum, Int16 tempRuleNum, DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints
-		//activePassDataTable, idlePassDataTable
 		private Int16 checkForRepeat( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
             , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 curRuleNum, Int16 tempRuleNum, Int16 inActivePoints ) {
 
             Int16 retPoints = inActivePoints;
             if ( curRuleNum == tempRuleNum ) {
-                retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints);
-
-            } else if ( curRuleNum == 105 && tempRuleNum == 305 && ((byte)inViewRow["NumTurns"]) > 2 && ( (byte) inCheckedRow["NumTurns"] ) == 2 ) {
-                //Bypass check
-
-            } else if ( curRuleNum == 205 && tempRuleNum == 405 && ( (byte) inViewRow["NumTurns"] ) > 2 && ( (byte) inCheckedRow["NumTurns"] ) == 2 ) {
-                //Bypass check
+                retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, tempRuleNum );
 
             } else if ( curRuleNum > 100 && curRuleNum < 200 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
                     if ( inActiveView ) {
                         if ( inRowViewIdx > inRowCheckedIdx ) {
-                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints);
+                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, tempRuleNum);
                         }
                     } else {
                         if ( inColPrefix.Equals("Pass2") ) {
-                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints);
+                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, tempRuleNum );
                         }
                     }
                 }
             } else if ( curRuleNum > 200 && curRuleNum < 300 ) {
                 if ( ( curRuleNum + 200 ) == tempRuleNum ) {
-                    retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints);
+                    retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, tempRuleNum );
                 }
             }
             return retPoints;
         }
 
-        //DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints
         private Int16 checkCreditAndPoints( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
-            , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 inActivePoints ) {
+            , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 inActivePoints, Int16 curRuleNum, Int16 tempRuleNum ) {
             //If trick repeated determine if previous trick was same number but worth more or less points
 
             Int16 retPoints = inActivePoints;
@@ -898,8 +889,44 @@ namespace ValidationLibrary.Trick {
                 if ( ( (String) inViewRow["Results"] ).Equals("Credit") 
                     && ( (String) inCheckedRow["Results"] ).Equals("Credit")
                     ) {
-                    if ( (Int16)inCheckedRow["Score"] < retPoints ) {
-                        if ( inActiveView ) {
+					if ( (Int16) inCheckedRow["Score"] == retPoints ) {
+						if ( inActiveView ) {
+							if ( inRowViewIdx < inRowCheckedIdx ) {
+								inCheckedRow["Score"] = 0;
+								inCheckedRow["Results"] = "Repeat";
+							} else {
+								if ( ( curRuleNum + 200 ) == tempRuleNum ) {
+									byte curNumTurns = (byte) inViewRow["NumTurns"];
+									int prevRowIdx = inRowCheckedIdx - 1;
+                                    if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx = inRowCheckedIdx - 2;
+									Int16 prevRuleNum = (Int16) activePassDataTable.Rows[prevRowIdx]["RuleNum"];
+									if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[prevRowIdx]["Score"] == 0 ) {
+									} else {
+										inViewRow["Score"] = 0;
+										inViewRow["Results"] = "Repeat";
+										retPoints = 0;
+									}
+								} else {
+									inViewRow["Score"] = 0;
+									inViewRow["Results"] = "Repeat";
+									retPoints = 0;
+								}
+							}
+
+						} else {
+							if ( inColPrefix.Equals( "Pass1" ) ) {
+								inCheckedRow["Score"] = 0;
+								inCheckedRow["Results"] = "Repeat";
+
+							} else {
+								inViewRow["Score"] = 0;
+								inViewRow["Results"] = "Repeat";
+								retPoints = 0;
+							}
+						}
+
+					} else if ( (Int16) inCheckedRow["Score"] < retPoints ) {
+						if ( inActiveView ) {
                             if ( inRowViewIdx > 0 ) {
                                 if ( inRowViewIdx > inRowCheckedIdx ) {
                                     inCheckedRow["Score"] = 0;
@@ -909,7 +936,8 @@ namespace ValidationLibrary.Trick {
                                     inViewRow["Results"] = "Repeat";
                                     retPoints = 0;
                                 }
-                            } else {
+
+							} else {
                                 if ( ( (String) inCheckedRow["Code"] ).ToLower().Equals("t5b")
                                     && ( ( (String) inViewRow["Code"] ).ToLower().Equals("t7f") || ( (String) inViewRow["Code"] ).ToLower().Equals("t7") )
                                     ) {
@@ -920,42 +948,23 @@ namespace ValidationLibrary.Trick {
                                     retPoints = 0;
                                 }
                             }
-                        } else {
-                            if ( ( (Int16) inViewRow["RuleNum"] == 105 && (Int16) inCheckedRow["RuleNum"] == 105 )
-                                || ( (Int16) inViewRow["RuleNum"] == 205 && (Int16) inCheckedRow["RuleNum"] == 205 )
-                                ) {
-                                if ( (byte) inViewRow["NumTurns"] > 2 && (byte) inCheckedRow["NumTurns"] == 2 ) {
-                                    inCheckedRow["Score"] = 0;
-                                    inCheckedRow["Results"] = "Repeat";
-                                } else if ( (byte) inViewRow["NumTurns"] == 2 && (byte) inCheckedRow["NumTurns"] > 2 ) {
-                                    inViewRow["Score"] = 0;
-                                    inViewRow["Results"] = "Repeat";
-                                    retPoints = 0;
-                                } else {
-                                    if ( inColPrefix.Equals("Pass1") ) {
-                                        inCheckedRow["Score"] = 0;
-                                        inCheckedRow["Results"] = "Repeat";
-                                    } else {
-                                        inViewRow["Score"] = 0;
-                                        inViewRow["Results"] = "Repeat";
-                                        retPoints = 0;
-                                    }
-                                }
-                            } else {
-                                if ( inColPrefix.Equals("Pass1") ) {
-                                    inCheckedRow["Score"] = 0;
-                                    inCheckedRow["Results"] = "Repeat";
-                                } else {
-                                    inViewRow["Score"] = 0;
-                                    inViewRow["Results"] = "Repeat";
-                                    retPoints = 0;
-                                }
-                            }
-                        }
-                    } else {
+
+						} else {
+							if ( inColPrefix.Equals( "Pass1" ) ) {
+								inCheckedRow["Score"] = 0;
+								inCheckedRow["Results"] = "Repeat";
+
+							} else {
+								inViewRow["Score"] = 0;
+								inViewRow["Results"] = "Repeat";
+								retPoints = 0;
+							}
+						}
+
+					} else {
                         if ( inActiveView ) {
                             if ( inRowViewIdx > 0 ) {
-                                if ( inRowViewIdx > inRowCheckedIdx ) {
+								if ( inRowViewIdx > inRowCheckedIdx ) {
                                     //If the CheckRow is 1 row behind (2 for a 180 trick) and is a reverse trick
                                     //Check the previous trick to see if same trick number but is not for credit
                                     //If that is the case then this trick should get credit
@@ -964,7 +973,6 @@ namespace ValidationLibrary.Trick {
                                     // prevNumTurns = (Byte) activePassDataTable.Rows[curIdx]["NumTurns"];
                                     Int16 curNumTurns = (Byte) inViewRow["NumTurns"];
                                     if ( ( ( curNumTurns % 2 ) == 0 ) && ( (inRowViewIdx - 1) == inRowCheckedIdx ) && ( inRowCheckedIdx > 0 ) ) {
-                                        Int16 curRuleNum = (Int16)inViewRow["RuleNum"];
                                         Int16 prevRuleNum = (Int16) activePassDataTable.Rows[inRowCheckedIdx - 1]["RuleNum"];
                                         if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[inRowCheckedIdx - 1]["Score"] == 0 ) {
                                         } else {
@@ -975,7 +983,6 @@ namespace ValidationLibrary.Trick {
 
                                     } else {
                                         if ( ( ( curNumTurns % 2 ) > 0 ) && ( ( inRowViewIdx - 2 ) == inRowCheckedIdx ) && (inRowCheckedIdx > 1) ) {
-                                            Int16 curRuleNum = (Int16) inViewRow["RuleNum"];
                                             Int16 prevRuleNum = (Int16) activePassDataTable.Rows[inRowCheckedIdx - 2]["RuleNum"];
                                             if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[inRowCheckedIdx - 2]["Score"] == 0 ) {
                                             } else {
