@@ -2283,9 +2283,11 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 MessageBox.Show("Error: Performing SQL operations" + "\n\nError: " + ExcpMsg);
             } finally {
-                myReader.Close();
-                myReader.Dispose();
-            }
+				if ( myReader != null ) {
+					myReader.Close();
+					myReader.Dispose();
+				}
+			}
 
             isDataModified = false;
             navRefresh_Click(null, null);

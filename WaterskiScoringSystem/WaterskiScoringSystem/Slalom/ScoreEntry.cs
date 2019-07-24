@@ -663,12 +663,7 @@ namespace WaterskiScoringSystem.Slalom {
 						curSqlStmt = new StringBuilder( "" );
 						if ( curRecapPK > 0 ) {
 							curSqlStmt.Append( "Update SlalomRecap Set " );
-							curSqlStmt.Append( " SanctionId = '" + curSanctionId + "'" );
-							curSqlStmt.Append( ", MemberId = '" + curMemberId + "'" );
-							curSqlStmt.Append( ", AgeGroup = '" + curAgeGroup + "'" );
-							curSqlStmt.Append( ", Round = " + curRound );
-							curSqlStmt.Append( ", PassSpeedKph = " + curPassSpeedKph.ToString("00") );
-							curSqlStmt.Append( ", SkierRunNum = " + curSkierRunNum );
+							curSqlStmt.Append( "PassSpeedKph = " + curPassSpeedKph.ToString("00") );
 							curSqlStmt.Append( ", PassLineLength = " + curPassLineLengthMeters.ToString( "00.00" ) );
 							curSqlStmt.Append( ", Reride = '" + curReride + "'" );
 							curSqlStmt.Append( ", Judge1Score = " + curJudge1Score );
@@ -688,8 +683,12 @@ namespace WaterskiScoringSystem.Slalom {
 							curSqlStmt.Append( ", ScoreProt = '" + curScoreProt + "'" );
 							curSqlStmt.Append( ", LastUpdateDate = getdate()" );
 							curSqlStmt.Append( ", RerideReason = '" + curRerideReason + "'" );
-							curSqlStmt.Append( ", Note = '" + curNote + "'" );
-							curSqlStmt.Append( " Where PK = " + curRecapPK.ToString() );
+							curSqlStmt.Append( ", Note = '" + curNote + "' " );
+							curSqlStmt.Append( "Where SanctionId = '" + curSanctionId + "' " );
+							curSqlStmt.Append( "AND MemberId = '" + curMemberId + "' " );
+							curSqlStmt.Append( "AND AgeGroup = '" + curAgeGroup + "' " );
+							curSqlStmt.Append( "AND Round = " + curRound + " " );
+							curSqlStmt.Append( "AND SkierRunNum = " + curSkierRunNum );
 							rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 						} else {
@@ -749,18 +748,15 @@ namespace WaterskiScoringSystem.Slalom {
 
 						#region Update skier total score for round
 						rowsProc = 0;
-						Int64 curScorePK = 0;
 						String curStartLengthMeters = "", curStatus = "TBD", curBoatCode = "", curEventClass = "";
 						Int16 curStartSpeedKph = 0;
 						Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( curAgeGroup );
 
 						if ( myScoreRow == null ) {
-							curScorePK = -1;
 							curStartLengthMeters = SlalomLineSelect.CurrentValue;
 							curStartSpeedKph = SlalomSpeedSelection.SelectSpeekKph;
 
 						} else {
-							curScorePK = (Int64) myScoreRow["PK"];
 							curStartLengthMeters = (String) myScoreRow["StartLen"];
 							curStartSpeedKph = (byte) myScoreRow["StartSpeed"];
 						}
@@ -868,20 +864,16 @@ namespace WaterskiScoringSystem.Slalom {
 						}
 
 						if ( curTimeInTol.Equals( "Y" ) ) {
-							if ( curScorePK > 0 ) {
+							if ( myScoreRow != null ) {
 								curSqlStmt = new StringBuilder( "" );
 								curSqlStmt.Append( "Update SlalomScore Set " );
-								curSqlStmt.Append( " SanctionId = '" + curSanctionId + "'" );
-								curSqlStmt.Append( ", MemberId = '" + curMemberId + "'" );
-								curSqlStmt.Append( ", AgeGroup = '" + curAgeGroup + "'" );
-								curSqlStmt.Append( ", EventClass = '" + curEventClass + "'" );
-								curSqlStmt.Append( ", Round = " + curRound );
-								curSqlStmt.Append( ", Score = " + curScore.ToString( "##0.00" ) );
+								curSqlStmt.Append( "Score = " + curScore.ToString( "##0.00" ) );
 								curSqlStmt.Append( ", NopsScore = " + curNopsScore.ToString( "##0.00" ) );
 								curSqlStmt.Append( ", StartSpeed = " + curStartSpeedKph.ToString( "00" ) );
 								curSqlStmt.Append( ", StartLen = '" + curStartLengthMeters + "'" );
 								curSqlStmt.Append( ", MaxSpeed = " + curMaxSpeedKphDiv.ToString( "00" ) );
 								curSqlStmt.Append( ", Boat = '" + curBoatCode + "'" );
+								curSqlStmt.Append( ", EventClass = '" + curEventClass + "'" );
 
 								curSqlStmt.Append( ", Status = '" + curStatus + "'" );
 								curSqlStmt.Append( ", FinalSpeedMph = " + curPassSpeedMph.ToString("00.0") );
@@ -896,8 +888,11 @@ namespace WaterskiScoringSystem.Slalom {
 								}
 
 								curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
-								curSqlStmt.Append( ", Note = '" + curNote + "'" );
-								curSqlStmt.Append( " Where PK = " + curScorePK.ToString() );
+								curSqlStmt.Append( ", Note = '" + curNote + "' " );
+								curSqlStmt.Append( "Where SanctionId = '" + curSanctionId + "' " );
+								curSqlStmt.Append( "AND MemberId = '" + curMemberId + "' " );
+								curSqlStmt.Append( "AND AgeGroup = '" + curAgeGroup + "' " );
+								curSqlStmt.Append( "AND Round = " + curRound );
 								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 							}
 							if ( rowsProc == 0 ) {
