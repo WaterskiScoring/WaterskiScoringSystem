@@ -366,14 +366,15 @@ namespace WaterskiScoringSystem.Tournament {
                     if (EventRegDataGridView.Rows.Count > 0) {
                         myViewIdx = 0;
                         EventRegDataGridView.CurrentCell = EventRegDataGridView.Rows[myViewIdx].Cells["SkierName"];
-                        loadPrintDataGrid();
                     }
                 }
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error retrieving tournament entries \n" + ex.Message );
             }
-             Cursor.Current = Cursors.Default;
-            try {
+
+			Cursor.Current = Cursors.Default;
+
+			try {
                 int curRowPos = myViewIdx + 1;
                 RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + EventRegDataGridView.Rows.Count.ToString();
             } catch {
@@ -598,11 +599,12 @@ namespace WaterskiScoringSystem.Tournament {
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error retrieving tournament entries \n" + ex.Message );
             }
-            
 
-        }
+			Cursor.Current = Cursors.Default;
 
-        private void loadGroupSelectList(String inEvent, EventHandler parentEvent) {
+		}
+
+		private void loadGroupSelectList(String inEvent, EventHandler parentEvent) {
             CheckBox curCheckBox;
             int curItemLoc = 5;
             int curItemSize = 0;
@@ -1203,8 +1205,8 @@ namespace WaterskiScoringSystem.Tournament {
 					getRunningOrderColumnfilter();
 
 					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                    myEventRegDataTable = getEventRegData();
-                    loadEventRegView();
+                    //myEventRegDataTable = getEventRegData();
+                    //loadEventRegView();
                 }
             }
         }
@@ -1221,8 +1223,8 @@ namespace WaterskiScoringSystem.Tournament {
 					getRunningOrderColumnfilter();
 
 					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                    myEventRegDataTable = getEventRegData();
-                    loadEventRegView();
+                    //myEventRegDataTable = getEventRegData();
+                    //loadEventRegView();
                 }
             }
         }
@@ -1239,8 +1241,8 @@ namespace WaterskiScoringSystem.Tournament {
 					getRunningOrderColumnfilter();
 
 					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                    myEventRegDataTable = getEventRegData();
-                    loadEventRegView();
+                    //myEventRegDataTable = getEventRegData();
+                    //loadEventRegView();
                 }
             }
         }
@@ -1583,7 +1585,11 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navPrint_Click(object sender, EventArgs e) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+
+			myEventRegDataTable = getEventRegData();
+			loadPrintDataGrid();
+
+			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
             bool CenterOnPage = true;

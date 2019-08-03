@@ -169,7 +169,7 @@ namespace WaterskiScoringSystem.Tournament {
 			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.EventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle10;
 			this.EventRegDataGridView.Location = new System.Drawing.Point(7, 142);
-			this.EventRegDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.EventRegDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.EventRegDataGridView.MultiSelect = false;
 			this.EventRegDataGridView.Name = "EventRegDataGridView";
 			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
@@ -397,7 +397,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.slalomButton.AutoSize = true;
 			this.slalomButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.slalomButton.Location = new System.Drawing.Point(153, 52);
-			this.slalomButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.slalomButton.Margin = new System.Windows.Forms.Padding(4);
 			this.slalomButton.Name = "slalomButton";
 			this.slalomButton.Size = new System.Drawing.Size(71, 21);
 			this.slalomButton.TabIndex = 1;
@@ -411,7 +411,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.trickButton.AutoSize = true;
 			this.trickButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.trickButton.Location = new System.Drawing.Point(233, 52);
-			this.trickButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.trickButton.Margin = new System.Windows.Forms.Padding(4);
 			this.trickButton.Name = "trickButton";
 			this.trickButton.Size = new System.Drawing.Size(60, 21);
 			this.trickButton.TabIndex = 2;
@@ -425,7 +425,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.jumpButton.AutoSize = true;
 			this.jumpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.jumpButton.Location = new System.Drawing.Point(307, 52);
-			this.jumpButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.jumpButton.Margin = new System.Windows.Forms.Padding(4);
 			this.jumpButton.Name = "jumpButton";
 			this.jumpButton.Size = new System.Drawing.Size(63, 21);
 			this.jumpButton.TabIndex = 3;
@@ -663,7 +663,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.PrintDataGridView.DefaultCellStyle = dataGridViewCellStyle26;
 			this.PrintDataGridView.Enabled = false;
 			this.PrintDataGridView.Location = new System.Drawing.Point(16, 288);
-			this.PrintDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PrintDataGridView.Margin = new System.Windows.Forms.Padding(4);
 			this.PrintDataGridView.Name = "PrintDataGridView";
 			this.PrintDataGridView.RowHeadersVisible = false;
 			this.PrintDataGridView.RowHeadersWidth = 31;
@@ -865,8 +865,8 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.printHeaderNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.printHeaderNote.Location = new System.Drawing.Point(649, 49);
-			this.printHeaderNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.printHeaderNote.Location = new System.Drawing.Point(649, 51);
+			this.printHeaderNote.Margin = new System.Windows.Forms.Padding(4);
 			this.printHeaderNote.Name = "printHeaderNote";
 			this.printHeaderNote.Size = new System.Drawing.Size(555, 22);
 			this.printHeaderNote.TabIndex = 6;
@@ -889,7 +889,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.EventGroupPanel.AutoScroll = true;
 			this.EventGroupPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.EventGroupPanel.Location = new System.Drawing.Point(81, 79);
-			this.EventGroupPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.EventGroupPanel.Margin = new System.Windows.Forms.Padding(4);
 			this.EventGroupPanel.Name = "EventGroupPanel";
 			this.EventGroupPanel.Size = new System.Drawing.Size(1116, 54);
 			this.EventGroupPanel.TabIndex = 7;
@@ -940,7 +940,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.Controls.Add(this.winStatus);
 			this.Controls.Add(this.EventRegDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "RunningOrderTour";
 			this.Text = "Running Order";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RunningOrderTour_FormClosing);

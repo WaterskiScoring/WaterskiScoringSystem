@@ -1589,22 +1589,22 @@ namespace WaterskiScoringSystem.Tournament {
                         curXmlTemp.Append("<JumpPlcmt></JumpPlcmt>");
                     }
                     try {
-                        curXmlTemp.Append("<OverallScore>" + (Decimal) curViewRow.Cells["TeamScoreTotal"].Value + "</OverallScore>");
+                        curXmlTemp.Append("<OverallScore>" + ((Decimal) curViewRow.Cells["TeamScoreTotal"].Value).ToString( "###0.0" ) + "</OverallScore>");
                     } catch {
                         curXmlTemp.Append("<OverallScore>0</OverallScore>");
                     }
                     try {
-                        curXmlTemp.Append("<SlalomScore>" + (Decimal) curViewRow.Cells["TeamScoreSlalom"].Value + "</SlalomScore>");
+                        curXmlTemp.Append("<SlalomScore>" + ((Decimal) curViewRow.Cells["TeamScoreSlalom"].Value ).ToString( "###0.0" ) + "</SlalomScore>");
                     } catch {
                         curXmlTemp.Append("<SlalomScore>0</SlalomScore>");
                     }
                     try {
-                        curXmlTemp.Append("<TrickScore>" + (Decimal) curViewRow.Cells["TeamScoreTrick"].Value + "</TrickScore>");
+                        curXmlTemp.Append("<TrickScore>" + ((Decimal) curViewRow.Cells["TeamScoreTrick"].Value ).ToString( "###0.0" ) + "</TrickScore>");
                     } catch {
                         curXmlTemp.Append("<TrickScore>0</TrickScore>");
                     }
                     try {
-                        curXmlTemp.Append("<JumpScore>" + (Decimal) curViewRow.Cells["TeamScoreJump"].Value + "</JumpScore>");
+                        curXmlTemp.Append("<JumpScore>" + ((Decimal) curViewRow.Cells["TeamScoreJump"].Value ).ToString( "###0.0" ) + "</JumpScore>");
                     } catch {
                         curXmlTemp.Append("<JumpScore>0</JumpScore>");
                     }
@@ -1684,23 +1684,25 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( plcmtAWSATeamButton.Checked ) {
                         curXmlTemp.Append("<SkierCategory>" + (String) curViewRow.Cells["PrintSkierCategory"].Value + "</SkierCategory>");
                     }
-
-                    if ( curSlalomSkierName.Length > 0 ) {
+					Decimal curDecimalValue = 0;
+					if ( curSlalomSkierName.Length > 0 ) {
                         curXmlTemp.Append("<SlalomSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameSlalom"].Value, singleQuoteDelim, "''")) + "</SlalomSkierName>");
                         curXmlTemp.Append("<SlalomPlcmt>" + (String) curViewRow.Cells["PrintPlcmtSlalom"].Value + "</SlalomPlcmt>");
                         try {
-                            curXmlTemp.Append("<SlalomScore>" + (String) curViewRow.Cells["PrintScoreSlalom"].Value + "</SlalomScore>");
-                        } catch {
+							Decimal.TryParse( (String)curViewRow.Cells["PrintScoreSlalom"].Value, out curDecimalValue );
+							curXmlTemp.Append( "<SlalomScore>" + curDecimalValue.ToString( "###0.0" ) + "</SlalomScore>" );
+						} catch {
                             curXmlTemp.Append("<SlalomScore></SlalomScore>");
                         }
                         try {
-                            curXmlTemp.Append("<SlalomNops>" + (String) curViewRow.Cells["PrintPointsSlalom"].Value + "</SlalomNops>");
+							Decimal.TryParse( (String) curViewRow.Cells["PrintPointsSlalom"].Value, out curDecimalValue );
+							curXmlTemp.Append("<SlalomNops>" + curDecimalValue.ToString( "###0.0" ) + "</SlalomNops>");
                         } catch {
                             curXmlTemp.Append("<SlalomNops></SlalomNops>");
                         }
                         try {
-                            curXmlTemp.Append("<SlalomPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsSlalom"].Value + "</SlalomPoints>");
-                        } catch {
+							curXmlTemp.Append("<SlalomPoints>" + ((Decimal)curViewRow.Cells["PrintPlcmtPointsSlalom"].Value).ToString( "###0.0" ) + "</SlalomPoints>");
+                        } catch (Exception ex) {
                             curXmlTemp.Append("<SlalomPoints></SlalomPoints>");
                         }
                     } else {
@@ -1715,19 +1717,21 @@ namespace WaterskiScoringSystem.Tournament {
                         curXmlTemp.Append("<TrickSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameTrick"].Value, singleQuoteDelim, "''" ) ) + "</TrickSkierName>");
                         curXmlTemp.Append("<TrickPlcmt>" + (String) curViewRow.Cells["PrintPlcmtTrick"].Value + "</TrickPlcmt>");
                         try {
-                            curXmlTemp.Append("<TrickScore>" + (String) curViewRow.Cells["PrintScoreTrick"].Value + "</TrickScore>");
+							Decimal.TryParse( (String) curViewRow.Cells["PrintScoreTrick"].Value, out curDecimalValue );
+							curXmlTemp.Append("<TrickScore>" + curDecimalValue.ToString( "###0.0" ) + "</TrickScore>");
                         } catch {
                             curXmlTemp.Append("<TrickScore></TrickScore>");
                         }
                         try {
-                            curXmlTemp.Append("<TrickNops>" + (String) curViewRow.Cells["PrintPointsTrick"].Value + "</TrickNops>");
+							Decimal.TryParse( (String) curViewRow.Cells["PrintPointsTrick"].Value, out curDecimalValue );
+							curXmlTemp.Append("<TrickNops>" + curDecimalValue.ToString( "###0.0" ) + "</TrickNops>");
                         } catch {
                             curXmlTemp.Append("<TrickNops></TrickNops>");
                         }
                         try {
-                            curXmlTemp.Append("<TrickPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsTrick"].Value + "</TrickPoints>");
-                        } catch {
-                            curXmlTemp.Append("<TrickPoints></TrickPoints>");
+							curXmlTemp.Append( "<TrickPoints>" + ( (Decimal) curViewRow.Cells["PrintPlcmtPointsTrick"].Value ).ToString( "###0.0" ) + "</TrickPoints>" );
+						} catch ( Exception ex ) {
+							curXmlTemp.Append("<TrickPoints></TrickPoints>");
                         }
                     } else {
                         curXmlTemp.Append("<TrickSkierName></TrickSkierName>");
@@ -1741,19 +1745,21 @@ namespace WaterskiScoringSystem.Tournament {
                         curXmlTemp.Append("<JumpSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameJump"].Value, singleQuoteDelim, "''" ) ) + "</JumpSkierName>");
                         curXmlTemp.Append("<JumpPlcmt>" + (String) curViewRow.Cells["PrintPlcmtJump"].Value + "</JumpPlcmt>");
                         try {
-                            curXmlTemp.Append("<JumpScore>" + (String) curViewRow.Cells["PrintScoreJump"].Value + "</JumpScore>");
+							Decimal.TryParse( (String) curViewRow.Cells["PrintScoreJump"].Value, out curDecimalValue );
+							curXmlTemp.Append("<JumpScore>" + curDecimalValue.ToString( "###0.0" ) + "</JumpScore>");
                         } catch {
                             curXmlTemp.Append("<JumpScore></JumpScore>");
                         }
                         try {
-                            curXmlTemp.Append("<JumpNops>" + (String) curViewRow.Cells["PrintPointsJump"].Value + "</JumpNops>");
+							Decimal.TryParse( (String) curViewRow.Cells["PrintPointsJump"].Value, out curDecimalValue );
+							curXmlTemp.Append("<JumpNops>" + curDecimalValue.ToString( "###0.0" ) + "</JumpNops>");
                         } catch {
                             curXmlTemp.Append("<JumpNops></JumpNops>");
                         }
                         try {
-                            curXmlTemp.Append("<JumpPoints>" + (Decimal) curViewRow.Cells["PrintPlcmtPointsJump"].Value + "</JumpPoints>");
-                        } catch {
-                            curXmlTemp.Append("<JumpPoints></JumpPoints>");
+							curXmlTemp.Append( "<JumpPoints>" + ( (Decimal) curViewRow.Cells["PrintPlcmtPointsJump"].Value ).ToString( "###0.0" ) + "</JumpPoints>" );
+						} catch ( Exception ex ) {
+							curXmlTemp.Append("<JumpPoints></JumpPoints>");
                         }
                     } else {
                         curXmlTemp.Append("<JumpSkierName></JumpSkierName>");
