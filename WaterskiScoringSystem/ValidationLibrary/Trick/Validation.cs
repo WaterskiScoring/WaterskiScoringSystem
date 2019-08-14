@@ -914,10 +914,24 @@ namespace ValidationLibrary.Trick {
 							}
 
 						} else {
-							if ( inColPrefix.Equals( "Pass1" ) ) {
-								inCheckedRow["Score"] = 0;
-								inCheckedRow["Results"] = "Repeat";
+							if ( ( curRuleNum + 200 ) == tempRuleNum ) {
+								byte curNumTurns = (byte) inViewRow["NumTurns"];
+								int prevRowIdx = inRowCheckedIdx - 1;
+								if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx = inRowCheckedIdx - 2;
+								Int16 prevRuleNum = (Int16) activePassDataTable.Rows[prevRowIdx]["RuleNum"];
+								if ( curRuleNum == prevRuleNum && (Int16) activePassDataTable.Rows[prevRowIdx]["Score"] == 0 ) {
+								} else {
+									retPoints = 0;
+									if ( inColPrefix.Equals( "Pass1" ) ) {
+										inCheckedRow["Score"] = 0;
+										inCheckedRow["Results"] = "Repeat";
 
+									} else {
+										inViewRow["Score"] = 0;
+										inViewRow["Results"] = "Repeat";
+										retPoints = 0;
+									}
+								}
 							} else {
 								inViewRow["Score"] = 0;
 								inViewRow["Results"] = "Repeat";

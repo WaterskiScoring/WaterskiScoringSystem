@@ -1166,7 +1166,9 @@ namespace WaterskiScoringSystem.Tournament {
                 curEvent = "Jump";
             }
             ExportData myExportData = new ExportData();
-            myExportData.exportData( PrintDataGridView, curEvent + "RunOrderList.txt");
+			myEventRegDataTable = getEventRegData();
+			loadPrintDataGrid();
+			myExportData.exportData( PrintDataGridView, curEvent + "RunOrderList.txt");
         }
 
         private void writeExportFile(StreamWriter outBuffer, StringBuilder outLine, bool inSideBySide) {

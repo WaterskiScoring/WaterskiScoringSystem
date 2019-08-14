@@ -2761,7 +2761,7 @@ namespace WaterskiScoringSystem.Trick {
 								 */
 								String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
 								if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-									if ( !( myCheckOfficials.checkOfficialAssignments( mySanctionNum, "Jump", curEventGroup, roundSelect.RoundValue ) ) ) {
+									if ( !( myCheckOfficials.checkOfficialAssignments( mySanctionNum, "Trick", curEventGroup, roundSelect.RoundValue ) ) ) {
 										MessageBox.Show( "No officials have been assigned for this event group and round "
 											+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
 									}

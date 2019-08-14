@@ -38,6 +38,7 @@ namespace WaterskiScoringSystem.Tournament {
         private String mySortCmd = "";
         private String myFilterCmd = "";
         private String myTourClass;
+		private StringBuilder myImportMsg;
 
         private DataRow myTourRow;
         private DataTable myTeamDataTable;
@@ -2064,7 +2065,7 @@ namespace WaterskiScoringSystem.Tournament {
             if ( myRules.ToLower().Equals( "ncwsa" ) ) {
                 curSqlStmt.Append( "  AND E.AgeGroup in ('CM', 'CW', 'BM', 'BW') " );
             }
-            curSqlStmt.Append( "Order By E.TeamCode, E.AgeGroup, E.EventGroup, E.RankingScore, T.SkierName " );
+            curSqlStmt.Append( "Order By E.TeamCode, E.AgeGroup, E.EventGroup, T.SkierName " );
 
             return getData( curSqlStmt.ToString() );
         }
@@ -2190,38 +2191,39 @@ namespace WaterskiScoringSystem.Tournament {
                 e.HasMorePages = true;
         }
 
-        private void navImport_Click( object sender, EventArgs e ) {
-            String inputBuffer, curTeamCode = "", curEvent = "", curDiv = "";
-            int curInputLineCount = 0, rowsProc = 0;
-            Boolean rowFound = false;
-            String[] inputCols = null, inputColNames = null;
-            char[] tabDelim = new char[] { '\t' };
+		private void navImport_Click( object sender, EventArgs e ) {
+			String inputBuffer, curTeamCode = "", curEvent = "", curDiv = "";
+			int curInputLineCount = 0, rowsProc = 0;
+			Boolean rowFound = false;
+			String[] inputCols = null, inputColNames = null;
+			char[] tabDelim = new char[] { '\t' };
 			/*
 			*/
 
 			DataTable curDataTable = null;
 
-            StringBuilder curSqlStmt = new StringBuilder("");
-            StreamReader myReader = null;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			myImportMsg = new StringBuilder( "" );
+			StreamReader myReader = null;
 
-            try {
-                myReader = getImportFile();
-                if ( myReader != null ) {
-                    isDataModified = false;
-                    curInputLineCount = 0;
-                    inputBuffer = myReader.ReadLine();
-                    inputColNames = inputBuffer.Split(tabDelim);
+			try {
+				myReader = getImportFile();
+				if ( myReader != null ) {
+					isDataModified = false;
+					curInputLineCount = 0;
+					inputBuffer = myReader.ReadLine();
+					inputColNames = inputBuffer.Split( tabDelim );
 
-                    while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
-                        curInputLineCount++;
-                        rowFound = false;
-                        inputCols = inputBuffer.Split(tabDelim);
+					while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+						curInputLineCount++;
+						rowFound = false;
+						inputCols = inputBuffer.Split( tabDelim );
 
-                        if ( inputCols.Length >= 6 ) {
+						if ( inputCols.Length >= 6 ) {
 							if ( inputCols[myTeamImportIdxTeamCode].Length > 0 ) {
 								importTeamData( inputCols );
 								curTeamCode = inputCols[myTeamImportIdxTeamCode];
-                            }
+							}
 
 							if ( inputCols[myTeamImportIdxEvent].Length > 0 ) {
 								curEvent = inputCols[myTeamImportIdxEvent];
@@ -2233,9 +2235,9 @@ namespace WaterskiScoringSystem.Tournament {
 							String curMemberId = "";
 							if ( inputCols[myTeamImportIdxMemberId].Length > 0 ) {
 								curMemberId = inputCols[myTeamImportIdxMemberId];
-                                if ( curMemberId.Length < 9 ) {
-									curMemberId = curMemberId.PadLeft(9, '0' );
-                                }
+								if ( curMemberId.Length < 9 ) {
+									curMemberId = curMemberId.PadLeft( 9, '0' );
+								}
 
 							} else {
 								if ( inputCols[myTeamImportIdxSkierName].Length > 0 ) {
@@ -2264,42 +2266,52 @@ namespace WaterskiScoringSystem.Tournament {
 									curSqlStmt.Append( "And AgeGroup = '" + curDiv + "' " );
 									curSqlStmt.Append( "And Event = '" + curEvent + "' " );
 									rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+									myImportMsg.Append( "\n* " +
+										String.Format( "Added Skier {0} {1} Div {2} {3} Event to team {4}"
+										, inputCols[myTeamImportIdxSkierName], curMemberId, curDiv, curEvent, curTeamCode ) );
+
 								} else {
-									MessageBox.Show( String.Format( "Skier {0} {1} is not currently registered in Division {2} and Event {3} "
+									myImportMsg.Append( "\n* " +
+										String.Format( "Not Registered: Skier {0} {1} Div {2} for {3} Event "
 										, inputCols[myTeamImportIdxSkierName], curMemberId, curDiv, curEvent ) );
 								}
 							}
 
-
 						} else {
-                            //Assume no data on this line, bypassing record
-                        }
-                    }
-                }
-            } catch ( Exception ex ) {
-                String ExcpMsg = ex.Message;
-                if ( curSqlStmt != null ) {
-                    ExcpMsg += "\n" + curSqlStmt.ToString();
-                }
-                MessageBox.Show("Error: Performing SQL operations" + "\n\nError: " + ExcpMsg);
-            } finally {
+							//Assume no data on this line, bypassing record
+						}
+					}
+				}
+
+			} catch ( Exception ex ) {
+				String ExcpMsg = ex.Message;
+				if ( curSqlStmt != null ) {
+					ExcpMsg += "\n" + curSqlStmt.ToString();
+				}
+				myImportMsg.Append( "\n\nError: Performing SQL operations" + "\nError: " + ExcpMsg );
+
+			} finally {
 				if ( myReader != null ) {
 					myReader.Close();
 					myReader.Dispose();
 				}
-			}
 
-            isDataModified = false;
-            navRefresh_Click(null, null);
-        }
+				isDataModified = false;
+				MessageBox.Show( "Team import processing complete: \n" + myImportMsg.ToString() );
+				navRefresh_Click( null, null );
+			}
+		}
 
 		private String searchForRegisteredSkierByName( String curSkierName, String curDiv, String curEvent) {
 			String returnMemberId = "";
+			String[] curNameNodes = curSkierName.Split( ',' );
 
 			/*
 			Search for skier in registration by name
 			*/
 			StringBuilder curSqlStmt = new StringBuilder( "" );
+			// Search skier name assuming name matches registration name exactly (LastName, FirstName)
 			curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
 			curSqlStmt.Append( "FROM EventReg ER " );
 			curSqlStmt.Append( "INNER JOIN TourReg TR ON ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND ER.AgeGroup = TR.AgeGroup " );
@@ -2316,7 +2328,7 @@ namespace WaterskiScoringSystem.Tournament {
 				Begin search using nodes from name provided
 				Will need to provide a select list if more than 1 skier is found matching the search critera
 				*/
-				String[] curNameNodes = curSkierName.Split( ',' );
+				// Search skier name using just first node (LastName).  Will be selected if this last name is the only one in the specified division
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
 				curSqlStmt.Append( "FROM EventReg ER " );
@@ -2329,10 +2341,50 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( curDataTable.Rows.Count == 1 ) {
 					returnMemberId = (String) curDataTable.Rows[0]["MemberId"];
 
+				} else if ( curNameNodes.Length > 1 ) { 
+					curSqlStmt = new StringBuilder( "" );
+					// Search skier name using just first node (LastName) and 2nd node with wildcard looking for the FirstName as a portion of the full name.  Will be selected if this last name is the only one in the specified division
+					curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
+					curSqlStmt.Append( "FROM EventReg ER " );
+					curSqlStmt.Append( "INNER JOIN TourReg TR ON ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND ER.AgeGroup = TR.AgeGroup " );
+					curSqlStmt.Append( "WHERE ER.SanctionId = '" + mySanctionNum + "' " );
+					curSqlStmt.Append( "AND TR.SkierName like '" + curNameNodes[0] + "%' " );
+					curSqlStmt.Append( "AND TR.SkierName like '%" + curNameNodes[1] + "%' " );
+					curSqlStmt.Append( "AND ER.AgeGroup = '" + curDiv + "' " );
+					curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+					curDataTable = getData( curSqlStmt.ToString() );
+					if ( curDataTable.Rows.Count == 1 ) {
+						returnMemberId = (String) curDataTable.Rows[0]["MemberId"];
+
+					} else {
+						returnMemberId = "";
+						myImportMsg.Append( "\n* Not Registered: "
+						+ String.Format( "Skier {0} Div {1} for {2} Event"
+							, curSkierName, curDiv, curEvent ) );
+					}
+
 				} else {
-					returnMemberId = "";
-					MessageBox.Show( String.Format( "Skier name {0} not found in available registered entrants in Division {1} and Event {2}"
-					, curSkierName, curDiv, curEvent ) );
+					// Search skier name chechking to see if name was input as FirstName LastName (separated by space)
+					curNameNodes = curSkierName.Split( ' ' );
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "SELECT ER.SanctionId, ER.MemberId, ER.AgeGroup, ER.EventGroup, ER.Event, ER.TeamCode, TR.SkierName " );
+					curSqlStmt.Append( "FROM EventReg ER " );
+					curSqlStmt.Append( "INNER JOIN TourReg TR ON ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND ER.AgeGroup = TR.AgeGroup " );
+					curSqlStmt.Append( "WHERE ER.SanctionId = '" + mySanctionNum + "' " );
+					curSqlStmt.Append( "AND TR.SkierName like '" + curNameNodes[1] + "%' " );
+					curSqlStmt.Append( "AND TR.SkierName like '%" + curNameNodes[0] + "%' " );
+					curSqlStmt.Append( "AND ER.AgeGroup = '" + curDiv + "' " );
+					curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+					curDataTable = getData( curSqlStmt.ToString() );
+					if ( curDataTable.Rows.Count == 1 ) {
+						returnMemberId = (String) curDataTable.Rows[0]["MemberId"];
+
+					} else {
+						returnMemberId = "";
+						myImportMsg.Append( "\n* Not Registered: "
+						+ String.Format( "Skier {0} Div {1} for {2} Event"
+							, curSkierName, curDiv, curEvent ) );
+					}
 				}
 			}
 
