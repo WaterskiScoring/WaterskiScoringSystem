@@ -35,7 +35,7 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '19.21', 19.21, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '20.01', 20.01, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
@@ -52,12 +52,12 @@ namespace WaterskiScoringSystem.Tools {
                         loadTrickList();
                     }
                 }
-                if (myDatabaseVersion < 19.05M) {
+                if (myDatabaseVersion < 20.01M) {
                     if ( openDbConn() ) {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 19.21M ) {
+                if ( myDatabaseVersion < 20.01M ) {
                     if ( openDbConn() ) {
                         loadListValues();
                     }
