@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlServerCe;
@@ -335,13 +336,14 @@ namespace WaterskiScoringSystem.Admin {
             } catch {
                 editSanctionId.Text = "";
             }
+			myOrigSanctionId = editSanctionId.Text;
             try {
                 editName.Text = (String)curViewRow.Cells["TourName"].Value;
             } catch {
                 editName.Text = "";
             }
             try {
-                editSanctionEditCode.Text = (String) curViewRow.Cells["SanctionEditCode"].Value;
+                editSanctionEditCode.Text = curViewRow.Cells["SanctionEditCode"].Value.ToString();
             } catch {
                 editSanctionEditCode.Text = "";
             }
@@ -533,7 +535,7 @@ namespace WaterskiScoringSystem.Admin {
                                 MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Warning,
                                 MessageBoxDefaultButton.Button1 );
-                        if ( msgResp == DialogResult.No ) {
+                        if ( msgResp == DialogResult.Cancel ) {
                             isDataModified = false;
                             isDataModifiedSlalomRounds = false;
                             isDataModifiedTrickRounds = false;
@@ -548,16 +550,24 @@ namespace WaterskiScoringSystem.Admin {
 
         private bool saveTourData() {
             String curMethodName = "Slalom:ScoreEntry:saveTourData";
-            bool curReturn = true;
+            bool curReturn = true, isExistingSanction = false;
             int rowsProc = 0;
             StringBuilder curSqlStmt = null;
 
             String curViewSanctionId = (String)myTourViewRow.Cells["SanctionId"].Value;
-            if ( curViewSanctionId == null ) curViewSanctionId = "";
-            try {
+			if ( curViewSanctionId == null ) {
+				curViewSanctionId = "";
+			} else {
+				curSqlStmt = new StringBuilder( String.Format("Select SanctionId From Tournament Where SanctionId = '{0}'", curViewSanctionId ) );
+				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) isExistingSanction = true;
+
+			}
+
+			try {
                 curSqlStmt = new StringBuilder( "" );
                 try {
-                    if ( curViewSanctionId.Length > 5 ) {
+                    if ( isExistingSanction ) {
                         curSqlStmt.Append( "Update Tournament Set " );
                         curSqlStmt.Append( "Name = '" + encodeDataForSql(editName.Text) + "' " );
                         curSqlStmt.Append( ", Class = '" + editClass.SelectedValue + "' " );
@@ -578,7 +588,8 @@ namespace WaterskiScoringSystem.Admin {
                         curSqlStmt.Append( ", HcapJumpPct = " + editHcapJumpPct.Text + " " );
                         curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
                         curSqlStmt.Append( "Where SanctionId = '" + curViewSanctionId + "' " );
-                    } else {
+
+					} else {
                         curSqlStmt.Append( "Insert Tournament ( " );
                         curSqlStmt.Append( " SanctionId, Name, Class, SanctionEditCode, Federation, Rules, EventDates, EventLocation, TourDataLoc" );
                         curSqlStmt.Append( ", SlalomRounds, JumpRounds, TrickRounds" );
@@ -1553,6 +1564,11 @@ namespace WaterskiScoringSystem.Admin {
                             }
                         }
                     }
+
+
+
+
+
                 } catch (Exception excp) {
                     MessageBox.Show("Error attempting to delete tournament and all scores \n" + excp.Message);
                 }
@@ -1652,32 +1668,86 @@ namespace WaterskiScoringSystem.Admin {
             myTourViewIdx = dataGridView.Rows.Add();
             myTourViewRow = dataGridView.Rows[myTourViewIdx];
 
-            myTourViewRow.Cells["SanctionId"].Value = "";
-            myTourViewRow.Cells["TourName"].Value = "";
-            myTourViewRow.Cells["TourClass"].Value = "C";
-            myTourViewRow.Cells["TourFederation"].Value = "usa";
-            String curDate = DateTime.Now.ToString();
-            myTourViewRow.Cells["EventDates"].Value = curDate.Substring(0, curDate.IndexOf(' '));
-            myTourViewRow.Cells["TourDataLoc"].Value = "";
-            myTourViewRow.Cells["EventLocation"].Value = "";
-            myTourViewRow.Cells["Rules"].Value = "awsa";
-            myTourViewRow.Cells["SlalomRounds"].Value = "0";
-            myTourViewRow.Cells["TrickRounds"].Value = "0";
-            myTourViewRow.Cells["JumpRounds"].Value = "0";
-            myTourViewRow.Cells["HcapSlalomBase"].Value = "0";
-            myTourViewRow.Cells["HcapTrickBase"].Value = "0";
-            myTourViewRow.Cells["HcapJumpBase"].Value = "0";
-            myTourViewRow.Cells["HcapSlalomPct"].Value = "0";
-            myTourViewRow.Cells["HcapTrickPct"].Value = "0";
-            myTourViewRow.Cells["HcapJumpPct"].Value = "0";
+			Dictionary<string, object> curSanctionEntry = getSanctionFromUSAWS();
+			if ( curSanctionEntry == null ) {
+				myTourViewRow.Cells["SanctionId"].Value = "";
+				myTourViewRow.Cells["TourName"].Value = "";
+				myTourViewRow.Cells["TourClass"].Value = "C";
+				myTourViewRow.Cells["TourFederation"].Value = "usa";
+				String curDate = DateTime.Now.ToString();
+				myTourViewRow.Cells["EventDates"].Value = curDate.Substring( 0, curDate.IndexOf( ' ' ) );
+				myTourViewRow.Cells["TourDataLoc"].Value = "";
+				myTourViewRow.Cells["EventLocation"].Value = "";
+				myTourViewRow.Cells["Rules"].Value = "awsa";
+				myTourViewRow.Cells["SlalomRounds"].Value = "0";
+				myTourViewRow.Cells["TrickRounds"].Value = "0";
+				myTourViewRow.Cells["JumpRounds"].Value = "0";
+				myTourViewRow.Cells["HcapSlalomBase"].Value = "0";
+				myTourViewRow.Cells["HcapTrickBase"].Value = "0";
+				myTourViewRow.Cells["HcapJumpBase"].Value = "0";
+				myTourViewRow.Cells["HcapSlalomPct"].Value = "0";
+				myTourViewRow.Cells["HcapTrickPct"].Value = "0";
+				myTourViewRow.Cells["HcapJumpPct"].Value = "0";
 
-            setEntryForEdit( myTourViewRow );
+			} else {
+                myTourViewRow.Cells["SanctionId"].Value = (String) curSanctionEntry["TournAppID"];
+				myTourViewRow.Cells["TourName"].Value = (String) curSanctionEntry["TName"];
+				myTourViewRow.Cells["TourClass"].Value = ( (String) curSanctionEntry["TSanction"] ).Substring( 6, 1 );
+				myTourViewRow.Cells["SanctionEditCode"].Value = ((int) curSanctionEntry["EditCode"]).ToString();
+				myTourViewRow.Cells["TourFederation"].Value = "usa";
+				myTourViewRow.Cells["EventDates"].Value = (String) curSanctionEntry["TDateE"] ;
+				myTourViewRow.Cells["TourDataLoc"].Value = "";
+				myTourViewRow.Cells["EventLocation"].Value = (String) curSanctionEntry["TSite"] + ", " + (String) curSanctionEntry["TCity"] + ", " + (String) curSanctionEntry["TState"];
+				myTourViewRow.Cells["Rules"].Value = "awsa";
+				myTourViewRow.Cells["SlalomRounds"].Value = "0";
+				myTourViewRow.Cells["TrickRounds"].Value = "0";
+				myTourViewRow.Cells["JumpRounds"].Value = "0";
+				myTourViewRow.Cells["HcapSlalomBase"].Value = "0";
+				myTourViewRow.Cells["HcapTrickBase"].Value = "0";
+				myTourViewRow.Cells["HcapJumpBase"].Value = "0";
+				myTourViewRow.Cells["HcapSlalomPct"].Value = "0";
+				myTourViewRow.Cells["HcapTrickPct"].Value = "0";
+				myTourViewRow.Cells["HcapJumpPct"].Value = "0";
+			}
+
+			setEntryForEdit( myTourViewRow );
             dataGridView.CurrentCell = dataGridView.Rows[myTourViewIdx].Cells["TourName"];
 
             editSanctionId.Focus();
         }
 
-        private void printButton_Click(object sender, EventArgs e) {
+		private Dictionary<string, object> getSanctionFromUSAWS() {
+			SanctionSetupDialog curDialog = new SanctionSetupDialog();
+			if ( curDialog.ShowDialog() != DialogResult.OK ) return null;
+
+			String curSanctionNum = curDialog.SanctionId;
+			String curSanctionEditCode = curDialog.EditCode;
+
+			/* -----------------------------------------------------------------------
+            * Configure URL to retrieve all skiers pre-registered for the active tournament
+			* This will include all appointed officials
+            ----------------------------------------------------------------------- */
+			String curQueryString = "?SanctionId=" + curSanctionNum;
+			String curContentType = "application/json; charset=UTF-8";
+			String curOfficialExportListUrl = "http://www.usawaterski.org/admin/GetSanctionExportJson.asp";
+			String curReqstUrl = curOfficialExportListUrl + curQueryString;
+
+			NameValueCollection curHeaderParams = new NameValueCollection();
+			List<object> curResponseDataList = null;
+
+			Cursor.Current = Cursors.WaitCursor;
+			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, curSanctionNum, curSanctionEditCode, false );
+			if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
+				StringBuilder curMsg = new StringBuilder( "" );
+				return (Dictionary<string, object>) curResponseDataList.ElementAt( 0 );
+
+			} else {
+				MessageBox.Show( "Unable to retrieve attributes for Sanction: " + curSanctionNum );
+				return null;
+			}
+		}
+
+		private void printButton_Click(object sender, EventArgs e) {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 

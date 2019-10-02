@@ -879,3 +879,14 @@ Update [SlalomRecap] Set PassSpeedKph = SUBSTRING ( Note, CHARINDEX('kph', Note)
 ALTER TABLE EventRunOrder ADD COLUMN  RunOrderGroup nvarchar(12);
 
 Update EventRunOrder Set RunOrderGroup = '';
+
+## v20.07
+DROP TABLE EventRunOrderFilters;
+CREATE TABLE EventRunOrderFilters (
+    SanctionId nchar(6) NOT NULL
+    , Event nvarchar(12) NOT NULL
+    , FilterName nvarchar(128) NOT NULL
+    , PrintTitle nvarchar(256)
+    , GroupFilterCriteria nvarchar(1024) NOT NULL
+    , LastUpdateDate datetime )
+);

@@ -745,32 +745,30 @@ namespace WaterskiScoringSystem.Common {
                             + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = 1 ");
                         if ( curSkierDetailRow.Length > 0 ) {
                             newSkierScoreRow["FirstScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-                            if ( inDataType.ToLower().Equals("first") || inDataType.ToLower().Equals("final") ) {
-                            } else {
-                                if ( (Byte) newSkierScoreRow["Round"] > 1 ) {
-                                    newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-                                    for ( Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++ ) {
-                                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "'"
-                                            + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString());
-                                        if ( curSkierDetailRow.Length > 0 ) {
-                                            if ( (Byte) newSkierScoreRow["Round"] != curSkierRound ) {
-                                                if ( (Decimal) curSkierDetailRow[0][curScoreName] > (Decimal) newSkierScoreRow["BackupScore"] ) {
-                                                    newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
+							//newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+							for ( Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++ ) {
+								curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String) curSkierRow["MemberId"] + "'"
+									+ " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString() );
+								if ( curSkierDetailRow.Length > 0 ) {
+									if ( (Byte) newSkierScoreRow["Round"] != curSkierRound ) {
+										if ( (Decimal) curSkierDetailRow[0][curScoreName] > (Decimal) newSkierScoreRow["BackupScore"] ) {
+											newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
+										}
+									}
+								}
+							}
+
+						} else {
                             newSkierScoreRow["FirstScore"] = 0;
                             newSkierScoreRow["BackupScore"] = 0;
                         }
-                    } else {
+
+					} else {
                         newSkierScoreRow["FirstScore"] = (Decimal) curSkierRow[curScoreName];
                         newSkierScoreRow["BackupScore"] = 0;
                     }
-                } else {
+
+				} else {
                     newSkierScoreRow["FirstScore"] = 0;
                     newSkierScoreRow["BackupScore"] = 0;
                 }

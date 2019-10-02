@@ -38,42 +38,49 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void TourRegAddMember_Load(object sender, EventArgs e) {
-            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-            if (mySanctionNum == null) {
-                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                this.Close();
-            } else {
-                if (mySanctionNum.Length < 6) {
-                    MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
-                    this.Close();
+		private void TourRegAddMember_Load( object sender, EventArgs e ) {
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			if ( mySanctionNum == null ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				this.Close();
+			} else {
+				if ( mySanctionNum.Length < 6 ) {
+					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+					this.Close();
 
 				} else {
-                    myDataModified = false;
-                    DataGridView.Rows.Clear();
+					myDataModified = false;
+					DataGridView.Rows.Clear();
 
 					myTourRow = getTourData();
 				}
-            }
+			}
 
-            sortDialogForm = new SortDialogForm();
-            sortDialogForm.ColumnList = DataGridView.Columns;
+			sortDialogForm = new SortDialogForm();
+			sortDialogForm.ColumnList = DataGridView.Columns;
 
-            filterDialogForm = new Common.FilterDialogForm();
-            filterDialogForm.ColumnList = DataGridView.Columns;
+			filterDialogForm = new Common.FilterDialogForm();
+			filterDialogForm.ColumnList = DataGridView.Columns;
 
-            myEditRegMemberDialog = new EditRegMember();
-            myEditMemberDialog = new EditMember();
+			myEditRegMemberDialog = new EditRegMember();
+			myEditMemberDialog = new EditMember();
 
-            //Initialize search fields and set starting position
-            inputLastName.Text = "";
-            inputFirstName.Text = "";
-            inputMemberId.Text = "";
-            inputState.Text = "";
-            inputLastName.Focus();
-        }
+			//Initialize search fields and set starting position
+			inputLastName.Text = "";
+			inputFirstName.Text = "";
+			inputMemberId.Text = "";
+			inputState.Text = "";
+			inputLastName.Focus();
 
-        private void TourRegAddMember_FormClosing(object sender, FormClosingEventArgs e) {
+			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
+			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
+				localSearchLoc.Checked = true;
+			} else {
+				usawsSearchLoc.Checked = true;
+			}
+		}
+
+		private void TourRegAddMember_FormClosing(object sender, FormClosingEventArgs e) {
         }
 
         private void AddButton_Click(object sender, EventArgs e) {
@@ -595,17 +602,21 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "FROM MemberList " );
             if ( inMemberId.Length > 0 ) {
                 curSqlStmt.Append( "Where MemberId = '" + inMemberId + "'" );
-            } else {
-				if ( curLastName.Length > 0) {
+
+			} else {
+				if ( curLastName.Length > 0 || curFirstName.Length > 0 ) {
 					curSqlStmt.Append( "Where LastName like '" + curLastName + "%'" );
-				}
-				if ( curFirstName.Length > 0 ) {
 					curSqlStmt.Append( "  And FirstName like '" + curFirstName + "%'" );
+					if ( curState.Length > 0 ) {
+						curSqlStmt.Append( "  And State = '" + curState + "'" );
+					}
+
+				} else {
+					if ( curState.Length > 0 ) {
+						curSqlStmt.Append( "Where State = '" + curState + "'" );
+					}
 				}
-				if ( curState.Length > 0 ) {
-                    curSqlStmt.Append( "  And State = '" + curState + "'" );
-                }
-            }
+			}
             curSqlStmt.Append( " Order by LastName, FirstName, SkiYearAge" );
 
 			return DataAccess.getDataTable( curSqlStmt.ToString() );

@@ -142,7 +142,12 @@ namespace WaterskiScoringSystem.Tournament {
                     curViewRow.Cells["SanctionId"].Value = (String) curDataRow["SanctionId"];
                     curViewRow.Cells["MemberId"].Value = (String) curDataRow["MemberId"];
                     curViewRow.Cells["SkierName"].Value = (String) curDataRow["SkierName"];
-                    try {
+					try {
+						curViewRow.Cells["State"].Value = (String) curDataRow["State"];
+					} catch {
+						curViewRow.Cells["State"].Value = "";
+					}
+					try {
                         curViewRow.Cells["AgeGroup"].Value = (String) curDataRow["AgeGroup"];
                     } catch {
                         curViewRow.Cells["AgeGroup"].Value = "";
@@ -1253,17 +1258,17 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getTourRegData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, ");
-            curSqlStmt.Append("R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.ReadyForPlcmt, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment, ");
-            curSqlStmt.Append( "R.TrickBoat, R.JumpHeight, R.Notes, " );
-            curSqlStmt.Append( "S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup, " );
-            curSqlStmt.Append( "T.Event AS TrickEvent, T.EventGroup AS TrickGroup, " );
-            curSqlStmt.Append( "J.Event AS JumpEvent, J.EventGroup AS JumpGroup " );
+            curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State" );
+            curSqlStmt.Append(", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.ReadyForPlcmt, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment");
+            curSqlStmt.Append( ", R.TrickBoat, R.JumpHeight, R.Notes" );
+            curSqlStmt.Append( ", S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup" );
+            curSqlStmt.Append( ", T.Event AS TrickEvent, T.EventGroup AS TrickGroup" );
+            curSqlStmt.Append( ", J.Event AS JumpEvent, J.EventGroup AS JumpGroup " );
             curSqlStmt.Append( "FROM TourReg AS R" );
             curSqlStmt.Append( "    LEFT OUTER JOIN EventReg AS S ON S.SanctionId = R.SanctionId AND S.MemberId = R.MemberId AND S.AgeGroup = R.AgeGroup AND S.Event = 'Slalom'" );
             curSqlStmt.Append( "    LEFT OUTER JOIN EventReg AS T ON T.SanctionId = R.SanctionId AND T.MemberId = R.MemberId AND T.AgeGroup = R.AgeGroup AND T.Event = 'Trick'" );
-            curSqlStmt.Append( "    LEFT OUTER JOIN EventReg AS J ON J.SanctionId = R.SanctionId AND J.MemberId = R.MemberId AND J.AgeGroup = R.AgeGroup AND J.Event = 'Jump'" );
-            curSqlStmt.Append( " WHERE R.SanctionId = '" + mySanctionNum + "'" );
+            curSqlStmt.Append( "    LEFT OUTER JOIN EventReg AS J ON J.SanctionId = R.SanctionId AND J.MemberId = R.MemberId AND J.AgeGroup = R.AgeGroup AND J.Event = 'Jump' " );
+            curSqlStmt.Append( "WHERE R.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY R.SkierName, R.AgeGroup " );
             return getData( curSqlStmt.ToString() );
         }

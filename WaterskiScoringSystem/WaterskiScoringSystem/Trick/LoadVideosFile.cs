@@ -18,9 +18,17 @@ namespace WaterskiScoringSystem.Trick {
     public partial class LoadVideosFile : Form {
         private String mySanctionNum = null;
         private Int16 myTrickRounds;
-        private String myVideoLoadUrl = "https://api.sproutvideo.com/v1/videos";
-        private char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
-        private List<String> mySelectedFileList = new List<String>();
+
+		private String myVideoLoadUrl = "https://api.sproutvideo.com/v1/videos";
+		private String myApiKey = "36924f60689e082b2626ae7da73d0404";
+		private String myApiKeyName = "SproutVideo-Api-Key";
+		private String myContentType = "application/x-www-form-urlencoded;charset=UTF-8";
+		private String myVideoListUrl = "https://api.sproutvideo.com/v1/videos";
+		private String myVideoDeleteUrl = "https://api.sproutvideo.com/v1/videos/";
+
+		private char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
+
+		private List<String> mySelectedFileList = new List<String>();
         private List<SkierVideoEntry> mySkierVideoList = null;
         private OpenFileDialog myFileDialog = null;
         private SkierVideoMatchDialogForm mySkierSelectDialog = null;
@@ -226,7 +234,7 @@ namespace WaterskiScoringSystem.Trick {
             //Get all avaialble trick skiers if filtered search found zero skiers
 
             StringBuilder curSqlStmt = new StringBuilder("");
-            curSqlStmt.Append("Select R.SkierName, S.MemberId, S.AgeGroup, S.Round, Score, V.Pass1VideoUrl, V.Pass2VideoUrl ");
+            curSqlStmt.Append("Select R.SkierName, S.MemberId, S.AgeGroup, S.Round, Score, V.Pass1VideoUrl, V.Pass2VideoUrl, '' as ResendStatus ");
             curSqlStmt.Append("from TrickScore S ");
             curSqlStmt.Append("JOIN TourReg R ON R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup ");
             curSqlStmt.Append("LEFT OUTER JOIN TrickVideo V ON V.SanctionId = S.SanctionId AND V.MemberId = S.MemberId ");
@@ -239,14 +247,65 @@ namespace WaterskiScoringSystem.Trick {
 
         }
 
-        private void ViewButton_Click(object sender, EventArgs e) {
+		private void ResendButton_Click( object sender, EventArgs e ) {
+			String curMethodName = "ResendButton_Click";
+
+			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+				myProgressInfo = new ProgressWindow();
+				try {
+					if ( ReviewVideoMatchDataGridView.Rows.Count > 0 ) {
+						myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
+						myProgressInfo.setProgressMax( ReviewVideoMatchDataGridView.Rows.Count );
+						myProgressInfo.Show();
+						int curProcessCount = 0;
+						foreach ( DataGridViewRow curViewRow in ReviewVideoMatchDataGridView.Rows ) {
+							curProcessCount++;
+							myProgressInfo.setProgressValue( curProcessCount );
+							myProgressInfo.setProgessMsg( "Processing match for skier " + (String)curViewRow.Cells["SkierName"].Value );
+							myProgressInfo.Refresh();
+							myProgressInfo.Show();
+
+							if ( curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value && curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value ) {
+								curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
+
+							} else {
+								if ( ( (String) curViewRow.Cells["Pass1VideoUrl"].Value ).Length > 1 || ( (String) curViewRow.Cells["Pass2VideoUrl"].Value ).Length > 1 ) {
+									bool curResults = ExportLiveWeb.exportCurrentSkierTrickVideo( mySanctionNum, (String) curViewRow.Cells["MemberId"].Value, (String) curViewRow.Cells["AgeGroup"].Value, (Byte) curViewRow.Cells["Round"].Value );
+									if ( curResults ) {
+										curViewRow.Cells["ResendStatus"].Value = "Video URL successfully attached to Live Web skier";
+
+									} else {
+										curViewRow.Cells["ResendStatus"].Value = "Error encountered attaching video URL to skier";
+									}
+
+								} else {
+									curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
+								}
+							}
+						}
+						myProgressInfo.Close();
+
+					} else {
+						myProgressInfo.Close();
+					}
+
+				} catch ( Exception ex ) {
+					String curMsg = curMethodName + ":Exception=" + ex.Message;
+					Log.WriteFile( curMsg );
+					MessageBox.Show( curMsg );
+					myProgressInfo.Close();
+				}
+
+			} else {
+				MessageBox.Show( curMethodName + ":Live Web must be activated to load videos" );
+			}
+
+		}
+
+		private void ViewButton_Click(object sender, EventArgs e) {
             String curMethodName = "ViewButton_Click";
-            String curApiKey = "36924f60689e082b2626ae7da73d0404";
-            String curApiKeyName = "SproutVideo-Api-Key";
-            String curContentType = "application/json; charset=UTF-8";
-            String curVideoListUrl = "https://api.sproutvideo.com/v1/videos";
             String curQueryString = "?tag_name=";
-            String curReqstUrl = curVideoListUrl + curQueryString + mySanctionNum;
+            String curReqstUrl = myVideoListUrl + curQueryString + mySanctionNum;
             Dictionary<string, object> curResponseDataList = null;
             NameValueCollection curHeaderParams = null;
 
@@ -255,7 +314,7 @@ namespace WaterskiScoringSystem.Trick {
             loadedVideoDataGridView.Visible = true;
 
             curHeaderParams = new NameValueCollection();
-            curHeaderParams.Add( curApiKeyName, curApiKey );
+            curHeaderParams.Add( myApiKeyName, myApiKey );
 
             try {
                 loadedVideoDataGridView.Rows.Clear();
@@ -265,7 +324,7 @@ namespace WaterskiScoringSystem.Trick {
 
                 while (curReqstUrl.Length > 0) {
                     //MessageBox.Show( "curReqstUrl: " + curReqstUrl );
-                    curResponseDataList = SendMessageHttp.getMessageResponseJson( curReqstUrl, curHeaderParams, curContentType );
+                    curResponseDataList = SendMessageHttp.getMessageResponseJson( curReqstUrl, curHeaderParams, myContentType );
                     if (curResponseDataList != null && curResponseDataList.Count > 0) {
                         if (curResponseDataList.ContainsKey( "videos" )) {
                             if (curResponseDataList.ContainsKey( "next_page" )) {
@@ -367,8 +426,6 @@ namespace WaterskiScoringSystem.Trick {
 
         private void OkButton_Click(object sender, EventArgs e) {
             String curMethodName = "OkButton_Click";
-            String curApiKey = "36924f60689e082b2626ae7da73d0404";
-            String curApiKeyName = "SproutVideo-Api-Key";
             String curFileFormName = "source_video";
             DataGridViewRow curViewRow = null; ;
             NameValueCollection curFormData = null;
@@ -413,7 +470,7 @@ namespace WaterskiScoringSystem.Trick {
                             curIdx++;
 
                             curHeaderParams = new NameValueCollection();
-                            curHeaderParams.Add( curApiKeyName, curApiKey );
+                            curHeaderParams.Add( myApiKeyName, myApiKey );
 
                             //List<KeyValuePair<String, String>> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
                             Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
@@ -679,21 +736,16 @@ namespace WaterskiScoringSystem.Trick {
 
         private void deleteVideosStatusInspecting() {
             String curMethodName = "deleteVideosStatusInspecting";
-            String curApiKey = "36924f60689e082b2626ae7da73d0404";
-            String curApiKeyName = "SproutVideo-Api-Key";
-            String curContentType = "application/x-www-form-urlencoded;charset=UTF-8";
-            String curVideoListUrl = "https://api.sproutvideo.com/v1/videos";
-            String curVideoDeleteUrl = "https://api.sproutvideo.com/v1/videos/";
             Dictionary<string, object> curResponseDataList = null;
             Dictionary<string, object> curResponseDeleteDataList = null;
             NameValueCollection curHeaderParams = null;
 
             curHeaderParams = new NameValueCollection();
-            curHeaderParams.Add( curApiKeyName, curApiKey );
+            curHeaderParams.Add( myApiKeyName, myApiKey );
 
             try {
                 //Get list of all videos
-                curResponseDataList = SendMessageHttp.getMessageResponseJson( curVideoListUrl, curHeaderParams, curContentType );
+                curResponseDataList = SendMessageHttp.getMessageResponseJson( myVideoListUrl, curHeaderParams, myContentType );
                 if (curResponseDataList != null && curResponseDataList.Count > 0) {
                     if (curResponseDataList.ContainsKey( "videos" )) {
                         ArrayList curList = (ArrayList)curResponseDataList["videos"];
@@ -709,7 +761,7 @@ namespace WaterskiScoringSystem.Trick {
                                 MessageBox.Show( "Video: Id:" + curVideoId + " Title:" + curVideoTitle + " State:" + curVideoState );
                                 if (curVideoState.ToLower().Equals( "inspecting" )) {
                                     //Delete any video with a status of "inspecting"
-                                    curResponseDeleteDataList = SendMessageHttp.deleteMessagePostJsonResp( curVideoDeleteUrl + curVideoId, curHeaderParams, "application/json; charset=UTF-8", null );
+                                    curResponseDeleteDataList = SendMessageHttp.deleteMessagePostJsonResp( myVideoDeleteUrl + curVideoId, curHeaderParams, "application/json; charset=UTF-8", null );
                                     SendMessageHttp.showServerRespJson( curResponseDeleteDataList );
                                 }
                             }
@@ -819,9 +871,9 @@ namespace WaterskiScoringSystem.Trick {
             myExportData.exportData( loadedVideoDataGridView );
         }
 
-    }
+	}
 
-    public class SkierVideoEntry {
+	public class SkierVideoEntry {
         public String VideoFileName;
         public String MemberId;
         private String mySkierName;

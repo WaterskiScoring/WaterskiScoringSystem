@@ -5329,7 +5329,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
-            curSqlStmt.Append( "  LEFT OUTER JOIN SlalomScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
+            curSqlStmt.Append( "  INNER JOIN SlalomScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
             if (inDataType.ToLower().Equals( "first" )) {
                 curSqlStmt.Append( "  AND SS.Round = 1 " );
             }
@@ -5483,7 +5483,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
-            curSqlStmt.Append( "  LEFT OUTER JOIN TrickScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
+            curSqlStmt.Append( "  INNER JOIN TrickScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
             if (inDataType.ToLower().Equals( "first" )) {
                 curSqlStmt.Append( "  AND SS.Round = 1 " );
             }
@@ -5629,7 +5629,7 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
-            curSqlStmt.Append( "  LEFT OUTER JOIN JumpScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
+            curSqlStmt.Append( "  INNER JOIN JumpScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
             if (inDataType.ToLower().Equals( "first" )) {
                 curSqlStmt.Append( "  AND SS.Round = 1 " );
             }

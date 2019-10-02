@@ -46,7 +46,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>14</ApplicationRevision>
     <ApplicationVersion>5.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -136,6 +136,12 @@
     </Compile>
     <Compile Include="Admin\MemberList.Designer.cs">
       <DependentUpon>MemberList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\SanctionSetupDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\SanctionSetupDialog.Designer.cs">
+      <DependentUpon>SanctionSetupDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\TourEventTech.cs">
       <SubType>Form</SubType>
@@ -490,6 +496,9 @@
     <EmbeddedResource Include="Admin\MemberList.resx">
       <DependentUpon>MemberList.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\SanctionSetupDialog.resx">
+      <DependentUpon>SanctionSetupDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\TourEventTech.resx">
       <DependentUpon>TourEventTech.cs</DependentUpon>
