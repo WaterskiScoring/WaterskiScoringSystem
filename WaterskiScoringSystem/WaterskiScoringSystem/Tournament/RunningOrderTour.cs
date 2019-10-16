@@ -22,7 +22,8 @@ namespace WaterskiScoringSystem.Tournament {
         private String myWindowTitle;
         private String mySanctionNum;
         private String myOrigItemValue = "";
-        private String mySortCmd = "";
+		private String myOrigGroupFilterValue = "";
+		private String mySortCmd = "";
 		private String myFilterCmd = "";
 		private String myTourRules = "";
         private String myTourEventClass = "";
@@ -233,10 +234,10 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             try {
+				EventRegDataGridView.Rows.Clear();
 				//Retrieve running order data for display
 				myEventRegDataTable = getEventRegData();
 				if ( myEventRegDataTable.Rows.Count > 0 ) {
-                    EventRegDataGridView.Rows.Clear();
                     DataGridViewRow curViewRow;
                     foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
                         isDataModified = false;
@@ -885,16 +886,9 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void navExport_Click(object sender, EventArgs e) {
-            String curEvent = "Slalom";
-            if ( slalomButton.Checked ) {
-                curEvent = "Slalom";
-            } else if ( trickButton.Checked ) {
-                curEvent = "Trick";
-            } else if ( jumpButton.Checked ) {
-                curEvent = "Jump";
-            }
+			String curEvent = getCurrentEvent();
 
-            ExportData myExportData = new ExportData();
+			ExportData myExportData = new ExportData();
             String[] curSelectCommand = new String[5];
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "DivOrder", "OfficialWork" };
             String curFilterCmd = myFilterCmd;
@@ -959,16 +953,9 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void navClassChangeButton_Click(object sender, EventArgs e) {
             String curMethodName = "RunningOrder:navClassChangeButton_Click";
-            String curEvent = "";
-            if (slalomButton.Checked) {
-                curEvent = "Slalom";
-            } else if (trickButton.Checked) {
-                curEvent = "Trick";
-            } else if (jumpButton.Checked) {
-                curEvent = "Jump";
-            }
+			String curEvent = getCurrentEvent();
 
-            RunOrderClassForm curForm = new RunOrderClassForm();
+			RunOrderClassForm curForm = new RunOrderClassForm();
             curForm.showClassChangeWindow( myTourRow, curEvent );
             curForm.ShowDialog( this );
             // Determine if the OK button was clicked on the dialog box.
@@ -1009,16 +996,9 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void navRecalcHcapButton_Click( object sender, EventArgs e ) {
             String curMethodName = "RunningOrder:navRecalcHcapButton_Click: ";
-            String curEvent = "";
-            if ( slalomButton.Checked ) {
-                curEvent = "Slalom";
-            } else if ( trickButton.Checked ) {
-                curEvent = "Trick";
-            } else if ( jumpButton.Checked ) {
-                curEvent = "Jump";
-            }
+			String curEvent = getCurrentEvent();
 
-            Decimal curHcapScore = 0;
+			Decimal curHcapScore = 0;
             Decimal curHcapBase = (Decimal) myTourRow["Hcap" + curEvent + "Base"];
             Decimal curHcapPct = (Decimal) myTourRow["Hcap" + curEvent + "Pct"];
 
@@ -1051,16 +1031,8 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 String curTourName = (String)myTourRow["Name"];
-
-                String curEvent = "Slalom";
-                if (slalomButton.Checked) {
-                    curEvent = "Slalom";
-                } else if (trickButton.Checked) {
-                    curEvent = "Trick";
-                } else if (jumpButton.Checked) {
-                    curEvent = "Jump";
-                }
-                String curFileName = curEvent + "_SplashEye.xml";
+				String curEvent = getCurrentEvent();
+				String curFileName = curEvent + "_SplashEye.xml";
                 outBuffer = getExportFile( curFileName );
                 if (outBuffer != null) {
                     outLine = new StringBuilder( "<Tournament name=\"" + curTourName + "\" SanctionId=\"" + mySanctionNum + "\" >" );
@@ -1142,15 +1114,8 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navSaveAs_Click( object sender, EventArgs e ) {
-            String curEvent = "Slalom";
-            if ( slalomButton.Checked ) {
-                curEvent = "Slalom";
-            } else if ( trickButton.Checked ) {
-                curEvent = "Trick";
-            } else if ( jumpButton.Checked ) {
-                curEvent = "Jump";
-            }
-            ExportData myExportData = new ExportData();
+			String curEvent = getCurrentEvent();
+			ExportData myExportData = new ExportData();
 			myEventRegDataTable = getEventRegData();
 			loadPrintDataGrid();
 			myExportData.exportData( PrintDataGridView, curEvent + "RunOrderList.txt");
@@ -1190,6 +1155,7 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "From EventRunOrderFilters " );
 			curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
 			curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+			curSqlStmt.Append( "Order by FilterName " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			foreach ( DataRow curRow in curDataTable.Rows ) {
 				curListCode = (String) curRow["FilterName"];
@@ -1197,44 +1163,123 @@ namespace WaterskiScoringSystem.Tournament {
 				curDropdownList.Add( curCodeValue );
 			}
 			GroupFilterComboBox.DataSource = curDropdownList;
+			myOrigGroupFilterValue = "** New Entry **";
+			GroupFilterComboBox.SelectedIndex = 0;
+        }
+
+		private void GroupFilterComboBox_SelectedValueChanged( object sender, EventArgs e ) {
+			if ( ( (ComboBox) sender ).Items.Count == 0 ) return;
+			try {
+				String curFilterName = ( (ComboBox) sender ).SelectedValue.ToString();
+				if ( curFilterName.Length == 0 ) return;
+				if ( curFilterName.Equals( "** New Entry **" ) ) return;
+				if ( curFilterName.Equals( myOrigGroupFilterValue ) ) return;
+
+				String curEvent = getCurrentEvent();
+
+				StringBuilder curSqlStmt = new StringBuilder( "Select FilterName, PrintTitle, GroupFilterCriteria " );
+				curSqlStmt.Append( "From EventRunOrderFilters " );
+				curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
+				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+				curSqlStmt.Append( "AND FilterName = '" + curFilterName + "' " );
+				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
+					foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {
+						curCheckBox.Checked = false;
+					}
+
+					this.printHeaderNote.Text = (String) curDataTable.Rows[0]["PrintTitle"];
+					myFilterCmd = (String) curDataTable.Rows[0]["GroupFilterCriteria"];
+					setGroupFilters( myFilterCmd );
+					myOrigGroupFilterValue = curFilterName;
+
+					loadEventRegView();
+
+				} else {
+					MessageBox.Show( curFilterName + " Not Found" );
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "GroupFilterComboBox_SelectedValueChanged: Exception encountered: " + ex.Message );
+			}
 		}
 
-		private void GetFilterButton_Click( object sender, EventArgs e ) {
-			String curFilterName = GroupFilterComboBox.Text;
-			if ( curFilterName.Length == 0 ) {
-				GroupFilterComboBox.SelectedItem.ToString();
+		private void GroupFilterComboBox_Validated( object sender, EventArgs e ) {
+			if ( ( (ComboBox) sender ).Items.Count == 0 ) return;
+
+			try {
+				if ( ( (ComboBox) sender ).SelectedIndex < 0 ) {
+					String curFilterName = ( (ComboBox) sender ).Text;
+
+					if ( curFilterName.Length == 0 ) {
+						if ( curFilterName.Length == 0 ) return;
+						if ( curFilterName.Equals( "** New Entry **" ) ) return;
+					} else if ( curFilterName.Equals( "** New Entry **" ) ) return;
+
+					StringBuilder curSqlStmt = new StringBuilder( "" );
+					String curEvent = getCurrentEvent();
+
+					String curPrintTitle = encodeDataForSql( this.printHeaderNote.Text );
+					myFilterCmd = buildFilterCmd();
+					if ( myOrigGroupFilterValue.Equals( "** New Entry **" ) ) myOrigGroupFilterValue = curFilterName;
+
+					curSqlStmt = new StringBuilder( "Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
+					curSqlStmt.Append( "From EventRunOrderFilters " );
+					curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
+					curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+					curSqlStmt.Append( "AND FilterName = '" + myOrigGroupFilterValue + "' " );
+					DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					curSqlStmt = new StringBuilder( "" );
+					if ( curDataTable.Rows.Count > 0 ) {
+						curSqlStmt.Append( "Update EventRunOrderFilters " );
+						curSqlStmt.Append( "Set GroupFilterCriteria = '" + encodeDataForSql(myFilterCmd) + "' " );
+						curSqlStmt.Append( ", PrintTitle = '" + curPrintTitle + "' " );
+						curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+						curSqlStmt.Append( ", FilterName = '" + curFilterName + "' " );
+						curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
+						curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+						curSqlStmt.Append( "AND FilterName = '" + myOrigGroupFilterValue + "' " );
+
+					} else {
+						curSqlStmt.Append( "Insert Into EventRunOrderFilters (" );
+						curSqlStmt.Append( "SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
+						curSqlStmt.Append( ") Values ( " );
+						curSqlStmt.Append( "'" + this.mySanctionNum + "', '" + curEvent + "', '" + curFilterName + "', '" + curPrintTitle + "', '" + encodeDataForSql( myFilterCmd ) + "' " );
+						curSqlStmt.Append( ")" );
+					}
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					myOrigGroupFilterValue = curFilterName;
+                    loadGroupFilterComboBox();
+					GroupFilterComboBox.SelectedItem = curFilterName;
+
+					loadEventRegView();
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "GroupFilterComboBox_Validating: Exception encountered: " + ex.Message );
+			}
+
+		}
+
+		private void DeleteFilterButton_Click( object sender, EventArgs e ) {
+			if ( GroupFilterComboBox.Items.Count == 0 ) return;
+			try {
+				String curFilterName = GroupFilterComboBox.SelectedValue.ToString();
 				if ( curFilterName.Length == 0 ) return;
 				if ( curFilterName.Equals( "** New Entry **" ) ) return;
 
-			} else if ( curFilterName.Equals( "** New Entry **" ) ) return;
+				String curEvent = getCurrentEvent();
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Delete From EventRunOrderFilters " );
+				curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
+				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+				curSqlStmt.Append( "AND FilterName = '" + curFilterName + "' " );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
-			String curEvent = "Slalom";
-			if ( slalomButton.Checked ) {
-				curEvent = "Slalom";
-			} else if ( trickButton.Checked ) {
-				curEvent = "Trick";
-			} else if ( jumpButton.Checked ) {
-				curEvent = "Jump";
-			}
+				loadGroupFilterComboBox();
 
-			StringBuilder curSqlStmt = new StringBuilder( "Select FilterName, PrintTitle, GroupFilterCriteria " );
-			curSqlStmt.Append( "From EventRunOrderFilters " );
-			curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
-			curSqlStmt.Append( "AND FilterName = '" + curFilterName + "' " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				//setGroupFilterCB( "GroupAll_CB", false );
-				foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {
-					curCheckBox.Checked = false;
-				}
-
-				this.printHeaderNote.Text = (String) curDataTable.Rows[0]["PrintTitle"];
-				myFilterCmd = (String) curDataTable.Rows[0]["GroupFilterCriteria"];
-				setGroupFilters( myFilterCmd );
-
-			} else {
-				MessageBox.Show( curFilterName + " Not Found" );
+			} catch ( Exception ex ) {
+				MessageBox.Show( "DeleteFilterButton_Click: Exception encountered: " + ex.Message );
 			}
 		}
 
@@ -1273,55 +1318,6 @@ namespace WaterskiScoringSystem.Tournament {
 			CheckBox groupFilterCB = (CheckBox) foundControls[0];
 			groupFilterCB.Checked = cbValue;
 			return;
-		}
-
-		private void SaveFilterButton_Click( object sender, EventArgs e ) {
-			String curFilterName = GroupFilterComboBox.Text;
-			if ( curFilterName.Length == 0 ) {
-				GroupFilterComboBox.SelectedItem.ToString();
-				if ( curFilterName.Length == 0 ) return;
-				if ( curFilterName.Equals( "** New Entry **" ) ) return;
-			} else if ( curFilterName.Equals( "** New Entry **" ) ) return;
-
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			String curEvent = "Slalom";
-			if ( slalomButton.Checked ) {
-				curEvent = "Slalom";
-			} else if ( trickButton.Checked ) {
-				curEvent = "Trick";
-			} else if ( jumpButton.Checked ) {
-				curEvent = "Jump";
-			}
-
-			String curPrintTitle = encodeDataForSql( this.printHeaderNote.Text );
-			myFilterCmd = encodeDataForSql( buildFilterCmd() );
-
-			curSqlStmt = new StringBuilder( "Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
-			curSqlStmt.Append( "From EventRunOrderFilters " );
-			curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
-			curSqlStmt.Append( "AND FilterName = '" + curFilterName + "' " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			curSqlStmt = new StringBuilder( "" );
-			if ( curDataTable.Rows.Count > 0 ) {
-				curSqlStmt.Append( "Update EventRunOrderFilters " );
-				curSqlStmt.Append( "Set GroupFilterCriteria = '" + myFilterCmd + "' " );
-				curSqlStmt.Append( ", PrintTitle = '" + curPrintTitle + "' " );
-				curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
-				curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
-				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
-				curSqlStmt.Append( "AND FilterName = '" + curFilterName + "' " );
-
-			} else {
-				curSqlStmt.Append( "Insert Into EventRunOrderFilters (" );
-				curSqlStmt.Append( "SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
-				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + this.mySanctionNum + "', '" + curEvent + "', '" + curFilterName + "', '" + curPrintTitle + "', '" + myFilterCmd + "' " );
-				curSqlStmt.Append( ")" );
-			}
-			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-
-			loadGroupFilterComboBox();
 		}
 
 		private void navRefresh_Click(object sender, EventArgs e) {
@@ -1410,19 +1406,14 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                 }
             }
-        }
 
-        private void ViewEditRoundButton_Click(object sender, EventArgs e) {
-            String curEvent = "Slalom";
-            if (slalomButton.Checked) {
-                curEvent = "Slalom";
-            } else if (trickButton.Checked) {
-                curEvent = "Trick";
-            } else if (jumpButton.Checked) {
-                curEvent = "Jump";
-            }
+			myOrigGroupFilterValue = "** New Entry **";
+			GroupFilterComboBox.SelectedIndex = 0;
+		}
 
-            RunningOrderRound curForm = new RunningOrderRound();
+		private void ViewEditRoundButton_Click(object sender, EventArgs e) {
+			String curEvent = getCurrentEvent();
+			RunningOrderRound curForm = new RunningOrderRound();
             curForm.MdiParent = this.MdiParent;
             curForm.RunningOrderForEvent(myTourRow, curEvent);
             curForm.Show();
@@ -1531,15 +1522,8 @@ namespace WaterskiScoringSystem.Tournament {
                         e.Cancel = true;
                     } else {
                         if (!( isObjectEmpty( myOrigItemValue ) )) {
-                            String curEvent = "Slalom";
-                            if (slalomButton.Checked) {
-                                curEvent = "Slalom";
-                            } else if (trickButton.Checked) {
-                                curEvent = "Trick";
-                            } else if (jumpButton.Checked) {
-                                curEvent = "Jump";
-                            }
-                            StringBuilder curSqlStmt = new StringBuilder( "" );
+							String curEvent = getCurrentEvent();
+							StringBuilder curSqlStmt = new StringBuilder( "" );
                             curSqlStmt.Append( "SELECT Count(*) as GroupCount " );
                             curSqlStmt.Append( "FROM EventReg E " );
                             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
@@ -1826,27 +1810,30 @@ namespace WaterskiScoringSystem.Tournament {
             if (ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK) {
                 if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Set" )) {
                     ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-                    ExportLiveWeb.exportTourData( mySanctionNum );
-                    LiveWebLabel.Visible = true;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" )) {
+					if ( ExportLiveWeb.exportTourData( mySanctionNum ) ) {
+						LiveWebLabel.Visible = true;
+
+					} else {
+						ExportLiveWeb.LiveWebLocation = "";
+						ExportLiveTwitter.TwitterLocation = "";
+						LiveWebLabel.Visible = false;
+					}
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" )) {
                     ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" )) {
                     ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
                     ExportLiveWeb.LiveWebLocation = "";
                     ExportLiveTwitter.TwitterLocation = "";
                     LiveWebLabel.Visible = false;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) || ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) || ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
                     if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                        String curEvent = "Slalom";
-                        if (slalomButton.Checked) {
-                            curEvent = "Slalom";
-                        } else if (trickButton.Checked) {
-                            curEvent = "Trick";
-                        } else if (jumpButton.Checked) {
-                            curEvent = "Jump";
-                        }
-                        List<String> curDivList = new List<String>();
+						String curEvent = getCurrentEvent();
+						List<String> curDivList = new List<String>();
                         foreach (CheckBox curCheckBox in EventGroupPanel.Controls) {
                             if (curCheckBox.Text.Equals( "All" )) {
                                 if (curCheckBox.Checked) {
@@ -1857,26 +1844,17 @@ namespace WaterskiScoringSystem.Tournament {
                         if (curDivList.Count == 0) {
                             foreach (CheckBox curCheckBox in EventGroupPanel.Controls) {
                                 if (curCheckBox.Checked) {
-                                    if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                                        if (curCheckBox.Text.Equals( "Men A" )) {
-                                            curDivList.Add( "CM" );
-                                        } else if (curCheckBox.Text.Equals( "Women A" )) {
-                                            curDivList.Add( "CW" );
-                                        } else if (curCheckBox.Text.Equals( "Men B" )) {
-                                            curDivList.Add( "BM" );
-                                        } else if (curCheckBox.Text.Equals( "Women B" )) {
-                                            curDivList.Add( "BW" );
-                                        } else if (curCheckBox.Text.Equals( "Non Team" )) {
-                                            curDivList.Add( curCheckBox.Text );
-                                        }
-                                    } else {
-                                        curDivList.Add( curCheckBox.Text );
-                                    }
-                                }
-                            }
+									curDivList.Add( curCheckBox.Text );
+								}
+							}
                         }
                         foreach (String curEventGroup in curDivList) {
-                            ExportLiveWeb.exportCurrentSkiersRunOrder( curEvent, mySanctionNum, 0, curEventGroup );
+                            if ( ExportLiveWeb.exportCurrentSkiersRunOrder( curEvent, mySanctionNum, 0, curEventGroup ) ) {
+								continue;
+							} else {
+								MessageBox.Show( "Error encountered sending running order data for Group " + curEventGroup + ".  Terminating request" );
+								break;
+							}
                         }
                     }
                 }
@@ -2008,6 +1986,14 @@ namespace WaterskiScoringSystem.Tournament {
 
 		}
 
+		private String getCurrentEvent() {
+			String curEvent = "Slalom";
+			if ( slalomButton.Checked ) return "Slalom";
+			if ( trickButton.Checked ) return "Trick";
+			if ( jumpButton.Checked ) return "Jump";
+			return "Slalom";
+		}
+
 		private DataTable getTourData(String inSanctionId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation" );
@@ -2020,16 +2006,9 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private DataTable getEventRegData() {
-            String curEvent = "Slalom";
-            if ( slalomButton.Checked ) {
-                curEvent = "Slalom";
-            } else if ( trickButton.Checked ) {
-                curEvent = "Trick";
-            } else if ( jumpButton.Checked ) {
-                curEvent = "Jump";
-            }
+			String curEvent = getCurrentEvent();
 
-            StringBuilder curSqlStmt = new StringBuilder( "" );
+			StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.Rotation, " );
             curSqlStmt.Append( "E.TeamCode, COALESCE(E.EventClass, '" + myTourEventClass + "') as EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
             curSqlStmt.Append( ", E.RankingScore, E.RankingRating, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
@@ -2045,8 +2024,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
             curSqlStmt.Append( "     LEFT OUTER JOIN CodeValueList L ON L.ListCode = E.EventClass AND ListName = 'Class' " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + curEvent + "' " );
-			if ( myFilterCmd.Length > 0 ) curSqlStmt.Append( "AND " + myFilterCmd );
-			if ( mySortCmd.Length > 0 ) curSqlStmt.Append( " ORDER BY " + mySortCmd );
+			if ( myFilterCmd.Length > 0 ) curSqlStmt.Append( "AND ( " + myFilterCmd + " ) ");
+			if ( mySortCmd.Length > 0 ) curSqlStmt.Append( "ORDER BY " + mySortCmd );
 
 			DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 			//curDataTable.DefaultView.Sort = mySortCmd;

@@ -35,13 +35,13 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '20.07', 20.07, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '20.08', 20.08, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
                     copyDatabaseFile();
                 }
-                if (myDatabaseVersion < 20.07M ) {
+                if (myDatabaseVersion < 20.08M ) {
                     if (openDbConn()) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );

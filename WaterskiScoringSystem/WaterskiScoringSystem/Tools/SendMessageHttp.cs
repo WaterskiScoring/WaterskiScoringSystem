@@ -638,7 +638,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public static bool sendMessagePostAsync(String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword) {
-            String curMethodName = "SendMessageHttp:sendMessagePostAsync";
+            String curMethodName = "SendMessageHttp:sendMessagePostAsync: ";
             WebRequest curRequest = null;
             RequestState curRequestState = null;
 
@@ -652,7 +652,8 @@ namespace WaterskiScoringSystem.Tools {
                     if (curRequest == null) {
                         MessageBox.Show( curMethodName + ":Unable to connect to " + curUrl );
                         Log.WriteFile( curMethodName + ":Unable to connect to " + curUrl );
-                    } else {
+
+					} else {
                         curRequest.Method = "POST";
 						if ( inUserAccount != null ) {
 							if ( inUrl.Contains( "usawaterski" ) ) {
@@ -681,8 +682,6 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
             } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
                 return false;
             }
 
@@ -725,8 +724,15 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private static void GetRequestStreamCallback(IAsyncResult inAsyncResult) {
+			String curMethodName = "SendMessageHttp:GetRequestStreamCallback: ";
+			if ( inAsyncResult == null ) {
+				MessageBox.Show( "GetRequestStreamCallback: AsyncResult is empty, most likely a bad internet connection" );
+				return;
+			}
+
 			RequestState curRequestState = null;
-            try {
+			try {
+				inAsyncResult.AsyncWaitHandle.WaitOne();
 				curRequestState = (RequestState) inAsyncResult.AsyncState;
 				if ( curRequestState.InputMsgBuffer.Length > 0 ) {
 					using ( Stream curDataStream = curRequestState.WebReqst.EndGetRequestStream( inAsyncResult ) ) {
@@ -734,9 +740,18 @@ namespace WaterskiScoringSystem.Tools {
 						curDataStream.Close();
 					}
 				}
+				return;
+
+			} catch (Exception ex ) {
+				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				throw new Exception( ex.Message );
+
 			} finally {
+				// Close the wait handle.
+				inAsyncResult.AsyncWaitHandle.Close();
+
 				// Start the asynchronous operation to get the response
-				if ( curRequestState != null ) {
+				if ( curRequestState != null && curRequestState.ReqstData.Length > 0 ) {
 					curRequestState.WebReqst.BeginGetResponse( new AsyncCallback( GetRespCallBack ), curRequestState );
 				}
 			}

@@ -35,7 +35,6 @@ namespace WaterskiScoringSystem.Tools {
         public static Boolean exportCurrentSkiers(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
             String curMethodName = "exportCurrentSlalomSkiers";
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            String curMsg = "";
             Boolean returnStatus = false;
             int curLineCount = 0;
             DataTable curDataTable = new DataTable();
@@ -51,8 +50,9 @@ namespace WaterskiScoringSystem.Tools {
                     curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
                     curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)" );
                     curSqlStmt.Append("Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId");
-                    curDataTable = getData(curSqlStmt.ToString());
-                } else {
+                    curDataTable = DataAccess.getDataTable( curSqlStmt.ToString());
+
+				} else {
                     curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, ER.EventGroup " );
                     curSqlStmt.Append( "From " + inEvent + "Score S " );
                     curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
@@ -77,7 +77,7 @@ namespace WaterskiScoringSystem.Tools {
                         }
                     }
                     curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
-                    curDataTable = getData( curSqlStmt.ToString() );
+                    curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 }
 
                 myProgressInfo.setProgressMin( 1 );
@@ -98,24 +98,32 @@ namespace WaterskiScoringSystem.Tools {
                     myProgressInfo.Refresh();
 
                     if (inEvent.Equals( "Slalom" )) {
-                        exportCurrentSkierSlalom( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
+						returnStatus = exportCurrentSkierSlalom( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
                     } else if (inEvent.Equals( "Trick" )) {
-                        exportCurrentSkierTrick( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
+						returnStatus = exportCurrentSkierTrick( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
                     } else if (inEvent.Equals( "Jump" )) {
-                        exportCurrentSkierJump( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
+						returnStatus = exportCurrentSkierJump( inSanctionId, curMemberId, curAgeGroup, curRound, 0, inEvent );
                     } else if ( inEvent.Equals("TrickVideo") ) {
-                        ExportLiveWeb.exportCurrentSkierTrickVideo( inSanctionId, curMemberId, curAgeGroup, curRound );
+						returnStatus = ExportLiveWeb.exportCurrentSkierTrickVideo( inSanctionId, curMemberId, curAgeGroup, curRound );
                     }
-                }
+					if ( returnStatus ) {
+						continue;
+					} else {
+						MessageBox.Show( String.Format( "Error encountered sending {0} scores for {1} {2}, terminating request", inEvent, curAgeGroup, curSkierName ) );
+						break;
+					}
+				}
 
-                myProgressInfo.Close();
-            } catch (Exception ex) {
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
+			} catch (Exception ex) {
+				MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
 
-            return returnStatus;
+			} finally {
+				myProgressInfo.Close();
+			}
+
+			return true;
         }
 
         public static Boolean exportCurrentSkierSlalom(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum, String inEventGroup) {
@@ -143,7 +151,8 @@ namespace WaterskiScoringSystem.Tools {
                         curSqlStmt.Append( "And Round = " + inRound + " And SkierRunNum = " + inSkierRunNum );
                     }
                     curXml.Append( exportData( "SlalomRecap", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "SkierRunNum" }, curSqlStmt.ToString(), "Insert" ) );
-                } else {
+
+				} else {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT * FROM TourReg " );
                     curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
@@ -195,15 +204,16 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 curXml.Append( "</LiveWebRequest>" );
-                SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                returnStatus = true;
-            } catch (Exception ex) {
-                returnStatus = false;
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
-            }
+				returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( returnStatus == false ) return false;
 
-            return returnStatus;
+			} catch (Exception ex) {
+				MessageBox.Show( "Error encountered trying to send slalom scores to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
+			}
+
+			return true;
         }
 
         public static Boolean exportCurrentSkierTrick(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum, String inEventGroup) {
@@ -231,7 +241,8 @@ namespace WaterskiScoringSystem.Tools {
                         curSqlStmt.Append( "And Round = " + inRound + " And SkierRunNum = " + inSkierRunNum );
                     }
                     curXml.Append( exportData( "TrickPass", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "PassNum", "Seq" }, curSqlStmt.ToString(), "Insert" ) );
-                } else {
+
+				} else {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT * FROM TourReg " );
                     curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
@@ -283,18 +294,19 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 curXml.Append( "</LiveWebRequest>" );
-                SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                returnStatus = true;
-            } catch (Exception ex) {
-                returnStatus = false;
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
-            }
+				returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( returnStatus == false ) return false;
 
-            return returnStatus;
-        }
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error encountered trying to send trick scores to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
+			}
 
-        public static Boolean exportCurrentSkierTrickVideo(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound) {
+			return true;
+		}
+
+		public static Boolean exportCurrentSkierTrickVideo(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound) {
             String curMethodName = "exportCurrentSkierTrickVideo";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
@@ -311,15 +323,16 @@ namespace WaterskiScoringSystem.Tools {
                 curXml.Append( exportData( "TrickVideo", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Insert" ) );
 
                 curXml.Append( "</LiveWebRequest>" );
-                SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                returnStatus = true;
-            } catch (Exception ex) {
-                returnStatus = false;
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
-            }
+				returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( returnStatus == false ) return false;
 
-            return returnStatus;
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error encountered trying to send trick videos to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
+			}
+
+			return true;
         }
 
         public static Boolean exportCurrentSkierJump(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum, String inEventGroup) {
@@ -347,7 +360,8 @@ namespace WaterskiScoringSystem.Tools {
                         curSqlStmt.Append( "And Round = " + inRound + " And PassNum = " + inPassNum );
                     }
                     curXml.Append( exportData( "JumpRecap", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "PassNum" }, curSqlStmt.ToString(), "Insert" ) );
-                } else {
+
+				} else {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT * FROM TourReg " );
                     curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
@@ -399,22 +413,22 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 curXml.Append( "</LiveWebRequest>" );
-                SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                returnStatus = true;
-            } catch (Exception ex) {
-                returnStatus = false;
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
-            }
+				returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( returnStatus == false ) return false;
 
-            return returnStatus;
-        }
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error encountered trying to send jump scores to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
+			}
 
-        public static Boolean exportCurrentSkiersRunOrder(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
+			return true;
+		}
+
+		public static Boolean exportCurrentSkiersRunOrder(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
             String curMethodName = "exportCurrentSkiersRunOrder";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
-            String curMsg = "";
             Boolean returnStatus = false;
             int curLineCount = 0;
             DataTable curDataTable = new DataTable();
@@ -462,8 +476,8 @@ namespace WaterskiScoringSystem.Tools {
 					}
 				}
 				curXml.Append( "</LiveWebRequest>" );
-				SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-				returnStatus = true;
+				returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( returnStatus == false ) return false;
 
 				/*
 				Send updated and new data
@@ -495,7 +509,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
                 curSqlStmt.Append( "Order by TR.SanctionId, ER.EventGroup, TR.MemberId, TR.AgeGroup" );
-                curDataTable = getData( curSqlStmt.ToString() );
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
                 myProgressInfo.setProgressMin( 1 );
                 myProgressInfo.setProgressMax( curDataTable.Rows.Count );
@@ -537,25 +551,26 @@ namespace WaterskiScoringSystem.Tools {
                     }
 
                     curXml.Append( "</LiveWebRequest>" );
-                    SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                    returnStatus = true;
+					returnStatus = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+					if ( returnStatus == false ) return false;
                 }
 
-                myProgressInfo.Close();
-            } catch (Exception ex) {
-                //MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error encountered trying to send running orders to web location \n\nError: " + ex.Message );
+				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				return false;
 
-            return returnStatus;
+			} finally {
+				myProgressInfo.Close();
+			}
+
+			return true;
         }
 
         public static Boolean exportTourData(String inSanctionId) {
             String curMethodName = "exportTourData";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
-            Boolean returnStatus = false;
 
             try {
                 curSqlStmt = new StringBuilder( "" );
@@ -567,18 +582,23 @@ namespace WaterskiScoringSystem.Tools {
                 curXml.Append( exportData( "Tournament", new String[] { "SanctionId" }, curSqlStmt.ToString(), "Update" ) );
 
                 curXml.Append( "</LiveWebRequest>" );
-                SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
-                Log.WriteFile( curMethodName + ":Connection successsful to " + LiveWebLocation + " for tournament " + inSanctionId );
+                bool sendComplete = SendMessageHttp.sendMessagePostXml( LiveWebLocation, curXml.ToString() );
+				if ( sendComplete ) {
+					Log.WriteFile( curMethodName + ":Connection successsful to " + LiveWebLocation + " for tournament " + inSanctionId );
+					return true;
 
-                returnStatus = true;
-            } catch (Exception ex) {
-                returnStatus = false;
+				} else {
+					MessageBox.Show( "Unable to make connection.  Try again later" );
+					return false;
+				}
+
+			} catch (Exception ex) {
                 MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
-            }
+				return false;
+			}
 
-            return returnStatus;
-        }
+		}
 
         public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
             String curMethodName = "exportData";
@@ -589,7 +609,7 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder curXml = new StringBuilder( "" );
 
             try {
-                curDataTable = getData( inSqlStmt );
+                curDataTable = DataAccess.getDataTable( inSqlStmt );
                 if (curDataTable == null) {
                     //curMsg = "No data found";
                 } else {
@@ -607,6 +627,8 @@ namespace WaterskiScoringSystem.Tools {
                         curXml.Append( "<Key>" + curColumn + "</Key>" );
                     }
                     curXml.Append( "</Keys>" );
+
+					if ( curDataTable.Rows.Count == 0 ) return "";;
 
                     if (curDataTable.Rows.Count == 0 && inCmd.ToLower().Equals( "delete" )) {
                         //curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
@@ -629,7 +651,8 @@ namespace WaterskiScoringSystem.Tools {
                         }
                         curXml.Append( "</Row>" );
                         curXml.Append( "</Rows>" );
-                    } else {
+
+					} else {
                         curXml.Append( "<Rows count=\"" + curDataTable.Rows.Count + "\">" );
                         foreach (DataRow curRow in curDataTable.Rows) {
                             curXml.Append( "<Row colCount=\"" + curDataTable.Columns.Count + "\">" );
@@ -660,17 +683,14 @@ namespace WaterskiScoringSystem.Tools {
                     MessageBox.Show( curMsg );
                 }
                 Log.WriteFile( curMethodName + ":conplete:" + curMsg );
-            } catch (Exception ex) {
+
+			} catch (Exception ex) {
                 MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
             }
 
             return curXml.ToString();
-        }
-
-        private static DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 
         public static String encodeXmlValue(String inValue) {

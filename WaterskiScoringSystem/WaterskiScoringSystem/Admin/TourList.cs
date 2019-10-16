@@ -1699,9 +1699,21 @@ namespace WaterskiScoringSystem.Admin {
 				myTourViewRow.Cells["TourDataLoc"].Value = "";
 				myTourViewRow.Cells["EventLocation"].Value = (String) curSanctionEntry["TSite"] + ", " + (String) curSanctionEntry["TCity"] + ", " + (String) curSanctionEntry["TState"];
 				myTourViewRow.Cells["Rules"].Value = "awsa";
-				myTourViewRow.Cells["SlalomRounds"].Value = "0";
-				myTourViewRow.Cells["TrickRounds"].Value = "0";
-				myTourViewRow.Cells["JumpRounds"].Value = "0";
+				if ( (bool) curSanctionEntry["TEventSlalom"] ) {
+					myTourViewRow.Cells["SlalomRounds"].Value = "1";
+				} else { 
+					myTourViewRow.Cells["SlalomRounds"].Value = "0";
+				}
+				if ( (bool) curSanctionEntry["TEventTrick"] ) {
+					myTourViewRow.Cells["TrickRounds"].Value = "1";
+				} else {
+					myTourViewRow.Cells["TrickRounds"].Value = "0";
+				}
+				if ( (bool) curSanctionEntry["TEventJump"] ) {
+					myTourViewRow.Cells["JumpRounds"].Value = "1";
+				} else {
+					myTourViewRow.Cells["JumpRounds"].Value = "0";
+				}
 				myTourViewRow.Cells["HcapSlalomBase"].Value = "0";
 				myTourViewRow.Cells["HcapTrickBase"].Value = "0";
 				myTourViewRow.Cells["HcapJumpBase"].Value = "0";

@@ -2647,8 +2647,14 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK ) {
 				if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Set" ) ) {
 					ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-					ExportLiveWeb.exportTourData( mySanctionNum );
-					LiveWebLabel.Visible = true;
+					if ( ExportLiveWeb.exportTourData( mySanctionNum ) ) {
+						LiveWebLabel.Visible = true;
+
+					} else {
+						ExportLiveWeb.LiveWebLocation = "";
+						ExportLiveTwitter.TwitterLocation = "";
+						LiveWebLabel.Visible = false;
+					}
 
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" ) ) {
 					ExportLiveWeb.LiveWebLocation = "";
@@ -2662,8 +2668,12 @@ namespace WaterskiScoringSystem.Slalom {
 							String curAgeGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
 							String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
+							if ( ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup ) == false ) {
+								MessageBox.Show( "Error encountered sending score to LiveWeb" );
+							}
+
 						} catch {
+							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
 						}
 					}
 
@@ -2672,9 +2682,12 @@ namespace WaterskiScoringSystem.Slalom {
 						try {
 							String curEventGroup = EventGroupList.SelectedItem.ToString();
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							ExportLiveWeb.exportCurrentSkiers( "Slalom", mySanctionNum, curRound, curEventGroup );
+							if ( ExportLiveWeb.exportCurrentSkiers( "Slalom", mySanctionNum, curRound, curEventGroup ) == false ) {
+								MessageBox.Show( "Error encountered sending score to LiveWeb" );
+							}
+
 						} catch {
-							MessageBox.Show( "Exception encounter sending message to LiveWeb" );
+							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
 						}
 					}
 				}
@@ -2994,7 +3007,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void roundSelect_Load( object sender, EventArgs e ) {
 			if ( myScoreDataTable != null ) {
 				if ( myScoreDataTable.Rows.Count > 0 ) {
-					roundSelect.RoundValue = (String) myScoreRow["Round"];
+					roundSelect.RoundValue = ( (Byte) myScoreRow["Round"] ).ToString();
 				}
 			}
 		}
@@ -3151,7 +3164,7 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( myScoreRow != null ) {
 						String curMemberId = (String) myScoreRow["MemberId"];
 						String curAgeGroup = (String) myScoreRow["AgeGroup"];
-						byte curRound = Convert.ToByte( (String) myScoreRow["Round"] );
+						byte curRound = (byte)myScoreRow["Round"];
 						StringBuilder curSqlStmt = new StringBuilder( "" );
 						curSqlStmt = new StringBuilder( String.Format( "Update SlalomScore Set " 
 							+ "EventClass = '{0}', LastUpdateDate = GETDATE() "
