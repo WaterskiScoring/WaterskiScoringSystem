@@ -425,7 +425,7 @@ namespace WaterskiScoringSystem.Tools {
 			return true;
 		}
 
-		public static Boolean exportCurrentSkiersRunOrder(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
+		public static Boolean exportCurrentSkiersRunOrder(String inTourRules, String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
             String curMethodName = "exportCurrentSkiersRunOrder";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
@@ -449,8 +449,14 @@ namespace WaterskiScoringSystem.Tools {
 					curXml.Append( exportData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup", "Round" }, curSqlStmt.ToString(), "Delete" ) );
 
 				} else {
-					curSqlStmt = new StringBuilder( "" );
-					curSqlStmt.Append( "SELECT Distinct SanctionId, Event, EventGroup FROM EventReg " );
+					curSqlStmt = new StringBuilder( "SELECT Distinct SanctionId, Event" );
+					if ( inTourRules.ToLower().Equals( "ncwsa" ) ) {
+						curSqlStmt.Append( ", AgeGroup " );
+					} else {
+						curSqlStmt.Append( ", EventGroup " );
+					}
+					curSqlStmt.Append( "FROM EventReg " );
+
 					curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' AND Event = '" + inEvent + "' " );
 					if ( inEventGroup != null ) {
 						if ( inEventGroup.Equals( "All" ) ) {
@@ -468,11 +474,20 @@ namespace WaterskiScoringSystem.Tools {
 							curSqlStmt.Append( "AND EventGroup = '" + inEventGroup + "' " );
 						}
 					}
-					curSqlStmt.Append( "Order by SanctionId, Event, EventGroup" );
+					curSqlStmt.Append( "Order by SanctionId, Event" );
+					if ( inTourRules.ToLower().Equals( "ncwsa" ) ) {
+						curSqlStmt.Append( ", AgeGroup " );
+					} else {
+						curSqlStmt.Append( ", EventGroup " );
+					}
 					if ( inEventGroup.Equals( "All" ) ) {
 						curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
 					} else {
-						curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+						if ( inTourRules.ToLower().Equals( "ncwsa" ) ) {
+							curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
+						} else {
+							curXml.Append( exportData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+						}
 					}
 				}
 				curXml.Append( "</LiveWebRequest>" );

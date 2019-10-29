@@ -535,42 +535,79 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22681	EventType	SlalomFoot		7	Slalom Barefoot			
 22682	EventType	TrickFoot		8	Trick Barefoot			
 22683	EventType	JumpFoot		9	Jump Barefoot			
-22684	Federation	 		0	Unknown			
-22685	Federation	usa		1	USA			
-22686	Federation	arg		2	Argentina			
-22687	Federation	aus		3	Australia			
-22688	Federation	aut		4	Austria			
-22689	Federation	bel		5	Belgian			
-22690	Federation	blr		6	Belarus			
-22691	Federation	bra		7	Brazil			
-22692	Federation	can		8	Canada			
-22693	Federation	chl		9	Chili			
-22694	Federation	col		10	Columbia			
-0	Federation	cze		11	Czech Republic			
-22695	Federation	den		12	Denmark			
-22696	Federation	fin		13	Finland			
-22697	Federation	fra		14	France			
-22698	Federation	ger		15	Germany			
-22699	Federation	gbr		16	Great Britain			
-22700	Federation	gre		17	Greece			
-22700	Federation	ina		18	Indonesia			
-22701	Federation	irl		19	Ireland			
-22702	Federation	ita		20	Italy			
-22703	Federation	jpn		21	Japan			
-22704	Federation	kor		22	Korea			
-22705	Federation	mex		23	Mexico			
-22706	Federation	nam		24	Namibia			
-22707	Federation	ned		25	Netherlands			
-22708	Federation	nor		26	Norway			
-22709	Federation	nzl		27	New Zealand			
-22710	Federation	per		28	Peru			
-22711	Federation	por		29	Portugal			
-22712	Federation	rus		30	Russia			
-22713	Federation	rsa		31	South Africa			
-22714	Federation	esp		32	Spain			
-22715	Federation	sui		33	Switzerland			
-22716	Federation	swe		34	Sweden			
-22717	Federation	ven		35	Venezuela			
+0	Federation	 		0	Unknown			
+0	Federation	usa		1	USA			
+0	Federation	afg		2	Afganistan			
+0	Federation	arg		3	Argentina			
+0	Federation	aus		4	Australia			
+0	Federation	aut		5	Austria			
+0	Federation	bah		6	Bahamas			
+0	Federation	blr		7	Belarus			
+0	Federation	bel		8	Belgian			
+0	Federation	ber		9	Bermuda			
+0	Federation	bra		10	Brazil			
+0	Federation	can		11	Canada			
+0	Federation	caf		12	Central African Republic			
+0	Federation	chl		13	Chili			
+0	Federation	chn		14	China			
+0	Federation	col		15	Columbia			
+0	Federation	crc		16	Costa Rica			
+0	Federation	cro		17	Croatia			
+0	Federation	cyp		18	Cyprus			
+0	Federation	cze		19	Czech Republic			
+0	Federation	den		20	Denmark			
+0	Federation	dom		21	Dominican Republic			
+0	Federation	ecu		22	Ecuador			
+0	Federation	esa		23	El Salvador			
+0	Federation	far		24	Faroe Island			
+0	Federation	fij		25	Figi			
+0	Federation	fin		26	Finland			
+0	Federation	fra		27	France			
+0	Federation	ger		28	Germany			
+0	Federation	gbr		29	Great Britain			
+0	Federation	gre		30	Greece			
+0	Federation	gua		31	Guatemala			
+0	Federation	hkg		32	Hong Kong			
+0	Federation	hun		33	Hungary			
+0	Federation	ina		34	Indonesia			
+0	Federation	iri		35	Iran			
+0	Federation	irl		36	Ireland			
+0	Federation	isr		37	Israel			
+0	Federation	ita		38	Italy			
+0	Federation	jam		39	Jamaica			
+0	Federation	jpn		40	Japan			
+0	Federation	kor		41	Korea			
+0	Federation	lat		42	Latvia			
+0	Federation	lbn		43	Lebanon			
+0	Federation	lux		44	Lithuania			
+0	Federation	mas		45	Malaysia			
+0	Federation	mri		46	Mauritius			
+0	Federation	mex		47	Mexico			
+0	Federation	mon		48	Monaco			
+0	Federation	nam		49	Namibia			
+0	Federation	ned		50	Netherlands			
+0	Federation	nzl		51	New Zealand			
+0	Federation	nor		52	Norway			
+0	Federation	per		53	Peru			
+0	Federation	phi		54	Philippines			
+0	Federation	pol		55	Poland			
+0	Federation	por		56	Portugal			
+0	Federation	pur		57	Puerto Rico			
+0	Federation	rus		58	Russia			
+0	Federation	ser		59	Serbia			
+0	Federation	sin		60	Singapore			
+0	Federation	svk		61	Slovakia			
+0	Federation	rsa		62	South Africa			
+0	Federation	esp		63	Spain			
+0	Federation	sur		64	Suriname			
+0	Federation	swe		65	Sweden			
+0	Federation	sui		66	Switzerland			
+0	Federation	tha		67	Thailand			
+0	Federation	tur		69	Turkey			
+0	Federation	tkm		70	Turkmenistan			
+0	Federation	ukr		71	Ukraine			
+0	Federation	uae		72	United Arab EMI			
+0	Federation	ven		73	Venezuela			
 22441	IwwfAgeGroup	YB		61	Intl Boys U10	1	9	
 22442	IwwfAgeGroup	YG		62	Intl Girls U10	1	9	
 22441	IwwfAgeGroup	JB		63	Intl Junior Boys U14	1	13	

@@ -77,10 +77,12 @@ namespace WaterskiScoringSystem.Tournament {
 
             if ( mySanctionNum == null ) {
                 MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-            } else {
+
+			} else {
                 if ( mySanctionNum.Length < 6 ) {
                     MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                } else {
+
+				} else {
                     //Retrieve selected tournament attributes
                     DataTable curTourDataTable = getTourData();
                     if ( curTourDataTable.Rows.Count > 0 ) {
@@ -96,11 +98,8 @@ namespace WaterskiScoringSystem.Tournament {
                         isLoadActive = true;
                         EventButtonAll.Checked = true;
                         isLoadActive = false;
-                        //roundActiveSelect.Visible = false;
-                        //activeLabel.Visible = false;
-                        //loadTourMemberView();
-                        //navRefresh_Click( null, null );
-                    } else {
+
+					} else {
                         MessageBox.Show( "The active tournament is not properly defined.  You must select from the Administration menu Tournament List option" );
                     }
                 }
@@ -772,8 +771,10 @@ namespace WaterskiScoringSystem.Tournament {
                 int rowsProc;
                 DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
                 Int64 curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
+				String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
+				String curEvent = curViewRow.Cells["Event"].Value.ToString();
 
-                StringBuilder curSqlStmt = new StringBuilder( "" );
+				StringBuilder curSqlStmt = new StringBuilder( "" );
                 if (curPK > 0) {
                     curSqlStmt.Append( "Delete OfficialWorkAsgmt " );
                     curSqlStmt.Append( " Where PK = " + curPK.ToString() );
@@ -782,8 +783,15 @@ namespace WaterskiScoringSystem.Tournament {
                         officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
                         winStatusMsg.Text = "Current row deleted";
                         isDataModified = false;
-                    }
-                } else {
+
+						curSqlStmt = new StringBuilder( "Select count(*) as RowCount From " );
+
+
+
+
+
+					}
+				} else {
                     officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
                     winStatusMsg.Text = "Current row deleted";
                     isDataModified = false;

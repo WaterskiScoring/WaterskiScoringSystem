@@ -369,6 +369,12 @@
     <Compile Include="Tools\LogRecoveryUtility.Designer.cs">
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\RegionalJuniorScoreAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\RegionalJuniorScoreAnalysis.Designer.cs">
+      <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\UpgradeDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -661,6 +667,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\LogRecoveryUtility.resx">
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\RegionalJuniorScoreAnalysis.resx">
+      <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\SqlCommandTool.resx">
       <DependentUpon>SqlCommandTool.cs</DependentUpon>

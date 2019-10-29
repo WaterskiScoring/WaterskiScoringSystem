@@ -2267,5 +2267,41 @@ namespace WaterskiScoringSystem.Properties {
                 this["OfficialImport_Location"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int RegionJuniorInfo_Width {
+            get {
+                return ((int)(this["RegionJuniorInfo_Width"]));
+            }
+            set {
+                this["RegionJuniorInfo_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int RegionJuniorInfo_Height {
+            get {
+                return ((int)(this["RegionJuniorInfo_Height"]));
+            }
+            set {
+                this["RegionJuniorInfo_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point RegionJuniorInfo_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["RegionJuniorInfo_Location"]));
+            }
+            set {
+                this["RegionJuniorInfo_Location"] = value;
+            }
+        }
     }
 }

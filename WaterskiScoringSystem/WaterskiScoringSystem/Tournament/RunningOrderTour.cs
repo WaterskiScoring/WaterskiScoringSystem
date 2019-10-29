@@ -1848,8 +1848,8 @@ namespace WaterskiScoringSystem.Tournament {
 								}
 							}
                         }
-                        foreach (String curEventGroup in curDivList) {
-                            if ( ExportLiveWeb.exportCurrentSkiersRunOrder( curEvent, mySanctionNum, 0, curEventGroup ) ) {
+						foreach ( String curEventGroup in curDivList) {
+                            if ( ExportLiveWeb.exportCurrentSkiersRunOrder( myTourRules, curEvent, mySanctionNum, 0, curEventGroup ) ) {
 								continue;
 							} else {
 								MessageBox.Show( "Error encountered sending running order data for Group " + curEventGroup + ".  Terminating request" );

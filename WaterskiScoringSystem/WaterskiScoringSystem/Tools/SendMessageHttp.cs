@@ -676,7 +676,6 @@ namespace WaterskiScoringSystem.Tools {
                         curRequestState.WebReqst.ContentLength = curRequestState.InputMsgBuffer.Length;
 
                         // Get the request stream.
-                        //curDataStream = curRequest.BeginGetRequestStream.GetRequestStream();
                         curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
                     }
                 }
@@ -751,7 +750,7 @@ namespace WaterskiScoringSystem.Tools {
 				inAsyncResult.AsyncWaitHandle.Close();
 
 				// Start the asynchronous operation to get the response
-				if ( curRequestState != null && curRequestState.ReqstData.Length > 0 ) {
+				if ( curRequestState != null  ) {
 					curRequestState.WebReqst.BeginGetResponse( new AsyncCallback( GetRespCallBack ), curRequestState );
 				}
 			}
@@ -762,9 +761,11 @@ namespace WaterskiScoringSystem.Tools {
 			RequestState curRequestState = null;
 			try {
 				// Set the State of request to asynchronous.
-				curRequestState = (RequestState) inAsyncResult.AsyncState;
-
 				// End the Asynchronous response.
+				if ( inAsyncResult.AsyncState == null ) return;
+				curRequestState = (RequestState) inAsyncResult.AsyncState;
+				if ( curRequestState == null ) return;
+				if ( curRequestState.WebReqst == null ) return;
 				curRequestState.WebResp = curRequestState.WebReqst.EndGetResponse( inAsyncResult );
 				String curMsg = ( (HttpWebResponse) curRequestState.WebResp ).StatusDescription;
 				if ( !( curMsg.Equals( "OK" ) ) ) {

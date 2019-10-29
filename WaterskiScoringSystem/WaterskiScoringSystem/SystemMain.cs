@@ -856,7 +856,17 @@ namespace WaterskiScoringSystem {
             }
         }
 
-        private void databaseToolToolStripMenuItem_Click( object sender, EventArgs e ) {
+		private void regionalJuniorExtractsToolStripMenuItem_Click( object sender, EventArgs e ) {
+			RegionalJuniorScoreAnalysis curForm = new RegionalJuniorScoreAnalysis();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+
+		private void databaseToolToolStripMenuItem_Click( object sender, EventArgs e ) {
             SqlCommandTool curForm = new SqlCommandTool();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
@@ -913,5 +923,5 @@ namespace WaterskiScoringSystem {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-    }
+	}
 }
