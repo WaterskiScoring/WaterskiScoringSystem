@@ -5330,9 +5330,6 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
             curSqlStmt.Append( "  INNER JOIN SlalomScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
-            if (inDataType.ToLower().Equals( "first" )) {
-                curSqlStmt.Append( "  AND SS.Round = 1 " );
-            }
             curSqlStmt.Append( "  LEFT OUTER JOIN EventRunOrder O ON O.SanctionId = TR.SanctionId AND O.MemberId = TR.MemberId AND O.AgeGroup = TR.AgeGroup AND O.Event = ER.Event AND O.Round = SS.Round " );
             curSqlStmt.Append( "  LEFT OUTER JOIN DivOrder DV ON DV.SanctionId = ER.SanctionId AND DV.AgeGroup = ER.AgeGroup AND DV.Event = ER.Event " );
             if (curTeamData) {
@@ -5345,8 +5342,11 @@ namespace WaterskiScoringSystem.Common {
             if ( curDiv.Length > 0 ) {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
+			if ( inDataType.ToLower().Equals( "first" ) ) {
+				curSqlStmt.Append( "  And SS.Round in (Select Min(Round) From SlalomScore SX WHERE SanctionId =  SS.SanctionId AND MemberId = SS.MemberId AND AgeGroup = SS.AgeGroup) " );
+			}
 
-            if ( inDataType.ToLower().Equals( "best" ) ) {
+			if ( inDataType.ToLower().Equals( "best" ) ) {
                 curSqlStmt.Append( "  AND SS.Round IN " );
                 curSqlStmt.Append( "      (SELECT MIN(Round) AS BestRoundNum FROM SlalomScore AS SS2 " );
                 curSqlStmt.Append( "       WHERE SS2.SanctionId = TR.SanctionId AND SS2.MemberId = TR.MemberId AND SS2.AgeGroup = TR.AgeGroup " );
@@ -5484,9 +5484,6 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
             curSqlStmt.Append( "  INNER JOIN TrickScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
-            if (inDataType.ToLower().Equals( "first" )) {
-                curSqlStmt.Append( "  AND SS.Round = 1 " );
-            }
             curSqlStmt.Append( "  LEFT OUTER JOIN EventRunOrder O ON O.SanctionId = TR.SanctionId AND O.MemberId = TR.MemberId AND O.AgeGroup = TR.AgeGroup AND O.Event = ER.Event AND O.Round = SS.Round " );
             curSqlStmt.Append( "  LEFT OUTER JOIN DivOrder DV ON DV.SanctionId = ER.SanctionId AND DV.AgeGroup = ER.AgeGroup AND DV.Event = ER.Event " );
             if (curTeamData) {
@@ -5499,8 +5496,11 @@ namespace WaterskiScoringSystem.Common {
             if ( curDiv.Length > 0 ) {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
+			if ( inDataType.ToLower().Equals( "first" ) ) {
+				curSqlStmt.Append( "  And SS.Round in (Select Min(Round) From TrickScore SX WHERE SanctionId =  SS.SanctionId AND MemberId = SS.MemberId AND AgeGroup = SS.AgeGroup) " );
+			}
 
-            if ( inDataType.ToLower().Equals( "best" ) ) {
+			if ( inDataType.ToLower().Equals( "best" ) ) {
                 curSqlStmt.Append( "  AND SS.Round IN " );
                 curSqlStmt.Append( "      (SELECT MIN(Round) AS BestRoundNum FROM TrickScore AS SS2 " );
                 curSqlStmt.Append( "       WHERE SS2.SanctionId = TR.SanctionId AND SS2.MemberId = TR.MemberId AND SS2.AgeGroup = TR.AgeGroup " );
@@ -5630,9 +5630,6 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
             curSqlStmt.Append( "  INNER JOIN JumpScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup AND SS.Round < 25" );
-            if (inDataType.ToLower().Equals( "first" )) {
-                curSqlStmt.Append( "  AND SS.Round = 1 " );
-            }
             curSqlStmt.Append( "  LEFT OUTER JOIN EventRunOrder O ON O.SanctionId = TR.SanctionId AND O.MemberId = TR.MemberId AND O.AgeGroup = TR.AgeGroup AND O.Event = ER.Event AND O.Round = SS.Round " );
             curSqlStmt.Append( "  LEFT OUTER JOIN DivOrder DV ON DV.SanctionId = ER.SanctionId AND DV.AgeGroup = ER.AgeGroup AND DV.Event = ER.Event " );
             if (curTeamData) {
@@ -5645,8 +5642,11 @@ namespace WaterskiScoringSystem.Common {
             if ( curDiv.Length > 0 ) {
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + curDiv + "' " );
             }
+			if ( inDataType.ToLower().Equals( "first" ) ) {
+				curSqlStmt.Append( "  And SS.Round in (Select Min(Round) From JumpScore SX WHERE SanctionId =  SS.SanctionId AND MemberId = SS.MemberId AND AgeGroup = SS.AgeGroup) " );
+			}
 
-            if ( inDataType.ToLower().Equals( "best" ) ) {
+			if ( inDataType.ToLower().Equals( "best" ) ) {
                 curSqlStmt.Append( "  AND SS.Round IN " );
                 curSqlStmt.Append( "      (SELECT MIN(Round) AS BestRoundNum FROM JumpScore AS SS2 " );
                 curSqlStmt.Append( "       WHERE SS2.SanctionId = TR.SanctionId AND SS2.MemberId = TR.MemberId AND SS2.AgeGroup = TR.AgeGroup " );

@@ -169,7 +169,7 @@ namespace WaterskiScoringSystem.Tournament {
         private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
             String curMethodName = "Tournament:TourEventReg:addEvent";
             String curMsg = "";
-            Boolean returnStatus = true;
+            //Boolean returnStatus = true;
             String curEventGroup, curEventClass, curTeamCode, curRankingRating = "";
             Decimal curRankingScore = 0, curHCapBase = 0, curHCapScore = 0;
             DataRow curTourRegRow, curTourEventRegRow;
@@ -179,211 +179,237 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 if ( inAgeDiv.ToUpper().Equals( "OF" ) ) {
-                    returnStatus = false;
                     curMsg = "Member is registered as an official only participant.  Age division must be updated before registering this member for an event";
                     MessageBox.Show( curMsg );
                     Log.WriteFile( curMethodName + curMsg );
-                } else if ( inAgeDiv.Trim().Length < 2 ) {
-                    returnStatus = false;
+					return false;
+
+				} else if ( inAgeDiv.Trim().Length < 2 ) {
                     curMsg = "Member " + inMemberId + " must have a valid division"
                         + "\n Unable to add to event " + inEvent;
                     MessageBox.Show( curMsg );
                     Log.WriteFile( curMethodName + curMsg );
-                }
-                if ( returnStatus ) {
-                    curTourRegRow = getTourMemberRow( mySanctionNum, inMemberId, inAgeDiv );
-                    if (curTourRegRow != null) {
-                        curTourEventRegDataTable = getDataBySkierEvent( mySanctionNum, inMemberId, inAgeDiv, inEvent );
-                        String curReadyForPlcmt = (String)curTourRegRow["ReadyForPlcmt"];
+					return false;
+				}
 
-                        if ( inEventClass.Trim().Length > 0 ) {
-                            if (validSkierClass( inEventClass, (String)myTourRow["Class"] )) {
-                                curEventClass = inEventClass;
-                            } else {
-                                curEventClass = getSkierTourEventClass( (String)myTourRow["Class"] );
-                            }
-                            if (curEventClass.ToUpper().Equals( "R" )) {
-                                if (( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" )) {
-                                    //Leave class as provided on input
-                                } else {
-                                    if (inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" )) {
-                                        curEventClass = "R";
-                                    } else if (inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
-                                        || inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
-                                        || inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
-                                        || inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
-                                        || inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
-                                        || inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
-                                       ) {
-                                        curEventClass = "E";
-                                    } else {
-                                        curEventClass = "L";
-                                    }
-                                }
-                            }
+				curTourRegRow = getTourMemberRow( mySanctionNum, inMemberId, inAgeDiv );
+				if ( curTourRegRow == null ) {
+					curMsg = "Member " + inMemberId + " is not registered in tournament"
+						+ "\n Unable to add to event " + inEvent;
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + curMsg );
+					return false;
+				}
 
-                        } else {
-                            curEventClass = getSkierTourEventClass( (String)myTourRow["Class"] );
-                            if (( (String)myTourRow["Class"] ).Equals( "A" )
-                                || ( (String)myTourRow["Class"] ).Equals( "B" )
-                                || ( (String)myTourRow["Class"] ).Equals( "R" )) {
-                                    if (( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" )) {
-                                        //Leave class as provided on input
-                                    } else {
-                                        if (inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" )) {
-                                            curEventClass = "R";
-                                        } else if (inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
-                                            || inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
-                                            || inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
-                                            || inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
-                                            || inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
-                                            || inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
-                                           ) {
-                                            if (curEventClass.ToUpper().Equals( "C" )) {
-                                            } else {
-                                                curEventClass = "E";
-                                            }
-                                        } else {
-                                            if (curEventClass.ToUpper().Equals( "C" ) || curEventClass.ToUpper().Equals( "E" )) {
-                                            } else {
-                                                curEventClass = "L";
-                                            }
-                                        }
-                                    }
-                            }
-                        }
-                        if ( inEventGroup.Trim().Length > 0 ) {
-                            curEventGroup = inEventGroup;
-                        } else {
-                            curEventGroup = inAgeDiv;
-                        }
+				curTourEventRegDataTable = getDataBySkierEvent( mySanctionNum, inMemberId, inAgeDiv, inEvent );
+				String curReadyForPlcmt = (String) curTourRegRow["ReadyForPlcmt"];
 
-                        //Get current ranking data for use in tournamnet
-                        curSkierRankingDataTable = getSkierByEvent( inMemberId, inEvent, inAgeDiv );
-                        if ( curSkierRankingDataTable.Rows.Count > 0 ) {
-                            curSkierRankingRow = curSkierRankingDataTable.Rows[0];
-                            curRankingRating = (String)curSkierRankingRow["Rating"];
-                            curRankingScore = (Decimal)curSkierRankingRow["Score"];
-                            curHCapBase = curRankingScore;
-                            curHCapScore = calcCapScore( inEvent, curRankingScore );
-                        }
+				if ( inEventClass.Trim().Length > 0 ) {
+					if ( validSkierClass( inEventClass, (String) myTourRow["Class"] ) ) {
+						curEventClass = inEventClass;
+					} else {
+						curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
+					}
+					if ( curEventClass.ToUpper().Equals( "R" ) ) {
+						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+							//Leave class as provided on input
+						} else {
+							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
+								curEventClass = "R";
+							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
+								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
+								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
+								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
+								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
+								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
+							   ) {
+								curEventClass = "E";
+							} else {
+								curEventClass = "L";
+							}
+						}
+					}
 
-                        StringBuilder curSqlStmt = new StringBuilder( "" );
-                        if ( curTourEventRegDataTable.Rows.Count == 0 ) {
-                            curSqlStmt.Append( "Insert EventReg (" );
-                            curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, TeamCode, EventClass" );
-                            curSqlStmt.Append( ", RunOrder, RankingScore, RankingRating, AgeGroup, ReadyForPlcmt" );
-                            curSqlStmt.Append( ", HCapBase, HCapScore, LastUpdateDate" );
-                            curSqlStmt.Append( ") Values (" );
-                            curSqlStmt.Append( "'" + mySanctionNum + "'" );
-                            curSqlStmt.Append( ", '" + inMemberId + "'" );
-                            curSqlStmt.Append( ", '" + inEvent + "'" );
-                            curSqlStmt.Append( ", '" + curEventGroup + "'" );
-                            curSqlStmt.Append( ", '" + inTeamCode + "'" );
-                            curSqlStmt.Append( ", '" + curEventClass + "'" );
-                            curSqlStmt.Append( ", '1'" );
-                            curSqlStmt.Append( ", " + curRankingScore );
-                            curSqlStmt.Append( ", '" + curRankingRating + "'" );
-                            curSqlStmt.Append( ", '" + inAgeDiv + "'" );
-                            curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
-                            curSqlStmt.Append( ", " + curHCapBase );
-                            curSqlStmt.Append( ", " + curHCapScore );
-                            curSqlStmt.Append( ", GETDATE() )" );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                            Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                            returnStatus = true;
-                        } else {
-                            #region Show information if input data found on database
-                            //Show information if input data found on database
-                            //Skip display if previoius display specfied to process all records the same
-                            if ( myMatchCommand.Length < 2 ) {
-                                String prevEventGroup = "", prevEventClass = "", prevRankingScore = "", prevRankingRating = "", prevHCapBase = "", prevHCapScore = "";
-                                curTourEventRegRow = curTourEventRegDataTable.Rows[0];
-                                try {
-                                    prevEventGroup = (String)curTourEventRegRow["EventGroup"];
-                                } catch {
-                                    prevEventGroup = "";
-                                }
-                                try {
-                                    prevEventClass = (String)curTourEventRegRow["EventClass"];
-                                } catch {
-                                    prevEventClass = "";
-                                }
-                                try {
-                                    prevRankingRating = (String)curTourEventRegRow["RankingRating"];
-                                } catch {
-                                    prevRankingRating = "";
-                                }
-                                try {
-                                    prevRankingScore = ( (Decimal)curTourEventRegRow["RankingScore"] ).ToString();
-                                } catch {
-                                    prevRankingScore = "";
-                                }
-                                try {
-                                    prevHCapBase = ( (Decimal)curTourEventRegRow["HCapBase"] ).ToString();
-                                } catch {
-                                    prevHCapBase = "";
-                                }
-                                try {
-                                    prevHCapScore = ( (Decimal)curTourEventRegRow["HCapScore"] ).ToString();
-                                } catch {
-                                    prevHCapScore = "";
-                                }
-                                String [] curMessage = new String[6];
-                                curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
-                                curMessage[1] = "is already registered for " + inEvent + " event";
-                                curMessage[2] = " RankingScore: Current=" + prevRankingScore + " : Import=" + curRankingScore;
-                                curMessage[3] = "RankingRating: Current=" + prevRankingRating + " : Import=" + curRankingRating;
-                                curMessage[4] = "     HCapBase: Current=" + prevHCapBase + " : Import=" + curHCapBase;
-                                curMessage[5] = "    HCapScore: Current=" + prevHCapScore + " : Import=" + curHCapScore;
-                                myMatchDialog.ImportKeyDataMultiLine = curMessage;
+				} else {
+					curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
+					if ( ( (String) myTourRow["Class"] ).Equals( "A" )
+						|| ( (String) myTourRow["Class"] ).Equals( "B" )
+						|| ( (String) myTourRow["Class"] ).Equals( "R" ) ) {
+						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+							//Leave class as provided on input
+						} else {
+							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
+								curEventClass = "R";
+							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
+								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
+								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
+								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
+								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
+								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
+							   ) {
+								if ( curEventClass.ToUpper().Equals( "C" ) ) {
+								} else {
+									curEventClass = "E";
+								}
+							} else {
+								if ( curEventClass.ToUpper().Equals( "C" ) || curEventClass.ToUpper().Equals( "E" ) ) {
+								} else {
+									curEventClass = "L";
+								}
+							}
+						}
+					}
+				}
+				if ( inEventGroup.Trim().Length > 0 ) {
+					curEventGroup = inEventGroup;
+				} else {
+					curEventGroup = inAgeDiv;
+				}
 
-                                myMatchDialog.MatchCommand = myMatchCommand;
-                                if ( myMatchDialog.ShowDialog() == DialogResult.OK ) {
-                                    myMatchCommand = myMatchDialog.MatchCommand;
-                                    myMatchCommandPrev = myMatchCommand;
-                                }
-                            }
-                            if ( myMatchCommand.ToLower().Equals( "update" )
-                                || myMatchCommand.ToLower().Equals( "updateall" ) ) {
-                                curSqlStmt.Append( "Update EventReg Set " );
-                                curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
-                                curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
-                                curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
-                                curSqlStmt.Append( "HCapScore = " + curHCapScore + ", " );
-                                curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
-                                curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
-                                curSqlStmt.Append( "  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'" );
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                                returnStatus = true;
-                            } else {
-                                returnStatus = false;
-                                //Re-initialize dialog response unless specified to process rows
-                                if ( myMatchCommand.ToLower().Equals( "skip" ) ) {
-                                    myMatchCommand = "";
-                                }
-                            }
-                            #endregion
-                        }
-                    } else {
-                        returnStatus = false;
-                        curMsg = "Member " + inMemberId + " is not registered in tournament"
-                            + "\n Unable to add to event " + inEvent ;
-                        MessageBox.Show( curMsg );
-                        Log.WriteFile( curMethodName + curMsg );
-                    }
-                }
-            } catch ( Exception ex ) {
+				//Get current ranking data for use in tournamnet
+				curSkierRankingDataTable = getSkierByEvent( inMemberId, inEvent, inAgeDiv );
+				if ( curSkierRankingDataTable.Rows.Count > 0 ) {
+					curSkierRankingRow = curSkierRankingDataTable.Rows[0];
+					curRankingRating = (String) curSkierRankingRow["Rating"];
+					curRankingScore = (Decimal) curSkierRankingRow["Score"];
+					curHCapBase = curRankingScore;
+					curHCapScore = calcCapScore( inEvent, curRankingScore );
+				}
+
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				if ( curTourEventRegDataTable.Rows.Count == 0 ) {
+					curSqlStmt.Append( "Insert EventReg (" );
+					curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, TeamCode, EventClass" );
+					curSqlStmt.Append( ", RunOrder, RankingScore, RankingRating, AgeGroup, ReadyForPlcmt" );
+					curSqlStmt.Append( ", HCapBase, HCapScore, LastUpdateDate" );
+					curSqlStmt.Append( ") Values (" );
+					curSqlStmt.Append( "'" + mySanctionNum + "'" );
+					curSqlStmt.Append( ", '" + inMemberId + "'" );
+					curSqlStmt.Append( ", '" + inEvent + "'" );
+					curSqlStmt.Append( ", '" + curEventGroup + "'" );
+					curSqlStmt.Append( ", '" + inTeamCode + "'" );
+					curSqlStmt.Append( ", '" + curEventClass + "'" );
+					curSqlStmt.Append( ", '1'" );
+					curSqlStmt.Append( ", " + curRankingScore );
+					curSqlStmt.Append( ", '" + curRankingRating + "'" );
+					curSqlStmt.Append( ", '" + inAgeDiv + "'" );
+					curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
+					curSqlStmt.Append( ", " + curHCapBase );
+					curSqlStmt.Append( ", " + curHCapScore );
+					curSqlStmt.Append( ", GETDATE() )" );
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+
+				} else {
+					#region Show information if input data found on database
+					//Show information if input data found on database
+					//Skip display if previoius display specfied to process all records the same
+					if ( myMatchCommand.Length < 2 ) {
+						String prevEventGroup = "", prevEventClass = "", prevRankingScore = "", prevRankingRating = "", prevHCapBase = "", prevHCapScore = "";
+						curTourEventRegRow = curTourEventRegDataTable.Rows[0];
+						try {
+							prevEventGroup = (String) curTourEventRegRow["EventGroup"];
+						} catch {
+							prevEventGroup = "";
+						}
+						try {
+							prevEventClass = (String) curTourEventRegRow["EventClass"];
+						} catch {
+							prevEventClass = "";
+						}
+						try {
+							prevRankingRating = (String) curTourEventRegRow["RankingRating"];
+						} catch {
+							prevRankingRating = "";
+						}
+						try {
+							prevRankingScore = ( (Decimal) curTourEventRegRow["RankingScore"] ).ToString();
+						} catch {
+							prevRankingScore = "";
+						}
+						try {
+							prevHCapBase = ( (Decimal) curTourEventRegRow["HCapBase"] ).ToString();
+						} catch {
+							prevHCapBase = "";
+						}
+						try {
+							prevHCapScore = ( (Decimal) curTourEventRegRow["HCapScore"] ).ToString();
+						} catch {
+							prevHCapScore = "";
+						}
+						String[] curMessage = new String[6];
+						curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
+						curMessage[1] = "is already registered for " + inEvent + " event";
+						curMessage[2] = " RankingScore: Current=" + prevRankingScore + " : Import=" + curRankingScore;
+						curMessage[3] = "RankingRating: Current=" + prevRankingRating + " : Import=" + curRankingRating;
+						curMessage[4] = "     HCapBase: Current=" + prevHCapBase + " : Import=" + curHCapBase;
+						curMessage[5] = "    HCapScore: Current=" + prevHCapScore + " : Import=" + curHCapScore;
+						myMatchDialog.ImportKeyDataMultiLine = curMessage;
+
+						myMatchDialog.MatchCommand = myMatchCommand;
+						if ( myMatchDialog.ShowDialog() == DialogResult.OK ) {
+							myMatchCommand = myMatchDialog.MatchCommand;
+							myMatchCommandPrev = myMatchCommand;
+						}
+					}
+
+					if ( myMatchCommand.ToLower().Equals( "update" )
+						|| myMatchCommand.ToLower().Equals( "updateall" ) ) {
+						curSqlStmt.Append( "Update EventReg Set " );
+						curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
+						curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
+						curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
+						curSqlStmt.Append( "HCapScore = " + curHCapScore + ", " );
+						curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
+						curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
+						curSqlStmt.Append( "  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'" );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+
+					} else {
+						//Re-initialize dialog response unless specified to process rows
+						if ( myMatchCommand.ToLower().Equals( "skip" ) ) {
+							myMatchCommand = "";
+						}
+						return false;
+					}
+					#endregion
+				}
+
+				return true;
+
+			} catch ( Exception ex ) {
                 curMsg = "Exception encountered adding skier to " + inEvent + " event \n" + ex.Message ;
                 MessageBox.Show( curMsg );
                 Log.WriteFile( curMethodName + curMsg );
                 return false;
             }
-            return returnStatus;
         }
 
-        public bool addTourReg( String inMemberId, String inPreRegNote, String inAgeGroup, String inTrickBoat, String inJumpHeight ) {
+		public bool addEventRunorder( String inEvent, String inMemberId, String inEventGroup, String inEventClass, int curEventRoundsPaid, String inAgeDiv ) {
+			for(int curEventRound = 1; curEventRound <= curEventRoundsPaid; curEventRound++ ) {
+				try {
+					StringBuilder curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Insert EventRunOrder " );
+					curSqlStmt.Append( "( SanctionId, MemberId, AgeGroup, EventGroup, RunOrderGroup, Event, Round, RunOrder, LastUpdateDate, Notes, RankingScore ) " );
+					curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, EventGroup, EventGroup, Event, " + curEventRound + ", RunOrder, GETDATE(), '', RankingScore " );
+					curSqlStmt.Append( "FROM EventReg " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' " );
+					curSqlStmt.Append( "AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' " );
+					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+				} catch ( Exception ex ) {
+					String curMsg = "Exception encountered adding skier to " + inEvent + " event \n" + ex.Message;
+					MessageBox.Show( curMsg );
+					Log.WriteFile( "addEventRunorder: " + curMsg );
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public bool addTourReg( String inMemberId, String inPreRegNote, String inAgeGroup, String inTrickBoat, String inJumpHeight ) {
             String curMethodName = "Tournament:TourEventReg:addTourReg";
             String curMsg = "";
             String curReadyToSki = "", curReadyForPlcmt = "", curJumpHeight = "0", curFed = "", curCity = "", curState = "", curGender = "";

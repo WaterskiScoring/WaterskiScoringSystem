@@ -1438,7 +1438,9 @@ namespace WaterskiScoringSystem.Common {
 
                     curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
                     if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
-                    if ( curReadyForPlcmt.Equals("Y") ) {
+					if ( inDataType.ToLower().Equals( "first" ) && !( curRound.Equals( "1" ) ) ) curReadyForPlcmt = "N";
+
+					if ( curReadyForPlcmt.Equals("Y") ) {
                         if ( Convert.ToInt32(curRound) > 0 ) {
                             if ( inPlcmtMethod.ToLower().Equals("score") ) {
                                 try {
@@ -1577,7 +1579,9 @@ namespace WaterskiScoringSystem.Common {
 
                     curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
                     if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
-                    if ( curReadyForPlcmt.Equals("Y") ) {
+					if ( inDataType.ToLower().Equals( "first" ) && !(curRound.Equals("1")) ) curReadyForPlcmt = "N";
+
+					if ( curReadyForPlcmt.Equals("Y") ) {
                         if ( Convert.ToInt32(curRound) > 0 ) {
                             if ( inPlcmtMethod.ToLower().Equals("score") ) {
                                 try {

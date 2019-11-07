@@ -19,6 +19,8 @@ namespace WaterskiScoringSystem.Tools {
         private char[] myTabDelim = new char[] { '\t' };
         private char[] mySingleQuoteDelim = new char[] { '\'' };
 
+		private bool myTourTypePickAndChoose = false;
+
 		private DataRow myTourRow = null;
 
 		private ImportMatchDialogForm MatchDialog;
@@ -465,8 +467,12 @@ namespace WaterskiScoringSystem.Tools {
         public bool importMemberDataCurrent( ) {
             return importMemberDataDialog( false );
         }
-
-        public bool importMemberDataNcwsa( ) {
+		public bool importMemberDataCurrent(String tourType) {
+			myTourTypePickAndChoose = false;
+			if ( tourType != null && tourType.ToLower().Equals( "pick" ) ) myTourTypePickAndChoose = true;
+			return importMemberDataDialog( false );
+		}
+		public bool importMemberDataNcwsa( ) {
             return importMemberDataDialog( true );
         }
 
@@ -525,7 +531,11 @@ namespace WaterskiScoringSystem.Tools {
             String curPath = Properties.Settings.Default.ExportDirectory;
             OpenFileDialog myFileDialog = new OpenFileDialog();
 
-			myImportMember = new ImportMember( myTourRow );
+			if ( myTourTypePickAndChoose ) {
+				myImportMember = new ImportMember( myTourRow, "pick" );
+			} else {
+				myImportMember = new ImportMember( myTourRow );
+			}
 
 			myFileDialog.InitialDirectory = curPath;
             myFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";

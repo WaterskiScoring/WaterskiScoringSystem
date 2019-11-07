@@ -324,8 +324,11 @@ namespace WaterskiScoringSystem {
             Properties.Settings.Default.Mdi_Title = this.Text;
             Properties.Settings.Default.Save();
         }
+		private void SystemMain_FormClosing( object sender, FormClosingEventArgs e ) {
+			e.Cancel = false;
+		}
 
-        private void navTournamentList_Click( object sender, EventArgs e ) {
+		private void navTournamentList_Click( object sender, EventArgs e ) {
             TourList curForm = new TourList();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
@@ -369,6 +372,12 @@ namespace WaterskiScoringSystem {
 
 		private void navImportTourReg_Click( object sender, EventArgs e ) {
 			ImportMember curImportMember = new ImportMember( null );
+			mdiStatusMsg.Text = "Import tournament registrations opening";
+			curImportMember.importPreRegMembers();
+		}
+
+		private void navImportTourRegPick_Click( object sender, EventArgs e ) {
+			ImportMember curImportMember = new ImportMember( null, "pick" );
 			mdiStatusMsg.Text = "Import tournament registrations opening";
 			curImportMember.importPreRegMembers();
 		}
@@ -821,7 +830,14 @@ namespace WaterskiScoringSystem {
             }
         }
 
-        private void navImportNcwsaFile_Click( object sender, EventArgs e ) {
+		private void navImportPickFile_Click( object sender, EventArgs e ) {
+			ImportData myImportData = new ImportData();
+			if ( myImportData.importMemberDataCurrent("Pick") ) {
+				MessageBox.Show( "Member data import complete." );
+			}
+		}
+
+		private void navImportNcwsaFile_Click( object sender, EventArgs e ) {
             ImportData myImportData = new ImportData();
             if ( myImportData.importMemberDataNcwsa() ) {
                 MessageBox.Show( "Member data import complete." );

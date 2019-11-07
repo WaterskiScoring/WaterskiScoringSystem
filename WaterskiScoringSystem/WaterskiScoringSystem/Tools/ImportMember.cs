@@ -14,6 +14,8 @@ namespace WaterskiScoringSystem.Tools {
         private char[] myTabDelim = new char[] { '\t' };
         private char[] mySingleQuoteDelim = new char[] { '\'' };
 
+		private bool myTourTypePickAndChoose = false;
+
 		private String mySanctionNum;
 
 		private int myCountMemberInput = 0;
@@ -35,6 +37,16 @@ namespace WaterskiScoringSystem.Tools {
 		private TourEventReg myTourEventReg;
 
 		public ImportMember( DataRow inTourRow ) {
+			initImportMember( inTourRow, null );
+        }
+		public ImportMember( DataRow inTourRow, String tourType ) {
+			initImportMember( inTourRow, tourType );
+		}
+
+		private void initImportMember( DataRow inTourRow, String tourType ) {
+			myTourTypePickAndChoose = false;
+			if ( tourType != null && tourType.ToLower().Equals("pick")) myTourTypePickAndChoose = true;
+
 			if ( inTourRow == null ) {
 				mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 				if ( mySanctionNum == null ) {
@@ -245,7 +257,7 @@ namespace WaterskiScoringSystem.Tools {
 					}
 				}
 
-				String curEventGroup = "", curEventClass = "", curTrickBoat = "", curJumpHeight = "", curPreRegNote = "";
+				String curTrickBoat = "", curJumpHeight = "", curPreRegNote = "";
 				curTrickBoat = (String) curImportMemberEntry["TrickBoat"];
 				curJumpHeight = (String) curImportMemberEntry["JumpHeight"];
 				if ( curJumpHeight.Length == 0 ) {
@@ -296,76 +308,17 @@ namespace WaterskiScoringSystem.Tools {
 						if ( curReqstStatus ) myCountTourRegAdded++;
 					}
 
-					curEventGroup = curEventSlalom;
-					if ( curImportMemberEntry.ContainsKey( "EventClassSlalom" ) ) {
-						curEventClass = (String) curImportMemberEntry["EventClassSlalom"];
-					} else if ( curImportMemberEntry.ContainsKey( "SlalomPaid" ) ) {
-						curEventClass = (String) curImportMemberEntry["SlalomPaid"];
-						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
-					}
-					if ( curEventGroup.Trim().Length > 0 ) {
-						if ( curEventClass.Trim().Length > 0 ) {
-							curEventClass = curEventClass.Substring( 0, 1 );
-						}
+					curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberId, "Slalom", curEventSlalom
+						, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight, curTeam );
+                    if ( curReqstStatus ) myCountSlalomAdded++;
 
-						curReqstStatus = myTourEventReg.addTourReg( curMemberId, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountTourRegAdded++;
+					curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberId, "Trick", curEventTrick
+						, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight, curTeam );
+					if ( curReqstStatus ) myCountTrickAdded++;
 
-						if ( curEventGroup.ToLower().Equals( "of" ) ) {
-						} else {
-							curReqstStatus = myTourEventReg.addEventSlalom( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
-							if ( curReqstStatus ) myCountSlalomAdded++;
-						}
-					}
-
-					curEventGroup = curEventTrick;
-					if ( curImportMemberEntry.ContainsKey( "EventClassTrick" ) ) {
-						curEventClass = (String) curImportMemberEntry["EventClassTrick"];
-					} else if ( curImportMemberEntry.ContainsKey( "TrickPaid" ) ) {
-						curEventClass = (String) curImportMemberEntry["TrickPaid"];
-						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
-					}
-					if ( curEventGroup.Trim().Length > 0 ) {
-						if ( curEventClass.Trim().Length > 0 ) {
-							curEventClass = curEventClass.Substring( 0, 1 );
-						}
-
-						curReqstStatus = myTourEventReg.addTourReg( curMemberId, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountTourRegAdded++;
-
-						if ( curEventGroup.ToLower().Equals( "of" ) ) {
-						} else {
-							curReqstStatus = myTourEventReg.addEventTrick( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
-							if ( curReqstStatus ) myCountTrickAdded++;
-						}
-					}
-
-					curEventGroup = curEventJump;
-					if ( curImportMemberEntry.ContainsKey( "EventClassJump" ) ) {
-						curEventClass = (String) curImportMemberEntry["EventClassJump"];
-					} else if ( curImportMemberEntry.ContainsKey( "JumpPaid" ) ) {
-						curEventClass = (String) curImportMemberEntry["JumpPaid"];
-						if ( curEventClass.Length > 1 ) curEventClass = curEventClass.ToString().Substring( 0, 1 );
-					}
-					if ( curEventGroup.Trim().Length > 0 ) {
-						if ( curAgeGroup.Equals( "B1" )
-							|| curAgeGroup.Equals( "G1" ) ) {
-							MessageBox.Show( "Jump event not allowed for B1 or G1 divisions.\nSkipping event registration." );
-						} else {
-							if ( curEventClass.Trim().Length > 0 ) {
-								curEventClass = curEventClass.Substring( 0, 1 );
-							}
-
-							curReqstStatus = myTourEventReg.addTourReg( curMemberId, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountTourRegAdded++;
-
-							if ( curEventGroup.ToLower().Equals( "of" ) ) {
-							} else {
-								curReqstStatus = myTourEventReg.addEventJump( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
-								if ( curReqstStatus ) myCountJumpAdded++;
-							}
-						}
-					}
+					curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberId, "Jump", curEventJump
+						, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight, curTeam );
+					if ( curReqstStatus ) myCountJumpAdded++;
 
 					if ( curTeam.Length > 0 ) {
 						if ( !( inNcwsa ) ) {
@@ -463,6 +416,55 @@ namespace WaterskiScoringSystem.Tools {
 			}
 
 			return true;
+		}
+
+		private bool regSkierForEvent( Dictionary<string, object> curImportMemberEntry, String curMemberId, String curEvent
+			, String curEventGroup, String curPreRegNote, String curAgeGroup, String curTrickBoat, String curJumpHeight, String curTeam ) {
+			int curEventRoundsPaid = 0;
+			String curEventClass = "";
+
+			try {
+				if ( curImportMemberEntry.ContainsKey( "EventClass" + curEvent ) ) {
+					curEventClass = (String) curImportMemberEntry["EventClass" + curEvent];
+				} else if ( curImportMemberEntry.ContainsKey( curEvent + "Paid" ) ) {
+					curEventClass = (String) curImportMemberEntry[curEvent + "Paid"];
+					if ( curEventClass.Trim().Length > 1 ) {
+						curEventClass = curEventClass.ToString().Substring( 0, 1 );
+						curEventRoundsPaid = int.Parse( ( (String) curImportMemberEntry[curEvent + "Paid"] ).ToString().Substring( 1 ) );
+					}
+				}
+				if ( curEventGroup.Trim().Length > 0 ) {
+					if ( curEventClass.Trim().Length > 1 ) curEventClass = curEventClass.Substring( 0, 1 );
+
+					bool curReqstStatus = myTourEventReg.addTourReg( curMemberId, curPreRegNote, curAgeGroup, curTrickBoat, curJumpHeight );
+					if ( curReqstStatus ) myCountTourRegAdded++;
+
+					if ( !( curEventGroup.ToLower().Equals( "of" ) ) ) {
+						bool returnStatus = false;
+						if ( curEvent.Equals( "Slalom" ) ) returnStatus = myTourEventReg.addEventSlalom( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
+						if ( curEvent.Equals( "Trick" ) ) returnStatus = myTourEventReg.addEventTrick( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
+						if ( curEvent.Equals( "Jump" ) ) returnStatus = myTourEventReg.addEventJump( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
+
+						if ( curEventRoundsPaid > 0 && myTourTypePickAndChoose ) {
+							returnStatus = myTourEventReg.addEventRunorder( curEvent, curMemberId, curEventGroup, curEventClass, curEventRoundsPaid, curAgeGroup );
+						}
+						return returnStatus;
+					}
+				}
+				return false;
+
+			} catch ( Exception ex ) {
+				String curLastName = (String) curImportMemberEntry["LastName"];
+				curLastName = stringReplace( curLastName, mySingleQuoteDelim, "''" );
+				String curFirstName = (String) curImportMemberEntry["FirstName"];
+				curFirstName = stringReplace( curFirstName, mySingleQuoteDelim, "''" );
+
+				String ExcpMsg = "regSkierForEvent: Error processing member "
+					+ curMemberId + " " + curFirstName + " " + curLastName + " Event=" + curEvent + "\n\n " + ex.Message;
+				MessageBox.Show( ExcpMsg );
+				return false;
+			}
+
 		}
 
 		public void importMemberWithRatings( Dictionary<string, object> curImportMemberEntry ) {

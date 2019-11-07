@@ -1441,7 +1441,6 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void EventRegDataGridView_Leave( object sender, EventArgs e ) {
-            EventRegDataGridView.EndEdit();
         }
 
         private void EventRegDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
@@ -1602,7 +1601,7 @@ namespace WaterskiScoringSystem.Tournament {
         private void EventRegDataGridView_CellValidated( object sender, DataGridViewCellEventArgs e ) {
             if (EventRegDataGridView.Rows.Count > 0) {
                 myViewIdx = e.RowIndex;
-                String curColName = EventRegDataGridView.Columns[e.ColumnIndex].Name;
+				String curColName = EventRegDataGridView.Columns[e.ColumnIndex].Name;
                 DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
                 if (curColName.Equals("RunOrder")) {
                     if ( myOrigItemValue == null ) myOrigItemValue = "0";
