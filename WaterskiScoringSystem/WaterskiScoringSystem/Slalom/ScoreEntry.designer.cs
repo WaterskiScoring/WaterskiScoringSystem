@@ -34,25 +34,17 @@
 			System.Windows.Forms.Label TourBoatLabel;
 			System.Windows.Forms.Label EventGroupLabel;
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScoreEntry));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -75,23 +67,80 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScoreEntry));
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.noteLabel = new System.Windows.Forms.Label();
 			this.ActiveSkierNameLabel = new System.Windows.Forms.Label();
 			this.LiveWebLabel = new System.Windows.Forms.Label();
 			this.TourEventRegDataGridView = new System.Windows.Forms.DataGridView();
+			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.slalomRecapDataGridView = new System.Windows.Forms.DataGridView();
+			this.RoundRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skierPassRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.CellBorder1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateEntry2Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Judge2ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateExit2Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.CellBorder2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateEntry3Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Judge3ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateExit3Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.CellBorder3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Judge4ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.CellBorder4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Judge5ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.CellBorder5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateEntry1Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Judge1ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GateExit1Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.CellBorder6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TimeInTolRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.TimeInTolImg = new System.Windows.Forms.DataGridViewImageColumn();
+			this.BoatTimeRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreProtRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.RerideRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.NoteRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RerideReasonRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PassSpeedKphRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PassLineLengthRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SanctionIdRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MemberIdRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AgeGroupRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.noteTextBox = new System.Windows.Forms.TextBox();
 			this.nopsScoreTextBox = new System.Windows.Forms.TextBox();
 			this.scoreTextBox = new System.Windows.Forms.TextBox();
@@ -160,55 +209,6 @@
 			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.SlalomLineSelect = new WaterskiScoringSystem.Common.SlalomLineSelect();
 			this.SlalomSpeedSelection = new WaterskiScoringSystem.Common.SlalomSpeedSelect();
-			this.RoundRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.skierPassRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.CellBorder1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateEntry2Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.Judge2ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateExit2Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.CellBorder2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateEntry3Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.Judge3ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateExit3Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.CellBorder3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Judge4ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.CellBorder4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Judge5ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.CellBorder5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateEntry1Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.Judge1ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.GateExit1Recap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.CellBorder6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TimeInTolRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.TimeInTolImg = new System.Windows.Forms.DataGridViewImageColumn();
-			this.BoatTimeRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreProtRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.RerideRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.NoteRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RerideReasonRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassSpeedKphRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassLineLengthRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SanctionIdRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.MemberIdRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.AgeGroupRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			roundLabel = new System.Windows.Forms.Label();
 			activeLabel = new System.Windows.Forms.Label();
 			UnscoredMsgLabel = new System.Windows.Forms.Label();
@@ -249,7 +249,7 @@
 			activeLabel.Location = new System.Drawing.Point(61, 72);
 			activeLabel.Margin = new System.Windows.Forms.Padding(0);
 			activeLabel.Name = "activeLabel";
-			activeLabel.Size = new System.Drawing.Size(114, 19);
+			activeLabel.Size = new System.Drawing.Size(102, 16);
 			activeLabel.TabIndex = 0;
 			activeLabel.Text = "Active Round";
 			activeLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -312,7 +312,7 @@
 			startSpeedLabel.Location = new System.Drawing.Point(365, 168);
 			startSpeedLabel.Margin = new System.Windows.Forms.Padding(1);
 			startSpeedLabel.Name = "startSpeedLabel";
-			startSpeedLabel.Size = new System.Drawing.Size(58, 19);
+			startSpeedLabel.Size = new System.Drawing.Size(53, 16);
 			startSpeedLabel.TabIndex = 0;
 			startSpeedLabel.Text = "Speed";
 			startSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -323,7 +323,7 @@
 			startLenLabel.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			startLenLabel.Location = new System.Drawing.Point(496, 168);
 			startLenLabel.Name = "startLenLabel";
-			startLenLabel.Size = new System.Drawing.Size(110, 19);
+			startLenLabel.Size = new System.Drawing.Size(98, 16);
 			startLenLabel.TabIndex = 0;
 			startLenLabel.Text = "Rope Length";
 			startLenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -334,7 +334,7 @@
 			TourBoatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			TourBoatLabel.Location = new System.Drawing.Point(839, 439);
 			TourBoatLabel.Name = "TourBoatLabel";
-			TourBoatLabel.Size = new System.Drawing.Size(41, 17);
+			TourBoatLabel.Size = new System.Drawing.Size(33, 13);
 			TourBoatLabel.TabIndex = 0;
 			TourBoatLabel.Text = "Boat";
 			TourBoatLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -347,7 +347,7 @@
 			EventGroupLabel.Location = new System.Drawing.Point(199, 72);
 			EventGroupLabel.Margin = new System.Windows.Forms.Padding(0);
 			EventGroupLabel.Name = "EventGroupLabel";
-			EventGroupLabel.Size = new System.Drawing.Size(109, 19);
+			EventGroupLabel.Size = new System.Drawing.Size(97, 16);
 			EventGroupLabel.TabIndex = 0;
 			EventGroupLabel.Text = "Event Group";
 			EventGroupLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -384,7 +384,7 @@
 			this.LiveWebLabel.Location = new System.Drawing.Point(272, 47);
 			this.LiveWebLabel.Name = "LiveWebLabel";
 			this.LiveWebLabel.Padding = new System.Windows.Forms.Padding(1);
-			this.LiveWebLabel.Size = new System.Drawing.Size(130, 20);
+			this.LiveWebLabel.Size = new System.Drawing.Size(106, 16);
 			this.LiveWebLabel.TabIndex = 0;
 			this.LiveWebLabel.Text = "Live Web Active";
 			this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -423,7 +423,7 @@
             this.SanctionId,
             this.MemberId,
             this.Event});
-			this.TourEventRegDataGridView.Location = new System.Drawing.Point(12, 190);
+			this.TourEventRegDataGridView.Location = new System.Drawing.Point(5, 186);
 			this.TourEventRegDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.TourEventRegDataGridView.MultiSelect = false;
 			this.TourEventRegDataGridView.Name = "TourEventRegDataGridView";
@@ -435,6 +435,201 @@
 			this.TourEventRegDataGridView.TabIndex = 100;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TourEventRegDataGridView_RowEnter);
+			// 
+			// SkierName
+			// 
+			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SkierName.HeaderText = "Skier";
+			this.SkierName.Name = "SkierName";
+			this.SkierName.ReadOnly = true;
+			this.SkierName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// AgeGroup
+			// 
+			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle2;
+			this.AgeGroup.HeaderText = "Div";
+			this.AgeGroup.Name = "AgeGroup";
+			this.AgeGroup.ReadOnly = true;
+			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.AgeGroup.ToolTipText = "Federation age group";
+			this.AgeGroup.Width = 26;
+			// 
+			// TeamCode
+			// 
+			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TeamCode.HeaderText = "Team";
+			this.TeamCode.Name = "TeamCode";
+			this.TeamCode.ReadOnly = true;
+			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.TeamCode.Width = 50;
+			// 
+			// EventClass
+			// 
+			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle3;
+			this.EventClass.HeaderText = "Cls";
+			this.EventClass.Name = "EventClass";
+			this.EventClass.ReadOnly = true;
+			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventClass.Width = 26;
+			// 
+			// EventGroup
+			// 
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle4;
+			this.EventGroup.HeaderText = "Grp";
+			this.EventGroup.Name = "EventGroup";
+			this.EventGroup.ReadOnly = true;
+			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventGroup.Width = 27;
+			// 
+			// Score
+			// 
+			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle5.Format = "N2";
+			dataGridViewCellStyle5.NullValue = null;
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle5;
+			this.Score.HeaderText = "Score";
+			this.Score.Name = "Score";
+			this.Score.ReadOnly = true;
+			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Score.Width = 40;
+			// 
+			// ScoreWithHcap
+			// 
+			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle6.Format = "N2";
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle6;
+			this.ScoreWithHcap.HeaderText = "ScoreH";
+			this.ScoreWithHcap.Name = "ScoreWithHcap";
+			this.ScoreWithHcap.ReadOnly = true;
+			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ScoreWithHcap.Width = 45;
+			// 
+			// RankingScore
+			// 
+			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle7;
+			this.RankingScore.HeaderText = "Rank";
+			this.RankingScore.Name = "RankingScore";
+			this.RankingScore.ReadOnly = true;
+			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingScore.Width = 40;
+			// 
+			// HCapBase
+			// 
+			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle8;
+			this.HCapBase.HeaderText = "HBase";
+			this.HCapBase.Name = "HCapBase";
+			this.HCapBase.ReadOnly = true;
+			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapBase.Width = 40;
+			// 
+			// HCapScore
+			// 
+			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle9;
+			this.HCapScore.HeaderText = "HCap";
+			this.HCapScore.Name = "HCapScore";
+			this.HCapScore.ReadOnly = true;
+			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapScore.Width = 40;
+			// 
+			// Status
+			// 
+			this.Status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Status.HeaderText = "Status";
+			this.Status.Name = "Status";
+			this.Status.ReadOnly = true;
+			this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Status.Width = 55;
+			// 
+			// Order
+			// 
+			this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Order.DefaultCellStyle = dataGridViewCellStyle10;
+			this.Order.HeaderText = "Ord";
+			this.Order.Name = "Order";
+			this.Order.ReadOnly = true;
+			this.Order.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Order.Width = 26;
+			// 
+			// RankingRating
+			// 
+			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingRating.DefaultCellStyle = dataGridViewCellStyle11;
+			this.RankingRating.HeaderText = "Rating";
+			this.RankingRating.Name = "RankingRating";
+			this.RankingRating.ReadOnly = true;
+			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingRating.Visible = false;
+			this.RankingRating.Width = 45;
+			// 
+			// SanctionId
+			// 
+			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SanctionId.HeaderText = "SanctionId";
+			this.SanctionId.Name = "SanctionId";
+			this.SanctionId.ReadOnly = true;
+			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SanctionId.Visible = false;
+			this.SanctionId.Width = 60;
+			// 
+			// MemberId
+			// 
+			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.MemberId.HeaderText = "MemberId";
+			this.MemberId.Name = "MemberId";
+			this.MemberId.ReadOnly = true;
+			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.MemberId.Visible = false;
+			this.MemberId.Width = 60;
+			// 
+			// Event
+			// 
+			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Event.HeaderText = "Event";
+			this.Event.Name = "Event";
+			this.Event.ReadOnly = true;
+			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Event.Visible = false;
+			this.Event.Width = 50;
 			// 
 			// winStatus
 			// 
@@ -519,899 +714,6 @@
 			this.slalomRecapDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.slalomRecapDataGridView_CellValidating);
 			this.slalomRecapDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.slalomRecapDataGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.slalomRecapDataGridView_KeyUp);
-			// 
-			// noteTextBox
-			// 
-			this.noteTextBox.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.noteTextBox.Location = new System.Drawing.Point(374, 124);
-			this.noteTextBox.Margin = new System.Windows.Forms.Padding(0);
-			this.noteTextBox.Multiline = true;
-			this.noteTextBox.Name = "noteTextBox";
-			this.noteTextBox.Size = new System.Drawing.Size(371, 25);
-			this.noteTextBox.TabIndex = 25;
-			// 
-			// nopsScoreTextBox
-			// 
-			this.nopsScoreTextBox.BackColor = System.Drawing.Color.Maroon;
-			this.nopsScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsScoreTextBox.ForeColor = System.Drawing.Color.White;
-			this.nopsScoreTextBox.Location = new System.Drawing.Point(693, 455);
-			this.nopsScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.nopsScoreTextBox.Name = "nopsScoreTextBox";
-			this.nopsScoreTextBox.ReadOnly = true;
-			this.nopsScoreTextBox.Size = new System.Drawing.Size(66, 30);
-			this.nopsScoreTextBox.TabIndex = 36;
-			this.nopsScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			// 
-			// scoreTextBox
-			// 
-			this.scoreTextBox.BackColor = System.Drawing.Color.Maroon;
-			this.scoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.scoreTextBox.ForeColor = System.Drawing.Color.White;
-			this.scoreTextBox.Location = new System.Drawing.Point(631, 455);
-			this.scoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.scoreTextBox.Name = "scoreTextBox";
-			this.scoreTextBox.ReadOnly = true;
-			this.scoreTextBox.Size = new System.Drawing.Size(57, 30);
-			this.scoreTextBox.TabIndex = 35;
-			this.scoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			// 
-			// ActivePassDesc
-			// 
-			this.ActivePassDesc.BackColor = System.Drawing.SystemColors.Info;
-			this.ActivePassDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ActivePassDesc.ForeColor = System.Drawing.SystemColors.Highlight;
-			this.ActivePassDesc.Location = new System.Drawing.Point(638, 403);
-			this.ActivePassDesc.Name = "ActivePassDesc";
-			this.ActivePassDesc.Size = new System.Drawing.Size(336, 24);
-			this.ActivePassDesc.TabIndex = 27;
-			this.ActivePassDesc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// skierPassMsg
-			// 
-			this.skierPassMsg.BackColor = System.Drawing.SystemColors.Info;
-			this.skierPassMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.skierPassMsg.ForeColor = System.Drawing.Color.Red;
-			this.skierPassMsg.Location = new System.Drawing.Point(638, 377);
-			this.skierPassMsg.Name = "skierPassMsg";
-			this.skierPassMsg.Size = new System.Drawing.Size(336, 24);
-			this.skierPassMsg.TabIndex = 26;
-			this.skierPassMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// addPassButton
-			// 
-			this.addPassButton.AutoSize = true;
-			this.addPassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.addPassButton.Location = new System.Drawing.Point(277, 455);
-			this.addPassButton.Margin = new System.Windows.Forms.Padding(0);
-			this.addPassButton.Name = "addPassButton";
-			this.addPassButton.Padding = new System.Windows.Forms.Padding(1);
-			this.addPassButton.Size = new System.Drawing.Size(83, 30);
-			this.addPassButton.TabIndex = 30;
-			this.addPassButton.Text = "Add";
-			this.addPassButton.UseVisualStyleBackColor = true;
-			this.addPassButton.Click += new System.EventHandler(this.addPassButton_Click);
-			// 
-			// deletePassButton
-			// 
-			this.deletePassButton.AutoSize = true;
-			this.deletePassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.deletePassButton.Location = new System.Drawing.Point(365, 455);
-			this.deletePassButton.Margin = new System.Windows.Forms.Padding(0);
-			this.deletePassButton.Name = "deletePassButton";
-			this.deletePassButton.Padding = new System.Windows.Forms.Padding(1);
-			this.deletePassButton.Size = new System.Drawing.Size(67, 30);
-			this.deletePassButton.TabIndex = 31;
-			this.deletePassButton.Text = "Delete";
-			this.deletePassButton.UseVisualStyleBackColor = true;
-			this.deletePassButton.Click += new System.EventHandler(this.deletePassButton_Click);
-			// 
-			// optionUpButton
-			// 
-			this.optionUpButton.AutoSize = true;
-			this.optionUpButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.optionUpButton.Location = new System.Drawing.Point(437, 455);
-			this.optionUpButton.Margin = new System.Windows.Forms.Padding(0);
-			this.optionUpButton.Name = "optionUpButton";
-			this.optionUpButton.Padding = new System.Windows.Forms.Padding(1);
-			this.optionUpButton.Size = new System.Drawing.Size(70, 30);
-			this.optionUpButton.TabIndex = 32;
-			this.optionUpButton.Text = "Opt Up";
-			this.optionUpButton.UseVisualStyleBackColor = true;
-			this.optionUpButton.Click += new System.EventHandler(this.optionUpButton_Click);
-			// 
-			// listBoatTimesDataGridView
-			// 
-			this.listBoatTimesDataGridView.AllowUserToAddRows = false;
-			this.listBoatTimesDataGridView.AllowUserToDeleteRows = false;
-			this.listBoatTimesDataGridView.AllowUserToResizeColumns = false;
-			this.listBoatTimesDataGridView.AllowUserToResizeRows = false;
-			this.listBoatTimesDataGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle35.ForeColor = System.Drawing.Color.Purple;
-			dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.listBoatTimesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle35;
-			this.listBoatTimesDataGridView.ColumnHeadersHeight = 28;
-			this.listBoatTimesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-			this.listBoatTimesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.BoatTimeKey,
-            this.ListCodeNum,
-            this.FastTimeTol,
-            this.ActualTime,
-            this.SlowtimeTol,
-            this.TimeKeyDesc});
-			dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle41.BackColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle41.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle41.ForeColor = System.Drawing.Color.DarkBlue;
-			dataGridViewCellStyle41.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle41.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle41;
-			this.listBoatTimesDataGridView.GridColor = System.Drawing.SystemColors.Control;
-			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(638, 186);
-			this.listBoatTimesDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.listBoatTimesDataGridView.MultiSelect = false;
-			this.listBoatTimesDataGridView.Name = "listBoatTimesDataGridView";
-			this.listBoatTimesDataGridView.ReadOnly = true;
-			this.listBoatTimesDataGridView.RowHeadersVisible = false;
-			dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle42.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.listBoatTimesDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle42;
-			this.listBoatTimesDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.listBoatTimesDataGridView.Size = new System.Drawing.Size(336, 185);
-			this.listBoatTimesDataGridView.TabIndex = 0;
-			// 
-			// BoatTimeKey
-			// 
-			this.BoatTimeKey.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			this.BoatTimeKey.DefaultCellStyle = dataGridViewCellStyle36;
-			this.BoatTimeKey.HeaderText = "ABT-ID #";
-			this.BoatTimeKey.Name = "BoatTimeKey";
-			this.BoatTimeKey.ReadOnly = true;
-			this.BoatTimeKey.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.BoatTimeKey.Width = 60;
-			// 
-			// ListCodeNum
-			// 
-			this.ListCodeNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle37.Format = "N2";
-			dataGridViewCellStyle37.NullValue = null;
-			this.ListCodeNum.DefaultCellStyle = dataGridViewCellStyle37;
-			this.ListCodeNum.HeaderText = "ListCodeNum";
-			this.ListCodeNum.Name = "ListCodeNum";
-			this.ListCodeNum.ReadOnly = true;
-			this.ListCodeNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ListCodeNum.Visible = false;
-			this.ListCodeNum.Width = 30;
-			// 
-			// FastTimeTol
-			// 
-			this.FastTimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle38.Format = "N2";
-			dataGridViewCellStyle38.NullValue = null;
-			this.FastTimeTol.DefaultCellStyle = dataGridViewCellStyle38;
-			this.FastTimeTol.HeaderText = "Fast";
-			this.FastTimeTol.Name = "FastTimeTol";
-			this.FastTimeTol.ReadOnly = true;
-			this.FastTimeTol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.FastTimeTol.Width = 40;
-			// 
-			// ActualTime
-			// 
-			this.ActualTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle39.Format = "N2";
-			dataGridViewCellStyle39.NullValue = null;
-			this.ActualTime.DefaultCellStyle = dataGridViewCellStyle39;
-			this.ActualTime.HeaderText = "Ideal";
-			this.ActualTime.Name = "ActualTime";
-			this.ActualTime.ReadOnly = true;
-			this.ActualTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ActualTime.Width = 40;
-			// 
-			// SlowtimeTol
-			// 
-			this.SlowtimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle40.Format = "N2";
-			dataGridViewCellStyle40.NullValue = null;
-			this.SlowtimeTol.DefaultCellStyle = dataGridViewCellStyle40;
-			this.SlowtimeTol.HeaderText = "Slow";
-			this.SlowtimeTol.Name = "SlowtimeTol";
-			this.SlowtimeTol.ReadOnly = true;
-			this.SlowtimeTol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SlowtimeTol.Width = 40;
-			// 
-			// TimeKeyDesc
-			// 
-			this.TimeKeyDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TimeKeyDesc.HeaderText = "Description";
-			this.TimeKeyDesc.Name = "TimeKeyDesc";
-			this.TimeKeyDesc.ReadOnly = true;
-			this.TimeKeyDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TimeKeyDesc.Width = 125;
-			// 
-			// topMenuNav
-			// 
-			this.topMenuNav.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.topMenuNav.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.navRefresh,
-            this.navPrint,
-            this.navExport,
-            this.navFilter,
-            this.navSort,
-            this.navSaveItem,
-            this.navLiveWeb,
-            this.navExportRecord});
-			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
-			this.topMenuNav.Name = "topMenuNav";
-			this.topMenuNav.Size = new System.Drawing.Size(1258, 47);
-			this.topMenuNav.TabIndex = 52;
-			this.topMenuNav.Text = "toolStrip1";
-			// 
-			// navRefresh
-			// 
-			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navRefresh.Name = "navRefresh";
-			this.navRefresh.Size = new System.Drawing.Size(62, 44);
-			this.navRefresh.Text = "Refresh";
-			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
-			// 
-			// navPrint
-			// 
-			this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
-			this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navPrint.Name = "navPrint";
-			this.navPrint.Size = new System.Drawing.Size(43, 44);
-			this.navPrint.Text = "Print";
-			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navPrint.Click += new System.EventHandler(this.navPrintResults_Click);
-			// 
-			// navExport
-			// 
-			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
-			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(56, 44);
-			this.navExport.Text = "Export";
-			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExport.Click += new System.EventHandler(this.navExport_Click);
-			// 
-			// navFilter
-			// 
-			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
-			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navFilter.Name = "navFilter";
-			this.navFilter.Size = new System.Drawing.Size(46, 44);
-			this.navFilter.Text = "Filter";
-			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
-			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
-			// 
-			// navSort
-			// 
-			this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
-			this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navSort.Name = "navSort";
-			this.navSort.Size = new System.Drawing.Size(40, 44);
-			this.navSort.Text = "Sort";
-			this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navSort.ToolTipText = "Sort skier list by specified criteria using dialog window";
-			this.navSort.Click += new System.EventHandler(this.navSort_Click);
-			// 
-			// navSaveItem
-			// 
-			this.navSaveItem.Image = ((System.Drawing.Image)(resources.GetObject("navSaveItem.Image")));
-			this.navSaveItem.Name = "navSaveItem";
-			this.navSaveItem.Size = new System.Drawing.Size(44, 44);
-			this.navSaveItem.Text = "Save";
-			this.navSaveItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navSaveItem.Click += new System.EventHandler(this.navSaveItem_Click);
-			// 
-			// navLiveWeb
-			// 
-			this.navLiveWeb.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
-			this.navLiveWeb.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navLiveWeb.Name = "navLiveWeb";
-			this.navLiveWeb.Size = new System.Drawing.Size(73, 44);
-			this.navLiveWeb.Text = "Live Web";
-			this.navLiveWeb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navLiveWeb.Click += new System.EventHandler(this.navLiveWeb_Click);
-			// 
-			// navExportRecord
-			// 
-			this.navExportRecord.Image = global::WaterskiScoringSystem.Properties.Resources.DVDVR;
-			this.navExportRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExportRecord.Name = "navExportRecord";
-			this.navExportRecord.Size = new System.Drawing.Size(107, 44);
-			this.navExportRecord.Text = "Export Record";
-			this.navExportRecord.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExportRecord.Click += new System.EventHandler(this.navExportRecord_Click);
-			// 
-			// ClassR3JudgeCB
-			// 
-			this.ClassR3JudgeCB.AutoSize = true;
-			this.ClassR3JudgeCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ClassR3JudgeCB.Location = new System.Drawing.Point(408, 47);
-			this.ClassR3JudgeCB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.ClassR3JudgeCB.Name = "ClassR3JudgeCB";
-			this.ClassR3JudgeCB.Size = new System.Drawing.Size(197, 24);
-			this.ClassR3JudgeCB.TabIndex = 0;
-			this.ClassR3JudgeCB.TabStop = false;
-			this.ClassR3JudgeCB.Text = "Use 3 Judges (video in use)";
-			this.ClassR3JudgeCB.UseVisualStyleBackColor = true;
-			this.ClassR3JudgeCB.CheckedChanged += new System.EventHandler(this.ClassR3JudgeCB_CheckedChanged);
-			// 
-			// ClassC5JudgeCB
-			// 
-			this.ClassC5JudgeCB.AutoSize = true;
-			this.ClassC5JudgeCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ClassC5JudgeCB.Location = new System.Drawing.Point(617, 47);
-			this.ClassC5JudgeCB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.ClassC5JudgeCB.Name = "ClassC5JudgeCB";
-			this.ClassC5JudgeCB.Size = new System.Drawing.Size(112, 24);
-			this.ClassC5JudgeCB.TabIndex = 0;
-			this.ClassC5JudgeCB.TabStop = false;
-			this.ClassC5JudgeCB.Text = "Use 5 Judges";
-			this.ClassC5JudgeCB.UseVisualStyleBackColor = true;
-			this.ClassC5JudgeCB.CheckedChanged += new System.EventHandler(this.ClassC5JudgeCB_CheckedChanged);
-			// 
-			// TourBoatTextbox
-			// 
-			this.TourBoatTextbox.BackColor = System.Drawing.Color.FloralWhite;
-			this.TourBoatTextbox.Location = new System.Drawing.Point(834, 458);
-			this.TourBoatTextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.TourBoatTextbox.Name = "TourBoatTextbox";
-			this.TourBoatTextbox.ReadOnly = true;
-			this.TourBoatTextbox.Size = new System.Drawing.Size(125, 25);
-			this.TourBoatTextbox.TabIndex = 38;
-			this.TourBoatTextbox.WordWrap = false;
-			this.TourBoatTextbox.TextChanged += new System.EventHandler(this.TourBoatTextbox_TextChanged);
-			// 
-			// listApprovedBoatsDataGridView
-			// 
-			this.listApprovedBoatsDataGridView.AllowUserToAddRows = false;
-			this.listApprovedBoatsDataGridView.AllowUserToDeleteRows = false;
-			this.listApprovedBoatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.listApprovedBoatsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-			dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle43.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle43.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle43.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle43.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listApprovedBoatsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle43;
-			this.listApprovedBoatsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.listApprovedBoatsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.BoatModelApproved,
-            this.EngineSpec,
-            this.SpeedControl,
-            this.HullStatus,
-            this.FuelDel,
-            this.Transmission,
-            this.Prop,
-            this.BoatCode,
-            this.BoatOwner,
-            this.BoatNotes});
-			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(273, 540);
-			this.listApprovedBoatsDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
-			this.listApprovedBoatsDataGridView.RowHeadersVisible = false;
-			dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle51;
-			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(933, 354);
-			this.listApprovedBoatsDataGridView.TabIndex = 1;
-			this.listApprovedBoatsDataGridView.TabStop = false;
-			this.listApprovedBoatsDataGridView.Visible = false;
-			this.listApprovedBoatsDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listApprovedBoatsDataGridView_CellContentDoubleClick);
-			// 
-			// BoatModelApproved
-			// 
-			this.BoatModelApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle44.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle44;
-			this.BoatModelApproved.HeaderText = "Boat Model";
-			this.BoatModelApproved.Name = "BoatModelApproved";
-			this.BoatModelApproved.Width = 180;
-			// 
-			// EngineSpec
-			// 
-			this.EngineSpec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle45.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle45;
-			this.EngineSpec.HeaderText = "Engine Mfr. & Model";
-			this.EngineSpec.Name = "EngineSpec";
-			this.EngineSpec.Width = 180;
-			// 
-			// SpeedControl
-			// 
-			this.SpeedControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle46.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle46;
-			this.SpeedControl.HeaderText = "Speed Control";
-			this.SpeedControl.Name = "SpeedControl";
-			this.SpeedControl.Width = 75;
-			// 
-			// HullStatus
-			// 
-			this.HullStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle47.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle47;
-			this.HullStatus.HeaderText = "Hull Status";
-			this.HullStatus.Name = "HullStatus";
-			this.HullStatus.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HullStatus.Width = 75;
-			// 
-			// FuelDel
-			// 
-			this.FuelDel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle48;
-			this.FuelDel.HeaderText = "Fuel Del";
-			this.FuelDel.Name = "FuelDel";
-			this.FuelDel.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.FuelDel.Visible = false;
-			this.FuelDel.Width = 50;
-			// 
-			// Transmission
-			// 
-			this.Transmission.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle49.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Transmission.DefaultCellStyle = dataGridViewCellStyle49;
-			this.Transmission.HeaderText = "Trans";
-			this.Transmission.Name = "Transmission";
-			this.Transmission.Visible = false;
-			// 
-			// Prop
-			// 
-			this.Prop.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle50.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle50.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Prop.DefaultCellStyle = dataGridViewCellStyle50;
-			this.Prop.HeaderText = "Prop";
-			this.Prop.Name = "Prop";
-			this.Prop.Visible = false;
-			this.Prop.Width = 150;
-			// 
-			// BoatCode
-			// 
-			this.BoatCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatCode.HeaderText = "Boat Code";
-			this.BoatCode.Name = "BoatCode";
-			this.BoatCode.Width = 75;
-			// 
-			// BoatOwner
-			// 
-			this.BoatOwner.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatOwner.HeaderText = "Owner";
-			this.BoatOwner.MaxInputLength = 128;
-			this.BoatOwner.Name = "BoatOwner";
-			this.BoatOwner.ReadOnly = true;
-			// 
-			// BoatNotes
-			// 
-			this.BoatNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatNotes.HeaderText = "Notes";
-			this.BoatNotes.MaxInputLength = 255;
-			this.BoatNotes.Name = "BoatNotes";
-			this.BoatNotes.ReadOnly = true;
-			this.BoatNotes.Width = 150;
-			// 
-			// BoatSelectInfoLabel
-			// 
-			this.BoatSelectInfoLabel.AutoSize = true;
-			this.BoatSelectInfoLabel.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.BoatSelectInfoLabel.Location = new System.Drawing.Point(100, 13);
-			this.BoatSelectInfoLabel.Name = "BoatSelectInfoLabel";
-			this.BoatSelectInfoLabel.Size = new System.Drawing.Size(414, 19);
-			this.BoatSelectInfoLabel.TabIndex = 0;
-			this.BoatSelectInfoLabel.Text = "Double click on entry or click on Select Boat button";
-			// 
-			// EventRunInfoLabel
-			// 
-			this.EventRunInfoLabel.BackColor = System.Drawing.Color.DimGray;
-			this.EventRunInfoLabel.Font = new System.Drawing.Font("Arial Narrow", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventRunInfoLabel.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunInfoLabel.Location = new System.Drawing.Point(4, 9);
-			this.EventRunInfoLabel.Name = "EventRunInfoLabel";
-			this.EventRunInfoLabel.Size = new System.Drawing.Size(81, 58);
-			this.EventRunInfoLabel.TabIndex = 0;
-			this.EventRunInfoLabel.Text = "Event Start: \\n Event Delay: \\n Skier, Passes:";
-			this.EventRunInfoLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			// 
-			// EventRunPerfLabel
-			// 
-			this.EventRunPerfLabel.BackColor = System.Drawing.Color.DimGray;
-			this.EventRunPerfLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventRunPerfLabel.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunPerfLabel.Location = new System.Drawing.Point(160, 9);
-			this.EventRunPerfLabel.Name = "EventRunPerfLabel";
-			this.EventRunPerfLabel.Size = new System.Drawing.Size(127, 58);
-			this.EventRunPerfLabel.TabIndex = 0;
-			this.EventRunPerfLabel.Text = "Event Duration:\\n Mins Per Skiers: \\n Mins Per Passes: ";
-			this.EventRunPerfLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			// 
-			// EventRunPerfData
-			// 
-			this.EventRunPerfData.BackColor = System.Drawing.Color.DimGray;
-			this.EventRunPerfData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventRunPerfData.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunPerfData.Location = new System.Drawing.Point(287, 9);
-			this.EventRunPerfData.Name = "EventRunPerfData";
-			this.EventRunPerfData.Size = new System.Drawing.Size(35, 58);
-			this.EventRunPerfData.TabIndex = 0;
-			this.EventRunPerfData.Text = "00:00 \\n 00:00";
-			// 
-			// EventRunInfoData
-			// 
-			this.EventRunInfoData.BackColor = System.Drawing.Color.DimGray;
-			this.EventRunInfoData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventRunInfoData.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunInfoData.Location = new System.Drawing.Point(85, 9);
-			this.EventRunInfoData.Name = "EventRunInfoData";
-			this.EventRunInfoData.Size = new System.Drawing.Size(52, 58);
-			this.EventRunInfoData.TabIndex = 0;
-			this.EventRunInfoData.Text = "HH:MM-HH:MM-  000, 000";
-			// 
-			// BoatSelectButton
-			// 
-			this.BoatSelectButton.AutoSize = true;
-			this.BoatSelectButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.BoatSelectButton.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.BoatSelectButton.Image = global::WaterskiScoringSystem.Properties.Resources.arrow_down;
-			this.BoatSelectButton.Location = new System.Drawing.Point(964, 457);
-			this.BoatSelectButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.BoatSelectButton.Name = "BoatSelectButton";
-			this.BoatSelectButton.Size = new System.Drawing.Size(22, 25);
-			this.BoatSelectButton.TabIndex = 39;
-			this.BoatSelectButton.UseVisualStyleBackColor = true;
-			this.BoatSelectButton.Click += new System.EventHandler(this.BoatSelectButton_Click);
-			// 
-			// PauseTimerButton
-			// 
-			this.PauseTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.pause;
-			this.PauseTimerButton.Location = new System.Drawing.Point(138, 10);
-			this.PauseTimerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.PauseTimerButton.Name = "PauseTimerButton";
-			this.PauseTimerButton.Size = new System.Drawing.Size(20, 29);
-			this.PauseTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-			this.PauseTimerButton.TabIndex = 48;
-			this.PauseTimerButton.TabStop = false;
-			this.PauseTimerButton.Click += new System.EventHandler(this.PauseTimerButton_Click);
-			// 
-			// StartTimerButton
-			// 
-			this.StartTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.play;
-			this.StartTimerButton.Location = new System.Drawing.Point(138, 38);
-			this.StartTimerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.StartTimerButton.Name = "StartTimerButton";
-			this.StartTimerButton.Size = new System.Drawing.Size(20, 29);
-			this.StartTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-			this.StartTimerButton.TabIndex = 49;
-			this.StartTimerButton.TabStop = false;
-			this.StartTimerButton.Click += new System.EventHandler(this.StartTimerButton_Click);
-			// 
-			// EventDelayReasonTextBox
-			// 
-			this.EventDelayReasonTextBox.BackColor = System.Drawing.Color.PaleGoldenrod;
-			this.EventDelayReasonTextBox.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventDelayReasonTextBox.ForeColor = System.Drawing.Color.Black;
-			this.EventDelayReasonTextBox.Location = new System.Drawing.Point(4, 91);
-			this.EventDelayReasonTextBox.Margin = new System.Windows.Forms.Padding(1);
-			this.EventDelayReasonTextBox.MaxLength = 128;
-			this.EventDelayReasonTextBox.Name = "EventDelayReasonTextBox";
-			this.EventDelayReasonTextBox.Size = new System.Drawing.Size(318, 26);
-			this.EventDelayReasonTextBox.TabIndex = 0;
-			this.EventDelayReasonTextBox.Text = "Event delay reason to be written to log";
-			// 
-			// EventDelayReasonLabel
-			// 
-			this.EventDelayReasonLabel.AutoSize = true;
-			this.EventDelayReasonLabel.BackColor = System.Drawing.Color.DimGray;
-			this.EventDelayReasonLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EventDelayReasonLabel.ForeColor = System.Drawing.Color.White;
-			this.EventDelayReasonLabel.Location = new System.Drawing.Point(4, 67);
-			this.EventDelayReasonLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-			this.EventDelayReasonLabel.Name = "EventDelayReasonLabel";
-			this.EventDelayReasonLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-			this.EventDelayReasonLabel.Size = new System.Drawing.Size(239, 22);
-			this.EventDelayReasonLabel.TabIndex = 0;
-			this.EventDelayReasonLabel.Text = "Event delay reason to be written to log";
-			this.EventDelayReasonLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.ScrollBar;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(5, 162);
-			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(240, 21);
-			this.RowStatusLabel.TabIndex = 0;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
-			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-			// 
-			// activeSkierName
-			// 
-			this.activeSkierName.AutoEllipsis = true;
-			this.activeSkierName.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.activeSkierName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-			this.activeSkierName.Location = new System.Drawing.Point(479, 94);
-			this.activeSkierName.Name = "activeSkierName";
-			this.activeSkierName.Size = new System.Drawing.Size(266, 26);
-			this.activeSkierName.TabIndex = 0;
-			this.activeSkierName.Text = "Active Skier Name";
-			// 
-			// ForceCompButton
-			// 
-			this.ForceCompButton.AutoSize = true;
-			this.ForceCompButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ForceCompButton.Location = new System.Drawing.Point(512, 454);
-			this.ForceCompButton.Margin = new System.Windows.Forms.Padding(0);
-			this.ForceCompButton.Name = "ForceCompButton";
-			this.ForceCompButton.Padding = new System.Windows.Forms.Padding(1);
-			this.ForceCompButton.Size = new System.Drawing.Size(99, 33);
-			this.ForceCompButton.TabIndex = 33;
-			this.ForceCompButton.Text = "Skier Done";
-			this.ForceCompButton.UseVisualStyleBackColor = true;
-			this.ForceCompButton.Click += new System.EventHandler(this.ForceCompButton_Click);
-			// 
-			// RefreshLabel1
-			// 
-			this.RefreshLabel1.AutoSize = true;
-			this.RefreshLabel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.RefreshLabel1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RefreshLabel1.ForeColor = System.Drawing.Color.Firebrick;
-			this.RefreshLabel1.Location = new System.Drawing.Point(5, 47);
-			this.RefreshLabel1.Margin = new System.Windows.Forms.Padding(0);
-			this.RefreshLabel1.Name = "RefreshLabel1";
-			this.RefreshLabel1.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
-			this.RefreshLabel1.Size = new System.Drawing.Size(267, 21);
-			this.RefreshLabel1.TabIndex = 0;
-			this.RefreshLabel1.Text = "Select group and Refresh for skier list";
-			// 
-			// EventGroupList
-			// 
-			this.EventGroupList.FormattingEnabled = true;
-			this.EventGroupList.Location = new System.Drawing.Point(211, 95);
-			this.EventGroupList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.EventGroupList.Name = "EventGroupList";
-			this.EventGroupList.Size = new System.Drawing.Size(85, 28);
-			this.EventGroupList.TabIndex = 10;
-			this.EventGroupList.SelectedIndexChanged += new System.EventHandler(this.EventGroupList_SelectedIndexChanged);
-			// 
-			// scoreLabel
-			// 
-			this.scoreLabel.AutoSize = true;
-			this.scoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.scoreLabel.Location = new System.Drawing.Point(637, 439);
-			this.scoreLabel.Name = "scoreLabel";
-			this.scoreLabel.Size = new System.Drawing.Size(50, 17);
-			this.scoreLabel.TabIndex = 0;
-			this.scoreLabel.Text = "Score";
-			this.scoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// nopsScoreLabel
-			// 
-			this.nopsScoreLabel.AutoSize = true;
-			this.nopsScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsScoreLabel.Location = new System.Drawing.Point(708, 439);
-			this.nopsScoreLabel.Name = "nopsScoreLabel";
-			this.nopsScoreLabel.Size = new System.Drawing.Size(51, 17);
-			this.nopsScoreLabel.TabIndex = 0;
-			this.nopsScoreLabel.Text = "NOPS";
-			this.nopsScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// scoreEventClass
-			// 
-			this.scoreEventClass.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.scoreEventClass.ForeColor = System.Drawing.SystemColors.HotTrack;
-			this.scoreEventClass.FormattingEnabled = true;
-			this.scoreEventClass.Location = new System.Drawing.Point(374, 95);
-			this.scoreEventClass.Margin = new System.Windows.Forms.Padding(0);
-			this.scoreEventClass.MaxLength = 24;
-			this.scoreEventClass.Name = "scoreEventClass";
-			this.scoreEventClass.Size = new System.Drawing.Size(100, 25);
-			this.scoreEventClass.TabIndex = 101;
-			this.scoreEventClass.SelectedIndexChanged += new System.EventHandler(this.scoreEventClass_SelectedIndexChanged);
-			this.scoreEventClass.Validating += new System.ComponentModel.CancelEventHandler(this.scoreEventClass_Validating);
-			// 
-			// ResizeWide
-			// 
-			this.ResizeWide.AutoSize = true;
-			this.ResizeWide.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.ResizeWide.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-			this.ResizeWide.ForeColor = System.Drawing.Color.Navy;
-			this.ResizeWide.Location = new System.Drawing.Point(243, 162);
-			this.ResizeWide.Name = "ResizeWide";
-			this.ResizeWide.Size = new System.Drawing.Size(27, 22);
-			this.ResizeWide.TabIndex = 103;
-			this.ResizeWide.Text = "Ø";
-			this.ResizeWide.Click += new System.EventHandler(this.ResizeWide_Click);
-			// 
-			// ResizeNarrow
-			// 
-			this.ResizeNarrow.AutoSize = true;
-			this.ResizeNarrow.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.ResizeNarrow.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-			this.ResizeNarrow.ForeColor = System.Drawing.Color.Navy;
-			this.ResizeNarrow.Location = new System.Drawing.Point(243, 164);
-			this.ResizeNarrow.Name = "ResizeNarrow";
-			this.ResizeNarrow.Size = new System.Drawing.Size(27, 22);
-			this.ResizeNarrow.TabIndex = 102;
-			this.ResizeNarrow.Text = "×";
-			this.ResizeNarrow.Click += new System.EventHandler(this.ResizeNarrow_Click);
-			// 
-			// approvedBoatSelectGroupBox
-			// 
-			this.approvedBoatSelectGroupBox.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.approvedBoatSelectGroupBox.Controls.Add(this.refreshBoatListButton);
-			this.approvedBoatSelectGroupBox.Controls.Add(this.selectBoatButton);
-			this.approvedBoatSelectGroupBox.Controls.Add(this.BoatSelectInfoLabel);
-			this.approvedBoatSelectGroupBox.Location = new System.Drawing.Point(274, 495);
-			this.approvedBoatSelectGroupBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.approvedBoatSelectGroupBox.Name = "approvedBoatSelectGroupBox";
-			this.approvedBoatSelectGroupBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.approvedBoatSelectGroupBox.Size = new System.Drawing.Size(536, 44);
-			this.approvedBoatSelectGroupBox.TabIndex = 0;
-			this.approvedBoatSelectGroupBox.TabStop = false;
-			// 
-			// refreshBoatListButton
-			// 
-			this.refreshBoatListButton.BackColor = System.Drawing.Color.Maroon;
-			this.refreshBoatListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.refreshBoatListButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.refreshBoatListButton.ForeColor = System.Drawing.Color.White;
-			this.refreshBoatListButton.Location = new System.Drawing.Point(456, 9);
-			this.refreshBoatListButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.refreshBoatListButton.Name = "refreshBoatListButton";
-			this.refreshBoatListButton.Size = new System.Drawing.Size(74, 27);
-			this.refreshBoatListButton.TabIndex = 2;
-			this.refreshBoatListButton.Text = "Refresh List";
-			this.refreshBoatListButton.UseVisualStyleBackColor = false;
-			this.refreshBoatListButton.Click += new System.EventHandler(this.refreshBoatListButton_Click);
-			// 
-			// selectBoatButton
-			// 
-			this.selectBoatButton.BackColor = System.Drawing.Color.Maroon;
-			this.selectBoatButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.selectBoatButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.selectBoatButton.ForeColor = System.Drawing.Color.White;
-			this.selectBoatButton.Location = new System.Drawing.Point(5, 9);
-			this.selectBoatButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.selectBoatButton.Name = "selectBoatButton";
-			this.selectBoatButton.Size = new System.Drawing.Size(74, 27);
-			this.selectBoatButton.TabIndex = 1;
-			this.selectBoatButton.Text = "Select Boat";
-			this.selectBoatButton.UseVisualStyleBackColor = false;
-			this.selectBoatButton.Click += new System.EventHandler(this.selectBoatButton_Click);
-			// 
-			// hcapScoreLabel
-			// 
-			this.hcapScoreLabel.AutoSize = true;
-			this.hcapScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.hcapScoreLabel.Location = new System.Drawing.Point(778, 439);
-			this.hcapScoreLabel.Name = "hcapScoreLabel";
-			this.hcapScoreLabel.Size = new System.Drawing.Size(47, 17);
-			this.hcapScoreLabel.TabIndex = 0;
-			this.hcapScoreLabel.Text = "HCap";
-			this.hcapScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// hcapScoreTextBox
-			// 
-			this.hcapScoreTextBox.BackColor = System.Drawing.Color.Maroon;
-			this.hcapScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.hcapScoreTextBox.ForeColor = System.Drawing.Color.White;
-			this.hcapScoreTextBox.Location = new System.Drawing.Point(763, 455);
-			this.hcapScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.hcapScoreTextBox.Name = "hcapScoreTextBox";
-			this.hcapScoreTextBox.ReadOnly = true;
-			this.hcapScoreTextBox.Size = new System.Drawing.Size(66, 30);
-			this.hcapScoreTextBox.TabIndex = 37;
-			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			// 
-			// EventRunInfoBox
-			// 
-			this.EventRunInfoBox.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.EventRunInfoBox.Controls.Add(this.EventRunInfoLabel);
-			this.EventRunInfoBox.Controls.Add(this.EventRunPerfLabel);
-			this.EventRunInfoBox.Controls.Add(this.EventRunPerfData);
-			this.EventRunInfoBox.Controls.Add(this.EventRunInfoData);
-			this.EventRunInfoBox.Controls.Add(this.PauseTimerButton);
-			this.EventRunInfoBox.Controls.Add(this.StartTimerButton);
-			this.EventRunInfoBox.Controls.Add(this.EventDelayReasonTextBox);
-			this.EventRunInfoBox.Controls.Add(this.EventDelayReasonLabel);
-			this.EventRunInfoBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.EventRunInfoBox.Location = new System.Drawing.Point(749, 42);
-			this.EventRunInfoBox.Margin = new System.Windows.Forms.Padding(1);
-			this.EventRunInfoBox.Name = "EventRunInfoBox";
-			this.EventRunInfoBox.Padding = new System.Windows.Forms.Padding(1);
-			this.EventRunInfoBox.Size = new System.Drawing.Size(330, 120);
-			this.EventRunInfoBox.TabIndex = 0;
-			this.EventRunInfoBox.TabStop = false;
-			// 
-			// roundActiveSelect
-			// 
-			this.roundActiveSelect.AutoScroll = true;
-			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundActiveSelect.Location = new System.Drawing.Point(5, 95);
-			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(0);
-			this.roundActiveSelect.Name = "roundActiveSelect";
-			this.roundActiveSelect.RoundValue = "";
-			this.roundActiveSelect.Size = new System.Drawing.Size(204, 64);
-			this.roundActiveSelect.TabIndex = 11;
-			this.roundActiveSelect.Tag = "";
-			// 
-			// roundSelect
-			// 
-			this.roundSelect.AutoScroll = true;
-			this.roundSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundSelect.Location = new System.Drawing.Point(272, 186);
-			this.roundSelect.Margin = new System.Windows.Forms.Padding(0);
-			this.roundSelect.Name = "roundSelect";
-			this.roundSelect.RoundValue = "";
-			this.roundSelect.Size = new System.Drawing.Size(60, 93);
-			this.roundSelect.TabIndex = 20;
-			this.roundSelect.Tag = "";
-			this.roundSelect.Load += new System.EventHandler(this.roundSelect_Load);
-			// 
-			// SlalomLineSelect
-			// 
-			this.SlalomLineSelect.BackColor = System.Drawing.Color.Silver;
-			this.SlalomLineSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.SlalomLineSelect.CurrentShowValueNum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-			this.SlalomLineSelect.CurrentValue = "";
-			this.SlalomLineSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SlalomLineSelect.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.SlalomLineSelect.Location = new System.Drawing.Point(456, 186);
-			this.SlalomLineSelect.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-			this.SlalomLineSelect.Name = "SlalomLineSelect";
-			this.SlalomLineSelect.Size = new System.Drawing.Size(180, 220);
-			this.SlalomLineSelect.TabIndex = 22;
-			this.SlalomLineSelect.Tag = "";
-			this.SlalomLineSelect.Load += new System.EventHandler(this.SlalomLineSelect_Load);
-			// 
-			// SlalomSpeedSelection
-			// 
-			this.SlalomSpeedSelection.BackColor = System.Drawing.Color.Silver;
-			this.SlalomSpeedSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.SlalomSpeedSelection.CurrentShowSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.CurrentValueDesc = "";
-			this.SlalomSpeedSelection.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SlalomSpeedSelection.Location = new System.Drawing.Point(334, 186);
-			this.SlalomSpeedSelection.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-			this.SlalomSpeedSelection.MaxSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.MinSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.Name = "SlalomSpeedSelection";
-			this.SlalomSpeedSelection.SelectSpeekKph = ((short)(0));
-			this.SlalomSpeedSelection.Size = new System.Drawing.Size(120, 220);
-			this.SlalomSpeedSelection.TabIndex = 21;
-			this.SlalomSpeedSelection.Tag = "";
-			this.SlalomSpeedSelection.Load += new System.EventHandler(this.SlalomSpeedSelect_Load);
 			// 
 			// RoundRecap
 			// 
@@ -1798,204 +1100,902 @@
 			this.Updated.Visible = false;
 			this.Updated.Width = 25;
 			// 
-			// SkierName
+			// noteTextBox
 			// 
-			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SkierName.HeaderText = "Skier";
-			this.SkierName.Name = "SkierName";
-			this.SkierName.ReadOnly = true;
-			this.SkierName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.noteTextBox.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.noteTextBox.Location = new System.Drawing.Point(374, 124);
+			this.noteTextBox.Margin = new System.Windows.Forms.Padding(0);
+			this.noteTextBox.Multiline = true;
+			this.noteTextBox.Name = "noteTextBox";
+			this.noteTextBox.Size = new System.Drawing.Size(371, 25);
+			this.noteTextBox.TabIndex = 25;
 			// 
-			// AgeGroup
+			// nopsScoreTextBox
 			// 
-			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle2;
-			this.AgeGroup.HeaderText = "Div";
-			this.AgeGroup.Name = "AgeGroup";
-			this.AgeGroup.ReadOnly = true;
-			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.AgeGroup.ToolTipText = "Federation age group";
-			this.AgeGroup.Width = 26;
+			this.nopsScoreTextBox.BackColor = System.Drawing.Color.Maroon;
+			this.nopsScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.nopsScoreTextBox.ForeColor = System.Drawing.Color.White;
+			this.nopsScoreTextBox.Location = new System.Drawing.Point(693, 455);
+			this.nopsScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.nopsScoreTextBox.Name = "nopsScoreTextBox";
+			this.nopsScoreTextBox.ReadOnly = true;
+			this.nopsScoreTextBox.Size = new System.Drawing.Size(66, 26);
+			this.nopsScoreTextBox.TabIndex = 36;
+			this.nopsScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// TeamCode
+			// scoreTextBox
 			// 
-			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TeamCode.HeaderText = "Team";
-			this.TeamCode.Name = "TeamCode";
-			this.TeamCode.ReadOnly = true;
-			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.TeamCode.Width = 50;
+			this.scoreTextBox.BackColor = System.Drawing.Color.Maroon;
+			this.scoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.scoreTextBox.ForeColor = System.Drawing.Color.White;
+			this.scoreTextBox.Location = new System.Drawing.Point(631, 455);
+			this.scoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.scoreTextBox.Name = "scoreTextBox";
+			this.scoreTextBox.ReadOnly = true;
+			this.scoreTextBox.Size = new System.Drawing.Size(57, 26);
+			this.scoreTextBox.TabIndex = 35;
+			this.scoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// EventClass
+			// ActivePassDesc
 			// 
-			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle3;
-			this.EventClass.HeaderText = "Cls";
-			this.EventClass.Name = "EventClass";
-			this.EventClass.ReadOnly = true;
-			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventClass.Width = 26;
+			this.ActivePassDesc.BackColor = System.Drawing.SystemColors.Info;
+			this.ActivePassDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ActivePassDesc.ForeColor = System.Drawing.SystemColors.Highlight;
+			this.ActivePassDesc.Location = new System.Drawing.Point(638, 403);
+			this.ActivePassDesc.Name = "ActivePassDesc";
+			this.ActivePassDesc.Size = new System.Drawing.Size(336, 24);
+			this.ActivePassDesc.TabIndex = 27;
+			this.ActivePassDesc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// EventGroup
+			// skierPassMsg
 			// 
-			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle4;
-			this.EventGroup.HeaderText = "Grp";
-			this.EventGroup.Name = "EventGroup";
-			this.EventGroup.ReadOnly = true;
-			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventGroup.Width = 27;
+			this.skierPassMsg.BackColor = System.Drawing.SystemColors.Info;
+			this.skierPassMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.skierPassMsg.ForeColor = System.Drawing.Color.Red;
+			this.skierPassMsg.Location = new System.Drawing.Point(638, 377);
+			this.skierPassMsg.Name = "skierPassMsg";
+			this.skierPassMsg.Size = new System.Drawing.Size(336, 24);
+			this.skierPassMsg.TabIndex = 26;
+			this.skierPassMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// Score
+			// addPassButton
 			// 
-			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle5.Format = "N2";
-			dataGridViewCellStyle5.NullValue = null;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle5;
-			this.Score.HeaderText = "Score";
-			this.Score.Name = "Score";
-			this.Score.ReadOnly = true;
-			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Score.Width = 40;
+			this.addPassButton.AutoSize = true;
+			this.addPassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.addPassButton.Location = new System.Drawing.Point(277, 455);
+			this.addPassButton.Margin = new System.Windows.Forms.Padding(0);
+			this.addPassButton.Name = "addPassButton";
+			this.addPassButton.Padding = new System.Windows.Forms.Padding(1);
+			this.addPassButton.Size = new System.Drawing.Size(83, 30);
+			this.addPassButton.TabIndex = 30;
+			this.addPassButton.Text = "Add";
+			this.addPassButton.UseVisualStyleBackColor = true;
+			this.addPassButton.Click += new System.EventHandler(this.addPassButton_Click);
 			// 
-			// ScoreWithHcap
+			// deletePassButton
 			// 
-			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.Format = "N2";
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle6;
-			this.ScoreWithHcap.HeaderText = "ScoreH";
-			this.ScoreWithHcap.Name = "ScoreWithHcap";
-			this.ScoreWithHcap.ReadOnly = true;
-			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.ScoreWithHcap.Width = 45;
+			this.deletePassButton.AutoSize = true;
+			this.deletePassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.deletePassButton.Location = new System.Drawing.Point(365, 455);
+			this.deletePassButton.Margin = new System.Windows.Forms.Padding(0);
+			this.deletePassButton.Name = "deletePassButton";
+			this.deletePassButton.Padding = new System.Windows.Forms.Padding(1);
+			this.deletePassButton.Size = new System.Drawing.Size(67, 30);
+			this.deletePassButton.TabIndex = 31;
+			this.deletePassButton.Text = "Delete";
+			this.deletePassButton.UseVisualStyleBackColor = true;
+			this.deletePassButton.Click += new System.EventHandler(this.deletePassButton_Click);
 			// 
-			// RankingScore
+			// optionUpButton
 			// 
-			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle7;
-			this.RankingScore.HeaderText = "Rank";
-			this.RankingScore.Name = "RankingScore";
-			this.RankingScore.ReadOnly = true;
-			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingScore.Width = 40;
+			this.optionUpButton.AutoSize = true;
+			this.optionUpButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.optionUpButton.Location = new System.Drawing.Point(437, 455);
+			this.optionUpButton.Margin = new System.Windows.Forms.Padding(0);
+			this.optionUpButton.Name = "optionUpButton";
+			this.optionUpButton.Padding = new System.Windows.Forms.Padding(1);
+			this.optionUpButton.Size = new System.Drawing.Size(70, 30);
+			this.optionUpButton.TabIndex = 32;
+			this.optionUpButton.Text = "Opt Up";
+			this.optionUpButton.UseVisualStyleBackColor = true;
+			this.optionUpButton.Click += new System.EventHandler(this.optionUpButton_Click);
 			// 
-			// HCapBase
+			// listBoatTimesDataGridView
 			// 
-			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle8;
-			this.HCapBase.HeaderText = "HBase";
-			this.HCapBase.Name = "HCapBase";
-			this.HCapBase.ReadOnly = true;
-			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapBase.Width = 40;
+			this.listBoatTimesDataGridView.AllowUserToAddRows = false;
+			this.listBoatTimesDataGridView.AllowUserToDeleteRows = false;
+			this.listBoatTimesDataGridView.AllowUserToResizeColumns = false;
+			this.listBoatTimesDataGridView.AllowUserToResizeRows = false;
+			this.listBoatTimesDataGridView.BackgroundColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle35.ForeColor = System.Drawing.Color.Purple;
+			dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.listBoatTimesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle35;
+			this.listBoatTimesDataGridView.ColumnHeadersHeight = 28;
+			this.listBoatTimesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+			this.listBoatTimesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BoatTimeKey,
+            this.ListCodeNum,
+            this.FastTimeTol,
+            this.ActualTime,
+            this.SlowtimeTol,
+            this.TimeKeyDesc});
+			dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle41.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle41.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle41.ForeColor = System.Drawing.Color.DarkBlue;
+			dataGridViewCellStyle41.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle41.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle41;
+			this.listBoatTimesDataGridView.GridColor = System.Drawing.SystemColors.Control;
+			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(638, 186);
+			this.listBoatTimesDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.listBoatTimesDataGridView.MultiSelect = false;
+			this.listBoatTimesDataGridView.Name = "listBoatTimesDataGridView";
+			this.listBoatTimesDataGridView.ReadOnly = true;
+			this.listBoatTimesDataGridView.RowHeadersVisible = false;
+			dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle42.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.listBoatTimesDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle42;
+			this.listBoatTimesDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.listBoatTimesDataGridView.Size = new System.Drawing.Size(336, 185);
+			this.listBoatTimesDataGridView.TabIndex = 0;
 			// 
-			// HCapScore
+			// BoatTimeKey
 			// 
-			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle9;
-			this.HCapScore.HeaderText = "HCap";
-			this.HCapScore.Name = "HCapScore";
-			this.HCapScore.ReadOnly = true;
-			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapScore.Width = 40;
+			this.BoatTimeKey.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			this.BoatTimeKey.DefaultCellStyle = dataGridViewCellStyle36;
+			this.BoatTimeKey.HeaderText = "ABT-ID #";
+			this.BoatTimeKey.Name = "BoatTimeKey";
+			this.BoatTimeKey.ReadOnly = true;
+			this.BoatTimeKey.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatTimeKey.Width = 60;
 			// 
-			// Status
+			// ListCodeNum
 			// 
-			this.Status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Status.HeaderText = "Status";
-			this.Status.Name = "Status";
-			this.Status.ReadOnly = true;
-			this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Status.Width = 55;
+			this.ListCodeNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle37.Format = "N2";
+			dataGridViewCellStyle37.NullValue = null;
+			this.ListCodeNum.DefaultCellStyle = dataGridViewCellStyle37;
+			this.ListCodeNum.HeaderText = "ListCodeNum";
+			this.ListCodeNum.Name = "ListCodeNum";
+			this.ListCodeNum.ReadOnly = true;
+			this.ListCodeNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ListCodeNum.Visible = false;
+			this.ListCodeNum.Width = 30;
 			// 
-			// Order
+			// FastTimeTol
 			// 
-			this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Order.DefaultCellStyle = dataGridViewCellStyle10;
-			this.Order.HeaderText = "Ord";
-			this.Order.Name = "Order";
-			this.Order.ReadOnly = true;
-			this.Order.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Order.Width = 26;
+			this.FastTimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle38.Format = "N2";
+			dataGridViewCellStyle38.NullValue = null;
+			this.FastTimeTol.DefaultCellStyle = dataGridViewCellStyle38;
+			this.FastTimeTol.HeaderText = "Fast";
+			this.FastTimeTol.Name = "FastTimeTol";
+			this.FastTimeTol.ReadOnly = true;
+			this.FastTimeTol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.FastTimeTol.Width = 40;
 			// 
-			// RankingRating
+			// ActualTime
 			// 
-			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingRating.DefaultCellStyle = dataGridViewCellStyle11;
-			this.RankingRating.HeaderText = "Rating";
-			this.RankingRating.Name = "RankingRating";
-			this.RankingRating.ReadOnly = true;
-			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingRating.Visible = false;
-			this.RankingRating.Width = 45;
+			this.ActualTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle39.Format = "N2";
+			dataGridViewCellStyle39.NullValue = null;
+			this.ActualTime.DefaultCellStyle = dataGridViewCellStyle39;
+			this.ActualTime.HeaderText = "Ideal";
+			this.ActualTime.Name = "ActualTime";
+			this.ActualTime.ReadOnly = true;
+			this.ActualTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ActualTime.Width = 40;
 			// 
-			// SanctionId
+			// SlowtimeTol
 			// 
-			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SanctionId.HeaderText = "SanctionId";
-			this.SanctionId.Name = "SanctionId";
-			this.SanctionId.ReadOnly = true;
-			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SanctionId.Visible = false;
-			this.SanctionId.Width = 60;
+			this.SlowtimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle40.Format = "N2";
+			dataGridViewCellStyle40.NullValue = null;
+			this.SlowtimeTol.DefaultCellStyle = dataGridViewCellStyle40;
+			this.SlowtimeTol.HeaderText = "Slow";
+			this.SlowtimeTol.Name = "SlowtimeTol";
+			this.SlowtimeTol.ReadOnly = true;
+			this.SlowtimeTol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SlowtimeTol.Width = 40;
 			// 
-			// MemberId
+			// TimeKeyDesc
 			// 
-			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.MemberId.HeaderText = "MemberId";
-			this.MemberId.Name = "MemberId";
-			this.MemberId.ReadOnly = true;
-			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.MemberId.Visible = false;
-			this.MemberId.Width = 60;
+			this.TimeKeyDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TimeKeyDesc.HeaderText = "Description";
+			this.TimeKeyDesc.Name = "TimeKeyDesc";
+			this.TimeKeyDesc.ReadOnly = true;
+			this.TimeKeyDesc.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TimeKeyDesc.Width = 125;
 			// 
-			// Event
+			// topMenuNav
 			// 
-			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Event.HeaderText = "Event";
-			this.Event.Name = "Event";
-			this.Event.ReadOnly = true;
-			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Event.Visible = false;
-			this.Event.Width = 50;
+			this.topMenuNav.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.topMenuNav.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.navRefresh,
+            this.navPrint,
+            this.navExport,
+            this.navFilter,
+            this.navSort,
+            this.navSaveItem,
+            this.navLiveWeb,
+            this.navExportRecord});
+			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
+			this.topMenuNav.Name = "topMenuNav";
+			this.topMenuNav.Size = new System.Drawing.Size(1258, 42);
+			this.topMenuNav.TabIndex = 52;
+			this.topMenuNav.Text = "toolStrip1";
+			// 
+			// navRefresh
+			// 
+			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navRefresh.Name = "navRefresh";
+			this.navRefresh.Size = new System.Drawing.Size(50, 39);
+			this.navRefresh.Text = "Refresh";
+			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
+			// 
+			// navPrint
+			// 
+			this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
+			this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPrint.Name = "navPrint";
+			this.navPrint.Size = new System.Drawing.Size(36, 39);
+			this.navPrint.Text = "Print";
+			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPrint.Click += new System.EventHandler(this.navPrintResults_Click);
+			// 
+			// navExport
+			// 
+			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
+			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExport.Name = "navExport";
+			this.navExport.Size = new System.Drawing.Size(45, 39);
+			this.navExport.Text = "Export";
+			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExport.Click += new System.EventHandler(this.navExport_Click);
+			// 
+			// navFilter
+			// 
+			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
+			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navFilter.Name = "navFilter";
+			this.navFilter.Size = new System.Drawing.Size(37, 39);
+			this.navFilter.Text = "Filter";
+			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
+			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
+			// 
+			// navSort
+			// 
+			this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
+			this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navSort.Name = "navSort";
+			this.navSort.Size = new System.Drawing.Size(32, 39);
+			this.navSort.Text = "Sort";
+			this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSort.ToolTipText = "Sort skier list by specified criteria using dialog window";
+			this.navSort.Click += new System.EventHandler(this.navSort_Click);
+			// 
+			// navSaveItem
+			// 
+			this.navSaveItem.Image = ((System.Drawing.Image)(resources.GetObject("navSaveItem.Image")));
+			this.navSaveItem.Name = "navSaveItem";
+			this.navSaveItem.Size = new System.Drawing.Size(35, 39);
+			this.navSaveItem.Text = "Save";
+			this.navSaveItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSaveItem.Click += new System.EventHandler(this.navSaveItem_Click);
+			// 
+			// navLiveWeb
+			// 
+			this.navLiveWeb.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+			this.navLiveWeb.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navLiveWeb.Name = "navLiveWeb";
+			this.navLiveWeb.Size = new System.Drawing.Size(59, 39);
+			this.navLiveWeb.Text = "Live Web";
+			this.navLiveWeb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navLiveWeb.Click += new System.EventHandler(this.navLiveWeb_Click);
+			// 
+			// navExportRecord
+			// 
+			this.navExportRecord.Image = global::WaterskiScoringSystem.Properties.Resources.DVDVR;
+			this.navExportRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportRecord.Name = "navExportRecord";
+			this.navExportRecord.Size = new System.Drawing.Size(85, 39);
+			this.navExportRecord.Text = "Export Record";
+			this.navExportRecord.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportRecord.Click += new System.EventHandler(this.navExportRecord_Click);
+			// 
+			// ClassR3JudgeCB
+			// 
+			this.ClassR3JudgeCB.AutoSize = true;
+			this.ClassR3JudgeCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ClassR3JudgeCB.Location = new System.Drawing.Point(408, 47);
+			this.ClassR3JudgeCB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.ClassR3JudgeCB.Name = "ClassR3JudgeCB";
+			this.ClassR3JudgeCB.Size = new System.Drawing.Size(154, 20);
+			this.ClassR3JudgeCB.TabIndex = 0;
+			this.ClassR3JudgeCB.TabStop = false;
+			this.ClassR3JudgeCB.Text = "Use 3 Judges (video in use)";
+			this.ClassR3JudgeCB.UseVisualStyleBackColor = true;
+			this.ClassR3JudgeCB.CheckedChanged += new System.EventHandler(this.ClassR3JudgeCB_CheckedChanged);
+			// 
+			// ClassC5JudgeCB
+			// 
+			this.ClassC5JudgeCB.AutoSize = true;
+			this.ClassC5JudgeCB.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ClassC5JudgeCB.Location = new System.Drawing.Point(617, 47);
+			this.ClassC5JudgeCB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.ClassC5JudgeCB.Name = "ClassC5JudgeCB";
+			this.ClassC5JudgeCB.Size = new System.Drawing.Size(88, 20);
+			this.ClassC5JudgeCB.TabIndex = 0;
+			this.ClassC5JudgeCB.TabStop = false;
+			this.ClassC5JudgeCB.Text = "Use 5 Judges";
+			this.ClassC5JudgeCB.UseVisualStyleBackColor = true;
+			this.ClassC5JudgeCB.CheckedChanged += new System.EventHandler(this.ClassC5JudgeCB_CheckedChanged);
+			// 
+			// TourBoatTextbox
+			// 
+			this.TourBoatTextbox.BackColor = System.Drawing.Color.FloralWhite;
+			this.TourBoatTextbox.Location = new System.Drawing.Point(834, 458);
+			this.TourBoatTextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.TourBoatTextbox.Name = "TourBoatTextbox";
+			this.TourBoatTextbox.ReadOnly = true;
+			this.TourBoatTextbox.Size = new System.Drawing.Size(125, 21);
+			this.TourBoatTextbox.TabIndex = 38;
+			this.TourBoatTextbox.WordWrap = false;
+			this.TourBoatTextbox.TextChanged += new System.EventHandler(this.TourBoatTextbox_TextChanged);
+			// 
+			// listApprovedBoatsDataGridView
+			// 
+			this.listApprovedBoatsDataGridView.AllowUserToAddRows = false;
+			this.listApprovedBoatsDataGridView.AllowUserToDeleteRows = false;
+			this.listApprovedBoatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.listApprovedBoatsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+			dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle43.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle43.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle43.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle43.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listApprovedBoatsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle43;
+			this.listApprovedBoatsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.listApprovedBoatsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BoatModelApproved,
+            this.EngineSpec,
+            this.SpeedControl,
+            this.HullStatus,
+            this.FuelDel,
+            this.Transmission,
+            this.Prop,
+            this.BoatCode,
+            this.BoatOwner,
+            this.BoatNotes});
+			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(273, 540);
+			this.listApprovedBoatsDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
+			this.listApprovedBoatsDataGridView.RowHeadersVisible = false;
+			dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle51;
+			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(933, 354);
+			this.listApprovedBoatsDataGridView.TabIndex = 1;
+			this.listApprovedBoatsDataGridView.TabStop = false;
+			this.listApprovedBoatsDataGridView.Visible = false;
+			this.listApprovedBoatsDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listApprovedBoatsDataGridView_CellContentDoubleClick);
+			// 
+			// BoatModelApproved
+			// 
+			this.BoatModelApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle44.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle44;
+			this.BoatModelApproved.HeaderText = "Boat Model";
+			this.BoatModelApproved.Name = "BoatModelApproved";
+			this.BoatModelApproved.Width = 180;
+			// 
+			// EngineSpec
+			// 
+			this.EngineSpec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle45.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle45;
+			this.EngineSpec.HeaderText = "Engine Mfr. & Model";
+			this.EngineSpec.Name = "EngineSpec";
+			this.EngineSpec.Width = 180;
+			// 
+			// SpeedControl
+			// 
+			this.SpeedControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle46.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle46;
+			this.SpeedControl.HeaderText = "Speed Control";
+			this.SpeedControl.Name = "SpeedControl";
+			this.SpeedControl.Width = 75;
+			// 
+			// HullStatus
+			// 
+			this.HullStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle47.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle47;
+			this.HullStatus.HeaderText = "Hull Status";
+			this.HullStatus.Name = "HullStatus";
+			this.HullStatus.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HullStatus.Width = 75;
+			// 
+			// FuelDel
+			// 
+			this.FuelDel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle48;
+			this.FuelDel.HeaderText = "Fuel Del";
+			this.FuelDel.Name = "FuelDel";
+			this.FuelDel.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.FuelDel.Visible = false;
+			this.FuelDel.Width = 50;
+			// 
+			// Transmission
+			// 
+			this.Transmission.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle49.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Transmission.DefaultCellStyle = dataGridViewCellStyle49;
+			this.Transmission.HeaderText = "Trans";
+			this.Transmission.Name = "Transmission";
+			this.Transmission.Visible = false;
+			// 
+			// Prop
+			// 
+			this.Prop.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle50.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle50.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Prop.DefaultCellStyle = dataGridViewCellStyle50;
+			this.Prop.HeaderText = "Prop";
+			this.Prop.Name = "Prop";
+			this.Prop.Visible = false;
+			this.Prop.Width = 150;
+			// 
+			// BoatCode
+			// 
+			this.BoatCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatCode.HeaderText = "Boat Code";
+			this.BoatCode.Name = "BoatCode";
+			this.BoatCode.Width = 75;
+			// 
+			// BoatOwner
+			// 
+			this.BoatOwner.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatOwner.HeaderText = "Owner";
+			this.BoatOwner.MaxInputLength = 128;
+			this.BoatOwner.Name = "BoatOwner";
+			this.BoatOwner.ReadOnly = true;
+			// 
+			// BoatNotes
+			// 
+			this.BoatNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatNotes.HeaderText = "Notes";
+			this.BoatNotes.MaxInputLength = 255;
+			this.BoatNotes.Name = "BoatNotes";
+			this.BoatNotes.ReadOnly = true;
+			this.BoatNotes.Width = 150;
+			// 
+			// BoatSelectInfoLabel
+			// 
+			this.BoatSelectInfoLabel.AutoSize = true;
+			this.BoatSelectInfoLabel.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.BoatSelectInfoLabel.Location = new System.Drawing.Point(100, 13);
+			this.BoatSelectInfoLabel.Name = "BoatSelectInfoLabel";
+			this.BoatSelectInfoLabel.Size = new System.Drawing.Size(367, 16);
+			this.BoatSelectInfoLabel.TabIndex = 0;
+			this.BoatSelectInfoLabel.Text = "Double click on entry or click on Select Boat button";
+			// 
+			// EventRunInfoLabel
+			// 
+			this.EventRunInfoLabel.BackColor = System.Drawing.Color.DimGray;
+			this.EventRunInfoLabel.Font = new System.Drawing.Font("Arial Narrow", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventRunInfoLabel.ForeColor = System.Drawing.Color.Gold;
+			this.EventRunInfoLabel.Location = new System.Drawing.Point(4, 9);
+			this.EventRunInfoLabel.Name = "EventRunInfoLabel";
+			this.EventRunInfoLabel.Size = new System.Drawing.Size(81, 58);
+			this.EventRunInfoLabel.TabIndex = 0;
+			this.EventRunInfoLabel.Text = "Event Start: \\n Event Delay: \\n Skier, Passes:";
+			this.EventRunInfoLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
+			// EventRunPerfLabel
+			// 
+			this.EventRunPerfLabel.BackColor = System.Drawing.Color.DimGray;
+			this.EventRunPerfLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventRunPerfLabel.ForeColor = System.Drawing.Color.Gold;
+			this.EventRunPerfLabel.Location = new System.Drawing.Point(160, 9);
+			this.EventRunPerfLabel.Name = "EventRunPerfLabel";
+			this.EventRunPerfLabel.Size = new System.Drawing.Size(127, 58);
+			this.EventRunPerfLabel.TabIndex = 0;
+			this.EventRunPerfLabel.Text = "Event Duration:\\n Mins Per Skiers: \\n Mins Per Passes: ";
+			this.EventRunPerfLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
+			// EventRunPerfData
+			// 
+			this.EventRunPerfData.BackColor = System.Drawing.Color.DimGray;
+			this.EventRunPerfData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventRunPerfData.ForeColor = System.Drawing.Color.Gold;
+			this.EventRunPerfData.Location = new System.Drawing.Point(287, 9);
+			this.EventRunPerfData.Name = "EventRunPerfData";
+			this.EventRunPerfData.Size = new System.Drawing.Size(35, 58);
+			this.EventRunPerfData.TabIndex = 0;
+			this.EventRunPerfData.Text = "00:00 \\n 00:00";
+			// 
+			// EventRunInfoData
+			// 
+			this.EventRunInfoData.BackColor = System.Drawing.Color.DimGray;
+			this.EventRunInfoData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventRunInfoData.ForeColor = System.Drawing.Color.Gold;
+			this.EventRunInfoData.Location = new System.Drawing.Point(85, 9);
+			this.EventRunInfoData.Name = "EventRunInfoData";
+			this.EventRunInfoData.Size = new System.Drawing.Size(52, 58);
+			this.EventRunInfoData.TabIndex = 0;
+			this.EventRunInfoData.Text = "HH:MM-HH:MM-  000, 000";
+			// 
+			// BoatSelectButton
+			// 
+			this.BoatSelectButton.AutoSize = true;
+			this.BoatSelectButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.BoatSelectButton.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.BoatSelectButton.Image = global::WaterskiScoringSystem.Properties.Resources.arrow_down;
+			this.BoatSelectButton.Location = new System.Drawing.Point(964, 457);
+			this.BoatSelectButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.BoatSelectButton.Name = "BoatSelectButton";
+			this.BoatSelectButton.Size = new System.Drawing.Size(22, 25);
+			this.BoatSelectButton.TabIndex = 39;
+			this.BoatSelectButton.UseVisualStyleBackColor = true;
+			this.BoatSelectButton.Click += new System.EventHandler(this.BoatSelectButton_Click);
+			// 
+			// PauseTimerButton
+			// 
+			this.PauseTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.pause;
+			this.PauseTimerButton.Location = new System.Drawing.Point(138, 10);
+			this.PauseTimerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.PauseTimerButton.Name = "PauseTimerButton";
+			this.PauseTimerButton.Size = new System.Drawing.Size(20, 29);
+			this.PauseTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.PauseTimerButton.TabIndex = 48;
+			this.PauseTimerButton.TabStop = false;
+			this.PauseTimerButton.Click += new System.EventHandler(this.PauseTimerButton_Click);
+			// 
+			// StartTimerButton
+			// 
+			this.StartTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.play;
+			this.StartTimerButton.Location = new System.Drawing.Point(138, 38);
+			this.StartTimerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.StartTimerButton.Name = "StartTimerButton";
+			this.StartTimerButton.Size = new System.Drawing.Size(20, 29);
+			this.StartTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.StartTimerButton.TabIndex = 49;
+			this.StartTimerButton.TabStop = false;
+			this.StartTimerButton.Click += new System.EventHandler(this.StartTimerButton_Click);
+			// 
+			// EventDelayReasonTextBox
+			// 
+			this.EventDelayReasonTextBox.BackColor = System.Drawing.Color.PaleGoldenrod;
+			this.EventDelayReasonTextBox.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventDelayReasonTextBox.ForeColor = System.Drawing.Color.Black;
+			this.EventDelayReasonTextBox.Location = new System.Drawing.Point(4, 91);
+			this.EventDelayReasonTextBox.Margin = new System.Windows.Forms.Padding(1);
+			this.EventDelayReasonTextBox.MaxLength = 128;
+			this.EventDelayReasonTextBox.Name = "EventDelayReasonTextBox";
+			this.EventDelayReasonTextBox.Size = new System.Drawing.Size(318, 22);
+			this.EventDelayReasonTextBox.TabIndex = 0;
+			this.EventDelayReasonTextBox.Text = "Event delay reason to be written to log";
+			// 
+			// EventDelayReasonLabel
+			// 
+			this.EventDelayReasonLabel.AutoSize = true;
+			this.EventDelayReasonLabel.BackColor = System.Drawing.Color.DimGray;
+			this.EventDelayReasonLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.EventDelayReasonLabel.ForeColor = System.Drawing.Color.White;
+			this.EventDelayReasonLabel.Location = new System.Drawing.Point(4, 67);
+			this.EventDelayReasonLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+			this.EventDelayReasonLabel.Name = "EventDelayReasonLabel";
+			this.EventDelayReasonLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+			this.EventDelayReasonLabel.Size = new System.Drawing.Size(186, 18);
+			this.EventDelayReasonLabel.TabIndex = 0;
+			this.EventDelayReasonLabel.Text = "Event delay reason to be written to log";
+			this.EventDelayReasonLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.ScrollBar;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(5, 162);
+			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(240, 21);
+			this.RowStatusLabel.TabIndex = 0;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
+			// activeSkierName
+			// 
+			this.activeSkierName.AutoEllipsis = true;
+			this.activeSkierName.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.activeSkierName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+			this.activeSkierName.Location = new System.Drawing.Point(479, 94);
+			this.activeSkierName.Name = "activeSkierName";
+			this.activeSkierName.Size = new System.Drawing.Size(266, 26);
+			this.activeSkierName.TabIndex = 0;
+			this.activeSkierName.Text = "Active Skier Name";
+			// 
+			// ForceCompButton
+			// 
+			this.ForceCompButton.AutoSize = true;
+			this.ForceCompButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ForceCompButton.Location = new System.Drawing.Point(512, 454);
+			this.ForceCompButton.Margin = new System.Windows.Forms.Padding(0);
+			this.ForceCompButton.Name = "ForceCompButton";
+			this.ForceCompButton.Padding = new System.Windows.Forms.Padding(1);
+			this.ForceCompButton.Size = new System.Drawing.Size(99, 33);
+			this.ForceCompButton.TabIndex = 33;
+			this.ForceCompButton.Text = "Skier Done";
+			this.ForceCompButton.UseVisualStyleBackColor = true;
+			this.ForceCompButton.Click += new System.EventHandler(this.ForceCompButton_Click);
+			// 
+			// RefreshLabel1
+			// 
+			this.RefreshLabel1.AutoSize = true;
+			this.RefreshLabel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+			this.RefreshLabel1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RefreshLabel1.ForeColor = System.Drawing.Color.Firebrick;
+			this.RefreshLabel1.Location = new System.Drawing.Point(5, 47);
+			this.RefreshLabel1.Margin = new System.Windows.Forms.Padding(0);
+			this.RefreshLabel1.Name = "RefreshLabel1";
+			this.RefreshLabel1.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
+			this.RefreshLabel1.Size = new System.Drawing.Size(221, 17);
+			this.RefreshLabel1.TabIndex = 0;
+			this.RefreshLabel1.Text = "Select group and Refresh for skier list";
+			// 
+			// EventGroupList
+			// 
+			this.EventGroupList.FormattingEnabled = true;
+			this.EventGroupList.Location = new System.Drawing.Point(211, 95);
+			this.EventGroupList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.EventGroupList.Name = "EventGroupList";
+			this.EventGroupList.Size = new System.Drawing.Size(85, 24);
+			this.EventGroupList.TabIndex = 10;
+			this.EventGroupList.SelectedIndexChanged += new System.EventHandler(this.EventGroupList_SelectedIndexChanged);
+			// 
+			// scoreLabel
+			// 
+			this.scoreLabel.AutoSize = true;
+			this.scoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.scoreLabel.Location = new System.Drawing.Point(637, 439);
+			this.scoreLabel.Name = "scoreLabel";
+			this.scoreLabel.Size = new System.Drawing.Size(40, 13);
+			this.scoreLabel.TabIndex = 0;
+			this.scoreLabel.Text = "Score";
+			this.scoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// nopsScoreLabel
+			// 
+			this.nopsScoreLabel.AutoSize = true;
+			this.nopsScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.nopsScoreLabel.Location = new System.Drawing.Point(708, 439);
+			this.nopsScoreLabel.Name = "nopsScoreLabel";
+			this.nopsScoreLabel.Size = new System.Drawing.Size(41, 13);
+			this.nopsScoreLabel.TabIndex = 0;
+			this.nopsScoreLabel.Text = "NOPS";
+			this.nopsScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// scoreEventClass
+			// 
+			this.scoreEventClass.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.scoreEventClass.ForeColor = System.Drawing.SystemColors.HotTrack;
+			this.scoreEventClass.FormattingEnabled = true;
+			this.scoreEventClass.Location = new System.Drawing.Point(374, 95);
+			this.scoreEventClass.Margin = new System.Windows.Forms.Padding(0);
+			this.scoreEventClass.MaxLength = 24;
+			this.scoreEventClass.Name = "scoreEventClass";
+			this.scoreEventClass.Size = new System.Drawing.Size(100, 21);
+			this.scoreEventClass.TabIndex = 101;
+			this.scoreEventClass.SelectedIndexChanged += new System.EventHandler(this.scoreEventClass_SelectedIndexChanged);
+			this.scoreEventClass.Validating += new System.ComponentModel.CancelEventHandler(this.scoreEventClass_Validating);
+			// 
+			// ResizeWide
+			// 
+			this.ResizeWide.AutoSize = true;
+			this.ResizeWide.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.ResizeWide.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+			this.ResizeWide.ForeColor = System.Drawing.Color.Navy;
+			this.ResizeWide.Location = new System.Drawing.Point(243, 162);
+			this.ResizeWide.Name = "ResizeWide";
+			this.ResizeWide.Size = new System.Drawing.Size(22, 17);
+			this.ResizeWide.TabIndex = 103;
+			this.ResizeWide.Text = "Ø";
+			this.ResizeWide.Click += new System.EventHandler(this.ResizeWide_Click);
+			// 
+			// ResizeNarrow
+			// 
+			this.ResizeNarrow.AutoSize = true;
+			this.ResizeNarrow.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.ResizeNarrow.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+			this.ResizeNarrow.ForeColor = System.Drawing.Color.Navy;
+			this.ResizeNarrow.Location = new System.Drawing.Point(243, 164);
+			this.ResizeNarrow.Name = "ResizeNarrow";
+			this.ResizeNarrow.Size = new System.Drawing.Size(22, 17);
+			this.ResizeNarrow.TabIndex = 102;
+			this.ResizeNarrow.Text = "×";
+			this.ResizeNarrow.Click += new System.EventHandler(this.ResizeNarrow_Click);
+			// 
+			// approvedBoatSelectGroupBox
+			// 
+			this.approvedBoatSelectGroupBox.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.approvedBoatSelectGroupBox.Controls.Add(this.refreshBoatListButton);
+			this.approvedBoatSelectGroupBox.Controls.Add(this.selectBoatButton);
+			this.approvedBoatSelectGroupBox.Controls.Add(this.BoatSelectInfoLabel);
+			this.approvedBoatSelectGroupBox.Location = new System.Drawing.Point(274, 495);
+			this.approvedBoatSelectGroupBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.approvedBoatSelectGroupBox.Name = "approvedBoatSelectGroupBox";
+			this.approvedBoatSelectGroupBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.approvedBoatSelectGroupBox.Size = new System.Drawing.Size(536, 44);
+			this.approvedBoatSelectGroupBox.TabIndex = 0;
+			this.approvedBoatSelectGroupBox.TabStop = false;
+			// 
+			// refreshBoatListButton
+			// 
+			this.refreshBoatListButton.BackColor = System.Drawing.Color.Maroon;
+			this.refreshBoatListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.refreshBoatListButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.refreshBoatListButton.ForeColor = System.Drawing.Color.White;
+			this.refreshBoatListButton.Location = new System.Drawing.Point(456, 9);
+			this.refreshBoatListButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.refreshBoatListButton.Name = "refreshBoatListButton";
+			this.refreshBoatListButton.Size = new System.Drawing.Size(74, 27);
+			this.refreshBoatListButton.TabIndex = 2;
+			this.refreshBoatListButton.Text = "Refresh List";
+			this.refreshBoatListButton.UseVisualStyleBackColor = false;
+			this.refreshBoatListButton.Click += new System.EventHandler(this.refreshBoatListButton_Click);
+			// 
+			// selectBoatButton
+			// 
+			this.selectBoatButton.BackColor = System.Drawing.Color.Maroon;
+			this.selectBoatButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.selectBoatButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.selectBoatButton.ForeColor = System.Drawing.Color.White;
+			this.selectBoatButton.Location = new System.Drawing.Point(5, 9);
+			this.selectBoatButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.selectBoatButton.Name = "selectBoatButton";
+			this.selectBoatButton.Size = new System.Drawing.Size(74, 27);
+			this.selectBoatButton.TabIndex = 1;
+			this.selectBoatButton.Text = "Select Boat";
+			this.selectBoatButton.UseVisualStyleBackColor = false;
+			this.selectBoatButton.Click += new System.EventHandler(this.selectBoatButton_Click);
+			// 
+			// hcapScoreLabel
+			// 
+			this.hcapScoreLabel.AutoSize = true;
+			this.hcapScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreLabel.Location = new System.Drawing.Point(778, 439);
+			this.hcapScoreLabel.Name = "hcapScoreLabel";
+			this.hcapScoreLabel.Size = new System.Drawing.Size(38, 13);
+			this.hcapScoreLabel.TabIndex = 0;
+			this.hcapScoreLabel.Text = "HCap";
+			this.hcapScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// hcapScoreTextBox
+			// 
+			this.hcapScoreTextBox.BackColor = System.Drawing.Color.Maroon;
+			this.hcapScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreTextBox.ForeColor = System.Drawing.Color.White;
+			this.hcapScoreTextBox.Location = new System.Drawing.Point(763, 455);
+			this.hcapScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.hcapScoreTextBox.Name = "hcapScoreTextBox";
+			this.hcapScoreTextBox.ReadOnly = true;
+			this.hcapScoreTextBox.Size = new System.Drawing.Size(66, 26);
+			this.hcapScoreTextBox.TabIndex = 37;
+			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// EventRunInfoBox
+			// 
+			this.EventRunInfoBox.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.EventRunInfoBox.Controls.Add(this.EventRunInfoLabel);
+			this.EventRunInfoBox.Controls.Add(this.EventRunPerfLabel);
+			this.EventRunInfoBox.Controls.Add(this.EventRunPerfData);
+			this.EventRunInfoBox.Controls.Add(this.EventRunInfoData);
+			this.EventRunInfoBox.Controls.Add(this.PauseTimerButton);
+			this.EventRunInfoBox.Controls.Add(this.StartTimerButton);
+			this.EventRunInfoBox.Controls.Add(this.EventDelayReasonTextBox);
+			this.EventRunInfoBox.Controls.Add(this.EventDelayReasonLabel);
+			this.EventRunInfoBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.EventRunInfoBox.Location = new System.Drawing.Point(749, 42);
+			this.EventRunInfoBox.Margin = new System.Windows.Forms.Padding(1);
+			this.EventRunInfoBox.Name = "EventRunInfoBox";
+			this.EventRunInfoBox.Padding = new System.Windows.Forms.Padding(1);
+			this.EventRunInfoBox.Size = new System.Drawing.Size(330, 120);
+			this.EventRunInfoBox.TabIndex = 0;
+			this.EventRunInfoBox.TabStop = false;
+			// 
+			// roundActiveSelect
+			// 
+			this.roundActiveSelect.AutoScroll = true;
+			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.roundActiveSelect.Location = new System.Drawing.Point(5, 95);
+			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(0);
+			this.roundActiveSelect.Name = "roundActiveSelect";
+			this.roundActiveSelect.RoundValue = "";
+			this.roundActiveSelect.Size = new System.Drawing.Size(204, 64);
+			this.roundActiveSelect.TabIndex = 11;
+			this.roundActiveSelect.Tag = "";
+			// 
+			// roundSelect
+			// 
+			this.roundSelect.AutoScroll = true;
+			this.roundSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.roundSelect.Location = new System.Drawing.Point(272, 186);
+			this.roundSelect.Margin = new System.Windows.Forms.Padding(0);
+			this.roundSelect.Name = "roundSelect";
+			this.roundSelect.RoundValue = "";
+			this.roundSelect.Size = new System.Drawing.Size(60, 93);
+			this.roundSelect.TabIndex = 20;
+			this.roundSelect.Tag = "";
+			this.roundSelect.Load += new System.EventHandler(this.roundSelect_Load);
+			// 
+			// SlalomLineSelect
+			// 
+			this.SlalomLineSelect.BackColor = System.Drawing.Color.Silver;
+			this.SlalomLineSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.SlalomLineSelect.CurrentShowValueNum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+			this.SlalomLineSelect.CurrentValue = "";
+			this.SlalomLineSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SlalomLineSelect.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.SlalomLineSelect.Location = new System.Drawing.Point(456, 186);
+			this.SlalomLineSelect.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+			this.SlalomLineSelect.Name = "SlalomLineSelect";
+			this.SlalomLineSelect.Size = new System.Drawing.Size(180, 220);
+			this.SlalomLineSelect.TabIndex = 22;
+			this.SlalomLineSelect.Tag = "";
+			this.SlalomLineSelect.Load += new System.EventHandler(this.SlalomLineSelect_Load);
+			// 
+			// SlalomSpeedSelection
+			// 
+			this.SlalomSpeedSelection.BackColor = System.Drawing.Color.Silver;
+			this.SlalomSpeedSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.SlalomSpeedSelection.CurrentShowSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.CurrentValueDesc = "";
+			this.SlalomSpeedSelection.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SlalomSpeedSelection.Location = new System.Drawing.Point(334, 186);
+			this.SlalomSpeedSelection.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+			this.SlalomSpeedSelection.MaxSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.MinSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.Name = "SlalomSpeedSelection";
+			this.SlalomSpeedSelection.SelectSpeekKph = ((short)(0));
+			this.SlalomSpeedSelection.Size = new System.Drawing.Size(120, 220);
+			this.SlalomSpeedSelection.TabIndex = 21;
+			this.SlalomSpeedSelection.Tag = "";
+			this.SlalomSpeedSelection.Load += new System.EventHandler(this.SlalomSpeedSelect_Load);
 			// 
 			// ScoreEntry
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1258, 920);
 			this.Controls.Add(this.EventRunInfoBox);
