@@ -33,7 +33,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataRow myOfficialWorkRow;
         private DataRow myTourRow;
-        //private DataTable myTourOfficialWorkDataTable;
         private DataTable myTourMemberList;
 
         public OfficialWorkRecord() {
@@ -75,8 +74,6 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( curTourDataTable.Rows.Count > 0 ) {
                         myTourRow = curTourDataTable.Rows[0];
                         myTourRules = (String)myTourRow["Rules"];
-
-                        navRefresh_Click( null, null );
 
                         if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
                         if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
@@ -170,11 +167,16 @@ namespace WaterskiScoringSystem.Tournament {
                             AnncrJumpCreditCB.Enabled = false;
 
                         }
-                        #endregion
-                    }
+						#endregion
 
-                }
-            }
+						/*
+						* Update officials credits and then load data for viewing
+						*/
+						navRefresh_Click( null, null );
+					}
+
+				}
+			}
         }
 
         private void OfficialWorkRecord_FormClosed( object sender, FormClosedEventArgs e ) {

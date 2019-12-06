@@ -18,21 +18,32 @@ namespace WaterskiScoringSystem.Tournament {
         private Boolean isDataModified = false;
         private Boolean isSetMemberActive = false;
         private Boolean isLoadActive = false;
-        private String mySanctionNum;
+
+		private String mySanctionNum;
         private String mySortCommand;
         private String myFilterCmd;
         private String myOrigTextValue;
         private String myEvent;
         private String myTourRules;
-        private int myViewRowIdx;
-        private int myTourRounds;
-        private SortDialogForm sortDialogForm;
+		private String myMemberSelectFilter;
+		private String myTourClass;
+
+		private int myViewRowIdx;
+		private int mySearchViewRowIdx;
+		private int myTourRounds;
+
+		private SortDialogForm sortDialogForm;
         private FilterDialogForm filterDialogForm;
         private PrintDocument myPrintDoc;
         private DataGridViewPrinter myPrintDataGrid;
+		private ListSkierClass mySkierClassList;
 
-        private DataRow myTourRow;
-        private ArrayList myEventGroupDropdownList = new ArrayList();
+		private DataRow myTourRow;
+		//private DataRow myClassRow;
+		//private DataRow myClassCRow;
+		//private DataRow myClassERow;
+
+		private ArrayList myEventGroupDropdownList = new ArrayList();
         private DataTable myWorkAsgmtListDataTable;
         private DataTable myOfficialWorkAsgmtDataTable;
         private DataTable myListTourMemberDataTable;
@@ -65,7 +76,7 @@ namespace WaterskiScoringSystem.Tournament {
             labelMemberQuickFind.Visible = false;
             listTourMemberDataGridView.Visible = false;
 
-            sortDialogForm = new SortDialogForm();
+			sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnList = officialWorkAsgmtDataGridView.Columns;
 
             filterDialogForm = new Common.FilterDialogForm();
@@ -88,8 +99,15 @@ namespace WaterskiScoringSystem.Tournament {
                     if ( curTourDataTable.Rows.Count > 0 ) {
                         myTourRow = curTourDataTable.Rows[0];
                         myTourRules = (String)myTourRow["Rules"];
+						myTourClass = myTourRow["Class"].ToString().ToUpper();
 
-                        setEventList();
+						mySkierClassList = new ListSkierClass();
+						mySkierClassList.ListSkierClassLoad();
+						//myClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + myTourClass + "'" )[0];
+						//myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+						//myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+
+						setEventList();
                         setAsgmtList();
 
                         roundActiveSelect.SelectList_LoadHorztl( myTourRounds.ToString(), roundActiveSelect_Click );
@@ -132,11 +150,13 @@ namespace WaterskiScoringSystem.Tournament {
                 winStatusMsg.Text = "Retrieving tournament official assignment list";
                 Cursor.Current = Cursors.WaitCursor;
 
-                loadTourMemberView();
+				myListTourMemberDataTable = getTourMemberList();
+				loadTourMemberView();
                 navRefreshByEvent();
                 isDataModified = false;
+				myViewRowIdx = 0;
 
-            } catch ( Exception ex ) {
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error attempting to retrieve tournament official assignments\n" + ex.Message );
             }
         }
@@ -147,157 +167,62 @@ namespace WaterskiScoringSystem.Tournament {
             winStatusMsg.Text = "Retrieving tournament entries";
             Cursor.Current = Cursors.WaitCursor;
             isLoadActive = true;
+			DataTable curDataTable = myListTourMemberDataTable;
+			if ( myMemberSelectFilter.Length > 1 ) {
+				curDataTable.DefaultView.RowFilter = myMemberSelectFilter;
+				curDataTable = curDataTable.DefaultView.ToTable();
+            }
+			listTourMemberDataGridView.DataSource = curDataTable;
 
-            try {
-                listTourMemberDataGridView.Rows.Clear();
-                myListTourMemberDataTable = getTourMemberList();
+			try {
+				//if ( listTourMemberDataGridView.Rows.Count > 0 ) listTourMemberDataGridView.Rows.Clear();
                 listTourMemberDataGridView.BeginInvoke( (MethodInvoker)delegate() {
                     Application.DoEvents();
                     Cursor.Current = Cursors.Default;
                     winStatusMsg.Text = "Tournament member list retrieved";
                 } );
 
-                if ( myListTourMemberDataTable.Rows.Count > 0 ) {
-                    DataGridViewRow curViewRow;
-                    int curViewIdx = 0;
-                    foreach ( DataRow curDataRow in myListTourMemberDataTable.Rows ) {
-                        curViewIdx = listTourMemberDataGridView.Rows.Add();
-                        curViewRow = listTourMemberDataGridView.Rows[curViewIdx];
+				listTourMemberDataGridView.Columns["MemberIdOfficial"].HeaderText = "MemberId";
+				listTourMemberDataGridView.Columns["MemberIdOfficial"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["MemberNameOfficial"].HeaderText = "SkierName";
+				listTourMemberDataGridView.Columns["MemberNameOfficial"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["Federation"].HeaderText = "Federation";
+				listTourMemberDataGridView.Columns["Federation"].ReadOnly = true;
 
-                        curViewRow.Cells["SanctionIdTour"].Value = (String)curDataRow["SanctionId"];
-                        curViewRow.Cells["MemberIdTour"].Value = (String)curDataRow["MemberId"];
-                        curViewRow.Cells["SkierNameTour"].Value = (String)curDataRow["SkierName"];
-                        try {
-                            curViewRow.Cells["FederationTour"].Value = (String)curDataRow["Federation"];
-                        } catch {
-                            curViewRow.Cells["FederationTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["JudgeSlalomRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["JudgeSlalomRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["JudgeSlalomRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["JudgeSlalomRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["JudgeTrickRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["JudgeTrickRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["JudgeTrickRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["JudgeTrickRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["JudgeJumpRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["JudgeJumpRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["JudgeJumpRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["JudgeJumpRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["SafetyOfficialRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["SafetyOfficialRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["SafetyOfficialRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["SafetyOfficialRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["ScorerSlalomRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["ScorerSlalomRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["ScorerSlalomRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["ScorerSlalomRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["ScorerTrickRatingDesc"];
-                            if (curValue.ToUpper().Equals( "UNRATED" )) {
-                                curViewRow.Cells["ScorerTrickRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["ScorerTrickRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["ScorerTrickRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["ScorerJumpRatingDesc"];
-                            if (curValue.ToUpper().Equals( "UNRATED" )) {
-                                curViewRow.Cells["ScorerJumpRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["ScorerJumpRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["ScorerJumpRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["TechOfficialRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["TechOfficialRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["TechOfficialRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["TechOfficialRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["DriverSlalomRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["DriverSlalomRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["DriverSlalomRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["DriverSlalomRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["DriverTrickRatingDesc"];
-                            if (curValue.ToUpper().Equals( "UNRATED" )) {
-                                curViewRow.Cells["DriverTrickRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["DriverTrickRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["DriverTrickRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["DriverJumpRatingDesc"];
-                            if (curValue.ToUpper().Equals( "UNRATED" )) {
-                                curViewRow.Cells["DriverJumpRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["DriverJumpRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["DriverJumpRatingDescTour"].Value = "";
-                        }
-                        try {
-                            String curValue = (String)curDataRow["AnncrOfficialRatingDesc"];
-                            if ( curValue.ToUpper().Equals( "UNRATED" ) ) {
-                                curViewRow.Cells["AnncrOfficialRatingDescTour"].Value = "";
-                            } else {
-                                curViewRow.Cells["AnncrOfficialRatingDescTour"].Value = curValue;
-                            }
-                        } catch {
-                            curViewRow.Cells["AnncrOfficialRatingDescTour"].Value = "";
-                        }
-                    }
-                    curViewIdx = listTourMemberDataGridView.Rows.Add();
-                    listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[0].Cells["SkierNameTour"];
-                    Cursor.Current = Cursors.Default;
-                }
-            } catch ( Exception ex ) {
+				listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].HeaderText = "Judge Slalom";
+				listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].HeaderText = "Judge Trick";
+				listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].HeaderText = "Judge Jump";
+				listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].ReadOnly = true;
+
+				listTourMemberDataGridView.Columns["ScorerSlalomRatingDesc"].HeaderText = "Scorer Slalom";
+				listTourMemberDataGridView.Columns["ScorerSlalomRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["ScorerTrickRatingDesc"].HeaderText = "Scorer Trick";
+				listTourMemberDataGridView.Columns["ScorerTrickRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["ScorerJumpRatingDesc"].HeaderText = "Scorer Jump";
+				listTourMemberDataGridView.Columns["ScorerJumpRatingDesc"].ReadOnly = true;
+
+				listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].HeaderText = "Driver Slalom";
+				listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["DriverTrickRatingDesc"].HeaderText = "Driver Trick";
+				listTourMemberDataGridView.Columns["DriverTrickRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].HeaderText = "Driver Jump";
+				listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].ReadOnly = true;
+
+				listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].HeaderText = "Safety";
+				listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].HeaderText = "Tech";
+				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].ReadOnly = true;
+				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].HeaderText = "Announcer";
+				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].ReadOnly = true;
+
+				if ( listTourMemberDataGridView.Rows.Count > 0 ) {
+					listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[0].Cells["MemberNameOfficial"];
+				}
+				Cursor.Current = Cursors.Default;
+
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error attempting to retrieve available tournament officials \n" + ex.Message );
             }
             isLoadActive = false;
@@ -325,10 +250,12 @@ namespace WaterskiScoringSystem.Tournament {
                     activeLabel.Visible = true;
 
                     if ( myListTourMemberDataTable == null ) {
-                        loadTourMemberView();
+						myListTourMemberDataTable = getTourMemberList();
+						loadTourMemberView();
                     } else {
                         if ( myListTourMemberDataTable.Rows.Count == 0 ) {
-                            loadTourMemberView();
+							myListTourMemberDataTable = getTourMemberList();
+							loadTourMemberView();
                         }
                     }
                     myOfficialWorkAsgmtDataTable = getOfficialWorkAsgmt( myEvent, curGroup, curRound );
@@ -468,25 +395,41 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( saveOfficialWorkAsgmt( myViewRowIdx ) ) {
                     isDataModified = false;
                     isSetMemberActive = false;
-					if ( myViewRowIdx == ( officialWorkAsgmtDataGridView.Rows.Count - 1) ) {
+					if ( ( myViewRowIdx == ( officialWorkAsgmtDataGridView.Rows.Count - 1) )
+						&& ( (String) officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value ).Length > 0 ) {
 						navAddNewItem_Click( null, null );
+
+					} else {
+						myViewRowIdx = officialWorkAsgmtDataGridView.CurrentRow.Index;
+						String curColName = officialWorkAsgmtDataGridView.Columns[officialWorkAsgmtDataGridView.CurrentCell.ColumnIndex].Name;
+						if ( curColName.Equals( "StartTime" ) || curColName.Equals( "EndTime" ) || curColName.Equals( "Notes" ) ) {
+							officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"];
+                        }
 					}
 				}
-            } catch ( Exception excp ) {
+
+			} catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
             }
         }
 
         private bool saveOfficialWorkAsgmt( int inRowIdx ) {
-            bool curReturn = true;
+			bool curReturn = true;
             int rowsProc;
             Int64 curPK = 0;
-            try {
+			if ( officialWorkAsgmtDataGridView.Rows.Count == 0 ) return true;
+
+			try {
                 DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[inRowIdx];
                 String curUpdateStatus = (String)curViewRow.Cells["Updated"].Value;
                 curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
-                if ( curUpdateStatus.ToUpper().Equals( "Y" ) ) {
-                    if (validateRow( myViewRowIdx )) {
+
+				if ( curViewRow.Cells["MemberId"].Value != System.DBNull.Value
+					&& curViewRow.Cells["MemberId"].Value != null
+					&& ( (String) curViewRow.Cells["MemberId"].Value ).Length > 1
+					&& ( (String) curViewRow.Cells["MemberName"].Value ).Length > 1
+					&& ( (String) curViewRow.Cells["Updated"].Value ).Equals( "Y" ) ) {
+                    if (validateRow( inRowIdx ) ) {
                         try {
                             String curSanctionId = (String)curViewRow.Cells["SanctionId"].Value;
                             String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
@@ -630,13 +573,14 @@ namespace WaterskiScoringSystem.Tournament {
                     EventGroupList.Visible = false;
                     roundActiveSelect.Visible = false;
                     activeLabel.Visible = false;
-                } else {
+					//navRefreshByEvent();
+
+				} else {
                     EventGroupList.Visible = true;
                     roundActiveSelect.Visible = true;
                     activeLabel.Visible = true;
-                   
-                    myEventGroupDropdownList = new ArrayList();
-                    //EventGroupList.DataSource = myEventGroupDropdownList;
+
+					myEventGroupDropdownList = new ArrayList();
                     if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
                         myEventGroupDropdownList.Add( "Men A" );
                         myEventGroupDropdownList.Add( "Women A" );
@@ -656,13 +600,7 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                     EventGroupList.DataSource = myEventGroupDropdownList;
                 }
-                /*
-                 */
-                if ( !( isLoadActive ) ) {
-                    navRefreshByEvent();
-                }
             }
-
         }
 
         private void setEventList() {
@@ -743,59 +681,78 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( myEvent.ToUpper().Equals( "ALL" ) ) {
                     MessageBox.Show( "Must select an event before a new assignment can be made" );
                 } else {
-                    string DateString = DateTime.Now.ToString( "MM/dd/yy hh:mm tt" );
-                    myViewRowIdx = officialWorkAsgmtDataGridView.Rows.Add();
-                    DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
-
-                    curViewRow.Cells["PK"].Value = "-1";
-                    curViewRow.Cells["Updated"].Value = "Y";
-                    curViewRow.Cells["SanctionId"].Value = mySanctionNum;
-                    curViewRow.Cells["Event"].Value = myEvent;
-                    curViewRow.Cells["EventGroup"].Value = EventGroupList.SelectedValue.ToString();
-                    curViewRow.Cells["Round"].Value = roundActiveSelect.RoundValue.ToString();
-                    curViewRow.Cells["MemberId"].Value = "";
-                    curViewRow.Cells["MemberName"].Value = "";
-                    curViewRow.Cells["WorkAsgmt"].Value = "";
-                    curViewRow.Cells["StartTime"].Value = DateString;
-                    curViewRow.Cells["EndTime"].Value = "";
-                    curViewRow.Cells["Notes"].Value = "";
-                    officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["WorkAsgmt"];
-
-                    labelMemberQuickFind.Visible = true;
-                }
-            }
+					DataGridViewRow curViewRow = addWorkAsgmtRow();
+				}
+			}
         }
 
-        private void navDeleteItem_Click( object sender, EventArgs e ) {
+		private DataGridViewRow addWorkAsgmtRow() {
+			string DateString = DateTime.Now.ToString( "MM/dd/yy hh:mm tt" );
+			DataGridViewRow curViewRow = null;
+            try {
+				myViewRowIdx = officialWorkAsgmtDataGridView.Rows.Add();
+				curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
+
+			} catch {
+				try {
+					officialWorkAsgmtDataGridView.Rows.Clear();
+					myViewRowIdx = 0;
+					officialWorkAsgmtDataGridView.Rows.Insert( myViewRowIdx );
+					curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
+				} catch ( Exception excp ) {
+					MessageBox.Show( "Error attempting to add new official row \n" + excp.Message );
+				}
+			}
+
+			if ( curViewRow != null ) {
+				curViewRow.Cells["PK"].Value = "-1";
+				curViewRow.Cells["Updated"].Value = "N";
+				curViewRow.Cells["SanctionId"].Value = mySanctionNum;
+				curViewRow.Cells["Event"].Value = myEvent;
+				curViewRow.Cells["EventGroup"].Value = EventGroupList.SelectedValue.ToString();
+				curViewRow.Cells["Round"].Value = roundActiveSelect.RoundValue.ToString();
+				curViewRow.Cells["MemberId"].Value = "";
+				curViewRow.Cells["MemberName"].Value = "";
+				curViewRow.Cells["WorkAsgmt"].Value = "";
+				curViewRow.Cells["StartTime"].Value = DateString;
+				curViewRow.Cells["EndTime"].Value = "";
+				curViewRow.Cells["Notes"].Value = "";
+
+				if ( officialWorkAsgmtDataGridView.Rows.Count == 0 ) myViewRowIdx = officialWorkAsgmtDataGridView.Rows.Add(curViewRow);
+
+				officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["WorkAsgmt"];
+			}
+
+			labelMemberQuickFind.Visible = true;
+			return curViewRow;
+
+		}
+
+		private void navDeleteItem_Click( object sender, EventArgs e ) {
+			if ( myViewRowIdx < 0 ) return;
+
             try {
                 int rowsProc;
                 DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
                 Int64 curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
-				String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
-				String curEvent = curViewRow.Cells["Event"].Value.ToString();
 
 				StringBuilder curSqlStmt = new StringBuilder( "" );
                 if (curPK > 0) {
-                    curSqlStmt.Append( "Delete OfficialWorkAsgmt " );
+					curSqlStmt.Append( "Delete OfficialWorkAsgmt " );
                     curSqlStmt.Append( " Where PK = " + curPK.ToString() );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-					if ( rowsProc > 0) {
-                        officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
-                        winStatusMsg.Text = "Current row deleted";
-                        isDataModified = false;
-
-						curSqlStmt = new StringBuilder( "Select count(*) as RowCount From " );
-
-
-
-
-
-					}
-				} else {
-                    officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
-                    winStatusMsg.Text = "Current row deleted";
-                    isDataModified = false;
                 }
+
+				officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
+				winStatusMsg.Text = "Current row deleted";
+				isDataModified = false;
+
+				if ( myViewRowIdx >= officialWorkAsgmtDataGridView.Rows.Count ) {
+					myViewRowIdx = officialWorkAsgmtDataGridView.Rows.Count - 1;
+				}
+				if ( officialWorkAsgmtDataGridView.Rows.Count == 0 ) {
+					curViewRow = addWorkAsgmtRow();
+				}
 
 			} catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to delete current official assignment \n" + excp.Message );
@@ -803,13 +760,17 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void officialWorkAsgmtDataGridView_KeyUp( object sender, KeyEventArgs e ) {
-            String curColName = "";
+			DataGridView curView = (DataGridView) sender;
+			String curColName = "";
             try {
-                if ( e.KeyCode == Keys.Enter ) {
-                    curColName = officialWorkAsgmtDataGridView.Columns[( (DataGridView)sender ).CurrentCell.ColumnIndex].Name;
-                    if ( curColName.Equals( "StartTime" )
-                    || curColName.Equals( "EndTime" )
-                    || curColName.Equals( "Notes" )
+                if ( e.KeyCode == Keys.Enter
+                    && myViewRowIdx == ( curView.Rows.Count - 1 )
+					&& ( (String) curView.Rows[mySearchViewRowIdx].Cells["MemberName"].Value ).Length > 0
+					) {
+                    curColName = curView.Columns[curView.CurrentCell.ColumnIndex].Name;
+					if ( curColName.Equals( "StartTime" )
+						|| curColName.Equals( "EndTime" )
+						|| curColName.Equals( "Notes" )
                         ) {
                         e.Handled = true;
                         if (validateRow( myViewRowIdx, false )) {
@@ -820,222 +781,63 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                     }
                 }
-            } catch ( Exception exp ) {
+
+			} catch ( Exception exp ) {
                 MessageBox.Show( "Exception in slalomRecapDataGridView_KeyUp \n" + exp.Message );
             }
         }
 
-        private void officialWorkAsgmtDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
-            DataGridView curView = (DataGridView)sender;
+		private void officialWorkAsgmtDataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView)sender;
+			if ( curView.Rows.Count <= 0 ) return;
 
-            //Update data if changes are detected
-            if ( isDataModified && (myViewRowIdx != e.RowIndex) ) {
-                try {
-                    Timer curTimerObj = new Timer();
-                    curTimerObj.Interval = 5;
-                    curTimerObj.Tick += new EventHandler( saveDataRow );
-                    curTimerObj.Start();
-                } catch ( Exception excp ) {
-                    MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
-                }
-            } else {
-                myViewRowIdx = e.RowIndex;
-            }
-        }
+			String curColName = curView.Columns[e.ColumnIndex].Name;
 
-        private void officialWorkAsgmtDataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
-            DataGridView curView = (DataGridView)sender;
-            if ( curView.Rows.Count > 0 ) {
-                String curColName = curView.Columns[e.ColumnIndex].Name;
-                if ( curColName.Equals( "Event" )
-                    || curColName.Equals( "EventGroup" )
-                    || curColName.Equals( "MemberName" )
-                    || curColName.Equals( "WorkAsgmt" )
-                    || curColName.Equals( "Notes" )
-                    ) {
-                    if ( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
-                        myOrigTextValue = "";
-                    } else {
-                        myOrigTextValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                    }
-                } else if ( curColName.Equals( "StartTime" )
-                    || curColName.Equals( "EndTime" )
-                    ) {
-                    if ( isObjectEmpty(curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value) ) {
-                        myOrigTextValue = "";
-                    } else {
-                        myOrigTextValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                    }
-                }
+			if ( curColName.Equals( "MemberName" )
+					|| curColName.Equals( "WorkAsgmt" )
+					|| curColName.Equals( "Notes" )
+					) {
+				if ( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
+					myOrigTextValue = "";
+				} else {
+					myOrigTextValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+				}
 
-                if ( curColName.Equals( "MemberName" ) ) {
-                    isSetMemberActive = true;
-                    listTourMemberDataGridView.Visible = true;
-                    labelMemberSelect.Visible = true;
-                    listTourMemberDataGridView.Visible = true;
-                    if ( myOrigTextValue.Length > 0 ) {
-                        int curIdx = findMemberRow( myOrigTextValue );
-                        listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["SkierNameTour"];
-                    } else {
-                        labelMemberQuickFind.Visible = true;
-                    }
-                } else {
-                    isSetMemberActive = false;
-                    listTourMemberDataGridView.Visible = false;
-                    labelMemberSelect.Visible = false;
-                    labelMemberQuickFind.Visible = false;
-                }
-            }
-        }
+			} else if ( curColName.Equals( "StartTime" )
+				|| curColName.Equals( "EndTime" )
+				) {
+				if ( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
+					myOrigTextValue = "";
+				} else {
+					myOrigTextValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+				}
+			}
 
-        private void officialWorkAsgmtDataGridView_CellValueChanged( object sender, DataGridViewCellEventArgs e ) {
-            DataGridView curView = (DataGridView)sender;
-            if ( curView.Rows.Count > 0 ) {
-                String curColName = curView.Columns[e.ColumnIndex].Name;
-                if ( curColName.Equals( "MemberName" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        int curIdx = findMemberRow( (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value );
-                        listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["SkierNameTour"];
-                    }
-                }
-            }
+			if ( curColName.Equals( "MemberName" ) ) {
+				isSetMemberActive = true;
+				setMemberSelectFilter( (String) curView.Rows[e.RowIndex].Cells["WorkAsgmt"].Value );
+				listTourMemberDataGridView.Visible = true;
+				labelMemberSelect.Visible = true;
+				listTourMemberDataGridView.Visible = true;
+				if ( myOrigTextValue.Length > 0 ) {
+					int curIdx = findMemberRow( myOrigTextValue );
+					if ( curIdx < 0 ) {
+						labelMemberQuickFind.Visible = true;
+					} else {
+						listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
+					}
 
-        }
+				} else {
+					labelMemberQuickFind.Visible = true;
+				}
 
-        private void officialWorkAsgmtDataGridView_CellValidated( object sender, DataGridViewCellEventArgs e ) {
-            DataGridView curView = (DataGridView)sender;
-            if ( curView.Rows.Count > 0 ) {
-                String curColName = curView.Columns[e.ColumnIndex].Name;
-                if ( curColName.Equals( "Event" ) ) {
-                    if ( isObjectEmpty(curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                        }
-                    }
-                } else if ( curColName.Equals( "EventGroup" ) ) {
-                    if ( !(isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                        }
-                    }
-                } else if ( curColName.Equals( "WorkAsgmt" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                        }
-                    }
-                } else if ( curColName.Equals( "MemberName" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                        }
-                    }
-                } else if ( curColName.Equals( "Notes" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                        }
-                    }
-                } else if ( curColName.Equals( "StartTime" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                            curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = curValue.ToUpper();
-                        }
-                    }
-                } else if ( curColName.Equals( "EndTime" ) ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-                        String curValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-                        if ( curValue != myOrigTextValue ) {
-                            isDataModified = true;
-                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-                            curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = curValue.ToUpper();
-                        }
-                    }
-                }
-            }
-        }
-
-        private bool validateRow(int inRowIdx) {
-            return validateRow( inRowIdx, true );
-        }
-        private bool validateRow( int inRowIdx, bool inShowMsg ) {
-            DataGridView curView = officialWorkAsgmtDataGridView;
-            bool curValidData = true;
-            String curValue = "";
-            if ( curView.Rows[inRowIdx].Cells["MemberId"].Value != System.DBNull.Value 
-                && curView.Rows[inRowIdx].Cells["MemberId"].Value != null ) {
-                curValue = (String)curView.Rows[inRowIdx].Cells["MemberId"].Value;
-                if ( curValue.Length <= 1 ) {
-                    curValidData = false;
-                    if ( inShowMsg ) MessageBox.Show( "A member must be assigned" );
-                }
-            } else {
-                curValidData = false;
-                if (inShowMsg) MessageBox.Show( "A member must be assigned" );
-            }
-            if ( curView.Rows[inRowIdx].Cells["Event"].Value != System.DBNull.Value
-                && curView.Rows[inRowIdx].Cells["Event"].Value != null ) {
-                curValue = (String)curView.Rows[inRowIdx].Cells["Event"].Value;
-                if ( curValue.Length <= 1 ) {
-                    curValidData = false;
-                    if (inShowMsg) MessageBox.Show( "An event must be selected" );
-                }
-            } else {
-                curValidData = false;
-                if (inShowMsg) MessageBox.Show( "An event must be selected" );
-            }
-            if ( curView.Rows[inRowIdx].Cells["EventGroup"].Value != System.DBNull.Value
-                && curView.Rows[inRowIdx].Cells["EventGroup"].Value != null ) {
-                curValue = (String)curView.Rows[inRowIdx].Cells["EventGroup"].Value;
-                if ( curValue.Length < 1 ) {
-                    curValidData = false;
-                    if (inShowMsg) MessageBox.Show( "An event group must be selected" );
-                }
-            } else {
-                curValidData = false;
-                if (inShowMsg) MessageBox.Show( "An event group must be selected" );
-            }
-            if ( curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value != System.DBNull.Value
-                && curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value != null ) {
-                curValue = (String)curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value;
-                if ( curValue.Length <= 1 ) {
-                    curValidData = false;
-                    if (inShowMsg) MessageBox.Show( "A work assignment must be assigned" );
-                }
-            } else {
-                curValidData = false;
-                if (inShowMsg) MessageBox.Show( "A work assignment must be assigned" );
-            }
-            return curValidData;
-        }
-
-        private void listTourMemberDataGridView_KeyUp(object sender, KeyEventArgs e) {
-            try {
-                if (e.KeyCode == Keys.Enter) {
-                    assignMemberOfficial( (DataGridView)sender, ( (DataGridView)sender ).CurrentCell.RowIndex - 1 );
-                }
-            } catch ( Exception exp ) {
-                MessageBox.Show( exp.Message );
-            }
-
-        }
-
-        private void listTourMemberDataGridView_CellContentDoubleClick( object sender, DataGridViewCellEventArgs e ) {
-            assignMemberOfficial( (DataGridView)sender, e.RowIndex );
-        }
+			} else {
+				isSetMemberActive = false;
+				listTourMemberDataGridView.Visible = false;
+				labelMemberSelect.Visible = false;
+				labelMemberQuickFind.Visible = false;
+			}
+		}
 
 		private void officialWorkAsgmtDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
 			DataGridView curView = (DataGridView) sender;
@@ -1049,13 +851,154 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 		}
 
+		private void officialWorkAsgmtDataGridView_CellValueChanged( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView)sender;
+			if ( curView.Rows.Count <= 0 ) return;
+
+			String curColName = curView.Columns[e.ColumnIndex].Name;
+			if ( curColName.Equals( "MemberName" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					mySearchViewRowIdx = e.RowIndex;
+                    int curIdx = findMemberRow( (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value );
+					if ( curIdx >= 0 ) {
+						listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
+					}
+				}
+			}
+		}
+
+		private void officialWorkAsgmtDataGridView_CellValidated( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView) sender;
+			if ( curView.Rows.Count <= 0 ) return;
+
+			String curColName = curView.Columns[e.ColumnIndex].Name;
+			if ( curColName.Equals( "WorkAsgmt" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigTextValue ) {
+						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+					}
+				}
+
+			} else if ( curColName.Equals( "MemberName" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigTextValue ) {
+						if ( curView.Rows[e.RowIndex].Cells["MemberId"].Value != System.DBNull.Value
+							&& curView.Rows[e.RowIndex].Cells["MemberId"].Value != null
+							&& ( (String) curView.Rows[e.RowIndex].Cells["MemberId"].Value ).Length > 1
+							) {
+							curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+						}
+					}
+				}
+
+			} else if ( curColName.Equals( "Notes" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigTextValue ) {
+						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+					}
+				}
+
+			} else if ( curColName.Equals( "StartTime" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigTextValue ) {
+						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+						curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = curValue.ToUpper();
+					}
+				}
+
+			} else if ( curColName.Equals( "EndTime" ) ) {
+				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigTextValue ) {
+						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+						curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = curValue.ToUpper();
+					}
+				}
+			}
+
+			if ( curView.Rows[e.RowIndex].Cells["MemberId"].Value != System.DBNull.Value
+				&& curView.Rows[e.RowIndex].Cells["MemberId"].Value != null
+				&& ((String)curView.Rows[e.RowIndex].Cells["MemberId"].Value).Length > 1
+				&& ( (String) curView.Rows[e.RowIndex].Cells["Updated"].Value ).Equals( "Y" ) ) {
+				isDataModified = true;
+			}
+		}
+
+		private void officialWorkAsgmtDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView) sender;
+
+			//Update data if changes are detected
+			if ( myViewRowIdx != e.RowIndex && myViewRowIdx < curView.Rows.Count ) {
+
+				if ( curView.Rows[myViewRowIdx].Cells["MemberId"].Value != System.DBNull.Value
+					&& curView.Rows[myViewRowIdx].Cells["MemberId"].Value != null
+					&& ( (String) curView.Rows[myViewRowIdx].Cells["MemberId"].Value ).Length > 1
+					&& ( (String) curView.Rows[myViewRowIdx].Cells["MemberName"].Value ).Length > 1
+					&& ( (String) curView.Rows[myViewRowIdx].Cells["WorkAsgmt"].Value ).Length > 1
+					&& ( (String) curView.Rows[myViewRowIdx].Cells["Updated"].Value ).Equals( "Y" )
+					) {
+					try {
+						Timer curTimerObj = new Timer();
+						curTimerObj.Interval = 5;
+						curTimerObj.Tick += new EventHandler( saveDataRow );
+						curTimerObj.Start();
+						return;
+
+					} catch ( Exception excp ) {
+						MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+					}
+				} else {
+					myViewRowIdx = e.RowIndex;
+                }
+			}
+			return;
+		}
+
+		private bool validateRow(int inRowIdx) {
+            return validateRow( inRowIdx, true );
+        }
+        private bool validateRow( int inRowIdx, bool inShowMsg ) {
+            DataGridView curView = officialWorkAsgmtDataGridView;
+            String curValue = "";
+			if ( curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value != System.DBNull.Value
+                && curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value != null ) {
+                curValue = (String)curView.Rows[inRowIdx].Cells["WorkAsgmt"].Value;
+                if ( curValue.Length <= 1 ) {
+                    if (inShowMsg) MessageBox.Show( "A work assignment must be assigned" );
+					return false;
+				}
+			} else {
+                if (inShowMsg) MessageBox.Show( "A work assignment must be assigned" );
+				return false;
+			}
+			return true;
+		}
+
+		private void listTourMemberDataGridView_KeyUp(object sender, KeyEventArgs e) {
+            try {
+                if (e.KeyCode == Keys.Enter) {
+                    assignMemberOfficial( (DataGridView)sender, ( (DataGridView)sender ).CurrentCell.RowIndex - 1 );
+                }
+            } catch ( Exception exp ) {
+                MessageBox.Show( exp.Message );
+            }
+        }
+
+        private void listTourMemberDataGridView_CellContentDoubleClick( object sender, DataGridViewCellEventArgs e ) {
+            assignMemberOfficial( (DataGridView)sender, e.RowIndex );
+        }
+
 		private void assignMemberOfficial( DataGridView inView, int inRowIdx ) {
-            if ( !(isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdTour"].Value) ) ) {
-                String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdTour"].Value;
-                String curSkierName = (String)inView.Rows[inRowIdx].Cells["SkierNameTour"].Value;
+            if ( !(isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value) ) ) {
+                String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
+                String curMemberName = (String)inView.Rows[inRowIdx].Cells["MemberNameOfficial"].Value;
 
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
-                officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curSkierName;
+                officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curMemberName;
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["Updated"].Value = "Y";
 
                 isDataModified = true;
@@ -1070,9 +1013,10 @@ namespace WaterskiScoringSystem.Tournament {
 
         private int findMemberRow(String inValue) {
             String curMemberName = "";
-            int curColIdx = listTourMemberDataGridView.Columns["SkierNameTour"].Index;
+			if ( listTourMemberDataGridView.Rows.Count == 0 ) return -1;
+			int curColIdx = listTourMemberDataGridView.Columns["MemberNameOfficial"].Index;
 
-            if ( inValue.Length > 0 ) {
+			if ( inValue.Length > 0 ) {
                 int curIdx = 0;
                 foreach ( DataGridViewRow curRow in listTourMemberDataGridView.Rows ) {
                     curMemberName = (String)curRow.Cells[curColIdx].Value;
@@ -1095,7 +1039,52 @@ namespace WaterskiScoringSystem.Tournament {
             return listTourMemberDataGridView.Rows.Count - 2;
         }
 
-        private void navCopyItem_Click(object sender, EventArgs e) {
+		private void setMemberSelectFilter( String inRole ) {
+			myMemberSelectFilter = "";
+			//'Boat Judge', 'Event Judge'))
+			if ( inRole.Equals( "Boat Judge" ) || inRole.Equals( "Event Judge" ) || inRole.Equals( "Event ACJ" ) ) {
+				if ( myEvent.Equals( "Slalom" ) ) {
+					myMemberSelectFilter = "JudgeSlalomRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Trick" ) ) {
+					myMemberSelectFilter = "JudgeTrickRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Jump" ) ) {
+					myMemberSelectFilter = "JudgeJumpRatingDesc <> ''";
+				}
+
+			} else if ( inRole.Equals( "Driver" ) ) {
+				if ( myEvent.Equals( "Slalom" ) ) {
+					myMemberSelectFilter = "DriverSlalomRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Trick" ) ) {
+					myMemberSelectFilter = "DriverTrickRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Jump" ) ) {
+					myMemberSelectFilter = "DriverJumpRatingDesc <> ''";
+				}
+
+			} else if ( inRole.Equals( "Scorer" ) ) {
+				if ( myEvent.Equals( "Slalom" ) ) {
+					myMemberSelectFilter = "ScorerSlalomRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Trick" ) ) {
+					myMemberSelectFilter = "ScorerTrickRatingDesc <> ''";
+				} else if ( myEvent.Equals( "Jump" ) ) {
+					myMemberSelectFilter = "ScorerJumpRatingDesc <> ''";
+				}
+
+			} else if ( inRole.Equals( "Safety" ) ) {
+				myMemberSelectFilter = "SafetyOfficialRatingDesc <> ''";
+
+			} else if ( inRole.Equals( "Announcer" ) ) {
+				myMemberSelectFilter = "AnncrOfficialRatingDesc <> ''";
+
+			} else if ( inRole.Equals( "Technical Controller" ) ) {
+				myMemberSelectFilter = "TechOfficialRatingDesc <> ''";
+			} else {
+				myMemberSelectFilter = "";
+            }
+
+			loadTourMemberView();
+		}
+
+		private void navCopyItem_Click(object sender, EventArgs e) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             String curGroup = "";
 
@@ -1272,8 +1261,80 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        // The PrintPage action for the PrintDocument control
-        private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
+		private void navTemplateButton_Click( object sender, EventArgs e ) {
+			if ( EventButtonAll.Checked ) {
+				MessageBox.Show( "Event must be selected to enter officials" );
+				return;
+			}
+			if ( officialWorkAsgmtDataGridView.Rows.Count > 1 ) {
+				MessageBox.Show( "Use of template only allowed when officials not already assigned" );
+				return;
+			}
+			if ( officialWorkAsgmtDataGridView.Rows.Count == 1 ) {
+				if ( ( (String) officialWorkAsgmtDataGridView.Rows[0].Cells["WorkAsgmt"].Value ).Length == 0
+					&& ( officialWorkAsgmtDataGridView.Rows[0].Cells["MemberId"].Value == System.DBNull.Value
+						|| officialWorkAsgmtDataGridView.Rows[0].Cells["MemberId"].Value != null )
+						|| ( (String) officialWorkAsgmtDataGridView.Rows[0].Cells["MemberId"].Value ).Length > 1
+					) {
+					officialWorkAsgmtDataGridView.Rows.Clear();
+
+				} else {
+					MessageBox.Show( "Use of template only allowed when officials not already assigned" );
+					return;
+				}
+			} else if ( officialWorkAsgmtDataGridView.Rows.Count == 0 ) {
+				officialWorkAsgmtDataGridView.Rows.Clear();
+			}
+
+			int curAddNumRows = 6;
+			Int16 classCompare = mySkierClassList.compareClassChange( "C", myTourClass );
+            if ( mySkierClassList.compareClassChange( "C", myTourClass ) > 0 ) {
+				curAddNumRows = 11;
+			}
+
+			this.myViewRowIdx = 0;
+			for ( int rowIdx = 0; rowIdx < curAddNumRows; rowIdx++ ) {
+				DataGridViewRow curViewRow = addWorkAsgmtRow();
+
+				if ( curAddNumRows > 6 ) {
+					if ( rowIdx == 0 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Driver";
+					} else if ( rowIdx == 1 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Boat Judge";
+					} else if ( rowIdx == 2 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Event Judge";
+					} else if ( rowIdx == 3 || rowIdx == 4 || rowIdx == 5 || rowIdx == 6 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Event Judge";
+					} else if ( rowIdx == 7 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Scorer";
+					} else if ( rowIdx == 8 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Safety";
+					} else if ( rowIdx == 9 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Technical Controller";
+					} else if ( rowIdx == 10 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Event ACJ";
+					}
+
+				} else {
+					if ( rowIdx == 0 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Driver";
+					} else if ( rowIdx == 1 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Boat Judge";
+					} else if ( rowIdx == 2 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Event Judge";
+					} else if ( rowIdx == 3 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Event Judge";
+					} else if ( rowIdx == 4 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Scorer";
+					} else if ( rowIdx == 5 ) {
+						curViewRow.Cells["WorkAsgmt"].Value = "Safety";
+					}
+				}
+			}
+		}
+
+		// The PrintPage action for the PrintDocument control
+		private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
             bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
             if ( more == true )
                 e.HasMorePages = true;
@@ -1307,8 +1368,10 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private DataTable getTourMemberList() {
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT TourReg.SanctionId, TourReg.MemberId, TourReg.SkierName, MemberList.Federation" );
+			myMemberSelectFilter = "";
+
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT TourReg.MemberId as MemberIdOfficial, TourReg.SkierName as MemberNameOfficial, MemberList.Federation" );
             curSqlStmt.Append( ", OfficialWork.JudgeSlalomRating AS JudgeSlalomRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.JudgeTrickRating AS JudgeTrickRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.JudgeJumpRating AS JudgeJumpRatingDesc" );

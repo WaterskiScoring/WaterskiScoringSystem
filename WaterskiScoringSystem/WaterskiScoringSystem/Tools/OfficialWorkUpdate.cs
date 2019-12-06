@@ -75,7 +75,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event ACJ'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -89,7 +89,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event ACJ'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -103,7 +103,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event ACJ'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
