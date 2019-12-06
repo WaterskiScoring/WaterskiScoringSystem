@@ -1041,42 +1041,71 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private void setMemberSelectFilter( String inRole ) {
 			myMemberSelectFilter = "";
-			//'Boat Judge', 'Event Judge'))
+
+			listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].Visible = false;
+
+			listTourMemberDataGridView.Columns["ScorerSlalomRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["ScorerTrickRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["ScorerJumpRatingDesc"].Visible = false;
+
+			listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["DriverTrickRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].Visible = false;
+
+			listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = false;
+
 			if ( inRole.Equals( "Boat Judge" ) || inRole.Equals( "Event Judge" ) || inRole.Equals( "Event ACJ" ) ) {
 				if ( myEvent.Equals( "Slalom" ) ) {
 					myMemberSelectFilter = "JudgeSlalomRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Trick" ) ) {
 					myMemberSelectFilter = "JudgeTrickRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Jump" ) ) {
 					myMemberSelectFilter = "JudgeJumpRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].Visible = true;
 				}
 
 			} else if ( inRole.Equals( "Driver" ) ) {
 				if ( myEvent.Equals( "Slalom" ) ) {
 					myMemberSelectFilter = "DriverSlalomRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Trick" ) ) {
 					myMemberSelectFilter = "DriverTrickRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["DriverTrickRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Jump" ) ) {
 					myMemberSelectFilter = "DriverJumpRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].Visible = true;
 				}
 
 			} else if ( inRole.Equals( "Scorer" ) ) {
 				if ( myEvent.Equals( "Slalom" ) ) {
 					myMemberSelectFilter = "ScorerSlalomRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["ScorerSlalomRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Trick" ) ) {
 					myMemberSelectFilter = "ScorerTrickRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["ScorerTrickRatingDesc"].Visible = true;
 				} else if ( myEvent.Equals( "Jump" ) ) {
 					myMemberSelectFilter = "ScorerJumpRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["ScorerJumpRatingDesc"].Visible = true;
 				}
 
 			} else if ( inRole.Equals( "Safety" ) ) {
 				myMemberSelectFilter = "SafetyOfficialRatingDesc <> ''";
+				listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].Visible = true;
 
 			} else if ( inRole.Equals( "Announcer" ) ) {
 				myMemberSelectFilter = "AnncrOfficialRatingDesc <> ''";
+				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
 
 			} else if ( inRole.Equals( "Technical Controller" ) ) {
 				myMemberSelectFilter = "TechOfficialRatingDesc <> ''";
+				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = true;
+
 			} else {
 				myMemberSelectFilter = "";
             }
