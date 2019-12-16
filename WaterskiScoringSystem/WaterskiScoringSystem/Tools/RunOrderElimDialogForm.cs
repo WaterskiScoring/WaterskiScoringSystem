@@ -1467,23 +1467,23 @@ namespace WaterskiScoringSystem.Tools {
 				if ( pointsScoreButton.Checked ) {
 					if ( handicapPointsButton.Checked ) {
 						if ( myEvent.Equals( "Slalom" ) ) {
-							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by E.AgeGroup, (S.Score + E.HCapScore) DESC " );
 						} else if ( myEvent.Equals( "Trick" ) ) {
-							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by E.AgeGroup, (S.Score + E.HCapScore) DESC " );
 						} else if ( myEvent.Equals( "Jump" ) ) {
-							curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.ScoreMeters + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by E.AgeGroup, (S.ScoreMeters + E.HCapScore) DESC " );
 						}
 					} else {
-						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.NopsScore DESC " );
+						curSqlStmt.Append( "Order by E.AgeGroup,, S.NopsScore DESC " );
 					}
 
 				} else {
 					if ( myEvent.Equals( "Slalom" ) ) {
-						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+						curSqlStmt.Append( "Order by E.AgeGroup,, S.Score DESC " );
 					} else if ( myEvent.Equals( "Trick" ) ) {
-						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+						curSqlStmt.Append( "Order by E.AgeGroup,, S.Score DESC " );
 					} else if ( myEvent.Equals( "Jump" ) ) {
-						curSqlStmt.Append( "Order by E.AgeGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.ScoreFeet DESC, S.ScoreMeters DESC " );
+						curSqlStmt.Append( "Order by E.AgeGroup,, S.ScoreFeet DESC, S.ScoreMeters DESC " );
 					}
 				}
 
@@ -1497,23 +1497,23 @@ namespace WaterskiScoringSystem.Tools {
 				if ( pointsScoreButton.Checked ) {
 					if ( handicapPointsButton.Checked ) {
 						if ( myEvent.Equals( "Slalom" ) ) {
-							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, (S.Score + E.HCapScore) DESC " );
 						} else if ( myEvent.Equals( "Trick" ) ) {
-							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.Score + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, (S.Score + E.HCapScore) DESC " );
 						} else if ( myEvent.Equals( "Jump" ) ) {
-							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), (S.ScoreMeters + E.HCapScore) DESC " );
+							curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, (S.ScoreMeters + E.HCapScore) DESC " );
 						}
 					} else {
-						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.NopsScore DESC " );
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, S.NopsScore DESC " );
 					}
 
 				} else {
 					if ( myEvent.Equals( "Slalom" ) ) {
-						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, S.Score DESC " );
 					} else if ( myEvent.Equals( "Trick" ) ) {
-						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.Score DESC " );
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, S.Score DESC " );
 					} else if ( myEvent.Equals( "Jump" ) ) {
-						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, O.RunOrder, COALESCE(D.RunOrder, 999), S.ScoreFeet DESC, S.ScoreMeters DESC " );
+						curSqlStmt.Append( "Order by O.EventGroup, O.RunOrderGroup, S.ScoreFeet DESC, S.ScoreMeters DESC " );
 					}
 				}
 

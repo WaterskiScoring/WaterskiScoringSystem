@@ -80,19 +80,16 @@ namespace WaterskiScoringSystem.Tournament {
                         if ( Convert.ToInt16(myTourRow["SlalomRounds"]) == 0 ) {
                             SlalomReg.Visible = false;
                             SlalomGroup.Visible = false;
-                            RegCountSlalomLabel.Visible = false;
                             SlalomRegCount.Visible = false;
                         }
                         if ( Convert.ToInt16(myTourRow["TrickRounds"]) == 0 ) {
                             TrickReg.Visible = false;
                             TrickGroup.Visible = false;
-                            RegCountTrickLabel.Visible = false;
                             TrickRegCount.Visible = false;
                         }
                         if ( Convert.ToInt16(myTourRow["JumpRounds"]) == 0 ) {
                             JumpReg.Visible = false;
                             JumpGroup.Visible = false;
-                            RegCountJumpLabel.Visible = false;
                             JumpRegCount.Visible = false;
                         }
                         myTourRegAddDialog = new TourRegAddMember();
@@ -316,7 +313,15 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void navSave_Click( object sender, EventArgs e ) {
+		protected override bool ProcessCmdKey( ref Message msg, Keys keyData ) {
+			if ( keyData == ( Keys.Control | Keys.F ) ) {
+				SearchTextbox.Focus();
+				return true;
+			}
+			return base.ProcessCmdKey( ref msg, keyData );
+		}
+
+		private void navSave_Click( object sender, EventArgs e ) {
             String curMethodName = "Tournament:Registration:navSave_Click";
             String curMsg = "";
             try {
@@ -1176,7 +1181,48 @@ namespace WaterskiScoringSystem.Tournament {
             return returnStatus;
         }
 
-        private bool isObjectEmpty( object inObject ) {
+		private void SearchButton_Click( object sender, EventArgs e ) {
+			int curFindRow = tourRegDataGridView.Rows.Count - 2;
+			String curMemberName = "";
+			if ( tourRegDataGridView.Rows.Count == 0 ) curFindRow = -1;
+			int curColIdx = tourRegDataGridView.Columns["SkierName"].Index;
+
+			if ( SearchTextbox.Text.Length > 0 ) {
+				int curIdx = 0;
+				foreach ( DataGridViewRow curRow in tourRegDataGridView.Rows ) {
+					curMemberName = (String) curRow.Cells[curColIdx].Value;
+					if ( curMemberName == null ) curFindRow = curIdx - 1;
+					if ( curMemberName.Length > SearchTextbox.Text.Length ) {
+						if ( curMemberName.StartsWith( SearchTextbox.Text, true, null ) ) {
+							curFindRow = curIdx;
+							break;
+
+						} else if ( curMemberName.CompareTo( SearchTextbox.Text ) >= 0 ) {
+							curFindRow = curIdx;
+							break;
+						}
+
+					} else {
+						if ( curMemberName.CompareTo( SearchTextbox.Text ) >= 0 ) {
+							curFindRow = curIdx;
+							break;
+						}
+					}
+					curIdx++;
+				}
+			}
+			tourRegDataGridView.Focus();
+			tourRegDataGridView.CurrentCell = tourRegDataGridView.Rows[curFindRow].Cells["SkierName"];
+		}
+
+		private void SearchTextbox_KeyUp( object sender, KeyEventArgs e ) {
+			if ( e.KeyCode == Keys.Enter ) {
+				SearchButton.Focus();
+				SearchButton_Click( null, null );
+			}
+		}
+
+		private bool isObjectEmpty( object inObject ) {
             bool curReturnValue = false;
             if ( inObject == null ) {
                 curReturnValue = true;

@@ -14,8 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>WaterskiScoringSystem.Program</StartupObject>
-    <ManifestCertificateThumbprint>3183A438C5FD761C9293E95ADA17CB60C0F63AE8</ManifestCertificateThumbprint>
-    <ManifestKeyFile>WaterskiScoringSystem_11_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>68BD04C173411286543516F6C761E4B1B3B1690A</ManifestCertificateThumbprint>
+    <ManifestKeyFile>WaterskiScoringSystem_1_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>true</SignManifests>
@@ -842,13 +842,6 @@
     <None Include="WaterskiScoringSystem_10_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_11_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_1_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_3_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_4_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_5_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_6_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_7_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_8_TemporaryKey.pfx" />
-    <None Include="WaterskiScoringSystem_9_TemporaryKey.pfx" />
     <None Include="WaterskiScoringSystem_TemporaryKey.pfx" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1188,7 +1181,6 @@
     <None Include="Resources\dropdown.JPG" />
     <None Include="Resources\pause.jpg" />
     <None Include="Resources\play.jpg" />
-    <None Include="WaterskiScoringSystem_2_TemporaryKey.pfx" />
     <Content Include="TrickList.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

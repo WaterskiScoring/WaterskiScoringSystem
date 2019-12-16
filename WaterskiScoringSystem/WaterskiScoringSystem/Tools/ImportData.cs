@@ -295,7 +295,10 @@ namespace WaterskiScoringSystem.Tools {
 														|| colName.Equals( "BoatEndTimeTol" )
 														|| ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
 														|| ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+														|| ( colName.Equals( "FinalPassNum" ) && myTableName.Equals( "SlalomScore" ) )
+														|| ( colName.Equals( "PassNum" ) && myTableName.Equals( "SlalomRecap" ) )
 														) {
+													//Columns that have been dropped or have data that can't be imported
 												} else {
 													if ( stmtData.Length > 1 ) {
 														stmtData.Append( ", [" + colName + "] = " );
@@ -362,7 +365,10 @@ namespace WaterskiScoringSystem.Tools {
 											|| colName.Equals( "BoatEndTimeTol" )
 											|| ( colName.Equals( "Pass1VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
 											|| ( colName.Equals( "Pass2VideoUrl" ) && myTableName.Equals( "TrickScore" ) )
+											|| ( colName.Equals( "FinalPassNum" ) && myTableName.Equals( "SlalomScore" ) )
+											|| ( colName.Equals( "PassNum" ) && myTableName.Equals( "SlalomRecap" ) )
 											) {
+											//Columns that have been dropped or have data that can't be imported
 										} else {
 											if ( stmtInsert.Length > 1 ) {
 												stmtInsert.Append( ", [" + colName + "]" );

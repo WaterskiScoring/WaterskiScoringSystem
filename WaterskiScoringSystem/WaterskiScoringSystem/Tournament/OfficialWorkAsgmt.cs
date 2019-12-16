@@ -1100,11 +1100,11 @@ namespace WaterskiScoringSystem.Tournament {
 
 			} else if ( inRole.Equals( "Announcer" ) ) {
 				myMemberSelectFilter = "AnncrOfficialRatingDesc <> ''";
-				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
+				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = true;
 
 			} else if ( inRole.Equals( "Technical Controller" ) ) {
 				myMemberSelectFilter = "TechOfficialRatingDesc <> ''";
-				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = true;
+				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
 
 			} else {
 				myMemberSelectFilter = "";
@@ -1400,7 +1400,7 @@ namespace WaterskiScoringSystem.Tournament {
 			myMemberSelectFilter = "";
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT TourReg.MemberId as MemberIdOfficial, TourReg.SkierName as MemberNameOfficial, MemberList.Federation" );
+            curSqlStmt.Append( "SELECT Distinct TourReg.MemberId as MemberIdOfficial, TourReg.SkierName as MemberNameOfficial, MemberList.Federation" );
             curSqlStmt.Append( ", OfficialWork.JudgeSlalomRating AS JudgeSlalomRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.JudgeTrickRating AS JudgeTrickRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.JudgeJumpRating AS JudgeJumpRatingDesc" );

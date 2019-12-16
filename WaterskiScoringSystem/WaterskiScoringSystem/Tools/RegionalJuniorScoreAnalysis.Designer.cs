@@ -69,7 +69,7 @@
 			this.WindowInstructionsLabel.Name = "WindowInstructionsLabel";
 			this.WindowInstructionsLabel.Size = new System.Drawing.Size(1002, 23);
 			this.WindowInstructionsLabel.TabIndex = 0;
-			this.WindowInstructionsLabel.Text = "Curent tournament must be current year\'s regional sanction";
+			this.WindowInstructionsLabel.Text = "Current tournament must be current year\'s regional sanction";
 			this.WindowInstructionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// ExecAvgSameDivButton

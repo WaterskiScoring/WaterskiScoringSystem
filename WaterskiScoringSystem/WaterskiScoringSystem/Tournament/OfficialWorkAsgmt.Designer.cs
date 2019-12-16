@@ -136,7 +136,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.officialWorkAsgmtDataGridView.MultiSelect = false;
 			this.officialWorkAsgmtDataGridView.Name = "officialWorkAsgmtDataGridView";
 			this.officialWorkAsgmtDataGridView.RowHeadersVisible = false;
-			this.officialWorkAsgmtDataGridView.Size = new System.Drawing.Size(793, 307);
+			this.officialWorkAsgmtDataGridView.Size = new System.Drawing.Size(793, 426);
 			this.officialWorkAsgmtDataGridView.TabIndex = 1;
 			this.officialWorkAsgmtDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.officialWorkAsgmtDataGridView_CellContentClick);
 			this.officialWorkAsgmtDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.officialWorkAsgmtDataGridView_CellEnter);
@@ -279,9 +279,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 413);
+			this.winStatus.Location = new System.Drawing.Point(0, 532);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(1087, 22);
+			this.winStatus.Size = new System.Drawing.Size(974, 22);
 			this.winStatus.TabIndex = 2;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -296,9 +296,8 @@ namespace WaterskiScoringSystem.Tournament {
 			this.listTourMemberDataGridView.AllowUserToDeleteRows = false;
 			this.listTourMemberDataGridView.AllowUserToResizeColumns = false;
 			this.listTourMemberDataGridView.AllowUserToResizeRows = false;
-			this.listTourMemberDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.listTourMemberDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.listTourMemberDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.listTourMemberDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
 			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
@@ -318,9 +317,9 @@ namespace WaterskiScoringSystem.Tournament {
 			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.listTourMemberDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
-			this.listTourMemberDataGridView.Location = new System.Drawing.Point(343, 141);
+			this.listTourMemberDataGridView.Location = new System.Drawing.Point(466, 141);
 			this.listTourMemberDataGridView.Name = "listTourMemberDataGridView";
-			this.listTourMemberDataGridView.Size = new System.Drawing.Size(737, 268);
+			this.listTourMemberDataGridView.Size = new System.Drawing.Size(500, 387);
 			this.listTourMemberDataGridView.TabIndex = 0;
 			this.listTourMemberDataGridView.TabStop = false;
 			this.listTourMemberDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTourMemberDataGridView_CellContentDoubleClick);
@@ -332,7 +331,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.labelMemberSelect.BackColor = System.Drawing.Color.LightGoldenrodYellow;
 			this.labelMemberSelect.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.labelMemberSelect.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelMemberSelect.Location = new System.Drawing.Point(344, 127);
+			this.labelMemberSelect.Location = new System.Drawing.Point(467, 127);
 			this.labelMemberSelect.Name = "labelMemberSelect";
 			this.labelMemberSelect.Size = new System.Drawing.Size(300, 14);
 			this.labelMemberSelect.TabIndex = 0;
@@ -419,7 +418,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navTemplateButton});
 			this.topNavBar.Location = new System.Drawing.Point(0, 0);
 			this.topNavBar.Name = "topNavBar";
-			this.topNavBar.Size = new System.Drawing.Size(1087, 38);
+			this.topNavBar.Size = new System.Drawing.Size(974, 38);
 			this.topNavBar.TabIndex = 21;
 			this.topNavBar.Text = "toolStrip1";
 			// 
@@ -537,7 +536,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.labelMemberQuickFind.BackColor = System.Drawing.Color.LightGoldenrodYellow;
 			this.labelMemberQuickFind.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.labelMemberQuickFind.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelMemberQuickFind.Location = new System.Drawing.Point(344, 90);
+			this.labelMemberQuickFind.Location = new System.Drawing.Point(467, 90);
 			this.labelMemberQuickFind.Name = "labelMemberQuickFind";
 			this.labelMemberQuickFind.Size = new System.Drawing.Size(312, 32);
 			this.labelMemberQuickFind.TabIndex = 0;
@@ -586,7 +585,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1087, 435);
+			this.ClientSize = new System.Drawing.Size(974, 554);
 			this.Controls.Add(this.roundActiveSelect);
 			this.Controls.Add(this.activeLabel);
 			this.Controls.Add(this.EnterKeyLabel2);
