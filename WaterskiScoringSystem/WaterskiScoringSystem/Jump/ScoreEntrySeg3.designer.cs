@@ -129,6 +129,7 @@
 			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -203,6 +204,8 @@
 			this.JumpSpeedSelect = new WaterskiScoringSystem.Common.JumpSpeedSelect();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
+			this.hcapScoreLabel = new System.Windows.Forms.Label();
+			this.hcapScoreTextBox = new System.Windows.Forms.TextBox();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -264,7 +267,7 @@
 			ErrorMsgLabel.BackColor = System.Drawing.Color.Red;
 			ErrorMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ErrorMsgLabel.ForeColor = System.Drawing.Color.White;
-			ErrorMsgLabel.Location = new System.Drawing.Point(138, 609);
+			ErrorMsgLabel.Location = new System.Drawing.Point(138, 524);
 			ErrorMsgLabel.Name = "ErrorMsgLabel";
 			ErrorMsgLabel.Size = new System.Drawing.Size(132, 18);
 			ErrorMsgLabel.TabIndex = 41;
@@ -277,7 +280,7 @@
 			InprogMsgLabel.BackColor = System.Drawing.Color.LimeGreen;
 			InprogMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			InprogMsgLabel.ForeColor = System.Drawing.Color.White;
-			InprogMsgLabel.Location = new System.Drawing.Point(138, 586);
+			InprogMsgLabel.Location = new System.Drawing.Point(138, 501);
 			InprogMsgLabel.Name = "InprogMsgLabel";
 			InprogMsgLabel.Size = new System.Drawing.Size(132, 18);
 			InprogMsgLabel.TabIndex = 42;
@@ -290,7 +293,7 @@
 			ScoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			ScoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ScoredMsgLabel.ForeColor = System.Drawing.Color.DarkBlue;
-			ScoredMsgLabel.Location = new System.Drawing.Point(5, 609);
+			ScoredMsgLabel.Location = new System.Drawing.Point(5, 524);
 			ScoredMsgLabel.Name = "ScoredMsgLabel";
 			ScoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			ScoredMsgLabel.TabIndex = 39;
@@ -302,7 +305,7 @@
 			UnscoredMsgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			UnscoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			UnscoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 586);
+			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 501);
 			UnscoredMsgLabel.Name = "UnscoredMsgLabel";
 			UnscoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			UnscoredMsgLabel.TabIndex = 40;
@@ -370,7 +373,7 @@
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 683);
+			this.winStatus.Location = new System.Drawing.Point(0, 734);
 			this.winStatus.Name = "winStatus";
 			this.winStatus.Size = new System.Drawing.Size(1165, 22);
 			this.winStatus.TabIndex = 19;
@@ -398,7 +401,7 @@
 			this.scoreMetersTextBox.BackColor = System.Drawing.Color.Maroon;
 			this.scoreMetersTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.scoreMetersTextBox.ForeColor = System.Drawing.Color.White;
-			this.scoreMetersTextBox.Location = new System.Drawing.Point(357, 264);
+			this.scoreMetersTextBox.Location = new System.Drawing.Point(341, 264);
 			this.scoreMetersTextBox.Name = "scoreMetersTextBox";
 			this.scoreMetersTextBox.ReadOnly = true;
 			this.scoreMetersTextBox.Size = new System.Drawing.Size(60, 26);
@@ -417,7 +420,7 @@
 			this.nopsScoreTextBox.BackColor = System.Drawing.Color.Maroon;
 			this.nopsScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.nopsScoreTextBox.ForeColor = System.Drawing.Color.White;
-			this.nopsScoreTextBox.Location = new System.Drawing.Point(438, 264);
+			this.nopsScoreTextBox.Location = new System.Drawing.Point(406, 264);
 			this.nopsScoreTextBox.Name = "nopsScoreTextBox";
 			this.nopsScoreTextBox.ReadOnly = true;
 			this.nopsScoreTextBox.Size = new System.Drawing.Size(75, 26);
@@ -489,7 +492,7 @@
 			this.jumpRecapDataGridView.Name = "jumpRecapDataGridView";
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
-			this.jumpRecapDataGridView.Size = new System.Drawing.Size(882, 239);
+			this.jumpRecapDataGridView.Size = new System.Drawing.Size(900, 200);
 			this.jumpRecapDataGridView.TabIndex = 31;
 			this.jumpRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellContentClick);
 			this.jumpRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellEnter);
@@ -936,6 +939,7 @@
             this.EventClass,
             this.EventGroup,
             this.Score,
+            this.ScoreWithHcap,
             this.RankingScore,
             this.HCapBase,
             this.HCapScore,
@@ -964,7 +968,7 @@
 			this.TourEventRegDataGridView.RowHeadersVisible = false;
 			this.TourEventRegDataGridView.RowHeadersWidth = 26;
 			this.TourEventRegDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 457);
+			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 372);
 			this.TourEventRegDataGridView.TabIndex = 43;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourEventRegDataGridView_RowEnter);
@@ -1017,7 +1021,7 @@
 			// 
 			// EventGroup
 			// 
-			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle19;
@@ -1026,7 +1030,7 @@
 			this.EventGroup.ReadOnly = true;
 			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventGroup.Width = 27;
+			this.EventGroup.Width = 31;
 			// 
 			// Score
 			// 
@@ -1037,9 +1041,18 @@
 			this.Score.HeaderText = "Score";
 			this.Score.Name = "Score";
 			this.Score.ReadOnly = true;
-			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.Score.Width = 40;
+			// 
+			// ScoreWithHcap
+			// 
+			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ScoreWithHcap.HeaderText = "ScoreH";
+			this.ScoreWithHcap.Name = "ScoreWithHcap";
+			this.ScoreWithHcap.ReadOnly = true;
+			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ScoreWithHcap.Width = 45;
 			// 
 			// RankingScore
 			// 
@@ -1498,7 +1511,7 @@
 			this.listApprovedBoatsDataGridView.RowHeadersWidth = 21;
 			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle44;
-			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(889, 151);
+			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(889, 66);
 			this.listApprovedBoatsDataGridView.TabIndex = 48;
 			this.listApprovedBoatsDataGridView.TabStop = false;
 			this.listApprovedBoatsDataGridView.Visible = false;
@@ -1783,7 +1796,7 @@
 			// 
 			this.nopsScoreLabel.AutoSize = true;
 			this.nopsScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsScoreLabel.Location = new System.Drawing.Point(455, 249);
+			this.nopsScoreLabel.Location = new System.Drawing.Point(423, 249);
 			this.nopsScoreLabel.Name = "nopsScoreLabel";
 			this.nopsScoreLabel.Size = new System.Drawing.Size(41, 13);
 			this.nopsScoreLabel.TabIndex = 0;
@@ -1803,7 +1816,7 @@
 			// scoreMetersLabel
 			// 
 			this.scoreMetersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.scoreMetersLabel.Location = new System.Drawing.Point(361, 236);
+			this.scoreMetersLabel.Location = new System.Drawing.Point(345, 236);
 			this.scoreMetersLabel.Name = "scoreMetersLabel";
 			this.scoreMetersLabel.Size = new System.Drawing.Size(52, 26);
 			this.scoreMetersLabel.TabIndex = 0;
@@ -1983,13 +1996,39 @@
 			this.roundSelect.TabIndex = 15;
 			this.roundSelect.Tag = "";
 			// 
+			// hcapScoreLabel
+			// 
+			this.hcapScoreLabel.AutoSize = true;
+			this.hcapScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreLabel.Location = new System.Drawing.Point(500, 248);
+			this.hcapScoreLabel.Name = "hcapScoreLabel";
+			this.hcapScoreLabel.Size = new System.Drawing.Size(38, 13);
+			this.hcapScoreLabel.TabIndex = 109;
+			this.hcapScoreLabel.Text = "HCap";
+			this.hcapScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// hcapScoreTextBox
+			// 
+			this.hcapScoreTextBox.BackColor = System.Drawing.Color.Maroon;
+			this.hcapScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreTextBox.ForeColor = System.Drawing.Color.White;
+			this.hcapScoreTextBox.Location = new System.Drawing.Point(486, 264);
+			this.hcapScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.hcapScoreTextBox.Name = "hcapScoreTextBox";
+			this.hcapScoreTextBox.ReadOnly = true;
+			this.hcapScoreTextBox.Size = new System.Drawing.Size(66, 26);
+			this.hcapScoreTextBox.TabIndex = 110;
+			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
 			// ScoreEntrySeg3
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-			this.ClientSize = new System.Drawing.Size(954, 722);
+			this.ClientSize = new System.Drawing.Size(954, 773);
+			this.Controls.Add(this.hcapScoreLabel);
+			this.Controls.Add(this.hcapScoreTextBox);
 			this.Controls.Add(this.approvedBoatSelectGroupBox);
 			this.Controls.Add(this.TourEventRegDataGridView);
 			this.Controls.Add(this.ResizeNarrow);
@@ -2136,24 +2175,6 @@
 		private System.Windows.Forms.Button refreshBoatListButton;
 		private System.Windows.Forms.Button selectBoatButton;
 		private System.Windows.Forms.Label BoatSelectInfoLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SkiYearAge;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
@@ -2196,5 +2217,26 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Split52TimeTolRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Split82TimeTolRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Split41TimeTolRecap;
+		private System.Windows.Forms.Label hcapScoreLabel;
+		private System.Windows.Forms.TextBox hcapScoreTextBox;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreWithHcap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkiYearAge;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
 	}
 }

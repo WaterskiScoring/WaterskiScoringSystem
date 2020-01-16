@@ -313,9 +313,9 @@ namespace WaterskiScoringSystem.Trick {
             ResizeWide.Enabled = false;
 
             if ( TeamCode.Visible ) {
-                TourEventRegDataGridView.Width = 565;
+                TourEventRegDataGridView.Width = 630;
             } else {
-                TourEventRegDataGridView.Width = 515;
+                TourEventRegDataGridView.Width = 580;
             }
         }
 
@@ -510,6 +510,7 @@ namespace WaterskiScoringSystem.Trick {
                     if ( ((String)myScoreRow["Status"]).Equals( "TBD" ) ) {
                         curSqlStmt.Append( "Delete TrickScore Where PK = " + curPK.ToString() );
 						TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Score"].Value = "";
+						TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = "";
 
 					} else if ( curPK > 0 ) {
 						curSqlStmt.Append( "Update TrickScore Set " );
@@ -995,7 +996,10 @@ namespace WaterskiScoringSystem.Trick {
 
 					curTotalScore = curPass1Score + curPass2Score;
                     scoreTextBox.Text = curTotalScore.ToString();
-                    TourEventRegDataGridView.CurrentRow.Cells["Score"].Value = scoreTextBox.Text;
+					hcapScoreTextBox.Text = ( curTotalScore + Decimal.Parse( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+
+					TourEventRegDataGridView.CurrentRow.Cells["Score"].Value = scoreTextBox.Text;
+					TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = hcapScoreTextBox.Text;
                     scorePass1.Text = curPass1Score.ToString();
                     scorePass2.Text = curPass2Score.ToString();
 
@@ -1076,8 +1080,10 @@ namespace WaterskiScoringSystem.Trick {
                 curTotalScore = curPass1Score + curPass2Score;
                 scoreTextBox.Text = curTotalScore.ToString();
                 TourEventRegDataGridView.CurrentRow.Cells["Score"].Value = scoreTextBox.Text;
+				hcapScoreTextBox.Text = ( curTotalScore + Decimal.Parse( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+				TourEventRegDataGridView.CurrentRow.Cells["ScoreWithHcap"].Value = hcapScoreTextBox.Text;
 
-                scorePass1.Text = curPass1Score.ToString();
+				scorePass1.Text = curPass1Score.ToString();
                 scorePass2.Text = curPass2Score.ToString();
 
                 ScoreList[0].Score = Convert.ToDecimal( curTotalScore.ToString() );
@@ -1805,8 +1811,18 @@ namespace WaterskiScoringSystem.Trick {
                             curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
                             curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
                             curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
-                            curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-                            curViewRow.Cells["RunOrder"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString();
+							try {
+								String curEventGroup = (String) curDataRow["EventGroup"];
+								String curRunOrderGroup = (String) curDataRow["RunOrderGroup"];
+								if ( curRunOrderGroup.Length > 0 ) {
+									curViewRow.Cells["EventGroup"].Value = curEventGroup + "-" + curRunOrderGroup;
+								} else {
+									curViewRow.Cells["EventGroup"].Value = curEventGroup;
+								}
+							} catch {
+								curViewRow.Cells["EventGroup"].Value = "";
+							}
+							curViewRow.Cells["RunOrder"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString();
                             try {
                                 curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
                             } catch {
@@ -1820,10 +1836,16 @@ namespace WaterskiScoringSystem.Trick {
                                 curViewRow.Cells["Score"].Value = "";
                                 curViewRow.Cells["Score"].ToolTipText = "";
                             }
-                            //LastUpdateDate
+							try {
+								curViewRow.Cells["ScoreWithHcap"].Value = ( (Int16) curDataRow["Score"] + (Decimal) curDataRow["HCapScore"] ).ToString( "##,###0.0" );
+								curViewRow.Cells["ScoreWithHcap"].ToolTipText = ( (DateTime) curDataRow["LastUpdateDate"] ).ToString( "MM/dd HH:mm:ss" );
+							} catch {
+								curViewRow.Cells["ScoreWithHcap"].Value = "";
+								curViewRow.Cells["ScoreWithHcap"].ToolTipText = "";
+							}
 
 
-                            try {
+							try {
                                 curViewRow.Cells["RankingScore"].Value = ( (Decimal)curDataRow["RankingScore"] ).ToString( "####0" );
                             } catch {
                                 curViewRow.Cells["RankingScore"].Value = "";
@@ -2184,7 +2206,12 @@ namespace WaterskiScoringSystem.Trick {
             } catch {
                 scoreTextBox.Text = "0";
             }
-            try {
+			try {
+				hcapScoreTextBox.Text = ( (Int16) myScoreRow["Score"] + (Decimal) myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
+			} catch {
+				hcapScoreTextBox.Text = "";
+			}
+			try {
                 scorePass1.Text = ( (Int16)myScoreRow["ScorePass1"] ).ToString();
             } catch {
                 scorePass1.Text = "0";
@@ -2199,7 +2226,7 @@ namespace WaterskiScoringSystem.Trick {
             } catch {
                 nopsScoreTextBox.Text = "0";
             }
-            try {
+			try {
                 noteTextBox.Text = (String)myScoreRow["Note"];
             } catch {
                 noteTextBox.Text = "";
@@ -3880,8 +3907,9 @@ namespace WaterskiScoringSystem.Trick {
             while (curIdx < 2 && curRowCount == 0) {
                 curSqlStmt = new StringBuilder( "" );
                 if (curIdx == 0) {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.EventGroup,  O.RunOrder, E.RunOrder, E.TeamCode" );
-                    curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.AgeGroup" );
+                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.RunOrder, E.RunOrder, E.TeamCode" );
+					curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) as EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
+					curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.AgeGroup" );
                     curSqlStmt.Append(", E.HCapBase, E.HCapScore, T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
                     curSqlStmt.Append( ", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
@@ -3891,7 +3919,7 @@ namespace WaterskiScoringSystem.Trick {
                     curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
                     curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Trick' " );
                 } else {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.TeamCode" );
+                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, '' as RunOrderGroup, E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, E.HCapBase, E.HCapScore" );
                     curSqlStmt.Append(", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
                     curSqlStmt.Append(", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
@@ -3945,10 +3973,11 @@ namespace WaterskiScoringSystem.Trick {
 		private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append("SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, S.Round, S.EventClass");
-            curSqlStmt.Append(", S.Score, S.ScorePass1, S.ScorePass2, S.NopsScore, S.Rating, S.Boat, S.Status, S.Note");
+            curSqlStmt.Append( ", S.Score, S.ScorePass1, S.ScorePass2, S.NopsScore, E.HCapScore, S.Rating, S.Boat, S.Status, S.Note" );
             curSqlStmt.Append(", Gender, SkiYearAge ");
             curSqlStmt.Append( "FROM TrickScore S " );
             curSqlStmt.Append( "  INNER JOIN TourReg T ON S.SanctionId = T.SanctionId AND S.MemberId = T.MemberId AND S.AgeGroup = T.AgeGroup ");
+			curSqlStmt.Append( "  INNER JOIN EventReg E ON S.SanctionId = E.SanctionId AND S.MemberId = E.MemberId AND S.AgeGroup = E.AgeGroup AND E.Event = 'Trick' " );
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND S.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append("  AND S.AgeGroup = '" + inAgeGroup + "' AND S.Round = " + inRound.ToString() + " ");
             curSqlStmt.Append("ORDER BY S.SanctionId, S.MemberId");

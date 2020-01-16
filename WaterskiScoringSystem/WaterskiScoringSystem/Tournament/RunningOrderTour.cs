@@ -1032,7 +1032,7 @@ namespace WaterskiScoringSystem.Tournament {
             try {
                 String curTourName = (String)myTourRow["Name"];
 				String curEvent = getCurrentEvent();
-				String curFileName = curEvent + "_SplashEye.xml";
+				String curFileName = curEvent + "_VideoRunorder.xml";
                 outBuffer = getExportFile( curFileName );
                 if (outBuffer != null) {
                     outLine = new StringBuilder( "<Tournament name=\"" + curTourName + "\" SanctionId=\"" + mySanctionNum + "\" >" );

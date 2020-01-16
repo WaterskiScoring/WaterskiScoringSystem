@@ -528,8 +528,8 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navExportSplashEye.Image = ((System.Drawing.Image)(resources.GetObject("navExportSplashEye.Image")));
 			this.navExportSplashEye.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExportSplashEye.Name = "navExportSplashEye";
-			this.navExportSplashEye.Size = new System.Drawing.Size(63, 39);
-			this.navExportSplashEye.Text = "SplashEye";
+			this.navExportSplashEye.Size = new System.Drawing.Size(95, 39);
+			this.navExportSplashEye.Text = "Video RunOrder";
 			this.navExportSplashEye.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExportSplashEye.ToolTipText = "Export visible data to a tab delimited text file";
 			this.navExportSplashEye.Click += new System.EventHandler(this.navExportSplashEye_Click);
@@ -895,7 +895,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.GroupFilterComboBox.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.GroupFilterComboBox.FormattingEnabled = true;
 			this.GroupFilterComboBox.Location = new System.Drawing.Point(5, 102);
-			this.GroupFilterComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.GroupFilterComboBox.Margin = new System.Windows.Forms.Padding(2);
 			this.GroupFilterComboBox.Name = "GroupFilterComboBox";
 			this.GroupFilterComboBox.Size = new System.Drawing.Size(130, 25);
 			this.GroupFilterComboBox.TabIndex = 9;
@@ -907,7 +907,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.DeleteFilterButton.AutoSize = true;
 			this.DeleteFilterButton.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.DeleteFilterButton.Location = new System.Drawing.Point(93, 72);
-			this.DeleteFilterButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.DeleteFilterButton.Margin = new System.Windows.Forms.Padding(2);
 			this.DeleteFilterButton.Name = "DeleteFilterButton";
 			this.DeleteFilterButton.Size = new System.Drawing.Size(41, 27);
 			this.DeleteFilterButton.TabIndex = 8;

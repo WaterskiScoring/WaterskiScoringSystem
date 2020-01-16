@@ -471,9 +471,9 @@ namespace WaterskiScoringSystem.Jump {
             ResizeWide.Enabled = false;
 
             if ( TeamCode.Visible ) {
-                TourEventRegDataGridView.Width = 540;
+                TourEventRegDataGridView.Width = 585;
             } else {
-                TourEventRegDataGridView.Width = 490;
+                TourEventRegDataGridView.Width = 535;
             }
         }
 
@@ -646,13 +646,14 @@ namespace WaterskiScoringSystem.Jump {
 
                                 if (myTourRules.ToLower().Equals( "iwwf" )) {
                                     TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = curScoreMeters;
-                                } else {
+								} else {
                                     TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = curScoreFeet;
-                                }
-                        #endregion
+								}
+								TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = this.hcapScoreTextBox.Text;
+								#endregion
 
-                                #region Update skier score for current pass
-                                rowsProc = 0;
+								#region Update skier score for current pass
+								rowsProc = 0;
                                 String curMeter1, curMeter2, curMeter3, curMeter4, curMeter5, curMeter6, curScoreTriangle;
                                 String curBoatSplitTime, curBoatSplitTime2, curBoatEndTime, curReride, curScoreProt, curTimeInTol;
                                 String curRerideReason, curResults, curReturnToBase, curNote;
@@ -921,8 +922,9 @@ namespace WaterskiScoringSystem.Jump {
                                 if (curCheckRecordMsg.Length > 1) {
                                     MessageBox.Show( curCheckRecordMsg );
                                 }
-                                #endregion
-                            } catch (Exception excp) {
+								#endregion
+
+							} catch (Exception excp) {
                                 curReturn = false;
                                 String curMsg = ":Error attempting to update skier score \n" + excp.Message;
                                 MessageBox.Show( curMsg );
@@ -932,7 +934,8 @@ namespace WaterskiScoringSystem.Jump {
                     }
 
                     isDataModified = false;
-                } catch (Exception excp) {
+
+				} catch (Exception excp) {
                     curReturn = false;
                     String curMsg = ":Error attempting to update skier score \n" + excp.Message;
                     MessageBox.Show( curMsg );
@@ -1076,6 +1079,7 @@ namespace WaterskiScoringSystem.Jump {
                                 }
                                 myScoreRow = null;
                                 scoreFeetTextBox.Text = "";
+								hcapScoreTextBox.Text = "";
                                 scoreMetersTextBox.Text = "";
                                 nopsScoreTextBox.Text = "";
                                 noteTextBox.Text = "";
@@ -1083,8 +1087,9 @@ namespace WaterskiScoringSystem.Jump {
                                 BoatSpeedTextBox.Text = "";
                                 TeamCodeTextBox.Text = "";
                                 TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = "";
+								TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = "";
 
-                                JumpSpeedSelect.CurrentValue = myMaxSpeed;
+								JumpSpeedSelect.CurrentValue = myMaxSpeed;
                                 scoreEntryBegin();
 
                                 setEventRegRowStatus( "1-TBD" );
@@ -1121,6 +1126,7 @@ namespace WaterskiScoringSystem.Jump {
                             }
                             myScoreRow = null;
                             scoreFeetTextBox.Text = "";
+							hcapScoreTextBox.Text = "";
                             scoreMetersTextBox.Text = "";
                             nopsScoreTextBox.Text = "";
                             noteTextBox.Text = "";
@@ -1805,12 +1811,18 @@ namespace WaterskiScoringSystem.Jump {
                         curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
                         curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
                         curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
-                        try {
-                            curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-                        } catch {
-                            curViewRow.Cells["EventGroup"].Value = "";
-                        }
-                        try {
+						try {
+							String curEventGroup = (String) curDataRow["EventGroup"];
+							String curRunOrderGroup = (String) curDataRow["RunOrderGroup"];
+							if ( curRunOrderGroup.Length > 0 ) {
+								curViewRow.Cells["EventGroup"].Value = curEventGroup + "-" + curRunOrderGroup;
+							} else {
+								curViewRow.Cells["EventGroup"].Value = curEventGroup;
+							}
+						} catch {
+							curViewRow.Cells["EventGroup"].Value = "";
+						}
+						try {
                             curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
                         } catch {
                             curViewRow.Cells["AgeGroup"].Value = "";
@@ -1839,7 +1851,19 @@ namespace WaterskiScoringSystem.Jump {
                         } catch {
                             curViewRow.Cells["Score"].Value = "";
                         }
-                        try {
+						try {
+							if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
+								curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal) curDataRow["ScoreMeters"] + (Decimal) curDataRow["HCapScore"] ).ToString( "##0.0" );
+							} else {
+								curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal) curDataRow["ScoreFeet"] + (Decimal) curDataRow["HCapScore"] ).ToString( "##0.0" );
+							}
+							hcapScoreTextBox.Text = (String) curViewRow.Cells["ScoreWithHcap"].Value;
+						} catch {
+							curViewRow.Cells["ScoreWithHcap"].Value = "";
+							hcapScoreTextBox.Text = "";
+						}
+
+						try {
                             curViewRow.Cells["RankingScore"].Value = ( (Decimal)curDataRow["RankingScore"] ).ToString( "###0.0" );
                         } catch {
                             curViewRow.Cells["RankingScore"].Value = "";
@@ -2199,7 +2223,16 @@ namespace WaterskiScoringSystem.Jump {
                 } catch {
                     nopsScoreTextBox.Text = "0";
                 }
-                try {
+				try {
+					if ( this.myTourRules.Equals( "IWWF" ) ) {
+						hcapScoreTextBox.Text = ( (Decimal) myScoreRow["ScoreMeters"] + (Decimal) myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
+					} else {
+						hcapScoreTextBox.Text = ( (Decimal) myScoreRow["ScoreFeet"] + (Decimal) myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
+					}
+				} catch {
+					hcapScoreTextBox.Text = "";
+				}
+				try {
                     noteTextBox.Text = (String)myScoreRow["Note"];
                 } catch {
                     noteTextBox.Text = "";
@@ -2235,13 +2268,15 @@ namespace WaterskiScoringSystem.Jump {
 				
 				//JumpSpeedSelect_Change( null, null );
 				scoreEntryInprogress();
-            } else {
+
+			} else {
                 myScoreRow = null;
 
                 scoreEventClass.SelectedValue = (String)curEventRegRow.Cells["EventClass"].Value;
                 scoreFeetTextBox.Text = "";
                 scoreMetersTextBox.Text = "";
-                nopsScoreTextBox.Text = "";
+				hcapScoreTextBox.Text = "";
+				nopsScoreTextBox.Text = "";
                 noteTextBox.Text = "";
                 RampHeightTextBox.Text = "";
                 BoatSpeedTextBox.Text = "";
@@ -4028,15 +4063,22 @@ namespace WaterskiScoringSystem.Jump {
 
                 scoreFeetTextBox.Text = skierScoreFeetBest.ToString();
                 scoreMetersTextBox.Text = skierScoreMetersBest.ToString();
-                BoatSpeedTextBox.Text = skierBoatSpeed.ToString( "00" );
+				if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
+					hcapScoreTextBox.Text = ( skierScoreMetersBest + Decimal.Parse( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+				} else {
+					hcapScoreTextBox.Text = ( skierScoreFeetBest + Decimal.Parse( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+				}
+				BoatSpeedTextBox.Text = skierBoatSpeed.ToString( "00" );
 
                 ScoreList[0].Score = skierScoreFeetBest;
                 appNopsCalc.calcNops( curAgeGroup, ScoreList );
                 nopsScoreTextBox.Text = Math.Round( ScoreList[0].Nops, 1 ).ToString();
-            } else {
+
+			} else {
                 scoreFeetTextBox.Text = "";
                 scoreMetersTextBox.Text = "";
-                BoatSpeedTextBox.Text = skierBoatSpeed.ToString( "00" );
+				hcapScoreTextBox.Text = "";
+				BoatSpeedTextBox.Text = skierBoatSpeed.ToString( "00" );
                 refreshScoreSummaryWindow();
                 setJumpScoreEntry( Convert.ToInt16( roundSelect.RoundValue ) );
             }
@@ -5375,8 +5417,9 @@ namespace WaterskiScoringSystem.Jump {
             while (curIdx < 2 && curRowCount == 0) {
                 curSqlStmt = new StringBuilder( "" );
                 if (curIdx == 0) {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.EventGroup,  O.RunOrder, E.RunOrder, E.TeamCode" );
-                    curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating" );
+                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.RunOrder, E.RunOrder, E.TeamCode" );
+					curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) as EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
+					curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating" );
                     curSqlStmt.Append( ", E.HCapBase, E.HCapScore, T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
                     curSqlStmt.Append(", COALESCE (S.Status, 'TBD') AS Status, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
                     curSqlStmt.Append( "FROM EventReg E " );
@@ -5386,7 +5429,7 @@ namespace WaterskiScoringSystem.Jump {
                     curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
                     curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Jump' " );
                 } else {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup,  E.RunOrder, E.TeamCode" );
+                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, '' as RunOrderGroup, E.RunOrder, E.TeamCode" );
                     curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
                     curSqlStmt.Append( ", T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
                     curSqlStmt.Append(", COALESCE (S.Status, 'TBD') AS Status, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
@@ -5490,7 +5533,7 @@ namespace WaterskiScoringSystem.Jump {
         private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, Round, S.EventClass, COALESCE(E.TeamCode, '') as TeamCode" );
-            curSqlStmt.Append( ", ScoreFeet, ScoreMeters , NopsScore, Rating, BoatSpeed, RampHeight, Status, Boat, Note" );
+            curSqlStmt.Append( ", ScoreFeet, ScoreMeters , NopsScore, HCapScore, Rating, BoatSpeed, RampHeight, Status, Boat, Note" );
             curSqlStmt.Append(", Gender, SkiYearAge ");
             curSqlStmt.Append( "FROM JumpScore S " );
             curSqlStmt.Append( "  INNER JOIN EventReg E ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND E.Event = 'Jump'" );
