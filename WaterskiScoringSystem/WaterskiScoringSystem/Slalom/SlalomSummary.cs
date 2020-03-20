@@ -724,10 +724,10 @@ namespace WaterskiScoringSystem.Slalom {
 
         private void navExport_Click(object sender, EventArgs e) {
             ExportData myExportData = new ExportData();
-            myExportData.exportData(mySummaryDataTable);
-        }
+			myExportData.exportData( scoreSummaryDataGridView );
+		}
 
-        private void navExportHtml_Click( object sender, EventArgs e ) {
+		private void navExportHtml_Click( object sender, EventArgs e ) {
             ExportData myExportData = new ExportData();
             String printTitle = Properties.Settings.Default.Mdi_Title;
             String printSubtitle = this.Text + " " + mySanctionNum + " held " + myTourRow["EventDates"].ToString();

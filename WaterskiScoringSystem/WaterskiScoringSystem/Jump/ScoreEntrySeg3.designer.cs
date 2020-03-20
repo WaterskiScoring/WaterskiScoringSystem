@@ -163,16 +163,6 @@
 			this.JumpCalcMetersCB = new System.Windows.Forms.CheckBox();
 			this.JumpCalcVideoCB = new System.Windows.Forms.CheckBox();
 			this.listApprovedBoatsDataGridView = new System.Windows.Forms.DataGridView();
-			this.BoatModelApproved = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EngineSpec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SpeedControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HullStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.FuelDel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Transmission = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Prop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.BoatCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.BoatOwner = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.BoatNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.BoatSelectButton = new System.Windows.Forms.Button();
 			this.TourBoatTextbox = new System.Windows.Forms.TextBox();
 			this.EventDelayReasonLabel = new System.Windows.Forms.Label();
@@ -200,12 +190,23 @@
 			this.BoatSelectInfoLabel = new System.Windows.Forms.Label();
 			this.refreshBoatListButton = new System.Windows.Forms.Button();
 			this.selectBoatButton = new System.Windows.Forms.Button();
+			this.hcapScoreLabel = new System.Windows.Forms.Label();
+			this.hcapScoreTextBox = new System.Windows.Forms.TextBox();
 			this.RampHeightSelect = new WaterskiScoringSystem.Common.RampHeightSelect();
 			this.JumpSpeedSelect = new WaterskiScoringSystem.Common.JumpSpeedSelect();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.hcapScoreLabel = new System.Windows.Forms.Label();
-			this.hcapScoreTextBox = new System.Windows.Forms.TextBox();
+			this.BoatModelApproved = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EngineSpec = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SpeedControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HullStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.FuelDel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Transmission = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Prop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BoatCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BoatOwner = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ModelYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BoatNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -267,7 +268,7 @@
 			ErrorMsgLabel.BackColor = System.Drawing.Color.Red;
 			ErrorMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ErrorMsgLabel.ForeColor = System.Drawing.Color.White;
-			ErrorMsgLabel.Location = new System.Drawing.Point(138, 524);
+			ErrorMsgLabel.Location = new System.Drawing.Point(138, 633);
 			ErrorMsgLabel.Name = "ErrorMsgLabel";
 			ErrorMsgLabel.Size = new System.Drawing.Size(132, 18);
 			ErrorMsgLabel.TabIndex = 41;
@@ -280,7 +281,7 @@
 			InprogMsgLabel.BackColor = System.Drawing.Color.LimeGreen;
 			InprogMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			InprogMsgLabel.ForeColor = System.Drawing.Color.White;
-			InprogMsgLabel.Location = new System.Drawing.Point(138, 501);
+			InprogMsgLabel.Location = new System.Drawing.Point(138, 610);
 			InprogMsgLabel.Name = "InprogMsgLabel";
 			InprogMsgLabel.Size = new System.Drawing.Size(132, 18);
 			InprogMsgLabel.TabIndex = 42;
@@ -293,7 +294,7 @@
 			ScoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			ScoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ScoredMsgLabel.ForeColor = System.Drawing.Color.DarkBlue;
-			ScoredMsgLabel.Location = new System.Drawing.Point(5, 524);
+			ScoredMsgLabel.Location = new System.Drawing.Point(5, 633);
 			ScoredMsgLabel.Name = "ScoredMsgLabel";
 			ScoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			ScoredMsgLabel.TabIndex = 39;
@@ -305,7 +306,7 @@
 			UnscoredMsgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			UnscoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			UnscoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 501);
+			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 610);
 			UnscoredMsgLabel.Name = "UnscoredMsgLabel";
 			UnscoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			UnscoredMsgLabel.TabIndex = 40;
@@ -373,9 +374,9 @@
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 734);
+			this.winStatus.Location = new System.Drawing.Point(0, 657);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(1165, 22);
+			this.winStatus.Size = new System.Drawing.Size(963, 22);
 			this.winStatus.TabIndex = 19;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -492,7 +493,7 @@
 			this.jumpRecapDataGridView.Name = "jumpRecapDataGridView";
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
-			this.jumpRecapDataGridView.Size = new System.Drawing.Size(900, 200);
+			this.jumpRecapDataGridView.Size = new System.Drawing.Size(672, 249);
 			this.jumpRecapDataGridView.TabIndex = 31;
 			this.jumpRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellContentClick);
 			this.jumpRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellEnter);
@@ -968,7 +969,7 @@
 			this.TourEventRegDataGridView.RowHeadersVisible = false;
 			this.TourEventRegDataGridView.RowHeadersWidth = 26;
 			this.TourEventRegDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 372);
+			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 479);
 			this.TourEventRegDataGridView.TabIndex = 43;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourEventRegDataGridView_RowEnter);
@@ -1205,7 +1206,7 @@
             this.navExportRecord});
 			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
 			this.topMenuNav.Name = "topMenuNav";
-			this.topMenuNav.Size = new System.Drawing.Size(1165, 42);
+			this.topMenuNav.Size = new System.Drawing.Size(963, 42);
 			this.topMenuNav.TabIndex = 44;
 			this.topMenuNav.Text = "toolStrip1";
 			// 
@@ -1488,6 +1489,7 @@
             this.Prop,
             this.BoatCode,
             this.BoatOwner,
+            this.ModelYear,
             this.BoatNotes});
 			dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Window;
@@ -1499,6 +1501,8 @@
 			this.listApprovedBoatsDataGridView.DefaultCellStyle = dataGridViewCellStyle42;
 			this.listApprovedBoatsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(276, 383);
+			this.listApprovedBoatsDataGridView.MaximumSize = new System.Drawing.Size(900, 250);
+			this.listApprovedBoatsDataGridView.MinimumSize = new System.Drawing.Size(600, 150);
 			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
 			dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control;
@@ -1511,115 +1515,11 @@
 			this.listApprovedBoatsDataGridView.RowHeadersWidth = 21;
 			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle44;
-			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(889, 66);
+			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(682, 187);
 			this.listApprovedBoatsDataGridView.TabIndex = 48;
 			this.listApprovedBoatsDataGridView.TabStop = false;
 			this.listApprovedBoatsDataGridView.Visible = false;
 			this.listApprovedBoatsDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listApprovedBoatsDataGridView_CellContentDoubleClick);
-			// 
-			// BoatModelApproved
-			// 
-			this.BoatModelApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle35;
-			this.BoatModelApproved.HeaderText = "Boat Model";
-			this.BoatModelApproved.Name = "BoatModelApproved";
-			this.BoatModelApproved.ReadOnly = true;
-			this.BoatModelApproved.Width = 180;
-			// 
-			// EngineSpec
-			// 
-			this.EngineSpec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle36.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle36;
-			this.EngineSpec.HeaderText = "Engine Mfr. & Model";
-			this.EngineSpec.Name = "EngineSpec";
-			this.EngineSpec.ReadOnly = true;
-			this.EngineSpec.Width = 180;
-			// 
-			// SpeedControl
-			// 
-			this.SpeedControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle37.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle37;
-			this.SpeedControl.HeaderText = "Speed Control";
-			this.SpeedControl.Name = "SpeedControl";
-			this.SpeedControl.ReadOnly = true;
-			this.SpeedControl.Width = 75;
-			// 
-			// HullStatus
-			// 
-			this.HullStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle38;
-			this.HullStatus.HeaderText = "Hull Status";
-			this.HullStatus.Name = "HullStatus";
-			this.HullStatus.ReadOnly = true;
-			this.HullStatus.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HullStatus.Width = 75;
-			// 
-			// FuelDel
-			// 
-			this.FuelDel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle39;
-			this.FuelDel.HeaderText = "Fuel Del";
-			this.FuelDel.Name = "FuelDel";
-			this.FuelDel.ReadOnly = true;
-			this.FuelDel.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.FuelDel.Visible = false;
-			this.FuelDel.Width = 50;
-			// 
-			// Transmission
-			// 
-			this.Transmission.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle40.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Transmission.DefaultCellStyle = dataGridViewCellStyle40;
-			this.Transmission.HeaderText = "Trans";
-			this.Transmission.Name = "Transmission";
-			this.Transmission.ReadOnly = true;
-			this.Transmission.Visible = false;
-			// 
-			// Prop
-			// 
-			this.Prop.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle41.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Prop.DefaultCellStyle = dataGridViewCellStyle41;
-			this.Prop.HeaderText = "Prop";
-			this.Prop.Name = "Prop";
-			this.Prop.ReadOnly = true;
-			this.Prop.Visible = false;
-			this.Prop.Width = 150;
-			// 
-			// BoatCode
-			// 
-			this.BoatCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatCode.HeaderText = "Boat Code";
-			this.BoatCode.Name = "BoatCode";
-			this.BoatCode.ReadOnly = true;
-			this.BoatCode.Width = 75;
-			// 
-			// BoatOwner
-			// 
-			this.BoatOwner.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatOwner.HeaderText = "Owner";
-			this.BoatOwner.MaxInputLength = 128;
-			this.BoatOwner.Name = "BoatOwner";
-			this.BoatOwner.ReadOnly = true;
-			// 
-			// BoatNotes
-			// 
-			this.BoatNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatNotes.HeaderText = "Notes";
-			this.BoatNotes.MaxInputLength = 255;
-			this.BoatNotes.Name = "BoatNotes";
-			this.BoatNotes.ReadOnly = true;
-			this.BoatNotes.Width = 150;
 			// 
 			// BoatSelectButton
 			// 
@@ -1942,6 +1842,30 @@
 			this.selectBoatButton.UseVisualStyleBackColor = false;
 			this.selectBoatButton.Click += new System.EventHandler(this.selectBoatButton_Click);
 			// 
+			// hcapScoreLabel
+			// 
+			this.hcapScoreLabel.AutoSize = true;
+			this.hcapScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreLabel.Location = new System.Drawing.Point(500, 248);
+			this.hcapScoreLabel.Name = "hcapScoreLabel";
+			this.hcapScoreLabel.Size = new System.Drawing.Size(38, 13);
+			this.hcapScoreLabel.TabIndex = 109;
+			this.hcapScoreLabel.Text = "HCap";
+			this.hcapScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// hcapScoreTextBox
+			// 
+			this.hcapScoreTextBox.BackColor = System.Drawing.Color.Maroon;
+			this.hcapScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hcapScoreTextBox.ForeColor = System.Drawing.Color.White;
+			this.hcapScoreTextBox.Location = new System.Drawing.Point(486, 264);
+			this.hcapScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.hcapScoreTextBox.Name = "hcapScoreTextBox";
+			this.hcapScoreTextBox.ReadOnly = true;
+			this.hcapScoreTextBox.Size = new System.Drawing.Size(66, 26);
+			this.hcapScoreTextBox.TabIndex = 110;
+			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
 			// RampHeightSelect
 			// 
 			this.RampHeightSelect.BackColor = System.Drawing.Color.Silver;
@@ -1996,29 +1920,117 @@
 			this.roundSelect.TabIndex = 15;
 			this.roundSelect.Tag = "";
 			// 
-			// hcapScoreLabel
+			// BoatModelApproved
 			// 
-			this.hcapScoreLabel.AutoSize = true;
-			this.hcapScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.hcapScoreLabel.Location = new System.Drawing.Point(500, 248);
-			this.hcapScoreLabel.Name = "hcapScoreLabel";
-			this.hcapScoreLabel.Size = new System.Drawing.Size(38, 13);
-			this.hcapScoreLabel.TabIndex = 109;
-			this.hcapScoreLabel.Text = "HCap";
-			this.hcapScoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.BoatModelApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle35.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle35;
+			this.BoatModelApproved.HeaderText = "Boat Model";
+			this.BoatModelApproved.Name = "BoatModelApproved";
+			this.BoatModelApproved.ReadOnly = true;
+			this.BoatModelApproved.Width = 180;
 			// 
-			// hcapScoreTextBox
+			// EngineSpec
 			// 
-			this.hcapScoreTextBox.BackColor = System.Drawing.Color.Maroon;
-			this.hcapScoreTextBox.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.hcapScoreTextBox.ForeColor = System.Drawing.Color.White;
-			this.hcapScoreTextBox.Location = new System.Drawing.Point(486, 264);
-			this.hcapScoreTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-			this.hcapScoreTextBox.Name = "hcapScoreTextBox";
-			this.hcapScoreTextBox.ReadOnly = true;
-			this.hcapScoreTextBox.Size = new System.Drawing.Size(66, 26);
-			this.hcapScoreTextBox.TabIndex = 110;
-			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.EngineSpec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle36.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle36;
+			this.EngineSpec.HeaderText = "Engine Mfr. & Model";
+			this.EngineSpec.Name = "EngineSpec";
+			this.EngineSpec.ReadOnly = true;
+			this.EngineSpec.Width = 180;
+			// 
+			// SpeedControl
+			// 
+			this.SpeedControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle37.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle37;
+			this.SpeedControl.HeaderText = "Speed Control";
+			this.SpeedControl.Name = "SpeedControl";
+			this.SpeedControl.ReadOnly = true;
+			this.SpeedControl.Width = 75;
+			// 
+			// HullStatus
+			// 
+			this.HullStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle38;
+			this.HullStatus.HeaderText = "Hull Status";
+			this.HullStatus.MaxInputLength = 16;
+			this.HullStatus.Name = "HullStatus";
+			this.HullStatus.ReadOnly = true;
+			this.HullStatus.Width = 50;
+			// 
+			// FuelDel
+			// 
+			this.FuelDel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle39;
+			this.FuelDel.HeaderText = "Fuel Del";
+			this.FuelDel.Name = "FuelDel";
+			this.FuelDel.ReadOnly = true;
+			this.FuelDel.Visible = false;
+			this.FuelDel.Width = 50;
+			// 
+			// Transmission
+			// 
+			this.Transmission.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle40.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Transmission.DefaultCellStyle = dataGridViewCellStyle40;
+			this.Transmission.HeaderText = "Trans";
+			this.Transmission.Name = "Transmission";
+			this.Transmission.ReadOnly = true;
+			this.Transmission.Visible = false;
+			// 
+			// Prop
+			// 
+			this.Prop.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle41.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Prop.DefaultCellStyle = dataGridViewCellStyle41;
+			this.Prop.HeaderText = "Prop";
+			this.Prop.Name = "Prop";
+			this.Prop.ReadOnly = true;
+			this.Prop.Visible = false;
+			this.Prop.Width = 150;
+			// 
+			// BoatCode
+			// 
+			this.BoatCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatCode.HeaderText = "Boat Code";
+			this.BoatCode.Name = "BoatCode";
+			this.BoatCode.ReadOnly = true;
+			this.BoatCode.Width = 75;
+			// 
+			// BoatOwner
+			// 
+			this.BoatOwner.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatOwner.HeaderText = "Owner";
+			this.BoatOwner.MaxInputLength = 128;
+			this.BoatOwner.Name = "BoatOwner";
+			this.BoatOwner.ReadOnly = true;
+			// 
+			// ModelYear
+			// 
+			this.ModelYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ModelYear.HeaderText = "Model Year";
+			this.ModelYear.MaxInputLength = 4;
+			this.ModelYear.Name = "ModelYear";
+			this.ModelYear.ReadOnly = true;
+			this.ModelYear.Width = 50;
+			// 
+			// BoatNotes
+			// 
+			this.BoatNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatNotes.HeaderText = "Notes";
+			this.BoatNotes.MaxInputLength = 255;
+			this.BoatNotes.Name = "BoatNotes";
+			this.BoatNotes.ReadOnly = true;
+			this.BoatNotes.Width = 150;
 			// 
 			// ScoreEntrySeg3
 			// 
@@ -2026,7 +2038,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-			this.ClientSize = new System.Drawing.Size(954, 773);
+			this.ClientSize = new System.Drawing.Size(963, 679);
 			this.Controls.Add(this.hcapScoreLabel);
 			this.Controls.Add(this.hcapScoreTextBox);
 			this.Controls.Add(this.approvedBoatSelectGroupBox);
@@ -2175,16 +2187,6 @@
 		private System.Windows.Forms.Button refreshBoatListButton;
 		private System.Windows.Forms.Button selectBoatButton;
 		private System.Windows.Forms.Label BoatSelectInfoLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HullStatus;
-		private System.Windows.Forms.DataGridViewTextBoxColumn FuelDel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Transmission;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Prop;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BoatCode;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BoatOwner;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BoatNotes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn RoundRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNumRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatSpeedRecap;
@@ -2238,5 +2240,16 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HullStatus;
+		private System.Windows.Forms.DataGridViewTextBoxColumn FuelDel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Transmission;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Prop;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatOwner;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ModelYear;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatNotes;
 	}
 }

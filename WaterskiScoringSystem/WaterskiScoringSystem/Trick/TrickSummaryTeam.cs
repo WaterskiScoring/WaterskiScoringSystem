@@ -620,7 +620,7 @@ namespace WaterskiScoringSystem.Trick {
 
         private void navExport_Click(object sender, EventArgs e) {
             ExportData myExportData = new ExportData();
-            myExportData.exportData( PrintDataGridView );
+            myExportData.exportData( scoreSummaryDataGridView );
         }
 
         private void ShowTeamButton_Click( object sender, EventArgs e ) {

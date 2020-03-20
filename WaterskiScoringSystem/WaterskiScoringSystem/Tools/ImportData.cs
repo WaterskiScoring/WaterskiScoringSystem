@@ -98,7 +98,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public void importData(String inFileName) {
-            string inputBuffer, colValue, MatchCommand = "", curMatchCommand = "", curLastUpdateDateIn = "";
+            string inputBuffer, curSanctionId = "", colValue, MatchCommand = "", curMatchCommand = "", curLastUpdateDateIn = "";
             string[] inputCols = null, inputColNames = null, inputKeys = null, curImportDataMatchMsg = { "", "", "", "" };
             DateTime curLastUpdateDate = new DateTime(), curDateValue = new DateTime();
             Boolean rowFound = false;
@@ -148,6 +148,10 @@ namespace WaterskiScoringSystem.Tools {
 						if ( inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" ) ) {
 							//Display statistics when another table entry is found
 							if ( myTableName != null ) {
+								if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) ) {
+									execSlalomRecapCheckAndUpdate( curSanctionId );
+								}
+
 								if ( curImportConfirmMsg ) {
 									MessageBox.Show( "Info: Import data processed for " + myTableName
 										+ "\nRows Read: " + rowsRead
@@ -162,7 +166,10 @@ namespace WaterskiScoringSystem.Tools {
 									rowsUpdated = 0;
 									rowsSkipped = 0;
 								}
+
+								curSanctionId = "";
 							}
+							
 							//Check for table name and assume all subsequent records are for this table
 							TableName = inputCols[1];
 							myProgressInfo.setProgessMsg( "Processing " + TableName );
@@ -205,6 +212,7 @@ namespace WaterskiScoringSystem.Tools {
 									foreach ( string keyName in inputKeys ) {
 										colValue = findColValue( keyName, inputColNames, inputCols );
 										if ( colValue == null ) colValue = "";
+										if ( keyName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = colValue;
 										if ( stmtSelect.Length > 1 ) {
 											stmtSelect.Append( ", " + keyName );
 											stmtWhere.Append( " AND " + keyName + " = '" + colValue + "'" );
@@ -223,6 +231,7 @@ namespace WaterskiScoringSystem.Tools {
 									if ( curDataTable == null ) {
 										MessageBox.Show( "Error: Checking " + myTableName + " for import data");
 										return;
+
 									} else {
 										if ( curDataTable.Rows.Count > 0 ) {
 											rowFound = true;
@@ -412,6 +421,9 @@ namespace WaterskiScoringSystem.Tools {
 					}
 
 					if ( inFileName == null ) {
+						if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) ) {
+							execSlalomRecapCheckAndUpdate( curSanctionId );
+						}
 						if ( curImportConfirmMsg ) {
 							MessageBox.Show( "Info: Import data processed for " + myTableName
 								+ "\nRows Read: " + rowsRead
@@ -442,7 +454,20 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        public bool truncateMemberData() {
+		private void execSlalomRecapCheckAndUpdate(String curSanctionId ) {
+			int curSkiYear = 0;
+            int.TryParse( curSanctionId.Substring( 0, 2 ), out curSkiYear );
+			if ( curSkiYear < 19 ) {
+				int rowsUpdate = DataAccess.ExecuteCommand( "Update SlalomRecap "
+							+ "Set PassSpeedKph = SUBSTRING ( Note, CHARINDEX('kph', Note) - 2, 2 ) "
+							+ "Where SanctionId = '" + curSanctionId + "' and PassSpeedKph is null "
+							);
+				int curValue = rowsUpdate;
+			}
+
+		}
+
+		public bool truncateMemberData() {
             String dialogMsg = "All members will be removed!"
                 + "\n This will not affect any tournament registrations or scores."
                 + "\n Do you want to continue?";
