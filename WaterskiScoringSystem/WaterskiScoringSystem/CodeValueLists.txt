@@ -1,0 +1,1542 @@
+Table:	CodeValueList							
+PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
+0	SlalomAltScoreMethodQual	B1		1	Boys 1 (U10)	0	0	Boys 1 (U10)
+0	SlalomAltScoreMethodQual	B2		2	Boys 2 (U12)	0	0	Boys 2 (U12)
+0	SlalomAltScoreMethodQual	B3		3	Boys 3 (U14)	0	0	Boys 3 (U14)
+0	SlalomAltScoreMethodQual	B4		4	Boys 4 (U16)	0	0	Boys 4 (U16)
+0	SlalomAltScoreMethodQual	B5		5	Boys 5 (U18)	0	0	Boys 5 (U18)
+0	SlalomAltScoreMethodQual	BM		11	Collegiate Men B 	0	0	Collegiate Men B 
+0	SlalomAltScoreMethodQual	BW		12	Collegiate Women B 	0	0	Collegiate Women B 
+0	SlalomAltScoreMethodQual	CM		13	Collegiate Men A 	0	0	Collegiate Men A 
+0	SlalomAltScoreMethodQual	CW		14	Collegiate Women A 	0	0	Collegiate Women A 
+0	SlalomAltScoreMethodQual	G1		5	Girls 1 (U10)	0	0	Girls 1 (U10)
+0	SlalomAltScoreMethodQual	G2		6	Girls 2 (U12)	0	0	Girls 2 (U12)
+0	SlalomAltScoreMethodQual	G3		7	Girls 3 (U14)	0	0	Girls 3 (U14)
+0	SlalomAltScoreMethodQual	G4		8	Girls 4 (U16)	0	0	Girls 4 (U16)
+0	SlalomAltScoreMethodQual	G5		9	Girls 5 (U18)	0	0	Girls 5 (U18)
+0	SlalomAltScoreMethodQual	M1		21	Mens 1 	0	0	Mens 1 
+0	SlalomAltScoreMethodQual	M2		22	Mens 2 	0	0	Mens 2 
+0	SlalomAltScoreMethodQual	M3		23	Mens 3 	0	0	Mens 3 
+0	SlalomAltScoreMethodQual	M4		24	Mens 4 	0	0	Mens 4 
+0	SlalomAltScoreMethodQual	M5		25	Mens 5 	0	0	Mens 5 
+0	SlalomAltScoreMethodQual	M6		26	Mens 6 	0	0	Mens 6 
+0	SlalomAltScoreMethodQual	M7		27	Mens 7 	0	0	Mens 7 
+0	SlalomAltScoreMethodQual	M8		28	Mens 8 	0	0	Mens 8 
+0	SlalomAltScoreMethodQual	M9		29	Mens 9 	0	0	Mens 9 
+0	SlalomAltScoreMethodQual	MA		30	Mens 10 	0	0	Mens 10 
+0	SlalomAltScoreMethodQual	MB		31	Mens 11 	0	0	Mens 11 
+0	SlalomAltScoreMethodQual	MM		63	Master Men 	0	0	Master Men 
+0	SlalomAltScoreMethodQual	MW		64	Master Women 	0	0	Master Women 
+0	SlalomAltScoreMethodQual	NM		65	Novice Mens 	0	0	Novice Mens 
+0	SlalomAltScoreMethodQual	NW		66	Novice Womens 	0	0	Novice Womens 
+0	SlalomAltScoreMethodQual	OM		61	Open Men 	0	0	Open Men 
+0	SlalomAltScoreMethodQual	OW		62	Open Women 	0	0	Open Women 
+0	SlalomAltScoreMethodQual	W1		41	Womens 1 	0	0	Womens 1 
+0	SlalomAltScoreMethodQual	W2		42	Womens 2 	0	0	Womens 2 
+0	SlalomAltScoreMethodQual	W3		43	Womens 3 	0	0	Womens 3 
+0	SlalomAltScoreMethodQual	W4		44	Womens 4 	0	0	Womens 4 
+0	SlalomAltScoreMethodQual	W5		45	Womens 5 	0	0	Womens 5 
+0	SlalomAltScoreMethodQual	W6		46	Womens 6 	0	0	Womens 6 
+0	SlalomAltScoreMethodQual	W7		47	Womens 7 	0	0	Womens 7 
+0	SlalomAltScoreMethodQual	W8		48	Womens 8 	0	0	Womens 8 
+0	SlalomAltScoreMethodQual	W9		49	Womens 9 	0	0	Womens 9 
+0	SlalomAltScoreMethodQual	WA		50	Womens 10 	0	0	Womens 10 
+0	SlalomAltScoreMethodQual	WB		51	Womens 11 	0	0	Womens 11 
+22356	AnnouncerRating	 	1	1	Unrated			
+22357	AnnouncerRating	S	2	2	State			
+22358	AnnouncerRating	R	3	3	Regional			
+22359	AnnouncerRating	N	4	4	National			
+22360	AnnouncerRating	E	5	5	Emeritus			
+0	ApprovedBoats	CC000-60-ZR4-19	190001	190001	Ski Nautique PCM ZR4 (6.0L) 4 Blade			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC000-62-H6-3-19	190002	190002	Ski Nautique PCM H6 (6.2L) 3 Blade			2019 | PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC000-53-H5-4-19	190003	190003	Ski Nautique PCM H5 (5.3L) 4 Blade			2019 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC000-53-H5-3-19	190004	190004	Ski Nautique PCM H5 (5.3L) 3 Blade			2019 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC200-60-ZR4-19	190005	190005	Ski Nautique 200 PCM ZR4 (6.0L) AC654			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-61-ZR4-19	190006	190006	Ski Nautique 200 PCM ZR4 (6.0L) AC668			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC200-60-ZR43-19	190007	190007	Ski Nautique 200 PCM ZR4 (6.0L) AC1458			2019 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-19-4	190030	190030	MasterCraft ProStar MV8 5.7L 4 Blade			2019 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-19-3	190031	190031	MasterCraft ProStar MV8 5.7L 3 Blade			2019 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-19-4	190032	190032	MasterCraft ProStar MV8 6.2L 4 Blade			2019 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-19-3	190033	190033	MasterCraft ProStar MV8 6.2L 3 Blade			2019 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-STD	190020	190020	Malibu Response TXi 6.2L STD Indmar			2019 | Indmar Raptor 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-HO1	190021	190021	Malibu Response TXi 6.2L HO Indmar 13x11.5			2019 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-HO2	190022	190022	Malibu Response TXi 6.2L HO Indmar 13x12			2019 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-409-19	190023	190023	Malibu Response TXi 6.0L Crusader 409 13x12			2019 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-409-19	190024	190024	Malibu Response TXi 6.0L Crusader 409 13x11.5			2019 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-450-19	190025	190025	Malibu Response TXi 6.0L Crusader 450 13x12			2019 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-450-19	190026	190026	Malibu Response TXi 6.0L Crusader 450 13x11.5			2019 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-53-19-MON	190027	190027	Malibu Response TXi 5.3L STD Monsoon			2019 | Monsoon 5.3L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M525	190028	190028	Malibu Response TXi 6.2L STD Monsoon AC525			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M515	190029	190029	Malibu Response TXi 6.2L STD Monsoon AC515			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-19-M330	190029	190029	Malibu Response TXi 6.2L STD Monsoon OJ330			2019 | Monsoon 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:OJ330, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	Cen-57-Z0-18-3	180010	180010	Centurion Carbon Pro 5.7L ZO 3 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	Cen-57-Z0-18-4	180011	180011	Centurion Carbon Pro 5.7L ZO 4 Blade			2018 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-18-3	180012	180012	Centurion Carbon Pro 6.0L ZO 3 Blade			2018 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-18-4	180013	180013	Centurion Carbon Pro 6.0L ZO 4 Blade			2018 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-18-STD	180020	180020	Malibu Response TXi 6.2L STD Indmar			2018 | Indmar Raptor 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-18-HO1	180021	180021	Malibu Response TXi 6.2L HO Indmar 13x11.5			2018 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-18-HO2	180022	180022	Malibu Response TXi 6.2L HO Indmar 13x12			2018 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-409-18	180023	180023	Malibu Response TXi 6.0L Crusader 409 13x12			2018 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-409-18	180024	180024	Malibu Response TXi 6.0L Crusader 409 13x11.5			2018 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-450-18	180025	180025	Malibu Response TXi 6.0L Crusader 450 13x12			2018 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-450-18	180026	180026	Malibu Response TXi 6.0L Crusader 450 13x11.5			2018 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-18-4	180030	180030	MasterCraft ProStar MV8 5.7L 4 Blade			2018 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-18-3	180031	180031	MasterCraft ProStar MV8 5.7L 3 Blade			2018 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-18-4	180032	180032	MasterCraft ProStar MV8 6.2L 4 Blade			2018 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-18-3	180033	180033	MasterCraft ProStar MV8 6.2L 3 Blade			2018 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-H5-4-18	180034	180034	Ski Nautique 200 PCM H5 5.3L 4 Blade			2018 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-H5-3-18	180035	180035	Ski Nautique 200 PCM H5 5.3L 3 Blade			2018 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-H6-4-18	180036	180036	Ski Nautique 200 PCM H6 6.2L 4 Blade			2018 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-H6-3-18	180037	180037	Ski Nautique 200 PCM H6 6.2L 3 Blade			2018 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-4094-18	180038	180038	Ski Nautique 200 PCM ZR409 6.0L 4 Blade			2018 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-4093-18	180039	180039	Ski Nautique 200 PCM ZR409 6.0L 3 Blade			2018 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	--Select--	999999	999999	Select boat in use			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+0	ApprovedBoats	Unlisted	999999	999999	Unlisted			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+0	ApprovedBoats	Cen-57-Z0-17-3	170010	170010	Centurion Carbon Pro 5.7L ZO 3 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	Cen-57-Z0-17-4	170011	170011	Centurion Carbon Pro 5.7L ZO 4 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-17-3	170012	170012	Centurion Carbon Pro 6.0L ZO 3 Blade			2017 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-17-4	170013	170013	Centurion Carbon Pro 6.0L ZO 4 Blade			2017 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-17-STD	170020	170020	Malibu Response TXi 6.2L STD Indmar			2017 | Indmar Raptor 6.2L STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-17-HO1	170021	170021	Malibu Response TXi 6.2L HO Indmar 13x11.5			2017 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-17-HO2	170022	170022	Malibu Response TXi 6.2L HO Indmar 13x12			2017 | Indmar Raptor 6.2L HO | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-409-17	170023	170023	Malibu Response TXi 6.0L Crusader 409 13x12			2017 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-409-17	170024	170024	Malibu Response TXi 6.0L Crusader 409 13x11.5			2017 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI1-60-450-17	170025	170025	Malibu Response TXi 6.0L Crusader 450 13x12			2017 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI2-60-450-17	170026	170026	Malibu Response TXi 6.0L Crusader 450 13x11.5			2017 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-17-4	170030	170030	MasterCraft ProStar MV8 5.7L 4 Blade			2017 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-17-3	170031	170031	MasterCraft ProStar MV8 5.7L 3 Blade			2017 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-17-4	170032	170032	MasterCraft ProStar MV8 6.2L 4 Blade			2017 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13.9 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-17-3	170033	170033	MasterCraft ProStar MV8 6.2L 3 Blade			2017 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-H5-4-17	170040	170040	Ski Nautique 200 PCM H5 5.3L 4 Blade			2017 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-H5-3-17	170041	170041	Ski Nautique 200 PCM H5 5.3L 3 Blade			2017 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-H6-4-17	170042	170042	Ski Nautique 200 PCM H6 6.2L 4 Blade			2017 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-H6-3-17	170043	170043	Ski Nautique 200 PCM H6 6.2L 3 Blade			2017 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-4094-17	170044	170044	Ski Nautique 200 PCM ZR409 6.0L 4 Blade			2017 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-4093-17	170045	170045	Ski Nautique 200 PCM ZR409 6.0L 3 Blade			2017 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	Cen-57-Z0-16	160010	160010	Centurion Carbon Pro 5.7L ZO			2016 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-16	160011	160011	Centurion Carbon Pro 6.0L ZO			2016 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-62-16	160020	160020	Malibu Response TXi 6.2L Indmar			2016 | Indmar Raptor 6.2L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-57-16	160021	160021	Malibu Response TXi 5.7L Crusader			2016 | Crusader 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-60-409-16	160022	160022	Malibu Response TXi 6.0L Crusader 409			2016 | Crusader 409 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MATXI-60-450-16	160023	160023	Malibu Response TXi 6.0L Crusader 450			2016 | Crusader 450 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MALXR-57-16	160024	160024	Malibu Response LXR 5.7L Crusader			2016 | Crusader Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-57-16	160030	160030	MasterCraft ProStar MV8 5.7L			2016 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ709, 4, 13 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MCProMV8-62-16	160031	160031	MasterCraft ProStar MV8 6.2L			2016 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ712, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-P15-16	160040	160040	Ski Nautique 200 PCM H5 5.3L 4 Blade			2016 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-53-P14-16	160041	160041	Ski Nautique 200 PCM H5 5.3L 3 Blade			2016 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-P15-16	160042	160042	Ski Nautique 200 PCM H6 6.2L 4 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-62-P14-16	160043	160043	Ski Nautique 200 PCM H6 6.2L 3 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
+0	ApprovedBoats	Cen-57-Z0-13	150010	150010	Centurion Carbon Pro 5.7L ZO			2015 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/.25:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-13	150011	150011	Centurion Carbon Pro 6.0L ZO			2015 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ337C, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	CC200-57-ZO-13	150012	150012	Ski Nautique 200 Excalibur 343 5.7L			2015 | PCM Excalibur 343 5.7L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC1458, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	CC409-60-ZO-13	150013	150013	Ski Nautique 200 ZR409 6.0L			2015 | PCM ZR409 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	CC450-60-ZO-13	150014	150014	Ski Nautique 200 ZR450 6.0L			2015 | PCM ZR450 6.0L | Fuel | Trans: 1.258:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral, AC422, 4, 12.5 x 15.5 Nibral, AC668, 4, 12.5 x 15 Nibral, AC1458, 3, 14 x 13 Nibral | ZO-R
+0	ApprovedBoats	MATXI-57-ZO	150016	150016	Malibu Response TXi 5.7L			2015 | Indmar Monsoon 5.7L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-R
+0	ApprovedBoats	MATXI-60-ZO	150017	150017	Malibu Response TXi 6.0L			2015 | Indmar L96 6.0L | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC515, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC190MV8-57-ZO	150020	150020	MasterCraft 190 MV8 5.7L			2015 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC190MV8-60-ZO	150021	150021	MasterCraft 190 MV8 6.0L			2015 | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC197MV8-57-ZO	150024	150024	MasterCraft 197 MV8 5.7L			2015 | Ilmor MV8 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC197MV8-60-ZO	150025	150025	MasterCraft 197 MV8 6.0L			2015 | Ilmor MV8 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ501, 4, 13 x 14.5 Nibral, OJ349, 3, 13 x 12 Nibral  | ZO-R
+0	ApprovedBoats	Cen-57-Z0-12	140001	140001	Centurion Carbon Pro 5.7L ZO			2014 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1/1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	Cen-60-Z0-12	140002	140002	Centurion Carbon Pro 6.0L ZO			2014| PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	CC196-57-ZO	140003	140003	Correct Craft 196-5.7L ZO			2014 | Engine:PCM Excalibur 5.7L PCM ZR6 5.7L | Fuel Del:MPI MPI | Trans:1.23:1 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC206-60-ZO	140004	140004	Correct Craft 206-6.0L ZO			2014  | PCM ZR6 6.0L | Fuel Del:MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 15.5 Nibral | ZO-R
+0	ApprovedBoats	CC200-57-ZO-12	140005	140005	Ski Nautique 200 Excalibur 5.7L ZO			2014  | PCM Excalibur 343 5.7L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC409-60-ZO-12	140006	140006	Ski Nautique 200 ZR409 6.0L			2014 | PCM ZR409 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC450-60-ZO-12	140007	140007	Ski Nautique 200 ZR450 6.0L			2014 | PCM ZR450 6.0L | Fuel | Trans: 1.23:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200SP-60-ZO	140008	140008	Sport Nautique 200 ZR409 6.0L			2014 | PCM ZR409 6.0L | Fuel | Trans: 1.48:1 | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-57-ZO	140011	140011	Correct Craft 200-6.0L ZO			2014  | PCM Excalibur 6.0L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	CC200-60-ZO	140012	140012	Correct Craft 200-5.7L ZO			2014  | PCM ZR6 5.7L | Fuel Del: MPI | Trans:1.23:1 | Propeller Mfr,Blades, Size: AC, 4, 12.5 x 14.25 Nibral, AC, 3, 13 x 14 Nibral, AC, 4, 12.5 x 15 Nibral | ZO-R
+0	ApprovedBoats	MALXI-57-ZO-12	140013	140013	Malibu Respons Lxi-57 ZO			2014 | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MALXI-57-PS-12	140014	140014	Malibu Respons Lxi-57 PS			2014 | Indmar Monsoon 5.7L Indmar Hammerhead 5.7L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+0	ApprovedBoats	MALXI-62-ZO-12	140015	140015	Malibu Respons Lxi-62 ZO			2014 | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MALXI-62-PS-12	140016	140016	Malibu Respons Lxi-62 PS			2014 | Indmar Monsoon 5.7L Indmar Hammerhead 6.2L | Fuel Del:MPI EFI | Trans:1:1 1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+0	ApprovedBoats	MAFXI-62-ZO-12	140017	140017	Malibu Respons Fxi-62 ZO			2014 | Indmar Hammerhead 6.2L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC190MCX-57-ZO	140018	140018	MasterCraft 190 MCX 5.7L			2014 | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO-R
+0	ApprovedBoats	MC190LY6-60-ZO	140019	140019	MasterCraft 190 LY6 6.0L			2014 | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO-R
+0	ApprovedBoats	MC197MCX-57-ZO	140020	140020	MasterCraft 197 MCX 5.7L			2014 | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO-R
+0	ApprovedBoats	MC197LY6-60-ZO	140021	140021	MasterCraft 197 LY6 6.0L			2014 | Indmar LY6 6.0L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral, OJ, 4, 13 x 14.5 | ZO-R
+0	ApprovedBoats	MC190-57-ZO	140022	140022	MasterCraft 190 - 5.7L ZO			2014 | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO-R
+0	ApprovedBoats	MC190-60-ZO	140023	140023	MasterCraft 190-6.0L ZO			2014 | Indmar LY6 6.0L | Fuel Del:EFI | Trans:1.22:1 | Propeller Mfr,Blades, Size:OJ, 4, 14.25 x 14 Nibral | ZO-R
+0	ApprovedBoats	MC197-57-ZO	140024	140024	MasterCraft 197-5.7L ZO			2014 | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.26:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral, OJ, 4, 14.25 x 14 Nibral | ZO-R
+0	ApprovedBoats	MC207-57-ZO	140025	140025	MasterCraft 214-5.7L ZO			2014 | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC207-57-PS	140026	140026	MasterCraft 214-5.7L PS			2014 | Indmar MCX 5.7L | Fuel Del:MPI | Trans:1.01 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 12 Nibral | PP 6.5ng PPSG
+0	ApprovedBoats	MC214V-57-ZO	140027	140027	MasterCraft 214V-5.7L ZO			2014 | Indmar MCX 5.7L | Fuel Del:EFI | Trans:1.56:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 17.5 | ZO-R
+0	ApprovedBoats	Outback-57-PS	140028	140028	MMoomba Outback-5.7L PS			2014 | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO-R
+0	ApprovedBoats	Outback-57-PP	140029	140029	MMoomba Outback-5.7L PP			2014 | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PPSG
+0	ApprovedBoats	Cen-57-Z0-00	130001	130001	CenturionGeneric ZO			Any | PCM | Fuel | Trans: ???? | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO-R
+0	ApprovedBoats	CC200-57-ZO-00	130005	130005	Ski Nautique Generic ZO			Any | PCM | Fuel | Trans: ???? | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MALXI-57-ZO-00	130013	130013	Malibu Respons Generic ZO			Any | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC190-57-ZO-00	130018	130018	MasterCraft Generic			Any | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO-R
+0	ApprovedBoats	Outback-57-PZ	130028	130028	MMoomba Outback-5.7L PZ			Any | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO-R
+22361	ApprovedManufacturers	CC	1	1	Correct Craft			Correct Craft
+22362	ApprovedManufacturers	MC	2	2	MasterCraft			MasterCraft
+22363	ApprovedManufacturers	MA	3	3	Malibu			Malibu
+22364	ApprovedManufacturers	CE	4	4	Centurion			Centurion
+22365	ApprovedManufacturers	OU	5	5	MMoomba			MMoomba
+22406	AWSAAgeGroup	B1		11	Boys 1 (U10)	1	9	
+22407	AWSAAgeGroup	B2		12	Boys 2 (U12)	1	11	
+22408	AWSAAgeGroup	B3		13	Boys 3 (U14)	1	13	
+22408	AWSAAgeGroup	B4		14	Boys 4 (U16)	1	15	
+22408	AWSAAgeGroup	B5		15	Boys 5 (U18)	1	17	
+22409	AWSAAgeGroup	G1		21	Girls 1 (U10)	1	9	
+22410	AWSAAgeGroup	G2		22	Girls 2 (U12)	1	11	
+22411	AWSAAgeGroup	G3		23	Girls 3 (U14)	1	13	
+22411	AWSAAgeGroup	G4		24	Girls 4 (U16)	1	15	
+22411	AWSAAgeGroup	G5		25	Girls 5 (U18)	1	17	
+22412	AWSAAgeGroup	M1		31	Mens 1	18	24	
+22413	AWSAAgeGroup	M2		32	Mens 2	25	34	
+22414	AWSAAgeGroup	M3		33	Mens 3	35	44	
+22415	AWSAAgeGroup	M4		34	Mens 4	45	54	
+22416	AWSAAgeGroup	M5		35	Mens 5	55	59	
+22417	AWSAAgeGroup	M6		36	Mens 6	60	64	
+22418	AWSAAgeGroup	M7		37	Mens 7	65	69	
+22419	AWSAAgeGroup	M8		38	Mens 8	70	74	
+22420	AWSAAgeGroup	M9		39	Mens 9	75	79	
+22421	AWSAAgeGroup	MA		40	Mens 10	80	84	
+22422	AWSAAgeGroup	MB		41	Mens 11	85	100	
+22423	AWSAAgeGroup	W1		51	Womens 1	18	24	
+22424	AWSAAgeGroup	W2		52	Womens 2	25	34	
+22425	AWSAAgeGroup	W3		53	Womens 3	35	44	
+22426	AWSAAgeGroup	W4		54	Womens 4	45	54	
+22427	AWSAAgeGroup	W5		55	Womens 5	55	59	
+22428	AWSAAgeGroup	W6		56	Womens 6	60	64	
+22429	AWSAAgeGroup	W7		57	Womens 7	65	69	
+22430	AWSAAgeGroup	W8		58	Womens 8	70	74	
+22431	AWSAAgeGroup	W9		59	Womens 9	75	79	
+22432	AWSAAgeGroup	WA		60	Womens 10	80	84	
+22433	AWSAAgeGroup	WB		61	Womens 11	85	100	
+22434	AWSAAgeGroup	OM		71	Open Men	1	100	
+22435	AWSAAgeGroup	OW		72	Open Women	1	100	
+22436	AWSAAgeGroup	MM		73	Master Men	35	100	
+22437	AWSAAgeGroup	MW		74	Master Women	35	100	
+22438	AWSAAgeGroup	NM		75	Novice Mens	18	100	
+22439	AWSAAgeGroup	NW		76	Novice Womens	18	100	
+22445	AWSAAgeGroup	IM		77	Intl Men	1	99	
+22446	AWSAAgeGroup	IW		78	Intl Women	1	99	
+22440	AWSAAgeGroup	OF		999	NonSkiing Official	16	100	
+22456	AWSAJumpMax	B2		11	45kph, 28.0mph	28	45	
+22457	AWSAJumpMax	B3		12	48kph, 29.8mph	29.8	48	
+22457	AWSAJumpMax	B4		13	51kph, 31.7mph	31.7	51	
+22457	AWSAJumpMax	B5		14	51kph, 31.7mph	31.7	51	
+22458	AWSAJumpMax	G2		21	45kph, 28.0mph	28	45	
+22459	AWSAJumpMax	G3		22	45kph, 28.0mph	28	45	
+22459	AWSAJumpMax	G4		23	51kph, 31.7mph	31.7	51	
+22459	AWSAJumpMax	G5		24	51kph, 31.7mph	31.7	51	
+22460	AWSAJumpMax	M1		31	57kph, 35.4mph	35.4	57	
+22461	AWSAJumpMax	M2		32	57kph, 35.4mph	35.4	57	
+22462	AWSAJumpMax	M3		33	57kph, 35.4mph	35.4	57	
+22463	AWSAJumpMax	M4		34	54kph, 33.6mph	33.6	54	
+22464	AWSAJumpMax	M5		35	51kph, 31.7mph	31.7	51	
+22465	AWSAJumpMax	M6		36	51kph, 31.7mph	31.7	51	
+22466	AWSAJumpMax	M7		37	51kph, 31.7mph	31.7	51	
+22467	AWSAJumpMax	M8		38	51kph, 31.7mph	31.7	51	
+22468	AWSAJumpMax	M9		39	48kph, 29.8mph	29.8	48	
+22469	AWSAJumpMax	MA		40	48kph, 29.8mph	29.8	48	
+22470	AWSAJumpMax	MB		41	48kph, 29.8mph	29.8	48	
+22471	AWSAJumpMax	W1		51	54kph, 33.6mph	33.6	54	
+22472	AWSAJumpMax	W2		52	54kph, 33.6mph	33.6	54	
+22473	AWSAJumpMax	W3		53	51kph, 31.7mph	31.7	51	
+22474	AWSAJumpMax	W4		54	51kph, 31.7mph	31.7	51	
+22475	AWSAJumpMax	W5		55	48kph, 29.8mph	29.8	48	
+22476	AWSAJumpMax	W6		56	48kph, 29.8mph	29.8	48	
+22477	AWSAJumpMax	W7		57	45kph, 28.0mph	28	45	
+22478	AWSAJumpMax	W8		58	45kph, 28.0mph	28	45	
+22479	AWSAJumpMax	W9		59	45kph, 28.0mph	28	45	
+22480	AWSAJumpMax	WA		60	45kph, 28.0mph	28	45	
+22481	AWSAJumpMax	WB		61	45kph, 28.0mph	28	45	
+22482	AWSAJumpMax	OM		71	57kph, 35.4mph	35.4	57	
+22483	AWSAJumpMax	OW		72	54kph, 33.6mph	33.6	54	
+22484	AWSAJumpMax	MM		73	57kph, 35.4mph	35.4	57	
+22485	AWSAJumpMax	MW		74	51kph, 31.7mph	31.7	51	
+22486	AWSAJumpMax	NM		75	54kph, 33.6mph	33.6	54	
+22487	AWSAJumpMax	NW		76	51kph, 31.7mph	31.7	51	
+22512	AWSARampMax	B2		11	5 Foot	0.235	5	
+22512	AWSARampMax	B3		12	5 Foot	0.235	5	
+22513	AWSARampMax	B4		13	5.5 Foot	0.255	5.5	
+22513	AWSARampMax	B5		14	5.5 Foot	0.255	5.5	
+22514	AWSARampMax	G2		21	5 Foot	0.235	5	
+22514	AWSARampMax	G3		22	5 Foot	0.235	5	
+22515	AWSARampMax	G4		23	5 Foot	0.235	5	
+22515	AWSARampMax	G5		24	5 Foot	0.235	5	
+22516	AWSARampMax	M1		31	5.5 Foot	0.255	5.5	
+22517	AWSARampMax	M2		32	5.5 Foot	0.255	5.5	
+22518	AWSARampMax	M3		33	5.5 Foot	0.255	5.5	
+22519	AWSARampMax	M4		34	5 Foot	0.235	5	
+22520	AWSARampMax	M5		35	5 Foot	0.235	5	
+22521	AWSARampMax	M6		36	5 Foot	0.235	5	
+22522	AWSARampMax	M7		37	5 Foot	0.235	5	
+22523	AWSARampMax	M8		38	5 Foot	0.235	5	
+22524	AWSARampMax	M9		39	5 Foot	0.235	5	
+22525	AWSARampMax	MA		40	5 Foot	0.235	5	
+22526	AWSARampMax	MB		41	5 Foot	0.235	5	
+22527	AWSARampMax	W1		51	5 Foot	0.235	5	
+22528	AWSARampMax	W2		52	5 Foot	0.235	5	
+22529	AWSARampMax	W3		53	5 Foot	0.235	5	
+22530	AWSARampMax	W4		54	5 Foot	0.235	5	
+22531	AWSARampMax	W5		55	5 Foot	0.235	5	
+22532	AWSARampMax	W6		56	5 Foot	0.235	5	
+22533	AWSARampMax	W7		57	5 Foot	0.235	5	
+22534	AWSARampMax	W8		58	5 Foot	0.235	5	
+22535	AWSARampMax	W9		59	5 Foot	0.235	5	
+22536	AWSARampMax	WA		60	5 Foot	0.235	5	
+22537	AWSARampMax	WB		61	5 Foot	0.235	5	
+22538	AWSARampMax	OM		71	6 Foot	0.271	6	
+22539	AWSARampMax	OW		72	5.5 Foot	0.255	5.5	
+22540	AWSARampMax	MM		73	5.5 Foot	0.255	5.5	
+22541	AWSARampMax	MW		74	5 Foot	0.235	5	
+22542	AWSARampMax	NM		75	5 Foot	0.235	5	
+22543	AWSARampMax	NW		76	5 Foot	0.235	5	
+0	AWSARecords	B1-S		11	Boys 1 (U10) - Slalom		105	1 bouys at 11.25m @49 kph (38 off @ 30.4 mph) 6/7/2014 Cooper Tate
+0	AWSARecords	B1-T		12	Boys 1 (U10) - Trick		6130	7/27/2017 Jake Abelson
+0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 9/1/2019 BENCHMARK
+0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
+0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		97	(29.2m) 45kph 5ft 8/10/2019 Corbin Pierce
+0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
+0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		9490	10/19/2019 Jake Abelson
+0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
+0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
+0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		10430	 7/18/2009 Adam Pickos  
+0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
+0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
+0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		10430	 7/18/2009 Adam Pickos  
+0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
+0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
+0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
+0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		85.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 9/18/2019 BENCHMARK
+0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		5340	7/24/2011 Neilly Ross
+0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 8/15/2006 Lindsey Able
+0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G3-T		57	Girls 3 (U14) - Trick		7170	6/28/2014 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G3-J		58	Girls 3 (U14) - Jump		120	5 45kph 6/22/2008 Brittany Greenwood APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G4-S		61	Girls 4 (U16) - Slalom		109	1 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G4-T		62	Girls 4 (U16) - Trick		10610	10/14/2016 Anna Gay APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G4-J		63	Girls 4 (U16) - Jump		154	(46.9m) 5 51kph 4/25/2010 Lauren Morgan APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G5-S		64	Girls 5 (U18) - Slalom		109	1 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G5-T		65	Girls 5 (U18) - Trick		10610	10/14/2016 Anna Gay APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G5-J		66	Girls 5 (U18) - Jump		154	(46.9m) 5 51kph 4/25/2010 Lauren Morgan APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	M1-S		71	Mens 1 - Slalom		122.5	2.5 buoy at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
+0	AWSARecords	M1-T		72	Mens 1 - Trick		11620	6/12/2016 Adam Pickos
+0	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 5.5 57kph 10/5/2013 Zack Worden
+0	AWSARecords	M2-S		81	Mens 2 - Slalom		122	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish  
+0	AWSARecords	M2-T		82	Mens 2 - Trick		12090	4/30/2011 Jimmy Seimers
+0	AWSARecords	M2-J		83	Mens 2 - Jump		216	5.5 57kph 9/24/2002 Mark Lane  
+0	AWSARecords	M3-S		91	Mens 3 - Slalom		115.50	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 8/23/2019 Adam Caldwell
+0	AWSARecords	M3-T		92	Mens 3 - Trick		12070	 7/17/2005 Russell Gay  
+0	AWSARecords	M3-J		93	Mens 3 - Jump		200	(61.1) 57kph 5ft 7/30/2016 Scot Ellis
+0	AWSARecords	M4-S		101	Mens 4 - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers
+0	AWSARecords	M4-T		102	Mens 4 - Trick		11470	10/24/2014 Russell Gay
+0	AWSARecords	M4-J		103	Mens 4 - Jump		191	(58.2M) 5 54kph 7/7/2018 Scot Ellis
+0	AWSARecords	M5-S		111	Mens 5 - Slalom		111.5	3.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/6/2015 Greg Badal
+0	AWSARecords	M5-T		112	Mens 5 - Trick		6080	5/12/2018 Marc Bedsole
+0	AWSARecords	M5-J		113	Mens 5 - Jump		157	(47.8M) 5 51kph 7/19/2014 Mitch Grau
+0	AWSARecords	M6-S		121	Mens 6 - Slalom		110	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley
+0	AWSARecords	M6-T		122	Mens 6 - Trick		4830	8/22/2014 Don Parsons
+0	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 10/12/2014 Frankie Dees
+0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
+0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
+0	AWSARecords	M7-J		133	Mens 7 - Jump		136	(41.5m) 51kph 5ft 9/8/2018 Frankie Dees
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		95	5 bouys at 11.25m @ 52 kph (38 off @ 32 mph) 10/13/2018 Jeff Wiswall 11/2/2019 Steve Raphael
+0	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
+0	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 5 48kph 8/31/2014 Brad Conger
+0	AWSARecords	M9-S		151	Mens 9 - Slalom		88	4 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/25/2018 Jim Kinney 9/29/2019 John Autore
+0	AWSARecords	M9-T		152	Mens 9 - Trick		2520	7/14/2019 Stan Switzer
+0	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 5 48kph 8/7/2014 Bruce Kunde
+0	AWSARecords	MA-S		161	Mens 10 - Slalom		77	5 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 8/25/2018 Don Fournier
+0	AWSARecords	MA-T		162	Mens 10 - Trick		1600	 10/20/2007 Harry Price  
+0	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
+0	AWSARecords	MB-S		171	Mens 11 - Slalom		50	2 bouys at 18.25m @ 46 kph (15 off @ 28.6 mph) 8/8/2019 Roger Wahl
+0	AWSARecords	MB-T		172	Mens 11 - Trick		1050	10/29/2012 Harry Price
+0	AWSARecords	MB-J		173	Mens 11 - Jump		22	(6.7m) 5 39kph 10/29/2012 Harry Price
+0	AWSARecords	W1-S		181	Womens 1 - Slalom		109	1 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/3/2009 Regina Jaquess  
+0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
+0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
+0	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
+0	AWSARecords	W2-T		192	Womens 2 - Trick		8990	 10/2/2010 Mandy Nightingale  
+0	AWSARecords	W2-J		193	Womens 2 - Jump		158	 5 54kph 10/6/1996 Brenda Baldwin  
+0	AWSARecords	W3-S		201	Womens 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 8/30/2014 April Coble-Eller
+0	AWSARecords	W3-T		202	Womens 3 - Trick		6450	 7/25/2010 Sally Montavon  
+0	AWSARecords	W3-J		203	Womens 3 - Jump		155	 5 51kph 10/6/2007 Brenda Baldwin  
+0	AWSARecords	W4-S		211	Womens 4 - Slalom		100.5	4.5 buoys at 11.25m @ 55 kph (38 off @ 34.2 mph) 10/4/2009 Jennifer Leachman-LaPoint  
+0	AWSARecords	W4-T		212	Womens 4 - Trick		5600	 7/4/1988 Barbara Cleveland  
+0	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 40.4 5 51kph 10/12/2014 Lori Krueger
+0	AWSARecords	W5-S		221	Womens 5 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 11/7/2019 Jennifer Leachman-LaPoint
+0	AWSARecords	W5-T		222	Womens 5 - Trick		5060	8/18/2007 Kay Nichols 9/18/2016 Lydia Robsham
+0	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.5) 48kph 5ft 8/9/2017 Joy Kelly
+0	AWSARecords	W6-S		231	Womens 6 - Slalom		93	3 bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 7/22/2018 Joy Kelley
+0	AWSARecords	W6-T		232	Womens 6 - Trick		3940	7/24/2019 Joy Kelley
+0	AWSARecords	W6-J		233	Womens 6 - Jump		122	 (37.3m) 48kph 5ft 9/1/2018 Joy Kelley
+0	AWSARecords	W7-S		241	Womens 7 - Slalom		86	2 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 6/20/2018 Cyndi Benzel
+0	AWSARecords	W7-T		242	Womens 7 - Trick		3330	 8/14/2001 Thelma Salmas  
+0	AWSARecords	W7-J		243	Womens 7 - Jump		85	(25.8m) 45kph 5ft 8/20/2016 Leza Harrison
+0	AWSARecords	W8-S		251	Womens 8 - Slalom		75.5	3.5 buoys at 13m @ 49 kph (32 off @ 30.4 mph) 6/14/2008 Margaret Anne Woodard  
+0	AWSARecords	W8-T		252	Womens 8 - Trick		2270	 5/14/2006 Thelma Salmas  
+0	AWSARecords	W8-J		253	Womens 8 - Jump		57	5 45kph 7/9/2006 Thelma Salmas  
+0	AWSARecords	W9-S		261	Womens 9 - Slalom		68	2 bouys at 13.00m @ 46 kph (32 off @ 28.6 mph) 9/22/2013 Maria Walsh
+0	AWSARecords	W9-T		262	Womens 9 - Trick		1670	 10/20/2007 Artis Price  
+0	AWSARecords	W9-J		263	Womens 9 - jump		45	5 45kph 8/16/1990 Lucille Borgen  
+0	AWSARecords	WA-S		271	Womens 10 - Slalom		56	2 buoys at 16m @ 46 kph (22 off @ 28.6 mph) 9/15/2007 Francis Woofenden  
+0	AWSARecords	WA-T		272	Womens 10 - Trick		1220	 10/11/2009 Artis Price  
+0	AWSARecords	WA-J		273	Womens 10 - Jump		0	 none none  
+0	AWSARecords	WB-S		281	Womens 11 - Slalom		46	4 buoys at 23m @ 43 kph (75 @ 26.7 mph) 7/17/2005 Lucille Borgen  
+0	AWSARecords	WB-T		282	Womens 11 - Trick		1120	8/19/2014 Artis Price
+0	AWSARecords	WB-J		283	Womens 11 - Jump		0	 none none  
+0	AWSARecords	OM-S		291	Open Men - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
+0	AWSARecords	OM-T		292	Open Men - Trick		12090	4/30/2011 Jimmy Siemers
+0	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3M) 6 57kph 5/1/2014 Freddy Krueger
+0	AWSARecords	OW-S		301	Open Womens - Slalom		112.5	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
+0	AWSARecords	OW-T		302	Open Womens - Trick		11260	10/5/2019 Erika Lang
+0	AWSARecords	OW-J		303	Open Women - Jump		188	(57.4m) 5.5 54kph 10/16/2016 Alex Lauretano
+0	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers 8/23/2019 Adam Caldwell
+0	AWSARecords	MM-T		312	Master Men - Trick		11570	 5/8/2010 Russell Gay  
+0	AWSARecords	MM-J		313	Master Men - Jump		215	(65.5m) 5.5 57kph 4/9/2011 Scot Ellis
+0	AWSARecords	MW-S		321	Master Women-Slalom		109	1 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 8/10/2015 BENCHMARK
+0	AWSARecords	MW-T		322	Master Women-Trick		6450	8/10/2015 BENCHMARK
+0	AWSARecords	MW-J		323	Master Women-Jump		155	8/10/2015 BENCHMARK
+22562	AWSASlalomMax	B1		11	49kph, 30mph	30	49	
+22563	AWSASlalomMax	B2		12	52kph, 32.3mph	32	52	
+22563	AWSASlalomMax	B3		13	55kph, 34mph	34	55	
+22564	AWSASlalomMax	B4		14	58kph, 36mph	36	58	
+22564	AWSASlalomMax	B5		14	58kph, 36mph	36	58	
+22565	AWSASlalomMax	G1		21	49kph, 30mph	30	49	
+22566	AWSASlalomMax	G2		22	52kph, 32mph	32	52	
+22566	AWSASlalomMax	G3		23	52kph, 32mph	32	52	
+22567	AWSASlalomMax	G4		24	55kph, 34mph	34	55	
+22567	AWSASlalomMax	G5		24	55kph, 34mph	34	55	
+22568	AWSASlalomMax	M1		31	58kph, 36mph	36	58	
+22569	AWSASlalomMax	M2		32	58kph, 36mph	36	58	
+22570	AWSASlalomMax	M3		33	58kph, 36mph	36	58	
+22571	AWSASlalomMax	M4		34	58kph, 36mph	36	58	
+22572	AWSASlalomMax	M5		35	58kph, 36mph	36	58	
+22573	AWSASlalomMax	M6		36	58kph, 36mph	36	58	
+22574	AWSASlalomMax	M7		37	58kph, 36mph	36	58	
+22575	AWSASlalomMax	M8		38	58kph, 36mph	36	58	
+22576	AWSASlalomMax	M9		39	58kph, 36mph	36	58	
+22577	AWSASlalomMax	MA		40	58kph, 36mph	36	58	
+22578	AWSASlalomMax	MB		41	58kph, 36mph	36	58	
+22579	AWSASlalomMax	W1		51	55kph, 34mph	34	55	
+22580	AWSASlalomMax	W2		52	55kph, 34mph	34	55	
+22581	AWSASlalomMax	W3		53	55kph, 34mph	34	55	
+22582	AWSASlalomMax	W4		54	55kph, 34mph	34	55	
+22583	AWSASlalomMax	W5		55	55kph, 34mph	34	55	
+22584	AWSASlalomMax	W6		56	55kph, 34mph	34	55	
+22585	AWSASlalomMax	W7		57	55kph, 34mph	34	55	
+22586	AWSASlalomMax	W8		58	55kph, 34mph	34	55	
+22587	AWSASlalomMax	W9		59	55kph, 34mph	34	55	
+22588	AWSASlalomMax	WA		60	55kph, 34mph	34	55	
+22589	AWSASlalomMax	WB		61	55kph, 34mph	34	55	
+22590	AWSASlalomMax	OM		71	58kph, 36mph	36	58	
+22591	AWSASlalomMax	OW		72	55kph, 34mph	34	55	
+22592	AWSASlalomMax	MM		73	55kph, 34mph	34	55	
+22593	AWSASlalomMax	MW		74	55kph, 34mph	34	55	
+22594	AWSASlalomMax	NM		75	58kph, 36mph	36	58	
+22595	AWSASlalomMax	NW		76	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	B1		11	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	B2		12	52kph, 32.3mph	32	52	
+0	AWSASlalomMaxDiv	B3		13	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	B4		14	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	B5		15	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	G1		21	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	G2		22	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	G3		23	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	G4		24	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	G5		25	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	M1		31	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	M2		32	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	M3		33	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	M4		34	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	M5		35	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	M6		36	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	M7		37	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	M8		38	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	M9		39	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	MA		40	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	MB		41	46kph, 28mph	28	46	
+0	AWSASlalomMaxDiv	W1		51	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	W2		52	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	W3		53	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	W4		54	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	W5		55	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	W6		56	52kph, 32mph	32	52	
+0	AWSASlalomMaxDiv	W7		57	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	W8		58	49kph, 30mph	30	49	
+0	AWSASlalomMaxDiv	W9		59	46kph, 28mph	28	46	
+0	AWSASlalomMaxDiv	WA		60	46kph, 28mph	28	46	
+0	AWSASlalomMaxDiv	WB		61	43kph, 26mph	26	43	
+0	AWSASlalomMaxDiv	OM		71	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	OW		72	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	MM		73	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	MW		74	55kph, 34mph	34	55	
+0	AWSASlalomMaxDiv	NM		75	58kph, 36mph	36	58	
+0	AWSASlalomMaxDiv	NW		76	55kph, 34mph	34	55	
+22627	Class	C	4	1	C - Competitive			
+22628	Class	F	1	2	F - Grass Roots / Fun / Novice			
+22628	Class	X	2	3	X - Experimental			
+22629	Class	R	9	5	R - Record			
+22630	Class	E	7	9	E - National Record			
+22631	Class	L	8	10	L - Ranking List			
+22632	ClassToEvent	C		1	C			
+22633	ClassToEvent	G		2	F			
+22634	ClassToEvent	F		3	F			
+22635	ClassToEvent	N		4	F			
+22636	ClassToEvent	R		5	R			
+22637	ClassToEvent	U		6	F			NCWSA Novice
+22638	ClassToEvent	E		9	E			
+22639	ClassToEvent	L		10	L			
+22640	ClassToEvent	A		11	L			
+22641	ClassToEvent	B		12	L			
+22642	ClassToEvent	I		13	F			
+22643	ClassToEvent	X		14	X			
+22644	ClassToEvent	P		15	R			
+22645	ClassToEvent	Q		16	C			
+22646	ClassToEvent	$		17	C			
+22614	ClassTour	C	4	1	C - Competitive			
+22615	ClassTour	G	1	2	G - Grass Roots			
+22616	ClassTour	F	1	3	F - Fun			
+22617	ClassTour	R	9	5	R - Record			
+22618	ClassTour	E	7	9	E - National Record			
+22619	ClassTour	L	8	10	L - Ranking List			
+22620	ClassTour	A	9	11	A - National Championships			
+22621	ClassTour	B	9	12	B - Regional Championships			
+22622	ClassTour	I	3	13	I - Novice IWWF			
+22623	ClassTour	X	5	14	X - Experimental			
+22624	ClassTour	P	9	15	P - Cash Prize Record			
+22625	ClassTour	Q	4	16	Q - Cash Prize Non-Record			
+22626	ClassTour	$	6	17	Cash Prize			
+22647	DriverRating	 		1	Unrated			
+0	DriverRating	Trained 		2	Trained			
+22648	DriverRating	Assistant		3	Assistant			
+22649	DriverRating	Regular		4	Regular			
+22650	DriverRating	Senior		5	Senior			
+22651	DriverRating	Emeritus		6	Emeritus			
+22652	EndOfTourReports	F1		1	WWParm.TNY			Tournament parameter file
+22655	EndOfTourReports	F4		4	######BT.prn			Boat time report
+22656	EndOfTourReports	F5		5	######*.sbk			Scorebook
+22657	EndOfTourReports	F6		6	######*.wsp			Water Ski Performance file for ranking list
+22658	EndOfTourReports	F8		7	######CJ.PRN			Chief Judge Report (PRN)
+22659	EndOfTourReports	F9		8	######CJ.txt			Chief Judge Report data file
+22661	EndOfTourReports	F11		9	######CS.htm			Condensed scorebook web report
+22663	EndOfTourReports	F13		10	######JT.csv			Jump time data file
+22664	EndOfTourReports	F14		11	######OD.txt			Official credit data file
+22665	EndOfTourReports	F16		12	######SD.PRN			Safety Director Report (PRN)
+22666	EndOfTourReports	F17		13	######SD.txt			Safety Director Report data file
+22668	EndOfTourReports	F19		14	######ST.csv			Slalom time data file
+22669	EndOfTourReports	F20		15	######TS.PRN			Tournament scores and information
+22670	EndOfTourReports	F21		16	######TS.txt			Tournament data file
+22671	EndOfTourReports	F23		17	######TU.PRN			Towboat Use Report (PRN)
+22672	EndOfTourReports	F24		18	######TU.txt			Towboat use data file
+22674	EndOfTourReports	F25		19	######HD.txt			Iwwf Homologation Dossier as a text file
+0	EndOfTourReports	F26		20	######SV.ZIP			Iwwf Site Survey (optional)
+0	EndOfTourReports	F27		21	.hom$			IwwfHomologationDossier.txt
+22675	EventType	Chief		1	Chief			
+22676	EventType	AsstChief		2	Assistant Chief			
+22677	EventType	Slalom		3	Slalom			
+22678	EventType	Trick		4	Trick			
+22679	EventType	Jump		5	Jump			
+22680	EventType	TechControl		6	TechController			
+22681	EventType	SlalomFoot		7	Slalom Barefoot			
+22682	EventType	TrickFoot		8	Trick Barefoot			
+22683	EventType	JumpFoot		9	Jump Barefoot			
+0	Federation	 		0	Unknown			
+0	Federation	usa		1	USA			
+0	Federation	afg		2	Afganistan			
+0	Federation	arg		3	Argentina			
+0	Federation	aus		4	Australia			
+0	Federation	aut		5	Austria			
+0	Federation	bah		6	Bahamas			
+0	Federation	blr		7	Belarus			
+0	Federation	bel		8	Belgian			
+0	Federation	ber		9	Bermuda			
+0	Federation	bra		10	Brazil			
+0	Federation	can		11	Canada			
+0	Federation	caf		12	Central African Republic			
+0	Federation	chl		13	Chili			
+0	Federation	chn		14	China			
+0	Federation	col		15	Columbia			
+0	Federation	crc		16	Costa Rica			
+0	Federation	cro		17	Croatia			
+0	Federation	cyp		18	Cyprus			
+0	Federation	cze		19	Czech Republic			
+0	Federation	den		20	Denmark			
+0	Federation	dom		21	Dominican Republic			
+0	Federation	ecu		22	Ecuador			
+0	Federation	esa		23	El Salvador			
+0	Federation	far		24	Faroe Island			
+0	Federation	fij		25	Figi			
+0	Federation	fin		26	Finland			
+0	Federation	fra		27	France			
+0	Federation	ger		28	Germany			
+0	Federation	gbr		29	Great Britain			
+0	Federation	gre		30	Greece			
+0	Federation	gua		31	Guatemala			
+0	Federation	hkg		32	Hong Kong			
+0	Federation	hun		33	Hungary			
+0	Federation	ina		34	Indonesia			
+0	Federation	iri		35	Iran			
+0	Federation	irl		36	Ireland			
+0	Federation	isr		37	Israel			
+0	Federation	ita		38	Italy			
+0	Federation	jam		39	Jamaica			
+0	Federation	jpn		40	Japan			
+0	Federation	kor		41	Korea			
+0	Federation	lat		42	Latvia			
+0	Federation	lbn		43	Lebanon			
+0	Federation	lux		44	Lithuania			
+0	Federation	mas		45	Malaysia			
+0	Federation	mri		46	Mauritius			
+0	Federation	mex		47	Mexico			
+0	Federation	mon		48	Monaco			
+0	Federation	nam		49	Namibia			
+0	Federation	ned		50	Netherlands			
+0	Federation	nzl		51	New Zealand			
+0	Federation	nor		52	Norway			
+0	Federation	per		53	Peru			
+0	Federation	phi		54	Philippines			
+0	Federation	pol		55	Poland			
+0	Federation	por		56	Portugal			
+0	Federation	pur		57	Puerto Rico			
+0	Federation	rus		58	Russia			
+0	Federation	ser		59	Serbia			
+0	Federation	sin		60	Singapore			
+0	Federation	svk		61	Slovakia			
+0	Federation	rsa		62	South Africa			
+0	Federation	esp		63	Spain			
+0	Federation	sur		64	Suriname			
+0	Federation	swe		65	Sweden			
+0	Federation	sui		66	Switzerland			
+0	Federation	tha		67	Thailand			
+0	Federation	tur		69	Turkey			
+0	Federation	tkm		70	Turkmenistan			
+0	Federation	ukr		71	Ukraine			
+0	Federation	uae		72	United Arab EMI			
+0	Federation	ven		73	Venezuela			
+22441	IwwfAgeGroup	YB		61	Intl Boys U10	1	9	
+22442	IwwfAgeGroup	YG		62	Intl Girls U10	1	9	
+22441	IwwfAgeGroup	JB		63	Intl Junior Boys U14	1	13	
+22442	IwwfAgeGroup	JG		64	Intl Junior Girls U14	1	13	
+22443	IwwfAgeGroup	IB		65	Intl Boys U17	1	16	
+22444	IwwfAgeGroup	IG		66	Intl Girls U17	1	16	
+22445	IwwfAgeGroup	IM		71	Intl Men	1	99	
+22446	IwwfAgeGroup	IW		72	Intl Women	1	99	
+22447	IwwfAgeGroup	JM		73	Intl Junior Men	1	20	
+22448	IwwfAgeGroup	JW		74	Intl Junior Women	1	20	
+22449	IwwfAgeGroup	S1		81	Intl Senior Men 1	35	44	
+22450	IwwfAgeGroup	S2		82	Intl Senior Men 2	45	54	
+22451	IwwfAgeGroup	S3		83	Intl Senior Men 3	55	64	
+22451	IwwfAgeGroup	S4		84	Intl Senior Men 4	65	69	
+22451	IwwfAgeGroup	S5		85	Intl Senior Men 5	70	74	
+22451	IwwfAgeGroup	S6		86	Intl Senior Men 6	75	79	
+22451	IwwfAgeGroup	S7		87	Intl Senior Men 7	80	84	
+22451	IwwfAgeGroup	S8		88	Intl Senior Men 8	85	99	
+22452	IwwfAgeGroup	L1		91	Intl Senior Women 1	35	44	
+22453	IwwfAgeGroup	L2		92	Intl Senior Women 2	45	54	
+22454	IwwfAgeGroup	L3		93	Intl Senior Women 3	55	64	
+22454	IwwfAgeGroup	L4		94	Intl Senior Women 4	65	69	
+22454	IwwfAgeGroup	L5		95	Intl Senior Women 5	70	74	
+22454	IwwfAgeGroup	L6		96	Intl Senior Women 6	75	79	
+22454	IwwfAgeGroup	L7		97	Intl Senior Women 7	80	84	
+22454	IwwfAgeGroup	L8		98	Intl Senior Women 8	85	99	
+22455	IwwfAgeGroup	OF		999	NonSkiing Official	16	100	
+22506	IwwfJump3TimesDiv	OM	1	1	60.0 meters	60	60	Open Men 60 meters or greater
+22507	IwwfJump3TimesDiv	OW	2	2	45.0 meters	45	45	Open Women 45 meters or greater
+22508	IwwfJump3TimesDiv	IM	1	3	60.0 meters	60	60	Open Men 60 meters or greater
+22509	IwwfJump3TimesDiv	IW	2	4	45.0 meters	45	45	Open Women 45 meters or greater
+22510	IwwfJump3TimesDiv	JM	3	5	38.0 meters	38	38	Junior Men 38 meters or greater
+22511	IwwfJump3TimesDiv	JW	4	6	38.0 meters	38	38	Junior Wowen 38 meters or greater
+22492	IwwfJumpMax	YB		51	42kph, 26.0mph	26.1	42	
+22493	IwwfJumpMax	YG		52	42kph, 26.0mph	26.1	42	
+22492	IwwfJumpMax	JB		53	45kph, 28.0mph	29.8	48	
+22493	IwwfJumpMax	JG		54	45kph, 28.0mph	28	45	
+22494	IwwfJumpMax	IB		55	51kph, 31.7mph	31.7	51	
+22495	IwwfJumpMax	IG		56	51kph, 31.7mph	31.7	51	
+22496	IwwfJumpMax	IM		61	57kph, 35.4mph	35.4	57	
+22497	IwwfJumpMax	IW		62	54kph, 33.6mph	33.6	54	
+22498	IwwfJumpMax	JM		63	57kph, 35.4mph	35.4	57	
+22499	IwwfJumpMax	JW		64	54kph, 33.6mph	33.6	54	
+22500	IwwfJumpMax	S1		71	57kph, 35.4mph	35.4	57	
+22501	IwwfJumpMax	S2		72	54kph, 33.6mph	33.6	54	
+22502	IwwfJumpMax	S3		73	51kph, 31.7mph	31.7	51	
+22502	IwwfJumpMax	S4		74	51kph, 31.7mph	31.7	51	
+22502	IwwfJumpMax	S5		75	51kph, 31.7mph	31.7	51	
+22502	IwwfJumpMax	S6		76	48kph, 29.8mph	29.8	48	
+22502	IwwfJumpMax	S7		77	48kph, 29.8mph	29.8	48	
+22502	IwwfJumpMax	S8		78	45kph, 28.0mph	28.0	45	
+22503	IwwfJumpMax	L1		81	51kph, 31.7mph	31.7	51	
+22504	IwwfJumpMax	L2		82	51kph, 31.7mph	31.7	51	
+00000	IwwfJumpMax	L3		83	51kph, 31.7mph	31.7	51	
+22505	IwwfJumpMax	L4		84	48kph, 29.8mph	29.8	48	
+22505	IwwfJumpMax	L5		85	45kph, 28.2mph	28.0	45	
+22505	IwwfJumpMax	L6		86	45kph, 28.2mph	28.0	45	
+22505	IwwfJumpMax	L7		87	45kph, 28.2mph	28.0	45	
+22505	IwwfJumpMax	L8		88	45kph, 28.2mph	28.0	45	
+0	IwwfOverallAdj	YB-S		11	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	YB-T		12	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	YB-J		13	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	YG-S		21	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	YG-T		22	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	YG-J		23	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	JB-S		14	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JB-T		15	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	JB-J		16	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	JG-S		24	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JG-T		25	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	JG-J		26	7	7	7	Overall Adjustment for Jump
+0	IwwfOverallAdj	IB-S		31	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	IB-T		32	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	IB-J		33	-20	-20	-20	Overall Adjustment for Jump
+0	IwwfOverallAdj	IG-S		41	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	IG-T		42	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	IG-J		43	-13	-13	-13	Overall Adjustment for Jump
+0	IwwfOverallAdj	IM-S		51	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	IM-T		52	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	IM-J		53	-25	-25	-25	Overall Adjustment for Jump
+0	IwwfOverallAdj	IW-S		61	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	IW-T		62	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	IW-J		63	-17	-17	-17	Overall Adjustment for Jump
+0	IwwfOverallAdj	JM-S		71	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JM-T		72	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	JM-J		73	-25	-25	-25	Overall Adjustment for Jump
+0	IwwfOverallAdj	JW-S		81	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JW-T		82	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	JW-J		83	-17	-17	-17	Overall Adjustment for Jump
+0	IwwfOverallAdj	S1-S		91	12	12	12	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S1-T		92	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S1-J		93	-20	-20	-20	Overall Adjustment for Jump
+0	IwwfOverallAdj	S2-S		101	6	6	6	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S2-T		102	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S2-J		103	-15	-15	-15	Overall Adjustment for Jump
+0	IwwfOverallAdj	S3-S		111	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S3-T		112	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S3-J		113	-10	-10	-10	Overall Adjustment for Jump
+0	IwwfOverallAdj	S4-S		114	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S4-T		115	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S4-J		116	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	S5-S		117	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S5-T		118	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S5-J		119	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	S6-S		121	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S6-T		122	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S6-J		123	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	S7-S		124	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S7-T		125	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S7-J		126	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	S8-S		127	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	S8-T		128	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	S8-J		129	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	L1-S		131	6	6	6	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L1-T		132	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L1-J		133	-7	-7	-7	Overall Adjustment for Jump
+0	IwwfOverallAdj	L2-S		141	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L2-T		142	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L2-J		143	0	0	0	Overall Adjustment for Jump
+0	IwwfOverallAdj	L3-S		151	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L3-T		152	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L3-J		153	5	5	5	Overall Adjustment for Jump
+0	IwwfOverallAdj	L4-S		154	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L4-T		155	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L4-J		156	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	L5-S		157	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L5-T		158	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L5-J		159	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	L6-S		161	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L6-T		162	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L6-J		163	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	L7-S		164	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L7-T		165	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L7-J		166	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	L8-S		167	0	0	0	Overall Adjustment for Slalom
+0	IwwfOverallAdj	L8-T		168	0	0	0	Overall Adjustment for Trick
+0	IwwfOverallAdj	L8-J		169	10	10	10	Overall Adjustment for Jump
+22548	IwwfRampMax	YB		51	5 Foot	0.235	5	
+22549	IwwfRampMax	YG		52	5 Foot	0.235	5	
+22548	IwwfRampMax	JB		53	5 Foot	0.235	5	
+22549	IwwfRampMax	JG		54	5 Foot	0.235	5	
+22550	IwwfRampMax	IB		55	5.5 Foot	0.255	5.5	
+22551	IwwfRampMax	IG		56	5 Foot	0.235	5	
+22552	IwwfRampMax	IM		61	6 Foot	0.271	6	
+22553	IwwfRampMax	IW		62	5.5 Foot	0.255	5.5	
+22554	IwwfRampMax	JM		63	6 Foot	0.271	6	
+22555	IwwfRampMax	JW		64	5.5 Foot	0.255	5.5	
+22556	IwwfRampMax	S1		71	5.5 Foot	0.255	5.5	
+22557	IwwfRampMax	S2		72	5 Foot	0.235	5	
+22558	IwwfRampMax	S3		73	5 Foot	0.235	5	
+22558	IwwfRampMax	S4		74	5 Foot	0.235	5	
+22558	IwwfRampMax	S5		75	5 Foot	0.235	5	
+22558	IwwfRampMax	S6		76	5 Foot	0.235	5	
+22558	IwwfRampMax	S7		77	5 Foot	0.235	5	
+22558	IwwfRampMax	S8		78	5 Foot	0.235	5	
+22559	IwwfRampMax	L1		81	5 Foot	0.235	5	
+22560	IwwfRampMax	L2		82	5 Foot	0.235	5	
+22561	IwwfRampMax	L3		83	5 Foot	0.235	5	
+22561	IwwfRampMax	L4		84	5 Foot	0.235	5	
+22561	IwwfRampMax	L5		85	5 Foot	0.235	5	
+22561	IwwfRampMax	L6		86	5 Foot	0.235	5	
+22561	IwwfRampMax	L7		87	5 Foot	0.235	5	
+22561	IwwfRampMax	L8		88	5 Foot	0.235	5	
+0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
+0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
+0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
+0	IwwfRecords	IM-O		394	Intl Men Overall		2820.79	4/20/2017 Adam Sedlmajer
+0	IwwfRecords	IW-S		401	Intl Women - Slalom		70.50	4.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
+0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
+0	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
+0	IwwfRecords	IW-O		404	Intl Women Overall		3126.52	5/20/2012 Natallia Berdnikava
+0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		63.5	3.5 at 10.75 @ 58kph 1/1/2019 Initial benchmark
+0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		11740.00	8/17/2019 Patricio Font
+0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 1/1/2019 Initial benchmark
+0	IwwfRecords	JM-O		414	Intl Junior Men Overall		2200.95	 1/1/2019 Initial benchmark
+0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		62	2 @ 10.75 55 kph 1/1/2019 Initial benchmark
+0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10440	 1/1/2019 Initial benchmark
+0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		46	5ft (1.5m)at 51 kph max 1/1/2019 Initial benchmark
+0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2685.26	 1/1/2019 Initial benchmark
+22600	IwwfSlalomMax	YB		51	49kph, 30mph	30	49	
+22601	IwwfSlalomMax	YG		52	49kph, 30mph	30	49	
+22600	IwwfSlalomMax	JB		53	55kph, 34mph	34	55	
+22601	IwwfSlalomMax	JG		54	52kph, 32mph	32	52	
+22602	IwwfSlalomMax	IB		55	58kph, 36mph	36	58	
+22603	IwwfSlalomMax	IG		56	55kph, 34mph	34	55	
+22604	IwwfSlalomMax	IM		61	58kph, 36mph	36	58	
+22605	IwwfSlalomMax	IW		62	55kph, 34mph	34	55	
+22606	IwwfSlalomMax	JM		63	58kph, 36mph	36	58	
+22607	IwwfSlalomMax	JW		64	55kph, 34mph	34	55	
+22608	IwwfSlalomMax	S1		71	55kph, 34mph	34	55	
+22609	IwwfSlalomMax	S2		72	55kph, 34mph	34	55	
+22610	IwwfSlalomMax	S3		73	55kph, 34mph	34	55	
+22610	IwwfSlalomMax	S4		74	52kph, 32mph	32	52	
+22610	IwwfSlalomMax	S5		75	52kph, 32mph	32	52	
+22610	IwwfSlalomMax	S6		76	49kph, 30mph	30	49	
+22610	IwwfSlalomMax	S7		77	49kph, 30mph	30	49	
+22610	IwwfSlalomMax	S8		78	46kph, 28mph	28	46	
+22611	IwwfSlalomMax	L1		81	55kph, 34mph	34	55	
+22612	IwwfSlalomMax	L2		82	55kph, 34mph	34	55	
+22613	IwwfSlalomMax	L3		83	52kph, 32mph	32	52	
+22613	IwwfSlalomMax	L4		84	49kph, 30mph	30	49	
+22613	IwwfSlalomMax	L5		85	49kph, 30mph	30	49	
+22613	IwwfSlalomMax	L6		86	46kph, 28mph	28	46	
+22613	IwwfSlalomMax	L7		87	46kph, 28mph	28	46	
+22613	IwwfSlalomMax	L8		88	46kph, 28mph	28	46	
+23409	IWWFSlalomMin	YB		11	25kph, 15mph	0	25	
+23410	IWWFSlalomMin	YG		12	25kph, 15mph	0	25	
+23409	IWWFSlalomMin	JB		13	43kph, 26mph	-6	43	
+23410	IWWFSlalomMin	JG		14	40kph, 24mph	-5	40	
+23411	IWWFSlalomMin	IB		15	52kph, 32mph	-9	52	
+23412	IWWFSlalomMin	IG		16	49kph, 30mph	-8	49	
+23413	IWWFSlalomMin	IM		21	52kph, 32mph	-9	52	
+23414	IWWFSlalomMin	IW		22	49kph, 30mph	-8	49	
+23415	IWWFSlalomMin	JM		23	52kph, 32mph	-9	52	
+23416	IWWFSlalomMin	JW		24	49kph, 30mph	-8	49	
+23417	IWWFSlalomMin	S1		31	49kph, 30mph	-8	49	
+23418	IWWFSlalomMin	S2		32	49kph, 30mph	-8	49	
+23419	IWWFSlalomMin	S3		33	46kph, 28mph	-7	46	
+23419	IWWFSlalomMin	S4		34	43kph, 26mph	-6	43	
+23419	IWWFSlalomMin	S5		34	43kph, 26mph	-6	43	
+23419	IWWFSlalomMin	S6		35	40kph, 24mph	-5	40	
+23419	IWWFSlalomMin	S7		36	40kph, 24mph	-5	40	
+23419	IWWFSlalomMin	S8		38	37kph, 22mph	-4	37	
+23420	IWWFSlalomMin	L1		41	49kph, 30mph	-8	49	
+23421	IWWFSlalomMin	L2		42	49kph, 30mph	-8	49	
+23422	IWWFSlalomMin	L3		43	43kph, 26mph	-6	43	
+23422	IWWFSlalomMin	L4		44	40kph, 24mph	-5	40	
+23422	IWWFSlalomMin	L5		45	40kph, 24mph	-5	40	
+23422	IWWFSlalomMin	L6		46	37kph, 22mph	-4	37	
+23422	IWWFSlalomMin	L7		47	37kph, 22mph	-4	37	
+23422	IWWFSlalomMin	L8		48	34kph, 20mph	-3	34	
+22718	JudgeRating	  		1	Unrated			
+22719	JudgeRating	Assistant		2	Assistant			
+22720	JudgeRating	Regular		3	Regular			
+22721	JudgeRating	Senior		4	Senior			
+22722	JudgeRating	Emeritus		5	Emeritus			
+22723	JudgeRating	PanAm		6	PanAm			
+22724	JumpBoatTime3Seg	57-R-52M		111	3.31	3.25	3.37	57kph,35.4mph 52M Segment Record Tolerance
+22725	JumpBoatTime3Seg	57-R-82M		112	5.18	5.11	5.25	57kph,35.4mph 82M Segment Record Tolerance
+22726	JumpBoatTime3Seg	57-R-41M		113	2.4	2.36	2.46	57kph,35.4mph 41M Segment Record Tolerance
+22727	JumpBoatTime3Seg	57-R-Balk		115	5.18	5.06	5.25	57kph,35.4mph Balk Record Tolerance
+22728	JumpBoatTime3Seg	57-R-41M-RTB		116	2.4	2.36	2.66	57kph,35.4mph 41M Segment RTB Record Tolerance
+22729	JumpBoatTime3Seg	54-R-52M		121	3.49	3.43	3.55	54kph,33.6mph 52M Segment Record Tolerance
+22730	JumpBoatTime3Seg	54-R-82M		122	5.47	5.39	5.55	54kph,33.6mph 82M Segment Record Tolerance
+22731	JumpBoatTime3Seg	54-R-41M		123	2.59	2.54	2.66	54kph,33.6mph 41M Segment Record Tolerance
+22732	JumpBoatTime3Seg	54-R-Balk		125	5.47	5.34	5.55	54kph,33.6mph Balk Record Tolerance
+22733	JumpBoatTime3Seg	54-R-41M-RTB		126	2.59	2.54	2.81	54kph,33.6mph 41M Segment RTB Record Tolerance
+22734	JumpBoatTime3Seg	51-R-52M		131	3.69	3.63	3.76	51kph,31.7mph 52M Segment Record Tolerance
+22735	JumpBoatTime3Seg	51-R-82M		132	5.79	5.7	5.88	51kph,31.7mph 82M Segment Record Tolerance
+22736	JumpBoatTime3Seg	51-R-41M		133	2.73	2.68	2.81	51kph,31.7mph 41M Segment Record Tolerance
+22737	JumpBoatTime3Seg	51-R-Balk		135	5.79	5.65	5.88	51kph,31.7mph Balk Record Tolerance
+22738	JumpBoatTime3Seg	51-R-41M-RTB		136	2.73	2.68	2.98	51kph,31.7mph 41M Segment RTB Record Tolerance
+22739	JumpBoatTime3Seg	48-R-52M		141	3.92	3.86	3.98	48kph,29.8mph 52M Segment Record Tolerance
+22740	JumpBoatTime3Seg	48-R-82M		142	6.15	6.05	6.25	48kph,29.8mph 82M Segment Record Tolerance
+22741	JumpBoatTime3Seg	48-R-41M		143	2.89	2.84	2.98	48kph,29.8mph 41M Segment Record Tolerance
+22742	JumpBoatTime3Seg	48-R-Balk		145	6.15	6	6.25	48kph,29.8mph Balk Record Tolerance
+22743	JumpBoatTime3Seg	48-R-41M-RTB		146	2.89	2.84	3.17	48kph,29.8mph 41M Segment RTB Record Tolerance
+22744	JumpBoatTime3Seg	45-R-52M		151	4.18	4.11	4.25	45kph,28mph 52M Segment Record Tolerance
+22745	JumpBoatTime3Seg	45-R-82M		152	6.56	6.45	6.68	45kph,28mph 82M Segment Record Tolerance
+22746	JumpBoatTime3Seg	45-R-41M		153	3.08	3.01	3.17	45kph,28mph 41M Segment Record Tolerance
+22747	JumpBoatTime3Seg	45-R-Balk		155	6.56	6.4	6.68	45kph,28mph Balk Record Tolerance
+22748	JumpBoatTime3Seg	45-R-41M-RTB		156	3.08	3.01	3.39	45kph,28mph 41M Segment RTB Record Tolerance
+22749	JumpBoatTime3Seg	42-R-52M		160	4.62	4.32	4.92	42kph,26.1mph 52M Segment Standard Tolerance
+22750	JumpBoatTime3Seg	42-R-82M		161	7.03	6.9	7.17	42kph,26.1mph 82M Segment Standard Tolerance
+22751	JumpBoatTime3Seg	42-R-41M		162	3.28	3.21	3.39	42kph,26.1mph 41M Segment Standard Tolerance
+22752	JumpBoatTime3Seg	42-R-Balk		163	7.03	6.85	7.17	42kph,26.1mph Balk Standard Tolerance
+22753	JumpBoatTime3Seg	42-R-41M-RTB		164	3.28	3.21	3.64	42kph,26.1mph 41M Segment RTB Standard Tolerance
+22754	JumpBoatTime3Seg	39-R-52M		170	4.93	4.7	5.16	39kph,24.2mph 52M Segment Standard Tolerance
+22755	JumpBoatTime3Seg	39-R-82M		171	7.57	7.42	7.73	39kph,24.2mph 82M Segment Standard Tolerance
+22756	JumpBoatTime3Seg	39-R-41M		173	3.51	3.43	3.64	39kph,24.2mph 41M Segment Standard Tolerance
+22757	JumpBoatTime3Seg	39-R-Balk		174	7.57	7.37	7.73	39kph,24.2mph Balk Standard Tolerance
+22758	JumpBoatTime3Seg	39-R-41M-RTB		175	3.51	3.43	3.94	39kph,24.2mph 41M Segment RTB Standard Tolerance
+22759	JumpBoatTime3Seg	57-C-52M		211	3.33	3.22	3.43	57kph,35.4mph 52M Segment Standard Tolerance
+22760	JumpBoatTime3Seg	57-C-82M		212	5.18	5.07	5.29	57kph,35.4mph 82M Segment Standard Tolerance
+22761	JumpBoatTime3Seg	57-C-41M		213	2.4	2.36	2.48	57kph,35.4mph 41M Segment Standard Tolerance
+22762	JumpBoatTime3Seg	57-C-Balk		215	5.18	5.02	5.29	57kph,35.4mph Balk Standard Tolerance
+22763	JumpBoatTime3Seg	57-C-41M-RTB		216	2.4	2.36	2.68	57kph,35.4mph 41M Segment RTB Standard Tolerance
+22764	JumpBoatTime3Seg	54-C-52M		221	3.55	3.41	3.69	54kph,33.6mph 52M Segment Standard Tolerance
+22765	JumpBoatTime3Seg	54-C-82M		222	5.47	5.35	5.59	54kph,33.6mph 82M Segment Standard Tolerance
+22766	JumpBoatTime3Seg	54-C-41M		223	2.59	2.54	2.68	54kph,33.6mph 41M Segment Standard Tolerance
+22767	JumpBoatTime3Seg	54-C-Balk		225	5.47	5.3	5.59	54kph,33.6mph Balk Standard Tolerance
+22768	JumpBoatTime3Seg	54-C-41M-RTB		226	2.59	2.54	2.84	54kph,33.6mph 41M Segment RTB Standard Tolerance
+22769	JumpBoatTime3Seg	51-C-52M		231	3.86	3.59	4.12	51kph,31.7mph 52M Segment Standard Tolerance
+22770	JumpBoatTime3Seg	51-C-82M		232	5.79	5.65	5.93	51kph,31.7mph 82M Segment Standard Tolerance
+22771	JumpBoatTime3Seg	51-C-41M		233	2.73	2.68	2.84	51kph,31.7mph 41M Segment Standard Tolerance
+22772	JumpBoatTime3Seg	51-C-Balk		235	5.79	5.6	5.93	51kph,31.7mph Balk Standard Tolerance
+22773	JumpBoatTime3Seg	51-C-41M-RTB		236	2.73	2.68	3.01	51kph,31.7mph 41M Segment RTB Standard Tolerance
+22774	JumpBoatTime3Seg	48-C-52M		241	4.03	3.8	4.26	48kph,29.8mph 52M Segment Standard Tolerance
+22775	JumpBoatTime3Seg	48-C-82M		242	6.15	6	6.31	48kph,29.8mph 82M Segment Standard Tolerance
+22776	JumpBoatTime3Seg	48-C-41M		243	2.89	2.84	3.01	48kph,29.8mph 41M Segment Standard Tolerance
+22777	JumpBoatTime3Seg	48-C-Balk		245	6.15	5.95	6.31	48kph,29.8mph Balk Standard Tolerance
+22778	JumpBoatTime3Seg	48-C-41M-RTB		246	2.89	2.84	3.21	48kph,29.8mph 41M Segment RTB Standard Tolerance
+22779	JumpBoatTime3Seg	45-C-52M		251	4.2	3.99	4.4	45kph,28mph 52M Segment Standard Tolerance
+22780	JumpBoatTime3Seg	45-C-82M		252	6.56	6.39	6.74	45kph,28mph 82M Segment Standard Tolerance
+22781	JumpBoatTime3Seg	45-C-41M		253	3.08	3.01	3.21	45kph,28mph 41M Segment Standard Tolerance
+22782	JumpBoatTime3Seg	45-C-Balk		255	6.56	6.34	6.74	45kph,28mph Balk Standard Tolerance
+22783	JumpBoatTime3Seg	45-C-41M-RTB		256	3.08	3.01	3.43	45kph,28mph 41M Segment RTB Standard Tolerance
+22784	JumpBoatTime3Seg	42-C-52M		261	4.62	4.32	4.92	42kph,26.1mph 52M Segment Standard Tolerance
+22785	JumpBoatTime3Seg	42-C-82M		262	7.03	6.83	7.24	42kph,26.1mph 82M Segment Standard Tolerance
+22786	JumpBoatTime3Seg	42-C-41M		263	3.28	3.21	3.43	42kph,26.1mph 41M Segment Standard Tolerance
+22787	JumpBoatTime3Seg	42-C-Balk		265	7.03	6.78	7.24	42kph,26.1mph Balk Standard Tolerance
+22788	JumpBoatTime3Seg	42-C-41M-RTB		266	3.28	3.21	3.69	42kph,26.1mph 41M Segment RTB Standard Tolerance
+22789	JumpBoatTime3Seg	39-C-52M		271	4.93	4.7	5.16	39kph,24.2mph 52M Segment Standard Tolerance
+22790	JumpBoatTime3Seg	39-C-82M		272	7.57	7.34	7.81	39kph,24.2mph 82M Segment Standard Tolerance
+22791	JumpBoatTime3Seg	39-C-41M		273	3.51	3.43	3.69	39kph,24.2mph 41M Segment Standard Tolerance
+22792	JumpBoatTime3Seg	39-C-Balk		275	7.57	7.29	7.81	39kph,24.2mph Balk Standard Tolerance
+22793	JumpBoatTime3Seg	39-C-41M-RTB		276	3.51	3.43	3.99	39kph,24.2mph 41M Segment RTB Standard Tolerance
+22794	JumpJudgesNum	V		0	0	0	0	
+22795	JumpJudgesNum	G		1	0	0	0	
+22796	JumpJudgesNum	S		2	3	3	3	
+22797	JumpJudgesNum	C		3	3	3	3	
+22798	JumpJudgesNum	N		4	3	3	3	
+22799	JumpJudgesNum	U		5	3	3	3	
+22800	JumpJudgesNum	R		6	6	6	6	
+22801	JumpJudgesNum	T		7	6	6	6	
+22802	JumpJudgesNum	E		8	6	6	6	
+22803	JumpJudgesNum	B		10	6	6	6	
+22804	JumpJudgesNum	A		11	6	6	6	
+22805	JumpJudgesNum	L		12	6	6	6	
+22806	JumpJudgesNum	X		13	6	6	6	
+22807	JumpJudgesNum	$		14	6	6	6	
+22808	JumpJudgesNum	P		15	6	6	6	
+22809	JumpJudgesNum	Q		16	6	6	6	
+22810	JumpJudgesNum	F		17	0	0	0	
+22811	JumpJudgesNum	I		18	0	0	0	
+22812	JumpMeter6Tol	V		0	0	0	0	
+22813	JumpMeter6Tol	S		1	0.1	0.1	0.1	
+22814	JumpMeter6Tol	C		2	0.1	0.1	0.1	
+22815	JumpMeter6Tol	F		3	0.1	0.1	0.1	
+22816	JumpMeter6Tol	N		4	0.1	0.1	0.1	
+22817	JumpMeter6Tol	U		5	0.1	0.1	0.1	
+22818	JumpMeter6Tol	R		6	0.1	0.1	0.1	
+22819	JumpMeter6Tol	T		7	0.1	0.1	0.1	
+22820	JumpMeter6Tol	I		8	0.1	0.1	0.1	
+22821	JumpMeter6Tol	E		9	0.1	0.1	0.1	
+22822	JumpMeter6Tol	B		10	0.1	0.1	0.1	
+22823	JumpMeter6Tol	A		11	0.1	0.1	0.1	
+22824	JumpMeter6Tol	L		12	0.1	0.1	0.1	
+22825	JumpMeter6Tol	X		13	0.1	0.1	0.1	
+22826	JumpMeter6Tol	$		14	0.1	0.1	0.1	
+22827	JumpMeter6Tol	P		15	0.1	0.1	0.1	
+22828	JumpMeter6Tol	Q		16	0.1	0.1	0.1	
+22829	JumpSpeeds	57kph	57	1	35.4mph	35	57	
+22830	JumpSpeeds	54kph	54	2	33.6mph	34	54	
+22831	JumpSpeeds	51kph	51	3	31.7mph	32	51	
+22832	JumpSpeeds	48kph	48	4	29.8mph	30	48	
+22833	JumpSpeeds	45kph	45	5	28.0mph	28	45	
+22834	JumpSpeeds	42kph	42	6	26.1mph	26	42	
+22835	JumpSpeeds	39kph	39	7	24.2mph	24	39	
+22836	JumpTriangle	V		0	0	0	0	
+22837	JumpTriangle	S		1	2.9528	2.953	0.9	
+22838	JumpTriangle	C		2	2.9528	2.953	0.9	
+22839	JumpTriangle	F		3	3.94	3.94	1.2	
+22840	JumpTriangle	N		4	3.94	3.94	1.2	
+22841	JumpTriangle	U		5	3.94	3.94	1.2	
+22842	JumpTriangle	R		6	1.9685	1.969	0.6	
+22843	JumpTriangle	T		7	1.9685	1.969	0.6	
+22844	JumpTriangle	I		8	3.94	3.94	1.2	
+22845	JumpTriangle	E		9	1.9685	1.969	0.6	
+22846	JumpTriangle	B		10	1.9685	1.969	0.6	
+22847	JumpTriangle	A		11	1.9685	1.969	0.6	
+22848	JumpTriangle	L		12	1.9685	1.969	0.6	
+22849	JumpTriangle	X		13	1.9685	1.969	0.6	
+22850	JumpTriangle	$		14	1.9685	1.969	0.6	
+22851	JumpTriangle	P		15	1.9685	1.969	0.6	
+22852	JumpTriangle	Q		16	1.9685	1.969	0.6	
+22853	JumpTriangleZero	V		0	0	0	0	
+22854	JumpTriangleZero	S		1	0.7546	0.755	0.23	
+22855	JumpTriangleZero	C		2	0.7546	0.755	0.23	
+22856	JumpTriangleZero	F		3	0.7546	0.755	0.23	
+22857	JumpTriangleZero	N		4	0.7546	0.755	0.23	
+22858	JumpTriangleZero	U		5	0.7546	0.755	0.23	
+22859	JumpTriangleZero	R		6	0.4921	0.492	0.15	
+22860	JumpTriangleZero	T		7	0.4921	0.492	0.15	
+22861	JumpTriangleZero	I		8	0.7546	0.755	0.23	
+22862	JumpTriangleZero	E		9	0.4921	0.492	0.15	
+22863	JumpTriangleZero	B		10	0.4921	0.492	0.15	
+22864	JumpTriangleZero	A		11	0.4921	0.492	0.15	
+22865	JumpTriangleZero	L		12	0.4921	0.492	0.15	
+22866	JumpTriangleZero	X		13	0.4921	0.492	0.15	
+22867	JumpTriangleZero	$		14	0.4921	0.492	0.15	
+22868	JumpTriangleZero	P		15	0.4921	0.492	0.15	
+22869	JumpTriangleZero	Q		16	0.4921	0.492	0.15	
+22870	MemberStatus	 		1	None			
+22871	MemberStatus	Active		2	Active			
+22872	MemberStatus	Inactive		3	Inactive			
+22873	MemberStatus	Supporting		4	Supporting			
+22874	NcwsaAgeGroup	CM		1	College Men A Team	1	99	
+22875	NcwsaAgeGroup	CW		2	College Women A Team	1	99	
+22876	NcwsaAgeGroup	BM		3	College Men B Team	1	99	
+22877	NcwsaAgeGroup	BW		4	College Women B Team	1	99	
+22878	NcwsaAgeGroup	OF		999	NonSkiing Official	16	100	
+22488	NcwsaJumpMax	CM		46	51kph, 31.7mph	31.7	51	
+22490	NcwsaJumpMax	BM		46	51kph, 31.7mph	31.7	51	
+22489	NcwsaJumpMax	CW		47	51kph, 31.7mph	31.7	51	
+22491	NcwsaJumpMax	BW		47	51kph, 31.7mph	31.7	51	
+22544	NcwsaRampMax	CM		46	5 Foot	0.235	5	
+22546	NcwsaRampMax	BM		46	5 Foot	0.235	5	
+22545	NcwsaRampMax	CW		47	5 Foot	0.235	5	
+22547	NcwsaRampMax	BW		47	5 Foot	0.235	5	
+0	NCWSARecords	CM-S		491	College Men - Slalom		117.5	3.5 buoys at 10.25m @ 58 kph (41 off @ 36 mph) 10/3/2011 Will Asher  
+0	NCWSARecords	CM-T		492	College Men - Trick		7050	5/17/2014 Dylan Schaffer
+0	NCWSARecords	CM-J		493	College Men - Jump		195	(59.5m) 10/14/2015 Zack Worden
+0	NCWSARecords	CW-S		501	College Women - Slalom		107.5	5.5 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/11/2019 Jaimee Bull
+0	NCWSARecords	CW-T		502	College Women - Trick		5960	10/7/2015 Erika Lang
+0	NCWSARecords	CW-J		503	College Women - Jump		159	(48.5m) 10/20/2017 Hanna Straltsova
+22596	NcwsaSlalomMax	CM		44	58kph, 36mph	36	58	
+22598	NcwsaSlalomMax	BM		44	58kph, 36mph	36	58	
+22597	NcwsaSlalomMax	CW		45	55kph, 34mph	34	55	
+22599	NcwsaSlalomMax	BW		45	55kph, 34mph	34	55	
+23423	NCWSASlalomMin	CM		1	31kph, 19.3mph	0	31	
+23424	NCWSASlalomMin	CW		2	31kph, 19.3mph	0	31	
+23425	NCWSASlalomMin	BM		3	31kph, 19.3mph	0	31	
+23426	NCWSASlalomMin	BW		4	31kph, 19.3mph	0	31	
+22879	OfficialAsgmt	Driver		1	Driver	0	0	
+22880	OfficialAsgmt	BoatJudge		2	Boat Judge	0	0	
+22881	OfficialAsgmt	EventJudge		3	Event Judge	0	0	
+22881	OfficialAsgmt	EventAcjJudge		4	Event ACJ	0	0	
+22882	OfficialAsgmt	Scorer		5	Scorer	0	0	
+22883	OfficialAsgmt	Safety		6	Safety	0	0	
+22884	OfficialAsgmt	TechCntl		10	Technical Controller	0	0	
+22885	OfficialAsgmt	Announcer		11	Announcer	0	0	
+22886	OfficialAsgmt	DockStarter		20	Dock Starter	0	0	
+22887	OfficialAsgmt	RopeHandler		20	Rope Handler	0	0	
+22888	OfficialAsgmt	EventJudgeAsst		30	Event Judge Aspiring	0	0	
+22889	OfficialAsgmt	SafetyAsst		30	Safety Aspiring	0	0	
+22890	OfficialAsgmt	ScorerAsst		30	Scorer Aspiring	0	0	
+22891	OfficialAsgmt	TechCntlAsst		30	Technical Controller Aspiring	0	0	
+22892	OfficialAsgmt	AnnouncerAsst		40	Announcer Aspiring	0	0	
+22893	OverallMethod	nops		1	NOPS			AWSA NOPS calculation methodology
+22894	OverallMethod	1000		2	Fixed based 1000			Universal overall calculation based on 1000 points for 1st place in each event
+22895	OverallMethod	placement		3	Event placement			Based on points assigned based on placement
+22896	RampHeight	4		1	4 Foot	0.215		
+22897	RampHeight	4.5		2	4.5 Foot	0.215		
+22898	RampHeight	5		3	5 Foot	0.235		
+22899	RampHeight	5.5		4	5.5 Foot	0.255		
+22900	RampHeight	6		5	6 Foot	0.271		
+22901	Rules	awsa		0	AWSA			
+22902	Rules	ncwsa		0	Collegiate			
+22903	Rules	iwwf		0	IWWF			
+22904	SafetyRating	 		1	Unrated			
+22905	SafetyRating	Coordinator		2	Coordinator			
+22906	SafetyRating	State		3	State			
+22907	SafetyRating	Regional		4	Regional			
+22908	SafetyRating	National		5	National			
+22909	SafetyRating	Emeritus		6	Emeritus			
+22910	ScorerRating	 		1	Unrated			
+22911	ScorerRating	Assistant		2	Assistant			
+22912	ScorerRating	Regular		3	Regular			
+22913	ScorerRating	Senior		4	Senior			
+22914	ScorerRating	Emeritus		5	Emeritus			
+22915	SlalomBoatTime	58-C-0		1	1.68	1.64	1.71	Score 0 - 25 or .5
+22916	SlalomBoatTime	58-C-1		2	4.22	4.15	4.28	Score 1 - 1.25 or 1.5
+22917	SlalomBoatTime	58-C-2		3	6.77	6.67	6.84	Score 2 - 2.25 or 2.5
+22918	SlalomBoatTime	58-C-3		4	9.31	9.2	9.41	Score 3 - 3.25 or 3.5
+22919	SlalomBoatTime	58-C-4		5	11.86	11.73	11.97	Score 4 - 4.25 or 4.5
+22920	SlalomBoatTime	58-C-5		6	14.4	14.25	14.53	Score 5 - 5.25 or 5.5
+22921	SlalomBoatTime	58-C-6		7	16.08	15.92	16.22	Score all 6
+22922	SlalomBoatTime	55-C-0		8	1.77	1.73	1.8	Score 0 - 25 or .5
+22923	SlalomBoatTime	55-C-1		9	4.45	4.37	4.51	Score 1 - 1.25 or 1.5
+22924	SlalomBoatTime	55-C-2		10	7.13	7.03	7.23	Score 2 - 2.25 or 2.5
+22925	SlalomBoatTime	55-C-3		11	9.82	9.69	9.93	Score 3 - 3.25 or 3.5
+22926	SlalomBoatTime	55-C-4		12	12.5	12.35	12.64	Score 4 - 4.25 or 4.5
+22927	SlalomBoatTime	55-C-5		13	15.19	15.02	15.34	Score 5 - 5.25 or 5.5
+22928	SlalomBoatTime	55-C-6		14	16.95	16.78	17.12	Score all 6
+22929	SlalomBoatTime	52-C-0		15	1.87	1.83	1.91	Score 0 - 25 or .5
+22930	SlalomBoatTime	52-C-1		16	4.71	4.62	4.78	Score 1 - 1.25 or 1.5
+22931	SlalomBoatTime	52-C-2		17	7.55	7.43	7.65	Score 2 - 2.25 or 2.5
+22932	SlalomBoatTime	52-C-3		18	10.38	10.24	10.52	Score 3 - 3.25 or 3.5
+22933	SlalomBoatTime	52-C-4		19	13.22	13.05	13.39	Score 4 - 4.25 or 4.5
+22934	SlalomBoatTime	52-C-5		20	16.06	15.87	16.25	Score 5 - 5.25 or 5.5
+22935	SlalomBoatTime	52-C-6		21	17.93	17.72	18.13	Score all 6
+22936	SlalomBoatTime	49-C-0		22	1.98	1.94	2.03	Score 0 - 25 or .5
+22937	SlalomBoatTime	49-C-1		23	5	4.9	5.08	Score 1 - 1.25 or 1.5
+22938	SlalomBoatTime	49-C-2		24	8.01	7.87	8.13	Score 2 - 2.25 or 2.5
+22939	SlalomBoatTime	49-C-3		25	11.02	10.85	11.18	Score 3 - 3.25 or 3.5
+22940	SlalomBoatTime	49-C-4		26	14.03	13.83	14.22	Score 4 - 4.25 or 4.5
+22941	SlalomBoatTime	49-C-5		27	17.04	16.81	17.27	Score 5 - 5.25 or 5.5
+22942	SlalomBoatTime	49-C-6		28	19.03	18.78	19.27	Score all 6
+22943	SlalomBoatTime	46-C-0		29	2.11	2.06	2.16	Score 0 - 25 or .5
+22944	SlalomBoatTime	46-C-1		30	5.32	5.21	5.42	Score 1 - 1.25 or 1.5
+22945	SlalomBoatTime	46-C-2		31	8.53	8.37	8.68	Score 2 - 2.25 or 2.5
+22946	SlalomBoatTime	46-C-3		32	11.74	11.54	11.93	Score 3 - 3.25 or 3.5
+22947	SlalomBoatTime	46-C-4		33	14.95	14.71	15.18	Score 4 - 4.25 or 4.5
+22948	SlalomBoatTime	46-C-5		34	18.16	17.88	18.42	Score 5 - 5.25 or 5.5
+22949	SlalomBoatTime	46-C-6		35	20.27	19.98	20.56	Score all 6
+22950	SlalomBoatTime	43-C-0		36	2.26	2.2	2.32	Score 0 - 25 or .5
+22951	SlalomBoatTime	43-C-1		37	5.69	5.56	5.81	Score 1 - 1.25 or 1.5
+22952	SlalomBoatTime	43-C-2		38	9.13	8.94	9.3	Score 2 - 2.25 or 2.5
+22953	SlalomBoatTime	43-C-3		39	12.56	12.33	12.78	Score 3 - 3.25 or 3.5
+22954	SlalomBoatTime	43-C-4		40	15.99	15.71	16.27	Score 4 - 4.25 or 4.5
+22955	SlalomBoatTime	43-C-5		41	19.42	19.1	19.75	Score 5 - 5.25 or 5.5
+22956	SlalomBoatTime	43-C-6		42	21.68	21.34	22.03	Score all 6
+22957	SlalomBoatTime	40-C-0		43	2.43	2.36	2.5	Score 0 - 25 or .5
+22958	SlalomBoatTime	40-C-1		44	6.12	5.97	6.26	Score 1 - 1.25 or 1.5
+22959	SlalomBoatTime	40-C-2		45	9.81	9.6	10.02	Score 2 - 2.25 or 2.5
+22960	SlalomBoatTime	40-C-3		46	13.5	13.23	13.78	Score 3 - 3.25 or 3.5
+22961	SlalomBoatTime	40-C-4		47	17.19	16.86	17.53	Score 4 - 4.25 or 4.5
+22962	SlalomBoatTime	40-C-5		48	20.88	20.5	21.27	Score 5 - 5.25 or 5.5
+22963	SlalomBoatTime	40-C-6		49	23.31	22.89	23.74	Score all 6
+22964	SlalomBoatTime	37-C-0		50	2.63	2.54	2.71	Score 0 - 25 or .5
+22965	SlalomBoatTime	37-C-1		51	6.62	6.44	6.79	Score 1 - 1.25 or 1.5
+22966	SlalomBoatTime	37-C-2		52	10.61	10.35	10.86	Score 2 - 2.25 or 2.5
+22967	SlalomBoatTime	37-C-3		53	14.59	14.27	14.93	Score 3 - 3.25 or 3.5
+22968	SlalomBoatTime	37-C-4		54	18.58	18.19	18.99	Score 4 - 4.25 or 4.5
+22969	SlalomBoatTime	37-C-5		55	22.57	22.11	23.06	Score 5 - 5.25 or 5.5
+22970	SlalomBoatTime	37-C-6		56	25.2	24.7	25.73	Score all 6
+22971	SlalomBoatTime	34-C-0		57	2.86	2.76	2.95	Score 0 - 25 or .5
+22972	SlalomBoatTime	34-C-1		58	7.2	6.99	7.41	Score 1 - 1.25 or 1.5
+22973	SlalomBoatTime	34-C-2		59	11.54	11.24	11.85	Score 2 - 2.25 or 2.5
+22974	SlalomBoatTime	34-C-3		60	15.88	15.49	16.29	Score 3 - 3.25 or 3.5
+22975	SlalomBoatTime	34-C-4		61	20.22	19.74	20.73	Score 4 - 4.25 or 4.5
+22976	SlalomBoatTime	34-C-5		62	24.56	23.99	25.16	Score 5 - 5.25 or 5.5
+22977	SlalomBoatTime	34-C-6		63	27.42	26.81	28.08	Score all 6
+22978	SlalomBoatTime	31-C-0		64	3.14	3.02	3.25	Score 0 - 25 or .5
+22979	SlalomBoatTime	31-C-1		65	7.9	7.65	8.15	Score 1 - 1.25 or 1.5
+22980	SlalomBoatTime	31-C-2		66	12.66	12.29	13.05	Score 2 - 2.25 or 2.5
+22981	SlalomBoatTime	31-C-3		67	17.42	16.93	17.93	Score 3 - 3.25 or 3.5
+22982	SlalomBoatTime	31-C-4		68	22.18	21.58	22.82	Score 4 - 4.25 or 4.5
+22983	SlalomBoatTime	31-C-5		69	26.94	26.24	27.7	Score 5 - 5.25 or 5.5
+22984	SlalomBoatTime	31-C-6		70	30.08	29.31	30.9	Score all 6
+22985	SlalomBoatTime	28-C-0		71	3.47	3.33	3.61	Score 0 - 25 or .5
+22986	SlalomBoatTime	28-C-1		72	8.74	8.43	9.07	Score 1 - 1.25 or 1.5
+22987	SlalomBoatTime	28-C-2		73	14.01	13.55	14.51	Score 2 - 2.25 or 2.5
+22988	SlalomBoatTime	28-C-3		74	19.29	18.68	19.94	Score 3 - 3.25 or 3.5
+22989	SlalomBoatTime	28-C-4		75	24.56	23.81	25.37	Score 4 - 4.25 or 4.5
+22990	SlalomBoatTime	28-C-5		76	29.83	28.94	30.8	Score 5 - 5.25 or 5.5
+22991	SlalomBoatTime	28-C-6		77	33.3	32.33	34.37	Score all 6
+22992	SlalomBoatTime	25-C-0		78	3.89	3.71	4.07	Score 0 - 25 or .5
+22993	SlalomBoatTime	25-C-1		79	9.79	9.4	10.21	Score 1 - 1.25 or 1.5
+22994	SlalomBoatTime	25-C-2		80	15.7	15.11	16.34	Score 2 - 2.25 or 2.5
+22995	SlalomBoatTime	25-C-3		81	21.6	20.83	22.46	Score 3 - 3.25 or 3.5
+22996	SlalomBoatTime	25-C-4		82	27.5	26.54	28.58	Score 4 - 4.25 or 4.5
+22997	SlalomBoatTime	25-C-5		83	33.41	32.26	34.68	Score 5 - 5.25 or 5.5
+22998	SlalomBoatTime	25-C-6		84	37.3	36.04	38.7	Score all 6
+22999	SlalomBoatTime	58-W-0		101	1.68	1.63	1.72	Score 0 - 25 or .5
+23000	SlalomBoatTime	58-W-1		102	4.22	4.14	4.29	Score 1 - 1.25 or 1.5
+23001	SlalomBoatTime	58-W-2		103	6.77	6.65	6.87	Score 2 - 2.25 or 2.5
+23002	SlalomBoatTime	58-W-3		104	9.31	9.17	9.44	Score 3 - 3.25 or 3.5
+23003	SlalomBoatTime	58-W-4		105	11.86	11.69	12.01	Score 4 - 4.25 or 4.5
+23004	SlalomBoatTime	58-W-5		106	14.4	14.21	14.58	Score 5 - 5.25 or 5.5
+23005	SlalomBoatTime	58-W-6		107	16.08	15.87	16.27	Score all 6
+23006	SlalomBoatTime	55-W-0		108	1.77	1.72	1.82	Score 0 - 25 or .5
+23007	SlalomBoatTime	55-W-1		109	4.45	4.36	4.53	Score 1 - 1.25 or 1.5
+23008	SlalomBoatTime	55-W-2		110	7.13	7	7.25	Score 2 - 2.25 or 2.5
+23009	SlalomBoatTime	55-W-3		111	9.82	9.65	9.97	Score 3 - 3.25 or 3.5
+23010	SlalomBoatTime	55-W-4		112	12.5	12.3	12.69	Score 4 - 4.25 or 4.5
+23011	SlalomBoatTime	55-W-5		113	15.19	14.96	15.4	Score 5 - 5.25 or 5.5
+23012	SlalomBoatTime	55-W-6		114	16.95	16.71	17.19	Score all 6
+23013	SlalomBoatTime	52-W-0		115	1.87	1.82	1.92	Score 0 - 25 or .5
+23014	SlalomBoatTime	52-W-1		116	4.71	4.6	4.8	Score 1 - 1.25 or 1.5
+23015	SlalomBoatTime	52-W-2		117	7.55	7.4	7.69	Score 2 - 2.25 or 2.5
+23016	SlalomBoatTime	52-W-3		118	10.38	10.19	10.57	Score 3 - 3.25 or 3.5
+23017	SlalomBoatTime	52-W-4		119	13.22	12.99	13.45	Score 4 - 4.25 or 4.5
+23018	SlalomBoatTime	52-W-5		120	16.06	15.79	16.32	Score 5 - 5.25 or 5.5
+23019	SlalomBoatTime	52-W-6		121	17.93	17.65	18.21	Score all 6
+23020	SlalomBoatTime	49-W-0		122	1.98	1.92	2.05	Score 0 - 25 or .5
+23021	SlalomBoatTime	49-W-1		123	5	4.87	5.11	Score 1 - 1.25 or 1.5
+23022	SlalomBoatTime	49-W-2		124	8.01	7.83	8.18	Score 2 - 2.25 or 2.5
+23023	SlalomBoatTime	49-W-3		125	11.02	10.8	11.24	Score 3 - 3.25 or 3.5
+23024	SlalomBoatTime	49-W-4		126	14.03	13.76	14.3	Score 4 - 4.25 or 4.5
+23025	SlalomBoatTime	49-W-5		127	17.04	16.73	17.36	Score 5 - 5.25 or 5.5
+23026	SlalomBoatTime	49-W-6		128	19.03	18.69	19.37	Score all 6
+23027	SlalomBoatTime	46-W-0		129	2.11	2.05	2.18	Score 0 - 25 or .5
+23028	SlalomBoatTime	46-W-1		130	5.32	5.18	5.46	Score 1 - 1.25 or 1.5
+23029	SlalomBoatTime	46-W-2		131	8.53	8.33	8.73	Score 2 - 2.25 or 2.5
+23030	SlalomBoatTime	46-W-3		132	11.74	11.47	12	Score 3 - 3.25 or 3.5
+23031	SlalomBoatTime	46-W-4		133	14.95	14.63	15.27	Score 4 - 4.25 or 4.5
+23032	SlalomBoatTime	46-W-5		134	18.16	17.78	18.54	Score 5 - 5.25 or 5.5
+23033	SlalomBoatTime	46-W-6		135	20.27	19.86	20.68	Score all 6
+23034	SlalomBoatTime	43-W-0		136	2.26	2.18	2.34	Score 0 - 25 or .5
+23035	SlalomBoatTime	43-W-1		137	5.69	5.53	5.85	Score 1 - 1.25 or 1.5
+23036	SlalomBoatTime	43-W-2		138	9.13	8.88	9.37	Score 2 - 2.25 or 2.5
+23037	SlalomBoatTime	43-W-3		139	12.56	12.24	12.87	Score 3 - 3.25 or 3.5
+23038	SlalomBoatTime	43-W-4		140	15.99	15.61	16.38	Score 4 - 4.25 or 4.5
+23039	SlalomBoatTime	43-W-5		141	19.42	18.98	19.89	Score 5 - 5.25 or 5.5
+23040	SlalomBoatTime	43-W-6		142	21.68	21.2	22.18	Score all 6
+23041	SlalomBoatTime	40-W-0		143	2.43	2.34	2.52	Score 0 - 25 or .5
+23042	SlalomBoatTime	40-W-1		144	6.12	5.92	6.31	Score 1 - 1.25 or 1.5
+23043	SlalomBoatTime	40-W-2		145	9.81	9.52	10.1	Score 2 - 2.25 or 2.5
+23044	SlalomBoatTime	40-W-3		146	13.5	13.13	13.89	Score 3 - 3.25 or 3.5
+23045	SlalomBoatTime	40-W-4		147	17.19	16.73	17.67	Score 4 - 4.25 or 4.5
+23046	SlalomBoatTime	40-W-5		148	20.88	20.34	21.44	Score 5 - 5.25 or 5.5
+23047	SlalomBoatTime	40-W-6		149	23.31	22.72	23.93	Score all 6
+23048	SlalomBoatTime	37-W-0		150	2.63	2.52	2.74	Score 0 - 25 or .5
+23049	SlalomBoatTime	37-W-1		151	6.62	6.38	6.85	Score 1 - 1.25 or 1.5
+23050	SlalomBoatTime	37-W-2		152	10.61	10.26	10.96	Score 2 - 2.25 or 2.5
+23051	SlalomBoatTime	37-W-3		153	14.59	14.14	15.07	Score 3 - 3.25 or 3.5
+23052	SlalomBoatTime	37-W-4		154	18.58	18.03	19.17	Score 4 - 4.25 or 4.5
+23053	SlalomBoatTime	37-W-5		155	22.57	21.92	23.26	Score 5 - 5.25 or 5.5
+23054	SlalomBoatTime	37-W-6		156	25.2	24.49	25.96	Score all 6
+23055	SlalomBoatTime	34-W-0		157	2.86	2.74	2.99	Score 0 - 25 or .5
+23056	SlalomBoatTime	34-W-1		158	7.2	6.92	7.49	Score 1 - 1.25 or 1.5
+23057	SlalomBoatTime	34-W-2		159	11.54	11.13	11.98	Score 2 - 2.25 or 2.5
+23058	SlalomBoatTime	34-W-3		160	15.88	15.33	16.47	Score 3 - 3.25 or 3.5
+23059	SlalomBoatTime	34-W-4		161	20.22	19.55	20.95	Score 4 - 4.25 or 4.5
+23060	SlalomBoatTime	34-W-5		162	24.56	23.76	25.43	Score 5 - 5.25 or 5.5
+23061	SlalomBoatTime	34-W-6		163	27.42	26.54	28.37	Score all 6
+23062	SlalomBoatTime	31-W-0		164	3.14	2.99	3.29	Score 0 - 25 or .5
+23063	SlalomBoatTime	31-W-1		165	7.9	7.56	8.25	Score 1 - 1.25 or 1.5
+23064	SlalomBoatTime	31-W-2		166	12.66	12.14	13.21	Score 2 - 2.25 or 2.5
+23065	SlalomBoatTime	31-W-3		167	17.42	16.74	18.16	Score 3 - 3.25 or 3.5
+23066	SlalomBoatTime	31-W-4		168	22.18	21.34	23.1	Score 4 - 4.25 or 4.5
+23067	SlalomBoatTime	31-W-5		169	26.94	25.94	28.04	Score 5 - 5.25 or 5.5
+23068	SlalomBoatTime	31-W-6		170	30.08	28.97	31.29	Score all 6
+23069	SlalomBoatTime	28-W-0		171	3.47	3.29	3.67	Score 0 - 25 or .5
+23070	SlalomBoatTime	28-W-1		172	8.74	8.32	9.2	Score 1 - 1.25 or 1.5
+23071	SlalomBoatTime	28-W-2		173	14.01	13.37	14.72	Score 2 - 2.25 or 2.5
+23072	SlalomBoatTime	28-W-3		174	19.29	18.43	20.23	Score 3 - 3.25 or 3.5
+23073	SlalomBoatTime	28-W-4		175	24.56	23.49	25.74	Score 4 - 4.25 or 4.5
+23074	SlalomBoatTime	28-W-5		176	29.83	28.56	31.25	Score 5 - 5.25 or 5.5
+23075	SlalomBoatTime	28-W-6		177	33.3	31.91	34.86	Score all 6
+23076	SlalomBoatTime	25-W-0		178	3.89	3.67	4.14	Score 0 - 25 or .5
+23077	SlalomBoatTime	25-W-1		179	9.79	9.26	10.39	Score 1 - 1.25 or 1.5
+23078	SlalomBoatTime	25-W-2		180	15.7	14.87	16.62	Score 2 - 2.25 or 2.5
+23079	SlalomBoatTime	25-W-3		181	21.6	20.5	22.84	Score 3 - 3.25 or 3.5
+23080	SlalomBoatTime	25-W-4		182	27.5	26.13	29.06	Score 4 - 4.25 or 4.5
+23081	SlalomBoatTime	25-W-5		183	33.41	31.77	35.27	Score 5 - 5.25 or 5.5
+23082	SlalomBoatTime	25-W-6		184	37.3	35.49	39.36	Score all 6
+23083	SlalomBoatTime	58-R-0		201	1.68	1.64	1.71	Score 0 - 25 or .5
+23084	SlalomBoatTime	58-R-1		202	4.22	4.15	4.28	Score 1 - 1.25 or 1.5
+23085	SlalomBoatTime	58-R-2		203	6.77	6.67	6.84	Score 2 - 2.25 or 2.5
+23086	SlalomBoatTime	58-R-3		204	9.31	9.2	9.41	Score 3 - 3.25 or 3.5
+23087	SlalomBoatTime	58-R-4		205	11.86	11.73	11.97	Score 4 - 4.25 or 4.5
+23088	SlalomBoatTime	58-R-5		206	14.4	14.25	14.53	Score 5 - 5.25 or 5.5
+23089	SlalomBoatTime	58-R-6		207	16.08	16	16.16	Score all 6
+23090	SlalomBoatTime	55-R-0		208	1.77	1.73	1.8	Score 0 - 25 or .5
+23091	SlalomBoatTime	55-R-1		209	4.45	4.37	4.51	Score 1 - 1.25 or 1.5
+23092	SlalomBoatTime	55-R-2		210	7.13	7.03	7.23	Score 2 - 2.25 or 2.5
+23093	SlalomBoatTime	55-R-3		211	9.82	9.69	9.93	Score 3 - 3.25 or 3.5
+23094	SlalomBoatTime	55-R-4		212	12.5	12.35	12.64	Score 4 - 4.25 or 4.5
+23095	SlalomBoatTime	55-R-5		213	15.19	15.02	15.34	Score 5 - 5.25 or 5.5
+23096	SlalomBoatTime	55-R-6		214	16.95	16.86	17.04	Score all 6
+23097	SlalomBoatTime	52-R-0		215	1.87	1.83	1.91	Score 0 - 25 or .5
+23098	SlalomBoatTime	52-R-1		216	4.71	4.62	4.78	Score 1 - 1.25 or 1.5
+23099	SlalomBoatTime	52-R-2		217	7.55	7.43	7.65	Score 2 - 2.25 or 2.5
+23100	SlalomBoatTime	52-R-3		218	10.38	10.24	10.52	Score 3 - 3.25 or 3.5
+23101	SlalomBoatTime	52-R-4		219	13.22	13.05	13.39	Score 4 - 4.25 or 4.5
+23102	SlalomBoatTime	52-R-5		220	16.06	15.87	16.25	Score 5 - 5.25 or 5.5
+23103	SlalomBoatTime	52-R-6		221	17.93	17.72	18.13	Score all 6
+23104	SlalomBoatTime	49-R-0		222	1.98	1.94	2.03	Score 0 - 25 or .5
+23105	SlalomBoatTime	49-R-1		223	5	4.9	5.08	Score 1 - 1.25 or 1.5
+23106	SlalomBoatTime	49-R-2		224	8.01	7.87	8.13	Score 2 - 2.25 or 2.5
+23107	SlalomBoatTime	49-R-3		225	11.02	10.85	11.18	Score 3 - 3.25 or 3.5
+23108	SlalomBoatTime	49-R-4		226	14.03	13.83	14.22	Score 4 - 4.25 or 4.5
+23109	SlalomBoatTime	49-R-5		227	17.04	16.81	17.27	Score 5 - 5.25 or 5.5
+23110	SlalomBoatTime	49-R-6		228	19.03	18.78	19.27	Score all 6
+23111	SlalomBoatTime	46-R-0		229	2.11	2.06	2.16	Score 0 - 25 or .5
+23112	SlalomBoatTime	46-R-1		230	5.32	5.21	5.42	Score 1 - 1.25 or 1.5
+23113	SlalomBoatTime	46-R-2		231	8.53	8.37	8.68	Score 2 - 2.25 or 2.5
+23114	SlalomBoatTime	46-R-3		232	11.74	11.54	11.93	Score 3 - 3.25 or 3.5
+23115	SlalomBoatTime	46-R-4		233	14.95	14.71	15.18	Score 4 - 4.25 or 4.5
+23116	SlalomBoatTime	46-R-5		234	18.16	17.88	18.42	Score 5 - 5.25 or 5.5
+23117	SlalomBoatTime	46-R-6		235	20.27	19.98	20.56	Score all 6
+23118	SlalomBoatTime	43-R-0		236	2.26	2.2	2.32	Score 0 - 25 or .5
+23119	SlalomBoatTime	43-R-1		237	5.69	5.56	5.81	Score 1 - 1.25 or 1.5
+23120	SlalomBoatTime	43-R-2		238	9.13	8.94	9.3	Score 2 - 2.25 or 2.5
+23121	SlalomBoatTime	43-R-3		239	12.56	12.33	12.78	Score 3 - 3.25 or 3.5
+23122	SlalomBoatTime	43-R-4		240	15.99	15.71	16.27	Score 4 - 4.25 or 4.5
+23123	SlalomBoatTime	43-R-5		241	19.42	19.1	19.75	Score 5 - 5.25 or 5.5
+23124	SlalomBoatTime	43-R-6		242	21.68	21.34	22.03	Score all 6
+23125	SlalomBoatTime	40-R-0		243	2.43	2.36	2.5	Score 0 - 25 or .5
+23126	SlalomBoatTime	40-R-1		244	6.12	5.97	6.26	Score 1 - 1.25 or 1.5
+23127	SlalomBoatTime	40-R-2		245	9.81	9.6	10.02	Score 2 - 2.25 or 2.5
+23128	SlalomBoatTime	40-R-3		246	13.5	13.23	13.78	Score 3 - 3.25 or 3.5
+23129	SlalomBoatTime	40-R-4		247	17.19	16.86	17.53	Score 4 - 4.25 or 4.5
+23130	SlalomBoatTime	40-R-5		248	20.88	20.5	21.27	Score 5 - 5.25 or 5.5
+23131	SlalomBoatTime	40-R-6		249	23.31	22.89	23.74	Score all 6
+23132	SlalomBoatTime	37-R-0		250	2.63	2.54	2.71	Score 0 - 25 or .5
+23133	SlalomBoatTime	37-R-1		251	6.62	6.44	6.79	Score 1 - 1.25 or 1.5
+23134	SlalomBoatTime	37-R-2		252	10.61	10.35	10.86	Score 2 - 2.25 or 2.5
+23135	SlalomBoatTime	37-R-3		253	14.59	14.27	14.93	Score 3 - 3.25 or 3.5
+23136	SlalomBoatTime	37-R-4		254	18.58	18.19	18.99	Score 4 - 4.25 or 4.5
+23137	SlalomBoatTime	37-R-5		255	22.57	22.11	23.06	Score 5 - 5.25 or 5.5
+23138	SlalomBoatTime	37-R-6		256	25.2	24.7	25.73	Score all 6
+23139	SlalomBoatTime	34-R-0		257	2.86	2.76	2.95	Score 0 - 25 or .5
+23140	SlalomBoatTime	34-R-1		258	7.2	6.99	7.41	Score 1 - 1.25 or 1.5
+23141	SlalomBoatTime	34-R-2		259	11.54	11.24	11.85	Score 2 - 2.25 or 2.5
+23142	SlalomBoatTime	34-R-3		260	15.88	15.49	16.29	Score 3 - 3.25 or 3.5
+23143	SlalomBoatTime	34-R-4		261	20.22	19.74	20.73	Score 4 - 4.25 or 4.5
+23144	SlalomBoatTime	34-R-5		262	24.56	23.99	25.16	Score 5 - 5.25 or 5.5
+23145	SlalomBoatTime	34-R-6		263	27.42	26.81	28.08	Score all 6
+23146	SlalomBoatTime	31-R-0		264	3.14	3.02	3.25	Score 0 - 25 or .5
+23147	SlalomBoatTime	31-R-1		265	7.9	7.65	8.15	Score 1 - 1.25 or 1.5
+23148	SlalomBoatTime	31-R-2		266	12.66	12.29	13.05	Score 2 - 2.25 or 2.5
+23149	SlalomBoatTime	31-R-3		267	17.42	16.93	17.93	Score 3 - 3.25 or 3.5
+23150	SlalomBoatTime	31-R-4		268	22.18	21.58	22.82	Score 4 - 4.25 or 4.5
+23151	SlalomBoatTime	31-R-5		269	26.94	26.24	27.7	Score 5 - 5.25 or 5.5
+23152	SlalomBoatTime	31-R-6		270	30.08	29.31	30.9	Score all 6
+23153	SlalomBoatTime	28-R-0		271	3.47	3.33	3.61	Score 0 - 25 or .5
+23154	SlalomBoatTime	28-R-1		272	8.74	8.43	9.07	Score 1 - 1.25 or 1.5
+23155	SlalomBoatTime	28-R-2		273	14.01	13.55	14.51	Score 2 - 2.25 or 2.5
+23156	SlalomBoatTime	28-R-3		274	19.29	18.68	19.94	Score 3 - 3.25 or 3.5
+23157	SlalomBoatTime	28-R-4		275	24.56	23.81	25.37	Score 4 - 4.25 or 4.5
+23158	SlalomBoatTime	28-R-5		276	29.83	28.94	30.8	Score 5 - 5.25 or 5.5
+23159	SlalomBoatTime	28-R-6		277	33.3	32.33	34.37	Score all 6
+23160	SlalomBoatTime	25-R-0		278	3.89	3.71	4.07	Score 0 - 25 or .5
+23161	SlalomBoatTime	25-R-1		279	9.79	9.4	10.21	Score 1 - 1.25 or 1.5
+23162	SlalomBoatTime	25-R-2		280	15.7	15.11	16.34	Score 2 - 2.25 or 2.5
+23163	SlalomBoatTime	25-R-3		281	21.6	20.83	22.46	Score 3 - 3.25 or 3.5
+23164	SlalomBoatTime	25-R-4		282	27.5	26.54	28.58	Score 4 - 4.25 or 4.5
+23165	SlalomBoatTime	25-R-5		283	33.41	32.26	34.68	Score 5 - 5.25 or 5.5
+23166	SlalomBoatTime	25-R-6		284	37.3	36.04	38.7	Score all 6
+23167	SlalomJudgesNum	S		1	3	3	3	
+23168	SlalomJudgesNum	C		2	3	3	3	
+23169	SlalomJudgesNum	F		3	1	1	1	
+23170	SlalomJudgesNum	N		4	1	1	1	
+23171	SlalomJudgesNum	G		4	1	1	1	
+23172	SlalomJudgesNum	U		5	1	1	1	
+23173	SlalomJudgesNum	R		6	5	3	5	
+23174	SlalomJudgesNum	T		7	5	3	5	
+23175	SlalomJudgesNum	I		8	1	1	1	
+23176	SlalomJudgesNum	E		9	5	3	5	
+23177	SlalomJudgesNum	B		10	5	3	5	
+23178	SlalomJudgesNum	A		11	5	3	5	
+23179	SlalomJudgesNum	L		12	5	3	5	
+23180	SlalomJudgesNum	X		13	5	3	5	
+23181	SlalomJudgesNum	$		14	5	3	5	
+23182	SlalomJudgesNum	P		15	5	3	5	
+23183	SlalomJudgesNum	Q		16	5	3	5	
+23184	SlalomLines	23M	23	1	Long - Neutral	0	23	
+23185	SlalomLines	18.25M	18.25	2	15 Off - Red	-15	18.25	
+23186	SlalomLines	16.00M	16	3	22 Off - Orange	-22	16	
+23187	SlalomLines	14.25M	14.25	4	28 Off - Yellow	-28	14.25	
+23188	SlalomLines	13.00M	13	5	32 Off - Green	-32	13	
+23189	SlalomLines	12.00M	12	6	35 Off - Blue	-35	12	
+23190	SlalomLines	11.25M	11.25	7	38 Off - Violet	-38	11.25	
+23191	SlalomLines	10.75M	10.75	8	39.5 Off - Neutral	-39	10.75	
+23192	SlalomLines	10.25M	10.25	9	41 Off - Pink	-41	10.25	
+23193	SlalomLines	9.75M	9.75	10	43 Off - Black	-43	9.75	
+23194	SlalomLines	9.5M	9.5	11	44 Off - Red	-44	9.5	
+23195	SlalomPass46	1	1	1	23.00M,25kph,Long,15.5mph	23	25	
+23196	SlalomPass46	2	2	2	23.00M,28kph,Long,17.4mph	23	28	
+23197	SlalomPass46	3	3	3	23.00M,31kph,Long,19.3mph	23	31	
+23198	SlalomPass46	4	4	4	23.00M,34kph,Long,21.1mph	23	34	
+23199	SlalomPass46	5	5	5	23.00M,37kph,Long,23.0mph	23	37	
+23200	SlalomPass46	6	6	6	23.00M,40kph,Long,24.9mph	23	40	
+23201	SlalomPass46	7	7	7	23.00M,43kph,Long,26.7mph	23	43	
+23202	SlalomPass46	8	8	8	23.00M,46kph,Long,28.6mph	23	46	
+23203	SlalomPass46	9	9	9	18.25M,46kph,15 Off,28.6mph	18.25	46	
+23204	SlalomPass46	10	10	10	16.00M,46kph,22 Off,28.6mph	16	46	
+23205	SlalomPass46	11	11	11	14.25M,46kph,28 Off,28.6mph	14.25	46	
+23206	SlalomPass46	12	12	12	13.00M,46kph,32 Off,28.6mph	13	46	
+23207	SlalomPass46	13	13	13	12.00M,46kph,35 Off,28.6mph	12	46	
+23208	SlalomPass46	14	14	14	11.25M,46kph,38 Off,28.6mph	11.25	46	
+23209	SlalomPass46	15	15	15	10.75M,46kph,39.5 Off,28.6mph	10.75	46	
+23210	SlalomPass46	16	16	16	10.25M,46kph,41 Off,28.6mph	10.25	46	
+23211	SlalomPass46	17	17	17	9.75M,46kph,43 Off,28.6mph	9.75	46	
+23212	SlalomPass46	18	18	18	9.5M,46kph,44 Off,28.6mph	9.5	46	
+23213	SlalomPass49	1	1	1	23.00M,25kph,Long,15.5mph	23	25	
+23214	SlalomPass49	2	2	2	23.00M,28kph,Long,17.4mph	23	28	
+23215	SlalomPass49	3	3	3	23.00M,31kph,Long,19.3mph	23	31	
+23216	SlalomPass49	4	4	4	23.00M,34kph,Long,21.1mph	23	34	
+23217	SlalomPass49	5	5	5	23.00M,37kph,Long,23.0mph	23	37	
+23218	SlalomPass49	6	6	6	23.00M,40kph,Long,24.9mph	23	40	
+23219	SlalomPass49	7	7	7	23.00M,43kph,Long,26.7mph	23	43	
+23220	SlalomPass49	8	8	8	23.00M,46kph,Long,28.6mph	23	46	
+23221	SlalomPass49	9	9	9	23.00M,49kph,Long,30.4mph	23	49	
+23222	SlalomPass49	10	10	10	18.25M,49kph,15 Off,30.4mph	18.25	49	
+23223	SlalomPass49	11	11	11	16.00M,49kph,22 Off,30.4mph	16	49	
+23224	SlalomPass49	12	12	12	14.25M,49kph,28 Off,30.4mph	14.25	49	
+23225	SlalomPass49	13	13	13	13.00M,49kph,32 Off,30.4mph	13	49	
+23226	SlalomPass49	14	14	14	12.00M,49kph,35 Off,30.4mph	12	49	
+23227	SlalomPass49	15	15	15	11.25M,49kph,38 Off,30.4mph	11.25	49	
+23228	SlalomPass49	16	16	16	10.75M,49kph,39.5 Off,30.4mph	10.75	49	
+23229	SlalomPass49	17	17	17	10.25M,49kph,41 Off,30.4mph	10.25	49	
+23230	SlalomPass49	18	18	18	9.75M,49kph,43 Off,30.4mph	9.75	49	
+23231	SlalomPass49	19	19	19	9.5M,49kph,44 Off,30.4mph	9.5	49	
+23232	SlalomPass52	1	1	1	23.00M,25kph,Long,15.5mph	23	25	
+23233	SlalomPass52	2	2	2	23.00M,28kph,Long,17.4mph	23	28	
+23234	SlalomPass52	3	3	3	23.00M,31kph,Long,19.3mph	23	31	
+23235	SlalomPass52	4	4	4	23.00M,34kph,Long,21.1mph	23	34	
+23236	SlalomPass52	5	5	5	23.00M,37kph,Long,23.0mph	23	37	
+23237	SlalomPass52	6	6	6	23.00M,40kph,Long,24.9mph	23	40	
+23238	SlalomPass52	7	7	7	23.00M,43kph,Long,26.7mph	23	43	
+23239	SlalomPass52	8	8	8	23.00M,46kph,Long,28.6mph	23	46	
+23240	SlalomPass52	9	9	9	23.00M,49kph,Long,30.4mph	23	49	
+23241	SlalomPass52	10	10	10	23.00M,52kph,Long,32.3mph	23	52	
+23242	SlalomPass52	11	11	11	18.25M,52kph,15 Off,32.3mph	18.25	52	
+23243	SlalomPass52	12	12	12	16.00M,52kph,22 Off,32.3mph	16	52	
+23244	SlalomPass52	13	13	13	14.25M,52kph,28 Off,32.3mph	14.25	52	
+23245	SlalomPass52	14	14	14	13.00M,52kph,32 Off,32.3mph	13	52	
+23246	SlalomPass52	15	15	15	12.00M,52kph,35 Off,32.3mph	12	52	
+23247	SlalomPass52	16	16	16	11.25M,52kph,38 Off,32.3mph	11.25	52	
+23248	SlalomPass52	17	17	17	10.75M,52kph,39.5 Off,32.3mph	10.75	52	
+23249	SlalomPass52	18	18	18	10.25M,52kph,41 Off,32.3mph	10.25	52	
+23250	SlalomPass52	19	19	19	9.75M,52kph,43 Off,32.3mph	9.75	52	
+23251	SlalomPass52	20	20	20	9.5M,52kph,44 Off,32.3mph	9.5	52	
+23252	SlalomPass55	1	1	1	23.00M,25kph,Long,15.5mph	23	25	
+23253	SlalomPass55	2	2	2	23.00M,28kph,Long,17.4mph	23	28	
+23254	SlalomPass55	3	3	3	23.00M,31kph,Long,19.3mph	23	31	
+23255	SlalomPass55	4	4	4	23.00M,34kph,Long,21.1mph	23	34	
+23256	SlalomPass55	5	5	5	23.00M,37kph,Long,23.0mph	23	37	
+23257	SlalomPass55	6	6	6	23.00M,40kph,Long,24.9mph	23	40	
+23258	SlalomPass55	7	7	7	23.00M,43kph,Long,26.7mph	23	43	
+23259	SlalomPass55	8	8	8	23.00M,46kph,Long,28.6mph	23	46	
+23260	SlalomPass55	9	9	9	23.00M,49kph,Long,30.4mph	23	49	
+23261	SlalomPass55	10	10	10	23.00M,52kph,Long,32.3mph	23	52	
+23262	SlalomPass55	11	11	11	23.00M,55kph,Long,34.2mph	23	55	
+23263	SlalomPass55	12	12	12	18.25M,55kph,15 Off,34.2mph	18.25	55	
+23264	SlalomPass55	13	13	13	16.00M,55kph,22 Off,34.2mph	16	55	
+23265	SlalomPass55	14	14	14	14.25M,55kph,28 Off,34.2mph	14.25	55	
+23266	SlalomPass55	15	15	15	13.00M,55kph,32 Off,34.2mph	13	55	
+23267	SlalomPass55	16	16	16	12.00M,55kph,35 Off,34.2mph	12	55	
+23268	SlalomPass55	17	17	17	11.25M,55kph,38 Off,34.2mph	11.25	55	
+23269	SlalomPass55	18	18	18	10.75M,55kph,39.5 Off,34.2mph	10.75	55	
+23270	SlalomPass55	19	19	19	10.25M,55kph,41 Off,34.2mph	10.25	55	
+23271	SlalomPass55	20	20	20	9.75M,55kph,43 Off,34.2mph	9.75	55	
+23272	SlalomPass55	21	21	21	9.5M,55kph,44 Off,34.2mph	9.5	55	
+23273	SlalomPass58	1	1	1	23.00M,25kph,Long,15.5mph	23	25	
+23274	SlalomPass58	2	2	2	23.00M,28kph,Long,17.4mph	23	28	
+23275	SlalomPass58	3	3	3	23.00M,31kph,Long,19.3mph	23	31	
+23276	SlalomPass58	4	4	4	23.00M,34kph,Long,21.1mph	23	34	
+23277	SlalomPass58	5	5	5	23.00M,37kph,Long,23.0mph	23	37	
+23278	SlalomPass58	6	6	6	23.00M,40kph,Long,24.9mph	23	40	
+23279	SlalomPass58	7	7	7	23.00M,43kph,Long,26.7mph	23	43	
+23280	SlalomPass58	8	8	8	23.00M,46kph,Long,28.6mph	23	46	
+23281	SlalomPass58	9	9	9	23.00M,49kph,Long,30.4mph	23	49	
+23282	SlalomPass58	10	10	10	23.00M,52kph,Long,32.3mph	23	52	
+23283	SlalomPass58	11	11	11	23.00M,55kph,Long,34.2mph	23	55	
+23284	SlalomPass58	12	12	12	23.00M,58kph,Long,36.0mph	23	58	
+23285	SlalomPass58	13	13	13	18.25M,58kph,15 Off,36.0mph	18.25	58	
+23286	SlalomPass58	14	14	14	16.00M,58kph,22 Off,36.0mph	16	58	
+23287	SlalomPass58	15	15	15	14.25M,58kph,28 Off,36.0mph	14.25	58	
+23288	SlalomPass58	16	16	16	13.00M,58kph,32 Off,36.0mph	13	58	
+23289	SlalomPass58	17	17	17	12.00M,58kph,35 Off,36.0mph	12	58	
+23290	SlalomPass58	18	18	18	11.25M,58kph,38 Off,36.0mph	11.25	58	
+23291	SlalomPass58	19	19	19	10.75M,58kph,39.5 Off,36.0mph	10.75	58	
+23292	SlalomPass58	20	20	20	10.25M,58kph,41 Off,36.0mph	10.25	58	
+23293	SlalomPass58	21	21	21	9.75M,58kph,43 Off,36.0mph	9.75	58	
+23294	SlalomPass58	22	22	22	9.5M,58kph,44 Off,36.0mph	9.5	58	
+23295	SlalomScoreToPP	0	0	1	buoy 1 Time	0	0.5	
+23296	SlalomScoreToPP	1	1	2	buoy 2 Time	1	1.5	
+23297	SlalomScoreToPP	2	2	3	buoy 3 Time	2	2.5	
+23298	SlalomScoreToPP	3	3	4	buoy 4 Time	3	3.5	
+23299	SlalomScoreToPP	4	4	5	buoy 5 Time	4	4.5	
+23300	SlalomScoreToPP	5	5	6	buoy 6 Time	5	5.5	
+23301	SlalomScoreToPP	6	6	7	End Course Time	6	6	
+23302	SlalomSpeeds	58kph	58	1	36.0mph	36	58	
+23303	SlalomSpeeds	55kph	55	2	34.2mph	34	55	
+23304	SlalomSpeeds	52kph	52	3	32.3mph	32	52	
+23305	SlalomSpeeds	49kph	49	4	30.4mph	30	49	
+23306	SlalomSpeeds	46kph	46	5	28.6mph	28	46	
+23307	SlalomSpeeds	43kph	43	6	26.7mph	26	43	
+23308	SlalomSpeeds	40kph	40	7	24.9mph	24	40	
+23309	SlalomSpeeds	37kph	37	8	23.0mph	23	37	
+23310	SlalomSpeeds	34kph	34	9	21.1mph	21	34	
+23311	SlalomSpeeds	31kph	31	10	19.3mph	19	31	
+23312	SlalomSpeeds	28kph	28	11	17.4mph	17	28	
+23313	SlalomSpeeds	25kph	25	12	15.5mph	15	25	
+23314	StateRegion	AR		1	C - South Central			
+23315	StateRegion	LA		1	C - South Central			
+23316	StateRegion	MS		1	C - South Central			
+23317	StateRegion	OK		1	C - South Central			
+23318	StateRegion	TX		1	C - South Central			
+23319	StateRegion	CT		1	E - East			
+23320	StateRegion	DE		1	E - East			
+23321	StateRegion	DC		1	E - East			
+23322	StateRegion	ME		1	E - East			
+23323	StateRegion	MD		1	E - East			
+23324	StateRegion	MA		1	E - East			
+23325	StateRegion	NH		1	E - East			
+23326	StateRegion	NJ		1	E - East			
+23327	StateRegion	NY		1	E - East			
+23328	StateRegion	PA		1	E - East			
+23329	StateRegion	RI		1	E - East			
+23330	StateRegion	VT		1	E - East			
+23331	StateRegion	VA		1	E - East			
+23332	StateRegion	WV		1	E - East			
+23333	StateRegion	IL		1	M - Midwest			
+23334	StateRegion	IN		1	M - Midwest			
+23335	StateRegion	IA		1	M - Midwest			
+23336	StateRegion	KS		1	M - Midwest			
+23337	StateRegion	MI		1	M - Midwest			
+23338	StateRegion	MN		1	M - Midwest			
+23339	StateRegion	MO		1	M - Midwest			
+23340	StateRegion	NE		1	M - Midwest			
+23341	StateRegion	ND		1	M - Midwest			
+23342	StateRegion	OH		1	M - Midwest			
+23343	StateRegion	WI		1	M - Midwest			
+23344	StateRegion	AL		1	S - South			
+23345	StateRegion	FL		1	S - South			
+23346	StateRegion	GA		1	S - South			
+23347	StateRegion	KY		1	S - South			
+23348	StateRegion	NC		1	S - South			
+23349	StateRegion	SC		1	S - South			
+23350	StateRegion	TN		1	S - South			
+23351	StateRegion	AK		1	W - West			
+23352	StateRegion	AZ		1	W - West			
+23353	StateRegion	CA		1	W - West			
+23354	StateRegion	CO		1	W - West			
+23355	StateRegion	HI		1	W - West			
+23356	StateRegion	ID		1	W - West			
+23357	StateRegion	MT		1	W - West			
+23358	StateRegion	NV		1	W - West			
+23359	StateRegion	NM		1	W - West			
+23360	StateRegion	OR		1	W - West			
+23361	StateRegion	SD		1	W - West			
+23362	StateRegion	UT		1	W - West			
+23363	StateRegion	WA		1	W - West			
+23364	StateRegion	WY		1	W - West			
+23365	TeamPlaceMethod	best		0	Best Team Skier			
+23366	TeamPlaceMethod	nops		1	NOPS			
+23367	TeamPlaceMethod	points		2	10/8/6/4/2 placement points			
+23368	TeamPlaceMethod	trials		3	AWSA Team Trials			
+23369	TeamPlaceMethod	ncwsa		4	NCWSA			
+23370	TechRating	 		1	Unrated			
+23372	TechRating	Regular		3	Regular			
+23373	TechRating	Senior		4	Senior			
+23374	TechRating	Emeritus		5	Emeritus			
+23375	TotalCalcMethod	best		1	Best each event			
+23376	TotalCalcMethod	round		2	Best total round			
+23377	TotalCalcMethod	last		3	Last round			
+23378	TrickJudgesNum	S		1	3	3	3	
+23379	TrickJudgesNum	C		2	3	3	3	
+23380	TrickJudgesNum	F		3	3	3	3	
+23381	TrickJudgesNum	N		4	3	3	3	
+23382	TrickJudgesNum	G		5	3	3	3	
+23383	TrickJudgesNum	U		6	3	3	3	
+23384	TrickJudgesNum	R		7	5	3	5	
+23385	TrickJudgesNum	T		8	5	3	5	
+23386	TrickJudgesNum	I		9	3	3	3	
+23387	TrickJudgesNum	E		10	5	3	5	
+23388	TrickJudgesNum	B		11	5	3	5	
+23389	TrickJudgesNum	A		12	5	3	5	
+23390	TrickJudgesNum	L		13	5	3	5	
+23391	TrickJudgesNum	X		14	5	3	5	
+23392	TrickJudgesNum	$		15	5	3	5	
+23393	TrickJudgesNum	P		16	5	3	5	
+23394	TrickJudgesNum	Q		17	5	3	5	
