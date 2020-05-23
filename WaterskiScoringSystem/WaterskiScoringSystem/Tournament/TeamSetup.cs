@@ -2061,7 +2061,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", T.TrickBoat, T.JumpHeight, T.State, T.Federation " );
             curSqlStmt.Append( "FROM EventReg E " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-            curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + inEvent + "' " );
+            curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + inEvent + "' AND E.ReadyForPlcmt = 'Y' ");
             if ( myRules.ToLower().Equals( "ncwsa" ) ) {
                 curSqlStmt.Append( "  AND E.AgeGroup in ('CM', 'CW', 'BM', 'BW') " );
             }

@@ -34,9 +34,11 @@
 			this.navMemberList = new System.Windows.Forms.ToolStripMenuItem();
 			this.memberImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.currentFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.standardRegistrationForPickChooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.collegiateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.navImportDataWstims = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportTourReg = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportTourRegPick = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportDataWstims = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTournament = new System.Windows.Forms.ToolStripMenuItem();
 			this.navRegistration = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTourRunningOrder = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,6 +89,8 @@
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportOLR = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportOLRPick = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionalJuniorExtractsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navMetricTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.shrinkDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,6 +99,8 @@
 			this.databaseToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.logRecoveryUtilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSetDatabase = new System.Windows.Forms.ToolStripMenuItem();
+			this.eWCSTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.eWCSCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.gettingStartedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,10 +108,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.navImportTourRegPick = new System.Windows.Forms.ToolStripMenuItem();
-			this.navImportOLR = new System.Windows.Forms.ToolStripMenuItem();
-			this.navImportOLRPick = new System.Windows.Forms.ToolStripMenuItem();
-			this.standardRegistrationForPickChooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -142,18 +144,18 @@
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(100, 6);
 			// 
 			// navClose
 			// 
 			this.navClose.Name = "navClose";
-			this.navClose.Size = new System.Drawing.Size(152, 22);
+			this.navClose.Size = new System.Drawing.Size(103, 22);
 			this.navClose.Text = "&Close";
 			// 
 			// navExit
 			// 
 			this.navExit.Name = "navExit";
-			this.navExit.Size = new System.Drawing.Size(152, 22);
+			this.navExit.Size = new System.Drawing.Size(103, 22);
 			this.navExit.Text = "E&xit";
 			this.navExit.Click += new System.EventHandler(this.navExit_Click);
 			// 
@@ -202,6 +204,12 @@
 			this.currentFormatToolStripMenuItem.Text = "Standard Registration Template";
 			this.currentFormatToolStripMenuItem.Click += new System.EventHandler(this.navImportFile_Click);
 			// 
+			// standardRegistrationForPickChooseToolStripMenuItem
+			// 
+			this.standardRegistrationForPickChooseToolStripMenuItem.Name = "standardRegistrationForPickChooseToolStripMenuItem";
+			this.standardRegistrationForPickChooseToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
+			this.standardRegistrationForPickChooseToolStripMenuItem.Text = "Standard Registration for Pick&&Choose";
+			// 
 			// collegiateToolStripMenuItem
 			// 
 			this.collegiateToolStripMenuItem.Name = "collegiateToolStripMenuItem";
@@ -209,19 +217,26 @@
 			this.collegiateToolStripMenuItem.Text = "Collegiate Registration Template";
 			this.collegiateToolStripMenuItem.Click += new System.EventHandler(this.navImportNcwsaFile_Click);
 			// 
-			// navImportDataWstims
-			// 
-			this.navImportDataWstims.Name = "navImportDataWstims";
-			this.navImportDataWstims.Size = new System.Drawing.Size(280, 22);
-			this.navImportDataWstims.Text = "WSTIMS For Windows";
-			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
-			// 
 			// navImportTourReg
 			// 
 			this.navImportTourReg.Name = "navImportTourReg";
 			this.navImportTourReg.Size = new System.Drawing.Size(280, 22);
 			this.navImportTourReg.Text = "Import Online Registrations (OLR)";
 			this.navImportTourReg.Click += new System.EventHandler(this.navImportTourReg_Click);
+			// 
+			// navImportTourRegPick
+			// 
+			this.navImportTourRegPick.Name = "navImportTourRegPick";
+			this.navImportTourRegPick.Size = new System.Drawing.Size(280, 22);
+			this.navImportTourRegPick.Text = "Import OLR - Pick&&Choose";
+			this.navImportTourRegPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
+			// 
+			// navImportDataWstims
+			// 
+			this.navImportDataWstims.Name = "navImportDataWstims";
+			this.navImportDataWstims.Size = new System.Drawing.Size(280, 22);
+			this.navImportDataWstims.Text = "WSTIMS For Windows";
+			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
 			// 
 			// navTournament
 			// 
@@ -580,7 +595,9 @@
             this.toolStripMenuItem1,
             this.databaseToolToolStripMenuItem,
             this.logRecoveryUtilityToolStripMenuItem,
-            this.navSetDatabase});
+            this.navSetDatabase,
+            this.eWCSTestToolStripMenuItem,
+            this.eWCSCloseToolStripMenuItem});
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(46, 20);
 			this.toolStripMenuItem2.Text = "T&ools";
@@ -626,6 +643,20 @@
 			this.navImportData.Size = new System.Drawing.Size(218, 22);
 			this.navImportData.Text = "Import WSTIMS Data";
 			this.navImportData.Click += new System.EventHandler(this.navImportData_Click);
+			// 
+			// navImportOLR
+			// 
+			this.navImportOLR.Name = "navImportOLR";
+			this.navImportOLR.Size = new System.Drawing.Size(218, 22);
+			this.navImportOLR.Text = "Import OLR";
+			this.navImportOLR.DisplayStyleChanged += new System.EventHandler(this.navImportTourReg_Click);
+			// 
+			// navImportOLRPick
+			// 
+			this.navImportOLRPick.Name = "navImportOLRPick";
+			this.navImportOLRPick.Size = new System.Drawing.Size(218, 22);
+			this.navImportOLRPick.Text = "Import OLR - Pick&&Choose";
+			this.navImportOLRPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
 			// 
 			// regionalJuniorExtractsToolStripMenuItem
 			// 
@@ -684,6 +715,24 @@
 			this.navSetDatabase.Text = "Set Database";
 			this.navSetDatabase.Click += new System.EventHandler(this.navSetDatabase_Click);
 			// 
+			// eWCSTestToolStripMenuItem
+			// 
+			this.eWCSTestToolStripMenuItem.Enabled = false;
+			this.eWCSTestToolStripMenuItem.Name = "eWCSTestToolStripMenuItem";
+			this.eWCSTestToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+			this.eWCSTestToolStripMenuItem.Text = "EWCS Connect";
+			this.eWCSTestToolStripMenuItem.Visible = false;
+			this.eWCSTestToolStripMenuItem.Click += new System.EventHandler(this.eWCSTestToolStripMenuItem_Click);
+			// 
+			// eWCSCloseToolStripMenuItem
+			// 
+			this.eWCSCloseToolStripMenuItem.Enabled = false;
+			this.eWCSCloseToolStripMenuItem.Name = "eWCSCloseToolStripMenuItem";
+			this.eWCSCloseToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+			this.eWCSCloseToolStripMenuItem.Text = "EWCS Close";
+			this.eWCSCloseToolStripMenuItem.Visible = false;
+			this.eWCSCloseToolStripMenuItem.Click += new System.EventHandler(this.eWCSCloseToolStripMenuItem_Click);
+			// 
 			// windowToolStripMenuItem
 			// 
 			this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -735,33 +784,6 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
-			// 
-			// navImportTourRegPick
-			// 
-			this.navImportTourRegPick.Name = "navImportTourRegPick";
-			this.navImportTourRegPick.Size = new System.Drawing.Size(280, 22);
-			this.navImportTourRegPick.Text = "Import OLR - Pick&&Choose";
-			this.navImportTourRegPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
-			// 
-			// navImportOLR
-			// 
-			this.navImportOLR.Name = "navImportOLR";
-			this.navImportOLR.Size = new System.Drawing.Size(218, 22);
-			this.navImportOLR.Text = "Import OLR";
-			this.navImportOLR.DisplayStyleChanged += new System.EventHandler(this.navImportTourReg_Click);
-			// 
-			// navImportOLRPick
-			// 
-			this.navImportOLRPick.Name = "navImportOLRPick";
-			this.navImportOLRPick.Size = new System.Drawing.Size(218, 22);
-			this.navImportOLRPick.Text = "Import OLR - Pick&&Choose";
-			this.navImportOLRPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
-			// 
-			// standardRegistrationForPickChooseToolStripMenuItem
-			// 
-			this.standardRegistrationForPickChooseToolStripMenuItem.Name = "standardRegistrationForPickChooseToolStripMenuItem";
-			this.standardRegistrationForPickChooseToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
-			this.standardRegistrationForPickChooseToolStripMenuItem.Text = "Standard Registration for Pick&&Choose";
 			// 
 			// SystemMain
 			// 
@@ -870,6 +892,8 @@
 		private System.Windows.Forms.ToolStripMenuItem navImportOLR;
 		private System.Windows.Forms.ToolStripMenuItem navImportOLRPick;
 		private System.Windows.Forms.ToolStripMenuItem standardRegistrationForPickChooseToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem eWCSTestToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem eWCSCloseToolStripMenuItem;
 	}
 }
 

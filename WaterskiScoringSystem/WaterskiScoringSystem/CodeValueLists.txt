@@ -1027,9 +1027,10 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22879	OfficialAsgmt	Driver		1	Driver	0	0	
 22880	OfficialAsgmt	BoatJudge		2	Boat Judge	0	0	
 22881	OfficialAsgmt	EventJudge		3	Event Judge	0	0	
-22881	OfficialAsgmt	EventAcjJudge		4	Event ACJ	0	0	
-22882	OfficialAsgmt	Scorer		5	Scorer	0	0	
-22883	OfficialAsgmt	Safety		6	Safety	0	0	
+22881	OfficialAsgmt	EventJudgeEC		4	Event Judge End Course	0	0	
+22881	OfficialAsgmt	EventAcjJudge		5	Event ACJ	0	0	
+22882	OfficialAsgmt	Scorer		6	Scorer	0	0	
+22883	OfficialAsgmt	Safety		7	Safety	0	0	
 22884	OfficialAsgmt	TechCntl		10	Technical Controller	0	0	
 22885	OfficialAsgmt	Announcer		11	Announcer	0	0	
 22886	OfficialAsgmt	DockStarter		20	Dock Starter	0	0	

@@ -227,7 +227,7 @@ namespace WaterskiScoringSystem.Tools {
                 curExcelRow++;
 
                 setCellValue(curExcelRow, "A", "Event Judge");
-                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge'" );
+                curRowsFound = curDataTable.Select("WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'Event Judge End Course'");
                 if (curRowsFound.Length > 0) {
                     for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
                         curRow = curRowsFound[curIdx];
@@ -895,7 +895,7 @@ namespace WaterskiScoringSystem.Tools {
                     outLine.Append( "Driver" + tabDelim + " " + tabDelim + " " );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
-                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge'" );
+                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'Event Judge End Course'" );
                 if (curRowsFound.Length > 0) {
                     for (int curIdx = 0; curIdx < 5; curIdx++) {
                         outLine = new StringBuilder( "" );

@@ -939,5 +939,11 @@ namespace WaterskiScoringSystem {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-	}
+        private void eWCSTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            //SendSocketioEwcs.openEwscConnection();
+        }
+        private void eWCSCloseToolStripMenuItem_Click(object sender, EventArgs e) {
+            //SendSocketioEwcs.closeEwscConnection();
+        }
+    }
 }
