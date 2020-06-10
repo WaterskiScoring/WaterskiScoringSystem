@@ -148,7 +148,7 @@ namespace WaterskiScoringSystem.Tools {
 						if ( inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" ) ) {
 							//Display statistics when another table entry is found
 							if ( myTableName != null ) {
-								if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) ) {
+								if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) && curSanctionId.Length >= 6 ) {
 									execSlalomRecapCheckAndUpdate( curSanctionId );
 								}
 

@@ -6051,7 +6051,6 @@ namespace WaterskiScoringSystem.Common {
 
 		}
 
-
 		private byte getSlalomSpeedMph( byte inSpeedKph ) {
             byte curReturnValue = 0;
             StringBuilder curSqlStmt = new StringBuilder( "" );

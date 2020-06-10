@@ -156,6 +156,80 @@ namespace WaterskiScoringSystem.Tools {
 				this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
 			}
 		}
+		
+		private void ExecAllStarCalcButton_Click(object sender, EventArgs e) {
+			CalcNops appNopsCalc;
+
+			myDataTable = getJuniorAllStarsData();
+			if (myDataTable == null) {
+				this.dataGridView.DataSource = new DataTable();
+				this.MessageLabel.Text = "SQL command completed, 0 rows processed";
+			
+			} else {
+				ScoreEntry scoreEntry = new Common.ScoreEntry();
+				appNopsCalc = CalcNops.Instance;
+				appNopsCalc.LoadDataForTour();
+
+				// curSqlStmt.Append(", 0.0 as RankingNopsTotal, 0.0 as NopsTotal, , 0.0 as RankingNopsTotal60Pct, 0.0 as NopsTotal40Pct, 0.0 as ScoreAllStar");
+				Decimal curRankingNopsTotal = 0.0M, curNopsTotal = 0.0M, curRankingNopsTotal60Pct = 0.0M, curNopsTotal40Pct = 0.0M, curScoreAllStar = 0.0M;
+				foreach (DataRow curDataRow in myDataTable.Rows) {
+					curRankingNopsTotal = 0.0M;
+					curNopsTotal = 0.0M;
+					curRankingNopsTotal60Pct = 0.0M;
+					curNopsTotal40Pct = 0.0M;
+					curScoreAllStar = 0.0M;
+
+					if ( curDataRow["EventSlalom"] != System.DBNull.Value && curDataRow["ScoreSlalom"] != System.DBNull.Value) {
+						scoreEntry.Event = (String)curDataRow["EventSlalom"];
+						scoreEntry.Score = (Decimal)curDataRow["RankingScoreSlalom"];
+
+						appNopsCalc.calcNops((String)curDataRow["AgeGroup"], scoreEntry);
+						curDataRow["RankingNopsSlalom"] = scoreEntry.Nops;
+
+						curRankingNopsTotal += scoreEntry.Nops;
+						curNopsTotal += (Decimal)curDataRow["RankingScoreSlalom"];
+					}
+					
+					if (curDataRow["EventTrick"] != System.DBNull.Value && curDataRow["ScoreTrick"] != System.DBNull.Value) {
+						scoreEntry.Event = (String)curDataRow["EventTrick"];
+						scoreEntry.Score = (Decimal)curDataRow["RankingScoreTrick"];
+
+						appNopsCalc.calcNops((String)curDataRow["AgeGroup"], scoreEntry);
+						curDataRow["RankingNopsTrick"] = scoreEntry.Nops;
+
+						curRankingNopsTotal += scoreEntry.Nops;
+						curNopsTotal += (Decimal)curDataRow["RankingScoreTrick"];
+					}
+
+					if (curDataRow["EventJump"] != System.DBNull.Value && curDataRow["ScoreJump"] != System.DBNull.Value) {
+						scoreEntry.Event = (String)curDataRow["EventJump"];
+						scoreEntry.Score = (Decimal)curDataRow["RankingScoreJump"];
+
+						appNopsCalc.calcNops((String)curDataRow["AgeGroup"], scoreEntry);
+						curDataRow["RankingNopsJump"] = scoreEntry.Nops;
+
+						curRankingNopsTotal += scoreEntry.Nops;
+						curNopsTotal += (Decimal)curDataRow["RankingScoreJump"];
+					}
+
+					curDataRow["RankingNopsTotal"] = curRankingNopsTotal;
+					curDataRow["NopsTotal"] = curNopsTotal;
+
+					curRankingNopsTotal60Pct = Math.Round(curRankingNopsTotal * .60M);
+					curNopsTotal40Pct = Math.Round(curNopsTotal * .40M);
+					curScoreAllStar = curRankingNopsTotal60Pct + curNopsTotal40Pct;
+
+					curDataRow["RankingNopsTotal60Pct"] = curRankingNopsTotal60Pct;
+					curDataRow["NopsTotal40Pct"] = curNopsTotal40Pct;
+					curDataRow["ScoreAllStar"] = curScoreAllStar;
+				}
+
+				myExportFileNameDefault = "JuniorAllStars";
+				this.dataGridView.DataSource = myDataTable;
+				this.dataGridView.Visible = true;
+				this.MessageLabel.Text = String.Format("SQL command completed, {0} rows processed", myDataTable.Rows.Count);
+			}
+		}
 
 		private void ExportButton_Click( object sender, EventArgs e ) {
 			ExportData myExportData = new ExportData();
@@ -282,6 +356,32 @@ namespace WaterskiScoringSystem.Tools {
 
 			curSqlStmt.Append( "Order by E.Event, T.AgeGroup, SkierName " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
+		private DataTable getJuniorAllStarsData() {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			curSqlStmt.Append("SELECT SkierName, T.MemberId, T.AgeGroup ");
+			curSqlStmt.Append(", ES.Event as EventSlalom, ES.RankingScore as RankingScoreSlalom, 0.0 as RankingNopsSlalom, SS.Score as ScoreSlalom, SS.NopsScore as NopsSlalom ");
+			curSqlStmt.Append(", ET.Event as EventTrick, ET.RankingScore as RankingScoreTrick, 0.0 as RankingNopsTrick, CONVERT(numeric(6, 1), ST.Score) as ScoreTrick, ST.NopsScore as NopsTrick ");
+			curSqlStmt.Append(", EJ.Event as EventJump, EJ.RankingScore as RankingScoreJump, 0.0 as RankingNopsJump, SJ.ScoreFeet as ScoreJump, SJ.NopsScore as NopsJump ");
+			curSqlStmt.Append(", 0.0 as RankingNopsTotal, 0.0 as NopsTotal, 0.0 as RankingNopsTotal60Pct, 0.0 as NopsTotal40Pct, 0.0 as ScoreAllStar ");
+			curSqlStmt.Append("FROM TourReg T ");
+			
+			curSqlStmt.Append("LEFT OUTER JOIN EventReg ES on T.SanctionId = ES.SanctionId and T.MemberId = ES.MemberId AND T.AgeGroup = ES.AgeGroup AND ES.Event = 'Slalom' ");
+			curSqlStmt.Append("LEFT OUTER JOIN SlalomScore SS on SS.SanctionId = T.SanctionId and SS.MemberId = T.MemberId AND SS.AgeGroup = T.AgeGroup And SS.Round = 1 ");
+
+			curSqlStmt.Append("LEFT OUTER JOIN EventReg ET on T.SanctionId = ET.SanctionId and T.MemberId = ET.MemberId AND T.AgeGroup = ET.AgeGroup AND ET.Event = 'Trick' ");
+			curSqlStmt.Append("LEFT OUTER JOIN TrickScore ST on ST.SanctionId = T.SanctionId and ST.MemberId = T.MemberId AND ST.AgeGroup = T.AgeGroup And ST.Round = 1 ");
+
+			curSqlStmt.Append("LEFT OUTER JOIN EventReg EJ on T.SanctionId = EJ.SanctionId and T.MemberId = EJ.MemberId AND T.AgeGroup = EJ.AgeGroup AND EJ.Event = 'Jump' ");
+			curSqlStmt.Append("LEFT OUTER JOIN JumpScore SJ on SJ.SanctionId = T.SanctionId and SJ.MemberId = T.MemberId AND SJ.AgeGroup = T.AgeGroup And SJ.Round = 1 ");
+
+			curSqlStmt.Append("WHERE T.SanctionId = '" + this.mySanctionNum + "' ");
+			curSqlStmt.Append("And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') ");
+			curSqlStmt.Append("AND T.AgeGroup not in ('B1', 'G1' ) ");
+
+			curSqlStmt.Append("ORDER BY T.AgeGroup, SkierName, T.MemberId ");
+			return DataAccess.getDataTable(curSqlStmt.ToString());
 		}
 
 		private DataTable getTourData() {

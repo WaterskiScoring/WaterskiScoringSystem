@@ -122,6 +122,10 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SocketIoClientDotNet, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SocketIoClientDotNet.0.9.13\lib\net45\SocketIoClientDotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -409,6 +413,7 @@
     <Compile Include="Slalom\SlalomSummaryAwards.Designer.cs">
       <DependentUpon>SlalomSummaryAwards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\EwscMonitor.cs" />
     <Compile Include="Tools\ExportBoatUse.cs" />
     <Compile Include="Tools\ExportLiveSms.cs" />
     <Compile Include="Tools\ExportLiveWeb.cs" />

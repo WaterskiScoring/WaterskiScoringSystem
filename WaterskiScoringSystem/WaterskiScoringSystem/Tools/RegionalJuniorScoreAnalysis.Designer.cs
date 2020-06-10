@@ -33,6 +33,7 @@
 			this.ExecAvgMostImprovedButton = new System.Windows.Forms.Button();
 			this.ExecAvgMostImprovedNewDivButton = new System.Windows.Forms.Button();
 			this.WindowSubInstructions = new System.Windows.Forms.Label();
+			this.ExecAllStarsDataButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -156,11 +157,24 @@
 			this.WindowSubInstructions.Text = " Regionals from last year must also be loaded on current computer";
 			this.WindowSubInstructions.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// ExecAllStarsDataButton
+			// 
+			this.ExecAllStarsDataButton.AutoSize = true;
+			this.ExecAllStarsDataButton.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ExecAllStarsDataButton.Location = new System.Drawing.Point(488, 89);
+			this.ExecAllStarsDataButton.Name = "ExecAllStarsDataButton";
+			this.ExecAllStarsDataButton.Size = new System.Drawing.Size(274, 26);
+			this.ExecAllStarsDataButton.TabIndex = 21;
+			this.ExecAllStarsDataButton.Text = "Get Junior All Star Resuls Current Year";
+			this.ExecAllStarsDataButton.UseVisualStyleBackColor = true;
+			this.ExecAllStarsDataButton.Click += new System.EventHandler(this.ExecAllStarCalcButton_Click);
+			// 
 			// RegionalJuniorScoreAnalysis
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1026, 675);
+			this.Controls.Add(this.ExecAllStarsDataButton);
 			this.Controls.Add(this.WindowSubInstructions);
 			this.Controls.Add(this.ExecAvgMostImprovedNewDivButton);
 			this.Controls.Add(this.ExecAvgMostImprovedButton);
@@ -194,5 +208,6 @@
 		private System.Windows.Forms.Button ExecAvgMostImprovedButton;
 		private System.Windows.Forms.Button ExecAvgMostImprovedNewDivButton;
 		private System.Windows.Forms.Label WindowSubInstructions;
+		private System.Windows.Forms.Button ExecAllStarsDataButton;
 	}
 }
