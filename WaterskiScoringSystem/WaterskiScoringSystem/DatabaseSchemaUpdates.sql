@@ -891,3 +891,30 @@ CREATE TABLE EventRunOrderFilters (
     , GroupFilterCriteria nvarchar(1024) NOT NULL
     , LastUpdateDate datetime 
 );
+
+
+## v20.08
+DROP TABLE EventRunOrderFilters;
+
+## v21.11
+CREATE TABLE EwscMsg (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgData     nvarchar(3584) NOT NULL,
+    CreateDate  datetime
+);
+
+ALTER TABLE [EwscMsg] ADD PRIMARY KEY ([PK]);
+
+## v21.13
+CREATE TABLE EwscListenMsg (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgData     nvarchar(3584) NOT NULL,
+    CreateDate  datetime
+);
+
+ALTER TABLE [EwscListenMsg] ADD PRIMARY KEY ([PK]);
+

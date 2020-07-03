@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlServerCe;
+using System.Threading.Tasks;
+
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Admin;
@@ -18,6 +20,7 @@ using WaterskiScoringSystem.Tournament;
 using WaterskiScoringSystem.Slalom;
 using WaterskiScoringSystem.Trick;
 using WaterskiScoringSystem.Jump;
+
 using Microsoft.Win32;
 
 namespace WaterskiScoringSystem {
@@ -939,11 +942,17 @@ namespace WaterskiScoringSystem {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-        private void eWCSTestToolStripMenuItem_Click(object sender, EventArgs e) {
-            //SendSocketioEwcs.openEwscConnection();
+        private void execEwcsConnect_Click(object sender, EventArgs e) {
+			Task.Factory.StartNew(() => EwscMonitor.execEwscMonitoring());
+		}
+
+		private void execEwcsClose_Click(object sender, EventArgs e) {
+            EwscMonitor.sendExit();
         }
-        private void eWCSCloseToolStripMenuItem_Click(object sender, EventArgs e) {
-            //SendSocketioEwcs.closeEwscConnection();
-        }
-    }
+
+		private void showEwcsPin_Click(object sender, EventArgs e) {
+			EwscMonitor.showPin();
+		}
+	}
 }
+

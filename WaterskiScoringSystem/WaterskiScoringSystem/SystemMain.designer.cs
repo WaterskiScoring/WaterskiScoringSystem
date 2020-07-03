@@ -99,8 +99,10 @@
 			this.databaseToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.logRecoveryUtilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSetDatabase = new System.Windows.Forms.ToolStripMenuItem();
-			this.eWCSTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.eWCSCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.ewcsSubMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ewcsConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ewcsCloseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.gettingStartedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,6 +110,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.eWCSShowPinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -596,8 +599,8 @@
             this.databaseToolToolStripMenuItem,
             this.logRecoveryUtilityToolStripMenuItem,
             this.navSetDatabase,
-            this.eWCSTestToolStripMenuItem,
-            this.eWCSCloseToolStripMenuItem});
+            this.toolStripSeparator3,
+            this.ewcsSubMenu});
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(46, 20);
 			this.toolStripMenuItem2.Text = "T&ools";
@@ -715,23 +718,34 @@
 			this.navSetDatabase.Text = "Set Database";
 			this.navSetDatabase.Click += new System.EventHandler(this.navSetDatabase_Click);
 			// 
-			// eWCSTestToolStripMenuItem
+			// toolStripSeparator3
 			// 
-			this.eWCSTestToolStripMenuItem.Enabled = false;
-			this.eWCSTestToolStripMenuItem.Name = "eWCSTestToolStripMenuItem";
-			this.eWCSTestToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-			this.eWCSTestToolStripMenuItem.Text = "EWCS Connect";
-			this.eWCSTestToolStripMenuItem.Visible = false;
-			this.eWCSTestToolStripMenuItem.Click += new System.EventHandler(this.eWCSTestToolStripMenuItem_Click);
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(215, 6);
 			// 
-			// eWCSCloseToolStripMenuItem
+			// ewcsSubMenu
 			// 
-			this.eWCSCloseToolStripMenuItem.Enabled = false;
-			this.eWCSCloseToolStripMenuItem.Name = "eWCSCloseToolStripMenuItem";
-			this.eWCSCloseToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-			this.eWCSCloseToolStripMenuItem.Text = "EWCS Close";
-			this.eWCSCloseToolStripMenuItem.Visible = false;
-			this.eWCSCloseToolStripMenuItem.Click += new System.EventHandler(this.eWCSCloseToolStripMenuItem_Click);
+			this.ewcsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ewcsConnectMenuItem,
+            this.ewcsCloseMenuItem,
+            this.eWCSShowPinToolStripMenuItem});
+			this.ewcsSubMenu.Name = "ewcsSubMenu";
+			this.ewcsSubMenu.Size = new System.Drawing.Size(218, 22);
+			this.ewcsSubMenu.Text = "EWCS";
+			// 
+			// ewcsConnectMenuItem
+			// 
+			this.ewcsConnectMenuItem.Name = "ewcsConnectMenuItem";
+			this.ewcsConnectMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ewcsConnectMenuItem.Text = "EWCS Connect";
+			this.ewcsConnectMenuItem.Click += new System.EventHandler(this.execEwcsConnect_Click);
+			// 
+			// ewcsCloseMenuItem
+			// 
+			this.ewcsCloseMenuItem.Name = "ewcsCloseMenuItem";
+			this.ewcsCloseMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.ewcsCloseMenuItem.Text = "EWCS Close";
+			this.ewcsCloseMenuItem.Click += new System.EventHandler(this.execEwcsClose_Click);
 			// 
 			// windowToolStripMenuItem
 			// 
@@ -784,6 +798,13 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
+			// 
+			// eWCSShowPinToolStripMenuItem
+			// 
+			this.eWCSShowPinToolStripMenuItem.Name = "eWCSShowPinToolStripMenuItem";
+			this.eWCSShowPinToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.eWCSShowPinToolStripMenuItem.Text = "EWCS Show Pin";
+			this.eWCSShowPinToolStripMenuItem.Click += new System.EventHandler(this.showEwcsPin_Click);
 			// 
 			// SystemMain
 			// 
@@ -892,8 +913,11 @@
 		private System.Windows.Forms.ToolStripMenuItem navImportOLR;
 		private System.Windows.Forms.ToolStripMenuItem navImportOLRPick;
 		private System.Windows.Forms.ToolStripMenuItem standardRegistrationForPickChooseToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem eWCSTestToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem eWCSCloseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem ewcsSubMenu;
+        private System.Windows.Forms.ToolStripMenuItem ewcsConnectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ewcsCloseMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem eWCSShowPinToolStripMenuItem;
 	}
 }
 

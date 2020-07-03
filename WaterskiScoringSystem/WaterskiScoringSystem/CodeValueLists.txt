@@ -266,7 +266,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22543	AWSARampMax	NW		76	5 Foot	0.235	5	
 0	AWSARecords	B1-S		11	Boys 1 (U10) - Slalom		105	1 bouys at 11.25m @49 kph (38 off @ 30.4 mph) 6/7/2014 Cooper Tate
 0	AWSARecords	B1-T		12	Boys 1 (U10) - Trick		6130	7/27/2017 Jake Abelson
-0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 9/1/2019 BENCHMARK
+0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 6/20/2020 Luka Zazade
 0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
 0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		97	(29.2m) 45kph 5ft 8/10/2019 Corbin Pierce
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
@@ -325,7 +325,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	MB-S		171	Mens 11 - Slalom		50	2 bouys at 18.25m @ 46 kph (15 off @ 28.6 mph) 8/8/2019 Roger Wahl
 0	AWSARecords	MB-T		172	Mens 11 - Trick		1050	10/29/2012 Harry Price
 0	AWSARecords	MB-J		173	Mens 11 - Jump		22	(6.7m) 5 39kph 10/29/2012 Harry Price
-0	AWSARecords	W1-S		181	Womens 1 - Slalom		109	1 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/3/2009 Regina Jaquess  
+0	AWSARecords	W1-S		181	Womens 1 - Slalom		110.00	2 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2020 Samantha Dumala
 0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
 0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
 0	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
