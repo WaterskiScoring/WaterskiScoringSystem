@@ -179,6 +179,11 @@ namespace WaterskiScoringSystem.Tournament {
             }
 		}
 
+		private void ExportButton_Click(object sender, EventArgs e) {
+			ExportData myExportData = new ExportData();
+			myExportData.exportData(DataGridView);
+		}
+
 		private void loadDataGridView() {
             //Retrieve data for current tournament
             //Used for initial load and to refresh data after updates
@@ -624,6 +629,11 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private DataTable sendRequest( String inMemberId, String inLastName, String inFirstName, String inState ) {
 			String curMethodName = "sendRequest";
+			String curContentType = "application/json; charset=UTF-8";
+			String curMemberExportListUrl = "https://usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curMemberSearchListUrl = "https://usawaterski.org/admin/GetMemberExportJson.asp";
+			String curExportUrl = "";
+
 			/* -----------------------------------------------------------------------
             * Validate TourID value for scores to be Exported.
             * https://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
@@ -633,20 +643,24 @@ namespace WaterskiScoringSystem.Tournament {
             ----------------------------------------------------------------------- */
 
 			StringBuilder curQueryString = new StringBuilder( "" );
-			curQueryString.Append("?SanctionId=" + mySanctionNum);
-			if ( inMemberId.Length > 0 ) {
-				curQueryString.Append( "&MemberId=" + inMemberId );
-			}
-			if ( inFirstName.Length > 0 || inLastName.Length > 0 ) {
-				curQueryString.Append( "&FirstName=" + inFirstName + "&LastName=" + inLastName );
-			}
-			if ( inState.Length > 0 ) {
-				curQueryString.Append( "&State=" + inState );
+			if (inState.Equals("bypass") && inState.Length > 0 && inMemberId.Length == 0 && inFirstName.Length == 0 && inLastName.Length == 0) {
+				curExportUrl = curMemberSearchListUrl;
+				curQueryString.Append("?State=" + inState);
+			} else {
+				curExportUrl = curMemberExportListUrl;
+				curQueryString.Append("?SanctionId=" + mySanctionNum);
+				if (inMemberId.Length > 0) {
+					curQueryString.Append("&MemberId=" + inMemberId);
+				}
+				if (inFirstName.Length > 0 || inLastName.Length > 0) {
+					curQueryString.Append("&FirstName=" + inFirstName + "&LastName=" + inLastName);
+				}
+				if (inState.Length > 0) {
+					curQueryString.Append("&State=" + inState);
+				}
 			}
 
-			String curContentType = "application/json; charset=UTF-8";
-			String curOfficialExportListUrl = "https://usawaterski.org/admin/GetMemberRegExportJson.asp";
-			String curReqstUrl = curOfficialExportListUrl + curQueryString.ToString();
+			String curReqstUrl = curExportUrl + curQueryString.ToString();
 			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
 				MessageBox.Show( "Sanction edit code is required to retrieve officials and ratings.  Enter required value on Tournament Form" );

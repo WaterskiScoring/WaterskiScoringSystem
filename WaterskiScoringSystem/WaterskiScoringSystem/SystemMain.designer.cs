@@ -103,6 +103,7 @@
 			this.ewcsSubMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.ewcsConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ewcsCloseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.eWCSShowPinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.gettingStartedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,7 +111,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.eWCSShowPinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -731,21 +731,28 @@
             this.eWCSShowPinToolStripMenuItem});
 			this.ewcsSubMenu.Name = "ewcsSubMenu";
 			this.ewcsSubMenu.Size = new System.Drawing.Size(218, 22);
-			this.ewcsSubMenu.Text = "EWCS";
+			this.ewcsSubMenu.Text = "WaterSkiConnect";
 			// 
 			// ewcsConnectMenuItem
 			// 
 			this.ewcsConnectMenuItem.Name = "ewcsConnectMenuItem";
 			this.ewcsConnectMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.ewcsConnectMenuItem.Text = "EWCS Connect";
+			this.ewcsConnectMenuItem.Text = "Connect";
 			this.ewcsConnectMenuItem.Click += new System.EventHandler(this.execEwcsConnect_Click);
 			// 
 			// ewcsCloseMenuItem
 			// 
 			this.ewcsCloseMenuItem.Name = "ewcsCloseMenuItem";
 			this.ewcsCloseMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.ewcsCloseMenuItem.Text = "EWCS Close";
+			this.ewcsCloseMenuItem.Text = "Close";
 			this.ewcsCloseMenuItem.Click += new System.EventHandler(this.execEwcsClose_Click);
+			// 
+			// eWCSShowPinToolStripMenuItem
+			// 
+			this.eWCSShowPinToolStripMenuItem.Name = "eWCSShowPinToolStripMenuItem";
+			this.eWCSShowPinToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.eWCSShowPinToolStripMenuItem.Text = "Show Pin";
+			this.eWCSShowPinToolStripMenuItem.Click += new System.EventHandler(this.showEwcsPin_Click);
 			// 
 			// windowToolStripMenuItem
 			// 
@@ -798,13 +805,6 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
-			// 
-			// eWCSShowPinToolStripMenuItem
-			// 
-			this.eWCSShowPinToolStripMenuItem.Name = "eWCSShowPinToolStripMenuItem";
-			this.eWCSShowPinToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.eWCSShowPinToolStripMenuItem.Text = "EWCS Show Pin";
-			this.eWCSShowPinToolStripMenuItem.Click += new System.EventHandler(this.showEwcsPin_Click);
 			// 
 			// SystemMain
 			// 

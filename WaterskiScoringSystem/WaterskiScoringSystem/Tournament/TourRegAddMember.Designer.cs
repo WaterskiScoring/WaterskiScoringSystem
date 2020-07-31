@@ -34,14 +34,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.labelLastName = new System.Windows.Forms.Label();
 			this.labelFirstName = new System.Windows.Forms.Label();
 			this.DataGridView = new System.Windows.Forms.DataGridView();
-			this.labelState = new System.Windows.Forms.Label();
-			this.inputState = new System.Windows.Forms.TextBox();
-			this.AddSkierMsg = new System.Windows.Forms.Label();
-			this.newMemberButton = new System.Windows.Forms.Button();
-			this.searchLocGroupBox = new System.Windows.Forms.GroupBox();
-			this.usawsSearchLoc = new System.Windows.Forms.RadioButton();
-			this.localSearchLoc = new System.Windows.Forms.RadioButton();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -88,6 +80,15 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ScorerJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Safety = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TechController = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.labelState = new System.Windows.Forms.Label();
+			this.inputState = new System.Windows.Forms.TextBox();
+			this.AddSkierMsg = new System.Windows.Forms.Label();
+			this.newMemberButton = new System.Windows.Forms.Button();
+			this.searchLocGroupBox = new System.Windows.Forms.GroupBox();
+			this.usawsSearchLoc = new System.Windows.Forms.RadioButton();
+			this.localSearchLoc = new System.Windows.Forms.RadioButton();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
+			this.ExportButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
 			this.searchLocGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -115,7 +116,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// SearchButton
 			// 
-			this.SearchButton.Location = new System.Drawing.Point(85, 39);
+			this.SearchButton.Location = new System.Drawing.Point(70, 39);
 			this.SearchButton.Name = "SearchButton";
 			this.SearchButton.Size = new System.Drawing.Size(75, 23);
 			this.SearchButton.TabIndex = 10;
@@ -125,7 +126,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(176, 39);
+			this.AddButton.Location = new System.Drawing.Point(146, 39);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(75, 23);
 			this.AddButton.TabIndex = 11;
@@ -136,7 +137,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// CloseButton
 			// 
 			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CloseButton.Location = new System.Drawing.Point(363, 39);
+			this.CloseButton.Location = new System.Drawing.Point(380, 39);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(75, 23);
 			this.CloseButton.TabIndex = 15;
@@ -238,91 +239,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.DataGridView.TabIndex = 40;
 			this.DataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellContentDoubleClick);
 			this.DataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
-			// 
-			// labelState
-			// 
-			this.labelState.AutoSize = true;
-			this.labelState.Location = new System.Drawing.Point(416, 2);
-			this.labelState.Name = "labelState";
-			this.labelState.Size = new System.Drawing.Size(32, 13);
-			this.labelState.TabIndex = 0;
-			this.labelState.Text = "State";
-			this.labelState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// inputState
-			// 
-			this.inputState.Location = new System.Drawing.Point(412, 15);
-			this.inputState.MaxLength = 2;
-			this.inputState.Name = "inputState";
-			this.inputState.Size = new System.Drawing.Size(40, 20);
-			this.inputState.TabIndex = 4;
-			// 
-			// AddSkierMsg
-			// 
-			this.AddSkierMsg.BackColor = System.Drawing.SystemColors.Info;
-			this.AddSkierMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AddSkierMsg.ForeColor = System.Drawing.SystemColors.Highlight;
-			this.AddSkierMsg.Location = new System.Drawing.Point(121, 76);
-			this.AddSkierMsg.Name = "AddSkierMsg";
-			this.AddSkierMsg.Size = new System.Drawing.Size(478, 20);
-			this.AddSkierMsg.TabIndex = 30;
-			this.AddSkierMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// newMemberButton
-			// 
-			this.newMemberButton.AutoSize = true;
-			this.newMemberButton.Location = new System.Drawing.Point(267, 39);
-			this.newMemberButton.Name = "newMemberButton";
-			this.newMemberButton.Size = new System.Drawing.Size(80, 23);
-			this.newMemberButton.TabIndex = 12;
-			this.newMemberButton.Text = "New Member";
-			this.newMemberButton.UseVisualStyleBackColor = true;
-			this.newMemberButton.Click += new System.EventHandler(this.newMemberButton_Click);
-			// 
-			// searchLocGroupBox
-			// 
-			this.searchLocGroupBox.Controls.Add(this.usawsSearchLoc);
-			this.searchLocGroupBox.Controls.Add(this.localSearchLoc);
-			this.searchLocGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.searchLocGroupBox.Location = new System.Drawing.Point(479, 4);
-			this.searchLocGroupBox.Name = "searchLocGroupBox";
-			this.searchLocGroupBox.Size = new System.Drawing.Size(145, 70);
-			this.searchLocGroupBox.TabIndex = 5;
-			this.searchLocGroupBox.TabStop = false;
-			this.searchLocGroupBox.Text = "Search Location";
-			// 
-			// usawsSearchLoc
-			// 
-			this.usawsSearchLoc.AutoSize = true;
-			this.usawsSearchLoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.usawsSearchLoc.Location = new System.Drawing.Point(8, 41);
-			this.usawsSearchLoc.Name = "usawsSearchLoc";
-			this.usawsSearchLoc.Size = new System.Drawing.Size(117, 19);
-			this.usawsSearchLoc.TabIndex = 2;
-			this.usawsSearchLoc.Text = "USA Water Ski";
-			this.usawsSearchLoc.UseVisualStyleBackColor = true;
-			// 
-			// localSearchLoc
-			// 
-			this.localSearchLoc.AutoSize = true;
-			this.localSearchLoc.Checked = true;
-			this.localSearchLoc.Location = new System.Drawing.Point(8, 17);
-			this.localSearchLoc.Name = "localSearchLoc";
-			this.localSearchLoc.Size = new System.Drawing.Size(64, 20);
-			this.localSearchLoc.TabIndex = 0;
-			this.localSearchLoc.TabStop = true;
-			this.localSearchLoc.Text = "Local";
-			this.localSearchLoc.UseVisualStyleBackColor = true;
-			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(4, 79);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
-			this.RowStatusLabel.TabIndex = 0;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
 			// 
 			// MemberId
 			// 
@@ -724,12 +640,108 @@ namespace WaterskiScoringSystem.Tournament {
 			this.TechController.Name = "TechController";
 			this.TechController.ReadOnly = true;
 			// 
+			// labelState
+			// 
+			this.labelState.AutoSize = true;
+			this.labelState.Location = new System.Drawing.Point(416, 2);
+			this.labelState.Name = "labelState";
+			this.labelState.Size = new System.Drawing.Size(32, 13);
+			this.labelState.TabIndex = 0;
+			this.labelState.Text = "State";
+			this.labelState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// inputState
+			// 
+			this.inputState.Location = new System.Drawing.Point(412, 15);
+			this.inputState.MaxLength = 2;
+			this.inputState.Name = "inputState";
+			this.inputState.Size = new System.Drawing.Size(40, 20);
+			this.inputState.TabIndex = 4;
+			// 
+			// AddSkierMsg
+			// 
+			this.AddSkierMsg.BackColor = System.Drawing.SystemColors.Info;
+			this.AddSkierMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.AddSkierMsg.ForeColor = System.Drawing.SystemColors.Highlight;
+			this.AddSkierMsg.Location = new System.Drawing.Point(121, 76);
+			this.AddSkierMsg.Name = "AddSkierMsg";
+			this.AddSkierMsg.Size = new System.Drawing.Size(478, 20);
+			this.AddSkierMsg.TabIndex = 30;
+			this.AddSkierMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// newMemberButton
+			// 
+			this.newMemberButton.AutoSize = true;
+			this.newMemberButton.Location = new System.Drawing.Point(222, 39);
+			this.newMemberButton.Name = "newMemberButton";
+			this.newMemberButton.Size = new System.Drawing.Size(80, 23);
+			this.newMemberButton.TabIndex = 12;
+			this.newMemberButton.Text = "New Member";
+			this.newMemberButton.UseVisualStyleBackColor = true;
+			this.newMemberButton.Click += new System.EventHandler(this.newMemberButton_Click);
+			// 
+			// searchLocGroupBox
+			// 
+			this.searchLocGroupBox.Controls.Add(this.usawsSearchLoc);
+			this.searchLocGroupBox.Controls.Add(this.localSearchLoc);
+			this.searchLocGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.searchLocGroupBox.Location = new System.Drawing.Point(479, 4);
+			this.searchLocGroupBox.Name = "searchLocGroupBox";
+			this.searchLocGroupBox.Size = new System.Drawing.Size(145, 70);
+			this.searchLocGroupBox.TabIndex = 5;
+			this.searchLocGroupBox.TabStop = false;
+			this.searchLocGroupBox.Text = "Search Location";
+			// 
+			// usawsSearchLoc
+			// 
+			this.usawsSearchLoc.AutoSize = true;
+			this.usawsSearchLoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.usawsSearchLoc.Location = new System.Drawing.Point(8, 41);
+			this.usawsSearchLoc.Name = "usawsSearchLoc";
+			this.usawsSearchLoc.Size = new System.Drawing.Size(117, 19);
+			this.usawsSearchLoc.TabIndex = 2;
+			this.usawsSearchLoc.Text = "USA Water Ski";
+			this.usawsSearchLoc.UseVisualStyleBackColor = true;
+			// 
+			// localSearchLoc
+			// 
+			this.localSearchLoc.AutoSize = true;
+			this.localSearchLoc.Checked = true;
+			this.localSearchLoc.Location = new System.Drawing.Point(8, 17);
+			this.localSearchLoc.Name = "localSearchLoc";
+			this.localSearchLoc.Size = new System.Drawing.Size(64, 20);
+			this.localSearchLoc.TabIndex = 0;
+			this.localSearchLoc.TabStop = true;
+			this.localSearchLoc.Text = "Local";
+			this.localSearchLoc.UseVisualStyleBackColor = true;
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(4, 79);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 0;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			// 
+			// ExportButton
+			// 
+			this.ExportButton.Location = new System.Drawing.Point(303, 39);
+			this.ExportButton.Name = "ExportButton";
+			this.ExportButton.Size = new System.Drawing.Size(75, 23);
+			this.ExportButton.TabIndex = 16;
+			this.ExportButton.Text = "Export";
+			this.ExportButton.UseVisualStyleBackColor = true;
+			this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+			// 
 			// TourRegAddMember
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.CloseButton;
 			this.ClientSize = new System.Drawing.Size(1181, 440);
+			this.Controls.Add(this.ExportButton);
 			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.searchLocGroupBox);
 			this.Controls.Add(this.newMemberButton);
@@ -825,5 +837,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScorerJump;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Safety;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TechController;
-	}
+        private System.Windows.Forms.Button ExportButton;
+    }
 }

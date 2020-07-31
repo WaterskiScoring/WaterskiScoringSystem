@@ -187,7 +187,7 @@ namespace WaterskiScoringSystem.Tools {
 						curDataRow["RankingNopsSlalom"] = scoreEntry.Nops;
 
 						curRankingNopsTotal += scoreEntry.Nops;
-						curNopsTotal += (Decimal)curDataRow["RankingScoreSlalom"];
+						curNopsTotal += (Decimal)curDataRow["NopsSlalom"];
 					}
 					
 					if (curDataRow["EventTrick"] != System.DBNull.Value && curDataRow["ScoreTrick"] != System.DBNull.Value) {
@@ -198,7 +198,7 @@ namespace WaterskiScoringSystem.Tools {
 						curDataRow["RankingNopsTrick"] = scoreEntry.Nops;
 
 						curRankingNopsTotal += scoreEntry.Nops;
-						curNopsTotal += (Decimal)curDataRow["RankingScoreTrick"];
+						curNopsTotal += (Decimal)curDataRow["NopsTrick"];
 					}
 
 					if (curDataRow["EventJump"] != System.DBNull.Value && curDataRow["ScoreJump"] != System.DBNull.Value) {
@@ -209,7 +209,7 @@ namespace WaterskiScoringSystem.Tools {
 						curDataRow["RankingNopsJump"] = scoreEntry.Nops;
 
 						curRankingNopsTotal += scoreEntry.Nops;
-						curNopsTotal += (Decimal)curDataRow["RankingScoreJump"];
+						curNopsTotal += (Decimal)curDataRow["NopsJump"];
 					}
 
 					curDataRow["RankingNopsTotal"] = curRankingNopsTotal;

@@ -301,11 +301,24 @@ namespace WaterskiScoringSystem.Tournament {
 					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 				} else {
+					curSqlStmt = new StringBuilder("");
+					curSqlStmt.Append("Update EventReg Set ");
+					curSqlStmt.Append("RankingScore = " + curRankingScore + ", ");
+					curSqlStmt.Append("RankingRating = '" + curRankingRating + "', ");
+					curSqlStmt.Append("HCapBase = " + curHCapBase + ", ");
+					curSqlStmt.Append("HCapScore = " + curHCapScore + ", ");
+					curSqlStmt.Append("LastUpdateDate = GETDATE() ");
+					curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'");
+					curSqlStmt.Append("  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'");
+					int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+					Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+
+
 					#region Show information if input data found on database
 					//Show information if input data found on database
 					//Skip display if previoius display specfied to process all records the same
 					if ( myMatchCommand.Length < 2 ) {
-						String prevEventGroup = "", prevEventClass = "", prevRankingScore = "", prevRankingRating = "", prevHCapBase = "", prevHCapScore = "";
+						String prevEventGroup = "", prevEventClass = "";
 						curTourEventRegRow = curTourEventRegDataTable.Rows[0];
 						try {
 							prevEventGroup = (String) curTourEventRegRow["EventGroup"];
@@ -317,33 +330,11 @@ namespace WaterskiScoringSystem.Tournament {
 						} catch {
 							prevEventClass = "";
 						}
-						try {
-							prevRankingRating = (String) curTourEventRegRow["RankingRating"];
-						} catch {
-							prevRankingRating = "";
-						}
-						try {
-							prevRankingScore = ( (Decimal) curTourEventRegRow["RankingScore"] ).ToString();
-						} catch {
-							prevRankingScore = "";
-						}
-						try {
-							prevHCapBase = ( (Decimal) curTourEventRegRow["HCapBase"] ).ToString();
-						} catch {
-							prevHCapBase = "";
-						}
-						try {
-							prevHCapScore = ( (Decimal) curTourEventRegRow["HCapScore"] ).ToString();
-						} catch {
-							prevHCapScore = "";
-						}
 						String[] curMessage = new String[6];
 						curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
 						curMessage[1] = "is already registered for " + inEvent + " event";
-						curMessage[2] = " RankingScore: Current=" + prevRankingScore + " : Import=" + curRankingScore;
-						curMessage[3] = "RankingRating: Current=" + prevRankingRating + " : Import=" + curRankingRating;
-						curMessage[4] = "     HCapBase: Current=" + prevHCapBase + " : Import=" + curHCapBase;
-						curMessage[5] = "    HCapScore: Current=" + prevHCapScore + " : Import=" + curHCapScore;
+						curMessage[2] = "Group: Current=" + prevEventGroup + " : Import=" + curEventGroup;
+						curMessage[3] = "Class: Current=" + prevEventClass + " : Import=" + curEventClass;
 						myMatchDialog.ImportKeyDataMultiLine = curMessage;
 
 						myMatchDialog.MatchCommand = myMatchCommand;
@@ -353,17 +344,17 @@ namespace WaterskiScoringSystem.Tournament {
 						}
 					}
 
+					curSqlStmt = new StringBuilder("");
 					if ( myMatchCommand.ToLower().Equals( "update" )
 						|| myMatchCommand.ToLower().Equals( "updateall" ) ) {
+						curSqlStmt = new StringBuilder("");
 						curSqlStmt.Append( "Update EventReg Set " );
-						curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
-						curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
-						curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
-						curSqlStmt.Append( "HCapScore = " + curHCapScore + ", " );
-						curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
+						curSqlStmt.Append("EventGroup = '" + curEventGroup + "' " );
+						curSqlStmt.Append(", EventClass = '" + curEventClass + "' " );
+						curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
 						curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
 						curSqlStmt.Append( "  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'" );
-						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 						Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 					} else {

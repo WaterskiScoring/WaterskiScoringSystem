@@ -1734,7 +1734,7 @@ namespace WaterskiScoringSystem.Slalom {
 						if (EwscMonitor.EwcsWebLocation.Length > 1) {
 							EwscMonitor.sendOfficialsAssignments("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue));
 
-							EwscMonitor.sendRunningOrder("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue), mySortCommand );
+							//EwscMonitor.sendRunningOrder("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue), mySortCommand );
 						}
 					}
 					myPrevEventGroup = curEventGroup;

@@ -23,12 +23,14 @@ namespace WaterskiScoringSystem.Tools {
 
 		public static String EwcsWebLocation = "";
 		private static String EwcsWebLocationDefault = "http://ewscdata.com:40000/";
+		//private static String EwcsWebLocationDefault = "http://waterskiconnect.com:40000/";
 		private static Quobject.SocketIoClientDotNet.Client.Socket socketClient = null;
 
 		public static void execEwscMonitoring() {
+			if (EwscMonitor.EwcsWebLocation.Length > 1) return;
 			EwscMonitor.EwcsWebLocation = EwcsWebLocationDefault;
 			String returnValue = startEwscMonitoring();
-			MessageBox.Show("execEwscMonitoring: Results=" + returnValue);
+			MessageBox.Show("WaterSkiConnect: Results=" + returnValue);
 		}
 
 		private static String startEwscMonitoring() {
@@ -62,7 +64,10 @@ namespace WaterskiScoringSystem.Tools {
 
 				if (count > 5) {
 					int returnMsg = checkForMsgToSend();
-					if (returnMsg > 0) return "Exit Ewsc";
+					if (returnMsg > 0) {
+						EwscMonitor.EwcsWebLocation = "";
+						return "Exit WaterSkiConnect";
+					}
 					count = 0;
 				}
 
@@ -300,8 +305,14 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		public static Boolean sendExit() {
-            addEwscMsg("Exit", "Exit EWSC");
-			EwscMonitor.EwcsWebLocation = "";
+			DialogResult msgResp =
+				MessageBox.Show("You have asked to close the connection to WaterSkiConnect", "Close Confirm",
+					MessageBoxButtons.OKCancel,
+					MessageBoxIcon.Warning,
+					MessageBoxDefaultButton.Button1);
+			if (msgResp == DialogResult.OK) {
+				addEwscMsg("Exit", "Exit WaterSkiConnect");
+			}
 			return true;
         }
 
