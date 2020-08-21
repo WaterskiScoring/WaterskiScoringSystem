@@ -227,6 +227,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
 			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety'))))" );
+			rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
 			#endregion
 
 			#region Update slalom announcer credits

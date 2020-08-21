@@ -13,7 +13,9 @@ namespace WaterskiScoringSystem.Tournament {
     public partial class OfficialWorkAsgmtCopy : Form {
         private String myCopyToGroup = "";
         private String myCopyToRound = "";
-        private bool isWindowLoading = true;
+		private String myCopyFromGroup = "";
+		private String myCopyFromRound = "";
+		private bool isWindowLoading = true;
 
         public OfficialWorkAsgmtCopy() {
             InitializeComponent();
@@ -40,10 +42,24 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+		public String CopyFromGroup {
+			set {
+				myCopyFromGroup = value;
+			}
+		}
 
-        public void showAvailable(String inSanctionId, String inRules, String inEvent, Int16 inRounds) {
+		public String CopyFromRound {
+			set {
+				myCopyFromRound = value;
+			}
+		}
+
+
+		public void showAvailable(String inSanctionId, String inRules, String inEvent, Int16 inRounds) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             isWindowLoading = true;
+
+			CopyFromLabel.Text = "Copying from group " + myCopyFromGroup + " round " + myCopyFromRound;
 
             if (inRules.ToLower().Equals( "ncwsa" )) {
                 DataGridViewRow curViewRow;
@@ -96,7 +112,6 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( "Order by Round, EventGroup " );
                 DataTable curDataTable = getData( curSqlStmt.ToString() );
                 if (curDataTable.Rows.Count > 0) {
-                    MessageBox.Show( "Number of rows found " + curDataTable.Rows.Count );
                     dataGridView.Rows.Clear();
                     DataGridViewRow curViewRow;
                     int curViewIdx = 0;

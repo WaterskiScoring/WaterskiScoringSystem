@@ -827,7 +827,8 @@ namespace WaterskiScoringSystem.Trick {
 
         private void calcScore() {
             bool curReadyToScore = true;
-            String curColPrefix, curTrickCode;
+			bool curPassTerm = false;
+			String curColPrefix, curTrickCode;
             Int16 curNumSkis = 0;
 
             if ( TourEventRegDataGridView.CurrentRow != null ) {
@@ -839,18 +840,25 @@ namespace WaterskiScoringSystem.Trick {
                 //Calculate first pass score
                 if ( Pass1DataGridView.Rows.Count > 0 ) {
                     curColPrefix = "Pass1";
-                    foreach ( DataGridViewRow curPassRow in Pass1DataGridView.Rows ) {
+					curPassTerm = false;
+
+					foreach ( DataGridViewRow curPassRow in Pass1DataGridView.Rows ) {
                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Skis"].Value )
                             || isObjectEmpty( curPassRow.Cells[curColPrefix + "Code"].Value )
                             ) {
                         } else {
                             curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                             curTrickCode = (String)curPassRow.Cells[curColPrefix + "Code"].Value;
-                            if ( curTrickCode.Equals( "END" ) || curTrickCode.Equals( "HORN" ) ) {
+							if (curPassTerm) {
+								curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+								curPassRow.Cells[curColPrefix + "Results"].Value = "OOC";
+
+							} else if ( curTrickCode.Equals( "END" ) || curTrickCode.Equals( "HORN" ) ) {
                                 if ( deleteTrickPass( curPassRow.Cells["Pass1PK"].Value.ToString() ) ) {
                                     Pass1DataGridView.Rows.Remove( curPassRow );
                                 }
-                            } else {
+                            
+							} else {
                                 if ( checkTrickCode( Pass1DataGridView, curPassRow.Index, curTrickCode, curNumSkis, curColPrefix ) ) {
 
                                     isTrickValid = true;
@@ -866,15 +874,15 @@ namespace WaterskiScoringSystem.Trick {
                                     if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Points"].Value ) ) {
                                         if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Results"].Value ) ) {
                                             MessageBox.Show( "Empty points and results (shouldn't be able to happen)" );
-                                            break;
-                                        } else {
+											curPassTerm = true;
+										} else {
                                             if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                                 if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                     Pass1DataGridView.Rows.Remove( curPassRow );
                                                 } else {
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                    break;
-                                                }
+													curPassTerm = true;
+												}
                                             }
                                         }
                                     } else {
@@ -882,36 +890,30 @@ namespace WaterskiScoringSystem.Trick {
                                             if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                                 Pass1DataGridView.Rows.Remove( curPassRow );
                                             } else {
-                                                MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                break;
-                                            }
+												curPassTerm = true;
+											}
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
                                             if ( curPassRow.Index > 0 && curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
-                                                MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
-                                                break;
-                                            }
+												curPassTerm = true;
+											}
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
                                             if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
-                                                MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                break;
-                                            }
+												curPassTerm = true;
+											}
                                         }
                                     }
                                 } else {
                                     if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                         if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
                                             Pass1DataGridView.Rows.Remove( curPassRow );
-                                            //curPass1Score += Convert.ToInt16( curPassRow.Cells[curColPrefix + "Points"].Value );
                                         } else {
-                                            MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                            break;
-                                        }
+											curPassTerm = true;
+										}
                                     } else {
                                         curReadyToScore = false;
                                         setEventRegRowStatus( "Error" );
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Unresolved";
-                                        break;
-                                    }
+									}
                                 }
                             }
                         }
@@ -921,14 +923,21 @@ namespace WaterskiScoringSystem.Trick {
                 if ( Pass2DataGridView.Visible ) {
                     if ( Pass2DataGridView.Rows.Count > 0 ) {
                         curColPrefix = "Pass2";
-                        foreach ( DataGridViewRow curPassRow in Pass2DataGridView.Rows ) {
+						curPassTerm = false;
+						
+						foreach ( DataGridViewRow curPassRow in Pass2DataGridView.Rows ) {
                             if ( isObjectEmpty( curPassRow.Cells[curColPrefix + "Skis"].Value )
                                 || isObjectEmpty( curPassRow.Cells[curColPrefix + "Code"].Value )
                                 ) {
                             } else {
                                 curNumSkis = this.myTrickValidation.validateNumSkis((String) curPassRow.Cells[curColPrefix + "Skis"].Value, this.myTourRules);
                                 curTrickCode = (String)curPassRow.Cells[curColPrefix + "Code"].Value;
-                                if ( curTrickCode.Equals( "END" ) || curTrickCode.Equals( "HORN" ) ) {
+
+								if (curPassTerm) {
+									curPassRow.Cells[curColPrefix + "Points"].Value = "0";
+									curPassRow.Cells[curColPrefix + "Results"].Value = "OOC";
+
+								} else if (curTrickCode.Equals("END") || curTrickCode.Equals("HORN")) {
                                     if ( deleteTrickPass( curPassRow.Cells["Pass2PK"].Value.ToString() ) ) {
                                         Pass2DataGridView.Rows.Remove( curPassRow );
                                     }
@@ -952,36 +961,32 @@ namespace WaterskiScoringSystem.Trick {
                                             } else {
                                                 if ( curPassRow.Index < ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                     MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                    break;
-                                                }
+													curPassTerm = true;
+												}
                                             }
                                         } else {
                                             if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "END" ) ) {
                                                 if ( curPassRow.Index == ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                     Pass2DataGridView.Rows.Remove( curPassRow );
                                                 } else {
-                                                    MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                    break;
-                                                }
+													curPassTerm = true;
+												}
                                             } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals("OOC") ) {
                                                 if ( curPassRow.Index > 0 && curPassRow.Index < ( Pass2DataGridView.Rows.Count - 1 ) ) {
-                                                    MessageBox.Show("Results equals OOC, all subsequent rows will be ignored");
-                                                    break;
-                                                }
+													curPassTerm = true;
+												}
                                             } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
                                                 if ( curPassRow.Index == ( Pass2DataGridView.Rows.Count - 1 ) ) {
                                                 } else {
-                                                    MessageBox.Show( "Results equals END, all subsequent rows will be ignored" );
-                                                    break;
-                                                }
+													curPassTerm = true;
+												}
                                             }
                                         }
                                     } else {
                                         curReadyToScore = false;
                                         setEventRegRowStatus( "Error" );
                                         curPassRow.Cells[curColPrefix + "Results"].Value = "Unresolved";
-                                        break;
-                                    }
+									}
                                 }
                             }
                         }

@@ -190,18 +190,18 @@ namespace WaterskiScoringSystem.Trick {
                         foreach ( String curVideoFileName in mySelectedFileList) {
                             SkierVideoEntry curSkierVideoEntry = new SkierVideoEntry( curVideoFileName, "", "", "", 0, 0, 0 );
                             if (searchForMatchingSkier( curSkierVideoEntry )) {
-                                mySkierVideoList.Add( curSkierVideoEntry );
-                                curViewIdx = selectedFileDataGridView.Rows.Add();
-                                curViewRow = selectedFileDataGridView.Rows[curViewIdx];
-                                curViewRow.Cells["SelectedFileName"].Value = Path.GetFileName(curVideoFileName);
-                                curViewRow.Cells["SelectedSkierName"].Value = curSkierVideoEntry.SkierName;
-                                curViewRow.Cells["SelectedMemberId"].Value = curSkierVideoEntry.MemberId;
-                                curViewRow.Cells["SelectedAgeGroup"].Value = curSkierVideoEntry.AgeGroup;
-                                curViewRow.Cells["SelectedRound"].Value = curSkierVideoEntry.Round;
-                                curViewRow.Cells["SelectedPass"].Value = curSkierVideoEntry.Pass;
-                                curViewRow.Cells["SelectedLoadStatus"].Value = "";
-                            }
-                        }
+								mySkierVideoList.Add(curSkierVideoEntry);
+								curViewIdx = selectedFileDataGridView.Rows.Add();
+								curViewRow = selectedFileDataGridView.Rows[curViewIdx];
+								curViewRow.Cells["SelectedFileName"].Value = Path.GetFileName(curVideoFileName);
+								curViewRow.Cells["SelectedSkierName"].Value = curSkierVideoEntry.SkierName;
+								curViewRow.Cells["SelectedMemberId"].Value = curSkierVideoEntry.MemberId;
+								curViewRow.Cells["SelectedAgeGroup"].Value = curSkierVideoEntry.AgeGroup;
+								curViewRow.Cells["SelectedRound"].Value = curSkierVideoEntry.Round;
+								curViewRow.Cells["SelectedPass"].Value = curSkierVideoEntry.Pass;
+								curViewRow.Cells["SelectedLoadStatus"].Value = "";
+							}
+						}
                         try {
                             if (selectedFileDataGridView.Rows.Count > 0) {
                                 selectedFileDataGridView.CurrentCell = selectedFileDataGridView.Rows[0].Cells["SelectedFileName"];
@@ -603,7 +603,9 @@ namespace WaterskiScoringSystem.Trick {
                         || curEntry.ToLower().Equals("p2")
                         || curEntry.ToLower().Equals("pass1")
                         || curEntry.ToLower().Equals("pass2")
-                        ) {
+						|| curEntry.ToLower().Equals("1")
+						|| curEntry.ToLower().Equals("2")
+						) {
                         try {
                             curNumValue = Regex.Match(curEntry, @"\d+").Value;
                             if ( curNumValue.Length > 0 ) {
@@ -620,14 +622,18 @@ namespace WaterskiScoringSystem.Trick {
             }
 
             if ( curRound == 0 ) curRound = 1;
-            if ( curFindSkiers != null && curFindSkiers.Length == 1 && curRound > 0 && curPass > 0 ) {
-                //Use record found by filtered search
-                inSkierVideoEntry.MemberId = (String) curFindSkiers[0]["MemberId"];
-                inSkierVideoEntry.SkierName = (String) curFindSkiers[0]["SkierName"];
-                inSkierVideoEntry.AgeGroup = (String) curFindSkiers[0]["AgeGroup"];
-                inSkierVideoEntry.Round = curRound;
-                inSkierVideoEntry.Pass = curPass;
-            } else {
+			if (curFindSkiers != null && curFindSkiers.Length == 1 && curRound > 0 && curPass > 0
+				&& checkForUniqueAssignment(inSkierVideoEntry)) {
+				//Use record found by filtered search
+				inSkierVideoEntry.MemberId = (String)curFindSkiers[0]["MemberId"];
+				inSkierVideoEntry.SkierName = (String)curFindSkiers[0]["SkierName"];
+				inSkierVideoEntry.AgeGroup = (String)curFindSkiers[0]["AgeGroup"];
+				inSkierVideoEntry.Round = curRound;
+				inSkierVideoEntry.Pass = curPass;
+			}
+			if (inSkierVideoEntry.MemberId.Length > 1 && checkForUniqueAssignment(inSkierVideoEntry) ) {
+				// Unique skier assigned
+			} else {
                 if ( curFindSkiers == null ) {
                     mySkierSelectDialog.SkierMatchList = null;
 
@@ -672,7 +678,23 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
 
-        private bool updateSkierScoreVideoUrl(SkierVideoEntry inSkierVideoEntry, String inVideoUrl) {
+		private bool checkForUniqueAssignment( SkierVideoEntry inSkierVideoEntry) {
+			foreach (SkierVideoEntry curSkierVideoEntry in mySkierVideoList) {
+				if ( curSkierVideoEntry.MemberId == inSkierVideoEntry.MemberId
+					&& curSkierVideoEntry.AgeGroup == inSkierVideoEntry.AgeGroup
+					&& curSkierVideoEntry.Round == inSkierVideoEntry.Round
+					&& curSkierVideoEntry.Pass == inSkierVideoEntry.Pass
+					) {
+					MessageBox.Show(String.Format("Video {0} assigned to {1}, round {2}, and pass {3} that has already been used by {4}"
+						, inSkierVideoEntry.VideoFileName, curSkierVideoEntry.SkierName, curSkierVideoEntry.Round, curSkierVideoEntry.Pass, curSkierVideoEntry.VideoFileName) );
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		private bool updateSkierScoreVideoUrl(SkierVideoEntry inSkierVideoEntry, String inVideoUrl) {
             String curMethodName = "updateSkierScoreVideoUrl";
             int rowsProc = 0;
 

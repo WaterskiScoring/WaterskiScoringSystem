@@ -997,7 +997,7 @@ namespace WaterskiScoringSystem.Tournament {
                 String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
                 String curMemberName = (String)inView.Rows[inRowIdx].Cells["MemberNameOfficial"].Value;
 
-                officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
+					officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curMemberName;
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["Updated"].Value = "Y";
 
@@ -1128,7 +1128,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private void navCopyItem_Click(object sender, EventArgs e) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            String curGroup = "";
+            String curFromGroup = "";
 
             if (myEvent.Equals( "All" )) {
                 MessageBox.Show( "You must select an event to be copied" );
@@ -1136,16 +1136,18 @@ namespace WaterskiScoringSystem.Tournament {
                 if (isObjectEmpty( EventGroupList.SelectedItem )) {
                     MessageBox.Show( "You must select an event group to be copied" );
                 } else {
-                    curGroup = EventGroupList.SelectedItem.ToString();
-                    if (curGroup.ToLower().Equals( "all" )) {
+					curFromGroup = EventGroupList.SelectedItem.ToString();
+                    if (curFromGroup.ToLower().Equals( "all" )) {
                         MessageBox.Show( "You must select an event group to be copied" );
                     } else {
-                        if (officialWorkAsgmtDataGridView.Rows.Count > 0) {
-                            String curRound = roundActiveSelect.RoundValue;
+                        if (officialWorkAsgmtDataGridView.Rows.Count > 1) {
+                            String curFromRound = roundActiveSelect.RoundValue;
                             Int16 curRounds = Convert.ToInt16( myTourRow[myEvent + "Rounds"].ToString() );
                             OfficialWorkAsgmtCopy curDialog = new OfficialWorkAsgmtCopy();
+							curDialog.CopyFromGroup = curFromGroup;
+							curDialog.CopyFromRound = curFromRound;
 
-                            curDialog.showAvailable( mySanctionNum, myTourRules, myEvent, curRounds );
+							curDialog.showAvailable( mySanctionNum, myTourRules, myEvent, curRounds );
                             curDialog.ShowDialog( this );
                             if (curDialog.DialogResult == DialogResult.OK) {
                                 String curCopyToRound = curDialog.CopyToRound;
@@ -1172,8 +1174,8 @@ namespace WaterskiScoringSystem.Tournament {
                                                 curSqlStmt.Append( ") Select SanctionId, MemberId, Event, '" + curCopyToGroup + "', " + curCopyToRound + ", WorkAsgmt, getdate(), null, null  " );
                                                 curSqlStmt.Append( "From OfficialWorkAsgmt " );
                                                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                                                curSqlStmt.Append( "And Round = " + curRound + " " );
-                                                curSqlStmt.Append( "And EventGroup = '" + curGroup + "' " );
+                                                curSqlStmt.Append( "And Round = " + curFromRound + " " );
+                                                curSqlStmt.Append( "And EventGroup = '" + curFromGroup + "' " );
                                                 curSqlStmt.Append( "And Event = '" + myEvent + "' " );
 												int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                                                 if (rowsProc > 0) {

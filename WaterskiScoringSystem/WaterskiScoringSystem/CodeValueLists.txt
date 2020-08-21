@@ -268,27 +268,27 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B1-T		12	Boys 1 (U10) - Trick		6130	7/27/2017 Jake Abelson
 0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 6/20/2020 Luka Zazade
 0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
-0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		97	(29.2m) 45kph 5ft 8/10/2019 Corbin Pierce
+0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		97	(29.2m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
-0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		9490	10/19/2019 Jake Abelson
+0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		9530	7/17/2020 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
-0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
-0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		10430	 7/18/2009 Adam Pickos  
-0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
+0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		112.00	4 bouys at 10.75m @ 58 kph (39 off @ 36 mph) 2/20/2020 2020 BENCHMARK
+0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		8680	7/17/2020 Erick Macias Sedano
+0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		191	(58.2m) 5.5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		10430	 7/18/2009 Adam Pickos  
 0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
-0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		85.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 9/18/2019 BENCHMARK
-0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		5340	7/24/2011 Neilly Ross
-0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 8/15/2006 Lindsey Able
+0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		43.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 2/20/2020 2020 BENCHMARK
+0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		5340	2/20/2020 2020 BENCHMARK
+0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19
 0	AWSARecords	G3-T		57	Girls 3 (U14) - Trick		7170	6/28/2014 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
 0	AWSARecords	G3-J		58	Girls 3 (U14) - Jump		120	5 45kph 6/22/2008 Brittany Greenwood APPVD BY AWSA BOD 8/5/19
-0	AWSARecords	G4-S		61	Girls 4 (U16) - Slalom		109	1 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
-0	AWSARecords	G4-T		62	Girls 4 (U16) - Trick		10610	10/14/2016 Anna Gay APPVD BY AWSA BOD 8/5/19
-0	AWSARecords	G4-J		63	Girls 4 (U16) - Jump		154	(46.9m) 5 51kph 4/25/2010 Lauren Morgan APPVD BY AWSA BOD 8/5/19
+0	AWSARecords	G4-S		61	Girls 4 (U16) - Slalom		105.00	3 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 2/20/2020 2020 BENCHMARK
+0	AWSARecords	G4-T		62	Girls 4 (U16) - Trick		9300	2/20/2020 2020 BENCHMARK
+0	AWSARecords	G4-J		63	Girls 4 (U16) - Jump		146	(44.5m) 5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G5-S		64	Girls 5 (U18) - Slalom		109	1 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 11/5/2016 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
 0	AWSARecords	G5-T		65	Girls 5 (U18) - Trick		10610	10/14/2016 Anna Gay APPVD BY AWSA BOD 8/5/19
 0	AWSARecords	G5-J		66	Girls 5 (U18) - Jump		154	(46.9m) 5 51kph 4/25/2010 Lauren Morgan APPVD BY AWSA BOD 8/5/19
@@ -322,7 +322,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	MA-S		161	Mens 10 - Slalom		77	5 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 8/25/2018 Don Fournier
 0	AWSARecords	MA-T		162	Mens 10 - Trick		1600	 10/20/2007 Harry Price  
 0	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
-0	AWSARecords	MB-S		171	Mens 11 - Slalom		50	2 bouys at 18.25m @ 46 kph (15 off @ 28.6 mph) 8/8/2019 Roger Wahl
+0	AWSARecords	MB-S		171	Mens 11 - Slalom		59.00	5 bouys at 16m @ 46 kph (22 off @ 28.6 mph) 7/23/2020 Ed Fisher
 0	AWSARecords	MB-T		172	Mens 11 - Trick		1050	10/29/2012 Harry Price
 0	AWSARecords	MB-J		173	Mens 11 - Jump		22	(6.7m) 5 39kph 10/29/2012 Harry Price
 0	AWSARecords	W1-S		181	Womens 1 - Slalom		110.00	2 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2020 Samantha Dumala
@@ -759,7 +759,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
 0	IwwfRecords	IW-O		404	Intl Women Overall		3126.52	5/20/2012 Natallia Berdnikava
 0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		63.5	3.5 at 10.75 @ 58kph 1/1/2019 Initial benchmark
-0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		11740.00	8/17/2019 Patricio Font
+0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12050.00	10/27/2019 Patricio Font
 0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 1/1/2019 Initial benchmark
 0	IwwfRecords	JM-O		414	Intl Junior Men Overall		2200.95	 1/1/2019 Initial benchmark
 0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		62	2 @ 10.75 55 kph 1/1/2019 Initial benchmark

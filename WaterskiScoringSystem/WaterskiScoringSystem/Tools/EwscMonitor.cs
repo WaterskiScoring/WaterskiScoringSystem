@@ -160,19 +160,27 @@ namespace WaterskiScoringSystem.Tools {
 			return true;
 		}
 
-		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion
-			, Int16 passNumber, Int16 speed, String rope, String split) {
+		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup
+			, String round, Int16 passNumber, Int16 speed, String rope, String split) {
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
 					, { "athleteCountry", athleteCountry.ToUpper() }
 					, { "athleteRegion", athleteRegion.ToUpper() }
+					, { "round", round }
 					, { "passNumber", passNumber }
 					, { "speed", speed }
 					, { "rope", rope }
 					, { "split", split }
 				};
+
+			DataTable curDataTable = getDriverAssignment(athleteEvent, eventGroup, round);
+			if ( curDataTable.Rows.Count > 0 ) {
+				DataRow curDataRow = curDataTable.Rows[(curDataTable.Rows.Count - 1)];
+				sendMsg.Add("driver", buildOfficialEntry(curDataRow));
+			}
+
 			addEwscMsg("athlete_data", JsonConvert.SerializeObject(sendMsg));
 			return true;
 		}
@@ -351,6 +359,24 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append("  AND O.Event = '" + inEvent + "' ");
 			curSqlStmt.Append("  AND O.EventGroup = '" + inEventGroup + "' ");
 			curSqlStmt.Append("  AND O.Round = " + inRound + " ");
+			curSqlStmt.Append("ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName");
+			return DataAccess.getDataTable(curSqlStmt.ToString());
+		}
+
+		private static DataTable getDriverAssignment(String inEvent, String inEventGroup, String inRound) {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			curSqlStmt.Append("SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt");
+			curSqlStmt.Append(", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation ");
+			curSqlStmt.Append("FROM OfficialWorkAsgmt O ");
+			curSqlStmt.Append("     INNER JOIN (Select Distinct SanctionId, MemberId, SkierName, State, Federation From TourReg ) T ");
+			curSqlStmt.Append("        ON O.MemberId = T.MemberId AND O.SanctionId = T.SanctionId ");
+			curSqlStmt.Append("     INNER JOIN CodeValueList AS L ON L.ListName = 'OfficialAsgmt' AND L.CodeValue = O.WorkAsgmt ");
+			curSqlStmt.Append("     INNER JOIN Tournament AS X on X.SanctionId = O.SanctionId ");
+			curSqlStmt.Append("WHERE O.SanctionId = '" + mySanctionNum + "' ");
+			curSqlStmt.Append("  AND O.Event = '" + inEvent + "' ");
+			curSqlStmt.Append("  AND O.EventGroup = '" + inEventGroup + "' ");
+			curSqlStmt.Append("  AND O.Round = " + inRound + " ");
+			curSqlStmt.Append("  AND O.WorkAsgmt = 'Driver' ");
 			curSqlStmt.Append("ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName");
 			return DataAccess.getDataTable(curSqlStmt.ToString());
 		}

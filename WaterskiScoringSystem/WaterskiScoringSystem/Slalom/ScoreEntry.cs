@@ -2312,6 +2312,8 @@ namespace WaterskiScoringSystem.Slalom {
 					, "Slalom"
 					, skierFed
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
+					, roundSelect.RoundValue
 					, Convert.ToInt16((String)myRecapRow.Cells["skierPassRecap"].Value)
 					, curPassSpeedKph
 					, curPassLineLengthMeters.ToString("00.00")
@@ -4479,6 +4481,7 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( TourEventRegDataGridView.Rows.Count > 0 ) {
 				if ( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "2-InProg" )
 					|| TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value.Equals( "3-Error" )
+					|| noteTextBox.Text.Length > 0
 					) {
 
 					String myBoatTime = "";

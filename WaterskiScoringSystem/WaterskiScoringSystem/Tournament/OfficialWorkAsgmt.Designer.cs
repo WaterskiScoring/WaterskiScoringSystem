@@ -508,8 +508,8 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navCopyItem.Image = global::WaterskiScoringSystem.Properties.Resources.folder;
 			this.navCopyItem.ImageTransparentColor = System.Drawing.Color.Transparent;
 			this.navCopyItem.Name = "navCopyItem";
-			this.navCopyItem.Size = new System.Drawing.Size(39, 35);
-			this.navCopyItem.Text = "Copy";
+			this.navCopyItem.Size = new System.Drawing.Size(70, 35);
+			this.navCopyItem.Text = "Copy From";
 			this.navCopyItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navCopyItem.ToolTipText = "Copy";
 			this.navCopyItem.Click += new System.EventHandler(this.navCopyItem_Click);
