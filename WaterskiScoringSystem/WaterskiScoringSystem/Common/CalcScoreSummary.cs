@@ -1616,6 +1616,14 @@ namespace WaterskiScoringSystem.Common {
 						curDataRow["ScoreOverall"] = (Decimal) curDataRow["PointsSlalom"]
 							+ (Decimal) curDataRow["PointsTrick"]
 							+ (Decimal) curDataRow["PointsJump"];
+
+						if ( (Decimal)curDataRow["PointsSlalom"] > 0 
+							&& (Decimal)curDataRow["PointsTrick"] > 0
+							&& (Decimal)curDataRow["PointsJump"] > 0
+							) {
+							curDataRow["QualifyOverall"] = "Yes";
+							curDataRow["EligOverall"] = "Yes";
+						}
 					}
 				}
 			}

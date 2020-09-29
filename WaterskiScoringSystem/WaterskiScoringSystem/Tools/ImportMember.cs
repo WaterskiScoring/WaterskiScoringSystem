@@ -445,7 +445,7 @@ namespace WaterskiScoringSystem.Tools {
 						if ( curEvent.Equals( "Trick" ) ) returnStatus = myTourEventReg.addEventTrick( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
 						if ( curEvent.Equals( "Jump" ) ) returnStatus = myTourEventReg.addEventJump( curMemberId, curEventGroup, curEventClass, curAgeGroup, curTeam );
 
-						if ( curEventRoundsPaid > 0 && myTourTypePickAndChoose ) {
+						if (returnStatus && curEventRoundsPaid > 0 && myTourTypePickAndChoose ) {
 							returnStatus = myTourEventReg.addEventRunorder( curEvent, curMemberId, curEventGroup, curEventClass, curEventRoundsPaid, curAgeGroup );
 						}
 						return returnStatus;

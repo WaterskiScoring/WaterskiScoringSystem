@@ -24,7 +24,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private void SlalomBoatButton_Click(object sender, EventArgs e) {
-            ReportName = "SlalomBoatJudgeForm";
+            ReportName = "SlalomJudgeForm";
         }
 
         private void SlalomRecapButton_Click(object sender, EventArgs e) {

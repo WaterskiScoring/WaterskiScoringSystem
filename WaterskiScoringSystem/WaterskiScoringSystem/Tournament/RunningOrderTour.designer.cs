@@ -571,8 +571,8 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navEditRound.Image = ((System.Drawing.Image)(resources.GetObject("navEditRound.Image")));
 			this.navEditRound.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navEditRound.Name = "navEditRound";
-			this.navEditRound.Size = new System.Drawing.Size(69, 39);
-			this.navEditRound.Text = "Edit Round";
+			this.navEditRound.Size = new System.Drawing.Size(95, 39);
+			this.navEditRound.Text = "Order by Round";
 			this.navEditRound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navEditRound.Click += new System.EventHandler(this.ViewEditRoundButton_Click);
 			// 

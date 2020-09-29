@@ -412,63 +412,30 @@ namespace WaterskiScoringSystem.Tournament {
 
                         String curEventGroup = "";
                         String curEventFlag = "";
-                        try {
-                            curEventFlag = curViewRow.Cells["SlalomReg"].Value.ToString();
-                        } catch {
-                            curEventFlag = "";
-                        }
+						if (curViewRow.Cells["SlalomReg"].Value != null ) curEventFlag = curViewRow.Cells["SlalomReg"].Value.ToString();
                         if ( curEventFlag.Equals("Y") ) {
                             curEventGroup = curViewRow.Cells["SlalomGroup"].Value.ToString();
                             if ( isObjectEmpty(curEventGroup) ) curEventGroup = "";
-                            curSqlStmt = new StringBuilder("");
-                            curSqlStmt.Append("Update EventReg Set ");
-                            curSqlStmt.Append(" EventGroup = '" + curEventGroup + "'");
-                            curSqlStmt.Append(", LastUpdateDate = GETDATE() ");
-                            curSqlStmt.Append("Where SanctionId = '" + curSanctionId + "'");
-                            curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
-                            curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
-                            curSqlStmt.Append("  AND Event = 'Slalom'");
-                            rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                            Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
-                        }
-                        try {
-                            curEventFlag = curViewRow.Cells["TrickReg"].Value.ToString();
-                        } catch {
-                            curEventFlag = "";
-                        }
-                        if ( curEventFlag.Equals("Y") ) {
-                            curEventGroup = curViewRow.Cells["TrickGroup"].Value.ToString();
-                            if ( isObjectEmpty(curEventGroup) ) curEventGroup = "";
-                            curSqlStmt = new StringBuilder("");
-                            curSqlStmt.Append("Update EventReg Set ");
-                            curSqlStmt.Append(" EventGroup = '" + curEventGroup + "'");
-                            curSqlStmt.Append(", LastUpdateDate = GETDATE() ");
-                            curSqlStmt.Append("Where SanctionId = '" + curSanctionId + "'");
-                            curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
-                            curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
-                            curSqlStmt.Append("  AND Event = 'Trick'");
-                            rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                            Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
-                        }
-                        try {
-                            curEventFlag = curViewRow.Cells["JumpReg"].Value.ToString();
-                        } catch {
-                            curEventFlag = "";
-                        }
-                        if ( curEventFlag.Equals("Y") ) {
-                            curEventGroup = curViewRow.Cells["JumpGroup"].Value.ToString();
-                            if ( isObjectEmpty(curEventGroup) ) curEventGroup = "";
-                            curSqlStmt = new StringBuilder("");
-                            curSqlStmt.Append("Update EventReg Set ");
-                            curSqlStmt.Append(" EventGroup = '" + curEventGroup + "'");
-                            curSqlStmt.Append(", LastUpdateDate = GETDATE() ");
-                            curSqlStmt.Append("Where SanctionId = '" + curSanctionId + "'");
-                            curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
-                            curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
-                            curSqlStmt.Append("  AND Event = 'Jump'");
-                            rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                            Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
-                        }
+							updateEventGroup(curMemberId, curAgeGroup, "Slalom", curEventGroup);
+						}
+
+						curEventGroup = "";
+						curEventFlag = "";
+						if (curViewRow.Cells["TrickReg"].Value != null) curEventFlag = curViewRow.Cells["TrickReg"].Value.ToString();
+						if (curEventFlag.Equals("Y")) {
+							curEventGroup = curViewRow.Cells["TrickGroup"].Value.ToString();
+							if (isObjectEmpty(curEventGroup)) curEventGroup = "";
+							updateEventGroup(curMemberId, curAgeGroup, "Trick", curEventGroup);
+						}
+
+						curEventGroup = "";
+						curEventFlag = "";
+						if (curViewRow.Cells["JumpReg"].Value != null ) curEventFlag = curViewRow.Cells["JumpReg"].Value.ToString();
+						if (curEventFlag.Equals("Y")) {
+							curEventGroup = curViewRow.Cells["JumpGroup"].Value.ToString();
+							if (isObjectEmpty(curEventGroup)) curEventGroup = "";
+							updateEventGroup(curMemberId, curAgeGroup, "Jump", curEventGroup);
+						}
 
                         winStatusMsg.Text = "Changes successfully saved";
                         isDataModified = false;
@@ -1331,7 +1298,96 @@ namespace WaterskiScoringSystem.Tournament {
             return getData( curSqlStmt.ToString() );
         }
 
-        private bool isMemberInTour(String inMemberId) {
+		private void updateEventGroup(String curMemberId, String curAgeGroup, String curEvent, String newEventGroup ) {
+			String curMethodName = "updateEventGroup: ";
+			int rowsProc = 0;
+			StringBuilder curSqlStmt = new StringBuilder("");
+			if (isObjectEmpty(newEventGroup)) newEventGroup = "";
+
+			try {
+				curSqlStmt.Append("SELECT E.Event, E.SanctionId, E.MemberId, O.MemberId as RunOrderMember, T.SkierName, E.AgeGroup, E.EventGroup, O.EventGroup as EventGroupRO, O.RunOrderGroup, O.Round ");
+				curSqlStmt.Append("FROM EventReg E ");
+				curSqlStmt.Append("INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup ");
+				curSqlStmt.Append("INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND O.Event = E.Event AND E.EventGroup = O.EventGroup ");
+				curSqlStmt.Append("Where E.SanctionId = '" + this.mySanctionNum + "'");
+				curSqlStmt.Append("  AND E.MemberId = '" + curMemberId + "'");
+				curSqlStmt.Append("  AND E.AgeGroup = '" + curAgeGroup + "'");
+				curSqlStmt.Append("  AND E.Event = '" + curEvent + "'");
+				curSqlStmt.Append("Order by E.Event, O.MemberId, E.AgeGroup, E.EventGroup");
+				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+
+				if (curDataTable.Rows.Count > 0) {
+					foreach (DataRow curRow in curDataTable.Rows) {
+						String curEventGroup = (String)curRow["EventGroup"];
+						String curEventGroupRO = (String)curRow["EventGroupRO"];
+						int curRound = (byte)curRow["Round"];
+						String curRunOrderGroup = "";
+						if (curRow["RunOrderGroup"] != System.DBNull.Value ) curRunOrderGroup = (String)curRow["RunOrderGroup"];
+
+						if (newEventGroup.Length > 0) {
+							if ( !(newEventGroup.Equals(curEventGroup)) ) {
+								curSqlStmt = new StringBuilder("");
+								curSqlStmt.Append("Update EventRunOrder Set ");
+								curSqlStmt.Append(" EventGroup = '" + newEventGroup + "'");
+								if (curRunOrderGroup.Equals(curEventGroup)) {
+									curSqlStmt.Append(", RunOrderGroup = '" + newEventGroup + "'");
+								}
+								curSqlStmt.Append(", LastUpdateDate = GETDATE() ");
+								curSqlStmt.Append("Where SanctionId = '" + this.mySanctionNum + "'");
+								curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
+								curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
+								curSqlStmt.Append("  AND Event = '" + curEvent + "'");
+								curSqlStmt.Append("  AND Round = " + curRound + " ");
+								rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+								Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+							}
+
+						} else {
+							curSqlStmt = new StringBuilder("");
+							curSqlStmt.Append("Delete From EventRunOrder ");
+							curSqlStmt.Append("Where SanctionId = '" + this.mySanctionNum + "'");
+							curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
+							curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
+							curSqlStmt.Append("  AND Event = '" + curEvent + "'");
+							curSqlStmt.Append("  AND Round = " + curRound + " ");
+							rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+							Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+						}
+					}
+				}
+
+				if (newEventGroup.Length > 0) {
+					curSqlStmt = new StringBuilder("");
+					curSqlStmt.Append("Update EventReg Set ");
+					curSqlStmt.Append(" EventGroup = '" + newEventGroup + "'");
+					curSqlStmt.Append(", LastUpdateDate = GETDATE() ");
+					curSqlStmt.Append("Where SanctionId = '" + this.mySanctionNum + "'");
+					curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
+					curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
+					curSqlStmt.Append("  AND Event = '" + curEvent + "'");
+					rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+					Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+
+				} else {
+					curSqlStmt = new StringBuilder("");
+					curSqlStmt.Append("Delete From EventReg ");
+					curSqlStmt.Append("Where SanctionId = '" + this.mySanctionNum + "'");
+					curSqlStmt.Append("  AND MemberId = '" + curMemberId + "'");
+					curSqlStmt.Append("  AND AgeGroup = '" + curAgeGroup + "'");
+					curSqlStmt.Append("  AND Event = '" + curEvent + "'");
+					rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+					Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+				}
+
+			} catch (Exception excp) {
+				String curMsg = "Error attempting to update skier event group \n" + excp.Message;
+				MessageBox.Show(curMsg);
+				Log.WriteFile(curMethodName + curMsg);
+			}
+
+		}
+
+		private bool isMemberInTour(String inMemberId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName " );
             curSqlStmt.Append( "FROM TourReg AS R " );

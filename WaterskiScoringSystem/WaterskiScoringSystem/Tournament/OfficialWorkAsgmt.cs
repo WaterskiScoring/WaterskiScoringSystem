@@ -763,27 +763,42 @@ namespace WaterskiScoringSystem.Tournament {
 			DataGridView curView = (DataGridView) sender;
 			String curColName = "";
             try {
-                if ( e.KeyCode == Keys.Enter
-                    && myViewRowIdx == ( curView.Rows.Count - 1 )
-					&& ( (String) curView.Rows[mySearchViewRowIdx].Cells["MemberName"].Value ).Length > 0
-					) {
-                    curColName = curView.Columns[curView.CurrentCell.ColumnIndex].Name;
-					if ( curColName.Equals( "StartTime" )
-						|| curColName.Equals( "EndTime" )
-						|| curColName.Equals( "Notes" )
-                        ) {
-                        e.Handled = true;
-                        if (validateRow( myViewRowIdx, false )) {
-                            Timer curTimerObj = new Timer();
-                            curTimerObj.Interval = 5;
-                            curTimerObj.Tick += new EventHandler( saveDataRow );
-                            curTimerObj.Start();
-                        }
-                    }
-                }
+				curColName = curView.Columns[curView.CurrentCell.ColumnIndex].Name;
+				if (e.KeyCode == Keys.Enter) {
+					if (curColName.Equals("MemberName")) {
+						if (((String)curView.Rows[mySearchViewRowIdx].Cells["MemberId"].Value).Length == 0
+							&& ((String)curView.Rows[mySearchViewRowIdx].Cells["MemberName"].Value).Length > 0
+						) {
+							e.SuppressKeyPress = true;
+							curView.CurrentCell = curView.Rows[mySearchViewRowIdx].Cells["MemberName"];
+							labelMemberSelect.Visible = true;
+							listTourMemberDataGridView.Visible = true;
+							listTourMemberDataGridView.Focus();
+							listTourMemberDataGridView.BackgroundColor = Color.LightCyan;
+						
+						}
 
-			} catch ( Exception exp ) {
-                MessageBox.Show( "Exception in slalomRecapDataGridView_KeyUp \n" + exp.Message );
+					} else if ((curColName.Equals("StartTime") || curColName.Equals("EndTime") || curColName.Equals("Notes"))
+						&& ((String)curView.Rows[mySearchViewRowIdx].Cells["MemberId"].Value).Length > 0
+						) {
+						if (myViewRowIdx == (curView.Rows.Count - 1)) {
+							e.Handled = true;
+							if (validateRow(myViewRowIdx, false)) {
+								Timer curTimerObj = new Timer();
+								curTimerObj.Interval = 5;
+								curTimerObj.Tick += new EventHandler(saveDataRow);
+								curTimerObj.Start();
+							}
+
+						} else if (myViewRowIdx < (curView.Rows.Count - 1)) {
+							mySearchViewRowIdx++;
+							curView.CurrentCell = curView.Rows[mySearchViewRowIdx].Cells["MemberName"];
+						}
+					}
+				}
+
+			} catch (Exception exp) {
+				MessageBox.Show( "Exception in slalomRecapDataGridView_KeyUp \n" + exp.Message );
             }
         }
 
@@ -816,24 +831,33 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( curColName.Equals( "MemberName" ) ) {
 				isSetMemberActive = true;
 				setMemberSelectFilter( (String) curView.Rows[e.RowIndex].Cells["WorkAsgmt"].Value );
-				listTourMemberDataGridView.Visible = true;
-				labelMemberSelect.Visible = true;
-				listTourMemberDataGridView.Visible = true;
 				if ( myOrigTextValue.Length > 0 ) {
-					int curIdx = findMemberRow( myOrigTextValue );
-					if ( curIdx < 0 ) {
-						labelMemberQuickFind.Visible = true;
+					if (((String)curView.Rows[e.RowIndex].Cells["MemberId"].Value).Length == 0) {
+						int curIdx = findMemberRow(myOrigTextValue);
+						if (curIdx >= 0) {
+							listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
+						}
+						labelMemberSelect.Visible = true;
+						listTourMemberDataGridView.Visible = true;
+						listTourMemberDataGridView.Focus();
+						listTourMemberDataGridView.BackgroundColor = Color.LightCyan;
+
 					} else {
-						listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
+						labelMemberSelect.Visible = false;
+						listTourMemberDataGridView.Visible = false;
+						listTourMemberDataGridView.BackgroundColor = Color.LightGray;
 					}
 
 				} else {
-					labelMemberQuickFind.Visible = true;
+					labelMemberSelect.Visible = true;
+					listTourMemberDataGridView.Visible = true;
+					listTourMemberDataGridView.BackgroundColor = Color.LightGray;
 				}
 
 			} else {
 				isSetMemberActive = false;
 				listTourMemberDataGridView.Visible = false;
+				listTourMemberDataGridView.BackgroundColor = Color.LightGray;
 				labelMemberSelect.Visible = false;
 				labelMemberQuickFind.Visible = false;
 			}
@@ -858,11 +882,13 @@ namespace WaterskiScoringSystem.Tournament {
 			String curColName = curView.Columns[e.ColumnIndex].Name;
 			if ( curColName.Equals( "MemberName" ) ) {
 				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+					String curValue = "";
 					mySearchViewRowIdx = e.RowIndex;
-                    int curIdx = findMemberRow( (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value );
-					if ( curIdx >= 0 ) {
+					int curIdx = findMemberRow((String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+					if (curIdx >= 0) {
 						listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
 					}
+					if (isSetMemberActive)curView.Rows[e.RowIndex].Cells["MemberId"].Value = "";
 				}
 			}
 		}
@@ -994,15 +1020,16 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private void assignMemberOfficial( DataGridView inView, int inRowIdx ) {
             if ( !(isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value) ) ) {
-                String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
+				isDataModified = true;
+				isSetMemberActive = false;
+				
+				String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
                 String curMemberName = (String)inView.Rows[inRowIdx].Cells["MemberNameOfficial"].Value;
 
-					officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
+				officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curMemberName;
                 officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["Updated"].Value = "Y";
 
-                isDataModified = true;
-                isSetMemberActive = false;
                 listTourMemberDataGridView.Visible = false;
                 labelMemberSelect.Visible = false;
                 officialWorkAsgmtDataGridView.Focus();

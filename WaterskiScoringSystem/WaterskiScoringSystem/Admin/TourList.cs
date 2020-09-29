@@ -511,12 +511,15 @@ namespace WaterskiScoringSystem.Admin {
                 ReportPropButton.Focus();
                 if ( isDataModified ) {
                     if ( validReqdFields() ) {
-                        saveTourData();
+						String tempOrigSanctionId = myOrigSanctionId;
+						saveTourData();
                         if ( isDataModifiedSanctionId ) {
-                            updateSanctionId();
+							myOrigSanctionId = tempOrigSanctionId;
+							updateSanctionId();
                             isDataModifiedSanctionId = false;
-                        }
-                        if ( isDataModifiedClass ) {
+							myOrigSanctionId = editSanctionId.Text;
+						}
+						if ( isDataModifiedClass ) {
                             updateEventClass();
                             isDataModifiedClass = false;
                         }

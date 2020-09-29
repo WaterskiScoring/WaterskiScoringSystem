@@ -268,19 +268,19 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B1-T		12	Boys 1 (U10) - Trick		6130	7/27/2017 Jake Abelson
 0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 6/20/2020 Luka Zazade
 0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
-0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		97	(29.2m) 45kph 5ft 2/20/2020 2020 BENCHMARK
+0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		105	(32.0m) 45kph 5ft 7/11/2020 Matthew Greenwood
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
 0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		9530	7/17/2020 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		112.00	4 bouys at 10.75m @ 58 kph (39 off @ 36 mph) 2/20/2020 2020 BENCHMARK
-0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		8680	7/17/2020 Erick Macias Sedano
+0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		9210	9/12/2020 Erick Macias Sedano
 0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		191	(58.2m) 5.5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		10430	 7/18/2009 Adam Pickos  
 0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
-0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		43.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 2/20/2020 2020 BENCHMARK
+0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		85.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		5340	2/20/2020 2020 BENCHMARK
 0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19
@@ -295,7 +295,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M1-S		71	Mens 1 - Slalom		122.5	2.5 buoy at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	AWSARecords	M1-T		72	Mens 1 - Trick		11620	6/12/2016 Adam Pickos
 0	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 5.5 57kph 10/5/2013 Zack Worden
-0	AWSARecords	M2-S		81	Mens 2 - Slalom		122	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish  
+0	AWSARecords	M2-S		81	Mens 2 - Slalom		122	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish 9/13/2020 Nate Smith
 0	AWSARecords	M2-T		82	Mens 2 - Trick		12090	4/30/2011 Jimmy Seimers
 0	AWSARecords	M2-J		83	Mens 2 - Jump		216	5.5 57kph 9/24/2002 Mark Lane  
 0	AWSARecords	M3-S		91	Mens 3 - Slalom		115.50	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 8/23/2019 Adam Caldwell
@@ -313,7 +313,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		136	(41.5m) 51kph 5ft 9/8/2018 Frankie Dees
-0	AWSARecords	M8-S		141	Mens 8 - Slalom		95	5 bouys at 11.25m @ 52 kph (38 off @ 32 mph) 10/13/2018 Jeff Wiswall 11/2/2019 Steve Raphael
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 9/13/2020 Steve Raphael
 0	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
 0	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 5 48kph 8/31/2014 Brad Conger
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		88	4 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/25/2018 Jim Kinney 9/29/2019 John Autore
@@ -329,12 +329,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
 0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
 0	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
-0	AWSARecords	W2-T		192	Womens 2 - Trick		8990	 10/2/2010 Mandy Nightingale  
+0	AWSARecords	W2-T		192	Womens 2 - Trick		10180	8/16/2020 Erika Lang
 0	AWSARecords	W2-J		193	Womens 2 - Jump		158	 5 54kph 10/6/1996 Brenda Baldwin  
 0	AWSARecords	W3-S		201	Womens 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 8/30/2014 April Coble-Eller
-0	AWSARecords	W3-T		202	Womens 3 - Trick		6450	 7/25/2010 Sally Montavon  
+0	AWSARecords	W3-T		202	Womens 3 - Trick		8250	8/7/2020 Regina Jaquess
 0	AWSARecords	W3-J		203	Womens 3 - Jump		155	 5 51kph 10/6/2007 Brenda Baldwin  
-0	AWSARecords	W4-S		211	Womens 4 - Slalom		100.5	4.5 buoys at 11.25m @ 55 kph (38 off @ 34.2 mph) 10/4/2009 Jennifer Leachman-LaPoint  
+0	AWSARecords	W4-S		211	Womens 4 - Slalom		102.50	0.5 buoys at 10.75m @ 55 kph (39 off @ 34.2 mph) 9/11/2020 Karen Truelove
 0	AWSARecords	W4-T		212	Womens 4 - Trick		5600	 7/4/1988 Barbara Cleveland  
 0	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 40.4 5 51kph 10/12/2014 Lori Krueger
 0	AWSARecords	W5-S		221	Womens 5 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 11/7/2019 Jennifer Leachman-LaPoint
@@ -750,6 +750,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22561	IwwfRampMax	L6		86	5 Foot	0.235	5	
 22561	IwwfRampMax	L7		87	5 Foot	0.235	5	
 22561	IwwfRampMax	L8		88	5 Foot	0.235	5	
+0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		55.00	1 bouys at 10.25 @ 58kph 7/12/2020 Federico Jaramillo
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
@@ -785,7 +786,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22610	IwwfSlalomMax	S7		77	49kph, 30mph	30	49	
 22610	IwwfSlalomMax	S8		78	46kph, 28mph	28	46	
 22611	IwwfSlalomMax	L1		81	55kph, 34mph	34	55	
-22612	IwwfSlalomMax	L2		82	55kph, 34mph	34	55	
+22612	IwwfSlalomMax	L2		82	52kph, 32mph	32	52	
 22613	IwwfSlalomMax	L3		83	52kph, 32mph	32	52	
 22613	IwwfSlalomMax	L4		84	49kph, 30mph	30	49	
 22613	IwwfSlalomMax	L5		85	49kph, 30mph	30	49	

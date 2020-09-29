@@ -380,14 +380,22 @@ namespace WaterskiScoringSystem.Tournament {
 		public bool addEventRunorder( String inEvent, String inMemberId, String inEventGroup, String inEventClass, int curEventRoundsPaid, String inAgeDiv ) {
 			for(int curEventRound = 1; curEventRound <= curEventRoundsPaid; curEventRound++ ) {
 				try {
-					StringBuilder curSqlStmt = new StringBuilder( "" );
-					curSqlStmt.Append( "Insert EventRunOrder " );
-					curSqlStmt.Append( "( SanctionId, MemberId, AgeGroup, EventGroup, RunOrderGroup, Event, Round, RunOrder, LastUpdateDate, Notes, RankingScore ) " );
-					curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, EventGroup, EventGroup, Event, " + curEventRound + ", RunOrder, GETDATE(), '', RankingScore " );
-					curSqlStmt.Append( "FROM EventReg " );
-					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' " );
-					curSqlStmt.Append( "AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' " );
-					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					StringBuilder curSqlStmt = new StringBuilder("");
+					curSqlStmt.Append("SELECT SanctionId, MemberId, AgeGroup, EventGroup, EventGroup, Event, " + curEventRound + ", RunOrder, GETDATE(), '', RankingScore ");
+					curSqlStmt.Append("FROM EventRunOrder ");
+					curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' ");
+					curSqlStmt.Append("AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' ");
+					DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+					if ( curDataTable.Rows.Count == 0 ) {
+						curSqlStmt = new StringBuilder("");
+						curSqlStmt.Append("Insert EventRunOrder ");
+						curSqlStmt.Append("( SanctionId, MemberId, AgeGroup, EventGroup, RunOrderGroup, Event, Round, RunOrder, LastUpdateDate, Notes, RankingScore ) ");
+						curSqlStmt.Append("SELECT SanctionId, MemberId, AgeGroup, EventGroup, EventGroup, Event, " + curEventRound + ", RunOrder, GETDATE(), '', RankingScore ");
+						curSqlStmt.Append("FROM EventReg ");
+						curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' ");
+						curSqlStmt.Append("AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' ");
+						int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+					}
 
 				} catch ( Exception ex ) {
 					String curMsg = "Exception encountered adding skier to " + inEvent + " event \n" + ex.Message;

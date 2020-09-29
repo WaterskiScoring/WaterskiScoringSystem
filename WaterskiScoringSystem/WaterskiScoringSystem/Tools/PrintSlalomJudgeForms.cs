@@ -10,7 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Tools {
-    class PrintSlalomBoatJudgeForms {
+    class PrintSlalomJudgeForms {
         #region  "Class instance variables"
         private Graphics myGraphicControl;
 
@@ -57,13 +57,13 @@ namespace WaterskiScoringSystem.Tools {
 
         #endregion
 
-        public PrintSlalomBoatJudgeForms() {
-            myReportName = "PrintSlalomBoatJudgeForms";
-            myReportHeader = "PrintSlalomBoatJudgeForms";
+        public PrintSlalomJudgeForms() {
+            myReportName = "PrintSlalomJudgeForm";
+            myReportHeader = "PrintSlalomJudgeForm";
             myReportFooter = "";
             myTourName = "";
             myTourRules = "";
-            myReportHeaderFont = new Font( "Tahoma", 9, FontStyle.Bold, GraphicsUnit.Point );
+            myReportHeaderFont = new Font( "Tahoma", 10, FontStyle.Bold, GraphicsUnit.Point );
             myReportHeaderTextColor = Color.Black;
             myReportFooterFont = new Font( "Tahoma", 8, FontStyle.Bold, GraphicsUnit.Point );
             myReportFooterTextColor = Color.Black;
@@ -84,7 +84,7 @@ namespace WaterskiScoringSystem.Tools {
             myLeftMargin = 25;
             myTopMargin = 25;
             myRightMargin = 25;
-            myBottomMargin = 35;
+            myBottomMargin = 50;
             myPageNumber = 0;
 
             myTextBoxLikeControls = new ArrayList();
@@ -129,7 +129,7 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in print method of PrintSlalomBoatJudgeForms \n Exception: " + ex.ToString() );
+                MessageBox.Show( "Exception encountered in print method of PrintSlalomJudgeForms \n Exception: " + ex.ToString() );
                 curReturnValue = false;
             }
             return curReturnValue;
@@ -138,7 +138,7 @@ namespace WaterskiScoringSystem.Tools {
         private void PrintReport(object inSender, System.Drawing.Printing.PrintPageEventArgs inPrintEventArgs) {
             int curPageSkierCount = 0, curPageSkierMax = 18;
             Single[] curPagePos;
-            Single curTextBoxHeight = Convert.ToSingle(36.50);
+            Single curTextBoxHeight = Convert.ToSingle(33.0);
             Single curTextBoxWidth = 310;
             bool hasMorePages = false;
             DataRow curRow = null;
@@ -150,7 +150,7 @@ namespace WaterskiScoringSystem.Tools {
             curTextFormat.Alignment = StringAlignment.Near;
             curTextFormat.LineAlignment = StringAlignment.Center;
 
-            Single curPosX = myLeftMargin + Convert.ToSingle( 6 );
+            Single curPosX = myLeftMargin + Convert.ToSingle( 28 );
             Single curPosY = DrawHeader();
 
             while (curPageSkierCount <= curPageSkierMax && myRowIdx < myShowDataTable.Rows.Count && !hasMorePages) {
@@ -269,14 +269,14 @@ namespace WaterskiScoringSystem.Tools {
 
         // The funtion that print the title, page number, and the header row
         private Single DrawHeader() {
-            Single curPosY = myTopMargin;
-            Single curPosX = myLeftMargin + Convert.ToSingle( 6 );
+            Single curPosY = myTopMargin + Convert.ToSingle(27);
+			Single curPosX = myLeftMargin + Convert.ToSingle( 125 );
 
-            Image curImageFile = global::WaterskiScoringSystem.Properties.Resources.SlalomBoatJudgeForm;
+            Image curImageFile = global::WaterskiScoringSystem.Properties.Resources.SlalomJudgesForm;
             myGraphicControl.DrawImage( curImageFile, myLeftMargin, myTopMargin, myPageWidth, myPageHeight );
 
-            Single curHeaderTitleBufferHeight = Convert.ToSingle( 41.0 );
-            Single curHeaderBufferHeight = Convert.ToSingle( 21.0 );
+            Single curHeaderTitleBufferHeight = Convert.ToSingle( 35.0 );
+            Single curHeaderBufferHeight = Convert.ToSingle( 23.0 );
             Single curTextBoxHeight = Convert.ToSingle( 35.00 );
             Single curTextBoxWidth = 225;
             String curText = "";
@@ -295,7 +295,6 @@ namespace WaterskiScoringSystem.Tools {
             } else {
                 curText = myTourName;
             }
-            curPosX = myLeftMargin + Convert.ToSingle( 65 );
             Single[] curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportHeaderFont, new SolidBrush( myReportHeaderTextColor ), TitleFormat );
             curPosY = curPagePos[1];
             curPosY += curHeaderTitleBufferHeight;
@@ -320,7 +319,7 @@ namespace WaterskiScoringSystem.Tools {
                     TitleFormat.Alignment = StringAlignment.Near;
                     TitleFormat.LineAlignment = StringAlignment.Center;
                     curTextBoxWidth = 305;
-                    curPosX = myLeftMargin + Convert.ToSingle( 6 );
+                    curPosX = myLeftMargin + Convert.ToSingle( 25 );
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportHeaderFont, new SolidBrush( myReportHeaderTextColor ), TitleFormat );
                     curPosY = curPagePos[1] + curHeaderBufferHeight;
                 } else {

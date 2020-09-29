@@ -4586,35 +4586,35 @@ namespace WaterskiScoringSystem.Slalom {
 			TourBoatTextbox.Select( 0, 0 );
 			String curBoatCode = calcBoatCodeFromDisplay( TourBoatTextbox.Text );
 
-			if ( myScoreRow != null ) {
-				try {
-					StringBuilder curSqlStmt = new StringBuilder( "" );
-					curSqlStmt.Append( "Update SlalomScore Set Boat = '" + curBoatCode + "'" );
-					curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3}"
-						, mySanctionNum
-						, (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
-						, (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
-						, roundSelect.RoundValue ).ToString() );
-					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+			//if ( myScoreRow != null ) {
+			//}
+			try {
+				StringBuilder curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("Update SlalomScore Set Boat = '" + curBoatCode + "'");
+				curSqlStmt.Append(String.Format("Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3}"
+					, mySanctionNum
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
+					, roundSelect.RoundValue).ToString());
+				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+				Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
 
-					//String boatId, String boatManufacturer, String boatModel, Int16 boatYear, String boatColor, String boatComment
-					if (EwscMonitor.EwcsWebLocation.Length > 1) {
-						String curBoatModelName = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
-						Int16 curBoatModelYear = Convert.ToInt16((String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["ModelYear"].Value);
-						String curBoatNotes = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatNotes"].Value;
-						String curManufacturer = "Unknown";
-						if (curBoatModelName.Contains("Malibu")) curManufacturer = "Malibu";
-						if (curBoatModelName.Contains("Nautique")) curManufacturer = "Nautique";
-						if (curBoatModelName.Contains("Master")) curManufacturer = "Masctercraft";
-						EwscMonitor.sendBoatData(curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes);
-					}
-				
-				} catch ( Exception excp ) {
-					curMsg = ":Error attempting to update boat selection \n" + excp.Message;
-					MessageBox.Show( curMsg );
-					Log.WriteFile( curMethodName + curMsg );
+				//String boatId, String boatManufacturer, String boatModel, Int16 boatYear, String boatColor, String boatComment
+				if (EwscMonitor.EwcsWebLocation.Length > 1) {
+					String curBoatModelName = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
+					Int16 curBoatModelYear = Convert.ToInt16((String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["ModelYear"].Value);
+					String curBoatNotes = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatNotes"].Value;
+					String curManufacturer = "Unknown";
+					if (curBoatModelName.Contains("Malibu")) curManufacturer = "Malibu";
+					if (curBoatModelName.Contains("Nautique")) curManufacturer = "Nautique";
+					if (curBoatModelName.Contains("Master")) curManufacturer = "Masctercraft";
+					EwscMonitor.sendBoatData(curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes);
 				}
+
+			} catch (Exception excp) {
+				curMsg = ":Error attempting to update boat selection \n" + excp.Message;
+				MessageBox.Show(curMsg);
+				Log.WriteFile(curMethodName + curMsg);
 			}
 
 			listApprovedBoatsDataGridView.Visible = false;

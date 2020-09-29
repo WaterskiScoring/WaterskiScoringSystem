@@ -302,8 +302,13 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		private static Dictionary<string, object> buildOfficialEntry(DataRow curDataRow) {
-			String curFederation = (String)curDataRow["Federation"];
-			if (curFederation.Length == 0) curFederation = (String)curDataRow["TourFederation"];
+			String curFederation = "";
+			try {
+				curFederation = (String)curDataRow["Federation"];
+				if (curFederation.Length == 0) curFederation = (String)curDataRow["TourFederation"];
+			} catch {
+				if (curFederation.Length == 0) curFederation = (String)curDataRow["TourFederation"];
+			}
 			Dictionary<string, object> curOfficial = new Dictionary<string, object> {
 					{ "officialId", (String)curDataRow["MemberId"] }
 					, { "officialName", (String)curDataRow["MemberName"] }

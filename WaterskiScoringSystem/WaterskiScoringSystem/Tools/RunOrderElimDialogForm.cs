@@ -16,7 +16,8 @@ namespace WaterskiScoringSystem.Tools {
         private String myWindowTitle;
         private String myCommand;
         private String myEvent;
-        private String myPlcmtMethod;
+		private String mySortCmd = "";
+		private String myPlcmtMethod;
         private String myPlcmtOrg;
         private String myPointsMethod;
         private String myDataType;
@@ -153,6 +154,8 @@ namespace WaterskiScoringSystem.Tools {
             plcmtDivGrpButton.Visible = true;
             plcmtDivButton.Visible = true;
             plcmtTourButton.Visible = true;
+			plcmtTourButton.Checked = true;
+
 
 			PointsMethodGroupBox.Visible = false;
 			plcmtPointsButton.Visible = false;
@@ -166,8 +169,9 @@ namespace WaterskiScoringSystem.Tools {
 			kBasePointsButton.Visible = false;
 
 			NumSkiersTextbox.Visible = true;
+			NumSkiersLabel.Visible = true;
 
-            h2hNextGroupBox.Visible = false;
+			h2hNextGroupBox.Visible = false;
             plcmtMethodGroupBox.Visible = true;
             if (pointsScoreButton.Checked) {
                 PointsMethodGroupBox.Visible = true;
@@ -178,10 +182,12 @@ namespace WaterskiScoringSystem.Tools {
             previewDataGridView.Rows.Clear();
         }
 
-		public void getPickChooseEntries(String inEvent, Int16 inRound) {
+		public void getPickChooseEntries( String inEvent, Int16 inRound, String inSortCmd ) {
 			myCommand = "Pick";
 			myEvent = inEvent;
 			myRound = inRound;
+			mySortCmd = inSortCmd;
+
 			this.Text = myWindowTitle + " " + myRound.ToString() + " - " + myEvent + " - Pick And Choose";
 			setDataSelectOptions();
 
@@ -222,9 +228,13 @@ namespace WaterskiScoringSystem.Tools {
 			ratioPointsButton.Checked = false;
 			kBasePointsButton.Visible = false;
 
-			NumSkiersTextbox.Visible = true;
+			NumSkiersTextbox.Visible = false;
+			NumSkiersLabel.Visible = false;
 
 			previewDataGridView.Rows.Clear();
+
+			loadDataGridViewPick();
+
 		}
 
 		public void getHeadToHeadEntries(String inEvent, Int16 inRound) {
@@ -290,7 +300,8 @@ namespace WaterskiScoringSystem.Tools {
             setDataSelectOptions();
 
             NumSkiersTextbox.Visible = true;
-            RemoveUnscoredButton.Visible = false;
+			NumSkiersLabel.Visible = true;
+			RemoveUnscoredButton.Visible = false;
 
             rawScoreButton.Checked = true;
 
@@ -306,7 +317,6 @@ namespace WaterskiScoringSystem.Tools {
             plcmtDivGrpButton.Visible = false;
             plcmtDivButton.Visible = true;
             plcmtTourButton.Visible = true;
-
             plcmtTourButton.Checked = true;
 
             PointsMethodGroupBox.Visible = false;
@@ -543,7 +553,10 @@ namespace WaterskiScoringSystem.Tools {
             DataRow[] curFindRows = null;
             myDivFilter = null;
 			myGroupFilter = null;
-			if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+			if ( myCommand.Equals("Pick")) {
+				curSortCmd = mySortCmd;
+
+			} else if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
 				myDivFilter = EventGroupList.SelectedItem.ToString();
 				myGroupFilter = "All";
 
@@ -1116,6 +1129,9 @@ namespace WaterskiScoringSystem.Tools {
 						curViewRow.Cells["PreviewScore"].Value = curDataRow["RankingScore"].ToString();
 						curViewRow.Cells["previewPlcmt"].Value = curPlcmt;
 						curViewRow.Cells["previewSelected"].Value = true;
+						if (curDataRow["RunOrderMember"] == System.DBNull.Value) {
+							curViewRow.Cells["previewSelected"].Value = false;
+						}
 					}
 					try {
 						int curRowPos = curIdx + 1;
@@ -1397,17 +1413,18 @@ namespace WaterskiScoringSystem.Tools {
 			String curPointsName = "Points" + myEvent;
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT E.Event, E.SanctionId, E.MemberId, T.SkierName, E.EventGroup, E.RunOrder, " );
+            curSqlStmt.Append("SELECT E.Event, E.SanctionId, E.MemberId, O.MemberId as RunOrderMember, T.SkierName, E.EventGroup, E.RunOrder, ");
             curSqlStmt.Append( "E.TeamCode, E.EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, '" + myRound.ToString() + "' as Round " );
             curSqlStmt.Append( ", CONVERT(nvarchar(3), E.RunOrder) AS PlcmtGroup, CONVERT(nvarchar(3), E.RunOrder) AS PlcmtTour " );
             curSqlStmt.Append( ", E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
             curSqlStmt.Append( ", E.RankingScore AS " + curScoreName + ", (E.RankingScore + E.HCapScore) AS " + curPointsName );
             curSqlStmt.Append( ", " + myRound.ToString() + " AS " + curRoundName );
-            curSqlStmt.Append( ", '0' AS " + curPlcmtName + ", '' AS " + curGroupName );
+            curSqlStmt.Append( ", '0' AS " + curPlcmtName + ", '' AS " + curGroupName + ", COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
             curSqlStmt.Append( " FROM EventReg E " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
             curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-            curSqlStmt.Append( "WHERE E.SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND E.Event = '" + myEvent + "' " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND O.Event = E.Event AND O.Round = " + myRound + " ");
+			curSqlStmt.Append( "WHERE E.SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND E.Event = '" + myEvent + "' " );
             if (inDivFilter == null || inDivFilter.ToLower().Equals( "all" )) {
             } else {
                 curSqlStmt.Append( " AND E.AgeGroup = '" + inDivFilter + "' " );
@@ -1416,7 +1433,10 @@ namespace WaterskiScoringSystem.Tools {
 			} else {
 				curSqlStmt.Append( " AND E.EventGroup = '" + inGroupFilter + "' " );
 			}
-			if ( groupPlcmtButton.Checked) {
+			if (myCommand.Equals("Pick")) {
+				curSqlStmt.Append("Order by " + mySortCmd);
+
+			} else if ( groupPlcmtButton.Checked) {
                 curSqlStmt.Append( "Order by E.EventGroup, E.RunOrder, E.RankingScore DESC" );
             } else if (plcmtTourButton.Checked) {
                 curSqlStmt.Append( "Order by E.RunOrder, E.RankingScore DESC" );

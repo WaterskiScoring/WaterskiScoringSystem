@@ -408,7 +408,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 			myRunOrderElimDialog.TourRules = myTourRules;
 			myRunOrderElimDialog.TourData = myTourRow;
-			myRunOrderElimDialog.getPickChooseEntries( myEvent, Convert.ToInt16( roundActiveSelect.RoundValue ) );
+			myRunOrderElimDialog.getPickChooseEntries( myEvent, Convert.ToInt16( roundActiveSelect.RoundValue ), mySortCmd);
 			myRunOrderElimDialog.ShowDialog( this );
 			if ( myRunOrderElimDialog.DialogResult == DialogResult.OK ) {
 				navRefresh_Click( null, null );
@@ -1220,7 +1220,7 @@ namespace WaterskiScoringSystem.Tournament {
         private void navPrintFormButton_Click(object sender, EventArgs e) {
             Boolean curHeadToHead = false;
             Int16 curRound = Convert.ToInt16( roundActiveSelect.RoundValue );
-            String curTourPlcmtOrg = "group", curCommandType = "";
+            String curTourPlcmtOrg = this.myPlcmtOrg, curCommandType = "";
             int curCount = 0;
             foreach (DataGridViewRow curRow in EventRegDataGridView.Rows) {
                 if (( (String)curRow.Cells["EventGroup"].Value ).Equals( "HH1" )) {
@@ -1240,8 +1240,8 @@ namespace WaterskiScoringSystem.Tournament {
                 PrintOfficialFormDialog curDialog = new PrintOfficialFormDialog();
                 if (curDialog.ShowDialog() == DialogResult.OK) {
                     String curPrintReport = curDialog.ReportName;
-                    if (curPrintReport.Equals( "SlalomBoatJudgeForm" )) {
-                        PrintSlalomBoatJudgeForms curPrintForm = new PrintSlalomBoatJudgeForms();
+                    if (curPrintReport.Equals( "SlalomJudgeForm" )) {
+                        PrintSlalomJudgeForms curPrintForm = new PrintSlalomJudgeForms();
                         curPrintForm.PrintLandscape = true;
                         if (curHeadToHead) {
                             curPrintForm.ReportHeader = "Head to Head Round " + roundActiveSelect.RoundValue;
@@ -1363,25 +1363,36 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     INNER JOIN TourReg T ON O.SanctionId = T.SanctionId AND O.MemberId = T.MemberId AND O.AgeGroup = T.AgeGroup " );
             curSqlStmt.Append( "     INNER JOIN EventReg E ON O.SanctionId = E.SanctionId AND O.MemberId = E.MemberId AND O.AgeGroup = E.AgeGroup AND O.Event = E.Event " );
             curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON O.SanctionId = D.SanctionId AND O.AgeGroup = D.AgeGroup AND O.Event = D.Event " );
-            curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.Event = '" + myEvent + "' AND O.Round = " + inRound.ToString() + " " );
+			curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.Event = '" + myEvent + "' AND O.Round = " + inRound.ToString() + " " );
 
             if (curPlcmtOrg.Length == 0) {
-                //curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
-                curSqlStmt.Append( "Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC " );
-            } else if (inPlcmtOrg.ToLower().Equals( "tour" )) {
+				if (mySortCmd.Length > 0) {
+					curSqlStmt.Append("ORDER BY " + mySortCmd);
+				} else {
+					//curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
+					curSqlStmt.Append("Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC ");
+				}
+
+			} else if (inPlcmtOrg.ToLower().Equals( "tour" )) {
                 if ( inCommandType.Equals("H2H")) {
                     curSqlStmt.Append( "Order by O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
                 } else {
                     curSqlStmt.Append( "Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC " );
                 }
-            } else {
+            
+			} else {
                 if (inCommandType.Equals( "H2H" )) {
-                    if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                        curSqlStmt.Append( "Order by O.AgeGroup ASC, COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
-                    } else {
-                        curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
+					if (inPlcmtOrg.ToLower().Equals("div")) {
+						curSqlStmt.Append("Order by O.AgeGroup ASC, COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
+					
+					} else if (inPlcmtOrg.ToLower().Equals("group")) {
+						curSqlStmt.Append("Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
+
+					} else {
+                        curSqlStmt.Append("Order by O.RunOrderGroup, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
                     }
-                } else {
+                
+				} else {
                     curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC " );
                 }
             }

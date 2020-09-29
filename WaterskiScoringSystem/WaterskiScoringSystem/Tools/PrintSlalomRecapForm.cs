@@ -63,12 +63,12 @@ namespace WaterskiScoringSystem.Tools {
             myReportFooter = "";
             myTourRules = "";
             myTourName = "";
-            myReportHeaderFont = new Font( "Tahoma", 9, FontStyle.Bold, GraphicsUnit.Point );
+            myReportHeaderFont = new Font( "Tahoma", 10, FontStyle.Bold, GraphicsUnit.Point );
             myReportHeaderTextColor = Color.Black;
             myReportFooterFont = new Font( "Tahoma", 8, FontStyle.Bold, GraphicsUnit.Point );
             myReportFooterTextColor = Color.Black;
-            myReportBodyFont = new Font( "Tahoma", 8, FontStyle.Regular, GraphicsUnit.Point );
-            myReportSubTitleFont = new Font( "Tahoma", 8, FontStyle.Bold, GraphicsUnit.Point );
+            myReportBodyFont = new Font( "Tahoma", 9, FontStyle.Regular, GraphicsUnit.Point );
+            myReportSubTitleFont = new Font( "Tahoma", 9, FontStyle.Bold, GraphicsUnit.Point );
 
             myReportBodyTextColor = Color.Black;
             myCenterHeaderOnPage = false;
@@ -136,10 +136,10 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private void PrintReport(object inSender, System.Drawing.Printing.PrintPageEventArgs inPrintEventArgs) {
-            int curPageSkierCount = 0, curPageSkierMax = 22;
+            int curPageSkierCount = 0, curPageSkierMax = 18;
             Single[] curPagePos;
-            Single curTextBoxHeight = Convert.ToSingle(30.0);
-            Single curTextBoxWidth = 210;
+            Single curTextBoxHeight = Convert.ToSingle(33.5);
+            Single curTextBoxWidth = 310;
             bool hasMorePages = false;
             DataRow curRow = null;
             DataRow[] curFindRows;
@@ -150,7 +150,7 @@ namespace WaterskiScoringSystem.Tools {
             curTextFormat.Alignment = StringAlignment.Near;
             curTextFormat.LineAlignment = StringAlignment.Center;
 
-            Single curPosX = myLeftMargin + Convert.ToSingle( 6 );
+            Single curPosX = myLeftMargin + Convert.ToSingle( 28 );
             Single curPosY = DrawHeader();
 
             while (curPageSkierCount <= curPageSkierMax && myRowIdx < myShowDataTable.Rows.Count && !hasMorePages) {
@@ -264,11 +264,12 @@ namespace WaterskiScoringSystem.Tools {
 
         // The funtion that print the title, page number, and the header row
         private Single DrawHeader() {
-            Single curPosY = myTopMargin;
-            Single curPosX = myLeftMargin + Convert.ToSingle( 6 );
-            Single curHeaderTitleBufferHeight = Convert.ToSingle( 15.0 );
-            Single curHeaderBufferHeight = Convert.ToSingle( 48.5 );
-            Single curTextBoxHeight = Convert.ToSingle( 33.00 );
+			Single curPosY = myTopMargin + Convert.ToSingle(33.0);
+            Single curPosX = myLeftMargin + Convert.ToSingle( 130 );
+
+			Single curHeaderTitleBufferHeight = Convert.ToSingle(35.0);
+			Single curHeaderBufferHeight = Convert.ToSingle( 25.0 );
+            Single curTextBoxHeight = Convert.ToSingle( 35.00 );
             Single curTextBoxWidth = 225;
             String curText = "";
 
@@ -292,12 +293,11 @@ namespace WaterskiScoringSystem.Tools {
                 } else {
                     curText = myTourName;
                 }
-                curPosY += curHeaderTitleBufferHeight;
-                curPosX = myLeftMargin + Convert.ToSingle( 65 );
                 Single[] curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportHeaderFont, new SolidBrush( myReportHeaderTextColor ), TitleFormat );
                 curPosY = curPagePos[1];
+				curPosY += curHeaderTitleBufferHeight;
 
-                if (myReportHeader.Length > 1) {
+				if (myReportHeader.Length > 1) {
                     if (myReportHeader.IndexOf( "\\n" ) > 0) {
                         int curDelim = myReportHeader.IndexOf( "\\n" );
                         curText = myReportHeader.Substring( 0, curDelim ) + "\n" + myReportHeader.Substring( curDelim + 2 );
@@ -314,7 +314,7 @@ namespace WaterskiScoringSystem.Tools {
 
                     TitleFormat.Alignment = StringAlignment.Near;
                     TitleFormat.LineAlignment = StringAlignment.Center;
-                    curPosX = myLeftMargin + Convert.ToSingle( 6 );
+                    curPosX = myLeftMargin + Convert.ToSingle( 25 );
                     curPagePos = PrintText( curText, curPosX, curPosY, curTextBoxWidth, curTextBoxHeight, 0, 0, myReportHeaderFont, new SolidBrush( myReportHeaderTextColor ), TitleFormat );
                     curPosY = curPagePos[1] + curHeaderBufferHeight;
                 } else {
