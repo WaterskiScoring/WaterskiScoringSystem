@@ -173,6 +173,16 @@ namespace WaterskiScoringSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap magnifying_glass_with_eye {
+            get {
+                object obj = ResourceManager.GetObject("magnifying_glass_with_eye", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap minus_sign {
             get {
                 object obj = ResourceManager.GetObject("minus_sign", resourceCulture);

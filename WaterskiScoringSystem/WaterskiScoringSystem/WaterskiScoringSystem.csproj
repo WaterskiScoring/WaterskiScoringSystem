@@ -1198,6 +1198,7 @@
     <None Include="Resources\TrickFormTiming.png" />
     <None Include="Resources\SlalomJudgeForm.bmp" />
     <None Include="Resources\SlalomJudgesForm.png" />
+    <Content Include="Resources\magnifying-glass-with-eye.jpg" />
     <Content Include="waterski.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

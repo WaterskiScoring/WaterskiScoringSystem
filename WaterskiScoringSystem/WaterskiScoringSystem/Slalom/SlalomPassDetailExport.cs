@@ -135,7 +135,8 @@ namespace WaterskiScoringSystem.Slalom {
                 curViewRow.Cells["PassScore"].Value = ( (Decimal) curRow["PassScore"] ).ToString("#.00");
                 curViewRow.Cells["TimeInTol"].Value = (String) curRow["TimeInTol"];
                 curViewRow.Cells["PassNotes"].Value = (String) curRow["PassNotes"];
-                curViewRow.Cells["LastUpdateDate"].Value = ( (DateTime) curRow["LastUpdateDate"] ).ToString("yyyy/MM/dd HH:mm:ss");
+				if (curRow["ScoreNotes"] != System.DBNull.Value ) curViewRow.Cells["ScoreNotes"].Value = (String)curRow["ScoreNotes"];
+				curViewRow.Cells["LastUpdateDate"].Value = ( (DateTime) curRow["LastUpdateDate"] ).ToString("yyyy/MM/dd HH:mm:ss");
             }
 
         }
@@ -167,7 +168,7 @@ namespace WaterskiScoringSystem.Slalom {
             StringBuilder curSqlStmt = new StringBuilder("");
             curSqlStmt.Append( "SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass, E.RankingScore " );
             curSqlStmt.Append(", S.Round, COALESCE(V.CodeValue, S.Boat) as Boat, TD.SkierName as Driver, S.Score ");
-            curSqlStmt.Append(",R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes ");
+            curSqlStmt.Append(",R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes ");
             curSqlStmt.Append(", R.LastUpdateDate   ");
             curSqlStmt.Append("FROM SlalomScore S  ");
             curSqlStmt.Append("INNER JOIN SlalomRecap R ON S.MemberId = R.MemberId AND S.SanctionId = R.SanctionId AND S.AgeGroup = R.AgeGroup AND S.Round = R.Round   ");

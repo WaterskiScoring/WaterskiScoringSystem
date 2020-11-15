@@ -38,172 +38,171 @@ namespace WaterskiScoringSystem.Tools {
             myTourProperties = TourProperties.Instance;
 
             DataTable curTourDataTable = getTourData( inSanctionId );
-            if ( curTourDataTable != null ) {
-                if ( curTourDataTable.Rows.Count > 0 ) {
-                    myTourRow = curTourDataTable.Rows[0];
-                    curRules = (String)myTourRow["Rules"];
+            if ( curTourDataTable == null || curTourDataTable.Rows.Count == 0) return returnStatus;
 
-                    curFilename = inSanctionId.Trim() + myTourRow["Class"].ToString().Trim() + ".wsp";
-                    outBuffer = getExportFile( curFilename );
-                    if ( outBuffer != null ) {
-                        Log.WriteFile( "Export performance data file begin: " + curFilename );
+            myTourRow = curTourDataTable.Rows[0];
+            curRules = (String)myTourRow["Rules"];
 
-                        //Build file header line and write to file
-                        outLine.Append( writeHeader( inSanctionId ) );
-                        outBuffer.WriteLine( outLine.ToString() );
+            curFilename = inSanctionId.Trim() + myTourRow["Class"].ToString().Trim() + ".wsp";
+            outBuffer = getExportFile(curFilename);
+            if (outBuffer != null) return returnStatus;
 
-                        //Initialize output buffer
-                        outLine = new StringBuilder( "" );
-                    }
-                }
-            }
-            if ( outBuffer != null ) {
-                myProgressInfo = new ProgressWindow();
-                myProgressInfo.setProgessMsg( "Processing Skier Performance Data File" );
-                myProgressInfo.Show();
-                myProgressInfo.Refresh();
-                myProgressInfo.setProgressMax( 10 );
-                
-                DataTable curMemberDataTable = getMemberData( inSanctionId );
-                if ( curMemberDataTable != null ) {
-                    DataRow[] curScoreRows, curScoreSlalomRows, curScoreTrickRows, curScoreJumpRows;
-                    String curPlcmtMethod = "score", curPlcmtOverallOrg = "agegroup";
-                    String curDataType = myTourProperties.MasterSummaryDataType;
-                    //String curDataType = Properties.Settings.Default.MasterSummaryV2DataType;
-                    if ( curDataType.ToLower().Equals( "total" ) 
-                        || curDataType.ToLower().Equals( "best" )
-                        || curDataType.ToLower().Equals( "final" )
-                        || curDataType.ToLower().Equals( "first" ) ) {
-                    } else {
-                        curDataType = "best";
-                    }
-                    String curPointsMethod = myTourProperties.MasterSummaryPointsMethod;
-                    //String curPointsMethod = Properties.Settings.Default.MasterSummaryV2PointsMethod;
-                    if ( curPointsMethod.ToLower().Equals( "nops" ) 
-                        || curPointsMethod.ToLower().Equals( "plcmt" )
-                        || curPointsMethod.ToLower().Equals( "kbase" )
-                        || curPointsMethod.ToLower().Equals( "ratio" ) ) {
-                    } else {
-                        curPointsMethod = "nops";
-                    }
-                    String curPlcmtOrg = myTourProperties.MasterSummaryPlcmtOrg;
-                    //String curPlcmtOrg = Properties.Settings.Default.MasterSummaryV2PlcmtOrg;
-                    if ( curPlcmtOrg.ToLower().Equals("div") ) {
-                        curPlcmtOverallOrg = "agegroup";
-                    } else if ( curPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                        curPlcmtOverallOrg = "agegroupgroup";
-                    } else {
-                        curPlcmtOverallOrg = "agegroup";
-                        curPlcmtOrg = "div";
-                    }
+            Log.WriteFile("Export performance data file begin: " + curFilename);
 
-                    CalcScoreSummary curCalcSummary = new CalcScoreSummary();
-                    DataTable mySummaryDataTable = null;
+            //Build file header line and write to file
+            outLine.Append(writeHeader(inSanctionId));
+            outBuffer.WriteLine(outLine.ToString());
 
-                    DataTable myMemberData = curCalcSummary.getMemberData( inSanctionId );
-                    myProgressInfo.setProgressValue( 1 );
-                    myProgressInfo.Refresh();
+            //Initialize output buffer
+            outLine = new StringBuilder("");
 
-                    if (curRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" )) {
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", curRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 5 );
-                        myProgressInfo.Refresh();
+            myProgressInfo = new ProgressWindow();
+            myProgressInfo.setProgessMsg("Processing Skier Performance Data File");
+            myProgressInfo.Show();
+            myProgressInfo.Refresh();
+            myProgressInfo.setProgressMax(10);
 
-                        DataTable mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 6 );
-                        myProgressInfo.Refresh();
-                        DataTable myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 7 );
-                        myProgressInfo.Refresh();
-                        DataTable myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 8 );
-                        myProgressInfo.Refresh();
-                        DataTable newSummaryDataTable = curCalcSummary.buildTourScorebook( inSanctionId, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
-                        mySummaryDataTable = newSummaryDataTable;
-                        myProgressInfo.setProgressValue( 9 );
-                        myProgressInfo.Refresh();
+            DataTable curMemberDataTable = getMemberData(inSanctionId);
+            if (curMemberDataTable == null) return returnStatus;
 
-                    } else {
-                        DataTable mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        myProgressInfo.setProgressValue( 2 );
-                        myProgressInfo.Refresh();
-                        DataTable myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        myProgressInfo.setProgressValue( 3 );
-                        myProgressInfo.Refresh();
-                        DataTable myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        myProgressInfo.setProgressValue( 4 );
-                        myProgressInfo.Refresh();
-                        mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, curDataType, curPlcmtOverallOrg );
-                        myProgressInfo.setProgressValue( 5 );
-                        myProgressInfo.Refresh();
+            DataRow[] curScoreRows, curScoreSlalomRows, curScoreTrickRows, curScoreJumpRows;
+            String curPlcmtMethod = "score", curPlcmtOverallOrg = "agegroup";
+            String curDataType = myTourProperties.MasterSummaryDataType;
+			//String curDataType = Properties.Settings.Default.MasterSummaryV2DataType;
+			if ( curDataType.ToLower().Equals( "total" )
+				|| curDataType.ToLower().Equals( "best" )
+				|| curDataType.ToLower().Equals( "final" )
+				|| curDataType.ToLower().Equals( "first" ) ) {
+			} else {
+				curDataType = "best";
+			}
 
-                        DataTable mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 6 );
-                        myProgressInfo.Refresh();
-                        DataTable myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 7 );
-                        myProgressInfo.Refresh();
-                        DataTable myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myProgressInfo.setProgressValue( 8 );
-                        myProgressInfo.Refresh();
-                        DataTable newSummaryDataTable = curCalcSummary.buildTourScorebook( inSanctionId, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
-                        mySummaryDataTable = newSummaryDataTable;
-                        myProgressInfo.setProgressValue( 9 );
-                        myProgressInfo.Refresh();
+			String curPointsMethod = myTourProperties.MasterSummaryPointsMethod;
+			//String curPointsMethod = Properties.Settings.Default.MasterSummaryV2PointsMethod;
+			if ( curPointsMethod.ToLower().Equals( "nops" )
+				|| curPointsMethod.ToLower().Equals( "plcmt" )
+				|| curPointsMethod.ToLower().Equals( "kbase" )
+				|| curPointsMethod.ToLower().Equals( "ratio" ) ) {
+			} else {
+				curPointsMethod = "nops";
+			}
 
-                    }
-                    mySkierClassList = new ListSkierClass();
-                    mySkierClassList.ListSkierClassLoad();
+			String curPlcmtOrg = myTourProperties.MasterSummaryPlcmtOrg;
+			//String curPlcmtOrg = Properties.Settings.Default.MasterSummaryV2PlcmtOrg;
+			if ( curPlcmtOrg.ToLower().Equals( "div" ) ) {
+				curPlcmtOverallOrg = "agegroup";
+			} else if ( curPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+				curPlcmtOverallOrg = "agegroupgroup";
+			} else {
+				curPlcmtOverallOrg = "agegroup";
+				curPlcmtOrg = "div";
+			}
 
-                    int curRowCount = 0;
-                    myProgressInfo.setProgressMax( curMemberDataTable.Rows.Count );
-                    foreach ( DataRow curMemberRow in curMemberDataTable.Rows ) {
-                        curRowCount++;
-                        myProgressInfo.setProgressValue( curRowCount );
-                        myProgressInfo.Refresh();
+			CalcScoreSummary curCalcSummary = new CalcScoreSummary();
+			DataTable mySummaryDataTable = null;
 
-                        curMemberId = curMemberRow["MemberId"].ToString();
-                        curAgeGroup = curMemberRow["AgeGroup"].ToString();
-                        curReadyToSki = curMemberRow["ReadyToSki"].ToString();
-                        curScoreRows = mySummaryDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-                        //curScoreSlalomRows = mySlalomDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-                        //curScoreTrickRows = myTrickDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-                        //curScoreJumpRows = myJumpDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+			DataTable myMemberData = curCalcSummary.getMemberData( inSanctionId );
+			myProgressInfo.setProgressValue( 1 );
+			myProgressInfo.Refresh();
 
-                        if ( curReadyToSki.Equals( "Y" ) ) {
-                            if ( curScoreRows.Length > 0 ) {
-                                //Write skier identification information
-                                outLine.Append( writeSkierInfo( curMemberRow, inSanctionId, curRules, curAgeGroup ) );
+			if ( curRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" ) ) {
+				mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", curRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 5 );
+				myProgressInfo.Refresh();
 
-                                //Write skier performance summary information
-                                //outLine.Append( writeSkierPerfSmry( curMemberId, curAgeGroup, curDataType, curMemberRow, curScoreRows, curScoreSlalomRows, curScoreTrickRows, curScoreJumpRows ) );
-                                outLine.Append( writeSkierPerfSmry( curMemberId, curAgeGroup, curDataType, curMemberRow, curScoreRows, curScoreRows, curScoreRows, curScoreRows ) );
+				DataTable mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 6 );
+				myProgressInfo.Refresh();
+				DataTable myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 7 );
+				myProgressInfo.Refresh();
+				DataTable myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 8 );
+				myProgressInfo.Refresh();
+				DataTable newSummaryDataTable = curCalcSummary.buildTourScorebook( inSanctionId, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
+				mySummaryDataTable = newSummaryDataTable;
+				myProgressInfo.setProgressValue( 9 );
+				myProgressInfo.Refresh();
 
-                                //Write skier performance summary information
-                                outLine.Append( writeSkierPerfData( curMemberId, curAgeGroup, curRules, curMemberRow, curScoreRows ) );
+			} else {
+				DataTable mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
+				myProgressInfo.setProgressValue( 2 );
+				myProgressInfo.Refresh();
+				DataTable myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
+				myProgressInfo.setProgressValue( 3 );
+				myProgressInfo.Refresh();
+				DataTable myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
+				myProgressInfo.setProgressValue( 4 );
+				myProgressInfo.Refresh();
+				mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, curDataType, curPlcmtOverallOrg );
+				myProgressInfo.setProgressValue( 5 );
+				myProgressInfo.Refresh();
 
-                                //Write output line to file
-                                outBuffer.WriteLine( outLine.ToString() );
-                            }
-                        }
+				DataTable mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 6 );
+				myProgressInfo.Refresh();
+				DataTable myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 7 );
+				myProgressInfo.Refresh();
+				DataTable myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				myProgressInfo.setProgressValue( 8 );
+				myProgressInfo.Refresh();
+				DataTable newSummaryDataTable = curCalcSummary.buildTourScorebook( inSanctionId, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
+				mySummaryDataTable = newSummaryDataTable;
+				myProgressInfo.setProgressValue( 9 );
+				myProgressInfo.Refresh();
 
-                        //Initialize output buffer
-                        outLine = new StringBuilder( "" );
-                    }
-                    returnStatus = true;
-                    outBuffer.Close();
+			}
+			mySkierClassList = new ListSkierClass();
+			mySkierClassList.ListSkierClassLoad();
 
-                    myProgressInfo.Close();
-                    if ( curMemberDataTable.Rows.Count > 0 ) {
-                        MessageBox.Show( curMemberDataTable.Rows.Count + " rows found and written" );
-                    } else {
-                        MessageBox.Show( "No rows found" );
-                    }
-                    Log.WriteFile( "Export performance data file complete: " + curFilename );
-                }
-            }
+			int curRowCount = 0;
+			myProgressInfo.setProgressMax( curMemberDataTable.Rows.Count );
+			foreach ( DataRow curMemberRow in curMemberDataTable.Rows ) {
+				curRowCount++;
+				myProgressInfo.setProgressValue( curRowCount );
+				myProgressInfo.Refresh();
 
-            return returnStatus;
+				curMemberId = curMemberRow["MemberId"].ToString();
+				curAgeGroup = curMemberRow["AgeGroup"].ToString();
+				curReadyToSki = curMemberRow["ReadyToSki"].ToString();
+				curScoreRows = mySummaryDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				//curScoreSlalomRows = mySlalomDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				//curScoreTrickRows = myTrickDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				//curScoreJumpRows = myJumpDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+
+				if ( curReadyToSki.Equals( "Y" ) ) {
+					if ( curScoreRows.Length > 0 ) {
+						//Write skier identification information
+						outLine.Append( writeSkierInfo( curMemberRow, inSanctionId, curRules, curAgeGroup ) );
+
+						//Write skier performance summary information
+						//outLine.Append( writeSkierPerfSmry( curMemberId, curAgeGroup, curDataType, curMemberRow, curScoreRows, curScoreSlalomRows, curScoreTrickRows, curScoreJumpRows ) );
+						outLine.Append( writeSkierPerfSmry( curMemberId, curAgeGroup, curDataType, curMemberRow, curScoreRows, curScoreRows, curScoreRows, curScoreRows ) );
+
+						//Write skier performance summary information
+						outLine.Append( writeSkierPerfData( curMemberId, curAgeGroup, curRules, curMemberRow, curScoreRows ) );
+
+						//Write output line to file
+						outBuffer.WriteLine( outLine.ToString() );
+					}
+				}
+
+				//Initialize output buffer
+				outLine = new StringBuilder( "" );
+			}
+			returnStatus = true;
+			outBuffer.Close();
+
+			myProgressInfo.Close();
+			if ( curMemberDataTable.Rows.Count > 0 ) {
+				MessageBox.Show( curMemberDataTable.Rows.Count + " rows found and written" );
+			} else {
+				MessageBox.Show( "No rows found" );
+			}
+			Log.WriteFile( "Export performance data file complete: " + curFilename );
+
+			return returnStatus;
         }
 
         //Write skier identification information

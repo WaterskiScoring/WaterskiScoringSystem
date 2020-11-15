@@ -918,3 +918,5 @@ CREATE TABLE EwscListenMsg (
 
 ALTER TABLE [EwscListenMsg] ADD PRIMARY KEY ([PK]);
 
+## v21.26
+ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(64);

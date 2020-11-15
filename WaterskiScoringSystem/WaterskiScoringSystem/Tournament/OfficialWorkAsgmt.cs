@@ -1085,28 +1085,33 @@ namespace WaterskiScoringSystem.Tournament {
 			listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = false;
 			listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = false;
 
-            if ( inRole.Equals("Boat Judge") || inRole.Equals("Event Judge") || inRole.Equals("Event ACJ") ) {
+            if ( inRole.Equals("Boat Judge") || inRole.Equals("Event Judge") || inRole.Equals("Event Judge ACJ") ) {
                 if (myEvent.Equals("Slalom")) {
                     myMemberSelectFilter = "JudgeSlalomRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].Visible = true;
-                } else if (myEvent.Equals("Trick")) {
+
+				} else if (myEvent.Equals("Trick")) {
                     myMemberSelectFilter = "JudgeTrickRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].Visible = true;
-                } else if (myEvent.Equals("Jump")) {
+
+				} else if (myEvent.Equals("Jump")) {
                     myMemberSelectFilter = "JudgeJumpRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].Visible = true;
                 }
 
-            } else if ( inRole.Equals("Event Judge End Course") ) {
+            } else if ( inRole.Equals("End Course Official") ) {
                 if (myEvent.Equals("Slalom")) {
-                    myMemberSelectFilter = "JudgeSlalomRatingDesc <> '' OR DriverSlalomRatingDesc <> ''";
+                    myMemberSelectFilter = "JudgeSlalomRatingDesc <> '' OR DriverSlalomRatingDesc <> '' OR TechOfficialRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].Visible = true;
                     listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].Visible = true;
-                } else if (myEvent.Equals("Trick")) {
-                    myMemberSelectFilter = "JudgeTrickRatingDesc <> ''";
+					listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
+
+				} else if (myEvent.Equals("Trick")) {
+                    myMemberSelectFilter = "JudgeTrickRatingDesc <> '' OR DriverTrickRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeTrickRatingDesc"].Visible = true;
-                } else if (myEvent.Equals("Jump")) {
-                    myMemberSelectFilter = "JudgeJumpRatingDesc <> ''";
+
+				} else if (myEvent.Equals("Jump")) {
+                    myMemberSelectFilter = "JudgeJumpRatingDesc <> '' OR DriverJumpRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeJumpRatingDesc"].Visible = true;
                 }
 
@@ -1114,9 +1119,11 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( myEvent.Equals( "Slalom" ) ) {
 					myMemberSelectFilter = "DriverSlalomRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].Visible = true;
+
 				} else if ( myEvent.Equals( "Trick" ) ) {
 					myMemberSelectFilter = "DriverTrickRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["DriverTrickRatingDesc"].Visible = true;
+
 				} else if ( myEvent.Equals( "Jump" ) ) {
 					myMemberSelectFilter = "DriverJumpRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].Visible = true;
@@ -1126,9 +1133,11 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( myEvent.Equals( "Slalom" ) ) {
 					myMemberSelectFilter = "ScorerSlalomRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["ScorerSlalomRatingDesc"].Visible = true;
+
 				} else if ( myEvent.Equals( "Trick" ) ) {
 					myMemberSelectFilter = "ScorerTrickRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["ScorerTrickRatingDesc"].Visible = true;
+
 				} else if ( myEvent.Equals( "Jump" ) ) {
 					myMemberSelectFilter = "ScorerJumpRatingDesc <> ''";
 					listTourMemberDataGridView.Columns["ScorerJumpRatingDesc"].Visible = true;
@@ -1383,7 +1392,7 @@ namespace WaterskiScoringSystem.Tournament {
 					} else if ( rowIdx == 9 ) {
 						curViewRow.Cells["WorkAsgmt"].Value = "Technical Controller";
 					} else if ( rowIdx == 10 ) {
-						curViewRow.Cells["WorkAsgmt"].Value = "Event ACJ";
+						curViewRow.Cells["WorkAsgmt"].Value = "Event Judge ACJ";
 					}
 
 				} else {

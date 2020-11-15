@@ -52,6 +52,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navRemove = new System.Windows.Forms.ToolStripButton();
 			this.navSaveAs = new System.Windows.Forms.ToolStripButton();
 			this.navImportRankEquiv = new System.Windows.Forms.ToolStripButton();
+			this.navShowMember = new System.Windows.Forms.ToolStripButton();
 			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.SlalomRegCount = new System.Windows.Forms.Label();
 			this.TrickRegCount = new System.Windows.Forms.Label();
@@ -187,7 +188,8 @@ namespace WaterskiScoringSystem.Tournament {
             this.navEdit,
             this.navRemove,
             this.navSaveAs,
-            this.navImportRankEquiv});
+            this.navImportRankEquiv,
+            this.navShowMember});
 			this.navMainMenu.Location = new System.Drawing.Point(0, 0);
 			this.navMainMenu.Name = "navMainMenu";
 			this.navMainMenu.Size = new System.Drawing.Size(1090, 42);
@@ -294,6 +296,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navImportRankEquiv.Text = "Rank Equiv";
 			this.navImportRankEquiv.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navImportRankEquiv.Click += new System.EventHandler(this.navImportRankEquiv_Click);
+			// 
+			// navShowMember
+			// 
+			this.navShowMember.Image = global::WaterskiScoringSystem.Properties.Resources.magnifying_glass_with_eye;
+			this.navShowMember.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navShowMember.Name = "navShowMember";
+			this.navShowMember.Size = new System.Drawing.Size(88, 39);
+			this.navShowMember.Text = "Show Member";
+			this.navShowMember.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navShowMember.Click += new System.EventHandler(this.navShowMember_Click);
 			// 
 			// RowStatusLabel
 			// 
@@ -579,7 +591,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// AwsaMbrshpComment
 			// 
 			this.AwsaMbrshpComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.AwsaMbrshpComment.HeaderText = "Fed Membership Comments";
+			this.AwsaMbrshpComment.HeaderText = "Membership Status";
 			this.AwsaMbrshpComment.Name = "AwsaMbrshpComment";
 			this.AwsaMbrshpComment.Width = 120;
 			// 
@@ -673,6 +685,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.ToolStripButton navImportRankEquiv;
 		private System.Windows.Forms.Button SearchButton;
 		private System.Windows.Forms.TextBox SearchTextbox;
+		private System.Windows.Forms.ToolStripButton navShowMember;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn State;

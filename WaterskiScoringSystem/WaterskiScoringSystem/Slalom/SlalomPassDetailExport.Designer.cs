@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlalomPassDetailExport));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -34,8 +35,11 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlalomPassDetailExport));
 			this.dataGridView = new System.Windows.Forms.DataGridView();
+			this.winNavStrip = new System.Windows.Forms.ToolStrip();
+			this.navRefresh = new System.Windows.Forms.ToolStripButton();
+			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
 			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,10 +57,7 @@
 			this.TimeInTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.winNavStrip = new System.Windows.Forms.ToolStrip();
-			this.navRefresh = new System.Windows.Forms.ToolStripButton();
-			this.navExport = new System.Windows.Forms.ToolStripButton();
-			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
+			this.ScoreNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.winNavStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -94,12 +95,57 @@
             this.PassScore,
             this.TimeInTol,
             this.PassNotes,
-            this.LastUpdateDate});
-			this.dataGridView.Location = new System.Drawing.Point(20, 50);
-			this.dataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.LastUpdateDate,
+            this.ScoreNotes});
+			this.dataGridView.Location = new System.Drawing.Point(15, 41);
 			this.dataGridView.Name = "dataGridView";
-			this.dataGridView.Size = new System.Drawing.Size(1585, 619);
+			this.dataGridView.Size = new System.Drawing.Size(1189, 503);
 			this.dataGridView.TabIndex = 6;
+			// 
+			// winNavStrip
+			// 
+			this.winNavStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.navRefresh,
+            this.navExport,
+            this.navExportHtml});
+			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
+			this.winNavStrip.Name = "winNavStrip";
+			this.winNavStrip.Size = new System.Drawing.Size(1213, 42);
+			this.winNavStrip.TabIndex = 104;
+			this.winNavStrip.Text = "toolStrip1";
+			// 
+			// navRefresh
+			// 
+			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navRefresh.Name = "navRefresh";
+			this.navRefresh.Size = new System.Drawing.Size(50, 39);
+			this.navRefresh.Text = "Refresh";
+			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
+			// 
+			// navExport
+			// 
+			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
+			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExport.Name = "navExport";
+			this.navExport.Size = new System.Drawing.Size(45, 39);
+			this.navExport.Text = "Export";
+			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
+			this.navExport.Click += new System.EventHandler(this.navExport_Click);
+			// 
+			// navExportHtml
+			// 
+			this.navExportHtml.Image = ((System.Drawing.Image)(resources.GetObject("navExportHtml.Image")));
+			this.navExportHtml.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportHtml.Name = "navExportHtml";
+			this.navExportHtml.Size = new System.Drawing.Size(38, 39);
+			this.navExportHtml.Text = "Html";
+			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
+			this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
 			// 
 			// SanctionId
 			// 
@@ -268,59 +314,21 @@
 			this.LastUpdateDate.ReadOnly = true;
 			this.LastUpdateDate.Width = 120;
 			// 
-			// winNavStrip
+			// ScoreNotes
 			// 
-			this.winNavStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.navRefresh,
-            this.navExport,
-            this.navExportHtml});
-			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
-			this.winNavStrip.Name = "winNavStrip";
-			this.winNavStrip.Size = new System.Drawing.Size(1617, 47);
-			this.winNavStrip.TabIndex = 104;
-			this.winNavStrip.Text = "toolStrip1";
-			// 
-			// navRefresh
-			// 
-			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navRefresh.Name = "navRefresh";
-			this.navRefresh.Size = new System.Drawing.Size(62, 44);
-			this.navRefresh.Text = "Refresh";
-			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
-			// 
-			// navExport
-			// 
-			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
-			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(56, 44);
-			this.navExport.Text = "Export";
-			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
-			this.navExport.Click += new System.EventHandler(this.navExport_Click);
-			// 
-			// navExportHtml
-			// 
-			this.navExportHtml.Image = ((System.Drawing.Image)(resources.GetObject("navExportHtml.Image")));
-			this.navExportHtml.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExportHtml.Name = "navExportHtml";
-			this.navExportHtml.Size = new System.Drawing.Size(46, 44);
-			this.navExportHtml.Text = "Html";
-			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
-			this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
+			this.ScoreNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ScoreNotes.HeaderText = "Score Notes";
+			this.ScoreNotes.Name = "ScoreNotes";
+			this.ScoreNotes.ReadOnly = true;
+			this.ScoreNotes.Width = 125;
 			// 
 			// SlalomPassDetailExport
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1617, 684);
+			this.ClientSize = new System.Drawing.Size(1213, 556);
 			this.Controls.Add(this.winNavStrip);
 			this.Controls.Add(this.dataGridView);
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "SlalomPassDetailExport";
 			this.Text = "SlalomPassDetailExport";
 			this.Load += new System.EventHandler(this.SlalomPassDetailExport_Load);
@@ -356,5 +364,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn TimeInTol;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNotes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreNotes;
 	}
 }

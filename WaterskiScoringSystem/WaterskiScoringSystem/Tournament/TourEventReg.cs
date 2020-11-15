@@ -424,14 +424,17 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( curMemberRow == null ) return false;
 
 				#region Add skier to active tournament for the specified event but bypass if already registered for the event
+				String memberStatus = "";
 				try {
-					if ( ( (String) curMemberRow["MemberStatus"] ).ToLower().Equals( "active" ) ) {
+					memberStatus = (String)curMemberRow["MemberStatus"];
+					if ( memberStatus.ToLower().Equals( "active" ) ) {
 						curReadyToSki = "Y";
 					} else {
 						curReadyToSki = "N";
 					}
 				} catch {
 					curReadyToSki = "N";
+					memberStatus = "";
 				}
 				curReadyForPlcmt = curReadyToSki;
 
@@ -492,7 +495,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert TourReg (" );
 				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight " );
-				curSqlStmt.Append( " , Federation, Gender, City, State, SkiYearAge, Notes, LastUpdateDate" );
+				curSqlStmt.Append(" , Federation, Gender, City, State, SkiYearAge, Notes, AwsaMbrshpComment, LastUpdateDate");
 				curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( "'" + inMemberId + "'" );
 				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
@@ -508,6 +511,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", '" + curState + "'" );
 				curSqlStmt.Append( ", " + curSkiYearAge );
 				curSqlStmt.Append( ", '" + inPreRegNote + "'" );
+				curSqlStmt.Append(", '" + memberStatus + "'");
 				curSqlStmt.Append( ", getdate() )" );
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );

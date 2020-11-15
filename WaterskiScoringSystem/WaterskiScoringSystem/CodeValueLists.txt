@@ -795,30 +795,30 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22613	IwwfSlalomMax	L8		88	46kph, 28mph	28	46	
 23409	IWWFSlalomMin	YB		11	25kph, 15mph	0	25	
 23410	IWWFSlalomMin	YG		12	25kph, 15mph	0	25	
-23409	IWWFSlalomMin	JB		13	43kph, 26mph	-6	43	
-23410	IWWFSlalomMin	JG		14	40kph, 24mph	-5	40	
-23411	IWWFSlalomMin	IB		15	52kph, 32mph	-9	52	
-23412	IWWFSlalomMin	IG		16	49kph, 30mph	-8	49	
-23413	IWWFSlalomMin	IM		21	52kph, 32mph	-9	52	
-23414	IWWFSlalomMin	IW		22	49kph, 30mph	-8	49	
-23415	IWWFSlalomMin	JM		23	52kph, 32mph	-9	52	
-23416	IWWFSlalomMin	JW		24	49kph, 30mph	-8	49	
-23417	IWWFSlalomMin	S1		31	49kph, 30mph	-8	49	
-23418	IWWFSlalomMin	S2		32	49kph, 30mph	-8	49	
+23409	IWWFSlalomMin	JB		13	46kph, 28mph	-7	46	
+23410	IWWFSlalomMin	JG		14	43kph, 26mph	-6	43	
+23411	IWWFSlalomMin	IB		15	49kph, 30mph	-8	49	
+23412	IWWFSlalomMin	IG		16	46kph, 28mph	-7	46	
+23413	IWWFSlalomMin	IM		21	49kph, 30mph	-8	49	
+23414	IWWFSlalomMin	IW		22	46kph, 28mph	-7	46	
+23415	IWWFSlalomMin	JM		23	49kph, 30mph	-8	49	
+23416	IWWFSlalomMin	JW		24	46kph, 28mph	-7	46	
+23417	IWWFSlalomMin	S1		31	46kph, 28mph	-7	46	
+23418	IWWFSlalomMin	S2		32	46kph, 28mph	-7	46	
 23419	IWWFSlalomMin	S3		33	46kph, 28mph	-7	46	
 23419	IWWFSlalomMin	S4		34	43kph, 26mph	-6	43	
 23419	IWWFSlalomMin	S5		34	43kph, 26mph	-6	43	
 23419	IWWFSlalomMin	S6		35	40kph, 24mph	-5	40	
 23419	IWWFSlalomMin	S7		36	40kph, 24mph	-5	40	
 23419	IWWFSlalomMin	S8		38	37kph, 22mph	-4	37	
-23420	IWWFSlalomMin	L1		41	49kph, 30mph	-8	49	
-23421	IWWFSlalomMin	L2		42	49kph, 30mph	-8	49	
+23420	IWWFSlalomMin	L1		41	46kph, 28mph	-7	46	
+23421	IWWFSlalomMin	L2		42	43kph, 26mph	-6	43	
 23422	IWWFSlalomMin	L3		43	43kph, 26mph	-6	43	
 23422	IWWFSlalomMin	L4		44	40kph, 24mph	-5	40	
 23422	IWWFSlalomMin	L5		45	40kph, 24mph	-5	40	
 23422	IWWFSlalomMin	L6		46	37kph, 22mph	-4	37	
 23422	IWWFSlalomMin	L7		47	37kph, 22mph	-4	37	
-23422	IWWFSlalomMin	L8		48	34kph, 20mph	-3	34	
+23422	IWWFSlalomMin	L8		48	37kph, 22mph	-4	37	
 22718	JudgeRating	  		1	Unrated			
 22719	JudgeRating	Assistant		2	Assistant			
 22720	JudgeRating	Regular		3	Regular			
@@ -1005,8 +1005,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22879	OfficialAsgmt	Driver		1	Driver	0	0	
 22880	OfficialAsgmt	BoatJudge		2	Boat Judge	0	0	
 22881	OfficialAsgmt	EventJudge		3	Event Judge	0	0	
-22881	OfficialAsgmt	EventJudgeEC		4	Event Judge End Course	0	0	
-22881	OfficialAsgmt	EventAcjJudge		5	Event ACJ	0	0	
+22881	OfficialAsgmt	EventJudgeEC		4	End Course Official	0	0	
+22881	OfficialAsgmt	EventAcjJudge		5	Event Judge ACJ	0	0	
 22882	OfficialAsgmt	Scorer		6	Scorer	0	0	
 22883	OfficialAsgmt	Safety		7	Safety	0	0	
 22884	OfficialAsgmt	TechCntl		10	Technical Controller	0	0	

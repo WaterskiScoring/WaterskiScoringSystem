@@ -23,8 +23,8 @@ namespace WaterskiScoringSystem.Common {
             foreach (DataRow curRow in curDataTable.Rows) {
                 curListCode = (String)curRow["ListCode"];
                 curCodeValue = (String)curRow["CodeValue"];
-                myDropdownList.Add( new ListItem( curCodeValue, curListCode ) );
-            }
+				myDropdownList.Add( new ListItem( curCodeValue, curListCode ) );
+			}
         }
 
         public ArrayList DropdownList {
@@ -36,7 +36,11 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        private DataTable getData(String inSelectStmt) {
+		public void addNewValue(String newValue ) {
+			myDropdownList.Add(new ListItem(newValue, newValue));
+		}
+
+		private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
         }
 

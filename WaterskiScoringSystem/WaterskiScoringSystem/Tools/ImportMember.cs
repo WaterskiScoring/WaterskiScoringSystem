@@ -286,7 +286,7 @@ namespace WaterskiScoringSystem.Tools {
 					String curPrereg = (String) curImportMemberEntry["Prereg"] ;
 					if ( curPrereg == null ) curPrereg = "";
                     if ( curPrereg.Equals( "YES" ) ) {
-						curPreRegNote = "Pre-Registration";
+						curPreRegNote = "OLR";
 
 					} else if ( ((String) curImportMemberEntry["ApptdOfficial"]).Length > 0 ) {
 						curPreRegNote = "Appointed Official";
@@ -504,21 +504,13 @@ namespace WaterskiScoringSystem.Tools {
             if ( curImportMemberEntry["Federation"] != null ) {
                 Federation = (String) curImportMemberEntry["Federation"];
             }
-			String MemberStatus = "InActive";
-			if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.Boolean" ) ) {
-				Boolean ActiveMember = (Boolean) curImportMemberEntry["ActiveMember"];
-				if ( ActiveMember ) MemberStatus = "Active";
-
-			} else {
-				MemberStatus = (String)curImportMemberEntry["ActiveMember"];
-			}
 
             String MemTypeDesc = (String) curImportMemberEntry["MemTypeDesc"];
-			String Note = "Imported";
+			String Note = "OLR";
 			if ( curImportMemberEntry.ContainsKey( "Note" ) ) {
 				if ( curImportMemberEntry["Note"] != null ) {
 					Note = (String) curImportMemberEntry["Note"];
-					if ( Note.Length == 0 ) Note = "Imported";
+					if ( Note.Length == 0 ) Note = "OLR";
 				}
 			}
 
@@ -552,7 +544,6 @@ namespace WaterskiScoringSystem.Tools {
                 SkiYearAge = "0";
             }
 
-            String EffTo = (String) curImportMemberEntry["EffTo"];
 			Boolean CanSki = false;
 			if ( curImportMemberEntry["CanSki"] != null ) {
 				CanSki = (Boolean) curImportMemberEntry["CanSki"];
@@ -561,9 +552,41 @@ namespace WaterskiScoringSystem.Tools {
 			if ( curImportMemberEntry["CanSkiGR"] != null ) {
 				CanSkiGR = (Boolean) curImportMemberEntry["CanSkiGR"];
 			}
-			String Waiver =((int) curImportMemberEntry["Waiver"]).ToString();
+			String Waiver = ((int) curImportMemberEntry["Waiver"]).ToString();
 
-            String JudgeSlalomRating = (String)curImportMemberEntry["JudgeSlalom"];
+			String MemberStatus = "In-Active";
+			Boolean ActiveMember = false;
+			String EffTo = (String)curImportMemberEntry["EffTo"];
+			if (curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType("System.Boolean")) {
+				ActiveMember = (Boolean)curImportMemberEntry["ActiveMember"];
+			}
+			if (ActiveMember) MemberStatus = "Active";
+			
+			try {
+				DateTime curEffToDate = Convert.ToDateTime(EffTo);
+				EffTo = curEffToDate.ToString("MM/dd/yy");
+
+				DateTime curTourDate = Convert.ToDateTime(myTourRow["EventDates"]);
+				if ((curEffToDate >= curTourDate) && CanSki ) {
+					MemberStatus = "Active";
+					if (Waiver.Equals("0") ) MemberStatus += " ** Needs Annual Waiver";
+					if (CanSkiGR) MemberStatus += " ** Grass Roots Only";
+					if ( !CanSki ) MemberStatus = "Needs Upgrade";
+
+				} else {
+					if (CanSki) {
+						MemberStatus = "Needs Renew";
+					} else {
+						MemberStatus = "Needs Renew/Upgrade";
+					}
+				}
+
+			} catch {
+				MemberStatus = (String)curImportMemberEntry["ActiveMember"];
+			}
+
+
+			String JudgeSlalomRating = (String)curImportMemberEntry["JudgeSlalom"];
 			if ( curImportMemberEntry.Keys.Contains("JudgePanAmSlalom")) {
 				if ( ( (String) curImportMemberEntry["JudgePanAmSlalom"] ).ToLower().Equals( "int" ) ) {
 					JudgeSlalomRating = "PanAm";
@@ -654,7 +677,7 @@ namespace WaterskiScoringSystem.Tools {
                 curSqlStmt.Append(", State = '" + State + "'");
                 curSqlStmt.Append(", Federation = '" + Federation + "'");
                 curSqlStmt.Append(", MemberStatus = '" + MemberStatus + "'");
-                curSqlStmt.Append(", Note = 'Imported via OfficalRating process'");
+                curSqlStmt.Append(", Note = '" + Note +"'");
                 curSqlStmt.Append(", MemberExpireDate = '" + EffTo + "'");
                 curSqlStmt.Append(", UpdateDate = getdate()");
                 curSqlStmt.Append(", JudgeSlalomRating = '" + JudgeSlalomRating + "'");

@@ -264,7 +264,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curValidStatus = false;
             }
             if ( editMemberStatus_Validation() ) {
-                curMemberStatus = editMemberStatus.Text;
+				curMemberStatus = editMemberStatus.SelectedValue.ToString();
                 if ( curMemberStatus.ToUpper().Equals( "ACTIVE" ) ) {
                     curReadyToSki = "Y";
                 }
@@ -313,7 +313,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", SkiYearAge = " + curSkiYearAge.ToString() );
                     curSqlStmt.Append( ", Gender = '" + curGender + "'" );
                     curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
-                    curSqlStmt.Append( ", LastUpdateDate = getdate() " );
+					curSqlStmt.Append(", AwsaMbrshpComment = '" + curMemberStatus + "'");
+					curSqlStmt.Append( ", LastUpdateDate = getdate() " );
                     curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "'" );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
@@ -491,7 +492,22 @@ namespace WaterskiScoringSystem.Tournament {
 				editFederation.SelectedValue = "";
 			}
 			if ( ((String) curDataRow["MemberStatus"]).Length > 0 ) {
-				editMemberStatus.Text = (String) curDataRow["MemberStatus"];
+				String curMemberStatus = (String)curDataRow["MemberStatus"];
+				int idx = editMemberStatus.FindStringExact(curMemberStatus);
+				if ( idx < 0 ) {
+					//editMemberStatus.Items.Add(new ListItem(curMemberStatus, curMemberStatus));
+					myMemberStatusDropdownList.addNewValue(curMemberStatus);
+
+					editMemberStatus.DataSource = null;
+					editMemberStatus.Items.Clear();
+					editMemberStatus.DataSource = myMemberStatusDropdownList.DropdownList;
+					editMemberStatus.DisplayMember = "ItemName";
+					editMemberStatus.ValueMember = "ItemValue";
+
+				}
+				editMemberStatus.SelectedIndex = editMemberStatus.FindStringExact(curMemberStatus);
+				editMemberStatus.Text = curMemberStatus;
+
 			} else {
 				try {
 					if ( ( (String) curDataRow["ReadyToSki"] ).Equals( "Y" ) ) {
@@ -872,7 +888,7 @@ namespace WaterskiScoringSystem.Tournament {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT TR.MemberId, TR.SkierName, ML.LastName, ML.FirstName, TR.City, TR.State" );
 			curSqlStmt.Append( ", TR.Federation, TR.SkiYearAge, TR.AgeGroup, TR.Gender, TR.ReadyToSki " );
-			curSqlStmt.Append( ", Coalesce(ML.MemberStatus, '') AS MemberStatus, Coalesce(ML.MemberExpireDate, '') AS MemberExpireDate " );
+			curSqlStmt.Append(", Coalesce(AwsaMbrshpComment, ML.MemberStatus) AS MemberStatus, Coalesce(ML.MemberExpireDate, '') AS MemberExpireDate ");
 			curSqlStmt.Append( "FROM TourReg TR" );
 			curSqlStmt.Append( "  LEFT OUTER JOIN MemberList ML ON ML.MemberId = TR.MemberId " );
 			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND TR.MemberId = '" + inMemberId + "' AND TR.AgeGroup = '" + inAgeGroup + "'" );

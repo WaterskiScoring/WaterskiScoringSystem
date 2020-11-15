@@ -634,6 +634,23 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+		private void navShowMember_Click(object sender, EventArgs e) {
+			if (isDataModified) {
+				try {
+					isDataModified = false;
+					winStatusMsg.Text = "Previous row saved.";
+				} catch (Exception excp) {
+					MessageBox.Show("Error attempting to save changes \n" + excp.Message);
+				}
+			}
+
+			String memberId = (String)tourRegDataGridView.CurrentRow.Cells["MemberId"].Value;
+
+			// Open dialog for selecting skiers
+			myTourRegAddDialog.setInputMemberId(memberId);
+			myTourRegAddDialog.ShowDialog(this);
+		}
+
 		private void navImportRankEquiv_Click( object sender, EventArgs e ) {
 			// Ensure row focus change processing performed
 			if ( isDataModified ) {

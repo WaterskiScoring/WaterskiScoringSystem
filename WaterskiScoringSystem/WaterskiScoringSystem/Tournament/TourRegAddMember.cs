@@ -25,6 +25,7 @@ namespace WaterskiScoringSystem.Tournament {
         private FilterDialogForm filterDialogForm;
         private EditRegMember myEditRegMemberDialog;
         private EditMember myEditMemberDialog;
+		private String myInputMemberId = "";
 
 		private List<object> myResponseDataList = null;
 
@@ -37,6 +38,10 @@ namespace WaterskiScoringSystem.Tournament {
                 return myDataModified;
             }
         }
+
+		public void setInputMemberId( String inputValue ) {
+			myInputMemberId = inputValue;
+		}
 
 		private void TourRegAddMember_Load( object sender, EventArgs e ) {
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -77,6 +82,11 @@ namespace WaterskiScoringSystem.Tournament {
 				localSearchLoc.Checked = true;
 			} else {
 				usawsSearchLoc.Checked = true;
+			}
+
+			if ( myInputMemberId.Length > 0 ) {
+				inputMemberId.Text = myInputMemberId;
+				SearchButton_Click(null, null);
 			}
 		}
 

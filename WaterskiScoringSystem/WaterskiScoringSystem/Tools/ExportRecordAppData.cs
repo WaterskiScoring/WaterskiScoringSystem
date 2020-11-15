@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using System.Reflection;
-//using ComTypes = System.Runtime.InteropServices.ComTypes;
 
 namespace WaterskiScoringSystem.Tools {
     class ExportRecordAppData {
@@ -227,7 +226,7 @@ namespace WaterskiScoringSystem.Tools {
                 curExcelRow++;
 
                 setCellValue(curExcelRow, "A", "Event Judge");
-                curRowsFound = curDataTable.Select("WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'Event Judge End Course'");
+                curRowsFound = curDataTable.Select("WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'End Course Official'");
                 if (curRowsFound.Length > 0) {
                     for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
                         curRow = curRowsFound[curIdx];
@@ -895,7 +894,7 @@ namespace WaterskiScoringSystem.Tools {
                     outLine.Append( "Driver" + tabDelim + " " + tabDelim + " " );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
-                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'Event Judge End Course'" );
+                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'End Course Official'" );
                 if (curRowsFound.Length > 0) {
                     for (int curIdx = 0; curIdx < 5; curIdx++) {
                         outLine = new StringBuilder( "" );
