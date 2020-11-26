@@ -920,3 +920,105 @@ ALTER TABLE [EwscListenMsg] ADD PRIMARY KEY ([PK]);
 
 ## v21.26
 ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(64);
+
+## v21.28
+ALTER TABLE [SlalomScore] ADD COLUMN InsertDate datetime;
+ALTER TABLE [SlalomRecap] ADD COLUMN InsertDate datetime;
+ALTER TABLE [JumpScore] ADD COLUMN InsertDate datetime;
+ALTER TABLE [JumpRecap] ADD COLUMN InsertDate datetime;
+ALTER TABLE [TrickScore] ADD COLUMN InsertDate datetime;
+
+Update [SlalomScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
+Update [SlalomRecap] Set InsertDate = LastUpdateDate Where InsertDate is null;
+Update [JumpScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
+Update [JumpRecap] Set InsertDate = LastUpdateDate Where InsertDate is null;
+Update [TrickScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
+
+## v22.01
+
+DROP TABLE [BoatTime];
+DROP TABLE [BoatPath];
+DROP TABLE [JumpMeasurement];
+
+CREATE TABLE [BoatTime] (
+    PK bigint NOT NULL IDENTITY
+	, SanctionId nchar(6) NOT NULL
+	, MemberId nchar(9) NOT NULL
+    , Event nvarchar(12) NOT NULL
+
+	, Round tinyint NOT NULL
+	, PassNumber tinyint NOT NULL
+
+	, PassLineLength numeric(5,2) NULL
+	, PassSpeedKph tinyint
+
+	, BoatTimeBuoy1 numeric(5,2) NULL
+	, BoatTimeBuoy2 numeric(5,2) NULL
+	, BoatTimeBuoy3 numeric(5,2) NULL
+	, BoatTimeBuoy4 numeric(5,2) NULL
+	, BoatTimeBuoy5 numeric(5,2) NULL
+	, BoatTimeBuoy6 numeric(5,2) NULL
+	, BoatTimeBuoy7 numeric(5,2) NULL
+
+	, InsertDate datetime NULL
+	, LastUpdateDate datetime NULL
+);
+
+ALTER TABLE [BoatTime] ADD PRIMARY KEY ([PK]);
+
+CREATE TABLE [BoatPath] (
+    PK bigint NOT NULL IDENTITY
+	, SanctionId nchar(6) NOT NULL
+	, MemberId nchar(9) NOT NULL
+    , Event nvarchar(12) NOT NULL
+
+	, Round tinyint NOT NULL
+	, PassNumber tinyint NOT NULL
+
+	, PassLineLength numeric(5,2) NULL
+	, PassSpeedKph tinyint
+
+	, PathDevBuoy0 numeric(5,2) NULL
+	, PathDevBuoy1 numeric(5,2) NULL
+	, PathDevBuoy2 numeric(5,2) NULL
+	, PathDevBuoy3 numeric(5,2) NULL
+	, PathDevBuoy4 numeric(5,2) NULL
+	, PathDevBuoy5 numeric(5,2) NULL
+	, PathDevBuoy6 numeric(5,2) NULL
+
+	, PathDevCum0 numeric(5,2) NULL
+	, PathDevCum1 numeric(5,2) NULL
+	, PathDevCum2 numeric(5,2) NULL
+	, PathDevCum3 numeric(5,2) NULL
+	, PathDevCum4 numeric(5,2) NULL
+	, PathDevCum5 numeric(5,2) NULL
+	, PathDevCum6 numeric(5,2) NULL
+
+    , RerideNote nvarchar(64)
+    , PathPosLocValues nvarchar(1024)
+    , PathPosDevValues nvarchar(1024)
+	
+	, InsertDate datetime NULL
+	, LastUpdateDate datetime NULL
+);
+
+ALTER TABLE [BoatPath] ADD PRIMARY KEY ([PK]);
+
+CREATE TABLE [JumpMeasurement] (
+    PK bigint NOT NULL IDENTITY
+	, SanctionId nchar(6) NOT NULL
+	, MemberId nchar(9) NOT NULL
+    , Event nvarchar(12) NOT NULL
+
+	, Round tinyint NOT NULL
+	, PassNumber tinyint NOT NULL
+
+	, ScoreFeet numeric(5,2) NULL
+	, ScoreMeters numeric(5,2) NULL
+
+	, InsertDate datetime NULL
+	, LastUpdateDate datetime NULL
+);
+
+ALTER TABLE [JumpMeasurement] ADD PRIMARY KEY ([PK]);
+

@@ -80,6 +80,8 @@ namespace WaterskiScoringSystem.Slalom {
 		private CheckEventRecord myCheckEventRecord;
 		private DataTable myDivisionIntlDataTable = null;
 		private DataTable myDivisionAwsaJuniorDataTable = null;
+
+		private String[] loadBoatPathArgs = null;
 		#endregion
 
 		public ScoreEntry() {
@@ -702,7 +704,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curSqlStmt.Append( ", Judge1Score, Judge2Score, Judge3Score, Judge4Score, Judge5Score" );
 							curSqlStmt.Append( ", EntryGate1, EntryGate2, EntryGate3" );
 							curSqlStmt.Append( ", ExitGate1, ExitGate2, ExitGate3" );
-							curSqlStmt.Append( ", BoatTime, Score, TimeInTol, ScoreProt, LastUpdateDate, RerideReason, Note" );
+							curSqlStmt.Append( ", BoatTime, Score, TimeInTol, ScoreProt, LastUpdateDate, InsertDate, RerideReason, Note" );
 							curSqlStmt.Append( ") Values ( " );
 							curSqlStmt.Append( "'" + curSanctionId + "'" );
 							curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -727,7 +729,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curSqlStmt.Append( ", " + curScoreRecap );
 							curSqlStmt.Append( ", '" + curTimeInTol + "'" );
 							curSqlStmt.Append( ", '" + curScoreProt + "'" );
-							curSqlStmt.Append( ", getdate()" );
+							curSqlStmt.Append(", getdate(), getdate()");
 							curSqlStmt.Append( ", '" + curRerideReason + "'" );
 							curSqlStmt.Append( ", '" + curNote + "'" );
 							curSqlStmt.Append( ")" );
@@ -899,7 +901,7 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( myPassRowLastCompleted != null ) {
 									curSqlStmt.Append( ", CompletedSpeedMph, CompletedSpeedKph" );
 								}
-								curSqlStmt.Append( ", LastUpdateDate, Note" );
+								curSqlStmt.Append(", LastUpdateDate, InsertDate, Note");
 								curSqlStmt.Append( ") Values ( " );
 								curSqlStmt.Append( "'" + curSanctionId + "'" );
 								curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -925,7 +927,7 @@ namespace WaterskiScoringSystem.Slalom {
 									curSqlStmt.Append( ", " + Convert.ToInt16( (Decimal)myPassRowLastCompleted["SpeedKph"] ).ToString() );
 								}
 
-								curSqlStmt.Append( ", GETDATE()" );
+								curSqlStmt.Append(", GETDATE(), GETDATE()");
 								curSqlStmt.Append( ", '" + curNote + "'" );
 								curSqlStmt.Append( ")" );
 								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1586,6 +1588,15 @@ namespace WaterskiScoringSystem.Slalom {
 				//curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
 				//myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 				scoreEntryInprogress();
+
+				if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
+					/* 
+					 * Rettrieve boat path data
+					 */
+					//loadBoatPathDataGridView("Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value);
+					loadBoatPathDataGridView("Slalom", "200152493", "1", "2");
+				}
+
 				if ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
 					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) 
 					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6
@@ -1739,8 +1750,6 @@ namespace WaterskiScoringSystem.Slalom {
 				if (!(curEventGroup.Equals(myPrevEventGroup))) {
 					if (EwscMonitor.EwcsWebLocation.Length > 1) {
 						EwscMonitor.sendOfficialsAssignments("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue));
-
-						//EwscMonitor.sendRunningOrder("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue), mySortCommand );
 					}
 				}
 				myPrevEventGroup = curEventGroup;
@@ -3076,6 +3085,7 @@ namespace WaterskiScoringSystem.Slalom {
 				curTimerObj.Start();
 
 			} else {
+				boatPathDataGridView.Visible = false;
 				myRecapRow = null;
 				myScoreRow = null;
 
@@ -3339,7 +3349,79 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 		}
 
-		private void slalomRecapDataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
+		private void slalomRecapDataGridView_CellEnter_1(object sender, DataGridViewCellEventArgs e) {
+			myRecapColumn = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
+			if ( myRecapColumn.Equals("BoatTimeRecap") ) {
+
+				if ( slalomRecapDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly && EwscMonitor.EwcsWebLocation.Length > 1) {
+						/* 
+						 * Rettrieve boat path data
+						 */
+						//loadBoatPathDataGridView("Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value);
+						loadBoatPathDataGridView("Slalom", "200152493", "1", "2");
+				}
+
+				String cellValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
+				if ( cellValue.Length == 0 && EwscMonitor.EwcsWebLocation.Length > 1 ) {
+					Decimal curScore = calcScoreForPass();
+					if (curScore < 0) return;
+
+					//Decimal curBoatTime = EwscMonitor.getBoatTime( "Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value, curScore );
+					Decimal curBoatTime = EwscMonitor.getBoatTime("Slalom", "200152493", "1", "2", curScore );
+					if (curBoatTime < 0) return;
+
+					myRecapRow.Cells[e.ColumnIndex].Value = curBoatTime.ToString("#0.00");
+					boatTimeValidation();
+
+					/* 
+					 * Rettrieve boat path data
+					 */
+					//loadBoatPathArgs = new string[]{ "Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value  };
+					loadBoatPathArgs = new string[] { "Slalom", "200152493", "1", "2" };
+					Timer curTimerObj = new Timer();
+					curTimerObj.Interval = 5;
+					curTimerObj.Tick += new EventHandler(loadBoatPathDataTimer);
+					curTimerObj.Start();
+				}
+			}
+		}
+
+		private void loadBoatPathDataTimer(object sender, EventArgs e) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler(loadBoatPathDataTimer);
+			//loadBoatPathArgs
+			loadBoatPathDataGridView( loadBoatPathArgs[0], loadBoatPathArgs[1], loadBoatPathArgs[2], loadBoatPathArgs[3] );
+			loadBoatPathArgs = null;
+		}
+
+		private void loadBoatPathDataGridView(String curEvent, String curMemberId, String curRound, String curPassNum ) {
+			//Retrieve data for current tournament
+			//Used for initial load and to refresh data after updates
+			winStatusMsg.Text = "Retrieving boat times";
+			boatPathDataGridView.Visible = false;
+			Cursor.Current = Cursors.WaitCursor;
+
+			try {
+				boatPathDataGridView.Rows.Clear();
+				DataRow curDataRow = EwscMonitor.getBoatPath( curEvent, curMemberId, curRound, curPassNum );
+				if (curDataRow == null) return;
+
+				int curViewIdx = 0;
+				while ( curViewIdx < 6 ) {
+					curViewIdx = boatPathDataGridView.Rows.Add();
+					DataGridViewRow curViewRow = boatPathDataGridView.Rows[curViewIdx];
+					if ( curViewIdx == 0 ) curViewRow.Cells["boatPathBuoy"].Value = "Gate";
+					if (curViewIdx > 0) curViewRow.Cells["boatPathBuoy"].Value = "Buoy" + curViewIdx;
+					curViewRow.Cells["boatPathDev"].Value = (Decimal)curDataRow["PathDevBuoy" + curViewIdx];
+					curViewRow.Cells["boatPathCum"].Value = (Decimal)curDataRow["PathDevCum" + curViewIdx];
+				}
+
+				boatPathDataGridView.Visible = true;
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error retrieving boat times \n" + ex.Message);
+			}
 
 		}
 
@@ -3555,6 +3637,7 @@ namespace WaterskiScoringSystem.Slalom {
 						}
 					}
 					#endregion
+
 				} else if ( curColName.Equals( "BoatTimeRecap" ) ) {
 					#region Validate boat time
 					String curInputValue = (String) myRecapRow.Cells[e.ColumnIndex].Value;
@@ -3570,84 +3653,13 @@ namespace WaterskiScoringSystem.Slalom {
 							myRecapRow.Cells["RerideRecap"].Value = "N";
 							myRecapRow.Cells["ScoreRecap"].Value = "";
 						}
+
 					} else {
 						if ( myModCellValue.Length > 0 ) curInputValue = myModCellValue;
-						if ( curInputValue == myOrigCellValue ) {
-							/*
-							if ( ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
-								&& ( !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
-								if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
-									if ( myRecapRow.Cells["BoatTimeRecap"].ReadOnly ) {
-									} else {
-										if ( (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
-											if ( isExitGatesGood() ) {
-												isRecapRowEnterHandled = true;
-												isAddRecapRowInProg = true;
-												Timer curTimerObj = new Timer();
-												curTimerObj.Interval = 5;
-												curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-												curTimerObj.Start();
-											} else {
-												skierPassMsg.ForeColor = Color.Red;
-												skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
-											}
-										}
-									}
-								}
-							}
-							*/
-
-						} else {
-							isRecapRowEnterHandled = true;
-							isDataModified = true;
-							myRecapRow.Cells["Updated"].Value = "Y";
-							SlalomTimeValidate();
-							myOrigCellValue = (String) myRecapRow.Cells[e.ColumnIndex].Value;
-							if ( ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
-								&& ( !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
-								if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
-									if ( myRecapRow.Cells["BoatTimeRecap"].ReadOnly ) {
-									} else if ( (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
-										if ( isExitGatesGood() ) {
-											isAddRecapRowInProg = true;
-											Timer curTimerObj = new Timer();
-											curTimerObj.Interval = 5;
-											curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-											curTimerObj.Start();
-										} else {
-											skierPassMsg.ForeColor = Color.Red;
-											skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
-										}
-									} else if ( (String) myRecapRow.Cells["ScoreProtRecap"].Value == "Y" ) {
-										if ( isExitGatesGood() ) {
-											isAddRecapRowInProg = true;
-											Timer curTimerObj = new Timer();
-											curTimerObj.Interval = 5;
-											curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-											curTimerObj.Start();
-										}
-									} else if ( (String) myRecapRow.Cells["RerideRecap"].Value == "Y" ) {
-										if ( isExitGatesGood() ) {
-											isAddRecapRowInProg = true;
-											Timer curTimerObj = new Timer();
-											curTimerObj.Interval = 5;
-											curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-											curTimerObj.Start();
-										}
-									}
-								} else {
-									if ( (String) myRecapRow.Cells["RerideRecap"].Value == "Y" ) {
-										isAddRecapRowInProg = true;
-										Timer curTimerObj = new Timer();
-										curTimerObj.Interval = 5;
-										curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-										curTimerObj.Start();
-									}
-								}
-							}
-						}
+						if (curInputValue != myOrigCellValue) boatTimeValidation();
 					}
 					#endregion
+
 				} else if ( curColName.StartsWith( "Gate" ) ) {
 					#region Validate entrance and exit gate cells
 					try {
@@ -3683,6 +3695,7 @@ namespace WaterskiScoringSystem.Slalom {
 						return;
 					}
 					#endregion
+
 				} else if ( curColName.Equals( "RerideRecap" ) ) {
 					#region Validate reride cell check box
 					if ( myRecapRow.Cells["RerideRecap"].Value.ToString().Equals( "Y" ) ) {
@@ -3727,195 +3740,262 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 		}
 
+		private void boatTimeValidation() {
+			isRecapRowEnterHandled = true;
+			isDataModified = true;
+			myRecapRow.Cells["Updated"].Value = "Y";
+
+			SlalomTimeValidate();
+
+			if ( isObjectEmpty(myRecapRow.Cells["ScoreRecap"].Value) || isObjectEmpty(myRecapRow.Cells["TimeInTolRecap"].Value) ) return;
+			if ( Convert.ToDecimal(myRecapRow.Cells["ScoreRecap"].Value) < 6 ) return;
+			if ( myRecapRow.Cells["BoatTimeRecap"].ReadOnly ) return;
+
+			if ((String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y") {
+				if (isExitGatesGood()) {
+					isAddRecapRowInProg = true;
+					Timer curTimerObj = new Timer();
+					curTimerObj.Interval = 5;
+					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Start();
+
+				} else {
+					skierPassMsg.ForeColor = Color.Red;
+					skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
+				}
+				return;
+			}
+
+			if ((String)myRecapRow.Cells["ScoreProtRecap"].Value == "Y") {
+				if (isExitGatesGood()) {
+					isAddRecapRowInProg = true;
+					Timer curTimerObj = new Timer();
+					curTimerObj.Interval = 5;
+					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Start();
+				}
+				return;
+			}
+
+			if ((String)myRecapRow.Cells["RerideRecap"].Value == "Y") {
+				if (isExitGatesGood()) {
+					isAddRecapRowInProg = true;
+					Timer curTimerObj = new Timer();
+					curTimerObj.Interval = 5;
+					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Start();
+				}
+				return;
+			}
+
+			if ((String)myRecapRow.Cells["RerideRecap"].Value == "Y") {
+				isAddRecapRowInProg = true;
+				Timer curTimerObj = new Timer();
+				curTimerObj.Interval = 5;
+				curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+				curTimerObj.Start();
+				return;
+			}
+
+			return;
+		}
+
 		private void SlalomTimeValidate() {
-			bool curReadyToScore = false;
-			Decimal[] curJudgeScore = new Decimal[myNumJudges];
-			int[] curGateEntry = new int[myNumJudges];
-			int[] curGateExit = new int[myNumJudges];
-			int curGateEntryValue = 0;
 			Decimal curScore = 0;
-			DataRow curClassRow = getClassRowCurrentSkier();
 
 			if ( !( isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value ) ) ) {
-				#region Determine if sufficient information is available to calculate a score
-				if ( myNumJudges == 1 ) {
-					if ( !( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value ) ) ) {
-						curReadyToScore = true;
-						try {
-							curJudgeScore[0] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge1ScoreRecap"].Value );
-							if ( curJudgeScore[0] < 6 ) myRecapRow.Cells["GateExit1Recap"].Value = false;
-							if ( isEntryGatesGood() == false ) {
-								curJudgeScore[0] = 0;
-							}
-							curScore = SlalomRecapScoreCalc( curJudgeScore );
-						} catch {
-							curScore = 0;
-						}
+				// Determine if sufficient information is available to calculate a score
+				curScore = calcScoreForPass();
+				if (curScore < 0) return;
+
+				#region Analyze the boat time and fill when determined that short hand entry has been used
+				try {
+					Int16 curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
+					Decimal curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
+					myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
+
+					setBoatTimeRow(curPassSpeedKph, Convert.ToInt16(curScore.ToString().Substring(0, 1)));
+					loadBoatTimeView(curPassSpeedKph);
+					Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
+					Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
+					Decimal curActualTime = Convert.ToDecimal((String)myTimeRow["CodeValue"]);
+					Decimal tempTime, tempMinDiff, tempMaxDiff;
+
+					String curBoatTimeOrigValue = myRecapRow.Cells["BoatTimeRecap"].Value.ToString();
+					if (curBoatTimeOrigValue.ToUpper().Equals("OK")) {
+						myRecapRow.Cells["BoatTimeRecap"].Value = curActualTime.ToString("#0.00");
+						curBoatTimeOrigValue = curActualTime.ToString("#0.00");
+					} else if (curBoatTimeOrigValue.ToUpper().Equals("NONE")) {
+						myRecapRow.Cells["BoatTimeRecap"].Value = (curActualTime * -1).ToString("##0.00");
+						curBoatTimeOrigValue = (curActualTime * -1).ToString("##0.00");
+					} else if (curBoatTimeOrigValue.Length == 1) {
+						curBoatTimeOrigValue = "0" + curBoatTimeOrigValue;
 					}
-				} else if ( myNumJudges == 3 ) {
-					if ( ( !( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge2ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge3ScoreRecap"].Value ) ) )
-					   ) {
-						curReadyToScore = true;
-						try {
-							curJudgeScore[0] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge1ScoreRecap"].Value );
-							curJudgeScore[1] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge2ScoreRecap"].Value );
-							curJudgeScore[2] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge3ScoreRecap"].Value );
+					if (curBoatTimeOrigValue.Length == 2) {
+						if (!(curBoatTimeOrigValue.Contains("."))) {
+							Int32 delimPos = 0;
+							String newValue = "";
 
-							if ( isEntryGatesGood() ) {
-								curScore = SlalomRecapScoreCalc( curJudgeScore );
-							} else {
-								if ( (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] && myRecapRow.Index == 0 ) {
-									curScore = SlalomRecapScoreCalc( curJudgeScore );
-									if ( curScore < 6 ) {
-										curScore = 0;
-									}
-								} else {
-									curScore = 0;
-								}
-							}
-						} catch ( Exception ex ) {
-							MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + ex.Message );
-							curScore = 0;
-						}
-					}
-				} else if ( myNumJudges == 5 ) {
-					if ( ( !( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge2ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge3ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge4ScoreRecap"].Value ) ) )
-						&& ( !( isObjectEmpty( myRecapRow.Cells["Judge5ScoreRecap"].Value ) ) )
-					   ) {
-						curReadyToScore = true;
-						try {
-							curJudgeScore[0] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge1ScoreRecap"].Value );
-							curJudgeScore[1] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge2ScoreRecap"].Value );
-							curJudgeScore[2] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge3ScoreRecap"].Value );
-							curJudgeScore[3] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge4ScoreRecap"].Value );
-							curJudgeScore[4] = Convert.ToDecimal( (String) myRecapRow.Cells["Judge5ScoreRecap"].Value );
-
-							if ( isEntryGatesGood() ) {
-								curScore = SlalomRecapScoreCalc( curJudgeScore );
-							} else {
-								curScore = 0;
-							}
-						} catch {
-							curScore = 0;
-						}
-					}
-				}
-				#endregion
-
-				if ( curReadyToScore ) {
-					#region Analyze the boat time and fill when determined that short hand entry has been used
-					try {
-						Int16 curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-						Decimal curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
-						myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
-
-						setBoatTimeRow( curPassSpeedKph, Convert.ToInt16( curScore.ToString().Substring( 0, 1 ) ) );
-						loadBoatTimeView( curPassSpeedKph );
-						Decimal curMinTime = (Decimal) myTimeRow["MinValue"];
-						Decimal curMaxTime = (Decimal) myTimeRow["MaxValue"];
-						Decimal curActualTime = Convert.ToDecimal( (String) myTimeRow["CodeValue"] );
-						Decimal tempTime, tempMinDiff, tempMaxDiff;
-
-						String curBoatTimeOrigValue = myRecapRow.Cells["BoatTimeRecap"].Value.ToString();
-						if ( curBoatTimeOrigValue.ToUpper().Equals( "OK" ) ) {
-							myRecapRow.Cells["BoatTimeRecap"].Value = curActualTime.ToString( "#0.00" );
-							curBoatTimeOrigValue = curActualTime.ToString( "#0.00" );
-						} else if ( curBoatTimeOrigValue.ToUpper().Equals( "NONE" ) ) {
-							myRecapRow.Cells["BoatTimeRecap"].Value = ( curActualTime * -1 ).ToString( "##0.00" );
-							curBoatTimeOrigValue = ( curActualTime * -1 ).ToString( "##0.00" );
-						} else if ( curBoatTimeOrigValue.Length == 1 ) {
-							curBoatTimeOrigValue = "0" + curBoatTimeOrigValue;
-						}
-						if ( curBoatTimeOrigValue.Length == 2 ) {
-							if ( !( curBoatTimeOrigValue.Contains( "." ) ) ) {
-								Int32 delimPos = 0;
-								String newValue = "";
-
-								delimPos = curActualTime.ToString().IndexOf( '.' );
-								newValue = curActualTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
-								tempTime = Convert.ToDecimal( newValue );
-								if ( ( tempTime < curMinTime ) || ( tempTime > curMaxTime ) ) {
-									delimPos = curMinTime.ToString().IndexOf( '.' );
-									newValue = curMinTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
-									tempTime = Convert.ToDecimal( newValue );
-									if ( tempTime < curMinTime ) {
-										tempMinDiff = curMinTime - tempTime;
-										newValue = curMaxTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
-										tempTime = Convert.ToDecimal( newValue );
-										if ( tempTime > curMaxTime ) {
-											tempMaxDiff = tempTime - curMaxTime;
-											if ( tempMaxDiff > tempMinDiff ) {
-												newValue = curMinTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
-											} else {
-												newValue = curMaxTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
-											}
+							delimPos = curActualTime.ToString().IndexOf('.');
+							newValue = curActualTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+							tempTime = Convert.ToDecimal(newValue);
+							if ((tempTime < curMinTime) || (tempTime > curMaxTime)) {
+								delimPos = curMinTime.ToString().IndexOf('.');
+								newValue = curMinTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+								tempTime = Convert.ToDecimal(newValue);
+								if (tempTime < curMinTime) {
+									tempMinDiff = curMinTime - tempTime;
+									newValue = curMaxTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+									tempTime = Convert.ToDecimal(newValue);
+									if (tempTime > curMaxTime) {
+										tempMaxDiff = tempTime - curMaxTime;
+										if (tempMaxDiff > tempMinDiff) {
+											newValue = curMinTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+										} else {
+											newValue = curMaxTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
 										}
 									}
 								}
-								myRecapRow.Cells["BoatTimeRecap"].Value = newValue;
-								myRecapRow.Cells["RerideRecap"].Value = "N";
-								myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-								myRecapRow.Cells["RerideReasonRecap"].Value = "";
 							}
+							myRecapRow.Cells["BoatTimeRecap"].Value = newValue;
+							myRecapRow.Cells["RerideRecap"].Value = "N";
+							myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+							myRecapRow.Cells["RerideReasonRecap"].Value = "";
 						}
-						Decimal curBoatTime = Convert.ToDecimal( myRecapRow.Cells["BoatTimeRecap"].Value.ToString() );
-						if ( curBoatTime < 0 ) {
-							myRecapRow.Cells["TimeInTolRecap"].Value = "N";
-							myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-							myRecapRow.Cells["RerideRecap"].Value = "Y";
-							myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
-							skierPassMsg.ForeColor = Color.Red;
-							skierPassMsg.Text = "No time was available";
-							myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-							SlalomScoreCalc( curScore );
-
-						} else if ( curBoatTime > curMaxTime ) {
-							myRecapRow.Cells["TimeInTolRecap"].Value = "N";
-							myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-							if ( curScore == 6.0M ) {
-								myRecapRow.Cells["RerideRecap"].Value = "Y";
-							}
-							myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
-							skierPassMsg.ForeColor = Color.Red;
-							skierPassMsg.Text = "SLOW Boat time "
-								+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
-							myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-							SlalomScoreCalc( curScore );
-
-						} else if ( curBoatTime < curMinTime ) {
-							myRecapRow.Cells["TimeInTolRecap"].Value = "N";
-							myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-							myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
-							skierPassMsg.ForeColor = Color.Red;
-							skierPassMsg.Text = "FAST Boat time "
-								+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
-							myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-							SlalomScoreCalc( curScore );
-
-						} else {
-							myRecapRow.Cells["TimeInTolRecap"].Value = "Y";
-							myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-							myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeInTol;
-							skierPassMsg.ForeColor = Color.DarkGray;
-							skierPassMsg.Text = "Boat times - current score "
-								+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
-							if ( !( myRecapRow.Cells["RerideRecap"].Value.Equals( "Y" ) ) ) {
-								myRecapRow.Cells["RerideReasonRecap"].Value = "";
-							}
-							SlalomScoreCalc( curScore );
-						}
-
-					} catch ( Exception exp ) {
-						MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + exp.Message );
 					}
+					Decimal curBoatTime = Convert.ToDecimal(myRecapRow.Cells["BoatTimeRecap"].Value.ToString());
+					if (curBoatTime < 0) {
+						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+						myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+						myRecapRow.Cells["RerideRecap"].Value = "Y";
+						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
+						skierPassMsg.ForeColor = Color.Red;
+						skierPassMsg.Text = "No time was available";
+						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
+						SlalomScoreCalc(curScore);
+
+					} else if (curBoatTime > curMaxTime) {
+						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+						myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+						if (curScore == 6.0M) {
+							myRecapRow.Cells["RerideRecap"].Value = "Y";
+						}
+						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
+						skierPassMsg.ForeColor = Color.Red;
+						skierPassMsg.Text = "SLOW Boat time "
+							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
+						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
+						SlalomScoreCalc(curScore);
+
+					} else if (curBoatTime < curMinTime) {
+						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
+						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
+						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
+						skierPassMsg.ForeColor = Color.Red;
+						skierPassMsg.Text = "FAST Boat time "
+							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
+						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
+						SlalomScoreCalc(curScore);
+
+					} else {
+						myRecapRow.Cells["TimeInTolRecap"].Value = "Y";
+						myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeInTol;
+						skierPassMsg.ForeColor = Color.DarkGray;
+						skierPassMsg.Text = "Boat times - current score "
+							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
+						if (!(myRecapRow.Cells["RerideRecap"].Value.Equals("Y"))) {
+							myRecapRow.Cells["RerideReasonRecap"].Value = "";
+						}
+						SlalomScoreCalc(curScore);
+					}
+
+				} catch (Exception exp) {
+					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + exp.Message);
 				}
 				#endregion
 			}
+		}
+
+		/*
+		 * Determine if sufficient information is available to calculate a score
+		 */
+		private Decimal calcScoreForPass() {
+			DataRow curClassRow = getClassRowCurrentSkier();
+
+			Decimal[] curJudgeScore = new Decimal[myNumJudges];
+			int[] curGateEntry = new int[myNumJudges];
+			int[] curGateExit = new int[myNumJudges];
+
+			if (myNumJudges == 1) {
+				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value) ) return -1;
+				try {
+					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
+					if (curJudgeScore[0] < 6) myRecapRow.Cells["GateExit1Recap"].Value = false;
+					if (isEntryGatesGood() == false) {
+						curJudgeScore[0] = 0;
+					}
+					return SlalomRecapScoreCalc(curJudgeScore);
+
+				} catch (Exception ex) {
+					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+					return -1;
+				}
+			}
+
+			if (myNumJudges == 3) {
+				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value)
+					|| isObjectEmpty(myRecapRow.Cells["Judge2ScoreRecap"].Value)
+					|| isObjectEmpty(myRecapRow.Cells["Judge3ScoreRecap"].Value)
+				   ) return -1;
+
+				try {
+					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
+					curJudgeScore[1] = Convert.ToDecimal((String)myRecapRow.Cells["Judge2ScoreRecap"].Value);
+					curJudgeScore[2] = Convert.ToDecimal((String)myRecapRow.Cells["Judge3ScoreRecap"].Value);
+
+					if (isEntryGatesGood()) return SlalomRecapScoreCalc(curJudgeScore);
+
+					if ((Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] && myRecapRow.Index == 0) {
+						Decimal curScore = SlalomRecapScoreCalc(curJudgeScore);
+						if (curScore < 6) return 0;
+						return curScore;
+
+					} else {
+						return 0;
+					}
+
+				} catch (Exception ex) {
+					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+					return -1;
+				}
+			}
+
+			if (myNumJudges == 5) {
+				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value)
+					&& isObjectEmpty(myRecapRow.Cells["Judge2ScoreRecap"].Value)
+					&& isObjectEmpty(myRecapRow.Cells["Judge3ScoreRecap"].Value)
+					&& isObjectEmpty(myRecapRow.Cells["Judge4ScoreRecap"].Value)
+					&& isObjectEmpty(myRecapRow.Cells["Judge5ScoreRecap"].Value)
+				   ) return -1;
+
+				try {
+					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
+					curJudgeScore[1] = Convert.ToDecimal((String)myRecapRow.Cells["Judge2ScoreRecap"].Value);
+					curJudgeScore[2] = Convert.ToDecimal((String)myRecapRow.Cells["Judge3ScoreRecap"].Value);
+					curJudgeScore[3] = Convert.ToDecimal((String)myRecapRow.Cells["Judge4ScoreRecap"].Value);
+					curJudgeScore[4] = Convert.ToDecimal((String)myRecapRow.Cells["Judge5ScoreRecap"].Value);
+
+					if (isEntryGatesGood()) return SlalomRecapScoreCalc(curJudgeScore);
+					return 0;
+
+				} catch (Exception ex) {
+					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+					return -1;
+				}
+			}
+
+			return -1;
 		}
 
 		private Decimal SlalomRecapScoreCalc( Decimal[] inJudgeScores ) {
@@ -5369,6 +5449,5 @@ namespace WaterskiScoringSystem.Slalom {
 		private void TourBoatTextbox_TextChanged( object sender, EventArgs e ) {
 
 		}
-
 	}
 }

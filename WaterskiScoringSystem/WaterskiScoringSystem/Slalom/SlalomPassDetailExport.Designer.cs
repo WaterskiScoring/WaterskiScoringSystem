@@ -55,8 +55,9 @@
 			this.BoatTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TimeInTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.InsertDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PassNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.winNavStrip.SuspendLayout();
@@ -94,8 +95,9 @@
             this.BoatTime,
             this.PassScore,
             this.TimeInTol,
-            this.PassNotes,
             this.LastUpdateDate,
+            this.InsertDate,
+            this.PassNotes,
             this.ScoreNotes});
 			this.dataGridView.Location = new System.Drawing.Point(15, 41);
 			this.dataGridView.Name = "dataGridView";
@@ -298,6 +300,22 @@
 			this.TimeInTol.ReadOnly = true;
 			this.TimeInTol.Width = 40;
 			// 
+			// LastUpdateDate
+			// 
+			this.LastUpdateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.LastUpdateDate.HeaderText = "PassDatetime";
+			this.LastUpdateDate.Name = "LastUpdateDate";
+			this.LastUpdateDate.ReadOnly = true;
+			this.LastUpdateDate.Width = 120;
+			// 
+			// InsertDate
+			// 
+			this.InsertDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.InsertDate.HeaderText = "ScoreDatetime";
+			this.InsertDate.Name = "InsertDate";
+			this.InsertDate.ReadOnly = true;
+			this.InsertDate.Width = 120;
+			// 
 			// PassNotes
 			// 
 			this.PassNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -305,14 +323,6 @@
 			this.PassNotes.Name = "PassNotes";
 			this.PassNotes.ReadOnly = true;
 			this.PassNotes.Width = 175;
-			// 
-			// LastUpdateDate
-			// 
-			this.LastUpdateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.LastUpdateDate.HeaderText = "LastUpdateDate";
-			this.LastUpdateDate.Name = "LastUpdateDate";
-			this.LastUpdateDate.ReadOnly = true;
-			this.LastUpdateDate.Width = 120;
 			// 
 			// ScoreNotes
 			// 
@@ -362,8 +372,9 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatTime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassScore;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TimeInTol;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassNotes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn InsertDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassNotes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreNotes;
 	}
 }

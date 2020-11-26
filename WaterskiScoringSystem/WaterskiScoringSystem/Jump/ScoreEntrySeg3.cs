@@ -617,7 +617,7 @@ namespace WaterskiScoringSystem.Jump {
                                 } else {
                                     curSqlStmt.Append( "Insert JumpScore ( " );
                                     curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, Round, EventClass, BoatSpeed, RampHeight" );
-                                    curSqlStmt.Append( ", ScoreFeet, ScoreMeters, NopsScore, Status, Boat, LastUpdateDate, Note" );
+                                    curSqlStmt.Append(", ScoreFeet, ScoreMeters, NopsScore, Status, Boat, LastUpdateDate, InsertDate, Note");
                                     curSqlStmt.Append( ") Values ( " );
                                     curSqlStmt.Append( "'" + curSanctionId + "'" );
                                     curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -631,7 +631,7 @@ namespace WaterskiScoringSystem.Jump {
                                     curSqlStmt.Append( ", " + curNopsScore );
                                     curSqlStmt.Append( ", '" + curTourBoat + "'" );
                                     curSqlStmt.Append( ", '" + curStatus + "'" );
-                                    curSqlStmt.Append( ", GETDATE()" );
+                                    curSqlStmt.Append(", GETDATE(), GETDATE()" );
                                     curSqlStmt.Append( ", '" + curScoreNote + "'" );
                                     curSqlStmt.Append( ")" );
                                     rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -833,7 +833,7 @@ namespace WaterskiScoringSystem.Jump {
                                     curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, Round, PassNum" );
                                     curSqlStmt.Append( ", BoatSpeed, RampHeight, Meter1, Meter2, Meter3, Meter4, Meter5, Meter6, ScoreTriangle" );
                                     curSqlStmt.Append( ", ScoreFeet, ScoreMeters, BoatSplitTime, BoatSplitTime2, BoatEndTime, Split52TimeTol, Split82TimeTol, Split41TimeTol" );
-                                    curSqlStmt.Append( ", Reride, TimeInTol, ScoreProt, ReturnToBase, Results, LastUpdateDate, RerideReason, Note" );
+                                    curSqlStmt.Append(", Reride, TimeInTol, ScoreProt, ReturnToBase, Results, LastUpdateDate, InsertDate, RerideReason, Note");
                                     curSqlStmt.Append( ") Values (" );
                                     curSqlStmt.Append( " '" + curSanctionId + "'" );
                                     curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -862,7 +862,7 @@ namespace WaterskiScoringSystem.Jump {
                                     curSqlStmt.Append( ", '" + curScoreProt + "'" );
                                     curSqlStmt.Append( ", '" + curReturnToBase + "'" );
                                     curSqlStmt.Append( ", '" + curResults + "'" );
-                                    curSqlStmt.Append( ", getdate()" );
+                                    curSqlStmt.Append(", getdate(), getdate()");
                                     curSqlStmt.Append( ", '" + curRerideReason + "'" );
                                     curSqlStmt.Append( ", '" + curNote + "'" );
                                     curSqlStmt.Append( ")" );

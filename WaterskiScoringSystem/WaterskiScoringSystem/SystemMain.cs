@@ -953,6 +953,11 @@ namespace WaterskiScoringSystem {
 		private void showEwcsPin_Click(object sender, EventArgs e) {
 			EwscMonitor.showPin();
 		}
+
+		private void loadTestDataToolStripMenuItem_Click(object sender, EventArgs e) {
+			//EwscMonitor.execLoadTestMessages();
+			MessageBox.Show("Feature currently disabled");
+		}
 	}
 }
 

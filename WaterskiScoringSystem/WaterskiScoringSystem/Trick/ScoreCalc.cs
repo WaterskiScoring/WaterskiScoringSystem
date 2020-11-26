@@ -536,7 +536,7 @@ namespace WaterskiScoringSystem.Trick {
 						curSqlStmt.Append( "Insert TrickScore (" );
 						curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, Round, EventClass, " );
 						curSqlStmt.Append( "Score, ScorePass1, ScorePass2, NopsScore, " );
-						curSqlStmt.Append( "Boat, Status, LastUpdateDate, Note" );
+						curSqlStmt.Append("Boat, Status, LastUpdateDate, InsertDate, Note");
 						curSqlStmt.Append( ") Values (" );
 						curSqlStmt.Append( " '" + curSanctionId + "'" );
 						curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -549,7 +549,7 @@ namespace WaterskiScoringSystem.Trick {
 						curSqlStmt.Append( ", " + ( (Decimal) myScoreRow["NopsScore"] ).ToString( "#####.00" ) );
 						curSqlStmt.Append( ", '" + curBoat + "'" );
 						curSqlStmt.Append( ", '" + (String) myScoreRow["Status"] + "'" );
-						curSqlStmt.Append( ", GETDATE()" );
+						curSqlStmt.Append( ", GETDATE(), GETDATE()" );
 						curSqlStmt.Append( ", '" + curNote.Trim() + "'" );
 						curSqlStmt.Append( " )" );
 					}

@@ -151,6 +151,15 @@ namespace WaterskiScoringSystem.Tools {
 								if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) && curSanctionId.Length >= 6 ) {
 									execSlalomRecapCheckAndUpdate( curSanctionId );
 								}
+								if (curSanctionId.Length >= 6 &&
+									( myTableName.ToLower().Trim().Equals("slalomscore")
+									|| myTableName.ToLower().Trim().Equals("slalomrecap")
+									|| myTableName.ToLower().Trim().Equals("jumpscore")
+									|| myTableName.ToLower().Trim().Equals("jumprecap")
+									|| myTableName.ToLower().Trim().Equals("trickscore")
+									)) {
+									execInsertDateUpdate(curSanctionId, myTableName);
+								}
 
 								if ( curImportConfirmMsg ) {
 									MessageBox.Show( "Info: Import data processed for " + myTableName
@@ -424,6 +433,15 @@ namespace WaterskiScoringSystem.Tools {
 						if ( myTableName.ToLower().Trim().Equals( "slalomrecap" ) ) {
 							execSlalomRecapCheckAndUpdate( curSanctionId );
 						}
+						if (curSanctionId.Length >= 6 &&
+							(myTableName.ToLower().Trim().Equals("slalomscore")
+							|| myTableName.ToLower().Trim().Equals("slalomrecap")
+							|| myTableName.ToLower().Trim().Equals("jumpscore")
+							|| myTableName.ToLower().Trim().Equals("jumprecap")
+							|| myTableName.ToLower().Trim().Equals("trickscore")
+							)) {
+							execInsertDateUpdate(curSanctionId, myTableName);
+						}
 						if ( curImportConfirmMsg ) {
 							MessageBox.Show( "Info: Import data processed for " + myTableName
 								+ "\nRows Read: " + rowsRead
@@ -465,6 +483,12 @@ namespace WaterskiScoringSystem.Tools {
 				int curValue = rowsUpdate;
 			}
 
+		}
+
+		private void execInsertDateUpdate(String curSanctionId, String curTableName ) {
+			StringBuilder sqlStmt = new StringBuilder("");
+			sqlStmt = new StringBuilder("Update " + curTableName + " Set InsertDate = LastUpdateDate Where InsertDate is null and SanctionId = '" + curSanctionId + "'");
+			int rowsUpdate = DataAccess.ExecuteCommand(sqlStmt.ToString() );
 		}
 
 		public bool truncateMemberData() {

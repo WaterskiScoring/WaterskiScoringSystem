@@ -111,6 +111,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.loadTestDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -728,7 +729,8 @@
 			this.ewcsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ewcsConnectMenuItem,
             this.ewcsCloseMenuItem,
-            this.eWCSShowPinToolStripMenuItem});
+            this.eWCSShowPinToolStripMenuItem,
+            this.loadTestDataToolStripMenuItem});
 			this.ewcsSubMenu.Name = "ewcsSubMenu";
 			this.ewcsSubMenu.Size = new System.Drawing.Size(218, 22);
 			this.ewcsSubMenu.Text = "WaterSkiConnect";
@@ -805,6 +807,13 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
+			// 
+			// loadTestDataToolStripMenuItem
+			// 
+			this.loadTestDataToolStripMenuItem.Name = "loadTestDataToolStripMenuItem";
+			this.loadTestDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.loadTestDataToolStripMenuItem.Text = "Load Test Data";
+			this.loadTestDataToolStripMenuItem.Click += new System.EventHandler(this.loadTestDataToolStripMenuItem_Click);
 			// 
 			// SystemMain
 			// 
@@ -918,6 +927,7 @@
         private System.Windows.Forms.ToolStripMenuItem ewcsConnectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ewcsCloseMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem eWCSShowPinToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem loadTestDataToolStripMenuItem;
 	}
 }
 

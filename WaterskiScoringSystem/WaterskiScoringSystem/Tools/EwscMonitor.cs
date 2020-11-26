@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -11,26 +12,59 @@ using Quobject.EngineIoClientDotNet;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 using WaterskiScoringSystem.Common;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Threading;
 
 namespace WaterskiScoringSystem.Tools {
 	class EwscMonitor {
 		private static String mySanctionNum;
 		private static DataRow myTourRow;
 		private static Boolean myConnectActive = false;
+		private static DateTime myCurrentDatetime = DateTime.Now;
 
 		public static String EwcsWebLocation = "";
 		private static String EwcsWebLocationDefault = "http://ewscdata.com:40000/";
 		//private static String EwcsWebLocationDefault = "http://waterskiconnect.com:40000/";
 		private static Quobject.SocketIoClientDotNet.Client.Socket socketClient = null;
 
+		public static void setCurrentDate(String inDatetime) {
+			myCurrentDatetime = DateTime.Parse(inDatetime);
+		}
+
 		public static void execEwscMonitoring() {
 			if (EwscMonitor.EwcsWebLocation.Length > 1) return;
 			EwscMonitor.EwcsWebLocation = EwcsWebLocationDefault;
 			String returnValue = startEwscMonitoring();
 			MessageBox.Show("WaterSkiConnect: Results=" + returnValue);
+		}
+
+		public static void execLoadTestMessages() {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			DataTable curDataTable = null;
+
+			curSqlStmt = new StringBuilder("Select * from EwscListenMsg Where MsgType = 'boat_times'");
+			curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			foreach (DataRow curRow in curDataTable.Rows ) {
+				mySanctionNum = (String)curRow["SanctionId"];
+				saveBoatTimes((String)curRow["MsgData"]);
+			}
+
+			curSqlStmt = new StringBuilder("Select * from EwscListenMsg Where MsgType = 'boatpath_data'");
+			curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			foreach (DataRow curRow in curDataTable.Rows) {
+				mySanctionNum = (String)curRow["SanctionId"];
+				saveBoatPath((String)curRow["MsgData"]);
+			}
+
+			curSqlStmt = new StringBuilder("Select * from EwscListenMsg Where MsgType = 'jumpmeasurement_score'");
+			curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			foreach (DataRow curRow in curDataTable.Rows) {
+				mySanctionNum = (String)curRow["SanctionId"];
+				saveJumpMeasurement((String)curRow["MsgData"]);
+			}
 		}
 
 		private static String startEwscMonitoring() {
@@ -83,7 +117,8 @@ namespace WaterskiScoringSystem.Tools {
 			});
 
 			socketClient.On("boat_times", (data) => {
-				showMsg("boat_times", String.Format("boat_times {0}", data));
+				saveBoatTimes(data.ToString());
+				//showMsg("boat_times", String.Format("boat_times {0}", data));
 			});
 
 			socketClient.On("scoring_result", (data) => {
@@ -91,7 +126,8 @@ namespace WaterskiScoringSystem.Tools {
 			});
 
 			socketClient.On("boatpath_data", (data) => {
-				showMsg("boatpath_data", String.Format("boatpath_data {0}", data));
+				saveBoatPath(data.ToString());
+				//showMsg("boatpath_data", String.Format("boatpath_data {0}", data));
 			});
 
 			socketClient.On("trickscoring_detail", (data) => {
@@ -99,8 +135,166 @@ namespace WaterskiScoringSystem.Tools {
 			});
 
 			socketClient.On("jumpmeasurement_score", (data) => {
-				showMsg("jumpmeasurement_score", String.Format("jumpmeasurement_score {0}", data));
+				saveJumpMeasurement(data.ToString());
+				//showMsg("jumpmeasurement_score", String.Format("jumpmeasurement_score {0}", data));
 			});
+		}
+
+		private static void saveBoatTimes( String msg ) {
+			Dictionary<string, object> curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(msg.Substring(11));
+			StringBuilder curSqlStmt = new StringBuilder("");
+
+			try {
+				int curRound = 1;
+				if (curMsgDataList.ContainsKey("round")) curRound = (int)curMsgDataList["round"];
+
+				curSqlStmt.Append("Insert BoatTime ( ");
+				curSqlStmt.Append("SanctionId, MemberId, Event");
+				curSqlStmt.Append(", Round, PassNumber, PassLineLength, PassSpeedKph");
+				curSqlStmt.Append(", BoatTimeBuoy1, BoatTimeBuoy2, BoatTimeBuoy3,BoatTimeBuoy4, BoatTimeBuoy5, BoatTimeBuoy6, BoatTimeBuoy7");
+				curSqlStmt.Append(", InsertDate, LastUpdateDate ");
+				curSqlStmt.Append(") Values ( ");
+				curSqlStmt.Append("'" + mySanctionNum + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteId"] + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteEvent"] + "'");
+
+				curSqlStmt.Append(", " + curRound);
+				curSqlStmt.Append(", " + (int)curMsgDataList["passNumber"]);
+				curSqlStmt.Append(", " + (String)curMsgDataList["rope"]);
+				curSqlStmt.Append(", " + (String)curMsgDataList["speed"]);
+
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b1"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b2"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b3"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b4"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b5"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["b6"]);
+				curSqlStmt.Append(", " + (decimal)curMsgDataList["endgate"]);
+
+				curSqlStmt.Append(", getdate(), getdate()");
+				curSqlStmt.Append(" )");
+				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+				Log.WriteFile(curSqlStmt.ToString());
+
+			} catch (Exception ex) {
+				MessageBox.Show("saveBoatTimes: Invalid data encountered: " + ex.Message);
+				Log.WriteFile("saveBoatTimes: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString());
+			}
+		}
+
+		private static void saveBoatPath(String msg) {
+			Dictionary<string, object> curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(msg.Substring(14));
+			Dictionary<string, object> curBuoyResults = null;
+			StringBuilder curSqlStmt = new StringBuilder("");
+
+			try {
+				int curRound = 1;
+				if (curMsgDataList.ContainsKey("round")) curRound = (int)curMsgDataList["round"];
+
+				curSqlStmt.Append("Insert BoatPath ( ");
+				curSqlStmt.Append("SanctionId, MemberId, Event");
+				curSqlStmt.Append(", Round, PassNumber, PassLineLength, PassSpeedKph");
+				curSqlStmt.Append(", PathDevBuoy0, PathDevCum0");
+				curSqlStmt.Append(", PathDevBuoy1, PathDevCum1");
+				curSqlStmt.Append(", PathDevBuoy2, PathDevCum2");
+				curSqlStmt.Append(", PathDevBuoy3, PathDevCum3");
+				curSqlStmt.Append(", PathDevBuoy4, PathDevCum4");
+				curSqlStmt.Append(", PathDevBuoy5, PathDevCum5");
+				curSqlStmt.Append(", PathDevBuoy6, PathDevCum6");
+				curSqlStmt.Append(", RerideNote, InsertDate, LastUpdateDate, PathPosLocValues, PathPosDevValues ");
+				curSqlStmt.Append(") Values ( ");
+				curSqlStmt.Append("'" + mySanctionNum + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteId"] + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteEvent"] + "'");
+
+				curSqlStmt.Append(", " + curRound);
+				curSqlStmt.Append(", " + (int)curMsgDataList["passNumber"]);
+				curSqlStmt.Append(", " + (String)curMsgDataList["rope"]);
+				if (curMsgDataList["speed"].GetType() == System.Type.GetType("System.Int32")) {
+					curSqlStmt.Append(", " + (int)curMsgDataList["speed"]);
+				}
+				if (curMsgDataList["speed"].GetType() == System.Type.GetType("System.String")) {
+					curSqlStmt.Append(", " + (String)curMsgDataList["speed"]);
+				}
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["gate"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b1"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b2"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b3"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b4"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b5"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b6"];
+				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+				curSqlStmt.Append(", '" + (String)curMsgDataList["reride"] + "'");
+				curSqlStmt.Append(", getdate(), getdate()");
+
+				StringBuilder curPathPosLocValues = new StringBuilder("");
+				StringBuilder curPathPosDevValues = new StringBuilder("");
+				ArrayList curPosDetailList = (ArrayList)curMsgDataList["detail"];
+				foreach (Dictionary<string, object> curEntry in curPosDetailList) {
+					if (curPathPosLocValues.Length > 1) curPathPosLocValues.Append(",");
+					curPathPosLocValues.Append((int)curEntry["position"]);
+
+					if (curPathPosDevValues.Length > 1) curPathPosDevValues.Append(",");
+					curPathPosDevValues.Append((decimal)curEntry["deviation"]);
+				}
+				curSqlStmt.Append(", '" + curPathPosLocValues.ToString() + "'");
+				curSqlStmt.Append(", '" + curPathPosDevValues.ToString() + "'");
+
+				curSqlStmt.Append(" )");
+				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+				Log.WriteFile(curSqlStmt.ToString());
+
+			} catch (Exception ex ) {
+				MessageBox.Show("saveBoatPath: Invalid data encountered: " + ex.Message);
+				Log.WriteFile("saveBoatPath: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString());
+			}
+		}
+
+		private static void saveJumpMeasurement(String msg) {
+			Dictionary<string, object> curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(msg.Substring(22));
+			StringBuilder curSqlStmt = new StringBuilder("");
+
+			try {
+				int curRound = 1;
+				if (curMsgDataList.ContainsKey("round")) curRound = (int)curMsgDataList["round"];
+
+				curSqlStmt.Append("Insert JumpMeasurement ( ");
+				curSqlStmt.Append("SanctionId, MemberId, Event, Round, PassNumber, ScoreFeet, ScoreMeters");
+				curSqlStmt.Append(", InsertDate, LastUpdateDate ");
+				curSqlStmt.Append(") Values ( ");
+				curSqlStmt.Append("'" + mySanctionNum + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteId"] + "'");
+				curSqlStmt.Append(", '" + (String)curMsgDataList["athleteEvent"] + "'");
+
+				curSqlStmt.Append(", " + curRound);
+				curSqlStmt.Append(", " + (int)curMsgDataList["passNumber"]);
+
+				Dictionary<string, object> curBuoyResults = (Dictionary<string, object>)curMsgDataList["score"];
+				curSqlStmt.Append(", " + (int)curBuoyResults["distanceFeet"] + ", " + (decimal)curBuoyResults["distanceMetres"]);
+
+				curSqlStmt.Append(", getdate(), getdate()");
+				curSqlStmt.Append(" )");
+				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
+				Log.WriteFile(curSqlStmt.ToString());
+
+			} catch (Exception ex) {
+				MessageBox.Show("saveJumpMeasurement: Invalid data encountered: " + ex.Message);
+				Log.WriteFile("saveJumpMeasurement: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString());
+			}
 		}
 
 		private static void showMsg(String msgType, String msg) {
@@ -182,6 +376,7 @@ namespace WaterskiScoringSystem.Tools {
 			}
 
 			addEwscMsg("athlete_data", JsonConvert.SerializeObject(sendMsg));
+			myCurrentDatetime = DateTime.Now;
 			return true;
 		}
 
@@ -262,6 +457,7 @@ namespace WaterskiScoringSystem.Tools {
             foreach (DataRow curDataRow in curDataTable.Rows) {
 				String curOfficialAsgmt = (String)curDataRow["WorkAsgmt"];
 				if (curOfficialAsgmt.Equals("Driver")) {
+					if (curEventOfficials.ContainsKey("driver")) continue;
 					curEventOfficials.Add("driver", buildOfficialEntry( curDataRow ));
 					officialsAvailable = true;
 
@@ -283,10 +479,12 @@ namespace WaterskiScoringSystem.Tools {
 					towerJudgeIdx++;
 
 				} else if (curOfficialAsgmt.Equals("Boat Judge")) {
+					if (curEventOfficials.ContainsKey("boatJudge")) continue;
 					curEventOfficials.Add("boatJudge", buildOfficialEntry(curDataRow));
 					officialsAvailable = true;
 
 				} else if (curOfficialAsgmt.Equals("Scorer")) {
+					if (curEventOfficials.ContainsKey("scorer")) continue;
 					curEventOfficials.Add("scorer", buildOfficialEntry(curDataRow));
 					officialsAvailable = true;
 				}
@@ -299,6 +497,89 @@ namespace WaterskiScoringSystem.Tools {
 
 			return false;
 
+		}
+
+		public static decimal getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			String testSanctionId = "20E016";
+
+			for ( int count = 0; count < 10; count++ ) {
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM BoatTime ");
+				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
+				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
+				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
+				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
+				curSqlStmt.Append("AND Round = " + curRound + " ");
+				curSqlStmt.Append("AND PassNumber = " + curPassNum + " ");
+				curSqlStmt.Append("Order by InsertDate ");
+
+				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+				if (curDataTable.Rows.Count > 0) {
+					int curPassScore = Convert.ToInt32(Math.Floor(inPassScore)) + 1;
+					String timeKey = "BoatTimeBuoy" + curPassScore;
+					return (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1][timeKey];
+
+				} else {
+					Thread.Sleep(500);
+				}
+			}
+
+			return -1;
+		}
+
+		public static DataRow getBoatPath(String curEvent, String curMemberId, String curRound, String curPassNum ) {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			String testSanctionId = "20E016";
+
+			for (int count = 0; count < 10; count++) {
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM BoatPath ");
+				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
+				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
+				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
+				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
+				curSqlStmt.Append("AND Round = " + curRound + " ");
+				curSqlStmt.Append("AND PassNumber = " + curPassNum + " ");
+				curSqlStmt.Append("Order by InsertDate ");
+
+				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+				if (curDataTable.Rows.Count > 0) {
+					return curDataTable.Rows[curDataTable.Rows.Count - 1];
+
+				} else {
+					Thread.Sleep(500);
+				}
+			}
+
+			return null;
+		}
+
+		public static decimal[] getJumpMeasurement(String curEvent, String curMemberId, String curRound, String curPassNum) {
+			StringBuilder curSqlStmt = new StringBuilder("");
+			String testSanctionId = "20E016";
+
+			for (int count = 0; count < 10; count++) {
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM JumpMeasurement ");
+				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
+				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
+				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
+				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
+				curSqlStmt.Append("AND Round = " + curRound + " ");
+				curSqlStmt.Append("AND PassNumber = " + curPassNum + " ");
+				curSqlStmt.Append("Order by InsertDate ");
+
+				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+				if (curDataTable.Rows.Count > 0) {
+					return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreFeet"], (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreMeters"]};
+
+				} else {
+					Thread.Sleep(500);
+				}
+			}
+
+			return new decimal[] { -1, -1 };
 		}
 
 		private static Dictionary<string, object> buildOfficialEntry(DataRow curDataRow) {
@@ -426,6 +707,7 @@ namespace WaterskiScoringSystem.Tools {
 		private static void addEwscListenMsg(String msgType, String msgData) {
 			char[] singleQuoteDelim = new char[] { '\'' };
 			String curMsgData = stringReplace(msgData, singleQuoteDelim, "''");
+
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append("Insert EwscListenMsg ( ");
