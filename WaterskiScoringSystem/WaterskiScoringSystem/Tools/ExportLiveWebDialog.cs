@@ -74,5 +74,18 @@ namespace WaterskiScoringSystem.Tools {
             WebLocationTextBox.Text = "http://www.waterskiresults.com/WfwWeb/WfwImport.php";
         }
 
-    }
+		private void DisableSendButton_Click(object sender, EventArgs e) {
+			myActionCmd = "DiableSkier";
+
+		}
+
+		private void DisableAllSendButton_Click(object sender, EventArgs e) {
+			myActionCmd = "DiableAllSkier";
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+			System.Diagnostics.Process.Start(linkLabel1.Text);
+			linkLabel1.LinkVisited = true;
+		}
+	}
 }

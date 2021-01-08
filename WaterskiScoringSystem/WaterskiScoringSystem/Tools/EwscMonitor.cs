@@ -118,7 +118,6 @@ namespace WaterskiScoringSystem.Tools {
 
 			socketClient.On("boat_times", (data) => {
 				saveBoatTimes(data.ToString());
-				//showMsg("boat_times", String.Format("boat_times {0}", data));
 			});
 
 			socketClient.On("scoring_result", (data) => {
@@ -127,7 +126,6 @@ namespace WaterskiScoringSystem.Tools {
 
 			socketClient.On("boatpath_data", (data) => {
 				saveBoatPath(data.ToString());
-				//showMsg("boatpath_data", String.Format("boatpath_data {0}", data));
 			});
 
 			socketClient.On("trickscoring_detail", (data) => {
@@ -136,7 +134,6 @@ namespace WaterskiScoringSystem.Tools {
 
 			socketClient.On("jumpmeasurement_score", (data) => {
 				saveJumpMeasurement(data.ToString());
-				//showMsg("jumpmeasurement_score", String.Format("jumpmeasurement_score {0}", data));
 			});
 		}
 
@@ -147,6 +144,7 @@ namespace WaterskiScoringSystem.Tools {
 			try {
 				int curRound = 1;
 				if (curMsgDataList.ContainsKey("round")) curRound = (int)curMsgDataList["round"];
+				String curEvent = (String)curMsgDataList["athleteEvent"];
 
 				curSqlStmt.Append("Insert BoatTime ( ");
 				curSqlStmt.Append("SanctionId, MemberId, Event");
@@ -163,13 +161,21 @@ namespace WaterskiScoringSystem.Tools {
 				curSqlStmt.Append(", " + (String)curMsgDataList["rope"]);
 				curSqlStmt.Append(", " + (String)curMsgDataList["speed"]);
 
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b1"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b2"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b3"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b4"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b5"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["b6"]);
-				curSqlStmt.Append(", " + (decimal)curMsgDataList["endgate"]);
+				if (curEvent.Equals("Jump")) {
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["nt"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["mt"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["et"]);
+					curSqlStmt.Append(", 0, 0, 0, 0 " );
+
+				} else if (curEvent.Equals("Slalom")) {
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b1"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b2"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b3"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b4"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b5"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["b6"]);
+					curSqlStmt.Append(", " + (decimal)curMsgDataList["endgate"]);
+				}
 
 				curSqlStmt.Append(", getdate(), getdate()");
 				curSqlStmt.Append(" )");
@@ -190,6 +196,7 @@ namespace WaterskiScoringSystem.Tools {
 			try {
 				int curRound = 1;
 				if (curMsgDataList.ContainsKey("round")) curRound = (int)curMsgDataList["round"];
+				String curEvent = (String)curMsgDataList["athleteEvent"];
 
 				curSqlStmt.Append("Insert BoatPath ( ");
 				curSqlStmt.Append("SanctionId, MemberId, Event");
@@ -209,7 +216,11 @@ namespace WaterskiScoringSystem.Tools {
 
 				curSqlStmt.Append(", " + curRound);
 				curSqlStmt.Append(", " + (int)curMsgDataList["passNumber"]);
-				curSqlStmt.Append(", " + (String)curMsgDataList["rope"]);
+				if (curEvent.Equals("Slalom")) {
+					curSqlStmt.Append(", " + (String)curMsgDataList["rope"]);
+				} else {
+					curSqlStmt.Append(", ''");
+				}
 				if (curMsgDataList["speed"].GetType() == System.Type.GetType("System.Int32")) {
 					curSqlStmt.Append(", " + (int)curMsgDataList["speed"]);
 				}
@@ -220,23 +231,37 @@ namespace WaterskiScoringSystem.Tools {
 				curBuoyResults = (Dictionary<string, object>)curMsgDataList["gate"];
 				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b1"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+				if (curEvent.Equals("Jump")) {
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["nt"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b2"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["mt"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b3"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["et"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b4"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+					curSqlStmt.Append(", 0, 0, 0, 0, 0, 0 ");
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b5"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+				} else if (curEvent.Equals("Slalom")) {
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b1"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
 
-				curBuoyResults = (Dictionary<string, object>)curMsgDataList["b6"];
-				curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b2"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b3"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b4"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b5"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+
+					curBuoyResults = (Dictionary<string, object>)curMsgDataList["b6"];
+					curSqlStmt.Append(", " + (decimal)curBuoyResults["deviation"] + ", " + (decimal)curBuoyResults["cumulative"]);
+				}
 
 				curSqlStmt.Append(", '" + (String)curMsgDataList["reride"] + "'");
 				curSqlStmt.Append(", getdate(), getdate()");
@@ -499,15 +524,13 @@ namespace WaterskiScoringSystem.Tools {
 
 		}
 
-		public static decimal getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
+		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
 			StringBuilder curSqlStmt = new StringBuilder("");
-			String testSanctionId = "20E016";
 
 			for ( int count = 0; count < 10; count++ ) {
 				curSqlStmt = new StringBuilder("");
 				curSqlStmt.Append("SELECT * FROM BoatTime ");
-				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
+				curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
 				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
 				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
 				curSqlStmt.Append("AND Round = " + curRound + " ");
@@ -516,32 +539,50 @@ namespace WaterskiScoringSystem.Tools {
 
 				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 				if (curDataTable.Rows.Count > 0) {
-					int curPassScore = Convert.ToInt32(Math.Floor(inPassScore)) + 1;
-					String timeKey = "BoatTimeBuoy" + curPassScore;
-					return (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1][timeKey];
+					if (curEvent.Equals("Slalom")) {
+						int curPassScore = Convert.ToInt32(Math.Floor(inPassScore)) + 1;
+						String timeKey = "BoatTimeBuoy" + curPassScore;
+						return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1][timeKey] };
+
+					} else if (curEvent.Equals("Jump")) {
+						return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy1"]
+							, (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy2"]
+							, (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy3"]
+						};
+
+					}
 
 				} else {
 					Thread.Sleep(500);
 				}
 			}
 
-			return -1;
+			return new decimal[] { };
 		}
 
 		public static DataRow getBoatPath(String curEvent, String curMemberId, String curRound, String curPassNum ) {
 			StringBuilder curSqlStmt = new StringBuilder("");
-			String testSanctionId = "20E016";
 
 			for (int count = 0; count < 10; count++) {
 				curSqlStmt = new StringBuilder("");
-				curSqlStmt.Append("SELECT * FROM BoatPath ");
-				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
-				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
-				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
-				curSqlStmt.Append("AND Round = " + curRound + " ");
-				curSqlStmt.Append("AND PassNumber = " + curPassNum + " ");
-				curSqlStmt.Append("Order by InsertDate ");
+				curSqlStmt.Append( "SELECT P.Event, P.Round, P.PassNumber, P.PassLineLength, P.PassspeedKph" );
+				curSqlStmt.Append( ", P.PathDevBuoy0, P.PathDevCum0" );
+				curSqlStmt.Append( ", P.PathDevBuoy1, P.PathDevCum1, T.BoatTimeBuoy1" );
+				curSqlStmt.Append( ", P.PathDevBuoy2, P.PathDevCum2, T.BoatTimeBuoy2" );
+				curSqlStmt.Append( ", P.PathDevBuoy3, P.PathDevCum3, T.BoatTimeBuoy3" );
+				curSqlStmt.Append( ", P.PathDevBuoy4, P.PathDevCum4, T.BoatTimeBuoy4" );
+				curSqlStmt.Append( ", P.PathDevBuoy5, P.PathDevCum5, T.BoatTimeBuoy5" );
+				curSqlStmt.Append( ", P.PathDevBuoy6, P.PathDevCum6, T.BoatTimeBuoy6" );
+				curSqlStmt.Append( ", T.BoatTimeBuoy7" );
+				curSqlStmt.Append( ", P.InsertDate, P.LastUpdateDate " );
+				curSqlStmt.Append( "FROM BoatPath P " );
+				curSqlStmt.Append( "Left Outer Join BoatTime T on T.SanctionId = P.SanctionId AND T.MemberId = P.MemberId AND T.Round = P.Round  AND T.PassNumber = P.PassNumber AND T.Event = P.Event " );
+				curSqlStmt.Append("WHERE P.SanctionId = '" + mySanctionNum + "' ");
+				curSqlStmt.Append( "AND P.MemberId = '" + curMemberId + "' ");
+				curSqlStmt.Append( "AND P.Event = '" + curEvent + "' ");
+				curSqlStmt.Append( "AND P.Round = " + curRound + " ");
+				curSqlStmt.Append( "AND P.PassNumber = " + curPassNum + " ");
+				curSqlStmt.Append( "Order by P.InsertDate " );
 
 				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 				if (curDataTable.Rows.Count > 0) {
@@ -557,13 +598,11 @@ namespace WaterskiScoringSystem.Tools {
 
 		public static decimal[] getJumpMeasurement(String curEvent, String curMemberId, String curRound, String curPassNum) {
 			StringBuilder curSqlStmt = new StringBuilder("");
-			String testSanctionId = "20E016";
 
 			for (int count = 0; count < 10; count++) {
 				curSqlStmt = new StringBuilder("");
 				curSqlStmt.Append("SELECT * FROM JumpMeasurement ");
-				//curSqlStmt.Append("WHERE M.SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append("WHERE SanctionId = '" + testSanctionId + "' ");
+				curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
 				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
 				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
 				curSqlStmt.Append("AND Round = " + curRound + " ");

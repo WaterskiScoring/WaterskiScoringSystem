@@ -615,7 +615,235 @@ namespace WaterskiScoringSystem.Tools {
 
 		}
 
-        public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
+		public static Boolean disableCurrentSkiers(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
+			String curMethodName = "disableCurrentSkiers";
+			StringBuilder curSqlStmt = new StringBuilder("");
+			Boolean returnStatus = false;
+			int curLineCount = 0;
+			DataTable curDataTable = new DataTable();
+			ProgressWindow myProgressInfo = new ProgressWindow();
+
+			try {
+				if (inEvent.Equals("TrickVideo")) {
+					curSqlStmt.Append("Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round ");
+					curSqlStmt.Append("From TrickVideo S ");
+					curSqlStmt.Append("Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup ");
+					curSqlStmt.Append("Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId ");
+					curSqlStmt.Append("      AND ER.AgeGroup = S.AgeGroup AND ER.Event = 'Trick' ");
+					curSqlStmt.Append("Where S.SanctionId = '" + inSanctionId + "' ");
+					curSqlStmt.Append("AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)");
+					curSqlStmt.Append("Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId");
+					curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+
+				} else {
+					curSqlStmt.Append("Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, ER.EventGroup ");
+					curSqlStmt.Append("From " + inEvent + "Score S ");
+					curSqlStmt.Append("Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup ");
+					curSqlStmt.Append("Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId ");
+					curSqlStmt.Append("      AND ER.AgeGroup = S.AgeGroup AND ER.Event = '" + inEvent + "' ");
+					curSqlStmt.Append("Where S.SanctionId = '" + inSanctionId + "' ");
+					curSqlStmt.Append("AND S.Round = " + inRound + " ");
+					if (inEventGroup != null) {
+						if (inEventGroup.Equals("All")) {
+						} else if (inEventGroup.ToUpper().Equals("MEN A")) {
+							curSqlStmt.Append("And ER.AgeGroup = 'CM' ");
+						} else if (inEventGroup.ToUpper().Equals("WOMEN A")) {
+							curSqlStmt.Append("And ER.AgeGroup = 'CW' ");
+						} else if (inEventGroup.ToUpper().Equals("MEN B")) {
+							curSqlStmt.Append("And ER.AgeGroup = 'BM' ");
+						} else if (inEventGroup.ToUpper().Equals("WOMEN B")) {
+							curSqlStmt.Append("And ER.AgeGroup = 'BW' ");
+						} else if (inEventGroup.ToUpper().Equals("NON TEAM")) {
+							curSqlStmt.Append("And ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ");
+						} else {
+							curSqlStmt.Append("AND ER.EventGroup = '" + inEventGroup + "' ");
+						}
+					}
+					curSqlStmt.Append("Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup");
+					curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+				}
+
+				myProgressInfo.setProgressMin(1);
+				myProgressInfo.setProgressMax(curDataTable.Rows.Count);
+
+				String curMemberId = "", curAgeGroup = "", curSkierName = "";
+				byte curRound = 0;
+				foreach (DataRow curRow in curDataTable.Rows) {
+					curMemberId = (String)curRow["MemberId"];
+					curAgeGroup = (String)curRow["AgeGroup"];
+					curSkierName = (String)curRow["SkierName"];
+					curRound = (Byte)curRow["Round"];
+
+					curLineCount++;
+					myProgressInfo.setProgressValue(curLineCount);
+					myProgressInfo.setProgessMsg("Processing " + curSkierName);
+					myProgressInfo.Show();
+					myProgressInfo.Refresh();
+
+					if (inEvent.Equals("Slalom")) {
+						returnStatus = disableCurrentSkierSlalom(inSanctionId, curMemberId, curAgeGroup, curRound, inEvent);
+					} else if (inEvent.Equals("Trick")) {
+						returnStatus = disableCurrentSkierTrick(inSanctionId, curMemberId, curAgeGroup, curRound, inEvent);
+					} else if (inEvent.Equals("Jump")) {
+						returnStatus = disableCurrentSkierJump(inSanctionId, curMemberId, curAgeGroup, curRound, inEvent);
+					} else if (inEvent.Equals("TrickVideo")) {
+						returnStatus = ExportLiveWeb.exportCurrentSkierTrickVideo(inSanctionId, curMemberId, curAgeGroup, curRound);
+					}
+					if (returnStatus) {
+						continue;
+					} else {
+						MessageBox.Show(String.Format("Error encountered sending {0} scores for {1} {2}, terminating request", inEvent, curAgeGroup, curSkierName));
+						break;
+					}
+				}
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error encountered trying to send data to web location \n\nError: " + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				return false;
+
+			} finally {
+				myProgressInfo.Close();
+			}
+
+			return true;
+		}
+
+		public static Boolean disableCurrentSkierSlalom(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
+			String curMethodName = "disableCurrentSkierSlalom";
+			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curXml = new StringBuilder("");
+			Boolean returnStatus = false;
+
+			try {
+				curSqlStmt = new StringBuilder("");
+				curXml.Append("<LiveWebRequest>");
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM SlalomScore ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("SlalomScore", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Delete"));
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM SlalomRecap ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("SlalomRecap", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "SkierRunNum" }, curSqlStmt.ToString(), "Delete"));
+
+				curXml.Append("</LiveWebRequest>");
+				returnStatus = SendMessageHttp.sendMessagePostXml(LiveWebLocation, curXml.ToString());
+				if (returnStatus == false) return false;
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error encountered trying to send slalom scores to web location \n\nError: " + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				return false;
+			}
+
+			return true;
+		}
+
+		public static Boolean disableCurrentSkierTrick(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
+			String curMethodName = "disableCurrentSkierTrick";
+			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curXml = new StringBuilder("");
+			Boolean returnStatus = false;
+
+			try {
+				curSqlStmt = new StringBuilder("");
+				curXml.Append("<LiveWebRequest>");
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM TrickScore ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("TrickScore", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Delete"));
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM TrickPass ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("TrickPass", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "PassNum", "Seq" }, curSqlStmt.ToString(), "Delete"));
+
+				curXml.Append("</LiveWebRequest>");
+				returnStatus = SendMessageHttp.sendMessagePostXml(LiveWebLocation, curXml.ToString());
+				if (returnStatus == false) return false;
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error encountered trying to send trick scores to web location \n\nError: " + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				return false;
+			}
+
+			return true;
+		}
+
+		public static Boolean disableCurrentSkierTrickVideo(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound) {
+			String curMethodName = "disableCurrentSkierTrickVideo";
+			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curXml = new StringBuilder("");
+			Boolean returnStatus = false;
+
+			try {
+				curSqlStmt = new StringBuilder("");
+				curXml.Append("<LiveWebRequest>");
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM TrickVideo ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("TrickVideo", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Delete"));
+
+				curXml.Append("</LiveWebRequest>");
+				returnStatus = SendMessageHttp.sendMessagePostXml(LiveWebLocation, curXml.ToString());
+				if (returnStatus == false) return false;
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error encountered trying to send trick videos to web location \n\nError: " + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				return false;
+			}
+
+			return true;
+		}
+
+		public static Boolean disableCurrentSkierJump(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
+			String curMethodName = "disableCurrentSkierJump";
+			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curXml = new StringBuilder("");
+			Boolean returnStatus = false;
+
+			try {
+				curSqlStmt = new StringBuilder("");
+				curXml.Append("<LiveWebRequest>");
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM JumpScore ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("JumpScore", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Insert"));
+
+				curSqlStmt = new StringBuilder("");
+				curSqlStmt.Append("SELECT * FROM JumpRecap ");
+				curSqlStmt.Append("Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' ");
+				curSqlStmt.Append("And Round = " + inRound);
+				curXml.Append(exportData("JumpRecap", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round", "PassNum" }, curSqlStmt.ToString(), "Insert"));
+
+				curXml.Append("</LiveWebRequest>");
+				returnStatus = SendMessageHttp.sendMessagePostXml(LiveWebLocation, curXml.ToString());
+				if (returnStatus == false) return false;
+
+			} catch (Exception ex) {
+				MessageBox.Show("Error encountered trying to send jump scores to web location \n\nError: " + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				return false;
+			}
+
+			return true;
+		}
+
+		public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
             String curMethodName = "exportData";
             char[] singleQuoteDelim = new char[] { '\'' };
             String curMsg = "";

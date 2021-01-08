@@ -180,7 +180,7 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList V ON V.ListName = 'ApprovedBoats' AND V.ListCode = S.Boat ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom'   ");
             curSqlStmt.Append( "ORDER BY S.Round, E.EventGroup, S.AgeGroup, E.RankingScore, T.SkierName, R.SkierRunNum " );
-            return getData(curSqlStmt.ToString());
+            return DataAccess.getDataTable(curSqlStmt.ToString());
         }
 
         private DataTable getTourData() {
@@ -192,12 +192,9 @@ namespace WaterskiScoringSystem.Slalom {
             curSqlStmt.Append("LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' ");
-            return getData(curSqlStmt.ToString());
+            return DataAccess.getDataTable(curSqlStmt.ToString());
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable(inSelectStmt);
-        }
 
     }
 }

@@ -526,10 +526,14 @@ namespace WaterskiScoringSystem.Tools {
             String State = (String) curImportMemberEntry["State"];
 
 			String SkiYearAge = "0";
-			if ( curImportMemberEntry.ContainsKey( "SkiYearAge" ) ) {
-				SkiYearAge = ( (int) curImportMemberEntry["SkiYearAge"] ).ToString();
-			} else if ( curImportMemberEntry.ContainsKey( "Age" ) ) {
-				SkiYearAge = ( (int) curImportMemberEntry["Age"] ).ToString();
+			if (curImportMemberEntry.ContainsKey("SkiYearAge")) {
+				SkiYearAge = ((int)curImportMemberEntry["SkiYearAge"]).ToString();
+			} else if (curImportMemberEntry.ContainsKey("Age")) {
+				if (curImportMemberEntry["Age"].GetType() == System.Type.GetType("System.String")) {
+					SkiYearAge = (String)curImportMemberEntry["Age"];
+				} else if (curImportMemberEntry["Age"].GetType() == System.Type.GetType("System.Int32")) {
+					SkiYearAge = ((int)curImportMemberEntry["Age"]).ToString();
+				}
 			}
 			if ( SkiYearAge.Length > 0 ) {
                 int numCk;
@@ -545,14 +549,33 @@ namespace WaterskiScoringSystem.Tools {
             }
 
 			Boolean CanSki = false;
-			if ( curImportMemberEntry["CanSki"] != null ) {
-				CanSki = (Boolean) curImportMemberEntry["CanSki"];
+			if (curImportMemberEntry.ContainsKey("CanSki")) {
+				if (curImportMemberEntry["CanSki"] != null) {
+					if (curImportMemberEntry["CanSki"].GetType() == System.Type.GetType("System.String")) {
+						if (((String)curImportMemberEntry["CanSki"]).Equals("true")) CanSki = true;
+					} else {
+						CanSki = (Boolean)curImportMemberEntry["CanSki"];
+					}
+				}
 			}
 			Boolean CanSkiGR = false;
-			if ( curImportMemberEntry["CanSkiGR"] != null ) {
-				CanSkiGR = (Boolean) curImportMemberEntry["CanSkiGR"];
+			if (curImportMemberEntry.ContainsKey("CanSkiGR")) {
+				if (curImportMemberEntry["CanSkiGR"] != null) {
+					if (curImportMemberEntry["CanSkiGR"].GetType() == System.Type.GetType("System.String")) {
+						if (((String)curImportMemberEntry["CanSkiGR"]).Equals("true")) CanSkiGR = true;
+					} else {
+						CanSkiGR = (Boolean)curImportMemberEntry["CanSkiGR"];
+					}
+				}
 			}
-			String Waiver = ((int) curImportMemberEntry["Waiver"]).ToString();
+			String Waiver = "";
+			if (curImportMemberEntry.ContainsKey("Waiver")) {
+				if (curImportMemberEntry["Waiver"].GetType() == System.Type.GetType("System.String")) {
+					Waiver = (String)curImportMemberEntry["Waiver"];
+				} else {
+					Waiver = ((int)curImportMemberEntry["Waiver"]).ToString();
+				}
+			}
 
 			String MemberStatus = "In-Active";
 			Boolean ActiveMember = false;

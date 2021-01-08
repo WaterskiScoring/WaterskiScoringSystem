@@ -1671,10 +1671,12 @@ namespace WaterskiScoringSystem.Trick {
                     ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
                     ExportLiveWeb.exportTourData( mySanctionNum );
                     LiveWebLabel.Visible = true;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
                     ExportLiveWeb.LiveWebLocation = "";
                     LiveWebLabel.Visible = false;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" )) {
                     if (ExportLiveWeb.LiveWebLocation.Length > 1) {
                         try {
                             String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
@@ -1685,7 +1687,8 @@ namespace WaterskiScoringSystem.Trick {
                         } catch {
                         }
                     }
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
                     if (ExportLiveWeb.LiveWebLocation.Length > 1) {
                         try {
                             String curEventGroup = EventGroupList.SelectedItem.ToString();
@@ -1694,8 +1697,39 @@ namespace WaterskiScoringSystem.Trick {
                         } catch {
                         }
                     }
-                }
-            }
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("DiableSkier")) {
+					if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+						try {
+							String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+							String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+							String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+							String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
+							byte curRound = Convert.ToByte(roundSelect.RoundValue);
+							if (ExportLiveWeb.exportCurrentSkierTrick(mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup) == false) {
+								MessageBox.Show("Error encountered sending score to LiveWeb");
+							}
+
+						} catch {
+							MessageBox.Show("Exception encounter sending score to LiveWeb");
+						}
+					}
+
+				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("DiableAllSkier")) {
+					if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+						try {
+							String curEventGroup = EventGroupList.SelectedItem.ToString();
+							byte curRound = Convert.ToByte(roundSelect.RoundValue);
+							if (ExportLiveWeb.exportCurrentSkiers("Trick", mySanctionNum, curRound, curEventGroup) == false) {
+								MessageBox.Show("Error encountered sending score to LiveWeb");
+							}
+
+						} catch {
+							MessageBox.Show("Exception encounter sending score to LiveWeb");
+						}
+					}
+				}
+			}
         }
 
         private void loadEventGroupList(int inRound) {

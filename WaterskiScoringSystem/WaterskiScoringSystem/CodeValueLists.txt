@@ -1,5 +1,15 @@
 Table:	CodeValueList							
 PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
+0	SlalomBoatPathDevMax	B1	1	1	Buoy 1 Deviation Max	20	20	Buoy 1 Deviation Max
+0	SlalomBoatPathDevMax	B2	2	2	Buoy 2 Deviation Max	28	28	Buoy 2 Deviation Max
+0	SlalomBoatPathDevMax	B3	3	3	Buoy 3 Deviation Max	35	35	Buoy 3 Deviation Max
+0	SlalomBoatPathDevMax	B4	4	4	Buoy 4 Deviation Max	40	40	Buoy 4 Deviation Max
+0	SlalomBoatPathDevMax	B5	5	5	Buoy 5 Deviation Max	45	45	Buoy 5 Deviation Max
+0	SlalomBoatPathDevMax	B6	6	6	Buoy 6 Deviation Max	49	49	Buoy 6 Deviation Max
+0	JumpBoatPathDevMax	B1	1	1	Buoy 1 Deviation Max	20	20	Buoy 1 Deviation Max
+0	JumpBoatPathDevMax	B2	2	2	Buoy 2 Deviation Max	28	28	Buoy 2 Deviation Max
+0	JumpBoatPathDevMax	B3	3	3	Buoy 3 Deviation Max	35	35	Buoy 3 Deviation Max
+0	JumpBoatPathDevMax	B4	4	4	Buoy 4 Deviation Max	40	40	Buoy 4 Deviation Max
 0	SlalomAltScoreMethodQual	B1		1	Boys 1 (U10)	0	0	Boys 1 (U10)
 0	SlalomAltScoreMethodQual	B2		2	Boys 2 (U12)	0	0	Boys 2 (U12)
 0	SlalomAltScoreMethodQual	B3		3	Boys 3 (U14)	0	0	Boys 3 (U14)
@@ -42,11 +52,24 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	SlalomAltScoreMethodQual	W9		49	Womens 9 	0	0	Womens 9 
 0	SlalomAltScoreMethodQual	WA		50	Womens 10 	0	0	Womens 10 
 0	SlalomAltScoreMethodQual	WB		51	Womens 11 	0	0	Womens 11 
-22356	AnnouncerRating	 	1	1	Unrated			
-22357	AnnouncerRating	S	2	2	State			
-22358	AnnouncerRating	R	3	3	Regional			
-22359	AnnouncerRating	N	4	4	National			
-22360	AnnouncerRating	E	5	5	Emeritus			
+0	AnnouncerRating	 	1	1	Unrated			
+0	AnnouncerRating	S	2	2	State			
+0	AnnouncerRating	R	3	3	Regional			
+0	AnnouncerRating	N	4	4	National			
+0	AnnouncerRating	E	5	5	Emeritus			
+0	ApprovedBoats	MATXI-53-21	210001	1210001	Malibu Response Txi 5.3L			2021 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MATXI-62-21	210002	1210002	Malibu Response Txi 6.2L			2021 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC 525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MCPro-60-21	210003	1210003	MasterCraft ProStar 6.0L			2021 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
+0	ApprovedBoats	MCPro-62-21	210004	1210004	MasterCraft ProStar 6.2L			2021 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ 867-MF 3 14 x 13 Nibral | ZO-S
+0	ApprovedBoats	CC000-21	210005	1210005	Nautique			2021 | PCM H5 (5.3L), PCM ZR4 (6.0L), PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 654* 4 12.5 x 15 Nibral, AC 1458 3 13 x 14 Nibral, AC 668* 4 12.5 x 15.5 Nibral | ZO-S
+0	ApprovedBoats	CC200-21	210006	1210006	Nautique 200			2021 | PCM ZR4 (6.0L), PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 1458 3 13 x 14 Nibral | ZO-S
+0	ApprovedBoats	CC200-20	200006	1200006	Ski Nautique 200			2020 | PCM  | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size: | ZO-S
+0	ApprovedBoats	CC000-20	200001	1200001	Ski Nautique			2020 | PCM | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size: | ZO-S
+0	ApprovedBoats	--Select--	999999	1999999	Select boat in use			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+0	ApprovedBoats	Unlisted	999999	1999999	Unlisted			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
+0	ApprovedBoats	CC200-57-ZO-00	130005	1130005	Ski Nautique Generic ZO			Any | PCM | Fuel | Trans: ???? | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral | ZO-R
+0	ApprovedBoats	MALXI-57-ZO-00	130013	1130013	Malibu Respons Generic ZO			Any | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO-R
+0	ApprovedBoats	MC190-57-ZO-00	130018	1130018	MasterCraft Generic			Any | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO-R
 0	ApprovedBoats	CC000-53-H5-4-20	200001	200001	Ski Nautique PCM H5 (5.3L) 4 Blade			2020 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC654, 4, 12.5 x 15 Nibral | ZO-S
 0	ApprovedBoats	CC000-53-H5-3-20	200002	200002	Ski Nautique PCM H5 (5.3L) 3 Blade			2020 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-S
 0	ApprovedBoats	CC000-60-ZR43-20	200003	200003	Ski Nautique PCM ZR4 (6.0L) 3 Blade			2020 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-S
@@ -105,8 +128,6 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	ApprovedBoats	CC206-62-H6-3-18	180037	180037	Ski Nautique 200 PCM H6 6.2L 3 Blade			2018 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
 0	ApprovedBoats	CC206-62-4094-18	180038	180038	Ski Nautique 200 PCM ZR409 6.0L 4 Blade			2018 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
 0	ApprovedBoats	CC206-62-4093-18	180039	180039	Ski Nautique 200 PCM ZR409 6.0L 3 Blade			2018 | PCM ZR409 6.0L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
-0	ApprovedBoats	--Select--	999999	999999	Select boat in use			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
-0	ApprovedBoats	Unlisted	999999	999999	Unlisted			Year/HullStatus | EngineSpec | FuelDel | Transmission | Prop | SpeedControl
 0	ApprovedBoats	Cen-57-Z0-17-3	170010	170010	Centurion Carbon Pro 5.7L ZO 3 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
 0	ApprovedBoats	Cen-57-Z0-17-4	170011	170011	Centurion Carbon Pro 5.7L ZO 4 Blade			2017 | PCM Excalibur 343 (5.7L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ534, 4, 13 x 14.5 Nibral | ZO-R
 0	ApprovedBoats	Cen-60-Z0-17-3	170012	170012	Centurion Carbon Pro 6.0L ZO 3 Blade			2017 | PCM ZR409 (6.0L) | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ365, 3, 14 x 13 Nibral | ZO-R
@@ -141,11 +162,6 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	ApprovedBoats	CC200-53-P14-16	160041	160041	Ski Nautique 200 PCM H5 5.3L 3 Blade			2016 | PCM H5 5.3L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
 0	ApprovedBoats	CC206-62-P15-16	160042	160042	Ski Nautique 200 PCM H6 6.2L 4 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC668, 4, 12.5 x 15.5 Nibral | ZO-R
 0	ApprovedBoats	CC206-62-P14-16	160043	160043	Ski Nautique 200 PCM H6 6.2L 3 Blade			2016 | PCM H6 6.2L | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC1458, 3, 13 x 14 Nibral | ZO-R
-0	ApprovedBoats	Cen-57-Z0-00	130001	130001	CenturionGeneric ZO			Any | PCM | Fuel | Trans: ???? | Propeller Mfr,Blades, Size:OJ, 4, 13 x 14.5 Nibral | ZO-R
-0	ApprovedBoats	CC200-57-ZO-00	130005	130005	Ski Nautique Generic ZO			Any | PCM | Fuel | Trans: ???? | Propeller Mfr,Blades, Size:AC, 4, 12.5 x 14.25 Nibral | ZO-R
-0	ApprovedBoats	MALXI-57-ZO-00	130013	130013	Malibu Respons Generic ZO			Any | Indmar Monsoon 5.7L | Fuel Del: EFI | Trans:1:1 | Propeller Mfr,Blades, Size:AC, 3, 13 x 12 Nibral | ZO-R
-0	ApprovedBoats	MC190-57-ZO-00	130018	130018	MasterCraft Generic			Any | Indmar MCX 5.7L | Fuel | Trans: 1.26:1/1.25:1 | Propeller Mfr,Blades, Size:OJ, 4, 13.7 x 15 Nibral | ZO-R
-0	ApprovedBoats	Outback-57-PZ	130028	130028	MMoomba Outback-5.7L PZ			Any | Indmar Assault 5.7L | Fuel Del:EFI | Trans:1.03:1 | Propeller Mfr,Blades, Size:OJ, 3, 13 x 11 Nibral | PP 6.5ng | ZO-R
 22361	ApprovedManufacturers	CC	1	1	Correct Craft			Correct Craft
 22362	ApprovedManufacturers	MC	2	2	MasterCraft			MasterCraft
 22363	ApprovedManufacturers	MA	3	3	Malibu			Malibu

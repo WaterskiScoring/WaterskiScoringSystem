@@ -21,8 +21,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataTable myMemberListDataTable;
 		private DataRow myTourRow = null;
 
-		private List<object> myResponseDataList = null;
-
 		public TourRegRankEquiv() {
             InitializeComponent();
         }
@@ -64,7 +62,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void SearchButton_Click(object sender, EventArgs e) {
 			myMemberListDataTable = null;
-			myResponseDataList = null;
 			DataGridView.Rows.Clear();
 
 			/*
@@ -337,18 +334,10 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			NameValueCollection curHeaderParams = new NameValueCollection();
-			myResponseDataList = null;
-
 			Cursor.Current = Cursors.WaitCursor;
-			myResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
-			if ( myResponseDataList != null && myResponseDataList.Count > 0 ) {
-				DataTable curDataTable = SendMessageHttp.convertDictionaryListToDataTable( myResponseDataList );
-				Cursor.Current = Cursors.Default;
-				return curDataTable;
-			} else {
-				return null;
-			}
-
+			DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+			Cursor.Current = Cursors.Default;
+			return curDataTable;
 		}
 
 		private DataRow getTourData() {

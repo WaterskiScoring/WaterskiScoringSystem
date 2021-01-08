@@ -27,8 +27,6 @@ namespace WaterskiScoringSystem.Tournament {
         private EditMember myEditMemberDialog;
 		private String myInputMemberId = "";
 
-		private List<object> myResponseDataList = null;
-
 		public TourRegAddMember() {
             InitializeComponent();
         }
@@ -102,22 +100,20 @@ namespace WaterskiScoringSystem.Tournament {
 
                 DataGridView.CurrentRow.Selected = true;
                 DataGridViewSelectedRowCollection selectedRows = DataGridView.SelectedRows;
-                foreach ( DataGridViewRow curRow in selectedRows ) {
-					String curMemberIdSelected = (String) curRow.Cells["MemberId"].Value;
-					//String curAgeGroupSelected = (String) curRow.Cells["Div"].Value;
-
+                foreach ( DataGridViewRow curViewRow in selectedRows ) {
+					String curMemberIdSelected = (String)curViewRow.Cells["MemberId"].Value;
 					if ( usawsSearchLoc.Checked ) {
 						ImportMember importMember = new ImportMember( myTourRow );
 
 						/*
 						 * Search imported records to find the matching record to the selected skier currently being processed
 						 */
-						foreach ( Dictionary<string, object> curEntry in myResponseDataList ) {
+						foreach ( DataRow curDataRow in myMemberListDataTable.Rows) {
 							String curMemberId = "";
-							if ( curEntry.ContainsKey( "MemberID" ) ) {
-								curMemberId = (String) curEntry["MemberID"];
+							if (myMemberListDataTable.Columns.Contains( "MemberID" ) ) {
+								curMemberId = (String)curDataRow["MemberID"];
 							} else {
-								curMemberId = (String) curEntry["MemberId"];
+								curMemberId = (String)curDataRow["MemberId"];
 							}
 							if ( curMemberId.Length == 11 ) {
 								curMemberId = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
@@ -126,7 +122,7 @@ namespace WaterskiScoringSystem.Tournament {
 							 * Add or update member information for selected skier using imported data
 							 */
 							if ( curMemberId.Equals( curMemberIdSelected ) ) {
-								importMember.importMemberWithRatings( curEntry );
+								importMember.importMemberWithRatings(SendMessageHttp.convertDataRowToDictionary(curDataRow));
 								break;
 							}
 						}
@@ -163,7 +159,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void SearchButton_Click(object sender, EventArgs e) {
 			myMemberListDataTable = null;
-			myResponseDataList = null;
 			DataGridView.Rows.Clear();
 
 			if ( localSearchLoc.Checked ) {
@@ -678,18 +673,15 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			NameValueCollection curHeaderParams = new NameValueCollection();
-			myResponseDataList = null;
-
 			Cursor.Current = Cursors.WaitCursor;
-			myResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
-			if ( myResponseDataList != null && myResponseDataList.Count > 0 ) {
-				DataTable curDataTable = SendMessageHttp.convertDictionaryListToDataTable( myResponseDataList );
+			DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+			if (curDataTable != null ) {
 				Cursor.Current = Cursors.Default;
 				return curDataTable;
+
 			} else {
 				return null;
 			}
-
 		}
 
 		private DataRow getTourData() {

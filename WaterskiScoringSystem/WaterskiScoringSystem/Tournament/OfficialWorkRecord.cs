@@ -237,7 +237,9 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
                         curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
                         curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
-                        try {
+						curViewRow.Cells["ReadyToSki"].Value = (String)curDataRow["ReadyToSki"];
+
+						try {
                             curViewRow.Cells["Federation"].Value = (String)curDataRow["Federation"];
                         } catch {
                             curViewRow.Cells["Federation"].Value = "";
@@ -1231,7 +1233,7 @@ namespace WaterskiScoringSystem.Tournament {
         
         private DataRow getOfficialWorkData( String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT distinct O.PK, O.SanctionId, O.MemberId, T.SkierName" );
+            curSqlStmt.Append( "SELECT distinct O.PK, O.SanctionId, O.MemberId, T.SkierName, T.ReadyToSki" );
             curSqlStmt.Append( ", O.JudgeChief, O.JudgeAsstChief, O.JudgeAppointed" );
             curSqlStmt.Append( ", O.DriverChief, O.DriverAsstChief, O.DriverAppointed" );
             curSqlStmt.Append( ", O.ScoreChief, O.ScoreAsstChief, O.ScoreAppointed" );
@@ -1275,7 +1277,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getTourMemberList() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT distinct TR.SanctionId, TR.MemberId, TR.SkierName, ML.Federation" );
+            curSqlStmt.Append( "SELECT distinct TR.SanctionId, TR.MemberId, TR.SkierName, TR.ReadyToSki, ML.Federation" );
 			curSqlStmt.Append( ", Coalesce( O.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
 			curSqlStmt.Append( ", Coalesce( O.JudgeTrickRating, '' ) as JudgeTrickRating" );
 			curSqlStmt.Append( ", Coalesce( O.JudgeJumpRating, '' ) as JudgeJumpRating" );
@@ -1292,7 +1294,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
             curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
-            curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
+			curSqlStmt.Append("  AND TR.ReadyToSki = 'Y' ");
+			curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 

@@ -22,8 +22,6 @@ namespace WaterskiScoringSystem.Tournament {
         private RegionDropdownList myRegionDropdownList;
         private StateDropdownList myStateDropdownList;
 
-        private List<object> myResponseDataList = null;
-        
         public OfficialImport() {
             InitializeComponent();
         }
@@ -243,13 +241,9 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			NameValueCollection curHeaderParams = new NameValueCollection();
-			myResponseDataList = null;
-
 			Cursor.Current = Cursors.WaitCursor;
-			//myResponseDataList = SendMessageHttp.getMessageResponseJsonArray(curReqstUrl, curHeaderParams, curContentType, "wstims", "Slalom38tTrick13Jump250", false);
-			myResponseDataList = SendMessageHttp.getMessageResponseJsonArray(curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false);
-            if ( myResponseDataList != null && myResponseDataList.Count > 0 ) {
-                DataTable curDataTable = SendMessageHttp.convertDictionaryListToDataTable(myResponseDataList);
+			DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable(curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false);
+            if (curDataTable != null && curDataTable.Rows.Count > 0 ) {
                 officialImportDataGridView.DataSource = curDataTable;
 
                 officialImportDataGridView.Visible = true;

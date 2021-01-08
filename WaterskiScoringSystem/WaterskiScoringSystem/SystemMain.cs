@@ -617,7 +617,28 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
-        private void navTrickSummary_Click(object sender, EventArgs e) {
+		private void navBoatPathReportSlalom_Click(object sender, EventArgs e) {
+			BoatPathExport curForm = new BoatPathExport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Slalom";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+		private void navBoatPathReportJump_Click(object sender, EventArgs e) {
+			BoatPathExport curForm = new BoatPathExport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Jump";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+
+		private void navTrickSummary_Click(object sender, EventArgs e) {
             TrickSummary curForm = new TrickSummary();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
@@ -848,15 +869,8 @@ namespace WaterskiScoringSystem {
         }
 
         private void overviewToolStripMenuItem_Click( object sender, EventArgs e ) {
-            MessageBox.Show( "See the WstimsForWindowsRefGuide.pdf for full documentation."
-                + "\n\n Document can be downloaded from \n http://awsaeast.com/scoring/WstimsForWindowsRefGuide.pdf" );
-
-            //"WstimsForWindowsRefGuide.pdf"
-            //        + "\n StartupPath=" + Application.StartupPath
-            //        + "\n\n UserAppDataPath=" + Application.UserAppDataPath
-
-            //System.xxDiagnostics.Process.Start( Application.StartupPath + "\\WstimsForWindowsRefGuide.pdf" );
-        }
+            MessageBox.Show( "See the Wstims For Windows Newsletter Archive \nhttp://www.waterskiresults.com/filelist.php?FolderName=Newsletters");
+		}
 
         private void navHelpAbout_Click( object sender, EventArgs e ) {
             HelpAbout curForm = new HelpAbout();
@@ -958,6 +972,7 @@ namespace WaterskiScoringSystem {
 			//EwscMonitor.execLoadTestMessages();
 			MessageBox.Show("Feature currently disabled");
 		}
+
 	}
 }
 

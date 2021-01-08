@@ -115,11 +115,6 @@ namespace WaterskiScoringSystem.Tools {
         public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod) {
             String curMethodName = "SendMessageHttp:getMessageResponseJson";
             HttpWebRequest curRequest = null;
-            StringBuilder curMessageBuffer = new StringBuilder( "" );
-            HttpWebResponse curResponse = null;
-            Stream curResponseStream = null;
-            StreamReader curStreamReader = null;
-            Dictionary<string, object> curResponseDataList = null;
 
             try {
                 //Create a request using a URL that can receive a post
@@ -157,35 +152,67 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 //Send request to upload file
-                curResponse = (HttpWebResponse)curRequest.GetResponse();
-                curResponseStream = curResponse.GetResponseStream();
-                curStreamReader = new StreamReader( curResponseStream );
-                String curResponseMessage = curStreamReader.ReadToEnd();
-                if (curResponseMessage.Length > 0) {
-                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(curResponseMessage);
-                }
-            } catch (Exception ex) {
+				return readJsonResponseAsDictionary((HttpWebResponse)curRequest.GetResponse());
+
+			} catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                curResponseDataList = null;
-            } finally {
-                // Clean up the streams.
-                if (curStreamReader != null) curStreamReader.Close();
-                if (curResponseStream != null) curResponseStream.Close();
-                if (curResponse != null) curResponse.Close();
+                return null;
             }
-
-            return curResponseDataList;
         }
+		public static DataTable getMessageResponseDataTable(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod) {
+			String curMethodName = "SendMessageHttp:getMessageResponseDataTable";
+			HttpWebRequest curRequest = null;
 
-        public static List<object> getMessageResponseJsonArray( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod ) {
+			try {
+				//Create a request using a URL that can receive a post
+				curRequest = (HttpWebRequest)WebRequest.Create(inUrl);
+
+				//Set the Method property of the request to POST.
+				if (inPostMethod) {
+					curRequest.Method = "POST";
+				} else {
+					curRequest.Method = "GET";
+				}
+				//Set the ContentType property of the WebRequest.
+				curRequest.ContentType = inContentType;
+				curRequest.KeepAlive = true;
+				curRequest.Timeout = 500000;
+
+				if (inUserAccount != null) {
+					if (inUrl.Contains("usawaterski")) {
+						inHeaderParams.Add("WSTIMS", "Basic " + inUserAccount + ":" + inPassword);
+					} else {
+						curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
+					}
+				}
+				if (inUrl.ToLower().StartsWith("https")) {
+					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+					ServicePointManager.Expect100Continue = false;
+				}
+
+				//Set header parameters to the WebRequest
+				((HttpWebRequest)curRequest).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
+
+				if (inHeaderParams != null) {
+					foreach (string curKey in inHeaderParams.Keys) {
+						curRequest.Headers[curKey] = inHeaderParams[curKey];
+					}
+				}
+
+				//Send request to upload file
+				return readJsonResponseAsDataTable((HttpWebResponse)curRequest.GetResponse());
+
+			} catch (Exception ex) {
+				MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+				return null;
+			}
+		}
+
+		public static List<object> getMessageResponseJsonArray( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod ) {
             String curMethodName = "SendMessageHttp:getMessageResponseJsonArray";
             HttpWebRequest curRequest = null;
-            StringBuilder curMessageBuffer = new StringBuilder("");
-            HttpWebResponse curResponse = null;
-            Stream curResponseStream = null;
-            StreamReader curStreamReader = null;
-            List<object> curResponseDataList = null;
 
             try {
 				//Create a request using a URL that can receive a post
@@ -224,32 +251,13 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
 				//Send request to upload file
-				curResponse = (HttpWebResponse) curRequest.GetResponse();
-                curResponseStream = curResponse.GetResponseStream();
-                curStreamReader = new StreamReader(curResponseStream);
-                String curResponseMessage = curStreamReader.ReadToEnd();
-                if ( curResponseMessage.Length > 0 ) {
-					if ( curResponseMessage.Equals( "Invalid credentials, unable to complete request" ) ) {
-						MessageBox.Show( curResponseMessage );
-						curResponseDataList = null;
-					} else {
-						curResponseDataList = new JavaScriptSerializer().Deserialize<List<object>>( curResponseMessage );
-					}
-				}
+				return readJsonResponseAsList((HttpWebResponse)curRequest.GetResponse() );
 
             } catch ( Exception ex ) {
                 MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
                 Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
-                curResponseDataList = null;
-
-            } finally {
-                // Clean up the streams.
-                if ( curStreamReader != null ) curStreamReader.Close();
-                if ( curResponseStream != null ) curResponseStream.Close();
-                if ( curResponse != null ) curResponse.Close();
+                return null;
             }
-
-            return curResponseDataList;
         }
 
         //public static List<KeyValuePair<String, String>> sendMessagePostFileUpload(String inUrl, String inFileRef, String inFileFormName, NameValueCollection inHeaderParams, NameValueCollection inFormData, String inUserAccount, String inPassword) {
@@ -258,11 +266,6 @@ namespace WaterskiScoringSystem.Tools {
             HttpWebRequest curRequest = null;
             String curFileFormName = "file";
             StringBuilder curMessageBuffer = new StringBuilder( "" );
-            HttpWebResponse curResponse = null;
-            Stream curResponseStream = null;
-            StreamReader curStreamReader = null;
-            //List<KeyValuePair<String, String>> curResponseDataList = null;
-            Dictionary<string, object> curResponseDataList = null;
 
             try {
                 String curBoundary = "----------" + DateTime.Now.Ticks.ToString( "x" );
@@ -348,35 +351,14 @@ namespace WaterskiScoringSystem.Tools {
 
                 //Send request to upload file
                 Log.WriteFile( curMethodName + ":Sending request to upload file: " + inFileRef );
-                curResponse = (HttpWebResponse)curRequest.GetResponse();
-                curResponseStream = curResponse.GetResponseStream();
-                curStreamReader = new StreamReader( curResponseStream );
-                String curResponseMessage = curStreamReader.ReadToEnd();
-                Log.WriteFile( curMethodName + ":Upload file results: " + curResponseMessage );
-                if (curResponseMessage.Length > 0) {
-                    //curResponseDataList = readJsonResponse( curResponseMessage );
+				return readJsonResponseAsDictionary((HttpWebResponse)curRequest.GetResponse());
 
-                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( curResponseMessage );
-                    
-                    //showServerRespJson( curResponseDataList );
-                } else {
-                    curResponseDataList = new Dictionary<string, object>() {
-                    { "Error", "Response from video server was empty, video load not complete" } };
-                }
             } catch (Exception ex) {
                 //MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
                 //curResponseDataList = null;
                 Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                curResponseDataList = new Dictionary<string, object>() {
-                    { "Error", "Exception encountered loading video: " + ex.Message } } ;
-            } finally {
-                // Clean up the streams.
-                if (curStreamReader != null) curStreamReader.Close();
-                if (curResponseStream != null) curResponseStream.Close();
-                if (curResponse != null) curResponse.Close();
+                return new Dictionary<string, object>() { { "Error", "Exception encountered loading video: " + ex.Message } } ;
             }
-
-            return curResponseDataList;
         }
         public static List<KeyValuePair<String, String>> sendMessagePostJsonResp(String inUrl, String inAuthHeaderParms, String inContentType, String inMessage) {
             return sendMessagePostJsonResp( inUrl, inAuthHeaderParms, inContentType, inMessage, null, null );
@@ -467,10 +449,6 @@ namespace WaterskiScoringSystem.Tools {
             String curMethodName = "SendMessageHttp:sendMessagePostJsonResp";
             HttpWebRequest curRequest = null;
             Stream curDataStream = null;
-            Dictionary<string, object> curResponseDataList = null;
-            HttpWebResponse curResponse = null;
-            Stream curResponseStream = null;
-            StreamReader curStreamReader = null;
 
             try {
                 // Create a request using a URL that can receive a post. 
@@ -504,37 +482,19 @@ namespace WaterskiScoringSystem.Tools {
                 curDataStream.Close();
 
                 // Get the response.
-                curResponse = (HttpWebResponse)curRequest.GetResponse();
-                curResponseStream = curResponse.GetResponseStream();
-                curStreamReader = new StreamReader( curResponseStream );
-                String curResponseMessage = curStreamReader.ReadToEnd();
-                if (curResponseMessage.Length > 0) {
-                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( curResponseMessage );
-                }
+				return readJsonResponseAsDictionary((HttpWebResponse)curRequest.GetResponse());
 
             } catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                curResponseDataList = null;
-            } finally {
-                // Clean up the streams.
-                if (curStreamReader != null) curStreamReader.Close();
-                if (curResponseStream != null) curResponseStream.Close();
-                if (curDataStream != null) curDataStream.Close();
-                if (curResponse != null) curResponse.Close();
+                return null;
             }
-
-            return curResponseDataList;
         }
 
         public static Dictionary<string, object> deleteMessagePostJsonResp(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage) {
             String curMethodName = "SendMessageHttp:deleteMessagePostJsonResp";
             HttpWebRequest curRequest = null;
             Stream curDataStream = null;
-            Dictionary<string, object> curResponseDataList = null;
-            HttpWebResponse curResponse = null;
-            Stream curResponseStream = null;
-            StreamReader curStreamReader = null;
 
             try {
                 // Create a request using a URL that can receive a post. 
@@ -569,26 +529,13 @@ namespace WaterskiScoringSystem.Tools {
                     curDataStream.Close();
                 }
 
-                curResponse = (HttpWebResponse)curRequest.GetResponse();
-                curResponseStream = curResponse.GetResponseStream();
-                curStreamReader = new StreamReader( curResponseStream );
-                String curResponseMessage = curStreamReader.ReadToEnd();
-                if (curResponseMessage.Length > 0) {
-                    curResponseDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( curResponseMessage );
-                }
+				return readJsonResponseAsDictionary((HttpWebResponse)curRequest.GetResponse());
+
             } catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
                 Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                curResponseDataList = null;
-            } finally {
-                // Clean up the streams.
-                if (curStreamReader != null) curStreamReader.Close();
-                if (curResponseStream != null) curResponseStream.Close();
-                if (curDataStream != null) curDataStream.Close();
-                if (curResponse != null) curResponse.Close();
+                return null;
             }
-
-            return curResponseDataList;
         }
 
         public static bool sendMessagePostWithHeader(String inUrl, String inAuthHeaderParms, String inContentType, String inMessage) {
@@ -697,7 +644,96 @@ namespace WaterskiScoringSystem.Tools {
             return true;
         }
 
-        public static List<KeyValuePair<String, String>> readJsonResponse(String inResponse) {
+		public static DataTable readJsonResponseAsDataTable(HttpWebResponse curResponse) {
+			String curMethodName = "readJsonResponseAsDataTable: ";
+
+			Stream curResponseStream = null;
+			StreamReader curStreamReader = null;
+			JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+			jsonSerializer.MaxJsonLength = Int32.MaxValue;
+
+			try {
+				curResponseStream = curResponse.GetResponseStream();
+				curStreamReader = new StreamReader(curResponseStream);
+				String curResponseMessage = curStreamReader.ReadToEnd();
+				if (curResponseMessage.Length > 0) {
+					return convertDictionaryListToDataTable( jsonSerializer.Deserialize<List<object>>(curResponseMessage) );
+				}
+				return null;
+
+			} catch (Exception ex) {
+				MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+				return null;
+
+			} finally {
+				// Clean up the streams.
+				if (curStreamReader != null) curStreamReader.Close();
+				if (curResponseStream != null) curResponseStream.Close();
+				if (curResponse != null) curResponse.Close();
+			}
+		}
+
+		public static List<object> readJsonResponseAsList(HttpWebResponse curResponse) {
+			String curMethodName = "readJsonResponseAsDataTable: ";
+
+			Stream curResponseStream = null;
+			StreamReader curStreamReader = null;
+			JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+			jsonSerializer.MaxJsonLength = Int32.MaxValue;
+
+			try {
+				curResponseStream = curResponse.GetResponseStream();
+				curStreamReader = new StreamReader(curResponseStream);
+				String curResponseMessage = curStreamReader.ReadToEnd();
+				if (curResponseMessage.Length > 0) {
+					return jsonSerializer.Deserialize<List<object>>(curResponseMessage);
+				}
+				return null;
+
+			} catch (Exception ex) {
+				MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+				return null;
+
+			} finally {
+				// Clean up the streams.
+				if (curStreamReader != null) curStreamReader.Close();
+				if (curResponseStream != null) curResponseStream.Close();
+				if (curResponse != null) curResponse.Close();
+			}
+		}
+
+		public static Dictionary<string, object> readJsonResponseAsDictionary( HttpWebResponse curResponse ) {
+			String curMethodName = "readJsonResponseAsDictionary: ";
+			Stream curResponseStream = null;
+			StreamReader curStreamReader = null;
+			JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+			jsonSerializer.MaxJsonLength = Int32.MaxValue;
+
+			try {
+				curResponseStream = curResponse.GetResponseStream();
+				curStreamReader = new StreamReader(curResponseStream);
+				String curResponseMessage = curStreamReader.ReadToEnd();
+				if (curResponseMessage.Length > 0) {
+					return jsonSerializer.Deserialize<Dictionary<string, object>>(curResponseMessage);
+				}
+				return null;
+
+			} catch (Exception ex) {
+				MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
+				Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+				return null;
+
+			} finally {
+				// Clean up the streams.
+				if (curStreamReader != null) curStreamReader.Close();
+				if (curResponseStream != null) curResponseStream.Close();
+				if (curResponse != null) curResponse.Close();
+			}
+		}
+
+		public static List<KeyValuePair<String, String>> readJsonResponse(String inResponse) {
             List<KeyValuePair<String, String>> curResponseDataList = null;
 
             //Sample JSON response
@@ -909,6 +945,24 @@ namespace WaterskiScoringSystem.Tools {
 			return returnDatatTable;
 		}
 
+		/*
+		 */
+		public static Dictionary<string, object> convertDataRowToDictionary(DataRow curDataRow) {
+			Dictionary<string, object> curMemberData = new Dictionary<string, object>(); ;
+			foreach (DataColumn dataColumn in curDataRow.Table.Columns) {
+				try {
+					if (curDataRow[dataColumn.ColumnName] != System.DBNull.Value) {
+						curMemberData.Add(dataColumn.ColumnName, curDataRow[dataColumn.ColumnName]);
+					}
+				} catch (Exception ex) {
+					String curValue = ex.Message;
+					if (curValue.Length > 0) {
+						String curValueX = curValue;
+					}
+				}
+			}
+			return curMemberData;
+		}
 	}
 
 	public class RequestState {

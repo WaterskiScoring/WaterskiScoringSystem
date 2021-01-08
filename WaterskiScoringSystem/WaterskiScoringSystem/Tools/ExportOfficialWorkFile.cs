@@ -807,7 +807,8 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "FROM OfficialWork O " );
             curSqlStmt.Append( "	INNER JOIN TourReg T ON T.MemberId = O.MemberId AND T.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' " );
-            curSqlStmt.Append( "And (O.JudgeSlalomCredit = 'Y' OR O.JudgeTrickCredit = 'Y' OR O.JudgeJumpCredit = 'Y' " );
+			curSqlStmt.Append( "AND T.ReadyToSki = 'Y' " );
+			curSqlStmt.Append( "And (O.JudgeSlalomCredit = 'Y' OR O.JudgeTrickCredit = 'Y' OR O.JudgeJumpCredit = 'Y' " );
             curSqlStmt.Append( " OR O.ScoreSlalomCredit = 'Y' OR O.ScoreTrickCredit = 'Y' OR O.ScoreJumpCredit = 'Y'  " );
             curSqlStmt.Append( " OR O.DriverSlalomCredit = 'Y' OR O.DriverTrickCredit = 'Y' OR O.DriverJumpCredit = 'Y' " );
             curSqlStmt.Append( " OR O.SafetySlalomCredit = 'Y' OR O.SafetyTrickCredit = 'Y' OR O.SafetyJumpCredit = 'Y' " );

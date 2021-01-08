@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6.0.1.12")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.0")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6.0.1.12 9/22/2020")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.0 1/5/2021")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2337,6 +2337,78 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["TwilioFromPhoneNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathExport_Width {
+            get {
+                return ((int)(this["BoatPathExport_Width"]));
+            }
+            set {
+                this["BoatPathExport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathExport_Height {
+            get {
+                return ((int)(this["BoatPathExport_Height"]));
+            }
+            set {
+                this["BoatPathExport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point BoatPathExport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["BoatPathExport_Location"]));
+            }
+            set {
+                this["BoatPathExport_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathDetail_Width {
+            get {
+                return ((int)(this["BoatPathDetail_Width"]));
+            }
+            set {
+                this["BoatPathDetail_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathDetail_Height {
+            get {
+                return ((int)(this["BoatPathDetail_Height"]));
+            }
+            set {
+                this["BoatPathDetail_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point BoatPathDetail_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["BoatPathDetail_Location"]));
+            }
+            set {
+                this["BoatPathDetail_Location"] = value;
             }
         }
     }
