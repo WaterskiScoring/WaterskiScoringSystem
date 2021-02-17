@@ -45,7 +45,7 @@ namespace WaterskiScoringSystem.Tools {
 
             curFilename = inSanctionId.Trim() + myTourRow["Class"].ToString().Trim() + ".wsp";
             outBuffer = getExportFile(curFilename);
-            if (outBuffer != null) return returnStatus;
+            if (outBuffer == null) return returnStatus;
 
             Log.WriteFile("Export performance data file begin: " + curFilename);
 
@@ -167,9 +167,6 @@ namespace WaterskiScoringSystem.Tools {
 				curAgeGroup = curMemberRow["AgeGroup"].ToString();
 				curReadyToSki = curMemberRow["ReadyToSki"].ToString();
 				curScoreRows = mySummaryDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-				//curScoreSlalomRows = mySlalomDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-				//curScoreTrickRows = myTrickDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-				//curScoreJumpRows = myJumpDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
 
 				if ( curReadyToSki.Equals( "Y" ) ) {
 					if ( curScoreRows.Length > 0 ) {

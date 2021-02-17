@@ -1889,6 +1889,8 @@ namespace WaterskiScoringSystem.Common {
 								newDataRow["EventGroupOverall"] = (String)curSummaryRow["EventGroupOverall"];
 								newDataRow["EventGroup"] = (String)curSummaryRow["EventGroupOverall"];
 							}
+
+							newDataRow.EndEdit();
 							#endregion
 
 						}

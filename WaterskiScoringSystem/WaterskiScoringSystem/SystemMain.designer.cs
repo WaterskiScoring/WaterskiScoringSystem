@@ -102,11 +102,6 @@
 			this.logRecoveryUtilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSetDatabase = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.ewcsSubMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.ewcsConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ewcsCloseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.eWCSShowPinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.loadTestDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navHelp = new System.Windows.Forms.ToolStripMenuItem();
 			this.gettingStartedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -531,35 +526,35 @@
 			// navJumpEntryVideo3Seg
 			// 
 			this.navJumpEntryVideo3Seg.Name = "navJumpEntryVideo3Seg";
-			this.navJumpEntryVideo3Seg.Size = new System.Drawing.Size(165, 22);
+			this.navJumpEntryVideo3Seg.Size = new System.Drawing.Size(180, 22);
 			this.navJumpEntryVideo3Seg.Text = "Jump Score Entry";
 			this.navJumpEntryVideo3Seg.Click += new System.EventHandler(this.navJumpEntryVideo3Seg_Click);
 			// 
 			// navJumpRunningOrder
 			// 
 			this.navJumpRunningOrder.Name = "navJumpRunningOrder";
-			this.navJumpRunningOrder.Size = new System.Drawing.Size(165, 22);
+			this.navJumpRunningOrder.Size = new System.Drawing.Size(180, 22);
 			this.navJumpRunningOrder.Text = "&Running Order";
 			this.navJumpRunningOrder.Click += new System.EventHandler(this.navJumpRunningOrder_Click);
 			// 
 			// navJumpSummary
 			// 
 			this.navJumpSummary.Name = "navJumpSummary";
-			this.navJumpSummary.Size = new System.Drawing.Size(165, 22);
+			this.navJumpSummary.Size = new System.Drawing.Size(180, 22);
 			this.navJumpSummary.Text = "&Summary";
 			this.navJumpSummary.Click += new System.EventHandler(this.navJumpSummary_Click);
 			// 
 			// navJumpSummaryAwards
 			// 
 			this.navJumpSummaryAwards.Name = "navJumpSummaryAwards";
-			this.navJumpSummaryAwards.Size = new System.Drawing.Size(165, 22);
+			this.navJumpSummaryAwards.Size = new System.Drawing.Size(180, 22);
 			this.navJumpSummaryAwards.Text = "&Award Summary";
 			this.navJumpSummaryAwards.Click += new System.EventHandler(this.navJumpSummaryAward_Click);
 			// 
 			// navJumpScorebook
 			// 
 			this.navJumpScorebook.Name = "navJumpScorebook";
-			this.navJumpScorebook.Size = new System.Drawing.Size(165, 22);
+			this.navJumpScorebook.Size = new System.Drawing.Size(180, 22);
 			this.navJumpScorebook.Text = "Scorebook";
 			this.navJumpScorebook.Visible = false;
 			this.navJumpScorebook.Click += new System.EventHandler(this.navJumpScorebook_Click);
@@ -567,34 +562,34 @@
 			// navJumpTeamSummary
 			// 
 			this.navJumpTeamSummary.Name = "navJumpTeamSummary";
-			this.navJumpTeamSummary.Size = new System.Drawing.Size(165, 22);
+			this.navJumpTeamSummary.Size = new System.Drawing.Size(180, 22);
 			this.navJumpTeamSummary.Text = "&Team Summary";
 			this.navJumpTeamSummary.Click += new System.EventHandler(this.navJumpTeamSummary_Click);
 			// 
 			// boatPathReportToolStripMenuItem
 			// 
 			this.boatPathReportToolStripMenuItem.Name = "boatPathReportToolStripMenuItem";
-			this.boatPathReportToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.boatPathReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.boatPathReportToolStripMenuItem.Text = "Boat Path Report";
 			this.boatPathReportToolStripMenuItem.Click += new System.EventHandler(this.navBoatPathReportJump_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(162, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
 			// 
 			// navVideoJumpSetup
 			// 
 			this.navVideoJumpSetup.Enabled = false;
 			this.navVideoJumpSetup.Name = "navVideoJumpSetup";
-			this.navVideoJumpSetup.Size = new System.Drawing.Size(165, 22);
+			this.navVideoJumpSetup.Size = new System.Drawing.Size(180, 22);
 			this.navVideoJumpSetup.Text = "&Video Setup";
 			this.navVideoJumpSetup.Visible = false;
 			// 
 			// navMeterSetup
 			// 
 			this.navMeterSetup.Name = "navMeterSetup";
-			this.navMeterSetup.Size = new System.Drawing.Size(165, 22);
+			this.navMeterSetup.Size = new System.Drawing.Size(180, 22);
 			this.navMeterSetup.Text = "&Meter Setup";
 			this.navMeterSetup.Click += new System.EventHandler(this.navMeterSetup_Click);
 			// 
@@ -617,8 +612,7 @@
             this.databaseToolToolStripMenuItem,
             this.logRecoveryUtilityToolStripMenuItem,
             this.navSetDatabase,
-            this.toolStripSeparator3,
-            this.ewcsSubMenu});
+            this.toolStripSeparator3});
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(46, 20);
 			this.toolStripMenuItem2.Text = "T&ools";
@@ -741,45 +735,6 @@
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(215, 6);
 			// 
-			// ewcsSubMenu
-			// 
-			this.ewcsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ewcsConnectMenuItem,
-            this.ewcsCloseMenuItem,
-            this.eWCSShowPinToolStripMenuItem,
-            this.loadTestDataToolStripMenuItem});
-			this.ewcsSubMenu.Name = "ewcsSubMenu";
-			this.ewcsSubMenu.Size = new System.Drawing.Size(218, 22);
-			this.ewcsSubMenu.Text = "WaterSkiConnect";
-			// 
-			// ewcsConnectMenuItem
-			// 
-			this.ewcsConnectMenuItem.Name = "ewcsConnectMenuItem";
-			this.ewcsConnectMenuItem.Size = new System.Drawing.Size(150, 22);
-			this.ewcsConnectMenuItem.Text = "Connect";
-			this.ewcsConnectMenuItem.Click += new System.EventHandler(this.execEwcsConnect_Click);
-			// 
-			// ewcsCloseMenuItem
-			// 
-			this.ewcsCloseMenuItem.Name = "ewcsCloseMenuItem";
-			this.ewcsCloseMenuItem.Size = new System.Drawing.Size(150, 22);
-			this.ewcsCloseMenuItem.Text = "Close";
-			this.ewcsCloseMenuItem.Click += new System.EventHandler(this.execEwcsClose_Click);
-			// 
-			// eWCSShowPinToolStripMenuItem
-			// 
-			this.eWCSShowPinToolStripMenuItem.Name = "eWCSShowPinToolStripMenuItem";
-			this.eWCSShowPinToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-			this.eWCSShowPinToolStripMenuItem.Text = "Show Pin";
-			this.eWCSShowPinToolStripMenuItem.Click += new System.EventHandler(this.showEwcsPin_Click);
-			// 
-			// loadTestDataToolStripMenuItem
-			// 
-			this.loadTestDataToolStripMenuItem.Name = "loadTestDataToolStripMenuItem";
-			this.loadTestDataToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-			this.loadTestDataToolStripMenuItem.Text = "Load Test Data";
-			this.loadTestDataToolStripMenuItem.Click += new System.EventHandler(this.loadTestDataToolStripMenuItem_Click);
-			// 
 			// windowToolStripMenuItem
 			// 
 			this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -798,14 +753,14 @@
 			// gettingStartedToolStripMenuItem
 			// 
 			this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
 			this.gettingStartedToolStripMenuItem.Text = "&User Guide";
 			this.gettingStartedToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// navHelpAbout
 			// 
 			this.navHelpAbout.Name = "navHelpAbout";
-			this.navHelpAbout.Size = new System.Drawing.Size(180, 22);
+			this.navHelpAbout.Size = new System.Drawing.Size(131, 22);
 			this.navHelpAbout.Text = "About";
 			this.navHelpAbout.Click += new System.EventHandler(this.navHelpAbout_Click);
 			// 
@@ -931,11 +886,6 @@
 		private System.Windows.Forms.ToolStripMenuItem navImportOLRPick;
 		private System.Windows.Forms.ToolStripMenuItem standardRegistrationForPickChooseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem ewcsSubMenu;
-        private System.Windows.Forms.ToolStripMenuItem ewcsConnectMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ewcsCloseMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem eWCSShowPinToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem loadTestDataToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem navBoatPathReportSlalom;
 		private System.Windows.Forms.ToolStripMenuItem boatPathReportToolStripMenuItem;
 	}

@@ -491,7 +491,7 @@ namespace WaterskiScoringSystem.Tournament {
 			} catch {
 				editFederation.SelectedValue = "";
 			}
-			if ( ((String) curDataRow["MemberStatus"]).Length > 0 ) {
+			if ( curDataRow["MemberStatus"] != System.DBNull.Value && ( (String) curDataRow["MemberStatus"]).Length > 0 ) {
 				String curMemberStatus = (String)curDataRow["MemberStatus"];
 				int idx = editMemberStatus.FindStringExact(curMemberStatus);
 				if ( idx < 0 ) {

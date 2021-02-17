@@ -62,19 +62,26 @@
 			this.PassScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TimeInTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PathDevBuoy6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PathDevcum6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevCum6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PathDevZone6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreDatatime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassDatatime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -121,19 +128,26 @@
             this.PassScore,
             this.TimeInTol,
             this.PathDevBuoy0,
-            this.PathDevcum0,
+            this.PathDevCum0,
+            this.PathDevZone0,
             this.PathDevBuoy1,
-            this.PathDevcum1,
+            this.PathDevCum1,
+            this.PathDevZone1,
             this.PathDevBuoy2,
-            this.PathDevcum2,
+            this.PathDevCum2,
+            this.PathDevZone2,
             this.PathDevBuoy3,
-            this.PathDevcum3,
+            this.PathDevCum3,
+            this.PathDevZone3,
             this.PathDevBuoy4,
-            this.PathDevcum4,
+            this.PathDevCum4,
+            this.PathDevZone4,
             this.PathDevBuoy5,
-            this.PathDevcum5,
+            this.PathDevCum5,
+            this.PathDevZone5,
             this.PathDevBuoy6,
-            this.PathDevcum6,
+            this.PathDevCum6,
+            this.PathDevZone6,
             this.ScoreDatatime,
             this.PassDatatime,
             this.ScoreNotes});
@@ -393,12 +407,20 @@
 			this.PathDevBuoy0.ReadOnly = true;
 			this.PathDevBuoy0.Width = 50;
 			// 
-			// PathDevcum0
+			// PathDevCum0
 			// 
-			this.PathDevcum0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum0.HeaderText = "Cum Gate";
-			this.PathDevcum0.Name = "PathDevcum0";
-			this.PathDevcum0.Width = 50;
+			this.PathDevCum0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum0.HeaderText = "Cum Gate";
+			this.PathDevCum0.Name = "PathDevCum0";
+			this.PathDevCum0.Width = 50;
+			// 
+			// PathDevZone0
+			// 
+			this.PathDevZone0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone0.HeaderText = "Zone Gate";
+			this.PathDevZone0.Name = "PathDevZone0";
+			this.PathDevZone0.ReadOnly = true;
+			this.PathDevZone0.Width = 50;
 			// 
 			// PathDevBuoy1
 			// 
@@ -408,13 +430,21 @@
 			this.PathDevBuoy1.ReadOnly = true;
 			this.PathDevBuoy1.Width = 50;
 			// 
-			// PathDevcum1
+			// PathDevCum1
 			// 
-			this.PathDevcum1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum1.HeaderText = "Cum B1";
-			this.PathDevcum1.Name = "PathDevcum1";
-			this.PathDevcum1.ReadOnly = true;
-			this.PathDevcum1.Width = 50;
+			this.PathDevCum1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum1.HeaderText = "Cum B1";
+			this.PathDevCum1.Name = "PathDevCum1";
+			this.PathDevCum1.ReadOnly = true;
+			this.PathDevCum1.Width = 50;
+			// 
+			// PathDevZone1
+			// 
+			this.PathDevZone1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone1.HeaderText = "Zone B1";
+			this.PathDevZone1.Name = "PathDevZone1";
+			this.PathDevZone1.ReadOnly = true;
+			this.PathDevZone1.Width = 50;
 			// 
 			// PathDevBuoy2
 			// 
@@ -424,13 +454,21 @@
 			this.PathDevBuoy2.ReadOnly = true;
 			this.PathDevBuoy2.Width = 50;
 			// 
-			// PathDevcum2
+			// PathDevCum2
 			// 
-			this.PathDevcum2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum2.HeaderText = "Cum B2";
-			this.PathDevcum2.Name = "PathDevcum2";
-			this.PathDevcum2.ReadOnly = true;
-			this.PathDevcum2.Width = 50;
+			this.PathDevCum2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum2.HeaderText = "Cum B2";
+			this.PathDevCum2.Name = "PathDevCum2";
+			this.PathDevCum2.ReadOnly = true;
+			this.PathDevCum2.Width = 50;
+			// 
+			// PathDevZone2
+			// 
+			this.PathDevZone2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone2.HeaderText = "Zone B2";
+			this.PathDevZone2.Name = "PathDevZone2";
+			this.PathDevZone2.ReadOnly = true;
+			this.PathDevZone2.Width = 50;
 			// 
 			// PathDevBuoy3
 			// 
@@ -440,13 +478,21 @@
 			this.PathDevBuoy3.ReadOnly = true;
 			this.PathDevBuoy3.Width = 50;
 			// 
-			// PathDevcum3
+			// PathDevCum3
 			// 
-			this.PathDevcum3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum3.HeaderText = "Cum B3";
-			this.PathDevcum3.Name = "PathDevcum3";
-			this.PathDevcum3.ReadOnly = true;
-			this.PathDevcum3.Width = 50;
+			this.PathDevCum3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum3.HeaderText = "Cum B3";
+			this.PathDevCum3.Name = "PathDevCum3";
+			this.PathDevCum3.ReadOnly = true;
+			this.PathDevCum3.Width = 50;
+			// 
+			// PathDevZone3
+			// 
+			this.PathDevZone3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone3.HeaderText = "Zone B3";
+			this.PathDevZone3.Name = "PathDevZone3";
+			this.PathDevZone3.ReadOnly = true;
+			this.PathDevZone3.Width = 50;
 			// 
 			// PathDevBuoy4
 			// 
@@ -456,13 +502,21 @@
 			this.PathDevBuoy4.ReadOnly = true;
 			this.PathDevBuoy4.Width = 50;
 			// 
-			// PathDevcum4
+			// PathDevCum4
 			// 
-			this.PathDevcum4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum4.HeaderText = "Cum B4";
-			this.PathDevcum4.Name = "PathDevcum4";
-			this.PathDevcum4.ReadOnly = true;
-			this.PathDevcum4.Width = 50;
+			this.PathDevCum4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum4.HeaderText = "Cum B4";
+			this.PathDevCum4.Name = "PathDevCum4";
+			this.PathDevCum4.ReadOnly = true;
+			this.PathDevCum4.Width = 50;
+			// 
+			// PathDevZone4
+			// 
+			this.PathDevZone4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone4.HeaderText = "Zone B4";
+			this.PathDevZone4.Name = "PathDevZone4";
+			this.PathDevZone4.ReadOnly = true;
+			this.PathDevZone4.Width = 50;
 			// 
 			// PathDevBuoy5
 			// 
@@ -472,13 +526,21 @@
 			this.PathDevBuoy5.ReadOnly = true;
 			this.PathDevBuoy5.Width = 50;
 			// 
-			// PathDevcum5
+			// PathDevCum5
 			// 
-			this.PathDevcum5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum5.HeaderText = "Cum B5";
-			this.PathDevcum5.Name = "PathDevcum5";
-			this.PathDevcum5.ReadOnly = true;
-			this.PathDevcum5.Width = 50;
+			this.PathDevCum5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum5.HeaderText = "Cum B5";
+			this.PathDevCum5.Name = "PathDevCum5";
+			this.PathDevCum5.ReadOnly = true;
+			this.PathDevCum5.Width = 50;
+			// 
+			// PathDevZone5
+			// 
+			this.PathDevZone5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone5.HeaderText = "Zone B5";
+			this.PathDevZone5.Name = "PathDevZone5";
+			this.PathDevZone5.ReadOnly = true;
+			this.PathDevZone5.Width = 50;
 			// 
 			// PathDevBuoy6
 			// 
@@ -488,13 +550,21 @@
 			this.PathDevBuoy6.ReadOnly = true;
 			this.PathDevBuoy6.Width = 50;
 			// 
-			// PathDevcum6
+			// PathDevCum6
 			// 
-			this.PathDevcum6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PathDevcum6.HeaderText = "Cum B6";
-			this.PathDevcum6.Name = "PathDevcum6";
-			this.PathDevcum6.ReadOnly = true;
-			this.PathDevcum6.Width = 50;
+			this.PathDevCum6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevCum6.HeaderText = "Cum B6";
+			this.PathDevCum6.Name = "PathDevCum6";
+			this.PathDevCum6.ReadOnly = true;
+			this.PathDevCum6.Width = 50;
+			// 
+			// PathDevZone6
+			// 
+			this.PathDevZone6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PathDevZone6.HeaderText = "Zone B6";
+			this.PathDevZone6.Name = "PathDevZone6";
+			this.PathDevZone6.ReadOnly = true;
+			this.PathDevZone6.Width = 50;
 			// 
 			// ScoreDatatime
 			// 
@@ -567,19 +637,26 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassScore;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TimeInTol;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy0;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum0;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum0;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone0;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy2;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone2;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone3;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy4;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum4;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum4;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone4;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy5;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum5;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum5;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone5;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevBuoy6;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevcum6;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevCum6;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PathDevZone6;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreDatatime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassDatatime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreNotes;

@@ -934,7 +934,7 @@ Update [JumpScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
 Update [JumpRecap] Set InsertDate = LastUpdateDate Where InsertDate is null;
 Update [TrickScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
 
-## v22.01
+## v22.09
 
 DROP TABLE [BoatTime];
 DROP TABLE [BoatPath];
@@ -994,9 +994,16 @@ CREATE TABLE [BoatPath] (
 	, PathDevCum5 numeric(5,2) NULL
 	, PathDevCum6 numeric(5,2) NULL
 
+
+	, PathDevZone0 numeric(5,2) NULL
+	, PathDevZone1 numeric(5,2) NULL
+	, PathDevZone2 numeric(5,2) NULL
+	, PathDevZone3 numeric(5,2) NULL
+	, PathDevZone4 numeric(5,2) NULL
+	, PathDevZone5 numeric(5,2) NULL
+	, PathDevZone6 numeric(5,2) NULL
+
     , RerideNote nvarchar(64)
-    , PathPosLocValues nvarchar(1024)
-    , PathPosDevValues nvarchar(1024)
 	
 	, InsertDate datetime NULL
 	, LastUpdateDate datetime NULL
@@ -1022,3 +1029,15 @@ CREATE TABLE [JumpMeasurement] (
 
 ALTER TABLE [JumpMeasurement] ADD PRIMARY KEY ([PK]);
 
+## v22.11
+ALTER TABLE [BoatPath] ADD COLUMN DriverMemberId nchar(9) NULL;
+ALTER TABLE [BoatPath] ADD COLUMN DriverName nchar(64) NULL;
+ALTER TABLE [BoatPath] ADD COLUMN BoatDescription nchar(256) NULL;
+
+## v22.14
+ALTER TABLE [JumpRecap] ADD COLUMN SkierBoatPath nchar(6) NULL;
+Update [JumpRecap] Set SkierBoatPath = 'S';
+
+## v22.20
+ALTER TABLE [EwscMsg] ALTER COLUMN MsgData ntext ;
+DROP TABLE EwscListenMsg;

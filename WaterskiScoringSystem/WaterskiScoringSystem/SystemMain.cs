@@ -956,23 +956,6 @@ namespace WaterskiScoringSystem {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-        private void execEwcsConnect_Click(object sender, EventArgs e) {
-			Task.Factory.StartNew(() => EwscMonitor.execEwscMonitoring());
-		}
-
-		private void execEwcsClose_Click(object sender, EventArgs e) {
-            EwscMonitor.sendExit();
-        }
-
-		private void showEwcsPin_Click(object sender, EventArgs e) {
-			EwscMonitor.showPin();
-		}
-
-		private void loadTestDataToolStripMenuItem_Click(object sender, EventArgs e) {
-			//EwscMonitor.execLoadTestMessages();
-			MessageBox.Show("Feature currently disabled");
-		}
-
 	}
 }
 

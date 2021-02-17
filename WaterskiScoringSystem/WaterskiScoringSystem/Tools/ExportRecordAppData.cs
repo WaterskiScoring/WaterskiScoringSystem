@@ -142,31 +142,38 @@ namespace WaterskiScoringSystem.Tools {
                 setCellValue(20, "B", inTourRow["EventLocation"].ToString());
 
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefJudgeMemberId"].ToString() );
-                setCellValue(44, "B", transformName( inTourRow["ChiefJudgeName"].ToString()));
-                setCellValue(44, "H", curOfficialRow["JudgeSlalomRating"].ToString());
-                setCellValue(44, "G", inTourRow["ChiefJudgePhone"].ToString());
-                setCellValue(44, "E", inTourRow["ChiefJudgeEmail"].ToString());
+				if ( curOfficialRow  != null ) {
+					setCellValue( 44, "B", transformName( inTourRow["ChiefJudgeName"].ToString() ) );
+					setCellValue( 44, "H", curOfficialRow["JudgeSlalomRating"].ToString() );
+					setCellValue( 44, "G", inTourRow["ChiefJudgePhone"].ToString() );
+					setCellValue( 44, "E", inTourRow["ChiefJudgeEmail"].ToString() );
+				}
 
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
-                setCellValue(50, "B", transformName( inTourRow["ChiefDriverName"].ToString()));
-                setCellValue(50, "H", curOfficialRow["DriverSlalomRating"].ToString());
-                setCellValue(50, "G", inTourRow["ChiefDriverPhone"].ToString());
-                setCellValue(50, "E", inTourRow["ChiefDriverEmail"].ToString());
+				curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
+				if ( curOfficialRow != null ) {
+					setCellValue( 50, "B", transformName( inTourRow["ChiefDriverName"].ToString() ) );
+					setCellValue( 50, "H", curOfficialRow["DriverSlalomRating"].ToString() );
+					setCellValue( 50, "G", inTourRow["ChiefDriverPhone"].ToString() );
+					setCellValue( 50, "E", inTourRow["ChiefDriverEmail"].ToString() );
+				}
 
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
-                setCellValue(48, "B", transformName( inTourRow["ChiefScorerName"].ToString()));
-                setCellValue(48, "H", curOfficialRow["ScorerSlalomRating"].ToString());
-                setCellValue(48, "G", inTourRow["ChiefScorerPhone"].ToString());
-                setCellValue(48, "E", inTourRow["ChiefScorerEmail"].ToString());
+				curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
+				if ( curOfficialRow != null ) {
+					setCellValue( 48, "B", transformName( inTourRow["ChiefScorerName"].ToString() ) );
+					setCellValue( 48, "H", curOfficialRow["ScorerSlalomRating"].ToString() );
+					setCellValue( 48, "G", inTourRow["ChiefScorerPhone"].ToString() );
+					setCellValue( 48, "E", inTourRow["ChiefScorerEmail"].ToString() );
+				}
 
-                if (curTechRow == null) {
+				if (curTechRow == null) {
                 } else {
                     setCellValue(46, "B", transformName( curTechRow["ChiefTechName"].ToString() ));
                     setCellValue(46, "H", curTechRow["TechOfficialRating"].ToString());
                 }
 
                 return true;
-            } catch (Exception ex) {
+
+			} catch (Exception ex) {
                 MessageBox.Show( "Exception encountered in ExportRecordAppData writeTourData method"
                     + "\n\nException: " + ex.Message
                 );
@@ -378,8 +385,9 @@ namespace WaterskiScoringSystem.Tools {
 
             DataTable curDataTable = getSkierSlalomRecap( inSanctionId, inMemberId, inDiv, inRound );
             curExcelRow = exportDataTableExcel( curExcelRow, curDataTable );
+			curExcelRow = exportBoatPathSlalomDataExcel( curExcelRow, inMemberId, inRound, curDataTable );
 
-            curExcelRow = curExcelRow + 2;
+			curExcelRow = curExcelRow + 2;
             setCellValue( curExcelRow, "A", "Equipment Check:" );
             setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "A" + curExcelRow.ToString() } );
             curExcelRow++;
@@ -581,7 +589,6 @@ namespace WaterskiScoringSystem.Tools {
 
             DataTable curDataTable = getSkierJumpRecap( inSanctionId, inMemberId, inDiv, inRound );
             DataRow curRow = curDataTable.Rows[0];
-            //curExcelRow = exportDataTableExcel( curExcelRow, curDataTable );
 
             setCellValue( curExcelRow, "A", "JUMP RECORD DATA" );
             setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
@@ -619,7 +626,11 @@ namespace WaterskiScoringSystem.Tools {
             setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "F" + curExcelRow.ToString() } );
             setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
 
-            curExcelRow++;
+			curExcelRow++;
+			curExcelRow++;
+			curExcelRow = exportBoatPathJumpDataExcel( curExcelRow, inMemberId, inRound, curDataTable );
+
+			curExcelRow++;
             curExcelRow++;
             setCellValue( curExcelRow, "A", "Video Jump" );
             setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
@@ -791,40 +802,48 @@ namespace WaterskiScoringSystem.Tools {
                 outLine = new StringBuilder( "" );
                 outLine.Append( "Chief Judge" + tabDelim + transformName( inTourRow["ChiefJudgeName"].ToString() ) );
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefJudgeMemberId"].ToString() );
-                outLine.Append( tabDelim + curOfficialRow["JudgeSlalomRating"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefJudgeAddress"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefJudgePhone"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefJudgeEmail"].ToString() );
-                myOutBuffer.WriteLine( outLine.ToString() );
+				if ( curOfficialRow  != null ) {
+					outLine.Append( tabDelim + curOfficialRow["JudgeSlalomRating"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefJudgeAddress"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefJudgePhone"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefJudgeEmail"].ToString() );
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
 
-                outLine = new StringBuilder( "" );
+				outLine = new StringBuilder( "" );
                 outLine.Append( "Chief Driver" + tabDelim + transformName( inTourRow["ChiefDriverName"].ToString() ) );
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
-                outLine.Append( tabDelim + curOfficialRow["DriverSlalomRating"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefDriverAddress"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefDriverPhone"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefDriverEmail"].ToString() );
-                myOutBuffer.WriteLine( outLine.ToString() );
+				if ( curOfficialRow != null ) {
+					outLine.Append( tabDelim + curOfficialRow["DriverSlalomRating"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefDriverAddress"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefDriverPhone"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefDriverEmail"].ToString() );
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
 
-                outLine = new StringBuilder( "" );
+				outLine = new StringBuilder( "" );
                 outLine.Append( "Chief Scorer" + tabDelim + transformName( inTourRow["ChiefScorerName"].ToString() ) );
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
-                outLine.Append( tabDelim + curOfficialRow["ScorerSlalomRating"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefScorerAddress"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefScorerPhone"].ToString() );
-                outLine.Append( tabDelim + inTourRow["ChiefScorerEmail"].ToString() );
-                myOutBuffer.WriteLine( outLine.ToString() );
+				if ( curOfficialRow != null ) {
+					outLine.Append( tabDelim + curOfficialRow["ScorerSlalomRating"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefScorerAddress"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefScorerPhone"].ToString() );
+					outLine.Append( tabDelim + inTourRow["ChiefScorerEmail"].ToString() );
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
 
-                outLine = new StringBuilder( "" );
+				outLine = new StringBuilder( "" );
                 outLine.Append( "Safety Director" + tabDelim + transformName( inTourRow["ChiefSafetyName"].ToString() ) );
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["SafetyDirMemberId"].ToString() );
-                outLine.Append( tabDelim + curOfficialRow["SafetyOfficialRating"].ToString() );
-                outLine.Append( tabDelim + inTourRow["SafetyDirAddress"].ToString() );
-                outLine.Append( tabDelim + inTourRow["SafetyDirPhone"].ToString() );
-                outLine.Append( tabDelim + inTourRow["SafetyDirEmail"].ToString() );
-                myOutBuffer.WriteLine( outLine.ToString() );
+				if ( curOfficialRow != null ) {
+					outLine.Append( tabDelim + curOfficialRow["SafetyOfficialRating"].ToString() );
+					outLine.Append( tabDelim + inTourRow["SafetyDirAddress"].ToString() );
+					outLine.Append( tabDelim + inTourRow["SafetyDirPhone"].ToString() );
+					outLine.Append( tabDelim + inTourRow["SafetyDirEmail"].ToString() );
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
 
-                outLine = new StringBuilder( "" );
+				outLine = new StringBuilder( "" );
                 outLine.Append( "Tech Controller" );
                 if (curTechRow == null) {
                     outLine.Append( tabDelim + "" + tabDelim + "" );
@@ -968,12 +987,13 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool writePerfData(StringBuilder outLine, String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
-            try {
+			try {
                 if (inEvent.Equals( "Slalom" )) {
-                    //exportDataTable( outLine, getSkierSlalomScore( inSanctionId, inMemberId, inDiv, inRound ));
-                    exportDataTable( outLine, getSkierSlalomRecap( inSanctionId, inMemberId, inDiv, inRound ) );
-                } else if (inEvent.Equals( "Trick" )) {
-                    //exportDataTable( outLine, getSkierTrickScore( inSanctionId, inMemberId, inDiv, inRound ) );
+					DataTable curDataTable = getSkierSlalomRecap( inSanctionId, inMemberId, inDiv, inRound );
+					exportDataTable( outLine, curDataTable );
+					exportBoatPathSlalomDataText( outLine, inMemberId, inRound, curDataTable );
+
+				} else if (inEvent.Equals( "Trick" )) {
                     DataTable curDataTable = getSkierTrickPass( inSanctionId, inMemberId, inDiv, inRound, "1"  );
                     exportDataTable( outLine, curDataTable );
                     outLine = new StringBuilder( "" );
@@ -986,16 +1006,16 @@ namespace WaterskiScoringSystem.Tools {
                     for (int curIdx = curDataTable.Rows.Count + 1; curIdx < 26; curIdx++) {
                         myOutBuffer.WriteLine( outLine.ToString() );
                     }
-                } else if (inEvent.Equals( "Jump" )) {
-                    //exportDataTable( outLine, getSkierJumpScore( inSanctionId, inMemberId, inDiv, inRound ) );
-                    exportDataTable( outLine, getSkierJumpRecap( inSanctionId, inMemberId, inDiv, inRound ) );
-                    DataTable curDataTable = getJumpMeterSetup( inSanctionId );
-                    if (curDataTable.Rows.Count > 0) {
-                        exportDataTable( outLine, curDataTable );
-                    }
-                }
-                return true;
-            } catch (Exception ex) {
+
+				} else if (inEvent.Equals( "Jump" )) {
+					DataTable curDataTable = getSkierJumpRecap( inSanctionId, inMemberId, inDiv, inRound );
+					exportDataTable( outLine, curDataTable );
+					exportBoatPathJumpDataText( outLine, inMemberId, inRound, curDataTable );
+				}
+
+				return true;
+
+			} catch (Exception ex) {
                 MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
                     + "\n\nException: " + ex.Message
                 );
@@ -1020,14 +1040,16 @@ namespace WaterskiScoringSystem.Tools {
                     foreach (DataColumn curCol in inDataTable.Columns) {
                         curValue = cleanLabel( curRow[curCol.ColumnName].ToString() );
                         if (curCol.ColumnName.ToLower().Equals( "memberid" )) {
-                            //String curTempValue = "'" + curValue;
-                            //curValue = curTempValue;
-                        } else if (curCol.ColumnName.ToLower().Equals( "skiername" )) {
+							//String curTempValue = "'" + curValue;
+							//curValue = curTempValue;
+
+						} else if (curCol.ColumnName.ToLower().Equals( "skiername" )) {
                             String curTempValue = transformName( curValue );
                             curValue = curTempValue;
                             colCount++;
                             setCellValue(curExcelRow, colCount, curValue);
-                        } else {
+
+						} else {
                             colCount++;
                             setCellValue(curExcelRow, colCount, curValue);
                         }
@@ -1036,8 +1058,8 @@ namespace WaterskiScoringSystem.Tools {
 
                 return curExcelRow;
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
+                MessageBox.Show( "Exception encountered in ExportRecordAppData exportDataTableExcel method"
+					+ "\n\nException: " + ex.Message
                 );
                 return 0;
             }
@@ -1088,15 +1110,271 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
                 return true;
-            } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
+
+			} catch (Exception ex) {
+                MessageBox.Show( "Exception encountered in ExportRecordAppData exportDataTable method"
+					+ "\n\nException: " + ex.Message
                 );
                 return false;
             }
         }
 
-        private StreamWriter getExportFile(String inFileName) {
+		private int exportBoatPathSlalomDataExcel( int inStartRow, String memberId, String round, DataTable curDataTable ) {
+			int curExcelRow = inStartRow;
+			DataRow boatPathRow;
+			Decimal passScore;
+			Int16 passNum;
+
+			try {
+				Boolean writeHeader = true;
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					passNum = (Int16)curRow["SkierRunNum"];
+					passScore = (Decimal)curRow["Score"];
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					if ( boatPathRow == null ) continue;
+
+					if ( writeHeader ) {
+						writeHeader = false;
+						curExcelRow += 2;
+						setCellValue( curExcelRow, 1, "Boat Path Monitoring Data" );
+
+						curExcelRow++;
+						setCellValue( curExcelRow, 1, "Pass" );
+						setCellValue( curExcelRow, 2, "Desc" );
+						setCellValue( curExcelRow, 3, "Gate" );
+						setCellValue( curExcelRow, 4, "Buoy 1" );
+						setCellValue( curExcelRow, 5, "Buoy 2" );
+						setCellValue( curExcelRow, 6, "Buoy 3" );
+						setCellValue( curExcelRow, 7, "Buoy 4" );
+						setCellValue( curExcelRow, 8, "Buoy 5" );
+						setCellValue( curExcelRow, 9, "Buoy 6" );
+						setCellValue( curExcelRow, 10, "Exit" );
+					}
+
+					curExcelRow++;
+					int curColNum = 1;
+					setCellValue( curExcelRow, curColNum, ( (byte)boatPathRow["PassNumber"] ).ToString() );
+					curColNum++;
+					setCellValue( curExcelRow, curColNum, "Time" );
+					curColNum = 4;
+					for ( int rowIdx = 1; rowIdx <= 7; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+					curExcelRow++;
+					curColNum = 2;
+					setCellValue( curExcelRow, 2, "Dev" );
+					curColNum = 3;
+					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+
+					curExcelRow++;
+					curColNum = 2;
+					setCellValue( curExcelRow, 2, "Cum" );
+					curColNum = 3;
+					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathDataExcel method"
+					+ "\n\nException: " + ex.Message
+				);
+			}
+
+			return curExcelRow;
+		}
+
+		private void exportBoatPathSlalomDataText( StringBuilder outLine, String memberId, String round, DataTable curDataTable ) {
+			DataRow boatPathRow;
+			Decimal passScore;
+			Int16 passNum;
+
+			try {
+				Boolean writeHeader = true;
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					passNum = (Int16)curRow["SkierRunNum"];
+					passScore = (Decimal)curRow["Score"];
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					if ( boatPathRow == null ) continue;
+
+					if ( writeHeader ) {
+						writeHeader = false;
+						myOutBuffer.WriteLine( outLine.ToString() );
+
+						outLine = new StringBuilder( "Boat Path Monitoring Data" );
+						myOutBuffer.WriteLine( outLine.ToString() );
+
+						outLine = new StringBuilder( "" );
+						outLine.Append( "Pass" + tabDelim );
+						outLine.Append( "Desc" + tabDelim );
+						outLine.Append( "Gate" + tabDelim );
+						outLine.Append( "Buoy 1" + tabDelim );
+						outLine.Append( "Buoy 2" + tabDelim );
+						outLine.Append( "Buoy 3" + tabDelim );
+						outLine.Append( "Buoy 4" + tabDelim );
+						outLine.Append( "Buoy 5" + tabDelim );
+						outLine.Append( "Buoy 6" + tabDelim );
+						outLine.Append( "Exit" + tabDelim );
+						myOutBuffer.WriteLine( outLine.ToString() );
+					}
+
+					outLine = new StringBuilder( ( (byte)boatPathRow["PassNumber"] ).ToString() + tabDelim + "Time" + tabDelim );
+					for ( int rowIdx = 1; rowIdx <= 7; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+
+					outLine = new StringBuilder( tabDelim + "Dev" );
+					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+
+					outLine = new StringBuilder( tabDelim + "Cum" );
+					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
+						if ( passScore < ( rowIdx - 1 ) ) break;
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathSlalomDataText method"
+					+ "\n\nException: " + ex.Message
+				);
+			}
+		}
+
+		private int exportBoatPathJumpDataExcel( int inStartRow, String memberId, String round, DataTable curDataTable ) {
+			int curExcelRow = inStartRow;
+			DataRow boatPathRow;
+			Int16 passNum;
+
+			try {
+				Boolean writeHeader = true;
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					passNum = (byte)curRow["PassNum"];
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					if ( boatPathRow == null ) continue;
+
+					if ( writeHeader ) {
+						writeHeader = false;
+						curExcelRow++;
+						setCellValue( curExcelRow, 1, "Boat Path Monitoring Data" );
+
+						curExcelRow++;
+						setCellValue( curExcelRow, 1, "Pass" );
+						setCellValue( curExcelRow, 2, "Desc" );
+						setCellValue( curExcelRow, 3, "Gate" );
+						setCellValue( curExcelRow, 4, "52M" );
+						setCellValue( curExcelRow, 5, "82M" );
+						setCellValue( curExcelRow, 6, "Exit" );
+					}
+
+					curExcelRow++;
+					int curColNum = 1;
+					setCellValue( curExcelRow, curColNum, ( (byte)boatPathRow["PassNumber"] ).ToString() );
+					curColNum++;
+					setCellValue( curExcelRow, curColNum, "Time" );
+					curColNum = 4;
+					for ( int rowIdx = 1; rowIdx <= 4; rowIdx++ ) {
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+					curExcelRow++;
+					curColNum = 2;
+					setCellValue( curExcelRow, 2, "Dev" );
+					curColNum = 3;
+					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+
+					curExcelRow++;
+					curColNum = 2;
+					setCellValue( curExcelRow, 2, "Cum" );
+					curColNum = 3;
+					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
+						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
+						curColNum++;
+					}
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathDataExcel method"
+					+ "\n\nException: " + ex.Message
+				);
+			}
+
+			return curExcelRow;
+		}
+
+		private void exportBoatPathJumpDataText( StringBuilder outLine, String memberId, String round, DataTable curDataTable ) {
+			DataRow boatPathRow;
+			Int16 passNum;
+
+			try {
+				Boolean writeHeader = true;
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					passNum = (byte)curRow["PassNum"];
+					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString() );
+					if ( boatPathRow == null ) continue;
+
+					if ( writeHeader ) {
+						writeHeader = false;
+						myOutBuffer.WriteLine( outLine.ToString() );
+
+						outLine = new StringBuilder( "Boat Path Monitoring Data" );
+						myOutBuffer.WriteLine( outLine.ToString() );
+
+						outLine = new StringBuilder( "" );
+						outLine.Append( "Pass" + tabDelim );
+						outLine.Append( "Desc" + tabDelim );
+						outLine.Append( "Gate" + tabDelim );
+						outLine.Append( "52M" + tabDelim );
+						outLine.Append( "82M" + tabDelim );
+						outLine.Append( "41M" + tabDelim );
+						outLine.Append( "Exit" + tabDelim );
+						myOutBuffer.WriteLine( outLine.ToString() );
+					}
+
+					outLine = new StringBuilder( ( (byte)boatPathRow["PassNumber"] ).ToString() + tabDelim + "Time" + tabDelim );
+					for ( int rowIdx = 1; rowIdx <= 4; rowIdx++ ) {
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+
+					outLine = new StringBuilder( tabDelim + "Dev" );
+					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+
+					outLine = new StringBuilder( tabDelim + "Cum" );
+					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
+						outLine.Append( tabDelim + ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
+					}
+					myOutBuffer.WriteLine( outLine.ToString() );
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathDataExcel method"
+					+ "\n\nException: " + ex.Message
+				);
+			}
+		}
+
+		private StreamWriter getExportFile(String inFileName) {
             StreamWriter outBuffer = null;
 
             SaveFileDialog myFileDialog = new SaveFileDialog();

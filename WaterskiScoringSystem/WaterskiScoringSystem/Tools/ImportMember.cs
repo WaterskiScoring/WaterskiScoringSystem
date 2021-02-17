@@ -552,7 +552,7 @@ namespace WaterskiScoringSystem.Tools {
 			if (curImportMemberEntry.ContainsKey("CanSki")) {
 				if (curImportMemberEntry["CanSki"] != null) {
 					if (curImportMemberEntry["CanSki"].GetType() == System.Type.GetType("System.String")) {
-						if (((String)curImportMemberEntry["CanSki"]).Equals("true")) CanSki = true;
+						if (((String)curImportMemberEntry["CanSki"]).ToLower().Equals("true")) CanSki = true;
 					} else {
 						CanSki = (Boolean)curImportMemberEntry["CanSki"];
 					}
@@ -562,7 +562,7 @@ namespace WaterskiScoringSystem.Tools {
 			if (curImportMemberEntry.ContainsKey("CanSkiGR")) {
 				if (curImportMemberEntry["CanSkiGR"] != null) {
 					if (curImportMemberEntry["CanSkiGR"].GetType() == System.Type.GetType("System.String")) {
-						if (((String)curImportMemberEntry["CanSkiGR"]).Equals("true")) CanSkiGR = true;
+						if (((String)curImportMemberEntry["CanSkiGR"]).ToLower().Equals("true")) CanSkiGR = true;
 					} else {
 						CanSkiGR = (Boolean)curImportMemberEntry["CanSkiGR"];
 					}
@@ -578,13 +578,17 @@ namespace WaterskiScoringSystem.Tools {
 			}
 
 			String MemberStatus = "In-Active";
+			Type activeMemberType = curImportMemberEntry["ActiveMember"].GetType();
+			String curActiveMemberType = activeMemberType.ToString();
 			Boolean ActiveMember = false;
 			String EffTo = (String)curImportMemberEntry["EffTo"];
-			if (curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType("System.Boolean")) {
+			if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.Boolean" ) ) {
 				ActiveMember = (Boolean)curImportMemberEntry["ActiveMember"];
+			} else if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.String" ) ) {
+				String curValue = (String)curImportMemberEntry["ActiveMember"];
+				if ( curValue.ToLower().Equals( "true" ) ) ActiveMember = true;
 			}
-			if (ActiveMember) MemberStatus = "Active";
-			
+			if ( ActiveMember ) MemberStatus = "Active";
 			try {
 				DateTime curEffToDate = Convert.ToDateTime(EffTo);
 				EffTo = curEffToDate.ToString("MM/dd/yy");

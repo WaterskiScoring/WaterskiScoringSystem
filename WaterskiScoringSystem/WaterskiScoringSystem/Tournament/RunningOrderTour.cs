@@ -92,7 +92,13 @@ namespace WaterskiScoringSystem.Tournament {
             isLoadInProg = true;
             myTourProperties = TourProperties.Instance;
 
-            String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt", "RankingScore", "RankingRating", "JumpHeight", "TrickBoat", "HCapBase", "HCapScore" };
+			if ( EwscMonitor.ConnectActive() ) {
+				WaterskiConnectLabel.Visible = true;
+				SendSkierListButton.Visible = true;
+				SendSkierListButton.Enabled = true;
+			}
+
+			String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt", "RankingScore", "RankingRating", "JumpHeight", "TrickBoat", "HCapBase", "HCapScore" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -1859,7 +1865,29 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void navLiveWeb_Click(object sender, EventArgs e) {
+		private void SendSkierListButton_Click( object sender, EventArgs e ) {
+			myEventRegDataTable = getEventRegData();
+			if ( myEventRegDataTable.Rows.Count > 0 ) {
+				EwscMonitor.sendRunningOrder( getCurrentEvent(), myEventRegDataTable );
+				MessageBox.Show( "Running order has been sent to WaterSkiConnect" );
+			}
+		}
+
+		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
+			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
+			waterSkiConnectDialogDialog.ShowDialog();
+			if ( EwscMonitor.ConnectActive() ) {
+				WaterskiConnectLabel.Visible = true;
+				SendSkierListButton.Visible = true;
+				SendSkierListButton.Enabled = true;
+				return;
+			}
+			WaterskiConnectLabel.Visible = false;
+			SendSkierListButton.Visible = false;
+			SendSkierListButton.Enabled = false;
+		}
+
+		private void navLiveWeb_Click(object sender, EventArgs e) {
             // Display the form as a modal dialog box.
             ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
             ExportLiveWeb.LiveWebDialog.ShowDialog( this );
@@ -2067,10 +2095,10 @@ namespace WaterskiScoringSystem.Tournament {
 			String curEvent = getCurrentEvent();
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.Rotation, " );
-            curSqlStmt.Append( "E.TeamCode, COALESCE(E.EventClass, '" + myTourEventClass + "') as EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
+            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, E.RunOrder, E.Rotation" );
+            curSqlStmt.Append( ", E.TeamCode, COALESCE(E.EventClass, '" + myTourEventClass + "') as EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
             curSqlStmt.Append( ", E.RankingScore, E.RankingRating, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
-            curSqlStmt.Append( ", HCapBase, HcapScore, T.State, T.City " );
+            curSqlStmt.Append( ", HCapBase, HcapScore, T.State, T.City, T.Federation, X.Federation as TourFederation " );
             if (slalomButton.Checked) {
             } else if (trickButton.Checked) {
                 curSqlStmt.Append( ", T.TrickBoat " );
@@ -2079,7 +2107,8 @@ namespace WaterskiScoringSystem.Tournament {
             }
             curSqlStmt.Append( "FROM EventReg E " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-            curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+			curSqlStmt.Append( "     INNER JOIN Tournament AS X on X.SanctionId = E.SanctionId " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
             curSqlStmt.Append( "     LEFT OUTER JOIN CodeValueList L ON L.ListCode = E.EventClass AND ListName = 'Class' " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + curEvent + "' " );
 			if ( myFilterCmd.Length > 0 ) curSqlStmt.Append( "AND ( " + myFilterCmd + " ) ");
@@ -2179,7 +2208,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curReturnValue = true;
             }
             return curReturnValue;
-        }
+		}
 
 	}
 }
