@@ -2860,6 +2860,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.
 			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
+			waterSkiConnectDialogDialog.setEvent( "Slalom" );
 			waterSkiConnectDialogDialog.ShowDialog();
 			if ( EwscMonitor.ConnectActive() ) {
 				WaterskiConnectLabel.Visible = true;

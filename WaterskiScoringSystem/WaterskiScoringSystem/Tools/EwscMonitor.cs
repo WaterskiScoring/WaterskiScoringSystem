@@ -27,6 +27,7 @@ namespace WaterskiScoringSystem.Tools {
 		private static DateTime myCurrentDatetime = DateTime.Now;
 		private static char[] singleQuoteDelim = new char[] { '\'' };
 		private static String myLastConnectResponse = "";
+		private static Boolean myUseJumpTimes = false;
 
 		/*
 		 * You can see the different events that are supported here http://www.ewscdata.com/ewscdata_events
@@ -51,6 +52,15 @@ namespace WaterskiScoringSystem.Tools {
 			}
 			set {
 				myEventSubId = value;
+			}
+		}
+
+		public static Boolean useJumpTimes {
+			get {
+				return myUseJumpTimes;
+			}
+			set {
+				myUseJumpTimes = value;
 			}
 		}
 
@@ -746,6 +756,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 
 		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
+			if ( curEvent.Equals("Jump") && myUseJumpTimes == false ) return new decimal[] { };
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 

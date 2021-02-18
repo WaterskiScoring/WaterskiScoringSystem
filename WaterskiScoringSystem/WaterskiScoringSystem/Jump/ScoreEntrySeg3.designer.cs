@@ -2341,7 +2341,6 @@
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
 			this.ClientSize = new System.Drawing.Size(1228, 679);
-			this.Controls.Add(this.jumpRecapDataGridView);
 			this.Controls.Add(this.SkierBoatPathTextBox);
 			this.Controls.Add(SkierBoatPathLabel);
 			this.Controls.Add(this.boatPathDataGridView);
@@ -2405,6 +2404,7 @@
 			this.Controls.Add(this.JumpSpeedSelect);
 			this.Controls.Add(this.roundActiveSelect);
 			this.Controls.Add(this.roundSelect);
+			this.Controls.Add(this.jumpRecapDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(970, 500);
 			this.Name = "ScoreEntrySeg3";

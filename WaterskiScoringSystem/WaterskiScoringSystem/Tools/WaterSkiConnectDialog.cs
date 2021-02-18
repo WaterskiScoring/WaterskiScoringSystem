@@ -22,6 +22,20 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
+		public void setEvent( String inEvent ) {
+			if ( inEvent.Equals("Jump")) {
+				UseJumpTimesCheckBox.Checked = EwscMonitor.useJumpTimes;
+				UseJumpTimesCheckBox.Visible = true;
+				UseJumpTimesCheckBox.Enabled = true;
+				return;
+			}
+
+			UseJumpTimesCheckBox.Checked = false;
+			UseJumpTimesCheckBox.Visible = false;
+			UseJumpTimesCheckBox.Enabled = false;
+			EwscMonitor.useJumpTimes = UseJumpTimesCheckBox.Checked;
+		}
+
 		private void WaterSkiConnectDialog_Load( object sender, EventArgs e ) {
 			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 				MessageLabel.Text = "WaterSkiConnect is connected and active";
@@ -66,9 +80,8 @@ namespace WaterskiScoringSystem.Tools {
 			EwscMonitor.showPin();
 		}
 
-
-
-
-
+		private void UseJumpTimesCheckBox_CheckedChanged( object sender, EventArgs e ) {
+			EwscMonitor.useJumpTimes = UseJumpTimesCheckBox.Checked;
+		}
 	}
 }

@@ -1875,6 +1875,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
 			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
+			waterSkiConnectDialogDialog.setEvent( "RunOrder" );
 			waterSkiConnectDialogDialog.ShowDialog();
 			if ( EwscMonitor.ConnectActive() ) {
 				WaterskiConnectLabel.Visible = true;

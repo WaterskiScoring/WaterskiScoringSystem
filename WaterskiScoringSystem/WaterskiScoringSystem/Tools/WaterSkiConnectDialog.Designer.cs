@@ -30,6 +30,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.MessageLabel = new System.Windows.Forms.Label();
 			this.eventSubIdTextBox = new System.Windows.Forms.TextBox();
 			this.eventSubIdLabel = new System.Windows.Forms.Label();
+			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
@@ -78,28 +79,43 @@ namespace WaterskiScoringSystem.Tools {
 			// 
 			// eventSubIdTextBox
 			// 
-			this.eventSubIdTextBox.Location = new System.Drawing.Point(127, 81);
+			this.eventSubIdTextBox.Location = new System.Drawing.Point(123, 81);
 			this.eventSubIdTextBox.Name = "eventSubIdTextBox";
-			this.eventSubIdTextBox.Size = new System.Drawing.Size(228, 20);
+			this.eventSubIdTextBox.Size = new System.Drawing.Size(235, 20);
 			this.eventSubIdTextBox.TabIndex = 4;
 			// 
 			// eventSubIdLabel
 			// 
 			this.eventSubIdLabel.AutoSize = true;
 			this.eventSubIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.eventSubIdLabel.Location = new System.Drawing.Point(14, 82);
+			this.eventSubIdLabel.Location = new System.Drawing.Point(10, 82);
 			this.eventSubIdLabel.Name = "eventSubIdLabel";
 			this.eventSubIdLabel.Size = new System.Drawing.Size(107, 18);
-			this.eventSubIdLabel.TabIndex = 5;
+			this.eventSubIdLabel.TabIndex = 0;
 			this.eventSubIdLabel.Text = "Event Sub Id:";
 			this.eventSubIdLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// UseJumpTimesCheckBox
+			// 
+			this.UseJumpTimesCheckBox.AutoSize = true;
+			this.UseJumpTimesCheckBox.Enabled = false;
+			this.UseJumpTimesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.UseJumpTimesCheckBox.Location = new System.Drawing.Point(127, 108);
+			this.UseJumpTimesCheckBox.Name = "UseJumpTimesCheckBox";
+			this.UseJumpTimesCheckBox.Size = new System.Drawing.Size(143, 20);
+			this.UseJumpTimesCheckBox.TabIndex = 6;
+			this.UseJumpTimesCheckBox.Text = "Use Jump Times";
+			this.UseJumpTimesCheckBox.UseVisualStyleBackColor = true;
+			this.UseJumpTimesCheckBox.Visible = false;
+			this.UseJumpTimesCheckBox.CheckedChanged += new System.EventHandler(this.UseJumpTimesCheckBox_CheckedChanged);
 			// 
 			// WaterSkiConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(367, 113);
+			this.ClientSize = new System.Drawing.Size(366, 129);
+			this.Controls.Add(this.UseJumpTimesCheckBox);
 			this.Controls.Add(this.eventSubIdLabel);
 			this.Controls.Add(this.eventSubIdTextBox);
 			this.Controls.Add(this.ShowPinButton);
@@ -121,5 +137,6 @@ namespace WaterskiScoringSystem.Tools {
 		private System.Windows.Forms.Label MessageLabel;
 		private System.Windows.Forms.TextBox eventSubIdTextBox;
 		private System.Windows.Forms.Label eventSubIdLabel;
+		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
 	}
 }
