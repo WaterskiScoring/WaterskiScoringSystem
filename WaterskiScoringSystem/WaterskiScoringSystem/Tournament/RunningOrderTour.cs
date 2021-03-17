@@ -37,7 +37,9 @@ namespace WaterskiScoringSystem.Tournament {
         private Decimal myJump6Foot = 6M;
 
         private DataRow myTourRow;
-        private DataTable myEventRegDataTable;
+		private DataRow myClassCRow;
+		private DataRow myClassERow;
+		private DataTable myEventRegDataTable;
 		private Dictionary<string, Boolean> myRunningOrderColumnFilter;
 
 		private TourProperties myTourProperties;
@@ -127,7 +129,10 @@ namespace WaterskiScoringSystem.Tournament {
                         EventClass.DisplayMember = "ItemName";
                         EventClass.ValueMember = "ItemValue";
 
-                        if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
+						myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+						myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+
+						if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
                         if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
                         if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
                         if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) {
@@ -1565,21 +1570,38 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
-        private void EventRegDataGridView_CellValidating( object sender, DataGridViewCellValidatingEventArgs e ) {
+		private void EventRegDataGridView_CellValidating( object sender, DataGridViewCellValidatingEventArgs e ) {
             String curMethodName = "EventRegDataGridView_CellValidating";
             if ( EventRegDataGridView.Rows.Count > 0 ) {
                 myViewIdx = e.RowIndex;
                 String curColName = EventRegDataGridView.Columns[e.ColumnIndex].Name;
                 DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
                 if ( curColName.Equals( "EventClass" ) ) {
-                    String curSkierClass = e.FormattedValue.ToString();
+					String cellValueOrig = (String)EventRegDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+					String curSkierClass = e.FormattedValue.ToString();
                     if (curSkierClass.Length > 1) curSkierClass = e.FormattedValue.ToString().Substring(0, 1);
                     if (mySkierClassList.compareClassChange( curSkierClass, myTourClass ) < 0) {
                         MessageBox.Show( "Class " + curSkierClass + " cannot be assigned to a skier in a class " + myTourClass + " tournament" );
-                        e.Cancel = true;
-                    }
+						( (ComboBox)EventRegDataGridView.EditingControl ).SelectedValue = cellValueOrig;
+						e.Cancel = true;
+						return;
+					}
 
-                } else if (curColName.Equals( "EventGroup" )) {
+					if ( EventRegDataGridView.EditingControl == null ) return;
+					
+					DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curSkierClass.ToUpper() + "'" )[0];
+					if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+						//if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+						if ( !( IwwfMembership.validateIwwfMembership( (String)EventRegDataGridView.Rows[myViewIdx].Cells["MemberId"].Value, (String)this.myTourRow["EventDates"] ) ) ) {
+							MessageBox.Show( "Skier doesn't have an active IWWF license therefore not permitted to ski in class L/R.  Event class changed to E" );
+							( (ComboBox)EventRegDataGridView.EditingControl ).SelectedValue = "E";
+							e.Cancel = true;
+						}
+					}
+					return;
+				} 
+				
+				if (curColName.Equals( "EventGroup" )) {
                     String curValue = e.FormattedValue.ToString();
                     if (isObjectEmpty( curValue )) {
                         MessageBox.Show( "An event group is required" );
@@ -1868,7 +1890,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private void SendSkierListButton_Click( object sender, EventArgs e ) {
 			myEventRegDataTable = getEventRegData();
 			if ( myEventRegDataTable.Rows.Count > 0 ) {
-				EwscMonitor.sendRunningOrder( getCurrentEvent(), myEventRegDataTable );
+				EwscMonitor.sendRunningOrder( getCurrentEvent(), 0, myEventRegDataTable );
 				MessageBox.Show( "Running order has been sent to WaterSkiConnect" );
 			}
 		}
@@ -2092,7 +2114,7 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-        private DataTable getEventRegData() {
+		private DataTable getEventRegData() {
 			String curEvent = getCurrentEvent();
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );

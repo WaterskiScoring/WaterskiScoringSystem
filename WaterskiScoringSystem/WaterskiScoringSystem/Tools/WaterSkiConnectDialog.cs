@@ -67,9 +67,8 @@ namespace WaterskiScoringSystem.Tools {
 				EwscMonitor.sendExit();
 				
 				int count = 0;
-				while ( count >= 0 ) {
+				while ( EwscMonitor.ConnectActive() ) {
 					System.Threading.Thread.Sleep( 1000 );
-					if ( EwscMonitor.ConnectActive() ) break;
 					if ( count > 200 ) break;
 					count++;
 				}

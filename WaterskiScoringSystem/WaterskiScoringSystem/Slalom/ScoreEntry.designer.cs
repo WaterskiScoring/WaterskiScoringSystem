@@ -220,6 +220,10 @@
 			this.EventRunInfoBox = new System.Windows.Forms.GroupBox();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.boatPathDataGridView = new System.Windows.Forms.DataGridView();
+			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
+			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
+			this.SlalomLineSelect = new WaterskiScoringSystem.Common.SlalomLineSelect();
+			this.SlalomSpeedSelection = new WaterskiScoringSystem.Common.SlalomSpeedSelect();
 			this.boatPathBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.boatTimeBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.boatPathDev = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -227,10 +231,6 @@
 			this.boatPathZone = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.boatPathZoneTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.boatPathCumTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.SlalomLineSelect = new WaterskiScoringSystem.Common.SlalomLineSelect();
-			this.SlalomSpeedSelection = new WaterskiScoringSystem.Common.SlalomSpeedSelect();
 			roundLabel = new System.Windows.Forms.Label();
 			activeLabel = new System.Windows.Forms.Label();
 			UnscoredMsgLabel = new System.Windows.Forms.Label();
@@ -404,7 +404,7 @@
 			this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
 			this.LiveWebLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
-			this.LiveWebLabel.Location = new System.Drawing.Point(272, 47);
+			this.LiveWebLabel.Location = new System.Drawing.Point(229, 47);
 			this.LiveWebLabel.Name = "LiveWebLabel";
 			this.LiveWebLabel.Padding = new System.Windows.Forms.Padding(1);
 			this.LiveWebLabel.Size = new System.Drawing.Size(106, 16);
@@ -686,7 +686,7 @@
 			this.winStatus.Location = new System.Drawing.Point(0, 666);
 			this.winStatus.Name = "winStatus";
 			this.winStatus.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
-			this.winStatus.Size = new System.Drawing.Size(1320, 22);
+			this.winStatus.Size = new System.Drawing.Size(1325, 22);
 			this.winStatus.TabIndex = 5;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -754,7 +754,7 @@
 			this.slalomRecapDataGridView.MultiSelect = false;
 			this.slalomRecapDataGridView.Name = "slalomRecapDataGridView";
 			this.slalomRecapDataGridView.RowHeadersWidth = 31;
-			this.slalomRecapDataGridView.Size = new System.Drawing.Size(1033, 172);
+			this.slalomRecapDataGridView.Size = new System.Drawing.Size(1038, 172);
 			this.slalomRecapDataGridView.TabIndex = 50;
 			this.slalomRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.slalomRecapDataGridView_CellContentClick);
 			this.slalomRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.slalomRecapDataGridView_CellEnter);
@@ -1383,7 +1383,7 @@
             this.navExportRecord});
 			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
 			this.topMenuNav.Name = "topMenuNav";
-			this.topMenuNav.Size = new System.Drawing.Size(1320, 42);
+			this.topMenuNav.Size = new System.Drawing.Size(1325, 42);
 			this.topMenuNav.TabIndex = 52;
 			this.topMenuNav.Text = "toolStrip1";
 			// 
@@ -2009,7 +2009,7 @@
 			this.WaterskiConnectLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
 			this.WaterskiConnectLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.WaterskiConnectLabel.ForeColor = System.Drawing.Color.Gold;
-			this.WaterskiConnectLabel.Location = new System.Drawing.Point(384, 47);
+			this.WaterskiConnectLabel.Location = new System.Drawing.Point(338, 47);
 			this.WaterskiConnectLabel.Name = "WaterskiConnectLabel";
 			this.WaterskiConnectLabel.Padding = new System.Windows.Forms.Padding(1);
 			this.WaterskiConnectLabel.Size = new System.Drawing.Size(155, 16);
@@ -2053,9 +2053,76 @@
 			dataGridViewCellStyle60.BackColor = System.Drawing.SystemColors.Info;
 			dataGridViewCellStyle60.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.boatPathDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle60;
-			this.boatPathDataGridView.Size = new System.Drawing.Size(333, 185);
+			this.boatPathDataGridView.Size = new System.Drawing.Size(338, 185);
 			this.boatPathDataGridView.TabIndex = 105;
 			this.boatPathDataGridView.Visible = false;
+			// 
+			// roundActiveSelect
+			// 
+			this.roundActiveSelect.AutoScroll = true;
+			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.roundActiveSelect.Location = new System.Drawing.Point(5, 95);
+			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(0);
+			this.roundActiveSelect.Name = "roundActiveSelect";
+			this.roundActiveSelect.RoundValue = "";
+			this.roundActiveSelect.Size = new System.Drawing.Size(204, 64);
+			this.roundActiveSelect.TabIndex = 11;
+			this.roundActiveSelect.Tag = "";
+			// 
+			// roundSelect
+			// 
+			this.roundSelect.AutoScroll = true;
+			this.roundSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.roundSelect.Location = new System.Drawing.Point(272, 186);
+			this.roundSelect.Margin = new System.Windows.Forms.Padding(0);
+			this.roundSelect.Name = "roundSelect";
+			this.roundSelect.RoundValue = "";
+			this.roundSelect.Size = new System.Drawing.Size(60, 93);
+			this.roundSelect.TabIndex = 20;
+			this.roundSelect.Tag = "";
+			this.roundSelect.Load += new System.EventHandler(this.roundSelect_Load);
+			// 
+			// SlalomLineSelect
+			// 
+			this.SlalomLineSelect.BackColor = System.Drawing.Color.Silver;
+			this.SlalomLineSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.SlalomLineSelect.CurrentShowValueNum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+			this.SlalomLineSelect.CurrentValue = "";
+			this.SlalomLineSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SlalomLineSelect.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.SlalomLineSelect.Location = new System.Drawing.Point(456, 186);
+			this.SlalomLineSelect.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+			this.SlalomLineSelect.Name = "SlalomLineSelect";
+			this.SlalomLineSelect.Size = new System.Drawing.Size(180, 220);
+			this.SlalomLineSelect.TabIndex = 22;
+			this.SlalomLineSelect.Tag = "";
+			this.SlalomLineSelect.Load += new System.EventHandler(this.SlalomLineSelect_Load);
+			// 
+			// SlalomSpeedSelection
+			// 
+			this.SlalomSpeedSelection.BackColor = System.Drawing.Color.Silver;
+			this.SlalomSpeedSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.SlalomSpeedSelection.CurrentShowSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.CurrentValueDesc = "";
+			this.SlalomSpeedSelection.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SlalomSpeedSelection.Location = new System.Drawing.Point(334, 186);
+			this.SlalomSpeedSelection.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+			this.SlalomSpeedSelection.MaxSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.MinSpeedKph = ((short)(0));
+			this.SlalomSpeedSelection.Name = "SlalomSpeedSelection";
+			this.SlalomSpeedSelection.SelectSpeekKph = ((short)(0));
+			this.SlalomSpeedSelection.Size = new System.Drawing.Size(120, 220);
+			this.SlalomSpeedSelection.TabIndex = 21;
+			this.SlalomSpeedSelection.Tag = "";
+			this.SlalomSpeedSelection.Load += new System.EventHandler(this.SlalomSpeedSelect_Load);
 			// 
 			// boatPathBuoy
 			// 
@@ -2067,7 +2134,7 @@
 			this.boatPathBuoy.MaxInputLength = 2;
 			this.boatPathBuoy.Name = "boatPathBuoy";
 			this.boatPathBuoy.ReadOnly = true;
-			this.boatPathBuoy.Width = 45;
+			this.boatPathBuoy.Width = 55;
 			// 
 			// boatTimeBuoy
 			// 
@@ -2152,78 +2219,11 @@
 			this.boatPathCumTol.ReadOnly = true;
 			this.boatPathCumTol.Width = 50;
 			// 
-			// roundActiveSelect
-			// 
-			this.roundActiveSelect.AutoScroll = true;
-			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundActiveSelect.Location = new System.Drawing.Point(5, 95);
-			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(0);
-			this.roundActiveSelect.Name = "roundActiveSelect";
-			this.roundActiveSelect.RoundValue = "";
-			this.roundActiveSelect.Size = new System.Drawing.Size(204, 64);
-			this.roundActiveSelect.TabIndex = 11;
-			this.roundActiveSelect.Tag = "";
-			// 
-			// roundSelect
-			// 
-			this.roundSelect.AutoScroll = true;
-			this.roundSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundSelect.Location = new System.Drawing.Point(272, 186);
-			this.roundSelect.Margin = new System.Windows.Forms.Padding(0);
-			this.roundSelect.Name = "roundSelect";
-			this.roundSelect.RoundValue = "";
-			this.roundSelect.Size = new System.Drawing.Size(60, 93);
-			this.roundSelect.TabIndex = 20;
-			this.roundSelect.Tag = "";
-			this.roundSelect.Load += new System.EventHandler(this.roundSelect_Load);
-			// 
-			// SlalomLineSelect
-			// 
-			this.SlalomLineSelect.BackColor = System.Drawing.Color.Silver;
-			this.SlalomLineSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.SlalomLineSelect.CurrentShowValueNum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-			this.SlalomLineSelect.CurrentValue = "";
-			this.SlalomLineSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SlalomLineSelect.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.SlalomLineSelect.Location = new System.Drawing.Point(456, 186);
-			this.SlalomLineSelect.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-			this.SlalomLineSelect.Name = "SlalomLineSelect";
-			this.SlalomLineSelect.Size = new System.Drawing.Size(180, 220);
-			this.SlalomLineSelect.TabIndex = 22;
-			this.SlalomLineSelect.Tag = "";
-			this.SlalomLineSelect.Load += new System.EventHandler(this.SlalomLineSelect_Load);
-			// 
-			// SlalomSpeedSelection
-			// 
-			this.SlalomSpeedSelection.BackColor = System.Drawing.Color.Silver;
-			this.SlalomSpeedSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.SlalomSpeedSelection.CurrentShowSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.CurrentValueDesc = "";
-			this.SlalomSpeedSelection.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SlalomSpeedSelection.Location = new System.Drawing.Point(334, 186);
-			this.SlalomSpeedSelection.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-			this.SlalomSpeedSelection.MaxSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.MinSpeedKph = ((short)(0));
-			this.SlalomSpeedSelection.Name = "SlalomSpeedSelection";
-			this.SlalomSpeedSelection.SelectSpeekKph = ((short)(0));
-			this.SlalomSpeedSelection.Size = new System.Drawing.Size(120, 220);
-			this.SlalomSpeedSelection.TabIndex = 21;
-			this.SlalomSpeedSelection.Tag = "";
-			this.SlalomSpeedSelection.Load += new System.EventHandler(this.SlalomSpeedSelect_Load);
-			// 
 			// ScoreEntry
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1320, 688);
+			this.ClientSize = new System.Drawing.Size(1325, 688);
 			this.Controls.Add(this.boatPathDataGridView);
 			this.Controls.Add(this.WaterskiConnectLabel);
 			this.Controls.Add(this.EventRunInfoBox);
@@ -2437,6 +2437,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
 		private System.Windows.Forms.Label WaterskiConnectLabel;
 		private System.Windows.Forms.DataGridView boatPathDataGridView;
+		private System.Windows.Forms.ToolStripButton navWaterSkiConnect;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathBuoy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatTimeBuoy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathDev;
@@ -2444,6 +2445,5 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathZone;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathZoneTol;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathCumTol;
-		private System.Windows.Forms.ToolStripButton navWaterSkiConnect;
 	}
 }

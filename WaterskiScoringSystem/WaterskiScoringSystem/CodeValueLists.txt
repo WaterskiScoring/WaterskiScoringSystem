@@ -471,12 +471,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSASlalomMaxDiv	MW		74	55kph, 34mph	34	55	
 0	AWSASlalomMaxDiv	NM		75	58kph, 36mph	36	58	
 0	AWSASlalomMaxDiv	NW		76	55kph, 34mph	34	55	
-22627	Class	C	4	1	C - Competitive			
-22628	Class	F	1	2	F - Grass Roots / Fun / Novice			
-22628	Class	X	2	3	X - Experimental			
-22629	Class	R	9	5	R - Record			
-22630	Class	E	7	9	E - National Record			
-22631	Class	L	8	10	L - Ranking List			
+0	Class	F	1	1	F - Grass Roots / Fun / Novice			
+0	Class	X	2	2	X - Experimental			
+0	Class	C	4	4	C - Competitive			
+0	Class	E	7	7	E - National Record			
+0	Class	L	8	8	L - Ranking List			
+0	Class	R	9	9	R - Record			
 22632	ClassToEvent	C		1	C			
 22633	ClassToEvent	G		2	F			
 22634	ClassToEvent	F		3	F			

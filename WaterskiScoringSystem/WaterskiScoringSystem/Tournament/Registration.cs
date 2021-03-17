@@ -625,8 +625,9 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            // Open dialog for selecting skiers
-            myTourRegAddDialog.ShowDialog(this);
+			// Open dialog for selecting skiers
+			myTourRegAddDialog.resetInput();
+			myTourRegAddDialog.ShowDialog(this);
 
             // Refresh data from database
             if ( myTourRegAddDialog.isDataModified ) {

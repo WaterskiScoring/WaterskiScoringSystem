@@ -25,14 +25,20 @@ namespace WaterskiScoringSystem.Tournament {
         private AgeGroupDropdownList myAgeDivList;
         private DataRow myTourRow;
 
-        //Constructor
-        public TourEventReg() {
+		private DataRow myClassCRow;
+		private DataRow myClassERow;
+
+		//Constructor
+		public TourEventReg() {
             getTourInfo();
 
             mySkierClassList = new ListSkierClass();
             mySkierClassList.ListSkierClassLoad();
+			
+			myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+			myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
 
-            myMatchCommand = "";
+			myMatchCommand = "";
             myMatchCommandPrev = "";
             myMatchDialog = new ImportMatchDialogForm();
 
@@ -42,9 +48,9 @@ namespace WaterskiScoringSystem.Tournament {
                 String curRules = (String)myTourRow["Rules"];
                 myAgeDivList = new AgeGroupDropdownList( myTourRow );
             }
-        }
+		}
 
-        public DataRow getTourInfo() {
+		public DataRow getTourInfo() {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             DataTable curTourDataTable = getTourData( mySanctionNum );
             if ( curTourDataTable.Rows.Count > 0 ) {
@@ -115,61 +121,50 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         public bool addEventSlalom( String inMemberId, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
-            if ( myTourRow == null ) {
-                return false;
-            } else {
-                if ( ( (byte)myTourRow["SlalomRounds"] ) > 0 ) {
-                    return addEvent( inMemberId, "Slalom", inEventGroup, inEventClass, inAgeDiv, inTeamCode );
-                } else {
-                    MessageBox.Show( "Request to add skier to slalom event but tournament does not include this event." );
-                    return false;
-                }
-            }
+            if ( myTourRow == null ) return false;
+
+            if ( ( (byte)myTourRow["SlalomRounds"] ) > 0 ) return addEvent( inMemberId, "Slalom", inEventGroup, inEventClass, inAgeDiv, inTeamCode );
+                    
+			MessageBox.Show( "Request to add skier to slalom event but tournament does not include this event." );
+            return false;
         }
 
         public bool addEventTrick( String inMemberId, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
-            if ( myTourRow == null ) {
-                return false;
-            } else {
-                if ( ( (byte)myTourRow["TrickRounds"] ) > 0 ) {
-                    return addEvent( inMemberId, "Trick", inEventGroup, inEventClass, inAgeDiv, inTeamCode );
-                } else {
-                    MessageBox.Show( "Request to add skier to trick event but tournament does not include this event." );
-                    return false;
-                }
-            }
-        }
+            if ( myTourRow == null ) return false;
+			
+			if ( ( (byte)myTourRow["TrickRounds"] ) > 0 ) return addEvent( inMemberId, "Trick", inEventGroup, inEventClass, inAgeDiv, inTeamCode );
 
-        public bool addEventJump( String inMemberId, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
-            if ( myTourRow == null ) {
-                return false;
-            } else {
-                if ( ( (byte)myTourRow["JumpRounds"] ) > 0 ) {
-                    String curAgeDiv = inAgeDiv;
-                    String curEventGroup = inEventGroup;
-                    if ( curAgeDiv.ToUpper().Equals( "B1" ) ) {
-                        curAgeDiv = "B2";
-                        if ( inEventGroup.ToUpper().Equals( "B1" ) ) {
-                            curEventGroup = curAgeDiv;
-                        }
-                    } else if ( curAgeDiv.ToUpper().Equals( "G1" ) ) {
-                        curAgeDiv = "G2";
-                        if ( inEventGroup.ToUpper().Equals( "G1" ) ) {
-                            curEventGroup = curAgeDiv;
-                        }
-                    }
-                    return addEvent( inMemberId, "Jump", curEventGroup, inEventClass, curAgeDiv, inTeamCode );
-                } else {
-                    MessageBox.Show( "Request to add skier to jump event but tournament does not include this event." );
-                    return false;
-                }
-            }
-        }
+			MessageBox.Show( "Request to add skier to trick event but tournament does not include this event." );
+			return false;
+		}
 
-        private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
+		public bool addEventJump( String inMemberId, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
+            if ( myTourRow == null ) return false;
+
+			if ( ( (byte)myTourRow["JumpRounds"] ) > 0 ) {
+				String curAgeDiv = inAgeDiv;
+				String curEventGroup = inEventGroup;
+				if ( curAgeDiv.ToUpper().Equals( "B1" ) ) {
+					curAgeDiv = "B2";
+					if ( inEventGroup.ToUpper().Equals( "B1" ) ) {
+						curEventGroup = curAgeDiv;
+					}
+				} else if ( curAgeDiv.ToUpper().Equals( "G1" ) ) {
+					curAgeDiv = "G2";
+					if ( inEventGroup.ToUpper().Equals( "G1" ) ) {
+						curEventGroup = curAgeDiv;
+					}
+				}
+				return addEvent( inMemberId, "Jump", curEventGroup, inEventClass, curAgeDiv, inTeamCode );
+			}
+			
+			MessageBox.Show( "Request to add skier to jump event but tournament does not include this event." );
+			return false;
+		}
+
+		private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
             String curMethodName = "Tournament:TourEventReg:addEvent";
             String curMsg = "";
-            //Boolean returnStatus = true;
             String curEventGroup, curEventClass, curTeamCode, curRankingRating = "";
             Decimal curRankingScore = 0, curHCapBase = 0, curHCapScore = 0;
             DataRow curTourRegRow, curTourEventRegRow;
@@ -183,10 +178,11 @@ namespace WaterskiScoringSystem.Tournament {
                     MessageBox.Show( curMsg );
                     Log.WriteFile( curMethodName + curMsg );
 					return false;
-
-				} else if ( inAgeDiv.Trim().Length < 2 ) {
+				} 
+				
+				if ( inAgeDiv.Trim().Length < 2 ) {
                     curMsg = "Member " + inMemberId + " must have a valid division"
-                        + "\n Unable to add to event " + inEvent;
+						+ "\n Unable to add to event " + inEvent;
                     MessageBox.Show( curMsg );
                     Log.WriteFile( curMethodName + curMsg );
 					return false;
@@ -210,12 +206,15 @@ namespace WaterskiScoringSystem.Tournament {
 					} else {
 						curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
 					}
+					
 					if ( curEventClass.ToUpper().Equals( "R" ) ) {
 						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
 							//Leave class as provided on input
+						
 						} else {
 							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
 								curEventClass = "R";
+							
 							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
 								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
 								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
@@ -260,6 +259,16 @@ namespace WaterskiScoringSystem.Tournament {
 						}
 					}
 				}
+
+				//if ( curEventClass )
+				DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
+				if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+					if ( !( IwwfMembership.validateIwwfMembership( inMemberId, (String)this.myTourRow["EventDates"] ) ) ) {
+						curEventClass = "E";
+						MessageBox.Show( "Skier doesn't have an active IWWF license therefore not permitted to ski in class L/R.  Event class changed to E" );
+					}
+				}
+
 				if ( inEventGroup.Trim().Length > 0 ) {
 					curEventGroup = inEventGroup;
 				} else {

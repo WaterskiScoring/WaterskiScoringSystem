@@ -37,9 +37,15 @@ namespace WaterskiScoringSystem.Tools {
 		 * I think eventually this might be the address but don't think it is active yet
 		 * private static String EwcsWebLocationDefault = "http://waterskiconnect.com:40000/";
 		 * 
+		 * ewscdata.com IP Address = 68.66.248.50
+		 * 
 		 */
 		public static String EwcsWebLocation = "";
 		private static String EwcsWebLocationDefault = "http://ewscdata.com:40000/";
+		//private static String EwcsWebLocationDefault = "ws://localhost/chat";
+		//private static String EwcsWebLocationDefault = "http://localhost/chat";
+		//ws://' + location.host + '/chat
+
 		private static Quobject.SocketIoClientDotNet.Client.Socket socketClient = null;
 
 		public static void setCurrentDate(String inDatetime) {
@@ -98,29 +104,19 @@ namespace WaterskiScoringSystem.Tools {
 				Log.WriteFile(curMethodName + String.Format("Connection: {0}", jsonData));
 				socketClient.Emit("manual_connection_parameter", jsonData);
 			});
-
 			startClientListeners();
 
-			int count = 0;
-			while (count >= 0) {
+			while (true) {
 				System.Threading.Thread.Sleep(2000);
-
-				if (count > 5) {
-					int returnMsg = checkForMsgToSend();
-					if (returnMsg > 0) {
-						EwscMonitor.EwcsWebLocation = "";
-						myConnectActive = false;
-						myLastConnectResponse = "";
-						myEventSubId = "";
-						return "Exit WaterSkiConnect";
-					}
-					count = 0;
+				int returnMsg = checkForMsgToSend();
+				if ( returnMsg > 0 ) {
+					EwscMonitor.EwcsWebLocation = "";
+					myConnectActive = false;
+					myLastConnectResponse = "";
+					myEventSubId = "";
+					return "Exit WaterSkiConnect";
 				}
-
-				count++;
 			}
-			String returnValue = "";
-			return returnValue;
 		}
 
 		private static void startClientListeners() {
@@ -560,7 +556,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 					MessageBox.Show(msg);
 				}
 			} else {
-				//MessageBox.Show(msg);
+				MessageBox.Show(msg);
 			}
 		}
 
@@ -571,6 +567,12 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			DataTable curDataTable = getEwscMsg();
 			foreach (DataRow curDataRow in curDataTable.Rows) {
 				if (((String)curDataRow["MsgType"]).Equals("Exit")) {
+
+					socketClient.On( Socket.EVENT_DISCONNECT, () => {
+						Log.WriteFile( "checkForMsgToSend: Disconnection" );
+						socketClient.Disconnect();
+					} );
+
 					EwscMonitor.EwcsWebLocation = "";
 					myConnectActive = false;
 					myLastConnectResponse = "";
@@ -603,15 +605,17 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			return true;
 		}
 
-		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup
+		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div
 			, String round, Int16 passNumber, Int16 speed, String rope, String split) {
+			int curRound = int.Parse( round );
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
+					, { "athleteDivision", div }
 					, { "athleteCountry", athleteCountry.ToUpper() }
 					, { "athleteRegion", athleteRegion.ToUpper() }
-					, { "round", round }
+					, { "round", curRound }
 					, { "passNumber", passNumber }
 					, { "speed", speed }
 					, { "rope", rope }
@@ -648,49 +652,78 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			return true;
 		}
 
-		public static Boolean sendRunningOrder( String curEvent, DataTable curDataTable ) {
-			//Dictionary<string, object>[] startListAthletes = new Dictionary<string, object>[curDataTable.Rows.Count];
+		/*
+		 * Send boat_times manually entered into WSTIMS
+		 */
+		public static void sendJumpBoatTimes( String athleteId, String athleteName, String athleteEvent
+			, Int16 round, Int16 passNumber, Int16 speed, decimal splitTime, decimal splitTime2, decimal endTime ) {
+			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
+				{ "athleteId", athleteId }
+				, { "athleteName", athleteName }
+				, { "athleteEvent", athleteEvent }
+				, { "round", round }
+				, { "passNumber", passNumber }
+				, { "speed", speed }
+				, { "rope", "" }
+				, { "nt", splitTime.ToString("0.00") }
+				, { "mt", splitTime2.ToString("0.00") }
+				, { "et", endTime.ToString("0.00") }
+				};
+			addEwscMsg( "boat_times_scoring", JsonConvert.SerializeObject( sendMsg ) );
+		}
+
+
+		public static Boolean sendRunningOrder( String curEvent, int curRound, DataTable curDataTable ) {
 			ArrayList startListAthletes = new ArrayList();
 
 			int curRow = 0;
 			String curEventGroup = "", prevEventGroup = "";
 			foreach ( DataRow curDataRow in curDataTable.Rows ) {
-				curEventGroup = (String)curDataRow["EventGroup"];
-				if ( prevEventGroup != curEventGroup && startListAthletes.Count > 0 ) {
-					sendRunningOrderForGroup( curEvent, prevEventGroup, startListAthletes );
-					startListAthletes = new ArrayList();
-				}
+				try {
+					curEventGroup = (String)curDataRow["EventGroup"];
+					if ( prevEventGroup != curEventGroup && startListAthletes.Count > 0 ) {
+						sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
+						startListAthletes = new ArrayList();
+					}
 
-				String curFederation = (String)curDataRow["Federation"];
-				if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
+					String curFederation = "";
+					if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = ( String)curDataRow["Federation"];
+					if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
 
-				startListAthletes.Add( new Dictionary<string, object> {
-                    { "athleteId", (String)curDataRow["memberId"] }
-                    , { "athleteName", (String)curDataRow["SkierName"] }
+					startListAthletes.Add( new Dictionary<string, object> {
+					{ "athleteId", (String)curDataRow["memberId"] }
+					, { "athleteName", (String)curDataRow["SkierName"] }
 					, { "athleteCountry", curFederation.ToUpper() }
-                    , { "athleteRegion", (String)curDataRow["State"] }
-                    , { "position_starting", Convert.ToInt32(curRow + 1) }
-                    , { "position_seed", Convert.ToInt32(curDataTable.Rows.Count - curRow) }
-                    , { "position_current", Convert.ToInt32(curRow + 1) }
-                    , { "score_seed", (decimal)curDataRow["RankingScore"] }
-                    , { "score_current", Convert.ToDecimal(0) }
-                });
+					, { "athleteRegion", (String)curDataRow["State"] }
+					, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+					, { "athleteGroup", (String)curDataRow["EventGroup"] }
+					, { "position_starting", Convert.ToInt32(curRow + 1) }
+					, { "position_seed", Convert.ToInt32(curDataTable.Rows.Count - curRow) }
+					, { "position_current", Convert.ToInt32(curRow + 1) }
+					, { "score_seed", (decimal)curDataRow["RankingScore"] }
+					, { "score_current", Convert.ToDecimal(0) }
+					} );
 
-				prevEventGroup = curEventGroup;
-				curRow++;
+					prevEventGroup = curEventGroup;
+					curRow++;
+				
+				} catch (Exception ex ) {
+					MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
+					String curValue = ex.Message;
+				}
 			}
 
 			if ( startListAthletes.Count > 0 ) {
-				sendRunningOrderForGroup( curEvent, prevEventGroup, startListAthletes );
+				sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
 			}
 			
 			return true;
         }
 
-		private static void sendRunningOrderForGroup( String curEvent, String curEventGroup, ArrayList startListAthletes ) {
+		private static void sendRunningOrderForGroup( String curEvent, int curRound, String curEventGroup, ArrayList startListAthletes ) {
 			Dictionary<string, object> startListMsg = new Dictionary<string, object> {
 					{ "startlistName", "EventGroup " + curEventGroup }
-					, { "round", 0 }
+					, { "round", curRound }
 					, { "eventName", curEvent }
 					, { "division", curEventGroup }
 					, { "group", curEventGroup }

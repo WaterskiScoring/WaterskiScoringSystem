@@ -1977,7 +1977,7 @@
 			this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
 			this.LiveWebLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
-			this.LiveWebLabel.Location = new System.Drawing.Point(274, 37);
+			this.LiveWebLabel.Location = new System.Drawing.Point(252, 37);
 			this.LiveWebLabel.Name = "LiveWebLabel";
 			this.LiveWebLabel.Padding = new System.Windows.Forms.Padding(1);
 			this.LiveWebLabel.Size = new System.Drawing.Size(102, 15);
@@ -2092,7 +2092,7 @@
 			this.WaterskiConnectLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
 			this.WaterskiConnectLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.WaterskiConnectLabel.ForeColor = System.Drawing.Color.Gold;
-			this.WaterskiConnectLabel.Location = new System.Drawing.Point(382, 37);
+			this.WaterskiConnectLabel.Location = new System.Drawing.Point(357, 37);
 			this.WaterskiConnectLabel.Name = "WaterskiConnectLabel";
 			this.WaterskiConnectLabel.Padding = new System.Windows.Forms.Padding(1);
 			this.WaterskiConnectLabel.Size = new System.Drawing.Size(145, 15);

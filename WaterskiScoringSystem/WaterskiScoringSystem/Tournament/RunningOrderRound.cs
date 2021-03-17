@@ -81,11 +81,18 @@ namespace WaterskiScoringSystem.Tournament {
             roundActiveSelect.SelectList_LoadHorztl( myRounds.ToString(), roundActiveSelect_Click, false );
             roundActiveSelect.RoundValue = "1";
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-            //navRefresh_Click(null, null);
 
-        }
+			WaterskiConnectLabel.Visible = false;
+			SendSkierListButton.Visible = false;
+			SendSkierListButton.Enabled = false;
+			if ( EwscMonitor.ConnectActive() ) {
+				WaterskiConnectLabel.Visible = true;
+				SendSkierListButton.Visible = true;
+				SendSkierListButton.Enabled = true;
+			}
+		}
 
-        private void RunningOrderRound_Load(object sender, EventArgs e) {
+		private void RunningOrderRound_Load(object sender, EventArgs e) {
             if (Properties.Settings.Default.RunningOrderRound_Width > 0) {
                 this.Width = Properties.Settings.Default.RunningOrderRound_Width;
             }
@@ -413,6 +420,15 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( myRunOrderElimDialog.DialogResult == DialogResult.OK ) {
 				navRefresh_Click( null, null );
 			}
+		}
+
+		private void SendSkierListButton_Click( object sender, EventArgs e ) {
+			DataTable curDataTable = getEventRoundSkierOrder( Convert.ToInt16( roundActiveSelect.RoundValue ), myPlcmtOrg, myCommandType );
+			if ( curDataTable.Rows.Count > 0 ) {
+				EwscMonitor.sendRunningOrder( myEvent, Convert.ToInt16( roundActiveSelect.RoundValue ), curDataTable );
+				MessageBox.Show( "Running order has been sent to WaterSkiConnect" );
+			}
+
 		}
 
 		private Boolean checkDeleteExisting(Int16 inRound) {
@@ -1359,10 +1375,12 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append(", COALESCE(O.RankingScore, E.RankingScore) as RankingScore, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt");
             curSqlStmt.Append( ", E.EventClass, E.TeamCode, T.TrickBoat, T.JumpHeight, T.State, O.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder" );
             curSqlStmt.Append( ", O.Round as Round" + myEvent + " " );
-            curSqlStmt.Append( "FROM EventRunOrder O " );
+			curSqlStmt.Append( ", T.Federation, X.Federation as TourFederation " );
+			curSqlStmt.Append( "FROM EventRunOrder O " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON O.SanctionId = T.SanctionId AND O.MemberId = T.MemberId AND O.AgeGroup = T.AgeGroup " );
-            curSqlStmt.Append( "     INNER JOIN EventReg E ON O.SanctionId = E.SanctionId AND O.MemberId = E.MemberId AND O.AgeGroup = E.AgeGroup AND O.Event = E.Event " );
-            curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON O.SanctionId = D.SanctionId AND O.AgeGroup = D.AgeGroup AND O.Event = D.Event " );
+			curSqlStmt.Append( "     INNER JOIN EventReg E ON O.SanctionId = E.SanctionId AND O.MemberId = E.MemberId AND O.AgeGroup = E.AgeGroup AND O.Event = E.Event " );
+			curSqlStmt.Append( "     INNER JOIN Tournament AS X on X.SanctionId = E.SanctionId " );
+			curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON O.SanctionId = D.SanctionId AND O.AgeGroup = D.AgeGroup AND O.Event = D.Event " );
 			curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.Event = '" + myEvent + "' AND O.Round = " + inRound.ToString() + " " );
 
             if (curPlcmtOrg.Length == 0) {
@@ -1480,6 +1498,5 @@ namespace WaterskiScoringSystem.Tournament {
             }
             return curReturnValue;
         }
-
 	}
 }

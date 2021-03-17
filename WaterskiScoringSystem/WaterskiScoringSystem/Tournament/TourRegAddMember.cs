@@ -31,6 +31,13 @@ namespace WaterskiScoringSystem.Tournament {
             InitializeComponent();
         }
 
+		public void resetInput() {
+			inputFirstName.Text = "";
+			inputLastName.Text = "";
+			inputMemberId.Text = "";
+			inputState.Text = "";
+		}
+
         public bool isDataModified {
             get {
                 return myDataModified;

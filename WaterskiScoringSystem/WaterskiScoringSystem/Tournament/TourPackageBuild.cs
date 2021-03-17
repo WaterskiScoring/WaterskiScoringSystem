@@ -57,21 +57,6 @@ namespace WaterskiScoringSystem.Tournament {
             CheckForChiefOfficials();
             CheckBoatUse();
 
-            // Disabling the Alumni functionality at this time 8/8/17.  
-            // Do not want it used inadvertently
-            if ( ( (String) myTourRow["Name"] ).Contains("##Alumni##") ) {
-                String curMsg = "This has been recognized as a collegiate alumni tournament  "
-                    + "\nSlalom scores for these tournaments have been adjust for tournament scoring purposes"
-                    + "\nYou will need to have the scores adjusted to submit them to the AWSA Ranking List"
-                    + "\n\nClick OK to perform this update "
-                    + "\nClick Cancel to bypass this update if you want to skip the update or have previously completed the update";
-                DialogResult msgResp = MessageBox.Show(curMsg, "Update Notice",
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-                if ( msgResp == DialogResult.OK ) {
-                    execUpdateAlumniSlalomScores();
-                }
-            }
-
             TourPackageButton.BeginInvoke( (MethodInvoker)delegate() {
                 Application.DoEvents();
                 Cursor.Current = Cursors.Default;
@@ -532,9 +517,20 @@ namespace WaterskiScoringSystem.Tournament {
                             curTourFolder = curFolderDialog.SelectedPath;
                         }
                     }
-                    writeTourIdentDataFile( myTourRow, curTourFolder );
 
-                    ExportTourSummary myExportTourSummary = new ExportTourSummary();
+					writeTourIdentDataFile( myTourRow, curTourFolder );
+
+					ArrayList curFileFilterList = getEndOfTourReportList( mySanctionNum, myTourClass );
+					if ( (Decimal)myClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"] ) {
+						//curEventClass = "R";
+						//inputFolderPath + @"\" + outputPathAndFile
+						if ( !(File.Exists( curTourFolder + @"\" + this.mySanctionNum + "HD.txt")) ) {
+							MessageBox.Show( "Unable to generate tournament package for record tournament until Homologation Dossier" );
+							return;
+						}
+					}
+
+					ExportTourSummary myExportTourSummary = new ExportTourSummary();
                     myExportTourSummary.ExportData();
 
                     ExportData myExportData = new ExportData();
@@ -547,7 +543,6 @@ namespace WaterskiScoringSystem.Tournament {
                     myExportData.exportTourData( mySanctionNum, curTourDataFileName );
 
                     Cursor.Current = Cursors.WaitCursor;
-                    ArrayList curFileFilterList = getEndOfTourReportList( mySanctionNum, myTourClass );
                     ZipUtil.ZipFiles( curTourFolder, mySanctionNum + myTourClass + ".zip", curFileFilterList );
                     TourPackageButton.BeginInvoke( (MethodInvoker)delegate() {
                         Application.DoEvents();

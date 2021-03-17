@@ -47,7 +47,7 @@ namespace WaterskiScoringSystem.Tools {
 			// 
 			// DisconnectButton
 			// 
-			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.DisconnectButton.Location = new System.Drawing.Point(144, 43);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(75, 23);

@@ -2348,6 +2348,7 @@ namespace WaterskiScoringSystem.Slalom {
 					, skierFed
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
 					, roundSelect.RoundValue
 					, Convert.ToInt16((String)myRecapRow.Cells["skierPassRecap"].Value)
 					, curPassSpeedKph
@@ -2548,6 +2549,7 @@ namespace WaterskiScoringSystem.Slalom {
 			//    }
 			//}
 		}
+
 
 		private void navSort_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.

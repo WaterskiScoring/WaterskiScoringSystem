@@ -975,6 +975,16 @@ namespace WaterskiScoringSystem.Jump {
 			if (EwscMonitor.EwcsWebLocation.Length > 1) {
 				if (myRecapRow == null) return;
 
+				if ( !(EwscMonitor.useJumpTimes) ) {
+					EwscMonitor.sendJumpBoatTimes( curMemberId, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value, "Jump"
+						, Convert.ToInt16( (String)myRecapRow.Cells["RoundRecap"].Value )
+						, Convert.ToInt16( (String)myRecapRow.Cells["PassNumRecap"].Value )
+						, Convert.ToInt16( (String)myRecapRow.Cells["BoatSpeedRecap"].Value )
+						, Convert.ToDecimal( (String)myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+						, Convert.ToDecimal( (String)myRecapRow.Cells["BoatSplitTime2Recap"].Value )
+						, Convert.ToDecimal( (String)myRecapRow.Cells["BoatEndTimeRecap"].Value ) );
+				}
+
 				String skierFed = (String)myTourRow["Federation"];
 				if (((String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value).Length > 1) {
 					skierFed = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value;
@@ -3862,6 +3872,7 @@ namespace WaterskiScoringSystem.Jump {
 					, "Jump", skierFed
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
 					, roundSelect.RoundValue
 					, Convert.ToInt16((String)myRecapRow.Cells["PassNumRecap"].Value)
 					, curBoatSpeed, "", "0" );
