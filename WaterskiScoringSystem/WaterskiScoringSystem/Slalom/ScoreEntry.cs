@@ -54,6 +54,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private DataRow myPassRowLastCompleted;
 		private DataRow myTimeRow;
 		private DataRow myMinSpeedRow;
+		private DataRow myClassTourEventScoreRow;
 		private DataRow myClassCRow;
 		private DataRow myClassERow;
 		private DataRow myBoatPathDataRow;
@@ -155,18 +156,32 @@ namespace WaterskiScoringSystem.Slalom {
 			//Retrieve selected tournament attributes
 			DataTable curTourDataTable = getTourData( mySanctionNum );
 			if ( curTourDataTable.Rows.Count <= 0 ) {
-				MessageBox.Show("The active tournament is not properly defined.  You must select from the Administration menu Tournament List option");
+				MessageBox.Show( "The active tournament is not properly defined.  You must select from the Administration menu Tournament List option" );
 				return;
 			}
 
 			myTourRow = curTourDataTable.Rows[0];
-			if ((byte)myTourRow["SlalomRounds"] <= 0) {
-				MessageBox.Show("The slalom event is not defined for the active tournament");
+			if ( (byte)myTourRow["SlalomRounds"] <= 0 ) {
+				MessageBox.Show( "The slalom event is not defined for the active tournament" );
 				return;
 			}
 
+			mySkierClassList = new ListSkierClass();
+			mySkierClassList.ListSkierClassLoad();
+			scoreEventClass.DataSource = mySkierClassList.DropdownList;
+			scoreEventClass.DisplayMember = "ItemName";
+			scoreEventClass.ValueMember = "ItemValue";
+
+			myCheckOfficials = new CheckOfficials();
+
+			myTourClass = myTourRow["Class"].ToString().ToUpper();
+			myClassTourEventScoreRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + myTourRow["EventScoreClass"].ToString().ToUpper() + "'" )[0];
+			myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+			myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+
 			myTourRules = (String)myTourRow["Rules"];
-			if (myTourRules.ToLower().Equals("ncwsa")) {
+
+			if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
 				TeamCode.Visible = true;
 			} else {
 				TeamCode.Visible = false;
@@ -180,40 +195,31 @@ namespace WaterskiScoringSystem.Slalom {
 			EventRunPerfData.Text = "";
 
 			//Instantiate object for checking for records
-			myCheckEventRecord = new CheckEventRecord(myTourRow);
+			myCheckEventRecord = new CheckEventRecord( myTourRow );
 
 			//Load round selection list based on number of rounds specified for the tournament
-			roundSelect.SelectList_Load(myTourRow["SlalomRounds"].ToString(), roundSelect_Click);
-			roundActiveSelect.SelectList_LoadHorztl(myTourRow["SlalomRounds"].ToString(), roundActiveSelect_Click);
+			roundSelect.SelectList_Load( myTourRow["SlalomRounds"].ToString(), roundSelect_Click );
+			roundActiveSelect.SelectList_LoadHorztl( myTourRow["SlalomRounds"].ToString(), roundActiveSelect_Click );
 			roundActiveSelect.RoundValue = "1";
 
 			//Load rope length selection list
-			SlalomLineSelect.SelectList_Load(SlalomLineSelect_Change);
+			SlalomLineSelect.SelectList_Load( SlalomLineSelect_Change );
 
 			//Load slalom speed selection list
-			SlalomSpeedSelection.SelectList_Load(SlalomSpeedSelect_Change);
-
-			mySkierClassList = new ListSkierClass();
-			mySkierClassList.ListSkierClassLoad();
-			scoreEventClass.DataSource = mySkierClassList.DropdownList;
-			scoreEventClass.DisplayMember = "ItemName";
-			scoreEventClass.ValueMember = "ItemValue";
-			myTourClass = myTourRow["Class"].ToString().ToUpper();
-			myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
-			myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
+			SlalomSpeedSelection.SelectList_Load( SlalomSpeedSelect_Change );
 
 			//Determine required number of judges for event
 			myNumJudges = 5;
-			StringBuilder curSqlStmt = new StringBuilder("");
-			curSqlStmt.Append("Select ListCode, CodeValue, MaxValue, MinValue FROM CodeValueList ");
-			curSqlStmt.Append("Where ListName = 'SlalomJudgesNum' And ListCode = '" + myTourClass + "' ORDER BY SortSeq");
-			DataTable curNumJudgesDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
-			if (curNumJudgesDataTable.Rows.Count > 0) {
-				setShowByNumJudges(Convert.ToInt16((Decimal)curNumJudgesDataTable.Rows[0]["MaxValue"]));
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select ListCode, CodeValue, MaxValue, MinValue FROM CodeValueList " );
+			curSqlStmt.Append( "Where ListName = 'SlalomJudgesNum' And ListCode = '" + myTourClass + "' ORDER BY SortSeq" );
+			DataTable curNumJudgesDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curNumJudgesDataTable.Rows.Count > 0 ) {
+				setShowByNumJudges( Convert.ToInt16( (Decimal)curNumJudgesDataTable.Rows[0]["MaxValue"] ) );
 			} else {
-				setShowByNumJudges(1);
+				setShowByNumJudges( 1 );
 			}
-			if (myNumJudges > 3) {
+			if ( myNumJudges > 3 ) {
 				ClassC5JudgeCB.Visible = false;
 				ClassC5JudgeCB.Enabled = false;
 				ClassR3JudgeCB.Visible = true;
@@ -227,10 +233,10 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			//Retrieve and load boat times
-			curSqlStmt = new StringBuilder("");
-			curSqlStmt.Append("SELECT ListCode, ListCodeNum, SortSeq, CodeValue, MinValue, MaxValue, CodeDesc ");
-			curSqlStmt.Append("FROM CodeValueList WHERE ListName = 'SlalomBoatTime' ORDER BY SortSeq");
-			myTimesDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, SortSeq, CodeValue, MinValue, MaxValue, CodeDesc " );
+			curSqlStmt.Append( "FROM CodeValueList WHERE ListName = 'SlalomBoatTime' ORDER BY SortSeq" );
+			myTimesDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
 			//Retrieve list of approved tournament boats
 			getApprovedTowboats();
@@ -238,26 +244,19 @@ namespace WaterskiScoringSystem.Slalom {
 			approvedBoatSelectGroupBox.Visible = false;
 
 			//Retrieve and load tournament event entries
-			loadEventGroupList(Convert.ToByte(roundActiveSelect.RoundValue));
+			loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
 
-			if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 				LiveWebLabel.Visible = true;
 			} else {
 				LiveWebLabel.Visible = false;
 			}
-			if (EwscMonitor.EwcsWebLocation.Length > 1) {
+			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 				WaterskiConnectLabel.Visible = true;
 				myBoatPathDevMax = getBoatPathDevMax();
 
 			} else {
 				WaterskiConnectLabel.Visible = false;
-			}
-
-			DataRow curClassRow = getClassRow(myTourRow["EventScoreClass"].ToString().ToUpper());
-			if ((Decimal)curClassRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"]) {
-				myCheckOfficials = new CheckOfficials();
-			} else {
-				myCheckOfficials = null;
 			}
 
 			Cursor.Current = Cursors.Default;
@@ -397,7 +396,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void ClassR3JudgeCB_CheckedChanged( object sender, EventArgs e ) {
-			CheckBox curControl = (CheckBox) sender;
+			CheckBox curControl = (CheckBox)sender;
 			if ( curControl.Checked ) {
 				setShowByNumJudges( 3 );
 			} else {
@@ -406,7 +405,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void ClassC5JudgeCB_CheckedChanged( object sender, EventArgs e ) {
-			CheckBox curControl = (CheckBox) sender;
+			CheckBox curControl = (CheckBox)sender;
 			if ( curControl.Checked ) {
 				setShowByNumJudges( 5 );
 			} else {
@@ -427,12 +426,12 @@ namespace WaterskiScoringSystem.Slalom {
 				int curHours, curMins, curSeconds, curTimeDiff;
 				String curMethodName = "Slalom:ScoreEntry:FormClosed";
 				try {
-					curTimeDiff = Convert.ToInt32( ( (TimeSpan) DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
+					curTimeDiff = Convert.ToInt32( ( (TimeSpan)DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
 				} catch {
 					myEventStartTime = DateTime.Now;
 					EventRunInfoData.Text = "";
 					EventRunPerfData.Text = "";
-					curTimeDiff = Convert.ToInt32( ( (TimeSpan) DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
+					curTimeDiff = Convert.ToInt32( ( (TimeSpan)DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
 				}
 				Log.WriteFile( curMethodName + ":    Event Start=" + myEventStartTime.ToString( "MM/dd/yyyy HH:mm" ) );
 				Log.WriteFile( curMethodName + ":      Event End=" + DateTime.Now.ToString( "MM/dd/yyyy HH:mm" ) );
@@ -462,7 +461,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void DataGridView_DataError( object sender, DataGridViewDataErrorEventArgs e ) {
 			MessageBox.Show( "Error happened " + e.Context.ToString() + "\n Exception Message: " + e.Exception.Message );
 			if ( ( e.Exception ) is ConstraintException ) {
-				DataGridView view = (DataGridView) sender;
+				DataGridView view = (DataGridView)sender;
 				if ( e.RowIndex >= 0 ) {
 					view.Rows[e.RowIndex].ErrorText = "an error";
 				}
@@ -495,7 +494,7 @@ namespace WaterskiScoringSystem.Slalom {
 					curUpdateStatus = "N";
 				} else {
 					try {
-						curUpdateStatus = (String) myRecapRow.Cells["Updated"].Value;
+						curUpdateStatus = (String)myRecapRow.Cells["Updated"].Value;
 					} catch ( Exception excp ) {
 						if ( slalomRecapDataGridView.Rows.Count > 0 ) {
 							curUpdateStatus = "Y";
@@ -521,16 +520,16 @@ namespace WaterskiScoringSystem.Slalom {
 								return false;
 							}
 						}
-						String curSanctionId = (String) myRecapRow.Cells["SanctionIdRecap"].Value;
-						String curMemberId = (String) myRecapRow.Cells["MemberIdRecap"].Value;
-						String curAgeGroup = (String) myRecapRow.Cells["AgeGroupRecap"].Value;
-						byte curRound = Convert.ToByte( (String) myRecapRow.Cells["RoundRecap"].Value );
+						String curSanctionId = (String)myRecapRow.Cells["SanctionIdRecap"].Value;
+						String curMemberId = (String)myRecapRow.Cells["MemberIdRecap"].Value;
+						String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
+						byte curRound = Convert.ToByte( (String)myRecapRow.Cells["RoundRecap"].Value );
 
-						if ( !( curMemberId.Equals( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
+						if ( !( curMemberId.Equals( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
 							// Search grid to set current skier position
 							MessageBox.Show( "Unable to continue save processing"
 								+ "\n Current id of skier being scored       = " + curMemberId
-								+ "\n Current id skier in running order list = " + (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value );
+								+ "\n Current id skier in running order list = " + (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value );
 							return false;
 						}
 						#region Update skier score for current pass
@@ -539,48 +538,48 @@ namespace WaterskiScoringSystem.Slalom {
 						String curBoatTime, curReride, curScoreProt, curTimeInTol, curRerideReason, curNote;
 						String curEntryGate1, curEntryGate2, curEntryGate3, curExitGate1, curExitGate2, curExitGate3;
 
-						Int16 curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-						Decimal curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
+						Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+						Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 						myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 						int curSkierRunNum = myRecapRow.Index + 1;
 
 						try {
-							curReride = (String) myRecapRow.Cells["RerideRecap"].Value;
+							curReride = (String)myRecapRow.Cells["RerideRecap"].Value;
 						} catch {
 							curReride = "N";
 						}
 						try {
-							curJudge1Score = (String) myRecapRow.Cells["Judge1ScoreRecap"].Value;
+							curJudge1Score = (String)myRecapRow.Cells["Judge1ScoreRecap"].Value;
 							if ( curJudge1Score.Length < 1 ) curJudge1Score = "Null";
 						} catch {
 							curJudge1Score = "Null";
 						}
 						try {
-							curJudge2Score = (String) myRecapRow.Cells["Judge2ScoreRecap"].Value;
+							curJudge2Score = (String)myRecapRow.Cells["Judge2ScoreRecap"].Value;
 							if ( curJudge2Score.Length < 1 ) curJudge2Score = "Null";
 						} catch {
 							curJudge2Score = "Null";
 						}
 						try {
-							curJudge3Score = (String) myRecapRow.Cells["Judge3ScoreRecap"].Value;
+							curJudge3Score = (String)myRecapRow.Cells["Judge3ScoreRecap"].Value;
 							if ( curJudge3Score.Length < 1 ) curJudge3Score = "Null";
 						} catch {
 							curJudge3Score = "Null";
 						}
 						try {
-							curJudge4Score = (String) myRecapRow.Cells["Judge4ScoreRecap"].Value;
+							curJudge4Score = (String)myRecapRow.Cells["Judge4ScoreRecap"].Value;
 							if ( curJudge4Score.Length < 1 ) curJudge4Score = "Null";
 						} catch {
 							curJudge4Score = "Null";
 						}
 						try {
-							curJudge5Score = (String) myRecapRow.Cells["Judge5ScoreRecap"].Value;
+							curJudge5Score = (String)myRecapRow.Cells["Judge5ScoreRecap"].Value;
 							if ( curJudge5Score.Length < 1 ) curJudge5Score = "Null";
 						} catch {
 							curJudge5Score = "Null";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateEntry1Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateEntry1Recap"].Value ) {
 								curEntryGate1 = "1";
 							} else {
 								curEntryGate1 = "0";
@@ -589,7 +588,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curEntryGate1 = "0";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateEntry2Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateEntry2Recap"].Value ) {
 								curEntryGate2 = "1";
 							} else {
 								curEntryGate2 = "0";
@@ -598,7 +597,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curEntryGate2 = "0";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateEntry3Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateEntry3Recap"].Value ) {
 								curEntryGate3 = "1";
 							} else {
 								curEntryGate3 = "0";
@@ -607,7 +606,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curEntryGate3 = "0";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateExit1Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateExit1Recap"].Value ) {
 								curExitGate1 = "1";
 							} else {
 								curExitGate1 = "0";
@@ -616,7 +615,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curExitGate1 = "0";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateExit2Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateExit2Recap"].Value ) {
 								curExitGate2 = "1";
 							} else {
 								curExitGate2 = "0";
@@ -625,7 +624,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curExitGate2 = "0";
 						}
 						try {
-							if ( (bool) myRecapRow.Cells["GateExit3Recap"].Value ) {
+							if ( (bool)myRecapRow.Cells["GateExit3Recap"].Value ) {
 								curExitGate3 = "1";
 							} else {
 								curExitGate3 = "0";
@@ -634,35 +633,35 @@ namespace WaterskiScoringSystem.Slalom {
 							curExitGate3 = "0";
 						}
 						try {
-							curScoreRecap = (String) myRecapRow.Cells["ScoreRecap"].Value;
+							curScoreRecap = (String)myRecapRow.Cells["ScoreRecap"].Value;
 							if ( curScoreRecap.Length < 1 ) curScoreRecap = "0";
 						} catch {
 							curScoreRecap = "0";
 						}
 						try {
-							curTimeInTol = (String) myRecapRow.Cells["TimeInTolRecap"].Value;
+							curTimeInTol = (String)myRecapRow.Cells["TimeInTolRecap"].Value;
 						} catch {
 							curTimeInTol = "N";
 						}
 						try {
-							curBoatTime = (String) myRecapRow.Cells["BoatTimeRecap"].Value;
+							curBoatTime = (String)myRecapRow.Cells["BoatTimeRecap"].Value;
 							if ( curBoatTime.Length == 0 ) curBoatTime = "0";
 						} catch {
 							curBoatTime = "0";
 						}
 						try {
-							curScoreProt = (String) myRecapRow.Cells["ScoreProtRecap"].Value;
+							curScoreProt = (String)myRecapRow.Cells["ScoreProtRecap"].Value;
 						} catch {
 							curScoreProt = "N";
 						}
 						try {
-							curRerideReason = (String) myRecapRow.Cells["RerideReasonRecap"].Value;
+							curRerideReason = (String)myRecapRow.Cells["RerideReasonRecap"].Value;
 							curRerideReason = curRerideReason.Replace( "'", "''" );
 						} catch {
 							curRerideReason = "";
 						}
 						try {
-							curNote = (String) myRecapRow.Cells["NoteRecap"].Value;
+							curNote = (String)myRecapRow.Cells["NoteRecap"].Value;
 							curNote = curNote.Replace( "'", "''" );
 						} catch {
 							curNote = "";
@@ -671,7 +670,7 @@ namespace WaterskiScoringSystem.Slalom {
 						curSqlStmt = new StringBuilder( "" );
 						if ( isRecapRowExist( curSanctionId, curMemberId, curAgeGroup, curRound, curSkierRunNum ) ) {
 							curSqlStmt.Append( "Update SlalomRecap Set " );
-							curSqlStmt.Append( "PassSpeedKph = " + curPassSpeedKph.ToString("00") );
+							curSqlStmt.Append( "PassSpeedKph = " + curPassSpeedKph.ToString( "00" ) );
 							curSqlStmt.Append( ", PassLineLength = " + curPassLineLengthMeters.ToString( "00.00" ) );
 							curSqlStmt.Append( ", Reride = '" + curReride + "'" );
 							curSqlStmt.Append( ", Judge1Score = " + curJudge1Score );
@@ -731,7 +730,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curSqlStmt.Append( ", " + curScoreRecap );
 							curSqlStmt.Append( ", '" + curTimeInTol + "'" );
 							curSqlStmt.Append( ", '" + curScoreProt + "'" );
-							curSqlStmt.Append(", getdate(), getdate()");
+							curSqlStmt.Append( ", getdate(), getdate()" );
 							curSqlStmt.Append( ", '" + curRerideReason + "'" );
 							curSqlStmt.Append( ", '" + curNote + "'" );
 							curSqlStmt.Append( ")" );
@@ -756,11 +755,11 @@ namespace WaterskiScoringSystem.Slalom {
 							curStartSpeedKph = SlalomSpeedSelection.SelectSpeekKph;
 
 						} else {
-							curStartLengthMeters = (String) myScoreRow["StartLen"];
-							curStartSpeedKph = (byte) myScoreRow["StartSpeed"];
+							curStartLengthMeters = (String)myScoreRow["StartLen"];
+							curStartSpeedKph = (byte)myScoreRow["StartSpeed"];
 						}
 
-						curEventClass = (String) scoreEventClass.SelectedValue;
+						curEventClass = (String)scoreEventClass.SelectedValue;
 
 						Decimal curScore = 0, curNopsScore = 0;
 						try {
@@ -787,7 +786,7 @@ namespace WaterskiScoringSystem.Slalom {
 						curBoatCode = calcBoatCodeFromDisplay( TourBoatTextbox.Text );
 
 						try {
-							String curValue = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value;
+							String curValue = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value;
 							if ( curValue.Equals( "4-Done" ) ) curStatus = "Complete";
 							if ( curValue.Equals( "2-InProg" ) ) curStatus = "InProg";
 							if ( curValue.Equals( "3-Error" ) ) curStatus = "Error";
@@ -797,9 +796,9 @@ namespace WaterskiScoringSystem.Slalom {
 						}
 
 						String curFinalRopeOff = ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) );
-						Decimal curPassSpeedMph = Convert.ToInt16( (Decimal) myPassRow["SpeedMph"] );
+						Decimal curPassSpeedMph = Convert.ToInt16( (Decimal)myPassRow["SpeedMph"] );
 
-                        try {
+						try {
 							if ( Convert.ToDecimal( curScoreRecap ) < 0M ) {
 								/*
                                 * I don't know why I did this but it created a problem when it was checking for less than or equal to zero.
@@ -821,20 +820,20 @@ namespace WaterskiScoringSystem.Slalom {
 								for ( int idx = myRecapRow.Index - 1; idx >= 0; idx-- ) {
 									try {
 										DataGridViewRow tempRecapRow = slalomRecapDataGridView.Rows[idx];
-										Decimal tempScoreRecap = Decimal.Parse( (String) tempRecapRow.Cells["ScoreRecap"].Value );
-										String tempReride = (String) tempRecapRow.Cells["RerideRecap"].Value;
-										String tempScoreProtRecap = (String) tempRecapRow.Cells["ScoreProtRecap"].Value;
+										Decimal tempScoreRecap = Decimal.Parse( (String)tempRecapRow.Cells["ScoreRecap"].Value );
+										String tempReride = (String)tempRecapRow.Cells["RerideRecap"].Value;
+										String tempScoreProtRecap = (String)tempRecapRow.Cells["ScoreProtRecap"].Value;
 										if ( tempScoreRecap == 6M ) {
 											if ( tempReride.Equals( "Y" ) ) {
 												if ( tempScoreProtRecap.Equals( "Y" ) ) {
-													Int16 tempPassSpeedKph = Convert.ToInt16( (String) tempRecapRow.Cells["PassSpeedKphRecap"].Value );
-													Decimal tempPassLineLengthMeters = Convert.ToDecimal( (String) tempRecapRow.Cells["PassLineLengthRecap"].Value );
+													Int16 tempPassSpeedKph = Convert.ToInt16( (String)tempRecapRow.Cells["PassSpeedKphRecap"].Value );
+													Decimal tempPassLineLengthMeters = Convert.ToDecimal( (String)tempRecapRow.Cells["PassLineLengthRecap"].Value );
 													myPassRowLastCompleted = getPassRow( tempPassSpeedKph, tempPassLineLengthMeters );
 													break;
 												}
 											} else {
-												Int16 tempPassSpeedKph = Convert.ToInt16( (String) tempRecapRow.Cells["PassSpeedKphRecap"].Value );
-												Decimal tempPassLineLengthMeters = Convert.ToDecimal( (String) tempRecapRow.Cells["PassLineLengthRecap"].Value );
+												Int16 tempPassSpeedKph = Convert.ToInt16( (String)tempRecapRow.Cells["PassSpeedKphRecap"].Value );
+												Decimal tempPassLineLengthMeters = Convert.ToDecimal( (String)tempRecapRow.Cells["PassLineLengthRecap"].Value );
 												myPassRowLastCompleted = getPassRow( tempPassSpeedKph, tempPassLineLengthMeters );
 												break;
 											}
@@ -846,8 +845,8 @@ namespace WaterskiScoringSystem.Slalom {
 						} catch {
 						}
 
-						if ( ( (int)myPassRow["SlalomSpeedNum"] + (int)myPassRow["SlalomLineNum"] - 1 ) 
-							>  ( (int)myPassRowLastCompleted["SlalomSpeedNum"] + (int)myPassRowLastCompleted["SlalomLineNum"] ) ) {
+						if ( ( (int)myPassRow["SlalomSpeedNum"] + (int)myPassRow["SlalomLineNum"] - 1 )
+							> ( (int)myPassRowLastCompleted["SlalomSpeedNum"] + (int)myPassRowLastCompleted["SlalomLineNum"] ) ) {
 							DataRow tempPassRow = null;
 							if ( (int)myPassRow["SlalomSpeedNum"] == (int)myPassRowLastCompleted["SlalomSpeedNum"] ) {
 								tempPassRow = getPassRow( (int)myPassRowLastCompleted["SlalomSpeedNum"], ( (int)myPassRowLastCompleted["SlalomLineNum"] + 1 ) );
@@ -875,9 +874,9 @@ namespace WaterskiScoringSystem.Slalom {
 								curSqlStmt.Append( ", EventClass = '" + curEventClass + "'" );
 
 								curSqlStmt.Append( ", Status = '" + curStatus + "'" );
-								curSqlStmt.Append( ", FinalSpeedMph = " + curPassSpeedMph.ToString("00.0") );
-								curSqlStmt.Append( ", FinalSpeedKph = " + curPassSpeedKph.ToString("00") );
-								curSqlStmt.Append( ", FinalLen = '" + curPassLineLengthMeters.ToString("00.00") + "'" );
+								curSqlStmt.Append( ", FinalSpeedMph = " + curPassSpeedMph.ToString( "00.0" ) );
+								curSqlStmt.Append( ", FinalSpeedKph = " + curPassSpeedKph.ToString( "00" ) );
+								curSqlStmt.Append( ", FinalLen = '" + curPassLineLengthMeters.ToString( "00.00" ) + "'" );
 								curSqlStmt.Append( ", FinalLenOff = '" + curFinalRopeOff.ToString() + "'" );
 								curSqlStmt.Append( ", FinalPassScore = " + curScoreRecap );
 
@@ -903,7 +902,7 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( myPassRowLastCompleted != null ) {
 									curSqlStmt.Append( ", CompletedSpeedMph, CompletedSpeedKph" );
 								}
-								curSqlStmt.Append(", LastUpdateDate, InsertDate, Note");
+								curSqlStmt.Append( ", LastUpdateDate, InsertDate, Note" );
 								curSqlStmt.Append( ") Values ( " );
 								curSqlStmt.Append( "'" + curSanctionId + "'" );
 								curSqlStmt.Append( ", '" + curMemberId + "'" );
@@ -929,7 +928,7 @@ namespace WaterskiScoringSystem.Slalom {
 									curSqlStmt.Append( ", " + Convert.ToInt16( (Decimal)myPassRowLastCompleted["SpeedKph"] ).ToString() );
 								}
 
-								curSqlStmt.Append(", GETDATE(), GETDATE()");
+								curSqlStmt.Append( ", GETDATE(), GETDATE()" );
 								curSqlStmt.Append( ", '" + curNote + "'" );
 								curSqlStmt.Append( ")" );
 								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -946,7 +945,7 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( myScoreDataTable.Rows.Count > 0 ) {
 									myScoreRow = myScoreDataTable.Rows[0];
 								}
-								
+
 								//Send scores and information to any defined external reporting system
 								transmitExternalScoreboard( curSanctionId, curMemberId, curAgeGroup, curRound, curSkierRunNum );
 
@@ -967,7 +966,7 @@ namespace WaterskiScoringSystem.Slalom {
 								 */
 
 								#region Check to see if score is equal to or great than divisions current record score
-								String curCheckRecordMsg = myCheckEventRecord.checkRecordSlalom( curAgeGroup, scoreTextBox.Text, (byte) myScoreRow["SkiYearAge"], (string) myScoreRow["Gender"] );
+								String curCheckRecordMsg = myCheckEventRecord.checkRecordSlalom( curAgeGroup, scoreTextBox.Text, (byte)myScoreRow["SkiYearAge"], (string)myScoreRow["Gender"] );
 								if ( curCheckRecordMsg == null ) curCheckRecordMsg = "";
 								if ( curCheckRecordMsg.Length > 1 ) {
 									MessageBox.Show( curCheckRecordMsg );
@@ -982,12 +981,12 @@ namespace WaterskiScoringSystem.Slalom {
 							int curSeconds = 0, curMins = 0, curHours, curTimeDiff = 0;
 							if ( myPassRunCount > 1 ) {
 								try {
-									curTimeDiff = Convert.ToInt32( ( (TimeSpan) DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
+									curTimeDiff = Convert.ToInt32( ( (TimeSpan)DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
 								} catch {
 									myEventStartTime = DateTime.Now;
 									EventRunInfoData.Text = "";
 									EventRunPerfData.Text = "";
-									curTimeDiff = Convert.ToInt32( ( (TimeSpan) DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
+									curTimeDiff = Convert.ToInt32( ( (TimeSpan)DateTime.Now.Subtract( myEventStartTime ) ).TotalSeconds ) - myEventDelaySeconds;
 								}
 								curHours = Math.DivRem( curTimeDiff, 3600, out curSeconds );
 								curMins = Math.DivRem( curSeconds, 60, out curSeconds );
@@ -1030,25 +1029,25 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void transmitExternalScoreboard( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
-			String curSkierName = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
-			String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
+			String curSkierName = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
+			String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 
 			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-				String curEventGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+				String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
 				ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum, curEventGroup );
 			}
-			if (EwscMonitor.EwcsWebLocation.Length > 1) {
+			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 				String skierFed = (String)myTourRow["Federation"];
-				if (((String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value).Length > 1) {
+				if ( ( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value ).Length > 1 ) {
 					skierFed = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value;
 				}
-				EwscMonitor.sendAthleteScore((String)myRecapRow.Cells["MemberIdRecap"].Value
+				EwscMonitor.sendAthleteScore( (String)myRecapRow.Cells["MemberIdRecap"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value
 					, "Slalom"
 					, skierFed
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
-					, Convert.ToInt16((String)myRecapRow.Cells["skierPassRecap"].Value)
-					, Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value)
+					, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
+					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value )
 					, (String)myRecapRow.Cells["PassLineLengthRecap"].Value
 					, (String)myRecapRow.Cells["ScoreRecap"].Value );
 			}
@@ -1075,13 +1074,13 @@ namespace WaterskiScoringSystem.Slalom {
 						myEventRegViewIdx = TourEventRegDataGridView.Rows.Add();
 						curViewRow = TourEventRegDataGridView.Rows[myEventRegViewIdx];
 
-						curViewRow.Cells["SanctionId"].Value = (String) curDataRow["SanctionId"];
-						curViewRow.Cells["MemberId"].Value = (String) curDataRow["MemberId"];
-						curViewRow.Cells["SkierName"].Value = (String) curDataRow["SkierName"];
-						curViewRow.Cells["Event"].Value = (String) curDataRow["Event"];
+						curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
+						curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
+						curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
+						curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
 						try {
-							String curEventGroup = (String) curDataRow["EventGroup"];
-							String curRunOrderGroup = (String) curDataRow["RunOrderGroup"];
+							String curEventGroup = (String)curDataRow["EventGroup"];
+							String curRunOrderGroup = (String)curDataRow["RunOrderGroup"];
 							if ( curRunOrderGroup.Length > 0 ) {
 								curViewRow.Cells["EventGroup"].Value = curEventGroup + "-" + curRunOrderGroup;
 							} else {
@@ -1091,57 +1090,57 @@ namespace WaterskiScoringSystem.Slalom {
 							curViewRow.Cells["EventGroup"].Value = "";
 						}
 						try {
-							curViewRow.Cells["AgeGroup"].Value = (String) curDataRow["AgeGroup"];
+							curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
 						} catch {
 							curViewRow.Cells["AgeGroup"].Value = "";
 						}
 						try {
-							curViewRow.Cells["EventClass"].Value = (String) curDataRow["EventClass"];
+							curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
 						} catch {
 							curViewRow.Cells["EventClass"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TeamCode"].Value = (String) curDataRow["TeamCode"];
+							curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
 						} catch {
 							curViewRow.Cells["TeamCode"].Value = "";
 						}
 						try {
-							curViewRow.Cells["Order"].Value = ( (Int16) curDataRow["RunOrder"] ).ToString( "##0" );
+							curViewRow.Cells["Order"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString( "##0" );
 						} catch {
 							curViewRow.Cells["Order"].Value = "0";
 						}
 						try {
-							curViewRow.Cells["Score"].Value = ( (Decimal) curDataRow["Score"] ).ToString( "###.00" );
+							curViewRow.Cells["Score"].Value = ( (Decimal)curDataRow["Score"] ).ToString( "###.00" );
 						} catch {
 							curViewRow.Cells["Score"].Value = "";
 						}
 						try {
-							curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal) curDataRow["Score"] + (Decimal) curDataRow["HCapScore"] ).ToString( "##,###0.0" );
+							curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["Score"] + (Decimal)curDataRow["HCapScore"] ).ToString( "##,###0.0" );
 						} catch {
 							hcapScoreTextBox.Text = "";
 						}
 						try {
-							curViewRow.Cells["RankingScore"].Value = ( (Decimal) curDataRow["RankingScore"] ).ToString( "###0.0" );
+							curViewRow.Cells["RankingScore"].Value = ( (Decimal)curDataRow["RankingScore"] ).ToString( "###0.0" );
 						} catch {
 							curViewRow.Cells["RankingScore"].Value = "";
 						}
 						try {
-							curViewRow.Cells["RankingRating"].Value = (String) curDataRow["RankingRating"];
+							curViewRow.Cells["RankingRating"].Value = (String)curDataRow["RankingRating"];
 						} catch {
 							curViewRow.Cells["RankingRating"].Value = "";
 						}
 						try {
-							setEventRegRowStatus( (String) curDataRow["Status"], curViewRow );
+							setEventRegRowStatus( (String)curDataRow["Status"], curViewRow );
 						} catch {
 							setEventRegRowStatus( "TBD", curViewRow );
 						}
 						try {
-							curViewRow.Cells["HCapBase"].Value = ( (Decimal) curDataRow["HCapBase"] ).ToString( "###0.0" );
+							curViewRow.Cells["HCapBase"].Value = ( (Decimal)curDataRow["HCapBase"] ).ToString( "###0.0" );
 						} catch {
 							curViewRow.Cells["HCapBase"].Value = "";
 						}
 						try {
-							curViewRow.Cells["HCapScore"].Value = ( (Decimal) curDataRow["HCapScore"] ).ToString( "###0.0" );
+							curViewRow.Cells["HCapScore"].Value = ( (Decimal)curDataRow["HCapScore"] ).ToString( "###0.0" );
 						} catch {
 							curViewRow.Cells["HCapScore"].Value = "";
 						}
@@ -1209,32 +1208,32 @@ namespace WaterskiScoringSystem.Slalom {
 						curViewIdx = listBoatTimesDataGridView.Rows.Add();
 						curViewRow = listBoatTimesDataGridView.Rows[curViewIdx];
 						try {
-							curViewRow.Cells["BoatTimeKey"].Value = (String) curDataRow["ListCode"];
+							curViewRow.Cells["BoatTimeKey"].Value = (String)curDataRow["ListCode"];
 						} catch {
 							curViewRow.Cells["BoatTimeKey"].Value = "";
 						}
 						try {
-							curViewRow.Cells["ListCodeNum"].Value = ( (Decimal) curDataRow["ListCodeNum"] ).ToString( "##0" );
+							curViewRow.Cells["ListCodeNum"].Value = ( (Decimal)curDataRow["ListCodeNum"] ).ToString( "##0" );
 						} catch {
 							curViewRow.Cells["ListCodeNum"].Value = "";
 						}
 						try {
-							curViewRow.Cells["ActualTime"].Value = (String) curDataRow["CodeValue"];
+							curViewRow.Cells["ActualTime"].Value = (String)curDataRow["CodeValue"];
 						} catch {
 							curViewRow.Cells["ActualTime"].Value = "";
 						}
 						try {
-							curViewRow.Cells["FastTimeTol"].Value = ( (Decimal) curDataRow["MinValue"] ).ToString( "#0.00" );
+							curViewRow.Cells["FastTimeTol"].Value = ( (Decimal)curDataRow["MinValue"] ).ToString( "#0.00" );
 						} catch {
 							curViewRow.Cells["FastTimeTol"].Value = "";
 						}
 						try {
-							curViewRow.Cells["SlowtimeTol"].Value = ( (Decimal) curDataRow["MaxValue"] ).ToString( "#0.00" );
+							curViewRow.Cells["SlowtimeTol"].Value = ( (Decimal)curDataRow["MaxValue"] ).ToString( "#0.00" );
 						} catch {
 							curViewRow.Cells["SlowtimeTol"].Value = "";
 						}
 						try {
-							curViewRow.Cells["TimeKeyDesc"].Value = (String) curDataRow["CodeDesc"];
+							curViewRow.Cells["TimeKeyDesc"].Value = (String)curDataRow["CodeDesc"];
 						} catch {
 							curViewRow.Cells["TimeKeyDesc"].Value = "";
 						}
@@ -1258,7 +1257,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void StartTimerButton_Click( object sender, EventArgs e ) {
-			myEventDelaySeconds += Convert.ToInt32( ( (TimeSpan) DateTime.Now.Subtract( myEventDelayStartTime ) ).TotalSeconds );
+			myEventDelaySeconds += Convert.ToInt32( ( (TimeSpan)DateTime.Now.Subtract( myEventDelayStartTime ) ).TotalSeconds );
 			if ( EventDelayReasonTextBox.Text.Length > 1 ) {
 				Log.WriteFile( "Slalom:ScoreEntry:Event delayed: " + EventDelayReasonTextBox.Text );
 			}
@@ -1270,10 +1269,10 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private String getTimeClass() {
 			String curTimeClass = "C";
-			DataRow curClassRow = getClassRow( (String) scoreEventClass.SelectedValue );
-			if ( (Decimal) myClassERow["ListCodeNum"] < (Decimal) curClassRow["ListCodeNum"] ) {
+			DataRow curClassRow = getClassRow( (String)scoreEventClass.SelectedValue );
+			if ( (Decimal)myClassERow["ListCodeNum"] < (Decimal)curClassRow["ListCodeNum"] ) {
 				curTimeClass = "R";
-			} else if ( (Decimal) myClassCRow["ListCodeNum"] > (Decimal) curClassRow["ListCodeNum"] ) {
+			} else if ( (Decimal)myClassCRow["ListCodeNum"] > (Decimal)curClassRow["ListCodeNum"] ) {
 				curTimeClass = "W";
 			} else {
 				curTimeClass = "C";
@@ -1295,14 +1294,15 @@ namespace WaterskiScoringSystem.Slalom {
 			Int16 curMinSpeedKph = 0, curMaxSpeedKph = 0;
 			myMinSpeedRow = null;
 
-			String curMemberId = (String) inTourEventRegRow.Cells["MemberId"].Value;
-			String curAgeGroup = (String) inTourEventRegRow.Cells["AgeGroup"].Value;
-			String curSkierEventClass = (String) inTourEventRegRow.Cells["EventClass"].Value;
-			activeSkierName.Text = (String) inTourEventRegRow.Cells["SkierName"].Value;
+			String curMemberId = (String)inTourEventRegRow.Cells["MemberId"].Value;
+			String curAgeGroup = (String)inTourEventRegRow.Cells["AgeGroup"].Value;
+			String curEventGroup = (String)inTourEventRegRow.Cells["EventGroup"].Value;
+			String curSkierEventClass = (String)inTourEventRegRow.Cells["EventClass"].Value;
+			activeSkierName.Text = (String)inTourEventRegRow.Cells["SkierName"].Value;
 
 			Int16 curDefaultStartSpeed = getMaxSpeedOrigData( curAgeGroup );
 			DataRow curClassRow = getClassRow( curSkierEventClass );
-			if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
+			if ( (Decimal)curClassRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
 				curMaxSpeedKph = curDefaultStartSpeed;
 			} else {
 				curMaxSpeedKph = getMaxSpeedData( curAgeGroup );
@@ -1311,55 +1311,69 @@ namespace WaterskiScoringSystem.Slalom {
 			DataTable curMinSpeedDataTable = getMinSpeedData( curAgeGroup );
 			if ( curMinSpeedDataTable.Rows.Count > 0 ) {
 				myMinSpeedRow = curMinSpeedDataTable.Rows[0];
-				curMinSpeedKph = Convert.ToInt16( (Decimal) myMinSpeedRow["MaxSpeedKph"] );
+				curMinSpeedKph = Convert.ToInt16( (Decimal)myMinSpeedRow["MaxSpeedKph"] );
 			}
 			SlalomSpeedSelection.refreshSelectionList( curAgeGroup, curMaxSpeedKph, curMinSpeedKph );
 			SlalomLineSelect.showLongLine();
 
+			driverDropdown.SelectedValue = "";
+			driverDropdown.Text = "";
+			
+			myCheckOfficials.readOfficialAssignments( mySanctionNum, "Slalom", curEventGroup, roundSelect.RoundValue );
+			DataTable driverAsgmtDataTable = myCheckOfficials.driverAsgmtDataTable;
+			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
+			driverDropdown.DisplayMember = "MemberName";
+			driverDropdown.ValueMember = "MemberId";
+			if ( driverAsgmtDataTable.Rows.Count > 1 ) {
+				driverLabel.ForeColor = Color.Red;
+			} else {
+				driverLabel.ForeColor = Color.Black;
+			}
+
 			getSkierScoreByRound( curMemberId, curAgeGroup, inRound );
 			if ( myScoreDataTable.Rows.Count > 0 ) {
 				myScoreRow = myScoreDataTable.Rows[0];
-				roundSelect.RoundValue = ( (Byte) myScoreRow["Round"] ).ToString();
+				roundSelect.RoundValue = ( (Byte)myScoreRow["Round"] ).ToString();
 				try {
-					SlalomLineSelect.CurrentValue = (String) myScoreRow["StartLen"];
+					SlalomLineSelect.CurrentValue = (String)myScoreRow["StartLen"];
 				} catch {
 					DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select( "ListCodeNum = 18.25" );
-					SlalomLineSelect.CurrentValue = (String) curLineRow[0]["ListCode"];
+					SlalomLineSelect.CurrentValue = (String)curLineRow[0]["ListCode"];
 				}
 				try {
-					SlalomSpeedSelection.SelectSpeekKph = (Byte) myScoreRow["StartSpeed"];
+					SlalomSpeedSelection.SelectSpeekKph = (Byte)myScoreRow["StartSpeed"];
 				} catch {
 					SlalomSpeedSelection.SelectSpeekKph = curMaxSpeedKph;
 				}
 				try {
-					scoreEventClass.SelectedValue = (String) myScoreRow["EventClass"];
+					scoreEventClass.SelectedValue = (String)myScoreRow["EventClass"];
 				} catch {
-					scoreEventClass.SelectedValue = (String) inTourEventRegRow.Cells["EventClass"].Value;
+					scoreEventClass.SelectedValue = (String)inTourEventRegRow.Cells["EventClass"].Value;
 				}
-				if ( ( mySkierClassList.compareClassChange( (String) scoreEventClass.SelectedValue, "L" ) <= 0 ) || myTourRules.ToLower().Equals( "iwwf" ) ) {
+				if ( ( mySkierClassList.compareClassChange( (String)scoreEventClass.SelectedValue, "L" ) <= 0 ) || myTourRules.ToLower().Equals( "iwwf" ) ) {
 					SlalomLineSelect.hideLongLine();
 				}
 				try {
-					scoreTextBox.Text = ( (Decimal) myScoreRow["Score"] ).ToString( "##0.00" );
+					scoreTextBox.Text = ( (Decimal)myScoreRow["Score"] ).ToString( "##0.00" );
 				} catch {
 					scoreTextBox.Text = "";
 				}
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = scoreTextBox.Text;
 
 				try {
-					nopsScoreTextBox.Text = ( (Decimal) myScoreRow["NopsScore"] ).ToString( "##,###0.0" );
+					nopsScoreTextBox.Text = ( (Decimal)myScoreRow["NopsScore"] ).ToString( "##,###0.0" );
 				} catch {
 					nopsScoreTextBox.Text = "";
 				}
 
 				try {
-					hcapScoreTextBox.Text = ( (Decimal) myScoreRow["Score"] + Decimal.Parse( (String) inTourEventRegRow.Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+					hcapScoreTextBox.Text = ( (Decimal)myScoreRow["Score"] + Decimal.Parse( (String)inTourEventRegRow.Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
 				} catch {
 					hcapScoreTextBox.Text = "";
 				}
 
 				try {
-					noteTextBox.Text = (String) myScoreRow["Note"];
+					noteTextBox.Text = (String)myScoreRow["Note"];
 				} catch {
 					noteTextBox.Text = "";
 				}
@@ -1367,7 +1381,7 @@ namespace WaterskiScoringSystem.Slalom {
 				if ( myScoreRow["Boat"] == System.DBNull.Value ) {
 					TourBoatTextbox.Text = "";
 				} else {
-					TourBoatTextbox.Text = setApprovedBoatSelectEntry( (String) myScoreRow["Boat"] );
+					TourBoatTextbox.Text = setApprovedBoatSelectEntry( (String)myScoreRow["Boat"] );
 					TourBoatTextbox.Select( 0, 0 );
 				}
 
@@ -1375,12 +1389,12 @@ namespace WaterskiScoringSystem.Slalom {
 				myScoreRow = null;
 				DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select( "ListCodeNum = 18.25" );
 
-				SlalomLineSelect.CurrentValue = (String) curLineRow[0]["ListCode"];
+				SlalomLineSelect.CurrentValue = (String)curLineRow[0]["ListCode"];
 				SlalomSpeedSelection.SelectSpeekKph = curDefaultStartSpeed;
-				scoreEventClass.SelectedValue = (String) inTourEventRegRow.Cells["EventClass"].Value;
+				scoreEventClass.SelectedValue = (String)inTourEventRegRow.Cells["EventClass"].Value;
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = "";
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = "";
-				if ( ( mySkierClassList.compareClassChange( (String) scoreEventClass.SelectedValue, "L" ) <= 0 ) || myTourRules.ToLower().Equals( "iwwf" ) ) {
+				if ( ( mySkierClassList.compareClassChange( (String)scoreEventClass.SelectedValue, "L" ) <= 0 ) || myTourRules.ToLower().Equals( "iwwf" ) ) {
 					SlalomLineSelect.hideLongLine();
 				} else {
 					SlalomLineSelect.showLongLine();
@@ -1408,8 +1422,8 @@ namespace WaterskiScoringSystem.Slalom {
 			//getPassData( curListName );
 
 			if ( slalomRecapDataGridView.Rows.Count > 0 ) slalomRecapDataGridView.Rows.Clear();
-			String curMemberId = (String) inTourEventRegRow.Cells["MemberId"].Value;
-			String curAgeGroup = (String) inTourEventRegRow.Cells["AgeGroup"].Value;
+			String curMemberId = (String)inTourEventRegRow.Cells["MemberId"].Value;
+			String curAgeGroup = (String)inTourEventRegRow.Cells["AgeGroup"].Value;
 			getSkierRecapByRound( curMemberId, curAgeGroup, inRound );
 
 			if ( myRecapDataTable.Rows.Count > 0 ) {
@@ -1423,10 +1437,10 @@ namespace WaterskiScoringSystem.Slalom {
 					curPassLineLengthMeters = 0M;
 					curPassSpeedKph = 0;
 					try {
-						curPassLineLengthMeters = (Decimal) curDataRow["PassLineLength"];
+						curPassLineLengthMeters = (Decimal)curDataRow["PassLineLength"];
 						curViewRow.Cells["PassLineLengthRecap"].Value = curPassLineLengthMeters.ToString( "00.00" );
 
-						curPassSpeedKph = (Int16) ( (Byte) curDataRow["PassSpeedKph"] );
+						curPassSpeedKph = (Int16)( (Byte)curDataRow["PassSpeedKph"] );
 						curViewRow.Cells["PassSpeedKphRecap"].Value = curPassSpeedKph.ToString();
 
 					} catch {
@@ -1435,11 +1449,11 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 
 					curViewRow.Cells["Updated"].Value = "N";
-					curViewRow.Cells["SanctionIdRecap"].Value = (String) curDataRow["SanctionId"];
-					curViewRow.Cells["MemberIdRecap"].Value = (String) curDataRow["MemberId"];
-					curViewRow.Cells["AgeGroupRecap"].Value = (String) curDataRow["AgeGroup"];
-					curViewRow.Cells["RoundRecap"].Value = ( (Byte) curDataRow["Round"] ).ToString();
-					curViewRow.Cells["RoundRecap"].ToolTipText = ( (DateTime) curDataRow["LastUpdateDate"] ).ToString( "MM/dd HH:mm:ss" );
+					curViewRow.Cells["SanctionIdRecap"].Value = (String)curDataRow["SanctionId"];
+					curViewRow.Cells["MemberIdRecap"].Value = (String)curDataRow["MemberId"];
+					curViewRow.Cells["AgeGroupRecap"].Value = (String)curDataRow["AgeGroup"];
+					curViewRow.Cells["RoundRecap"].Value = ( (Byte)curDataRow["Round"] ).ToString();
+					curViewRow.Cells["RoundRecap"].ToolTipText = ( (DateTime)curDataRow["LastUpdateDate"] ).ToString( "MM/dd HH:mm:ss" );
 
 					curViewRow.Cells["skierPassRecap"].Value = ( curViewIdx + 1 ).ToString();
 					if ( curPassLineLengthMeters == 0 || curPassSpeedKph == 0 ) {
@@ -1448,7 +1462,7 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 
 					try {
-						curFlag = (String) curDataRow["TimeInTol"];
+						curFlag = (String)curDataRow["TimeInTol"];
 					} catch {
 						curFlag = "N";
 					}
@@ -1459,84 +1473,84 @@ namespace WaterskiScoringSystem.Slalom {
 						curViewRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
 					}
 					try {
-						curViewRow.Cells["BoatTimeRecap"].Value = ( (Decimal) curDataRow["BoatTime"] ).ToString( "#0.00" );
+						curViewRow.Cells["BoatTimeRecap"].Value = ( (Decimal)curDataRow["BoatTime"] ).ToString( "#0.00" );
 					} catch {
 						curViewRow.Cells["BoatTimeRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["ScoreRecap"].Value = ( (Decimal) curDataRow["Score"] ).ToString( "#.00" );
+						curViewRow.Cells["ScoreRecap"].Value = ( (Decimal)curDataRow["Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["ScoreRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["ScoreProtRecap"].Value = (String) curDataRow["ScoreProt"];
+						curViewRow.Cells["ScoreProtRecap"].Value = (String)curDataRow["ScoreProt"];
 					} catch {
 						curViewRow.Cells["ScoreProtRecap"].Value = "N";
 					}
 					try {
-						curViewRow.Cells["RerideRecap"].Value = (String) curDataRow["Reride"];
+						curViewRow.Cells["RerideRecap"].Value = (String)curDataRow["Reride"];
 					} catch {
 						curViewRow.Cells["RerideRecap"].Value = "N";
 					}
 					try {
-						curViewRow.Cells["RerideReasonRecap"].Value = (String) curDataRow["RerideReason"];
+						curViewRow.Cells["RerideReasonRecap"].Value = (String)curDataRow["RerideReason"];
 					} catch {
 						curViewRow.Cells["RerideReasonRecap"].Value = "";
 					}
 
 					try {
-						curViewRow.Cells["Judge1ScoreRecap"].Value = ( (Decimal) curDataRow["Judge1Score"] ).ToString( "#.00" );
+						curViewRow.Cells["Judge1ScoreRecap"].Value = ( (Decimal)curDataRow["Judge1Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["Judge1ScoreRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["Judge2ScoreRecap"].Value = ( (Decimal) curDataRow["Judge2Score"] ).ToString( "#.00" );
+						curViewRow.Cells["Judge2ScoreRecap"].Value = ( (Decimal)curDataRow["Judge2Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["Judge2ScoreRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["Judge3ScoreRecap"].Value = ( (Decimal) curDataRow["Judge3Score"] ).ToString( "#.00" );
+						curViewRow.Cells["Judge3ScoreRecap"].Value = ( (Decimal)curDataRow["Judge3Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["Judge3ScoreRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["Judge4ScoreRecap"].Value = ( (Decimal) curDataRow["Judge4Score"] ).ToString( "#.00" );
+						curViewRow.Cells["Judge4ScoreRecap"].Value = ( (Decimal)curDataRow["Judge4Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["Judge4ScoreRecap"].Value = "";
 					}
 					try {
-						curViewRow.Cells["Judge5ScoreRecap"].Value = ( (Decimal) curDataRow["Judge5Score"] ).ToString( "#.00" );
+						curViewRow.Cells["Judge5ScoreRecap"].Value = ( (Decimal)curDataRow["Judge5Score"] ).ToString( "#.00" );
 					} catch {
 						curViewRow.Cells["Judge5ScoreRecap"].Value = "";
 					}
 
 					try {
-						curViewRow.Cells["GateEntry1Recap"].Value = (bool) curDataRow["EntryGate1"];
+						curViewRow.Cells["GateEntry1Recap"].Value = (bool)curDataRow["EntryGate1"];
 					} catch {
 						curViewRow.Cells["GateEntry1Recap"].Value = false;
 					}
 					try {
-						curViewRow.Cells["GateEntry2Recap"].Value = (bool) curDataRow["EntryGate2"];
+						curViewRow.Cells["GateEntry2Recap"].Value = (bool)curDataRow["EntryGate2"];
 					} catch {
 						curViewRow.Cells["GateEntry2Recap"].Value = false;
 					}
 					try {
-						curViewRow.Cells["GateEntry3Recap"].Value = (bool) curDataRow["EntryGate3"];
+						curViewRow.Cells["GateEntry3Recap"].Value = (bool)curDataRow["EntryGate3"];
 					} catch {
 						curViewRow.Cells["GateEntry3Recap"].Value = false;
 					}
 					try {
-						curViewRow.Cells["GateExit1Recap"].Value = (bool) curDataRow["ExitGate1"];
+						curViewRow.Cells["GateExit1Recap"].Value = (bool)curDataRow["ExitGate1"];
 					} catch {
 						curViewRow.Cells["GateExit1Recap"].Value = false;
 					}
 					try {
-						curViewRow.Cells["GateExit2Recap"].Value = (bool) curDataRow["ExitGate2"];
+						curViewRow.Cells["GateExit2Recap"].Value = (bool)curDataRow["ExitGate2"];
 					} catch {
 						curViewRow.Cells["GateExit2Recap"].Value = false;
 					}
 					try {
-						curViewRow.Cells["GateExit3Recap"].Value = (bool) curDataRow["ExitGate3"];
+						curViewRow.Cells["GateExit3Recap"].Value = (bool)curDataRow["ExitGate3"];
 					} catch {
 						curViewRow.Cells["GateExit3Recap"].Value = false;
 					}
@@ -1545,17 +1559,17 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( curScoreValue.Length == 0 ) { curScoreValue = "0"; }
 					curScore = Convert.ToDecimal( curScoreValue );
 					try {
-						curViewRow.Cells["NoteRecap"].Value = (String) curDataRow["Note"];
+						curViewRow.Cells["NoteRecap"].Value = (String)curDataRow["Note"];
 					} catch {
 						curViewRow.Cells["NoteRecap"].Value = "";
 					}
 
 					setBoatTimeRow( curPassSpeedKph, 6 );
 					loadBoatTimeView( curPassSpeedKph );
-					Decimal curMinTime = (Decimal) myTimeRow["MinValue"];
-					Decimal curMaxTime = (Decimal) myTimeRow["MaxValue"];
-					Decimal curActualTime = Convert.ToDecimal( (String) myTimeRow["CodeValue"] );
-					ActivePassDesc.Text = (String) curViewRow.Cells["NoteRecap"].Value;
+					Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
+					Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
+					Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
+					ActivePassDesc.Text = (String)curViewRow.Cells["NoteRecap"].Value;
 					if ( curViewIdx < curViewIdxMax ) {
 						/*
 						 */
@@ -1592,14 +1606,14 @@ namespace WaterskiScoringSystem.Slalom {
 					/* 
 					 * Rettrieve boat path data
 					 */
-					loadBoatPathDataGridView("Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value, (String)myRecapRow.Cells["ScoreRecap"].Value );
+					loadBoatPathDataGridView( "Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value, (String)myRecapRow.Cells["ScoreRecap"].Value );
 				}
 
 				if ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
-					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) 
+					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) )
 					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6
 					&& isObjectEmpty( noteTextBox.Text )
-                    && (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
+					&& (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
 					) {
 					if ( roundActiveSelect.RoundValue.Equals( roundSelect.RoundValue ) ) {
 						if ( isExitGatesGood() ) {
@@ -1621,8 +1635,8 @@ namespace WaterskiScoringSystem.Slalom {
 					try {
 						StringBuilder curSqlStmt = new StringBuilder( "Delete SlalomScore " );
 						curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-						curSqlStmt.Append( " AND MemberId = '" + (String) inTourEventRegRow.Cells["MemberId"].Value + "' " );
-						curSqlStmt.Append( " AND AgeGroup = '" + (String) inTourEventRegRow.Cells["AgeGroup"].Value + "' " );
+						curSqlStmt.Append( " AND MemberId = '" + (String)inTourEventRegRow.Cells["MemberId"].Value + "' " );
+						curSqlStmt.Append( " AND AgeGroup = '" + (String)inTourEventRegRow.Cells["AgeGroup"].Value + "' " );
 						curSqlStmt.Append( " AND Round = '" + inRound + "' " );
 						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 						Log.WriteFile( "setSlalomRecapEntry:Found score with no passes.  Deleting score" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
@@ -1642,23 +1656,23 @@ namespace WaterskiScoringSystem.Slalom {
 			String curStatus = "", curTimeInTol, curReride, curScoreProt, curMemberId;
 			Decimal curScore;
 			try {
-				curTimeInTol = (String) curRow.Cells["TimeInTolRecap"].Value;
-				curReride = (String) curRow.Cells["RerideRecap"].Value;
-				curScoreProt = (String) curRow.Cells["ScoreProtRecap"].Value;
-				curScore = Convert.ToDecimal( (String) curRow.Cells["ScoreRecap"].Value );
+				curTimeInTol = (String)curRow.Cells["TimeInTolRecap"].Value;
+				curReride = (String)curRow.Cells["RerideRecap"].Value;
+				curScoreProt = (String)curRow.Cells["ScoreProtRecap"].Value;
+				curScore = Convert.ToDecimal( (String)curRow.Cells["ScoreRecap"].Value );
 				if ( curTimeInTol.ToUpper().Equals( "Y" ) ) {
 					if ( curScore < 6 ) {
 						curStatus = "4-Done";
 					} else {
 						if ( myNumJudges == 1 ) {
-							if ( (Boolean) curRow.Cells["GateExit1Recap"].Value ) {
+							if ( (Boolean)curRow.Cells["GateExit1Recap"].Value ) {
 								curStatus = "2-InProg";
 							}
 						} else {
 							int curGateExitValue = 0;
-							if ( !( (Boolean) curRow.Cells["GateExit1Recap"].Value ) ) curGateExitValue++;
-							if ( !( (Boolean) curRow.Cells["GateExit2Recap"].Value ) ) curGateExitValue++;
-							if ( !( (Boolean) curRow.Cells["GateExit3Recap"].Value ) ) curGateExitValue++;
+							if ( !( (Boolean)curRow.Cells["GateExit1Recap"].Value ) ) curGateExitValue++;
+							if ( !( (Boolean)curRow.Cells["GateExit2Recap"].Value ) ) curGateExitValue++;
+							if ( !( (Boolean)curRow.Cells["GateExit3Recap"].Value ) ) curGateExitValue++;
 							if ( curGateExitValue < 2 ) {
 								curStatus = "2-InProg";
 							} else {
@@ -1716,57 +1730,53 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void addPassButton_Click( object sender, EventArgs e ) {
 			int cellIndex = 0, rowIndex = 0;
-			if (slalomRecapDataGridView.Rows.Count > 0) {
+			if ( slalomRecapDataGridView.Rows.Count > 0 ) {
 				rowIndex = slalomRecapDataGridView.Rows.Count - 1;
 				cellIndex = 0;
 				slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[cellIndex];
 
 			} else {
-				if (checkForSkierRoundScore(TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
-					, Convert.ToInt32(roundSelect.RoundValue)
-					, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString())) {
-					MessageBox.Show("Skier already has a score in this round");
+				if ( checkForSkierRoundScore( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString()
+						, Convert.ToInt32( roundSelect.RoundValue )
+						, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() )
+					) {
+					MessageBox.Show( "Skier already has a score in this round" );
 					return;
 				}
 
-				setEventRegRowStatus("2-InProg");
-				String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
+				setEventRegRowStatus( "2-InProg" );
 
-				if (myCheckOfficials != null) {
+				String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
+				if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
+					EwscMonitor.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundSelect.RoundValue ) );
+				}
+
+				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					/*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 					 */
-					if (!(curEventGroup.Equals(myPrevEventGroup))) {
-						if (!(myCheckOfficials.checkOfficialAssignments(mySanctionNum, "Slalom", curEventGroup, roundSelect.RoundValue))) {
-							MessageBox.Show("No officials have been assigned for this event group and round "
-								+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs");
-						}
-
-					}
-				}
-				if (!(curEventGroup.Equals(myPrevEventGroup))) {
-					if (EwscMonitor.EwcsWebLocation.Length > 1) {
-						EwscMonitor.sendOfficialsAssignments("Slalom", curEventGroup, Convert.ToInt16(roundSelect.RoundValue));
+					if ( myCheckOfficials.officialAsgmtCount == 0 && (Decimal)myClassTourEventScoreRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
+						MessageBox.Show( "No officials have been assigned for this event group and round "
+							+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
 					}
 				}
 				myPrevEventGroup = curEventGroup;
 			}
 
-			myLastPassSelectValue = "";
-			addRecapRow();
-			setNewRowPos();
-
-			if (EwscMonitor.EwcsWebLocation.Length > 1) {
+			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 				WaterskiConnectLabel.Visible = true;
 			} else {
 				WaterskiConnectLabel.Visible = false;
 			}
 
+			myLastPassSelectValue = "";
+			addRecapRow();
+			setNewRowPos();
 		}
 
 		private void addRecapRowTimer( object sender, EventArgs e ) {
-			Timer curTimerObj = (Timer) sender;
+			Timer curTimerObj = (Timer)sender;
 			curTimerObj.Stop();
 			curTimerObj.Tick -= new EventHandler( addRecapRowTimer );
 
@@ -1789,8 +1799,8 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( slalomRecapDataGridView.Rows.Count > 0 ) {
 				#region Add new pass when at least one pass already exists
 				try {
-					curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-					curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
+					curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+					curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 					myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 
 					if ( myPassRow == null ) {
@@ -1800,15 +1810,15 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 
 					try {
-						curPassScore = Convert.ToDecimal( (String) myRecapRow.Cells["ScoreRecap"].Value );
+						curPassScore = Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value );
 					} catch {
 						curPassScore = 0M;
 					}
-					curRerideInd = (String) myRecapRow.Cells["RerideRecap"].Value;
-					curScoreProtInd = (String) myRecapRow.Cells["ScoreProtRecap"].Value;
-					curTimeInTolInd = (String) myRecapRow.Cells["TimeInTolRecap"].Value;
-					curSkierPass = (Int16) int.Parse( (String) myRecapRow.Cells["skierPassRecap"].Value );
-					String curAgeGroup = (String) myRecapRow.Cells["AgeGroupRecap"].Value;
+					curRerideInd = (String)myRecapRow.Cells["RerideRecap"].Value;
+					curScoreProtInd = (String)myRecapRow.Cells["ScoreProtRecap"].Value;
+					curTimeInTolInd = (String)myRecapRow.Cells["TimeInTolRecap"].Value;
+					curSkierPass = (Int16)int.Parse( (String)myRecapRow.Cells["skierPassRecap"].Value );
+					String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
 
 					if ( ( curTimeInTolInd.Equals( "Y" ) && curRerideInd.Equals( "N" ) && curPassScore == 6 )
 							|| ( curTimeInTolInd.Equals( "N" ) && curScoreProtInd.Equals( "Y" ) && curPassScore == 6 )
@@ -1817,7 +1827,7 @@ namespace WaterskiScoringSystem.Slalom {
 							) {
 						if ( curPassSpeedKph < curMaxSpeedKph ) {
 							DataRow curClassRow = getClassRowCurrentSkier();
-							if ( isQualifiedAltScoreMethod( curAgeGroup, (String) curClassRow["ListCode"] ) ) {
+							if ( isQualifiedAltScoreMethod( curAgeGroup, (String)curClassRow["ListCode"] ) ) {
 								/*
 								Determine if skier division and class qualify the skier to use the alternate scoring method.
 								This alternate scoring method no longer requires that the skier be scored at long line when at less than max speed
@@ -1887,7 +1897,7 @@ namespace WaterskiScoringSystem.Slalom {
 					slalomRecapDataGridView.Select();
 					slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
 					myRecapRow = slalomRecapDataGridView.Rows[rowIndex];
-					myOrigCellValue = (String) slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
+					myOrigCellValue = (String)slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
 
 				} else {
 					foreach ( DataGridViewRow curViewRow in slalomRecapDataGridView.Rows ) {
@@ -1905,7 +1915,7 @@ namespace WaterskiScoringSystem.Slalom {
 					int rowIndex = slalomRecapDataGridView.Rows.Count - 1;
 					slalomRecapDataGridView.Select();
 					slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
-					myOrigCellValue = (String) slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
+					myOrigCellValue = (String)slalomRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex].Value;
 					myRecapRow = slalomRecapDataGridView.Rows[rowIndex];
 					//myRecapRow.Cells["Judge1ScoreRecap"].Selected = true;
 
@@ -1931,7 +1941,7 @@ namespace WaterskiScoringSystem.Slalom {
 			String curMsg = "";
 			int curRowIdx = 0;
 
-			if (slalomRecapDataGridView.Rows.Count <= 0) {
+			if ( slalomRecapDataGridView.Rows.Count <= 0 ) {
 				slalomRecapDataGridView.Focus();
 				return;
 			}
@@ -1942,87 +1952,87 @@ namespace WaterskiScoringSystem.Slalom {
 
 				String curMemberId = (String)myRecapRow.Cells["MemberIdRecap"].Value;
 				String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
-				byte curRound = Convert.ToByte((String)myRecapRow.Cells["RoundRecap"].Value);
+				byte curRound = Convert.ToByte( (String)myRecapRow.Cells["RoundRecap"].Value );
 				Int16 curSkierRunNum = -1;
 				try {
-					curSkierRunNum = Convert.ToInt16((String)myRecapRow.Cells["skierPassRecap"].Value);
-				} catch (Exception ex) {
+					curSkierRunNum = Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value );
+				} catch ( Exception ex ) {
 				}
-				if (isRecapRowExist(mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum)) {
+				if ( isRecapRowExist( mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum ) ) {
 					// Delete row that has previously been scored
-					deleteScoredPass(curMemberId, curAgeGroup, curRound, curSkierRunNum, curRowIdx);
+					deleteScoredPass( curMemberId, curAgeGroup, curRound, curSkierRunNum, curRowIdx );
 
 				} else {
-					deleteUnscoredPass(curMemberId, curAgeGroup, curRound, curSkierRunNum, curRowIdx);
+					deleteUnscoredPass( curMemberId, curAgeGroup, curRound, curSkierRunNum, curRowIdx );
 				}
 
-			} catch (Exception excp) {
+			} catch ( Exception excp ) {
 				curMsg = ":Error attempting to save changes \n" + excp.Message;
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 			}
 			slalomRecapDataGridView.Focus();
 		}
 
-		private void deleteUnscoredPass(String curMemberId, String curAgeGroup, byte curRound, Int16 curSkierRunNum, int curRowIdx) {
+		private void deleteUnscoredPass( String curMemberId, String curAgeGroup, byte curRound, Int16 curSkierRunNum, int curRowIdx ) {
 			String curMethodName = "Slalom:ScoreEntry:deleteUnscoredPass: ";
 			String curMsg = "";
 			Int16 curPassSpeedKph = 0;
 			Decimal curPassLineLengthMeters = 0M;
-			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curSqlStmt = new StringBuilder( "" );
 
-			curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
-			curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
-			myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
-			if (myPassRow == null) {
-				curMsg = curMethodName + String.Format("Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters);
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+			curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+			curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+			myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
+			if ( myPassRow == null ) {
+				curMsg = curMethodName + String.Format( "Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters );
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 				return;
 			}
 
-			if (curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph) SlalomSpeedSelection.showActiveValue(curPassSpeedKph);
-			if (curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
-			if (curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum) SlalomLineSelect.showCurrentValue(curPassLineLengthMeters);
+			if ( curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph ) SlalomSpeedSelection.showActiveValue( curPassSpeedKph );
+			if ( curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum ) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
+			if ( curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum ) SlalomLineSelect.showCurrentValue( curPassLineLengthMeters );
 
 			// Remove deleted row from display gird
-			slalomRecapDataGridView.Rows.RemoveAt(curRowIdx);
+			slalomRecapDataGridView.Rows.RemoveAt( curRowIdx );
 
-			if (curRowIdx <= 0) {
-				deleteScore(curMemberId, curAgeGroup, curRound);
+			if ( curRowIdx <= 0 ) {
+				deleteScore( curMemberId, curAgeGroup, curRound );
 				return;
 			}
 
 			// Delete requested pass and then reset score and positioning to new last pass
 			curRowIdx--;
 			myRecapRow = (DataGridViewRow)slalomRecapDataGridView.Rows[curRowIdx];
-			curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
-			curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
-			myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
-			if (myPassRow == null) {
-				curMsg = curMethodName + String.Format("Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters);
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+			curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+			curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+			myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
+			if ( myPassRow == null ) {
+				curMsg = curMethodName + String.Format( "Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters );
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 			} else {
-				if (curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph) SlalomSpeedSelection.showActiveValue(curPassSpeedKph);
-				if (curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
-				if (curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum) SlalomLineSelect.showCurrentValue(curPassLineLengthMeters);
+				if ( curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph ) SlalomSpeedSelection.showActiveValue( curPassSpeedKph );
+				if ( curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum ) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
+				if ( curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum ) SlalomLineSelect.showCurrentValue( curPassLineLengthMeters );
 			}
 
 			// Force score reclaculation using new last available pass score
-			SlalomScoreCalc(Convert.ToDecimal((String)myRecapRow.Cells["ScoreRecap"].Value));
+			SlalomScoreCalc( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value ) );
 
 			scoreEntryInprogress();
-			setEventRegRowStatus("2-InProg");
-			foreach (DataGridViewCell curCell in myRecapRow.Cells) {
-				if (curCell.OwningColumn.Name.StartsWith("Judge")
-					|| curCell.OwningColumn.Name.StartsWith("Gate")
-					|| curCell.OwningColumn.Name.StartsWith("Time")
-					|| curCell.OwningColumn.Name.StartsWith("BoatTime")
-					|| curCell.OwningColumn.Name.StartsWith("ScoreProt")
-					|| curCell.OwningColumn.Name.StartsWith("Reride")
-					|| curCell.OwningColumn.Name.StartsWith("Note")
-					|| curCell.OwningColumn.Name.StartsWith("Updated")
+			setEventRegRowStatus( "2-InProg" );
+			foreach ( DataGridViewCell curCell in myRecapRow.Cells ) {
+				if ( curCell.OwningColumn.Name.StartsWith( "Judge" )
+					|| curCell.OwningColumn.Name.StartsWith( "Gate" )
+					|| curCell.OwningColumn.Name.StartsWith( "Time" )
+					|| curCell.OwningColumn.Name.StartsWith( "BoatTime" )
+					|| curCell.OwningColumn.Name.StartsWith( "ScoreProt" )
+					|| curCell.OwningColumn.Name.StartsWith( "Reride" )
+					|| curCell.OwningColumn.Name.StartsWith( "Note" )
+					|| curCell.OwningColumn.Name.StartsWith( "Updated" )
 					) {
 					curCell.ReadOnly = false;
 				}
@@ -2030,136 +2040,136 @@ namespace WaterskiScoringSystem.Slalom {
 			setNewRowPos();
 
 			ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
-			if (curPassSpeedKph > 0) {
-				setBoatTimeRow(curPassSpeedKph, 6);
-				loadBoatTimeView(curPassSpeedKph);
+			if ( curPassSpeedKph > 0 ) {
+				setBoatTimeRow( curPassSpeedKph, 6 );
+				loadBoatTimeView( curPassSpeedKph );
 				Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
 				Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
-				Decimal curActualTime = Convert.ToDecimal((String)myTimeRow["CodeValue"]);
+				Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
 				skierPassMsg.Text = "Boat times full course "
 					+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 			}
 		}
 
-		private void deleteScoredPass( String curMemberId, String curAgeGroup, byte curRound, Int16 curSkierRunNum, int curRowIdx) {
+		private void deleteScoredPass( String curMemberId, String curAgeGroup, byte curRound, Int16 curSkierRunNum, int curRowIdx ) {
 			String curMethodName = "Slalom:ScoreEntry:deleteScoredPass: ";
 			String curMsg = "";
 			int rowsProc = 0;
 			Int16 curPassSpeedKph = 0;
 			Decimal curPassLineLengthMeters = 0M;
-			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curSqlStmt = new StringBuilder( "" );
 
 			try {
 				curSqlStmt = new StringBuilder(
-					String.Format("Delete SlalomRecap Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} AND SkierRunNum = {4}"
-					, mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum).ToString());
-				rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-				Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
-				if (rowsProc == 0) return;
+					String.Format( "Delete SlalomRecap Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} AND SkierRunNum = {4}"
+					, mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum ).ToString() );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				if ( rowsProc == 0 ) return;
 
-			} catch (Exception excp) {
+			} catch ( Exception excp ) {
 				curMsg = curMethodName + "Error deleting slalom pass \n" + excp.Message;
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 				return;
 			}
 
 			myRecapRow = (DataGridViewRow)slalomRecapDataGridView.Rows[curRowIdx];
-			curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
-			curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
-			myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
-			if (myPassRow == null) {
-				curMsg = curMethodName + String.Format("Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters);
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+			curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+			curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+			myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
+			if ( myPassRow == null ) {
+				curMsg = curMethodName + String.Format( "Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters );
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 				return;
 			}
 
-			if (curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph) SlalomSpeedSelection.showActiveValue(curPassSpeedKph);
-			if (curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
-			if (curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum) SlalomLineSelect.showCurrentValue(curPassLineLengthMeters);
+			if ( curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph ) SlalomSpeedSelection.showActiveValue( curPassSpeedKph );
+			if ( curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum ) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
+			if ( curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum ) SlalomLineSelect.showCurrentValue( curPassLineLengthMeters );
 
 			// Remove deleted row (last row in display grid)
-			slalomRecapDataGridView.Rows.RemoveAt(curRowIdx);
+			slalomRecapDataGridView.Rows.RemoveAt( curRowIdx );
 
 			if ( curRowIdx <= 0 ) {
-				deleteScore(curMemberId, curAgeGroup, curRound);
+				deleteScore( curMemberId, curAgeGroup, curRound );
 
 			} else {
 				#region Set position to last row in grid and recalculate the score
 				curRowIdx--;
 				myRecapRow = (DataGridViewRow)slalomRecapDataGridView.Rows[curRowIdx];
-				curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
-				curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
-				myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
-				if (myPassRow == null) {
-					curMsg = curMethodName + String.Format("Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters);
-					MessageBox.Show(curMsg);
-					Log.WriteFile(curMethodName + curMsg);
+				curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+				curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+				myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
+				if ( myPassRow == null ) {
+					curMsg = curMethodName + String.Format( "Invalid data detected, slalom pass reference not found for KPH={0}, Line={1}", curPassSpeedKph, curPassLineLengthMeters );
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + curMsg );
 
 				} else {
-					if (curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph) SlalomSpeedSelection.showActiveValue(curPassSpeedKph);
-					if (curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
-					if (curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum) SlalomLineSelect.showCurrentValue(curPassLineLengthMeters);
+					if ( curPassSpeedKph != SlalomSpeedSelection.CurrentShowSpeedKph ) SlalomSpeedSelection.showActiveValue( curPassSpeedKph );
+					if ( curPassLineLengthMeters < SlalomLineSelect.CurrentShowValueNum ) curPassLineLengthMeters = SlalomLineSelect.CurrentShowValueNum;
+					if ( curPassLineLengthMeters != SlalomLineSelect.CurrentShowValueNum ) SlalomLineSelect.showCurrentValue( curPassLineLengthMeters );
 				}
 
 				// Force score reclaculation using new last available pass score
-				SlalomScoreCalc(Convert.ToDecimal((String)myRecapRow.Cells["ScoreRecap"].Value));
+				SlalomScoreCalc( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value ) );
 
 				scoreEntryInprogress();
-				setEventRegRowStatus("2-InProg");
-				foreach (DataGridViewCell curCell in myRecapRow.Cells) {
-					if (curCell.OwningColumn.Name.StartsWith("Judge")
-						|| curCell.OwningColumn.Name.StartsWith("Gate")
-						|| curCell.OwningColumn.Name.StartsWith("Time")
-						|| curCell.OwningColumn.Name.StartsWith("BoatTime")
-						|| curCell.OwningColumn.Name.StartsWith("ScoreProt")
-						|| curCell.OwningColumn.Name.StartsWith("Reride")
-						|| curCell.OwningColumn.Name.StartsWith("Note")
-						|| curCell.OwningColumn.Name.StartsWith("Updated")
+				setEventRegRowStatus( "2-InProg" );
+				foreach ( DataGridViewCell curCell in myRecapRow.Cells ) {
+					if ( curCell.OwningColumn.Name.StartsWith( "Judge" )
+						|| curCell.OwningColumn.Name.StartsWith( "Gate" )
+						|| curCell.OwningColumn.Name.StartsWith( "Time" )
+						|| curCell.OwningColumn.Name.StartsWith( "BoatTime" )
+						|| curCell.OwningColumn.Name.StartsWith( "ScoreProt" )
+						|| curCell.OwningColumn.Name.StartsWith( "Reride" )
+						|| curCell.OwningColumn.Name.StartsWith( "Note" )
+						|| curCell.OwningColumn.Name.StartsWith( "Updated" )
 						) {
 						curCell.ReadOnly = false;
 					}
 				}
 				setNewRowPos();
 				ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
-				if (curPassSpeedKph > 0) {
-					setBoatTimeRow(curPassSpeedKph, 6);
-					loadBoatTimeView(curPassSpeedKph);
+				if ( curPassSpeedKph > 0 ) {
+					setBoatTimeRow( curPassSpeedKph, 6 );
+					loadBoatTimeView( curPassSpeedKph );
 					Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
 					Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
-					Decimal curActualTime = Convert.ToDecimal((String)myTimeRow["CodeValue"]);
+					Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
 					skierPassMsg.Text = "Boat times full course "
 						+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 				}
 				#endregion
 			}
 
-			if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 				String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
-				ExportLiveWeb.exportCurrentSkierSlalom(mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup);
+				ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
 			}
 		}
 
-		private void deleteScore(String curMemberId, String curAgeGroup, byte curRound) {
+		private void deleteScore( String curMemberId, String curAgeGroup, byte curRound ) {
 			String curMethodName = "Slalom:ScoreEntry:deleteScore: ";
 			myRecapRow = null;
 			String curMsg = "";
 			int rowsProc = 0;
-			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curSqlStmt = new StringBuilder( "" );
 
 			try {
-				curSqlStmt = new StringBuilder("Delete SlalomScore ");
-				curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append(" AND MemberId = '" + curMemberId + "' ");
-				curSqlStmt.Append(" AND AgeGroup = '" + curAgeGroup + "' ");
-				curSqlStmt.Append(" AND Round = '" + curRound + "' ");
-				rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-				Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+				curSqlStmt = new StringBuilder( "Delete SlalomScore " );
+				curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+				curSqlStmt.Append( " AND MemberId = '" + curMemberId + "' " );
+				curSqlStmt.Append( " AND AgeGroup = '" + curAgeGroup + "' " );
+				curSqlStmt.Append( " AND Round = '" + curRound + "' " );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
-			} catch (Exception excp) {
+			} catch ( Exception excp ) {
 				curMsg = ":Error deleting skier score \n" + excp.Message;
-				Log.WriteFile(curMethodName + curMsg);
+				Log.WriteFile( curMethodName + curMsg );
 			}
 			myScoreRow = null;
 
@@ -2173,18 +2183,18 @@ namespace WaterskiScoringSystem.Slalom {
 			hcapScoreTextBox.Text = "";
 			noteTextBox.Text = "";
 			scoreEntryBegin();
-			setEventRegRowStatus("1-TBD");
+			setEventRegRowStatus( "1-TBD" );
 			refreshScoreSummaryWindow();
 			setNewRowPos();
 		}
 
 		private void nextPassWithOption() {
 			if ( isLastPassSelectActive ) return;
-			
-			String curAgeGroup = (String) myRecapRow.Cells["AgeGroupRecap"].Value;
+
+			String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
 			Int16 curMaxSpeed = getMaxSpeedOrigData( curAgeGroup );
-			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal) myPassRow["SpeedKph"] );
-			Decimal curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal)myPassRow["SpeedKph"] );
+			Decimal curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 			if ( curPassSpeedKph < curMaxSpeed ) {
 				int curRowIdx = slalomRecapDataGridView.Rows.Count - 1;
 				//
@@ -2233,8 +2243,8 @@ namespace WaterskiScoringSystem.Slalom {
 		private void addPassNextSpeed() {
 			myLastPassSelectValue = "Speed";
 
-			Int16 curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-			Decimal curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+			Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+			Decimal curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 
 			curPassSpeedKph += 3;
 			myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
@@ -2248,8 +2258,8 @@ namespace WaterskiScoringSystem.Slalom {
 		private void addPassNextLine() {
 			myLastPassSelectValue = "Line";
 			int curViewIdx = myRecapRow.Index;
-			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal) myPassRow["SpeedKph"] );
-			Decimal curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal)myPassRow["SpeedKph"] );
+			Decimal curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 
 			Decimal nextPassLineLengthMeters = SlalomLineSelect.getNextValue( curPassLineLengthMeters );
 			myPassRow = getPassRow( curPassSpeedKph, nextPassLineLengthMeters );
@@ -2273,8 +2283,8 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 			}
 
-			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal) myPassRow["SpeedKph"] );
-			Decimal curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal)myPassRow["SpeedKph"] );
+			Decimal curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 
 			slalomRecapDataGridView.Focus();
 			int curViewIdx = slalomRecapDataGridView.Rows.Add();
@@ -2312,21 +2322,21 @@ namespace WaterskiScoringSystem.Slalom {
 			myRecapRow.Cells["GateExit3Recap"].Value = true;
 
 			myRecapRow.Cells["NoteRecap"].Value = curPassLineLengthMeters.ToString( "00.00" ) + "M"
-				+ "," + (String) myPassRow["SpeedKphDesc"]
-				+ "," + ((String) myPassRow["LineLengthOffDesc"]).Substring(0, ( (String) myPassRow["LineLengthOffDesc"] ).IndexOf(" - " ))
-				+ "," + (String) myPassRow["SpeedMphDesc"];
+				+ "," + (String)myPassRow["SpeedKphDesc"]
+				+ "," + ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
+				+ "," + (String)myPassRow["SpeedMphDesc"];
 
 			setBoatTimeRow( curPassSpeedKph, 6 );
 			loadBoatTimeView( curPassSpeedKph );
-			Decimal curMinTime = (Decimal) myTimeRow["MinValue"];
-			Decimal curMaxTime = (Decimal) myTimeRow["MaxValue"];
-			Decimal curActualTime = Convert.ToDecimal( (String) myTimeRow["CodeValue"] );
+			Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
+			Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
+			Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
 			skierPassMsg.Text = "Boat times full course "
 				+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 
 			setNewRowPos();
 
-			ActivePassDesc.Text = (String) myRecapRow.Cells["NoteRecap"].Value;
+			ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
 			isAddRecapRowInProg = false;
 			myPassRunCount++;
 			if ( curViewIdx == 0 ) {
@@ -2337,9 +2347,9 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 			}
 
-			if (EwscMonitor.EwcsWebLocation.Length > 1) {
+			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 				String skierFed = (String)myTourRow["Federation"];
-				if (((String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value).Length > 1) {
+				if ( ( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value ).Length > 1 ) {
 					skierFed = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value;
 				}
 				EwscMonitor.sendAthleteData( (String)myRecapRow.Cells["MemberIdRecap"].Value
@@ -2350,10 +2360,11 @@ namespace WaterskiScoringSystem.Slalom {
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
 					, roundSelect.RoundValue
-					, Convert.ToInt16((String)myRecapRow.Cells["skierPassRecap"].Value)
+					, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
 					, curPassSpeedKph
-					, curPassLineLengthMeters.ToString("00.00")
-					, "0");
+					, curPassLineLengthMeters.ToString( "00.00" )
+					, "0"
+					, (String)driverDropdown.SelectedValue );
 			}
 
 		}
@@ -2364,21 +2375,21 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( slalomRecapDataGridView.Rows.Count == 0 ) return;
 
 			bool curOptAllow = true;
-			String curAgeGroup = (String) myRecapRow.Cells["AgeGroupRecap"].Value;
+			String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
 			curMaxSpeedKph = SlalomSpeedSelection.MaxSpeedKph;
 			Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( curAgeGroup );
 
-			if ( !( isObjectEmpty( (String) myRecapRow.Cells["ScoreRecap"].Value ) ) ) {
+			if ( !( isObjectEmpty( (String)myRecapRow.Cells["ScoreRecap"].Value ) ) ) {
 				#region Check for next action when a score is detected in current pass
 				Decimal curPassScore = 0M;
 				try {
-					curPassScore = Convert.ToDecimal( (String) myRecapRow.Cells["ScoreRecap"].Value );
+					curPassScore = Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value );
 				} catch {
 					curPassScore = 0M;
 				}
-				String curRerideInd = (String) myRecapRow.Cells["RerideRecap"].Value;
-				String curScoreProtInd = (String) myRecapRow.Cells["ScoreProtRecap"].Value;
-				String curTimeInTolInd = (String) myRecapRow.Cells["TimeInTolRecap"].Value;
+				String curRerideInd = (String)myRecapRow.Cells["RerideRecap"].Value;
+				String curScoreProtInd = (String)myRecapRow.Cells["ScoreProtRecap"].Value;
+				String curTimeInTolInd = (String)myRecapRow.Cells["TimeInTolRecap"].Value;
 				if ( curScoreProtInd.Equals( "Y" ) && curPassScore == 6 ) {
 					addRecapRow();
 				} else if ( curRerideInd.Equals( "N" ) ) {
@@ -2399,11 +2410,11 @@ namespace WaterskiScoringSystem.Slalom {
 
 			if ( curOptAllow ) {
 				String curOptUpType = "next";
-				curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-				curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
+				curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+				curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 				myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
-				if ( curPassSpeedKph < curMaxSpeedKph 
-					|| (curAgeGroup.StartsWith("M") && curPassSpeedKph < 58)
+				if ( curPassSpeedKph < curMaxSpeedKph
+					|| ( curAgeGroup.StartsWith( "M" ) && curPassSpeedKph < 58 )
 					|| ( curAgeGroup.StartsWith( "W" ) && curPassSpeedKph < 55 )
 					) {
 					if ( OptUpDialogForm.ShowDialog() == DialogResult.OK ) {
@@ -2426,8 +2437,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 				if ( curOptUpType.Equals( "next" ) ) {
 					#region Determine next speed and line length based on current attributes
-					curPassSpeedKph = Convert.ToInt16( (Decimal) myPassRow["SpeedKph"] );
-					curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+					curPassSpeedKph = Convert.ToInt16( (Decimal)myPassRow["SpeedKph"] );
+					curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 					curMaxSpeedKph = SlalomSpeedSelection.MaxSpeedKph;
 					if ( curMaxSpeedKph > curPassSpeedKph ) {
 						curPassSpeedKph += 3;
@@ -2452,10 +2463,10 @@ namespace WaterskiScoringSystem.Slalom {
 					//e.g. 23.00M,25kph,Long,15.5mph  OR  18.25M,46kph,15 Off,28.6mph
 					myRecapRow.Cells["NoteRecap"].Value = "Opt up to "
 						+ curPassLineLengthMeters.ToString( "00.00" ) + "M"
-						+ "," + (String) myPassRow["SpeedKphDesc"]
-						+ "," + ( (String) myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String) myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
-						+ "," + (String) myPassRow["SpeedMphDesc"];
-					ActivePassDesc.Text = (String) myRecapRow.Cells["NoteRecap"].Value;
+						+ "," + (String)myPassRow["SpeedKphDesc"]
+						+ "," + ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
+						+ "," + (String)myPassRow["SpeedMphDesc"];
+					ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
 					setNewRowPos();
 					loadBoatTimeView( curPassSpeedKph );
 
@@ -2463,12 +2474,12 @@ namespace WaterskiScoringSystem.Slalom {
 
 				} else if ( curOptUpType.Equals( "speed" ) ) {
 					#region Calculate next speed 
-					curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-					curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+					curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+					curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 
 					if ( curPassSpeedKph >= curMaxSpeedKphDiv ) {
 						SlalomLineSelect.resetCurrentValue( curPassLineLengthMeters );
-						curPassLineLengthMeters = Convert.ToDecimal( (String) slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["PassLineLengthRecap"].Value );
+						curPassLineLengthMeters = Convert.ToDecimal( (String)slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["PassLineLengthRecap"].Value );
 						if ( curPassLineLengthMeters < SlalomLineSelect.CurrentValueNum ) {
 							SlalomLineSelect.showCurrentValue( curPassLineLengthMeters );
 						}
@@ -2485,10 +2496,10 @@ namespace WaterskiScoringSystem.Slalom {
 					//e.g. 23.00M,25kph,Long,15.5mph  OR  18.25M,46kph,15 Off,28.6mph
 					myRecapRow.Cells["NoteRecap"].Value = "Opt up to "
 						+ curPassLineLengthMeters.ToString( "00.00" ) + "M"
-						+ "," + (String) myPassRow["SpeedKphDesc"]
-						+ "," + ( (String) myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String) myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
-						+ "," + (String) myPassRow["SpeedMphDesc"];
-					ActivePassDesc.Text = (String) myRecapRow.Cells["NoteRecap"].Value;
+						+ "," + (String)myPassRow["SpeedKphDesc"]
+						+ "," + ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
+						+ "," + (String)myPassRow["SpeedMphDesc"];
+					ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
 					setNewRowPos();
 					loadBoatTimeView( curPassSpeedKph );
 
@@ -2497,8 +2508,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 				} else if ( curOptUpType.Equals( "line" ) ) {
 					#region Calculate next line length 
-					curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-					curPassLineLengthMeters = (Decimal) myPassRow["LineLengthMeters"];
+					curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+					curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
 
 					Decimal nextPassLineLengthMeters = SlalomLineSelect.getNextValue( curPassLineLengthMeters );
 					myPassRow = getPassRow( curPassSpeedKph, nextPassLineLengthMeters );
@@ -2510,12 +2521,12 @@ namespace WaterskiScoringSystem.Slalom {
 					//e.g. 23.00M,25kph,Long,15.5mph  OR  18.25M,46kph,15 Off,28.6mph
 					myRecapRow.Cells["NoteRecap"].Value = "Opt up to "
 							+ nextPassLineLengthMeters.ToString( "00.00" ) + "M"
-							+ "," + (String) myPassRow["SpeedKphDesc"]
-							+ "," + ( (String) myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String) myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
-							+ "," + (String) myPassRow["SpeedMphDesc"];
-						ActivePassDesc.Text = (String) myRecapRow.Cells["NoteRecap"].Value;
+							+ "," + (String)myPassRow["SpeedKphDesc"]
+							+ "," + ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
+							+ "," + (String)myPassRow["SpeedMphDesc"];
+					ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
 
-						MessageBox.Show( "Opting up to " + nextPassLineLengthMeters + " at " + curPassSpeedKph + "kph" );
+					MessageBox.Show( "Opting up to " + nextPassLineLengthMeters + " at " + curPassSpeedKph + "kph" );
 
 					#endregion
 				}
@@ -2580,10 +2591,10 @@ namespace WaterskiScoringSystem.Slalom {
 		private void navExportRecord_Click( object sender, EventArgs e ) {
 			ExportRecordAppData myExportData = new ExportRecordAppData();
 			DataGridViewRow curViewRow = TourEventRegDataGridView.Rows[myEventRegViewIdx];
-			String curMemberId = (String) curViewRow.Cells["MemberId"].Value;
-			String curAgeGroup = (String) curViewRow.Cells["AgeGroup"].Value;
-			String curEventGroup = (String) curViewRow.Cells["EventGroup"].Value;
-			byte curRound = Convert.ToByte( (String) myRecapRow.Cells["RoundRecap"].Value );
+			String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
+			String curAgeGroup = (String)curViewRow.Cells["AgeGroup"].Value;
+			String curEventGroup = (String)curViewRow.Cells["EventGroup"].Value;
+			byte curRound = Convert.ToByte( (String)myRecapRow.Cells["RoundRecap"].Value );
 			myExportData.ExportData( mySanctionNum, "Slalom", curMemberId, curAgeGroup, curEventGroup, curRound );
 		}
 
@@ -2710,7 +2721,7 @@ namespace WaterskiScoringSystem.Slalom {
 				+ "INNER JOIN  SlalomScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Slalom' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Slalom' "
 				+ "Where BT.SanctionId = '" + mySanctionNum + "' AND BT.Event = 'Slalom' And BT.Round = " + roundActiveSelect.RoundValue + " ";
-			if (!(isObjectEmpty(curFilterCmd)) && curFilterCmd.Length > 0) {
+			if ( !( isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
@@ -2718,7 +2729,7 @@ namespace WaterskiScoringSystem.Slalom {
 				+ "INNER JOIN  SlalomScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Slalom' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Slalom' "
 				+ "Where BT.SanctionId = '" + mySanctionNum + "' AND BT.Event = 'Slalom' And BT.Round = " + roundActiveSelect.RoundValue + " ";
-			if (!(isObjectEmpty(curFilterCmd)) && curFilterCmd.Length > 0) {
+			if ( !( isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
@@ -2729,7 +2740,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void navRefreshTimer( object sender, EventArgs e ) {
-			Timer curTimerObj = (Timer) sender;
+			Timer curTimerObj = (Timer)sender;
 			curTimerObj.Stop();
 			curTimerObj.Tick -= new EventHandler( navRefreshTimer );
 			navRefresh_Click( null, null );
@@ -2797,10 +2808,10 @@ namespace WaterskiScoringSystem.Slalom {
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) ) {
 					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 						try {
-							String curEventGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
-							String curMemberId = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
-							String curAgeGroup = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-							String curTeamCode = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
+							String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+							String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+							String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+							String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
 							if ( ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup ) == false ) {
 								MessageBox.Show( "Error encountered sending score to LiveWeb" );
@@ -2825,40 +2836,40 @@ namespace WaterskiScoringSystem.Slalom {
 						}
 					}
 
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("DiableSkier")) {
-					if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "DiableSkier" ) ) {
+					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 						try {
 							String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
 							String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
 							String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
 							String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
-							byte curRound = Convert.ToByte(roundSelect.RoundValue);
-							if (ExportLiveWeb.exportCurrentSkierSlalom(mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup) == false) {
-								MessageBox.Show("Error encountered sending score to LiveWeb");
+							byte curRound = Convert.ToByte( roundSelect.RoundValue );
+							if ( ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup ) == false ) {
+								MessageBox.Show( "Error encountered sending score to LiveWeb" );
 							}
 
 						} catch {
-							MessageBox.Show("Exception encounter sending score to LiveWeb");
+							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
 						}
 					}
 
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("DiableAllSkier")) {
-					if (ExportLiveWeb.LiveWebLocation.Length > 1) {
+				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "DiableAllSkier" ) ) {
+					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 						try {
 							String curEventGroup = EventGroupList.SelectedItem.ToString();
-							byte curRound = Convert.ToByte(roundSelect.RoundValue);
-							if (ExportLiveWeb.exportCurrentSkiers("Slalom", mySanctionNum, curRound, curEventGroup) == false) {
-								MessageBox.Show("Error encountered sending score to LiveWeb");
+							byte curRound = Convert.ToByte( roundSelect.RoundValue );
+							if ( ExportLiveWeb.exportCurrentSkiers( "Slalom", mySanctionNum, curRound, curEventGroup ) == false ) {
+								MessageBox.Show( "Error encountered sending score to LiveWeb" );
 							}
 
 						} catch {
-							MessageBox.Show("Exception encounter sending score to LiveWeb");
+							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
 						}
 					}
 				}
 			}
 		}
-		
+
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.
 			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
@@ -2889,7 +2900,7 @@ namespace WaterskiScoringSystem.Slalom {
 					loadEventGroupListFromData( inRound );
 				}
 			} else {
-				if ( ( (ArrayList) EventGroupList.DataSource ).Count > 0 ) {
+				if ( ( (ArrayList)EventGroupList.DataSource ).Count > 0 ) {
 					if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
 					} else {
 						loadEventGroupListFromData( inRound );
@@ -2915,7 +2926,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void loadEventGroupListFromData( int inRound ) {
 			String curGroupValue = "";
 			if ( EventGroupList.DataSource != null ) {
-				if ( ( (ArrayList) EventGroupList.DataSource ).Count > 0 ) {
+				if ( ( (ArrayList)EventGroupList.DataSource ).Count > 0 ) {
 					try {
 						curGroupValue = EventGroupList.SelectedItem.ToString();
 					} catch {
@@ -2939,11 +2950,11 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			foreach ( DataRow curRow in curDataTable.Rows ) {
-				curEventGroupList.Add( (String) curRow["EventGroup"] );
+				curEventGroupList.Add( (String)curRow["EventGroup"] );
 			}
 			EventGroupList.DataSource = curEventGroupList;
 			if ( curGroupValue.Length > 0 ) {
-				foreach ( String curValue in (ArrayList) EventGroupList.DataSource ) {
+				foreach ( String curValue in (ArrayList)EventGroupList.DataSource ) {
 					if ( curValue.Equals( curGroupValue ) ) {
 						EventGroupList.SelectedItem = curGroupValue;
 						EventGroupList.Text = curGroupValue;
@@ -2960,7 +2971,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void slalomRecapDataGridView_KeyUp( object sender, KeyEventArgs e ) {
 			try {
-				myRecapColumn = slalomRecapDataGridView.Columns[( (DataGridView) sender ).CurrentCell.ColumnIndex].Name;
+				myRecapColumn = slalomRecapDataGridView.Columns[( (DataGridView)sender ).CurrentCell.ColumnIndex].Name;
 				if ( slalomRecapDataGridView != null ) {
 					if ( e.KeyCode == Keys.Enter ) {
 						if ( isRecapRowEnterHandled || isAddRecapRowInProg ) {
@@ -3028,7 +3039,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void setRecapNextCell( object sender, EventArgs e ) {
-			Timer curTimerObj = (Timer) sender;
+			Timer curTimerObj = (Timer)sender;
 			curTimerObj.Stop();
 			curTimerObj.Tick -= new EventHandler( setRecapNextCell );
 
@@ -3061,16 +3072,16 @@ namespace WaterskiScoringSystem.Slalom {
 
 			} else if ( myRecapColumn.Equals( "BoatTimeRecap" ) ) {
 				if ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
-					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) 
-					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 
-					&& (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y" 
-					) { 
-						isRecapRowEnterHandled = true;
-						isAddRecapRowInProg = true;
-						curTimerObj = new Timer();
-						curTimerObj.Interval = 5;
-						curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-						curTimerObj.Start();
+					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) )
+					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6
+					&& (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
+					) {
+					isRecapRowEnterHandled = true;
+					isAddRecapRowInProg = true;
+					curTimerObj = new Timer();
+					curTimerObj.Interval = 5;
+					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+					curTimerObj.Start();
 				} else {
 					slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells[myStartCellIndex];
 				}
@@ -3102,7 +3113,7 @@ namespace WaterskiScoringSystem.Slalom {
 				slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells["BoatTimeRecap"];
 
 			} else if ( myRecapColumn.StartsWith( "CellBorder" ) ) {
-                if ( myRecapColumn.Equals( "CellBorder1" ) ) {
+				if ( myRecapColumn.Equals( "CellBorder1" ) ) {
 					slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells["GateEntry2Recap"];
 
 				} else if ( myRecapColumn.Equals( "CellBorder2" ) ) {
@@ -3137,7 +3148,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void TourEventRegDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
-			DataGridView myDataView = (DataGridView) sender;
+			DataGridView myDataView = (DataGridView)sender;
 
 			//Update data if changes are detected
 			if ( isDataModified && ( myEventRegViewIdx != e.RowIndex ) ) {
@@ -3176,7 +3187,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void TourEventRegDataGridView_RowEnterReset( object sender, EventArgs e ) {
-			Timer curTimerObj = (Timer) sender;
+			Timer curTimerObj = (Timer)sender;
 			curTimerObj.Stop();
 			curTimerObj.Tick -= new EventHandler( TourEventRegDataGridView_RowEnterReset );
 
@@ -3186,7 +3197,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void roundSelect_Load( object sender, EventArgs e ) {
 			if ( myScoreDataTable != null ) {
 				if ( myScoreDataTable.Rows.Count > 0 ) {
-					roundSelect.RoundValue = ( (Byte) myScoreRow["Round"] ).ToString();
+					roundSelect.RoundValue = ( (Byte)myScoreRow["Round"] ).ToString();
 				}
 			}
 		}
@@ -3196,7 +3207,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void roundSelect_Click( object sender, EventArgs e ) {
 			if ( sender != null ) {
-				String curValue = ( (RadioButtonWithValue) sender ).Value.ToString();
+				String curValue = ( (RadioButtonWithValue)sender ).Value.ToString();
 				try {
 					roundSelect.RoundValue = curValue;
 				} catch ( Exception ex ) {
@@ -3224,7 +3235,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			if ( !( isDataModified ) ) {
 				if ( sender != null ) {
-					String curValue = ( (RadioButtonWithValue) sender ).Value.ToString();
+					String curValue = ( (RadioButtonWithValue)sender ).Value.ToString();
 					try {
 						roundActiveSelect.RoundValue = curValue;
 					} catch ( Exception ex ) {
@@ -3290,19 +3301,19 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void SlalomSpeedSelect_Load( object sender, EventArgs e ) {
 			if ( myScoreRow != null ) {
-				SlalomSpeedSelection.SelectSpeekKph = (Byte) myScoreRow["StartSpeed"];
+				SlalomSpeedSelection.SelectSpeekKph = (Byte)myScoreRow["StartSpeed"];
 			}
 		}
 
 		private void SlalomLineSelect_Load( object sender, EventArgs e ) {
 			if ( myScoreRow != null ) {
-				SlalomLineSelect.CurrentValue = (String) myScoreRow["StartLen"];
+				SlalomLineSelect.CurrentValue = (String)myScoreRow["StartLen"];
 			}
 		}
 
 		private void SlalomSpeedSelect_Change( object sender, EventArgs e ) {
 			if ( sender != null ) {
-				String curValue = ( (RadioButtonWithValue) sender ).Value.ToString();
+				String curValue = ( (RadioButtonWithValue)sender ).Value.ToString();
 				try {
 					SlalomSpeedSelection.SelectSpeekKph = Convert.ToInt16( curValue );
 
@@ -3321,7 +3332,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void SlalomLineSelect_Change( object sender, EventArgs e ) {
 			if ( sender != null ) {
-				String curValue = ( (RadioButtonWithValue) sender ).Value.ToString();
+				String curValue = ( (RadioButtonWithValue)sender ).Value.ToString();
 				try {
 					SlalomLineSelect.CurrentValue = curValue;
 					if ( slalomRecapDataGridView.RowCount > 1 ) {
@@ -3343,14 +3354,14 @@ namespace WaterskiScoringSystem.Slalom {
 				&& slalomRecapDataGridView.Rows[myRecapRow.Index - 1].Cells["RerideRecap"].Value.ToString().Equals( "Y" )
 				) {
 				Int16 curPassSpeedKph = SlalomSpeedSelection.SelectSpeekKph;
-                Decimal curPassLineLengthMeters = SlalomLineSelect.CurrentValueNum;
+				Decimal curPassLineLengthMeters = SlalomLineSelect.CurrentValueNum;
 				myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 
 				setBoatTimeRow( curPassSpeedKph, 6 );
 				loadBoatTimeView( curPassSpeedKph );
-				Decimal curMinTime = (Decimal) myTimeRow["MinValue"];
-				Decimal curMaxTime = (Decimal) myTimeRow["MaxValue"];
-				Decimal curActualTime = Convert.ToDecimal( (String) myTimeRow["CodeValue"] );
+				Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
+				Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
+				Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
 				skierPassMsg.Text = "Boat times full course "
 					+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 
@@ -3358,11 +3369,11 @@ namespace WaterskiScoringSystem.Slalom {
 				myRecapRow.Cells["PassLineLengthRecap"].Value = curPassLineLengthMeters.ToString( "00.00" );
 
 				myRecapRow.Cells["NoteRecap"].Value = curPassLineLengthMeters.ToString( "00.00" ) + "M"
-					+ "," + (String) myPassRow["SpeedKphDesc"]
-					+ "," + ( (String) myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String) myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
-					+ "," + (String) myPassRow["SpeedMphDesc"];
+					+ "," + (String)myPassRow["SpeedKphDesc"]
+					+ "," + ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) )
+					+ "," + (String)myPassRow["SpeedMphDesc"];
 
-				ActivePassDesc.Text = (String) myRecapRow.Cells["NoteRecap"].Value;
+				ActivePassDesc.Text = (String)myRecapRow.Cells["NoteRecap"].Value;
 
 				if ( curPassSpeedKph > SlalomSpeedSelection.MaxSpeedKph ) {
 					SlalomSpeedSelection.SelectSpeekKph = SlalomSpeedSelection.MaxSpeedKph;
@@ -3377,7 +3388,7 @@ namespace WaterskiScoringSystem.Slalom {
 			} else {
 				SlalomLineSelect.Enabled = false;
 				SlalomSpeedSelection.Enabled = false;
-            }
+			}
 		}
 
 		private void scoreEventClass_SelectedIndexChanged( object sender, EventArgs e ) {
@@ -3388,7 +3399,7 @@ namespace WaterskiScoringSystem.Slalom {
 			String curMethodName = "Slalom:ScoreEntry:scoreEventClass_Validating";
 			int rowsProc = 0;
 
-			ListItem curItem = (ListItem) scoreEventClass.SelectedItem;
+			ListItem curItem = (ListItem)scoreEventClass.SelectedItem;
 			String curEventClass = curItem.ItemValue;
 			if ( mySkierClassList.compareClassChange( curEventClass, myTourClass ) < 0 ) {
 				MessageBox.Show( "Class " + curEventClass + " cannot be assigned to a skier in a class " + myTourClass + " tournament" );
@@ -3397,11 +3408,11 @@ namespace WaterskiScoringSystem.Slalom {
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value = curEventClass;
 				try {
 					if ( myScoreRow != null ) {
-						String curMemberId = (String) myScoreRow["MemberId"];
-						String curAgeGroup = (String) myScoreRow["AgeGroup"];
+						String curMemberId = (String)myScoreRow["MemberId"];
+						String curAgeGroup = (String)myScoreRow["AgeGroup"];
 						byte curRound = (byte)myScoreRow["Round"];
 						StringBuilder curSqlStmt = new StringBuilder( "" );
-						curSqlStmt = new StringBuilder( String.Format( "Update SlalomScore Set " 
+						curSqlStmt = new StringBuilder( String.Format( "Update SlalomScore Set "
 							+ "EventClass = '{0}', LastUpdateDate = GETDATE() "
 							+ "Where SanctionId = '{1}' AND MemberId = '{2}' AND AgeGroup = '{3}' AND Round = {4}"
 							, curEventClass, mySanctionNum, curMemberId, curAgeGroup, curRound ).ToString() );
@@ -3420,8 +3431,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void slalomRecapDataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
 			String curColumnName = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
-			if ( !(curColumnName.Equals( "BoatTimeRecap" )) ) return;
-			if ( myRecapRow == null) return;
+			if ( !( curColumnName.Equals( "BoatTimeRecap" ) ) ) return;
+			if ( myRecapRow == null ) return;
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
 			if ( myRecapRow.Index == e.RowIndex ) {
@@ -3459,8 +3470,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
 			if ( EwscMonitor.EwcsWebLocation.Length > 1
-				&& ((String)curViewRow.Cells["BoatTimeRecap"].Value).Length > 0
-				&& ((String)curViewRow.Cells["ScoreRecap"].Value).Length > 0 ) {
+				&& ( (String)curViewRow.Cells["BoatTimeRecap"].Value ).Length > 0
+				&& ( (String)curViewRow.Cells["ScoreRecap"].Value ).Length > 0 ) {
 				/* 
 				 * Rettrieve boat path data
 				 */
@@ -3496,15 +3507,15 @@ namespace WaterskiScoringSystem.Slalom {
 			curTimerObj.Start();
 		}
 
-		private void loadBoatPathDataTimer(object sender, EventArgs e) {
+		private void loadBoatPathDataTimer( object sender, EventArgs e ) {
 			Timer curTimerObj = (Timer)sender;
 			curTimerObj.Stop();
-			curTimerObj.Tick -= new EventHandler(loadBoatPathDataTimer);
+			curTimerObj.Tick -= new EventHandler( loadBoatPathDataTimer );
 			loadBoatPathDataGridView( loadBoatPathArgs[0], loadBoatPathArgs[1], loadBoatPathArgs[2], loadBoatPathArgs[3], loadBoatPathArgs[4] );
 			loadBoatPathArgs = null;
 		}
 
-		private void loadBoatPathDataGridView(String curEvent, String curMemberId, String curRound, String curPassNum, String curPassScore ) {
+		private void loadBoatPathDataGridView( String curEvent, String curMemberId, String curRound, String curPassNum, String curPassScore ) {
 			//Retrieve data for current tournament
 			//Used for initial load and to refresh data after updates
 			winStatusMsg.Text = "Retrieving boat times";
@@ -3545,7 +3556,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 					if ( curViewIdx == 0 ) {
 						curViewRow.Cells["boatPathBuoy"].Value = "G";
-						if ( myBoatPathDataRow["boatTimeBuoy" + (curViewIdx + 1)] != System.DBNull.Value ) {
+						if ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )] != System.DBNull.Value ) {
 							curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )];
 						}
 						curViewRow.Cells["boatPathZoneTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ).ToString( "##0" );
@@ -3572,8 +3583,8 @@ namespace WaterskiScoringSystem.Slalom {
 					curViewRow.Cells["boatPathZoneTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ).ToString( "##0" );
 					curViewRow.Cells["boatPathCumTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MaxDev"] ).ToString( "##0" );
 
-					if ( myBoatPathDataRow["boatTimeBuoy" + (curViewIdx + 1)] != System.DBNull.Value ) {
-						curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + (curViewIdx + 1)];
+					if ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )] != System.DBNull.Value ) {
+						curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )];
 					}
 
 					if ( myBoatPathDataRow["PathDevBuoy" + curViewIdx] != System.DBNull.Value ) {
@@ -3584,7 +3595,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curViewRow.Cells["boatPathDev"].Style.ForeColor = Color.Red;
 						}
 						if ( (Decimal)myBoatPathDataRow["PathDevBuoy" + curViewIdx] < 0
-							&& (Decimal)myBoatPathDataRow["PathDevBuoy" + curViewIdx] < (-1 * (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ) ) {
+							&& (Decimal)myBoatPathDataRow["PathDevBuoy" + curViewIdx] < ( -1 * (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ) ) {
 							curViewRow.Cells["boatPathDev"].Style.Font = curFontBold;
 							curViewRow.Cells["boatPathDev"].Style.ForeColor = Color.Aquamarine;
 						}
@@ -3612,7 +3623,7 @@ namespace WaterskiScoringSystem.Slalom {
 							curViewRow.Cells["boatPathCum"].Style.ForeColor = Color.Red;
 						}
 						if ( (Decimal)myBoatPathDataRow["PathDevCum" + curViewIdx] < 0
-							&& (Decimal)myBoatPathDataRow["PathDevCum" + curViewIdx] < ( -1 * (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MaxDev"] )) {
+							&& (Decimal)myBoatPathDataRow["PathDevCum" + curViewIdx] < ( -1 * (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MaxDev"] ) ) {
 							curViewRow.Cells["boatPathCum"].Style.Font = curFontBold;
 							curViewRow.Cells["boatPathCum"].Style.ForeColor = Color.Aqua;
 						}
@@ -3621,8 +3632,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 				boatPathDataGridView.Visible = true;
 
-			} catch (Exception ex) {
-				MessageBox.Show("Error retrieving boat times \n" + ex.Message);
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error retrieving boat times \n" + ex.Message );
 			}
 
 		}
@@ -3652,7 +3663,7 @@ namespace WaterskiScoringSystem.Slalom {
 				String curColName = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
 				if ( curColName.StartsWith( "Judge" ) ) {
 					#region Validate any of the judge score cells
-					String curJudgeEntry = (String) e.FormattedValue;
+					String curJudgeEntry = (String)e.FormattedValue;
 					if ( isObjectEmpty( curJudgeEntry ) ) {
 						myModCellValue = "";
 					} else {
@@ -3733,7 +3744,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 				} else if ( curColName.StartsWith( "BoatTime" ) && myRecapRow.Cells[e.ColumnIndex].Value != null ) {
 					#region Validate boat time
-					String curValue = (String) e.FormattedValue;
+					String curValue = (String)e.FormattedValue;
 					if ( isObjectEmpty( curValue ) ) {
 						myModCellValue = "";
 					} else {
@@ -3767,7 +3778,7 @@ namespace WaterskiScoringSystem.Slalom {
 				String curColName = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
 				if ( curColName.StartsWith( "Judge" ) ) {
 					#region Validate any of the judge score cells
-					String curInputValue = (String) myRecapRow.Cells[e.ColumnIndex].Value;
+					String curInputValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
 					if ( isObjectEmpty( curInputValue ) ) {
 						if ( isObjectEmpty( myOrigCellValue ) ) {
 							//No new data input, no action required
@@ -3776,7 +3787,7 @@ namespace WaterskiScoringSystem.Slalom {
 							myRecapRow.Cells["Updated"].Value = "Y";
 						}
 					} else {
-						if ( SlalomLineSelect.Enabled || SlalomSpeedSelection.Enabled) {
+						if ( SlalomLineSelect.Enabled || SlalomSpeedSelection.Enabled ) {
 							SlalomLineSelect.Enabled = false;
 							SlalomSpeedSelection.Enabled = false;
 						}
@@ -3791,7 +3802,7 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( !( isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value.ToString() ) ) ) {
 									SlalomTimeValidate();
 								}
-								myOrigCellValue = (String) myRecapRow.Cells[e.ColumnIndex].Value;
+								myOrigCellValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
 							} catch ( Exception ex ) {
 								myRecapRow.ErrorText = "Value in " + curColName + " must be numeric";
 								MessageBox.Show( "Exception: " + ex.Message );
@@ -3800,7 +3811,7 @@ namespace WaterskiScoringSystem.Slalom {
 							if ( ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
 								&& ( !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
 								if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
-									if ( (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
+									if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
 										if ( isExitGatesGood() ) {
 											isAddRecapRowInProg = true;
 											Timer curTimerObj = new Timer();
@@ -3820,7 +3831,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 				} else if ( curColName.Equals( "BoatTimeRecap" ) ) {
 					#region Validate boat time
-					String curInputValue = (String) myRecapRow.Cells[e.ColumnIndex].Value;
+					String curInputValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
 					if ( isObjectEmpty( curInputValue ) ) {
 						if ( isObjectEmpty( myOrigCellValue ) ) {
 							//No new data input, no action required
@@ -3836,7 +3847,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 					} else {
 						if ( myModCellValue.Length > 0 ) curInputValue = myModCellValue;
-						if (curInputValue != myOrigCellValue) boatTimeValidation();
+						if ( curInputValue != myOrigCellValue ) boatTimeValidation();
 					}
 					#endregion
 
@@ -3844,13 +3855,13 @@ namespace WaterskiScoringSystem.Slalom {
 					#region Validate entrance and exit gate cells
 					try {
 						if ( myGateValueChg ) {
-							Boolean curGateValue = (Boolean) myRecapRow.Cells[curColName].Value;
+							Boolean curGateValue = (Boolean)myRecapRow.Cells[curColName].Value;
 							if ( !( isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value ) ) ) {
 								SlalomTimeValidate();
 								if ( ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
 									&& ( !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
 									if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
-										if ( (String) myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
+										if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
 											if ( isExitGatesGood() ) {
 												if ( curGateValue ) {
 													isAddRecapRowInProg = true;
@@ -3883,7 +3894,7 @@ namespace WaterskiScoringSystem.Slalom {
 							myRecapRow.Cells["ScoreRecap"].Value = "0";
 						} else {
 						}
-						rerideReasonDialogForm.RerideReasonText = (String) myRecapRow.Cells["RerideReasonRecap"].Value;
+						rerideReasonDialogForm.RerideReasonText = (String)myRecapRow.Cells["RerideReasonRecap"].Value;
 						if ( rerideReasonDialogForm.ShowDialog() == DialogResult.OK ) {
 							setEventRegRowStatus( "InProg" );
 							String curCommand = rerideReasonDialogForm.Command;
@@ -3927,16 +3938,16 @@ namespace WaterskiScoringSystem.Slalom {
 
 			SlalomTimeValidate();
 
-			if ( isObjectEmpty(myRecapRow.Cells["ScoreRecap"].Value) || isObjectEmpty(myRecapRow.Cells["TimeInTolRecap"].Value) ) return;
-			if ( Convert.ToDecimal(myRecapRow.Cells["ScoreRecap"].Value) < 6 ) return;
+			if ( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) || isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) return;
+			if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) < 6 ) return;
 			if ( myRecapRow.Cells["BoatTimeRecap"].ReadOnly ) return;
 
-			if ((String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y") {
-				if (isExitGatesGood()) {
+			if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y" ) {
+				if ( isExitGatesGood() ) {
 					isAddRecapRowInProg = true;
 					Timer curTimerObj = new Timer();
 					curTimerObj.Interval = 5;
-					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
 					curTimerObj.Start();
 
 				} else {
@@ -3946,33 +3957,33 @@ namespace WaterskiScoringSystem.Slalom {
 				return;
 			}
 
-			if ((String)myRecapRow.Cells["ScoreProtRecap"].Value == "Y") {
-				if (isExitGatesGood()) {
+			if ( (String)myRecapRow.Cells["ScoreProtRecap"].Value == "Y" ) {
+				if ( isExitGatesGood() ) {
 					isAddRecapRowInProg = true;
 					Timer curTimerObj = new Timer();
 					curTimerObj.Interval = 5;
-					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
 					curTimerObj.Start();
 				}
 				return;
 			}
 
-			if ((String)myRecapRow.Cells["RerideRecap"].Value == "Y") {
-				if (isExitGatesGood()) {
+			if ( (String)myRecapRow.Cells["RerideRecap"].Value == "Y" ) {
+				if ( isExitGatesGood() ) {
 					isAddRecapRowInProg = true;
 					Timer curTimerObj = new Timer();
 					curTimerObj.Interval = 5;
-					curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
 					curTimerObj.Start();
 				}
 				return;
 			}
 
-			if ((String)myRecapRow.Cells["RerideRecap"].Value == "Y") {
+			if ( (String)myRecapRow.Cells["RerideRecap"].Value == "Y" ) {
 				isAddRecapRowInProg = true;
 				Timer curTimerObj = new Timer();
 				curTimerObj.Interval = 5;
-				curTimerObj.Tick += new EventHandler(addRecapRowTimer);
+				curTimerObj.Tick += new EventHandler( addRecapRowTimer );
 				curTimerObj.Start();
 				return;
 			}
@@ -3986,53 +3997,53 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( !( isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value ) ) ) {
 				// Determine if sufficient information is available to calculate a score
 				curScore = calcScoreForPass();
-				if (curScore < 0) return;
+				if ( curScore < 0 ) return;
 
 				#region Analyze the boat time and fill when determined that short hand entry has been used
 				try {
-					Int16 curPassSpeedKph = Convert.ToInt16((String)myRecapRow.Cells["PassSpeedKphRecap"].Value);
-					Decimal curPassLineLengthMeters = Convert.ToDecimal((String)myRecapRow.Cells["PassLineLengthRecap"].Value);
-					myPassRow = getPassRow(curPassSpeedKph, curPassLineLengthMeters);
+					Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+					Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+					myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 
-					setBoatTimeRow(curPassSpeedKph, Convert.ToInt16(curScore.ToString().Substring(0, 1)));
-					loadBoatTimeView(curPassSpeedKph);
+					setBoatTimeRow( curPassSpeedKph, Convert.ToInt16( curScore.ToString().Substring( 0, 1 ) ) );
+					loadBoatTimeView( curPassSpeedKph );
 					Decimal curMinTime = (Decimal)myTimeRow["MinValue"];
 					Decimal curMaxTime = (Decimal)myTimeRow["MaxValue"];
-					Decimal curActualTime = Convert.ToDecimal((String)myTimeRow["CodeValue"]);
+					Decimal curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
 					Decimal tempTime, tempMinDiff, tempMaxDiff;
 
 					String curBoatTimeOrigValue = myRecapRow.Cells["BoatTimeRecap"].Value.ToString();
-					if (curBoatTimeOrigValue.ToUpper().Equals("OK")) {
-						myRecapRow.Cells["BoatTimeRecap"].Value = curActualTime.ToString("#0.00");
-						curBoatTimeOrigValue = curActualTime.ToString("#0.00");
-					} else if (curBoatTimeOrigValue.ToUpper().Equals("NONE")) {
-						myRecapRow.Cells["BoatTimeRecap"].Value = (curActualTime * -1).ToString("##0.00");
-						curBoatTimeOrigValue = (curActualTime * -1).ToString("##0.00");
-					} else if (curBoatTimeOrigValue.Length == 1) {
+					if ( curBoatTimeOrigValue.ToUpper().Equals( "OK" ) ) {
+						myRecapRow.Cells["BoatTimeRecap"].Value = curActualTime.ToString( "#0.00" );
+						curBoatTimeOrigValue = curActualTime.ToString( "#0.00" );
+					} else if ( curBoatTimeOrigValue.ToUpper().Equals( "NONE" ) ) {
+						myRecapRow.Cells["BoatTimeRecap"].Value = ( curActualTime * -1 ).ToString( "##0.00" );
+						curBoatTimeOrigValue = ( curActualTime * -1 ).ToString( "##0.00" );
+					} else if ( curBoatTimeOrigValue.Length == 1 ) {
 						curBoatTimeOrigValue = "0" + curBoatTimeOrigValue;
 					}
-					if (curBoatTimeOrigValue.Length == 2) {
-						if (!(curBoatTimeOrigValue.Contains("."))) {
+					if ( curBoatTimeOrigValue.Length == 2 ) {
+						if ( !( curBoatTimeOrigValue.Contains( "." ) ) ) {
 							Int32 delimPos = 0;
 							String newValue = "";
 
-							delimPos = curActualTime.ToString().IndexOf('.');
-							newValue = curActualTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
-							tempTime = Convert.ToDecimal(newValue);
-							if ((tempTime < curMinTime) || (tempTime > curMaxTime)) {
-								delimPos = curMinTime.ToString().IndexOf('.');
-								newValue = curMinTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
-								tempTime = Convert.ToDecimal(newValue);
-								if (tempTime < curMinTime) {
+							delimPos = curActualTime.ToString().IndexOf( '.' );
+							newValue = curActualTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
+							tempTime = Convert.ToDecimal( newValue );
+							if ( ( tempTime < curMinTime ) || ( tempTime > curMaxTime ) ) {
+								delimPos = curMinTime.ToString().IndexOf( '.' );
+								newValue = curMinTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
+								tempTime = Convert.ToDecimal( newValue );
+								if ( tempTime < curMinTime ) {
 									tempMinDiff = curMinTime - tempTime;
-									newValue = curMaxTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
-									tempTime = Convert.ToDecimal(newValue);
-									if (tempTime > curMaxTime) {
+									newValue = curMaxTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
+									tempTime = Convert.ToDecimal( newValue );
+									if ( tempTime > curMaxTime ) {
 										tempMaxDiff = tempTime - curMaxTime;
-										if (tempMaxDiff > tempMinDiff) {
-											newValue = curMinTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+										if ( tempMaxDiff > tempMinDiff ) {
+											newValue = curMinTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
 										} else {
-											newValue = curMaxTime.ToString().Substring(0, delimPos + 1) + curBoatTimeOrigValue;
+											newValue = curMaxTime.ToString().Substring( 0, delimPos + 1 ) + curBoatTimeOrigValue;
 										}
 									}
 								}
@@ -4043,8 +4054,8 @@ namespace WaterskiScoringSystem.Slalom {
 							myRecapRow.Cells["RerideReasonRecap"].Value = "";
 						}
 					}
-					Decimal curBoatTime = Convert.ToDecimal(myRecapRow.Cells["BoatTimeRecap"].Value.ToString());
-					if (curBoatTime < 0) {
+					Decimal curBoatTime = Convert.ToDecimal( myRecapRow.Cells["BoatTimeRecap"].Value.ToString() );
+					if ( curBoatTime < 0 ) {
 						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
 						myRecapRow.Cells["ScoreProtRecap"].Value = "N";
 						myRecapRow.Cells["RerideRecap"].Value = "Y";
@@ -4052,12 +4063,12 @@ namespace WaterskiScoringSystem.Slalom {
 						skierPassMsg.ForeColor = Color.Red;
 						skierPassMsg.Text = "No time was available";
 						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-						SlalomScoreCalc(curScore);
+						SlalomScoreCalc( curScore );
 
-					} else if (curBoatTime > curMaxTime) {
+					} else if ( curBoatTime > curMaxTime ) {
 						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
 						myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-						if (curScore == 6.0M) {
+						if ( curScore == 6.0M ) {
 							myRecapRow.Cells["RerideRecap"].Value = "Y";
 						}
 						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
@@ -4065,9 +4076,9 @@ namespace WaterskiScoringSystem.Slalom {
 						skierPassMsg.Text = "SLOW Boat time "
 							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-						SlalomScoreCalc(curScore);
+						SlalomScoreCalc( curScore );
 
-					} else if (curBoatTime < curMinTime) {
+					} else if ( curBoatTime < curMinTime ) {
 						myRecapRow.Cells["TimeInTolRecap"].Value = "N";
 						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
 						myRecapRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
@@ -4075,7 +4086,7 @@ namespace WaterskiScoringSystem.Slalom {
 						skierPassMsg.Text = "FAST Boat time "
 							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
 						myRecapRow.Cells["RerideReasonRecap"].Value = skierPassMsg.Text;
-						SlalomScoreCalc(curScore);
+						SlalomScoreCalc( curScore );
 
 					} else {
 						myRecapRow.Cells["TimeInTolRecap"].Value = "Y";
@@ -4084,14 +4095,14 @@ namespace WaterskiScoringSystem.Slalom {
 						skierPassMsg.ForeColor = Color.DarkGray;
 						skierPassMsg.Text = "Boat times - current score "
 							+ curMinTime.ToString() + " " + curActualTime.ToString() + " " + curMaxTime.ToString();
-						if (!(myRecapRow.Cells["RerideRecap"].Value.Equals("Y"))) {
+						if ( !( myRecapRow.Cells["RerideRecap"].Value.Equals( "Y" ) ) ) {
 							myRecapRow.Cells["RerideReasonRecap"].Value = "";
 						}
-						SlalomScoreCalc(curScore);
+						SlalomScoreCalc( curScore );
 					}
 
-				} catch (Exception exp) {
-					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + exp.Message);
+				} catch ( Exception exp ) {
+					MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + exp.Message );
 				}
 				#endregion
 			}
@@ -4107,70 +4118,70 @@ namespace WaterskiScoringSystem.Slalom {
 			int[] curGateEntry = new int[myNumJudges];
 			int[] curGateExit = new int[myNumJudges];
 
-			if (myNumJudges == 1) {
-				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value) ) return -1;
+			if ( myNumJudges == 1 ) {
+				if ( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value ) ) return -1;
 				try {
-					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
-					if (curJudgeScore[0] < 6) myRecapRow.Cells["GateExit1Recap"].Value = false;
-					if (isEntryGatesGood() == false) {
+					curJudgeScore[0] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge1ScoreRecap"].Value );
+					if ( curJudgeScore[0] < 6 ) myRecapRow.Cells["GateExit1Recap"].Value = false;
+					if ( isEntryGatesGood() == false ) {
 						curJudgeScore[0] = 0;
 					}
-					return SlalomRecapScoreCalc(curJudgeScore);
+					return SlalomRecapScoreCalc( curJudgeScore );
 
-				} catch (Exception ex) {
-					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+				} catch ( Exception ex ) {
+					MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + ex.Message );
 					return -1;
 				}
 			}
 
-			if (myNumJudges == 3) {
-				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value)
-					|| isObjectEmpty(myRecapRow.Cells["Judge2ScoreRecap"].Value)
-					|| isObjectEmpty(myRecapRow.Cells["Judge3ScoreRecap"].Value)
+			if ( myNumJudges == 3 ) {
+				if ( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value )
+					|| isObjectEmpty( myRecapRow.Cells["Judge2ScoreRecap"].Value )
+					|| isObjectEmpty( myRecapRow.Cells["Judge3ScoreRecap"].Value )
 				   ) return -1;
 
 				try {
-					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
-					curJudgeScore[1] = Convert.ToDecimal((String)myRecapRow.Cells["Judge2ScoreRecap"].Value);
-					curJudgeScore[2] = Convert.ToDecimal((String)myRecapRow.Cells["Judge3ScoreRecap"].Value);
+					curJudgeScore[0] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge1ScoreRecap"].Value );
+					curJudgeScore[1] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge2ScoreRecap"].Value );
+					curJudgeScore[2] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge3ScoreRecap"].Value );
 
-					if (isEntryGatesGood()) return SlalomRecapScoreCalc(curJudgeScore);
+					if ( isEntryGatesGood() ) return SlalomRecapScoreCalc( curJudgeScore );
 
-					if ((Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] && myRecapRow.Index == 0) {
-						Decimal curScore = SlalomRecapScoreCalc(curJudgeScore);
-						if (curScore < 6) return 0;
+					if ( (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] && myRecapRow.Index == 0 ) {
+						Decimal curScore = SlalomRecapScoreCalc( curJudgeScore );
+						if ( curScore < 6 ) return 0;
 						return curScore;
 
 					} else {
 						return 0;
 					}
 
-				} catch (Exception ex) {
-					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+				} catch ( Exception ex ) {
+					MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + ex.Message );
 					return -1;
 				}
 			}
 
-			if (myNumJudges == 5) {
-				if ( isObjectEmpty(myRecapRow.Cells["Judge1ScoreRecap"].Value)
-					&& isObjectEmpty(myRecapRow.Cells["Judge2ScoreRecap"].Value)
-					&& isObjectEmpty(myRecapRow.Cells["Judge3ScoreRecap"].Value)
-					&& isObjectEmpty(myRecapRow.Cells["Judge4ScoreRecap"].Value)
-					&& isObjectEmpty(myRecapRow.Cells["Judge5ScoreRecap"].Value)
+			if ( myNumJudges == 5 ) {
+				if ( isObjectEmpty( myRecapRow.Cells["Judge1ScoreRecap"].Value )
+					&& isObjectEmpty( myRecapRow.Cells["Judge2ScoreRecap"].Value )
+					&& isObjectEmpty( myRecapRow.Cells["Judge3ScoreRecap"].Value )
+					&& isObjectEmpty( myRecapRow.Cells["Judge4ScoreRecap"].Value )
+					&& isObjectEmpty( myRecapRow.Cells["Judge5ScoreRecap"].Value )
 				   ) return -1;
 
 				try {
-					curJudgeScore[0] = Convert.ToDecimal((String)myRecapRow.Cells["Judge1ScoreRecap"].Value);
-					curJudgeScore[1] = Convert.ToDecimal((String)myRecapRow.Cells["Judge2ScoreRecap"].Value);
-					curJudgeScore[2] = Convert.ToDecimal((String)myRecapRow.Cells["Judge3ScoreRecap"].Value);
-					curJudgeScore[3] = Convert.ToDecimal((String)myRecapRow.Cells["Judge4ScoreRecap"].Value);
-					curJudgeScore[4] = Convert.ToDecimal((String)myRecapRow.Cells["Judge5ScoreRecap"].Value);
+					curJudgeScore[0] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge1ScoreRecap"].Value );
+					curJudgeScore[1] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge2ScoreRecap"].Value );
+					curJudgeScore[2] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge3ScoreRecap"].Value );
+					curJudgeScore[3] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge4ScoreRecap"].Value );
+					curJudgeScore[4] = Convert.ToDecimal( (String)myRecapRow.Cells["Judge5ScoreRecap"].Value );
 
-					if (isEntryGatesGood()) return SlalomRecapScoreCalc(curJudgeScore);
+					if ( isEntryGatesGood() ) return SlalomRecapScoreCalc( curJudgeScore );
 					return 0;
 
-				} catch (Exception ex) {
-					MessageBox.Show("Processing error detected in SlalomTimeValidate \n" + ex.Message);
+				} catch ( Exception ex ) {
+					MessageBox.Show( "Processing error detected in SlalomTimeValidate \n" + ex.Message );
 					return -1;
 				}
 			}
@@ -4224,43 +4235,43 @@ namespace WaterskiScoringSystem.Slalom {
 			DataRow curClassRow;
 			try {
 				try {
-					String curMemberId = (String) myRecapRow.Cells["MemberIdRecap"].Value;
-					if ( !( curMemberId.Equals( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
+					String curMemberId = (String)myRecapRow.Cells["MemberIdRecap"].Value;
+					if ( !( curMemberId.Equals( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
 						MessageBox.Show( curMethodName + ": Unable to continue processing"
 							+ "\n Current id of skier being scored       = " + curMemberId
-							+ "\n Current id skier in running order list = " + (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value );
+							+ "\n Current id skier in running order list = " + (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value );
 						return;
 					}
 				} catch {
 					//No actions needed
 				}
 
-				String curAgeGroup = (String) TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
-				Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( (String) myRecapRow.Cells["AgeGroupRecap"].Value );
+				String curAgeGroup = (String)TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
+				Int16 curMaxSpeedKphDiv = getMaxSpeedOrigData( (String)myRecapRow.Cells["AgeGroupRecap"].Value );
 				curClassRow = getClassRowCurrentSkier();
-				String curRerideReason = (String) myRecapRow.Cells["RerideReasonRecap"].Value;
-				if ( ( (String) myRecapRow.Cells["ScoreProtRecap"].Value ).Equals( "Y" ) ) {
+				String curRerideReason = (String)myRecapRow.Cells["RerideReasonRecap"].Value;
+				if ( ( (String)myRecapRow.Cells["ScoreProtRecap"].Value ).Equals( "Y" ) ) {
 					curScoreProtGood = true;
 				} else {
 					curScoreProtGood = false;
 				}
-				if ( ( (String) myRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" ) ) {
+				if ( ( (String)myRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" ) ) {
 					curTimeGood = true;
 				} else {
 					curTimeGood = false;
 				}
 				myRecapRow.Cells["ScoreRecap"].Value = inScore.ToString( "#.00" );
-				Int16 curSkierPassNum = Convert.ToInt16( (String) myRecapRow.Cells["skierPassRecap"].Value );
-				Int16 curPassSpeedKph = Convert.ToInt16( (String) myRecapRow.Cells["PassSpeedKphRecap"].Value );
-				Decimal curPassLineLengthMeters = Convert.ToDecimal( (String) myRecapRow.Cells["PassLineLengthRecap"].Value );
+				Int16 curSkierPassNum = Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value );
+				Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+				Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 				myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
-				int curPassSpeedNum = (int) myPassRow["SlalomSpeedNum"];
-				int curPassLineNum = (int) myPassRow["SlalomLineNum"];
+				int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
+				int curPassLineNum = (int)myPassRow["SlalomLineNum"];
 
 				#region Check for adjustment for division or class with a minimum speed
 				curPassNumMinSpeed = 0;
 				if ( myMinSpeedRow != null ) {
-					curPassNumMinSpeed = Convert.ToInt16( (Decimal) myMinSpeedRow["NumPassMinSpeed"] );
+					curPassNumMinSpeed = Convert.ToInt16( (Decimal)myMinSpeedRow["NumPassMinSpeed"] );
 					if ( myPassRow != null ) {
 						if ( curPassSpeedKph >= SlalomSpeedSelection.MaxSpeedKph ) {
 							if ( isDivisionIntl( curAgeGroup ) ) {
@@ -4277,15 +4288,15 @@ namespace WaterskiScoringSystem.Slalom {
                 Skiers in qualified divisions can increase their score either by increasing speed or shortening the rope or both
                 It is no longer required that the skier be scored at long line when at less than max speed
                  */
-				bool isZbsAllowed = isQualifiedAltScoreMethod( curAgeGroup, (String) curClassRow["ListCode"] );
+				bool isZbsAllowed = isQualifiedAltScoreMethod( curAgeGroup, (String)curClassRow["ListCode"] );
 				if ( isZbsAllowed ) {
 					if ( curPassSpeedKph > curMaxSpeedKphDiv
-						&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+						&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 						) {
 						myPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
-						curPassSpeedNum = (int) myPassRow["SlalomSpeedNum"];
+						curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 					}
-				} else { 
+				} else {
 					// If not eligible for ZBS then no credit for shorter line length unless at maximum speed
 					if ( curPassSpeedKph < SlalomSpeedSelection.MaxSpeedKph ) {
 						curPassLineNum = 0;
@@ -4301,7 +4312,7 @@ namespace WaterskiScoringSystem.Slalom {
 								skierScore = inScore * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed );
 								setEventRegRowStatus( "2-InProg" );
 
-							} else if ( (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] ) {
+							} else if ( (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] ) {
 								skierScore = 0;
 								setEventRegRowStatus( "2-InProg" );
 								myRecapRow.Cells["RerideRecap"].Value = "Y";
@@ -4340,71 +4351,71 @@ namespace WaterskiScoringSystem.Slalom {
 						if ( inScore == 6 && isExitGatesGood() ) {
 							#region Scoring when time for current pass is good and full pass
 							setEventRegRowStatus( "2-InProg" );
-							if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
+							if ( (Decimal)curClassRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
 								#region Scoring when time for current pass is good and full pass for class E and above skiers
 								int curIdx = myRecapRow.Index - 1;
-								prevRerideInd = (String) slalomRecapDataGridView.Rows[curIdx].Cells["RerideRecap"].Value;
+								prevRerideInd = (String)slalomRecapDataGridView.Rows[curIdx].Cells["RerideRecap"].Value;
 								if ( prevRerideInd.Equals( "Y" ) ) {
-									prevTimeGood = (String) slalomRecapDataGridView.Rows[curIdx].Cells["TimeInTolRecap"].Value;
+									prevTimeGood = (String)slalomRecapDataGridView.Rows[curIdx].Cells["TimeInTolRecap"].Value;
 									if ( prevTimeGood.Equals( "Y" ) ) {
-										prevProtectInd = (String) slalomRecapDataGridView.Rows[curIdx].Cells["ScoreProtRecap"].Value;
+										prevProtectInd = (String)slalomRecapDataGridView.Rows[curIdx].Cells["ScoreProtRecap"].Value;
 										if ( prevProtectInd.Equals( "Y" ) ) {
 											skierScore = inScore * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed );
 
 										} else {
-											curPassScore = Convert.ToDecimal( (String) myRecapRow.Cells["ScoreRecap"].Value );
+											curPassScore = Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value );
 											for ( curIdx--; curIdx >= 0; curIdx-- ) {
 												DataGridViewRow tempRecapRow = slalomRecapDataGridView.Rows[curIdx];
-												prevRerideInd = (String) tempRecapRow.Cells["RerideRecap"].Value;
+												prevRerideInd = (String)tempRecapRow.Cells["RerideRecap"].Value;
 												if ( prevRerideInd.Equals( "N" ) ) {
-													curPassSpeedKph = Convert.ToInt16( (String) tempRecapRow.Cells["PassSpeedKphRecap"].Value );
-													curPassLineLengthMeters = Convert.ToDecimal( (String) tempRecapRow.Cells["PassLineLengthRecap"].Value );
-													if ( curPassSpeedKph > curMaxSpeedKphDiv 
-														&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"] 
+													curPassSpeedKph = Convert.ToInt16( (String)tempRecapRow.Cells["PassSpeedKphRecap"].Value );
+													curPassLineLengthMeters = Convert.ToDecimal( (String)tempRecapRow.Cells["PassLineLengthRecap"].Value );
+													if ( curPassSpeedKph > curMaxSpeedKphDiv
+														&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 														) {
 														myPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 													} else {
 														myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 													}
-													curPassSpeedNum = (int) myPassRow["SlalomSpeedNum"];
-													curPassLineNum = (int) myPassRow["SlalomLineNum"];
+													curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
+													curPassLineNum = (int)myPassRow["SlalomLineNum"];
 													skierScore = curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 													break;
 												}
 											}
 										}
 									} else {
-										prevProtectInd = (String) slalomRecapDataGridView.Rows[curIdx].Cells["ScoreProtRecap"].Value;
+										prevProtectInd = (String)slalomRecapDataGridView.Rows[curIdx].Cells["ScoreProtRecap"].Value;
 										if ( prevProtectInd.Equals( "Y" ) ) {
 											skierScore = inScore * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed );
 
 										} else {
-											prevTimeGood = (String) slalomRecapDataGridView.Rows[curIdx].Cells["TimeInTolRecap"].Value;
+											prevTimeGood = (String)slalomRecapDataGridView.Rows[curIdx].Cells["TimeInTolRecap"].Value;
 											if ( prevTimeGood.Equals( "Y" ) ) {
-												curPassScore = Convert.ToDecimal( (String) myRecapRow.Cells["ScoreRecap"].Value );
+												curPassScore = Convert.ToDecimal( (String)myRecapRow.Cells["ScoreRecap"].Value );
 												for ( curIdx--; curIdx >= 0; curIdx-- ) {
 													DataGridViewRow tempRecapRow = slalomRecapDataGridView.Rows[curIdx];
-													prevRerideInd = (String) tempRecapRow.Cells["RerideRecap"].Value;
+													prevRerideInd = (String)tempRecapRow.Cells["RerideRecap"].Value;
 													if ( prevRerideInd.Equals( "N" ) ) {
-														curPassSpeedKph = Convert.ToInt16( (String) tempRecapRow.Cells["PassSpeedKphRecap"].Value );
-														curPassLineLengthMeters = Convert.ToDecimal( (String) tempRecapRow.Cells["PassLineLengthRecap"].Value );
+														curPassSpeedKph = Convert.ToInt16( (String)tempRecapRow.Cells["PassSpeedKphRecap"].Value );
+														curPassLineLengthMeters = Convert.ToDecimal( (String)tempRecapRow.Cells["PassLineLengthRecap"].Value );
 														if ( curPassSpeedKph > curMaxSpeedKphDiv
-															&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+															&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 															) {
 															myPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 														} else {
 															myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 														}
-														curPassSpeedNum = (int) myPassRow["SlalomSpeedNum"];
-														curPassLineNum = (int) myPassRow["SlalomLineNum"];
+														curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
+														curPassLineNum = (int)myPassRow["SlalomLineNum"];
 														skierScore = curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 														break;
 													}
 												}
 
 											} else {
-												if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
-													prevPassScore = Convert.ToDecimal( (String) slalomRecapDataGridView.Rows[curIdx].Cells["ScoreRecap"].Value );
+												if ( (Decimal)curClassRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
+													prevPassScore = Convert.ToDecimal( (String)slalomRecapDataGridView.Rows[curIdx].Cells["ScoreRecap"].Value );
 													if ( prevPassScore >= inScore ) {
 														skierScore = prevPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 
@@ -4414,19 +4425,19 @@ namespace WaterskiScoringSystem.Slalom {
 														skierScore = curPassScore;
 														for ( curIdx--; curIdx >= 0; curIdx-- ) {
 															DataGridViewRow tempRecapRow = slalomRecapDataGridView.Rows[curIdx];
-															prevRerideInd = (String) tempRecapRow.Cells["RerideRecap"].Value;
+															prevRerideInd = (String)tempRecapRow.Cells["RerideRecap"].Value;
 															if ( prevRerideInd.Equals( "N" ) ) {
-																curPassSpeedKph = Convert.ToInt16( (String) tempRecapRow.Cells["PassSpeedKphRecap"].Value );
-																curPassLineLengthMeters = Convert.ToDecimal( (String) tempRecapRow.Cells["PassLineLengthRecap"].Value );
+																curPassSpeedKph = Convert.ToInt16( (String)tempRecapRow.Cells["PassSpeedKphRecap"].Value );
+																curPassLineLengthMeters = Convert.ToDecimal( (String)tempRecapRow.Cells["PassLineLengthRecap"].Value );
 																if ( curPassSpeedKph > curMaxSpeedKphDiv
-																	&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+																	&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 																	) {
 																	myPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 																} else {
 																	myPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 																}
-																curPassSpeedNum = (int) myPassRow["SlalomSpeedNum"];
-																curPassLineNum = (int) myPassRow["SlalomLineNum"];
+																curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
+																curPassLineNum = (int)myPassRow["SlalomLineNum"];
 																skierScore = curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 																break;
 															}
@@ -4450,13 +4461,13 @@ namespace WaterskiScoringSystem.Slalom {
 							#region Scoring when time for current pass is good but less than a full pass
 							int prevRowIdx = myRecapRow.Index - 1;
 							DataGridViewRow prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-							if ( (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] ) {
+							if ( (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] ) {
 								//For Class C and below tournaments check to see if this is the first score-able pass 
 								//after being allowed to continued after the first pass due to Rule 10.03C
 								int curTempIdx = prevRowIdx;
 								for ( curTempIdx = prevRowIdx; curTempIdx >= 0; curTempIdx-- ) {
-									if ( ( (String) slalomRecapDataGridView.Rows[curTempIdx].Cells["RerideRecap"].Value ).Equals( "Y" )
-										&& ( (String) prevRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" )
+									if ( ( (String)slalomRecapDataGridView.Rows[curTempIdx].Cells["RerideRecap"].Value ).Equals( "Y" )
+										&& ( (String)prevRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" )
 										) {
 									} else {
 										break;
@@ -4469,20 +4480,20 @@ namespace WaterskiScoringSystem.Slalom {
 
 							//Check previous passes to determine the final score 
 							short curPassSpeedKphOrig = curPassSpeedKph;
-							prevRerideInd = (String) prevRecapRow.Cells["RerideRecap"].Value;
+							prevRerideInd = (String)prevRecapRow.Cells["RerideRecap"].Value;
 							if ( prevRerideInd.Equals( "Y" ) ) {
 								#region Calculate score when current pass is not a full pass and the previous pass required a reride
-								prevTimeGood = (String) prevRecapRow.Cells["TimeInTolRecap"].Value;
+								prevTimeGood = (String)prevRecapRow.Cells["TimeInTolRecap"].Value;
 								if ( prevTimeGood.Equals( "Y" ) ) {
-									prevProtectInd = (String) prevRecapRow.Cells["ScoreProtRecap"].Value;
+									prevProtectInd = (String)prevRecapRow.Cells["ScoreProtRecap"].Value;
 									if ( prevProtectInd.Equals( "Y" ) ) {
-										prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
+										prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
 										if ( prevPassScore > inScore ) {
 											curPassScore = prevPassScore;
 											myRecapRow.Cells["ScoreRecap"].Value = prevPassScore.ToString( "#.00" );
 
-										} else if ( ( (String) prevRecapRow.Cells["RerideReasonRecap"].Value ).ToLower().Contains( "slow" )
-												&& ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] )
+										} else if ( ( (String)prevRecapRow.Cells["RerideReasonRecap"].Value ).ToLower().Contains( "slow" )
+												&& ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] )
 												) {
 											curPassScore = prevPassScore;
 										} else {
@@ -4490,17 +4501,17 @@ namespace WaterskiScoringSystem.Slalom {
 										}
 
 									} else {
-										if ( prevRowIdx == 0 && (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] ) {
-											if ( ( (String) prevRecapRow.Cells["RerideReasonRecap"].Value ).Contains( "10.03 (C)" ) ) {
+										if ( prevRowIdx == 0 && (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] ) {
+											if ( ( (String)prevRecapRow.Cells["RerideReasonRecap"].Value ).Contains( "10.03 (C)" ) ) {
 												curPassScore = 0;
 											} else {
 												curPassScore = inScore;
 											}
 
-										} else if ( ( (String) prevRecapRow.Cells["RerideReasonRecap"].Value ).ToLower().Contains( "slow" )
-													&& ( (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassERow["ListCodeNum"] )
+										} else if ( ( (String)prevRecapRow.Cells["RerideReasonRecap"].Value ).ToLower().Contains( "slow" )
+													&& ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] )
 												) {
-											prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
+											prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
 											if ( prevPassScore < inScore ) {
 												curPassScore = prevPassScore;
 											} else {
@@ -4515,21 +4526,21 @@ namespace WaterskiScoringSystem.Slalom {
 									skierScore = curPassScore;
 									for ( prevRowIdx--; prevRowIdx >= 0; prevRowIdx-- ) {
 										prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-										prevRerideInd = (String) prevRecapRow.Cells["RerideRecap"].Value;
+										prevRerideInd = (String)prevRecapRow.Cells["RerideRecap"].Value;
 										if ( prevRerideInd.Equals( "N" ) ) {
-											prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
-											curPassSpeedKph = Convert.ToInt16( (String) prevRecapRow.Cells["PassSpeedKphRecap"].Value );
-											curPassLineLengthMeters = Convert.ToDecimal( (String) prevRecapRow.Cells["PassLineLengthRecap"].Value );
+											prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
+											curPassSpeedKph = Convert.ToInt16( (String)prevRecapRow.Cells["PassSpeedKphRecap"].Value );
+											curPassLineLengthMeters = Convert.ToDecimal( (String)prevRecapRow.Cells["PassLineLengthRecap"].Value );
 											DataRow tempPassRow = null;
 											if ( curPassSpeedKph > curMaxSpeedKphDiv
-												&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+												&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 												) {
 												tempPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 											} else {
 												tempPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 											}
-											curPassSpeedNum = (int) tempPassRow["SlalomSpeedNum"];
-											curPassLineNum = (int) tempPassRow["SlalomLineNum"];
+											curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
+											curPassLineNum = (int)tempPassRow["SlalomLineNum"];
 											if ( !( isZbsAllowed ) && ( curPassSpeedKphOrig < SlalomSpeedSelection.MaxSpeedKph
 															|| ( curPassSpeedKphOrig >= SlalomSpeedSelection.MaxSpeedKph && curPassSpeedKph < SlalomSpeedSelection.MaxSpeedKph ) ) ) curPassLineNum = 0;
 											if ( prevPassScore == 6 ) {
@@ -4541,12 +4552,12 @@ namespace WaterskiScoringSystem.Slalom {
 
 								} else {
 									//Calculate score when current pass is not a full pass and the previous pass required a reride
-									if ( ( prevRowIdx == 1 ) && ( (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] )
-										&& ( ( (String) slalomRecapDataGridView.Rows[0].Cells["RerideReasonRecap"].Value ).Contains( "10.03 (C)" ) ) ) {
+									if ( ( prevRowIdx == 1 ) && ( (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] )
+										&& ( ( (String)slalomRecapDataGridView.Rows[0].Cells["RerideReasonRecap"].Value ).Contains( "10.03 (C)" ) ) ) {
 										curPassScore = 0;
 									} else {
-										prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
-										prevProtectInd = (String) prevRecapRow.Cells["ScoreProtRecap"].Value;
+										prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
+										prevProtectInd = (String)prevRecapRow.Cells["ScoreProtRecap"].Value;
 										if ( prevProtectInd.Equals( "Y" ) ) {
 											if ( prevPassScore > inScore ) {
 												curPassScore = prevPassScore;
@@ -4555,7 +4566,7 @@ namespace WaterskiScoringSystem.Slalom {
 												curPassScore = inScore;
 											}
 										} else {
-											if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
+											if ( (Decimal)curClassRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
 												if ( prevPassScore < inScore ) {
 													curPassScore = prevPassScore;
 													myRecapRow.Cells["ScoreRecap"].Value = prevPassScore.ToString( "#.00" );
@@ -4571,21 +4582,21 @@ namespace WaterskiScoringSystem.Slalom {
 									skierScore = curPassScore;
 									for ( prevRowIdx--; prevRowIdx >= 0; prevRowIdx-- ) {
 										prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-										prevRerideInd = (String) prevRecapRow.Cells["RerideRecap"].Value;
+										prevRerideInd = (String)prevRecapRow.Cells["RerideRecap"].Value;
 										if ( prevRerideInd.Equals( "N" ) ) {
-											prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
-											curPassSpeedKph = Convert.ToInt16( (String) prevRecapRow.Cells["PassSpeedKphRecap"].Value );
-											curPassLineLengthMeters = Convert.ToDecimal( (String) prevRecapRow.Cells["PassLineLengthRecap"].Value );
+											prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
+											curPassSpeedKph = Convert.ToInt16( (String)prevRecapRow.Cells["PassSpeedKphRecap"].Value );
+											curPassLineLengthMeters = Convert.ToDecimal( (String)prevRecapRow.Cells["PassLineLengthRecap"].Value );
 											DataRow tempPassRow = null;
 											if ( curPassSpeedKph > curMaxSpeedKphDiv
-												&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+												&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 												) {
 												tempPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 											} else {
 												tempPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 											}
-											curPassSpeedNum = (int) tempPassRow["SlalomSpeedNum"];
-											curPassLineNum = (int) tempPassRow["SlalomLineNum"];
+											curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
+											curPassLineNum = (int)tempPassRow["SlalomLineNum"];
 											if ( !( isZbsAllowed ) && ( curPassSpeedKphOrig < SlalomSpeedSelection.MaxSpeedKph
 															|| ( curPassSpeedKphOrig >= SlalomSpeedSelection.MaxSpeedKph && curPassSpeedKph < SlalomSpeedSelection.MaxSpeedKph ) ) ) curPassLineNum = 0;
 											if ( prevPassScore == 6 ) {
@@ -4599,19 +4610,19 @@ namespace WaterskiScoringSystem.Slalom {
 
 							} else {
 								// Calculate score when current pass is not a full pass and the previous pass was a completed and was not a reride
-								curPassSpeedKph = Convert.ToInt16( (String) prevRecapRow.Cells["PassSpeedKphRecap"].Value );
-								curPassLineLengthMeters = Convert.ToDecimal( (String) prevRecapRow.Cells["PassLineLengthRecap"].Value );
+								curPassSpeedKph = Convert.ToInt16( (String)prevRecapRow.Cells["PassSpeedKphRecap"].Value );
+								curPassLineLengthMeters = Convert.ToDecimal( (String)prevRecapRow.Cells["PassLineLengthRecap"].Value );
 								DataRow tempPassRow = null;
 								if ( curPassSpeedKph > curMaxSpeedKphDiv
-									&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+									&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 									) {
 									tempPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 								} else {
 									tempPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 								}
-								curPassSpeedNum = (int) tempPassRow["SlalomSpeedNum"];
+								curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
 								curPassLineNum = (int)tempPassRow["SlalomLineNum"];
-								if ( !(isZbsAllowed) && curPassSpeedKphOrig < SlalomSpeedSelection.MaxSpeedKph ) curPassLineNum = 0;
+								if ( !( isZbsAllowed ) && curPassSpeedKphOrig < SlalomSpeedSelection.MaxSpeedKph ) curPassLineNum = 0;
 								if ( !( isZbsAllowed ) && curPassSpeedKphOrig >= SlalomSpeedSelection.MaxSpeedKph && curPassSpeedKph < SlalomSpeedSelection.MaxSpeedKph ) curPassLineNum = 1;
 								skierScore = inScore + ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 							}
@@ -4631,13 +4642,13 @@ namespace WaterskiScoringSystem.Slalom {
 								skierScore = inScore;
 								int prevRowIdx = myRecapRow.Index - 1;
 								DataGridViewRow prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-								if ( (Decimal) curClassRow["ListCodeNum"] < (Decimal) myClassERow["ListCodeNum"] ) {
+								if ( (Decimal)curClassRow["ListCodeNum"] < (Decimal)myClassERow["ListCodeNum"] ) {
 									//For Class C and below tournaments check to see if this is the first score-able pass 
 									//after being allowed to continued after the first pass due to Rule 10.03C
 									int curTempIdx = prevRowIdx;
 									for ( curTempIdx = prevRowIdx; curTempIdx >= 0; curTempIdx-- ) {
-										if ( ( (String) slalomRecapDataGridView.Rows[curTempIdx].Cells["RerideRecap"].Value ).Equals( "Y" )
-											&& ( (String) prevRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" )
+										if ( ( (String)slalomRecapDataGridView.Rows[curTempIdx].Cells["RerideRecap"].Value ).Equals( "Y" )
+											&& ( (String)prevRecapRow.Cells["TimeInTolRecap"].Value ).Equals( "Y" )
 											) {
 										} else {
 											break;
@@ -4651,21 +4662,21 @@ namespace WaterskiScoringSystem.Slalom {
 								if ( prevRowIdx >= 0 ) {
 									for ( prevRowIdx = myRecapRow.Index - 1; prevRowIdx >= 0; prevRowIdx-- ) {
 										prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-										prevRerideInd = (String) prevRecapRow.Cells["RerideRecap"].Value;
+										prevRerideInd = (String)prevRecapRow.Cells["RerideRecap"].Value;
 										if ( prevRerideInd.Equals( "N" ) ) {
-											prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
-											curPassSpeedKph = Convert.ToInt16( (String) prevRecapRow.Cells["PassSpeedKphRecap"].Value );
-											curPassLineLengthMeters = Convert.ToDecimal( (String) prevRecapRow.Cells["PassLineLengthRecap"].Value );
+											prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
+											curPassSpeedKph = Convert.ToInt16( (String)prevRecapRow.Cells["PassSpeedKphRecap"].Value );
+											curPassLineLengthMeters = Convert.ToDecimal( (String)prevRecapRow.Cells["PassLineLengthRecap"].Value );
 											DataRow tempPassRow = null;
 											if ( curPassSpeedKph > curMaxSpeedKphDiv
-												&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+												&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 												) {
 												tempPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 											} else {
 												tempPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 											}
-											curPassSpeedNum = (int) tempPassRow["SlalomSpeedNum"];
-											curPassLineNum = (int) tempPassRow["SlalomLineNum"];
+											curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
+											curPassLineNum = (int)tempPassRow["SlalomLineNum"];
 											if ( prevPassScore == 6 ) {
 												skierScore = ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 												break;
@@ -4679,21 +4690,21 @@ namespace WaterskiScoringSystem.Slalom {
 							skierScore = 0;
 							for ( int prevRowIdx = myRecapRow.Index - 1; prevRowIdx >= 0; prevRowIdx-- ) {
 								DataGridViewRow prevRecapRow = slalomRecapDataGridView.Rows[prevRowIdx];
-								prevRerideInd = (String) prevRecapRow.Cells["RerideRecap"].Value;
+								prevRerideInd = (String)prevRecapRow.Cells["RerideRecap"].Value;
 								if ( prevRerideInd.Equals( "N" ) ) {
-									prevPassScore = Convert.ToDecimal( (String) prevRecapRow.Cells["ScoreRecap"].Value );
-									curPassSpeedKph = Convert.ToInt16( (String) prevRecapRow.Cells["PassSpeedKphRecap"].Value );
-									curPassLineLengthMeters = Convert.ToDecimal( (String) prevRecapRow.Cells["PassLineLengthRecap"].Value );
+									prevPassScore = Convert.ToDecimal( (String)prevRecapRow.Cells["ScoreRecap"].Value );
+									curPassSpeedKph = Convert.ToInt16( (String)prevRecapRow.Cells["PassSpeedKphRecap"].Value );
+									curPassLineLengthMeters = Convert.ToDecimal( (String)prevRecapRow.Cells["PassLineLengthRecap"].Value );
 									DataRow tempPassRow = null;
 									if ( curPassSpeedKph > curMaxSpeedKphDiv
-										&& (Decimal) curClassRow["ListCodeNum"] > (Decimal) myClassCRow["ListCodeNum"]
+										&& (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"]
 										) {
 										tempPassRow = getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 									} else {
 										tempPassRow = getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 									}
-									curPassSpeedNum = (int) tempPassRow["SlalomSpeedNum"];
-									curPassLineNum = (int) tempPassRow["SlalomLineNum"];
+									curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
+									curPassLineNum = (int)tempPassRow["SlalomLineNum"];
 									if ( prevPassScore == 6 ) {
 										skierScore = ( 6 * ( curPassSpeedNum + curPassLineNum + curPassNumMinSpeed ) );
 										break;
@@ -4709,7 +4720,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 				scoreTextBox.Text = skierScore.ToString();
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = skierScore.ToString( "###.00" );
-				hcapScoreTextBox.Text = ( skierScore + Decimal.Parse( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+				hcapScoreTextBox.Text = ( skierScore + Decimal.Parse( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
 
 				ScoreList[0].Score = Convert.ToDecimal( skierScore.ToString() );
 
@@ -4779,7 +4790,7 @@ namespace WaterskiScoringSystem.Slalom {
 									String curStatus = "TBD";
 									try {
 										setEventRegRowStatus( "4-Done", TourEventRegDataGridView.Rows[myEventRegViewIdx] );
-										String curValue = (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value;
+										String curValue = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Status"].Value;
 										if ( curValue.Equals( "4-Done" ) ) curStatus = "Complete";
 										if ( curValue.Equals( "2-InProg" ) ) curStatus = "InProg";
 										if ( curValue.Equals( "3-Error" ) ) curStatus = "Error";
@@ -4794,8 +4805,8 @@ namespace WaterskiScoringSystem.Slalom {
 									curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
 									curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3}"
 										, mySanctionNum
-										, (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
-										, ( String ) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
+										, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
+										, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
 										, roundSelect.RoundValue ).ToString() );
 									int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 									Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
@@ -4863,32 +4874,32 @@ namespace WaterskiScoringSystem.Slalom {
 			//if ( myScoreRow != null ) {
 			//}
 			try {
-				StringBuilder curSqlStmt = new StringBuilder("");
-				curSqlStmt.Append("Update SlalomScore Set Boat = '" + curBoatCode + "'");
-				curSqlStmt.Append(String.Format("Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3}"
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Update SlalomScore Set Boat = '" + curBoatCode + "'" );
+				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3}"
 					, mySanctionNum
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
-					, roundSelect.RoundValue).ToString());
-				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-				Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+					, roundSelect.RoundValue ).ToString() );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 				//String boatId, String boatManufacturer, String boatModel, Int16 boatYear, String boatColor, String boatComment
-				if (EwscMonitor.EwcsWebLocation.Length > 1) {
+				if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
 					String curBoatModelName = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
-					Int16 curBoatModelYear = Convert.ToInt16((String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["ModelYear"].Value);
+					Int16 curBoatModelYear = Convert.ToInt16( (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["ModelYear"].Value );
 					String curBoatNotes = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatNotes"].Value;
 					String curManufacturer = "Unknown";
-					if (curBoatModelName.Contains("Malibu")) curManufacturer = "Malibu";
-					if (curBoatModelName.Contains("Nautique")) curManufacturer = "Nautique";
-					if (curBoatModelName.Contains("Master")) curManufacturer = "Masctercraft";
-					EwscMonitor.sendBoatData(curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes);
+					if ( curBoatModelName.Contains( "Malibu" ) ) curManufacturer = "Malibu";
+					if ( curBoatModelName.Contains( "Nautique" ) ) curManufacturer = "Nautique";
+					if ( curBoatModelName.Contains( "Master" ) ) curManufacturer = "Masctercraft";
+					EwscMonitor.sendBoatData( curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes );
 				}
 
-			} catch (Exception excp) {
+			} catch ( Exception excp ) {
 				curMsg = ":Error attempting to update boat selection \n" + excp.Message;
-				MessageBox.Show(curMsg);
-				Log.WriteFile(curMethodName + curMsg);
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
 			}
 
 			listApprovedBoatsDataGridView.Visible = false;
@@ -4924,7 +4935,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private String setApprovedBoatSelectEntry( String inBoatCode ) {
 			try {
 				foreach ( DataGridViewRow curBoatRow in listApprovedBoatsDataGridView.Rows ) {
-					if ( ( (String) curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( inBoatCode.ToUpper() ) ) {
+					if ( ( (String)curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( inBoatCode.ToUpper() ) ) {
 						myBoatListIdx = curBoatRow.Index;
 						return buildBoatModelNameDisplay();
 					}
@@ -4936,7 +4947,7 @@ namespace WaterskiScoringSystem.Slalom {
 			} catch {
 				TourBoatTextbox.Text = "";
 				foreach ( DataGridViewRow curBoatRow in listApprovedBoatsDataGridView.Rows ) {
-					if ( ( (String) curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( "UNDEFINED" ) ) {
+					if ( ( (String)curBoatRow.Cells["BoatCode"].Value ).ToUpper().Equals( "UNDEFINED" ) ) {
 						myBoatListIdx = curBoatRow.Index;
 						return buildBoatModelNameDisplay();
 					}
@@ -4949,7 +4960,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private String buildBoatModelNameDisplay() {
 			if ( myBoatListIdx > 0 ) {
-				String curBoatCode = (String) listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatCode"].Value;
+				String curBoatCode = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatCode"].Value;
 				String curBoatModelName = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
 				return curBoatModelName + " (KEY: " + curBoatCode + ")";
 			}
@@ -4981,7 +4992,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 		private DataRow getPassRow( int inSpeedNum, int inLineNum ) {
 			String curPassSearchCmd = "";
-			curPassSearchCmd = "AND SL.SortSeq = " + (inLineNum + 1).ToString() + " AND SS.SortSeq = " + (12 - inSpeedNum + 1).ToString();
+			curPassSearchCmd = "AND SL.SortSeq = " + ( inLineNum + 1 ).ToString() + " AND SS.SortSeq = " + ( 12 - inSpeedNum + 1 ).ToString();
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT " );
@@ -5095,8 +5106,8 @@ namespace WaterskiScoringSystem.Slalom {
 				myPrintDoc = new PrintDocument();
 
 				String curDocName = "";
-				String curAgeGroup = (String) TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
-				String curSkierName = (String) TourEventRegDataGridView.CurrentRow.Cells["SkierName"].Value;
+				String curAgeGroup = (String)TourEventRegDataGridView.CurrentRow.Cells["AgeGroup"].Value;
+				String curSkierName = (String)TourEventRegDataGridView.CurrentRow.Cells["SkierName"].Value;
 				String[] curNameParts = curSkierName.Split( ',' );
 				if ( curNameParts.Length > 1 ) {
 					curDocName = curNameParts[1].Trim() + curNameParts[0].Trim() + "_" + curAgeGroup;
@@ -5259,7 +5270,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( ", (12 - SS.SortSeq + 1) as SlalomSpeedNum, (SL.SortSeq - 1) as SlalomLineNum " );
 			curSqlStmt.Append( "FROM SlalomRecap SR" );
 			curSqlStmt.Append( "  INNER JOIN CodeValueList as SS ON SS.ListName = 'SlalomSpeeds'  AND SS.MaxValue = PassSpeedKph" );
-            curSqlStmt.Append( "  INNER JOIN CodeValueList as SL ON SL.ListName = 'SlalomLines' AND SL.MaxValue = PassLineLength " );
+			curSqlStmt.Append( "  INNER JOIN CodeValueList as SL ON SL.ListName = 'SlalomLines' AND SL.MaxValue = PassLineLength " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' " );
 			curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() );
 			curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, SkierRunNum" );
@@ -5304,7 +5315,7 @@ namespace WaterskiScoringSystem.Slalom {
 					curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
 					curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom' " );
 				} else {
-					curSqlStmt.Append("SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, E.AgeGroup, E.EventGroup, '' as RunOrderGroup,  E.RunOrder, E.TeamCode");
+					curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, E.AgeGroup, E.EventGroup, '' as RunOrderGroup,  E.RunOrder, E.TeamCode" );
 					curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
 					curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
 					curSqlStmt.Append( "FROM EventReg E " );
@@ -5366,7 +5377,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( "ORDER BY SortSeq" );
 			DataTable curMaxSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curMaxSpeedDataTable.Rows.Count > 0 ) {
-				curMaxSpeed = Convert.ToInt16( (Decimal) curMaxSpeedDataTable.Rows[0]["MaxSpeedKph"] );
+				curMaxSpeed = Convert.ToInt16( (Decimal)curMaxSpeedDataTable.Rows[0]["MaxSpeedKph"] );
 			} else {
 				curMaxSpeed = SlalomSpeedSelection.MaxSpeedKph;
 			}
@@ -5393,7 +5404,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( "ORDER BY SortSeq" );
 			DataTable curMaxSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curMaxSpeedDataTable.Rows.Count > 0 ) {
-				curMaxSpeedDiv = Convert.ToInt16( (Decimal) curMaxSpeedDataTable.Rows[0]["MaxSpeedKph"] );
+				curMaxSpeedDiv = Convert.ToInt16( (Decimal)curMaxSpeedDataTable.Rows[0]["MaxSpeedKph"] );
 			} else {
 				curMaxSpeedDiv = getMaxSpeedData( inAgeGroup );
 			}
@@ -5406,7 +5417,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			// Disabling the Alumni functionality at this time 8/8/17.  
 			// Do not want it used inadvertently
-			if ( ( (String) myTourRow["Name"] ).Contains( "##Alumni##" ) ) {
+			if ( ( (String)myTourRow["Name"] ).Contains( "##Alumni##" ) ) {
 				curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue" );
 				curSqlStmt.Append( " FROM CodeValueList" );
 				curSqlStmt.Append( " WHERE ListName = 'AlumniMinSlalom' AND ListCode = '" + inAgeGroup + "'" );
@@ -5429,8 +5440,8 @@ namespace WaterskiScoringSystem.Slalom {
 			return false;
 		}
 
-		private Boolean isRecapRowExist( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum) {
-			StringBuilder curSqlStmt = new StringBuilder( 
+		private Boolean isRecapRowExist( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
+			StringBuilder curSqlStmt = new StringBuilder(
 				String.Format( "Select PK From SlalomRecap Where SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} AND SkierRunNum = {4}"
 				, curSanctionId, curMemberId, curAgeGroup, curRound, curSkierRunNum ).ToString() );
 			DataTable curDataTAble = DataAccess.getDataTable( curSqlStmt.ToString() );
@@ -5443,7 +5454,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Slalom' AND Round = " + inRound );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( (int) curDataTable.Rows[0]["SkierCount"] > 0 ) {
+			if ( (int)curDataTable.Rows[0]["SkierCount"] > 0 ) {
 				return true;
 			} else {
 				return false;
@@ -5500,7 +5511,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private DataRow getClassRowCurrentSkier() {
-			return getClassRow( (String) TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value );
+			return getClassRow( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value );
 		}
 		private DataRow getClassRow( String inClass ) {
 			DataRow[] curRowsFound = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + inClass + "'" );
@@ -5514,16 +5525,16 @@ namespace WaterskiScoringSystem.Slalom {
 		private bool isEntryGatesGood() {
 			int curGateEntryValue = 0;
 			if ( myNumJudges > 1 ) {
-				if ( (Boolean) myRecapRow.Cells["GateEntry1Recap"].Value ) curGateEntryValue++;
-				if ( (Boolean) myRecapRow.Cells["GateEntry2Recap"].Value ) curGateEntryValue++;
-				if ( (Boolean) myRecapRow.Cells["GateEntry3Recap"].Value ) curGateEntryValue++;
+				if ( (Boolean)myRecapRow.Cells["GateEntry1Recap"].Value ) curGateEntryValue++;
+				if ( (Boolean)myRecapRow.Cells["GateEntry2Recap"].Value ) curGateEntryValue++;
+				if ( (Boolean)myRecapRow.Cells["GateEntry3Recap"].Value ) curGateEntryValue++;
 				if ( curGateEntryValue > 1 ) {
 					return true;
 				} else {
 					return false;
 				}
 			} else {
-				if ( (Boolean) myRecapRow.Cells["GateEntry1Recap"].Value ) curGateEntryValue++;
+				if ( (Boolean)myRecapRow.Cells["GateEntry1Recap"].Value ) curGateEntryValue++;
 				if ( curGateEntryValue > 0 ) {
 					return true;
 				} else {
@@ -5538,7 +5549,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			int curGateExitValue = 0;
 			try {
-				curGateValue = (Boolean) inRow["ExitGate1"];
+				curGateValue = (Boolean)inRow["ExitGate1"];
 			} catch ( Exception ex ) {
 				curGateValue = false;
 				MessageBox.Show( "isExitGatesGood Exception:" + ex.Message );
@@ -5547,7 +5558,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			if ( myNumJudges > 1 ) {
 				try {
-					curGateValue = (Boolean) inRow["ExitGate2"];
+					curGateValue = (Boolean)inRow["ExitGate2"];
 				} catch {
 					curGateValue = false;
 				}
@@ -5555,7 +5566,7 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 			if ( myNumJudges > 2 ) {
 				try {
-					curGateValue = (Boolean) inRow["ExitGate3"];
+					curGateValue = (Boolean)inRow["ExitGate3"];
 				} catch {
 					curGateValue = false;
 				}
@@ -5579,12 +5590,12 @@ namespace WaterskiScoringSystem.Slalom {
 		private bool isExitGatesGood() {
 			Boolean curGatesGood = true;
 			int curGateExitValue = 0;
-			if ( !( (Boolean) myRecapRow.Cells["GateExit1Recap"].Value ) ) curGateExitValue++;
+			if ( !( (Boolean)myRecapRow.Cells["GateExit1Recap"].Value ) ) curGateExitValue++;
 			if ( myNumJudges > 1 ) {
-				if ( !( (Boolean) myRecapRow.Cells["GateExit2Recap"].Value ) ) curGateExitValue++;
+				if ( !( (Boolean)myRecapRow.Cells["GateExit2Recap"].Value ) ) curGateExitValue++;
 			}
 			if ( myNumJudges > 2 ) {
-				if ( !( (Boolean) myRecapRow.Cells["GateExit3Recap"].Value ) ) curGateExitValue++;
+				if ( !( (Boolean)myRecapRow.Cells["GateExit3Recap"].Value ) ) curGateExitValue++;
 			}
 			if ( myNumJudges > 2 ) {
 				if ( curGateExitValue < 2 ) {
@@ -5616,12 +5627,11 @@ namespace WaterskiScoringSystem.Slalom {
 			return curReturnValue;
 		}
 
-		private void TourBoatLabel_Click( object sender, EventArgs e ) {
-
-		}
-
-		private void TourBoatTextbox_TextChanged( object sender, EventArgs e ) {
-
+		private void driverDropdown_SelectedValueChanged( object sender, EventArgs e ) {
+			if ( ( (ComboBox)sender ).Items.Count == 0 ) return;
+			if ( ((ComboBox)sender ).SelectedValue == null ) return;
+			String curSelectedValue = ( (ComboBox)sender ).SelectedValue.ToString();
+			if ( curSelectedValue.Length == 0 ) return;
 		}
 
 	}

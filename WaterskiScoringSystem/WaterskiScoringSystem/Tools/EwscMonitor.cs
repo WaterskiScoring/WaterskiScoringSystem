@@ -122,7 +122,8 @@ namespace WaterskiScoringSystem.Tools {
 		private static void startClientListeners() {
 			socketClient.On("connect_confirm", (data) => {
 				myLastConnectResponse = data.ToString();
-				showMsg("connect_confirm", String.Format("connect_confirm: {0}", data));
+				Log.WriteFile( String.Format( "connect_confirm {0}", myLastConnectResponse ) );
+				showMsg( "connect_confirm", String.Format("connect_confirm: {0}", data));
 			});
 
 			socketClient.On("boat_times", (data) => {
@@ -144,6 +145,7 @@ namespace WaterskiScoringSystem.Tools {
 			socketClient.On("jumpmeasurement_score", (data) => {
 				saveJumpMeasurement(data.ToString());
 			});
+			
 		}
 
 		private static void saveBoatTimes( String msg ) {
@@ -581,8 +583,9 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 					removeEwscMsg( (int)curDataRow["PK"]);
 					return 1;
 				}
-				socketClient.Emit((String)curDataRow["MsgType"], (String)curDataRow["MsgData"]);
-				removeEwscMsg((int)curDataRow["PK"]);
+
+				socketClient.Emit( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
+				removeEwscMsg( (int)curDataRow["PK"]);
 			}
 			return 0;
 		}
@@ -606,7 +609,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 		}
 
 		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div
-			, String round, Int16 passNumber, Int16 speed, String rope, String split) {
+			, String round, Int16 passNumber, Int16 speed, String rope, String split, String driverMemberId ) {
 			int curRound = int.Parse( round );
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
@@ -622,10 +625,15 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 					, { "split", split }
 				};
 
-			DataTable curDataTable = getDriverAssignment(athleteEvent, eventGroup, round);
-			if ( curDataTable.Rows.Count > 0 ) {
-				DataRow curDataRow = curDataTable.Rows[(curDataTable.Rows.Count - 1)];
-				sendMsg.Add("driver", buildOfficialEntry(curDataRow));
+			if ( driverMemberId != null && driverMemberId.Length > 0 ) {
+				DataTable curDataTable = getDriverAssignment( driverMemberId );
+				if ( curDataTable.Rows.Count > 0 ) {
+					DataRow curDataRow = curDataTable.Rows[( curDataTable.Rows.Count - 1 )];
+					sendMsg.Add( "driver", buildOfficialEntry( curDataRow ) );
+				} else {
+					sendMsg.Add( "driver", buildOfficialEntry( null ) );
+				}
+
 			} else {
 				sendMsg.Add( "driver", buildOfficialEntry( null ) );
 			}
@@ -778,7 +786,6 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 				}
 			}
 			if (officialsAvailable) {
-				//String msg = JsonConvert.SerializeObject(curEventOfficials);
 				addEwscMsg("officials_data", JsonConvert.SerializeObject(curEventOfficials));
 				return true;
 			}
@@ -953,6 +960,16 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			curSqlStmt.Append("ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName");
 			return DataAccess.getDataTable(curSqlStmt.ToString());
 		}
+		private static DataTable getDriverAssignment( String inMemberId ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select Distinct T.SanctionId, T.MemberId, T.SkierName AS MemberName, T.State, X.Federation as TourFederation " );
+			curSqlStmt.Append( "From TourReg T" );
+			curSqlStmt.Append( "     INNER JOIN Tournament AS X on X.SanctionId = T.SanctionId " );
+			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "  AND T.MemberId = '" + inMemberId + "' " );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
 
 		private static void getSanctionNum() {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;

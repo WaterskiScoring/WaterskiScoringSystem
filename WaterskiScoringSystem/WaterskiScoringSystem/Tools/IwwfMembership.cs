@@ -34,7 +34,9 @@ namespace WaterskiScoringSystem.Tools {
 		private static String IwwfWebLocation = IwwfWebLocationStage;
 
 		private static String authApiKey = "IWWF";
-		private static String authApiValue = "cf1vfhl587mtny2eaeri6wfujusrfrnb";
+		private static String authApiValue = "cf1vfhl587mtny2eaeri6wfujusrfrnb"; // Staging
+		//private static String authApiValue = "9g2yh2wb2hhs4vc4yzjb1n4tsibs2wfq"; // prod
+		
 
 		public static Boolean validateIwwfMembership( String inMemberId, String inTourDate ) {
 			return true;

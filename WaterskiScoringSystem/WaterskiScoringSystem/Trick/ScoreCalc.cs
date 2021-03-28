@@ -34,7 +34,7 @@ namespace WaterskiScoringSystem.Trick {
         private DateTime myEventDelayStartTime;
 
         private String myTitle = "";
-        private String myTourRuleCode = ""; 
+        private String myTourRules = ""; 
         private String myOrigSkisValue = "";
         private String myActiveTrickPass = "";
         private String myOrigCodeValue = "";
@@ -42,7 +42,6 @@ namespace WaterskiScoringSystem.Trick {
         private String mySanctionNum;
         private String mySortCommand = "";
         private String myFilterCmd = "";
-        private String myTourRules = "";
         private String myTourClass = "";
 		private String myPrevEventGroup = "";
 
@@ -54,7 +53,8 @@ namespace WaterskiScoringSystem.Trick {
 
         private DataRow myTourRow;
         private DataRow myScoreRow;
-        private DataRow myClassCRow;
+		private DataRow myClassTourEventScoreRow;
+		private DataRow myClassCRow;
         private DataRow myClassERow;
 
         private TourProperties myTourProperties;
@@ -145,106 +145,99 @@ namespace WaterskiScoringSystem.Trick {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             Cursor.Current = Cursors.WaitCursor;
 
-            if (mySanctionNum == null) {
-                MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
-            } else {
-                if (mySanctionNum.Length < 6) {
-                    MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
-                } else {
-                    myTitle = this.Text;
+			if ( mySanctionNum == null ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+			if ( mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+			
+			myTitle = this.Text;
 
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData(mySanctionNum);
-                    if ( curTourDataTable.Rows.Count > 0 ) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        myTourRules = (String)myTourRow["Rules"];
-                        if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                            TeamCode.Visible = true;
-                        } else {
-                            TeamCode.Visible = false;
-                        }
-                        if ( (byte)myTourRow["TrickRounds"] > 0 ) {
+			//Retrieve selected tournament attributes
+			DataTable curTourDataTable = getTourData( mySanctionNum );
+			if ( curTourDataTable.Rows.Count <= 0 ) {
+				MessageBox.Show( "An active tournament is not properly defined" );
+				return;
+			}
 
-                            EventRunInfoLabel.Text = "   Event Start:\n" + "   Event Delay:\n" + "Skiers, Passes:";
-                            EventRunInfoData.Text = "";
-                            EventRunPerfLabel.Text = "Event Duration:\n" + "Mins Per Skier:\n" + " Mins Per Pass:";
-                            EventRunPerfData.Text = "";
+			myTourRow = curTourDataTable.Rows[0];
+			myTourRules = (String)myTourRow["Rules"];
+			myTourClass = myTourRow["Class"].ToString().ToUpper();
+			myClassTourEventScoreRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + myTourRow["EventScoreClass"].ToString().ToUpper() + "'" )[0];
+			myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+			myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
 
-                            //Instantiate object for checking for records
-                            myCheckEventRecord = new CheckEventRecord(myTourRow);
+			myCheckOfficials = new CheckOfficials();
 
-                            //Retrieve trick list
-                            myTourClass = myTourRow["Class"].ToString().ToUpper();
-                            myTourRuleCode = (String)myTourRow["Rules"];
-                            getTrickList( myTourRuleCode );
-                            if ( myTrickListDataTable.Rows.Count == 0 ) {
-                                getTrickList( "awsa" );
-                            }
+			if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+				TeamCode.Visible = true;
+			} else {
+				TeamCode.Visible = false;
+			}
+			if ( (byte)myTourRow["TrickRounds"] <= 0 ) {
+				MessageBox.Show( "The trick event is not defined for the active tournament" );
+				return;
+			}
 
-                            //Load skier classes to drop down list
-                            mySkierClassList = new ListSkierClass();
-                            mySkierClassList.ListSkierClassLoad();
-                            scoreEventClass.DataSource = mySkierClassList.DropdownList;
-                            scoreEventClass.DisplayMember = "ItemName";
-                            scoreEventClass.ValueMember = "ItemValue";
+			EventRunInfoLabel.Text = "   Event Start:\n" + "   Event Delay:\n" + "Skiers, Passes:";
+			EventRunInfoData.Text = "";
+			EventRunPerfLabel.Text = "Event Duration:\n" + "Mins Per Skier:\n" + " Mins Per Pass:";
+			EventRunPerfData.Text = "";
 
-                            myClassCRow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'C'")[0];
-                            myClassERow = mySkierClassList.SkierClassDataTable.Select("ListCode = 'E'")[0];
+			//Instantiate object for checking for records
+			myCheckEventRecord = new CheckEventRecord(myTourRow);
 
-							DataRow curClassRow = getClassRow( myTourRow["EventScoreClass"].ToString().ToUpper() );
-							if ( (Decimal) curClassRow["ListCodeNum"] >= (Decimal) myClassERow["ListCodeNum"] ) {
-								myCheckOfficials = new CheckOfficials();
-							} else {
-								myCheckOfficials = null;
-							}
+			//Retrieve trick list
+			getTrickList( myTourRules );
+			if ( myTrickListDataTable.Rows.Count == 0 ) getTrickList( "awsa" );
 
-							myTrickValidation.TourRules = myTourRules;
-                            myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
-                            myTrickValidation.TrickListDataTable = myTrickListDataTable;
+			//Load skier classes to drop down list
+			mySkierClassList = new ListSkierClass();
+			mySkierClassList.ListSkierClassLoad();
+			scoreEventClass.DataSource = mySkierClassList.DropdownList;
+			scoreEventClass.DisplayMember = "ItemName";
+			scoreEventClass.ValueMember = "ItemValue";
 
-                            //Load round selection list based on number of rounds specified for the tournament
-                            roundSelect.SelectList_Load( myTourRow["TrickRounds"].ToString(), roundSelect_Click );
-                            roundActiveSelect.SelectList_LoadHorztl( myTourRow["TrickRounds"].ToString(), roundActiveSelect_Click );
-                            roundActiveSelect.RoundValue = "1";
-                            roundSelect.RoundValue = "1";
+			myTrickValidation.TourRules = myTourRules;
+			myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
+			myTrickValidation.TrickListDataTable = myTrickListDataTable;
 
-                            //Determine required number of judges for event
-                            StringBuilder curSqlStmt = new StringBuilder( "" );
-                            curSqlStmt.Append( "Select ListCode, CodeValue, MaxValue, MinValue FROM CodeValueList ");
-                            curSqlStmt.Append( "Where ListName = 'TrickJudgesNum' And ListCode = '" + myTourRow["Class"].ToString() + "' ORDER BY SortSeq" );
-                            DataTable curNumJudgesDataTable = getData( curSqlStmt.ToString() );
-                            if (curNumJudgesDataTable.Rows.Count > 0) {
-                                myNumJudges = Convert.ToInt16( (Decimal)curNumJudgesDataTable.Rows[0]["MaxValue"] );
-                            } else {
-                                myNumJudges = 1;
-                            }
+			//Load round selection list based on number of rounds specified for the tournament
+			roundSelect.SelectList_Load( myTourRow["TrickRounds"].ToString(), roundSelect_Click );
+			roundActiveSelect.SelectList_LoadHorztl( myTourRow["TrickRounds"].ToString(), roundActiveSelect_Click );
+			roundActiveSelect.RoundValue = "1";
+			roundSelect.RoundValue = "1";
 
-                            //Retrieve list of approved tournament boats
-                            getApprovedTowboats();
-                            listApprovedBoatsDataGridView.Visible = false;
-							approvedBoatSelectGroupBox.Visible = false;
+			//Determine required number of judges for event
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select ListCode, CodeValue, MaxValue, MinValue FROM CodeValueList " );
+			curSqlStmt.Append( "Where ListName = 'TrickJudgesNum' And ListCode = '" + myTourRow["Class"].ToString() + "' ORDER BY SortSeq" );
+			DataTable curNumJudgesDataTable = getData( curSqlStmt.ToString() );
+			if ( curNumJudgesDataTable.Rows.Count > 0 ) {
+				myNumJudges = Convert.ToInt16( (Decimal)curNumJudgesDataTable.Rows[0]["MaxValue"] );
+			} else {
+				myNumJudges = 1;
+			}
 
-                            //Retrieve and load tournament event entries
-                            loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
+			//Retrieve list of approved tournament boats
+			getApprovedTowboats();
+			listApprovedBoatsDataGridView.Visible = false;
+			approvedBoatSelectGroupBox.Visible = false;
 
-                            if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                                LiveWebLabel.Visible = true;
-                            } else {
-                                LiveWebLabel.Visible = false;
-                            }
-                        } else {
-                            MessageBox.Show( "The trick event is not defined for the active tournament" );
-                        }
-                    } else {
-                        MessageBox.Show( "An active tournament is not properly defined" );
-                    }
+			//Retrieve and load tournament event entries
+			loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
 
-                }
-            }
+			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+				LiveWebLabel.Visible = true;
+			} else {
+				LiveWebLabel.Visible = false;
+			}
+		}
 
-        }
-
-        private void ScoreCalc_FormClosed(object sender, FormClosedEventArgs e) {
+		private void ScoreCalc_FormClosed(object sender, FormClosedEventArgs e) {
             if (this.WindowState == FormWindowState.Normal) {
                 Properties.Settings.Default.TrickCalc_Width = this.Size.Width;
                 Properties.Settings.Default.TrickCalc_Height = this.Size.Height;
@@ -350,7 +343,7 @@ namespace WaterskiScoringSystem.Trick {
                                         setEventRegRowStatus("2-InProg");
                                     }
                                 } else {
-                                    if ( myTourRuleCode.ToLower().Equals( "ncwsa" ) ) {
+                                    if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
                                         setEventRegRowStatus( "4-Done" );
                                     } else if ( Pass2DataGridView.Rows.Count > 0 ) {
 										if ( isObjectEmpty( Pass2DataGridView.Rows[0].Cells["Pass2Code"].Value ) ) {
@@ -363,7 +356,7 @@ namespace WaterskiScoringSystem.Trick {
 									}
 								}
 							} else {
-                                if ( myTourRuleCode.ToLower().Equals( "ncwsa" ) ) {
+                                if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
                                     setEventRegRowStatus( "1-TBD" );
                                 } else if ( Pass2DataGridView.Rows.Count > 0 ) {
 									if ( isObjectEmpty( Pass2DataGridView.Rows[0].Cells["Pass2Code"].Value ) ) {
@@ -2296,7 +2289,7 @@ namespace WaterskiScoringSystem.Trick {
             }
 
             //Populate second pass for current skier
-            if ( myTourRuleCode.ToLower().Equals( "ncwsa" )
+            if ( myTourRules.ToLower().Equals( "ncwsa" )
                 && ( curAgeGroup.ToLower().Equals( "cm" ) 
                 || curAgeGroup.ToLower().Equals( "cw" )
                 || curAgeGroup.ToLower().Equals( "bm" )
@@ -2826,22 +2819,23 @@ namespace WaterskiScoringSystem.Trick {
                                     isPassEnded = true;
                                 }
                             }
-							if ( myCheckOfficials != null ) {
+
+							String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
+							if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
+								myCheckOfficials.readOfficialAssignments( mySanctionNum, "Trick", curEventGroup, roundSelect.RoundValue );
+
 								/*
 								 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 								 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 								 */
-								String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
-								if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-									if ( !( myCheckOfficials.checkOfficialAssignments( mySanctionNum, "Trick", curEventGroup, roundSelect.RoundValue ) ) ) {
-										MessageBox.Show( "No officials have been assigned for this event group and round "
-											+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
-									}
-
-									myPrevEventGroup = curEventGroup;
+								if ( (Decimal)myClassTourEventScoreRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
+									MessageBox.Show( "No officials have been assigned for this event group and round "
+										+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
 								}
 							}
+							myPrevEventGroup = curEventGroup;
 						}
+						
 						if ( curPassFall ) {
                             MessageBox.Show( "No tricks allowed after a fall or trick marked as end" );
                             e.Cancel = false;

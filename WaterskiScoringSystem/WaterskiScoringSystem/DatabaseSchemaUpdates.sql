@@ -921,7 +921,8 @@ ALTER TABLE [EwscListenMsg] ADD PRIMARY KEY ([PK]);
 ## v21.26
 ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(64);
 
-## v21.28
+
+## v22.09
 ALTER TABLE [SlalomScore] ADD COLUMN InsertDate datetime;
 ALTER TABLE [SlalomRecap] ADD COLUMN InsertDate datetime;
 ALTER TABLE [JumpScore] ADD COLUMN InsertDate datetime;
@@ -933,8 +934,6 @@ Update [SlalomRecap] Set InsertDate = LastUpdateDate Where InsertDate is null;
 Update [JumpScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
 Update [JumpRecap] Set InsertDate = LastUpdateDate Where InsertDate is null;
 Update [TrickScore] Set InsertDate = LastUpdateDate Where InsertDate is null;
-
-## v22.09
 
 DROP TABLE [BoatTime];
 DROP TABLE [BoatPath];

@@ -901,7 +901,7 @@ namespace WaterskiScoringSystem.Tools {
                             curXml.Append( "<Row colCount=\"" + curDataTable.Columns.Count + "\">" );
                             foreach (DataColumn curColumn in curDataTable.Columns) {
                                 if (!( curColumn.ColumnName.ToUpper().Equals( "PK" ) )) {
-                                    if (curColumn.ColumnName.ToLower().Equals( "lastupdatedate" )) {
+                                    if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
                                         curValue = ( (DateTime)curRow[curColumn.ColumnName] ).ToString( "yyyy-MM-dd HH:mm:ss" );
                                         curValue = encodeXmlValue( curValue );
                                         //curValue = stringReplace( curValue, singleQuoteDelim, "''" );
