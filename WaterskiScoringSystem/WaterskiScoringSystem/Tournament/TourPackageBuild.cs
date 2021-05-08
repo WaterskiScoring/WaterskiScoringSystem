@@ -383,14 +383,14 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void RunAllButton_Click(object sender, EventArgs e) {
             PerfDataFileButton_Click( null, null );
-            exportBoatTimesButton_Click( null, null );
             ScoreBookButton_Click( null, null );
             WebOutputButton_Click( null, null );
             ChiefJudgeReportButton_Click( null, null );
             OfficialCreditFileButton_Click( null, null );
             SafetyDirReportButton_Click( null, null );
             BoatUseReportButton_Click( null, null );
-            TourPackageButton_Click( null, null );
+			exportBoatTimesButton_Click( null, null );
+			TourPackageButton_Click( null, null );
         }
 
         private void PerfDataFileButton_Click( object sender, EventArgs e ) {
@@ -611,217 +611,17 @@ namespace WaterskiScoringSystem.Tournament {
         private void exportBoatTimesButton_Click( object sender, EventArgs e ) {
             String mySanctionNum = Properties.Settings.Default.AppSanctionNum.Trim();
 
-            ExportBoatTimeReport myExportDataReport = new ExportBoatTimeReport();
-            myExportDataReport.exportBoatTimes( mySanctionNum );
+			BoatPathExport myExportDataReport = new BoatPathExport();
+			if ( (Byte)this.myTourRow["SlalomRounds"] > 0 ) {
+				myExportDataReport.exportReport( mySanctionNum, "Slalom" );
+			}
 
-            ExportBoatTimesJump myExportDataJump = new ExportBoatTimesJump();
-            myExportDataJump.exportBoatTimes( mySanctionNum );
+			if ( (Byte)this.myTourRow["JumpRounds"] > 0 ) {
+				myExportDataReport.exportReport( mySanctionNum, "Jump" );
+			}
+		}
 
-            ExportBoatTimesSlalom myExportDataSlalom = new ExportBoatTimesSlalom();
-            myExportDataSlalom.exportBoatTimes( mySanctionNum );
-        }
-
-        private void UpdateNops_Click( object sender, EventArgs e ) {
-            //Update NOPS values due to unavailable 2015 NOPS tables
-            //Prior to version 1.0.1.82
-            String curMsg = "This process will re-calculate all NOPS values for the current tournament "
-                + "based on the 2016 NOPS factors that were not available at the start of the 2016 ski season."
-                + "\n\nThis should include any 2016 tournaments scored before verion 3.0.0.2 was available and used."
-                + "\n\nClick OK to begin the update process";
-            DialogResult msgResp = MessageBox.Show( curMsg, "Updater Notice",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1 );
-            if (msgResp == DialogResult.OK) {
-                if (execUpdateNops()) {
-                    curMsg = "Click OK to rebuild the Scorebook, Web Scorebook, Skier Performance file, and update the tournament package ZIP file";
-                    msgResp = MessageBox.Show( curMsg, "Update Notice",
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1 );
-                    if (msgResp == DialogResult.OK) {
-                        ScoreBookButton_Click( null, null );
-                        WebOutputButton_Click( null, null );
-                        PerfDataFileButton_Click( null, null );
-                        TourPackageButton_Click( null, null );
-                    }
-                } else {
-                    MessageBox.Show( "\nReport updating has not been performed because issues have been detected with the NOPS update"
-                        + "\nPlease correct the errors shown and then retry" );
-                }
-            }
-        }
-
-        private bool execUpdateAlumniSlalomScores() {
-            bool curReturnValue = true;
-
-            SqlCeCommand sqlStmt = null;
-            SqlCeConnection myDbConn = null;
-            DataTable myDataTable = new DataTable();
-            StringBuilder curSqlStmt = new StringBuilder();
-            int rowsProc = 0;
-
-            try {
-                myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                myDbConn.Open();
-                sqlStmt = myDbConn.CreateCommand();
-                sqlStmt.CommandText = "Update SlalomScore "
-                    + "SET Score = ( ( FinalPassNum - 1 ) * 6 ) + FinalPassScore "
-                    + "Where SanctionId = '" + mySanctionNum + "' "
-                    + "And Score > 6";
-                rowsProc = sqlStmt.ExecuteNonQuery();
-                MessageBox.Show( String.Format("{0} slalom scores updated ", rowsProc) );
-
-            } catch ( Exception excp ) {
-                String curMsg = ":Error attempting to update slalom scores for alumni tournament \n" + excp.Message;
-                MessageBox.Show(curMsg);
-                curReturnValue = false;
-            } finally {
-                myDbConn.Close();
-            }
-            return curReturnValue;
-        }
-
-        private bool execUpdateNops() {
-            //Update NOPS values due to unavailable 2014 NOPS tables
-            //Prior to version 1.0.1.82
-            bool curReturnValue = true;
-
-            SqlCeCommand sqlStmt = null;
-            SqlCeConnection myDbConn = null;
-            DataTable myDataTable = new DataTable();
-            StringBuilder curSqlStmt = new StringBuilder();
-            List<Common.ScoreEntry> curScoreList = new List<Common.ScoreEntry>();
-            int rowsProc, rowUpdateCount = 0;
-
-            try {
-                myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                myDbConn.Open();
-                sqlStmt = myDbConn.CreateCommand();
-
-                myNopsCalc = CalcNops.Instance;
-                myNopsCalc.LoadDataForTour();
-                curScoreList.Add( new Common.ScoreEntry( "Trick", 0, "", 0 ) );
-
-                curSqlStmt = new StringBuilder();
-                curSqlStmt.Append( "Select PK, SanctionId, MemberId, AgeGroup, Score, Round " );
-                curSqlStmt.Append( "From TrickScore " );
-                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                curSqlStmt.Append( "Order by AgeGroup, MemberId, Round " );
-                myDataTable = getData( curSqlStmt.ToString() );
-
-                rowUpdateCount = 0;
-                foreach (DataRow curRow in myDataTable.Rows) {
-                    try {
-                        curScoreList[0].Nops = 0;
-                        curScoreList[0].Score = Convert.ToDecimal( (Int16)curRow["Score"] );
-                        myNopsCalc.calcNops( (String)curRow["AgeGroup"], curScoreList );
-
-                        sqlStmt.CommandText = "Update TrickScore "
-                            + "SET NopsScore = " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " "
-                            + "WHERE PK = " + (Int64)curRow["PK"]
-                            + "  And NopsScore != " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " ";
-                        rowsProc = sqlStmt.ExecuteNonQuery();
-                        rowUpdateCount += rowsProc;
-                        if (rowsProc == 0) {
-                            //MessageBox.Show( "Record for " + (String)curRow["MemberId"] + " not updated \nCalculated value is " + Math.Round( curScoreList[0].Nops, 1 ).ToString() );
-                        }
-                    } catch (Exception ex) {
-                        String ExcpMsg = ex.Message;
-                        if (sqlStmt != null) {
-                            ExcpMsg += "\n" + sqlStmt.CommandText;
-                        }
-                        MessageBox.Show( "Error updating trick NOPS " + "\n\nError: " + ExcpMsg );
-                        curReturnValue = false;
-                    }
-                }
-                MessageBox.Show( myDataTable.Rows.Count.ToString() + " Trick scores read"
-                    + "\nTrick NOPS scores updated = " + rowUpdateCount.ToString()
-                    + "\nNote: Records with no change in score were bypassed" );
-
-                curScoreList[0].Event = "Jump";
-                curSqlStmt = new StringBuilder();
-                curSqlStmt.Append( "Select PK, SanctionId, MemberId, AgeGroup, ScoreFeet, Round " );
-                curSqlStmt.Append( "From JumpScore " );
-                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                curSqlStmt.Append( "Order by AgeGroup, MemberId, Round " );
-                myDataTable = getData( curSqlStmt.ToString() );
-
-                rowUpdateCount = 0;
-                foreach (DataRow curRow in myDataTable.Rows) {
-                    try {
-                        curScoreList[0].Nops = 0;
-                        curScoreList[0].Score = (Decimal)curRow["ScoreFeet"];
-                        myNopsCalc.calcNops( (String)curRow["AgeGroup"], curScoreList );
-
-                        sqlStmt.CommandText = "Update JumpScore "
-                            + "SET NopsScore = " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " "
-                            + "WHERE PK = " + (Int64)curRow["PK"]
-                            + "  And NopsScore != " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " ";
-                        rowsProc = sqlStmt.ExecuteNonQuery();
-                        rowUpdateCount += rowsProc;
-                        if (rowsProc == 0) {
-                            //MessageBox.Show( "Record for " + (String)curRow["MemberId"] + " not updated \nCalculated value is " + Math.Round( curScoreList[0].Nops, 1 ).ToString() );
-                        }
-                    } catch (Exception ex) {
-                        String ExcpMsg = ex.Message;
-                        if (sqlStmt != null) {
-                            ExcpMsg += "\n" + sqlStmt.CommandText;
-                        }
-                        MessageBox.Show( "Error updating jump NOPS \n\nError: " + ExcpMsg );
-                        curReturnValue = false;
-                    }
-                }
-                MessageBox.Show( myDataTable.Rows.Count.ToString() + " Jump scores read"
-                    + "\nJump NOPS scores updated = " + rowUpdateCount.ToString()
-                    + "\nNote: Records with no change in score were bypassed" );
-
-                curScoreList[0].Event = "Slalom";
-                curSqlStmt = new StringBuilder();
-                curSqlStmt.Append( "Select PK, SanctionId, MemberId, AgeGroup, Score, Round " );
-                curSqlStmt.Append( "From SlalomScore " );
-                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                curSqlStmt.Append( "Order by AgeGroup, MemberId, Round " );
-                myDataTable = getData( curSqlStmt.ToString() );
-
-                rowUpdateCount = 0;
-                foreach (DataRow curRow in myDataTable.Rows) {
-                    try {
-                        curScoreList[0].Nops = 0;
-                        curScoreList[0].Score = (Decimal)curRow["Score"];
-                        myNopsCalc.calcNops( (String)curRow["AgeGroup"], curScoreList );
-
-                        sqlStmt.CommandText = "Update SlalomScore "
-                            + "SET NopsScore = " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " "
-                            + "WHERE PK = " + (Int64)curRow["PK"]
-                            + "  And NopsScore != " + Math.Round( curScoreList[0].Nops, 1 ).ToString() + " ";
-                        rowsProc = sqlStmt.ExecuteNonQuery();
-                        rowUpdateCount += rowsProc;
-                        if (rowsProc == 0) {
-                            //MessageBox.Show( "Record for " + (String)curRow["MemberId"] + " not updated \nCalculated value is " + Math.Round( curScoreList[0].Nops, 1 ).ToString() );
-                        }
-                    } catch (Exception ex) {
-                        String ExcpMsg = ex.Message;
-                        if (sqlStmt != null) {
-                            ExcpMsg += "\n" + sqlStmt.CommandText;
-                        }
-                        MessageBox.Show( "Error updating Slalom NOPS \n\nError: " + ExcpMsg );
-                        curReturnValue = false;
-                    }
-                }
-                MessageBox.Show( myDataTable.Rows.Count.ToString() + " Slalom scores read"
-                    + "\nSlalom NOPS scores updated = " + rowUpdateCount.ToString()
-                    + "\nNote: Records with no change in score were bypassed" );
-
-            } catch (Exception excp) {
-                String curMsg = ":Error attempting to update 2015 Nops values \n" + excp.Message;
-                MessageBox.Show( curMsg );
-                curReturnValue = false;
-            } finally {
-                myDbConn.Close();
-            }
-            return curReturnValue;
-        }
-
-        public ArrayList getEndOfTourReportList(String inSanctionNum, String inTourClass) {
+		public ArrayList getEndOfTourReportList(String inSanctionNum, String inTourClass) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT ListCode, SortSeq, CodeValue, CodeDesc" );
             curSqlStmt.Append( " FROM CodeValueList" );

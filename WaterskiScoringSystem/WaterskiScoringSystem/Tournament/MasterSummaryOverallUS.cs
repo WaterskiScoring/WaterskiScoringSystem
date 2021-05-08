@@ -201,20 +201,6 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 myTourProperties.MasterSummaryOverallFilter = curFilterSetting;
 
-                /*
-                if ( EventGroup.Visible ) {
-                    SlalomLabel.Location = new Point( 208, SlalomLabel.Location.Y );
-                    TrickLabel.Location = new Point( 573, SlalomLabel.Location.Y );
-                    JumpLabel.Location = new Point( 830, SlalomLabel.Location.Y );
-                    OverallLabel.Location = new Point( 1062, SlalomLabel.Location.Y );
-                } else {
-                    SlalomLabel.Location = new Point( 168, SlalomLabel.Location.Y );
-                    TrickLabel.Location = new Point( 533, SlalomLabel.Location.Y );
-                    JumpLabel.Location = new Point( 790, SlalomLabel.Location.Y );
-                    OverallLabel.Location = new Point( 1022, SlalomLabel.Location.Y );
-                }
-                 */
-
                 String curGroupValue = "";
                 try {
                     curGroupValue = EventGroupList.SelectedItem.ToString();

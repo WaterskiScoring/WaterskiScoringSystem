@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.8")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.6 3/26/2021")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.1.8 5/7/2021")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2409,6 +2409,114 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["BoatPathDetail_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathImportReport_Width {
+            get {
+                return ((int)(this["BoatPathImportReport_Width"]));
+            }
+            set {
+                this["BoatPathImportReport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathImportReport_Height {
+            get {
+                return ((int)(this["BoatPathImportReport_Height"]));
+            }
+            set {
+                this["BoatPathImportReport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point BoatPathImportReport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["BoatPathImportReport_Location"]));
+            }
+            set {
+                this["BoatPathImportReport_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatTimeImportReport_Width {
+            get {
+                return ((int)(this["BoatTimeImportReport_Width"]));
+            }
+            set {
+                this["BoatTimeImportReport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatTimeImportReport_Height {
+            get {
+                return ((int)(this["BoatTimeImportReport_Height"]));
+            }
+            set {
+                this["BoatTimeImportReport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point BoatTimeImportReport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["BoatTimeImportReport_Location"]));
+            }
+            set {
+                this["BoatTimeImportReport_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int JumpMeasurementImportReport_Width {
+            get {
+                return ((int)(this["JumpMeasurementImportReport_Width"]));
+            }
+            set {
+                this["JumpMeasurementImportReport_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int JumpMeasurementImportReport_Height {
+            get {
+                return ((int)(this["JumpMeasurementImportReport_Height"]));
+            }
+            set {
+                this["JumpMeasurementImportReport_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point JumpMeasurementImportReport_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["JumpMeasurementImportReport_Location"]));
+            }
+            set {
+                this["JumpMeasurementImportReport_Location"] = value;
             }
         }
     }

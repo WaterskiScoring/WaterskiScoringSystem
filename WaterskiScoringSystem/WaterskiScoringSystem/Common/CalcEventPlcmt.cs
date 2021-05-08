@@ -793,29 +793,21 @@ namespace WaterskiScoringSystem.Common {
                 nextPlctAdj = 0;
                 foreach ( DataRow curCheckScoreRow in inSkierScoreList.Rows ) {
                     if ( (String)curSkierScoreRow["MemberId"] != (String)curCheckScoreRow["MemberId"] ) {
-                        if ( (Decimal)curSkierScoreRow["Speed"] == (Decimal)curCheckScoreRow["Speed"] ) {
-                            if ( (Decimal)curSkierScoreRow["LineLength"] == (Decimal)curCheckScoreRow["LineLength"] ) {
-                                if ( (Decimal)curSkierScoreRow["BackupScore"] == (Decimal)curCheckScoreRow["BackupScore"] ) {
-                                    if ( (Decimal)curSkierScoreRow["FirstScore"] == (Decimal)curCheckScoreRow["FirstScore"] ) {
-                                        if ( (Decimal)curSkierScoreRow["RunoffScore"] == (Decimal)curCheckScoreRow["RunoffScore"] ) {
-                                            nextPlctAdj--;
-                                        } else if ( (Decimal)curSkierScoreRow["RunoffScore"] > (Decimal)curCheckScoreRow["RunoffScore"] ) {
-                                            nextPlctAdj--;
-                                        }
-                                    } else if ( (Decimal)curSkierScoreRow["FirstScore"] > (Decimal)curCheckScoreRow["FirstScore"] ) {
-                                        nextPlctAdj--;
-                                    }
-                                } else if ( (Decimal)curSkierScoreRow["BackupScore"] > (Decimal)curCheckScoreRow["BackupScore"] ) {
-                                    nextPlctAdj--;
-                                }
-                            } else if ( (Decimal)curSkierScoreRow["LineLength"] > (Decimal)curCheckScoreRow["LineLength"] ) {
-                                nextPlctAdj--;
-                            }
-                        } else if ( (Decimal)curSkierScoreRow["Speed"] > (Decimal)curCheckScoreRow["Speed"] ) {
-                            nextPlctAdj--;
-                        }
-                    }
-                }
+						if ( (Decimal)curSkierScoreRow["BackupScore"] == (Decimal)curCheckScoreRow["BackupScore"] ) {
+							if ( (Decimal)curSkierScoreRow["FirstScore"] == (Decimal)curCheckScoreRow["FirstScore"] ) {
+								if ( (Decimal)curSkierScoreRow["RunoffScore"] == (Decimal)curCheckScoreRow["RunoffScore"] ) {
+									nextPlctAdj--;
+								} else if ( (Decimal)curSkierScoreRow["RunoffScore"] > (Decimal)curCheckScoreRow["RunoffScore"] ) {
+									nextPlctAdj--;
+								}
+							} else if ( (Decimal)curSkierScoreRow["FirstScore"] > (Decimal)curCheckScoreRow["FirstScore"] ) {
+								nextPlctAdj--;
+							}
+						} else if ( (Decimal)curSkierScoreRow["BackupScore"] > (Decimal)curCheckScoreRow["BackupScore"] ) {
+							nextPlctAdj--;
+						}
+					}
+				}
                 curPlcmtNum = curOrigPlcmtPos + nextPlcmtPos + nextPlctAdj - 1;
                 if ( curPlcmt.Contains( "T" ) ) {
                     curSkierScoreRow[inPlcmtName] = curPlcmt;

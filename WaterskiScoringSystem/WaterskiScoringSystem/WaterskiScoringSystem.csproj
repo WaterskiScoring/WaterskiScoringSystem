@@ -48,7 +48,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>7.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -253,6 +253,18 @@
     <Compile Include="Common\AgeGroupSelect.Designer.cs">
       <DependentUpon>AgeGroupSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\BoatPathImportReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\BoatPathImportReport.Designer.cs">
+      <DependentUpon>BoatPathImportReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BoatTimeImportReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\BoatTimeImportReport.Designer.cs">
+      <DependentUpon>BoatTimeImportReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\CalcEventPlcmt.cs" />
     <Compile Include="Common\CalcNops.cs" />
     <Compile Include="Common\CalcScoreSummary.cs" />
@@ -269,6 +281,12 @@
     </Compile>
     <Compile Include="Common\BoatPathExport.Designer.cs">
       <DependentUpon>BoatPathExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\JumpMeasurementImportReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\JumpMeasurementImportReport.Designer.cs">
+      <DependentUpon>JumpMeasurementImportReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\SkierBoatPathSelect.cs">
       <SubType>UserControl</SubType>
@@ -462,6 +480,12 @@
     <Compile Include="Tools\RegionalJuniorScoreAnalysis.Designer.cs">
       <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ShowMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ShowMessage.Designer.cs">
+      <DependentUpon>ShowMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\UpgradeDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -620,8 +644,17 @@
       <DependentUpon>AgeGroupSelect.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Common\BoatPathImportReport.resx">
+      <DependentUpon>BoatPathImportReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BoatTimeImportReport.resx">
+      <DependentUpon>BoatTimeImportReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Common\ColumnSelectDialogcs.resx">
       <DependentUpon>ColumnSelectDialogcs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\JumpMeasurementImportReport.resx">
+      <DependentUpon>JumpMeasurementImportReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\SkierBoatPathSelect.resx">
       <DependentUpon>SkierBoatPathSelect.cs</DependentUpon>
@@ -769,6 +802,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\RegionalJuniorScoreAnalysis.resx">
       <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ShowMessage.resx">
+      <DependentUpon>ShowMessage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\SqlCommandTool.resx">
       <DependentUpon>SqlCommandTool.cs</DependentUpon>

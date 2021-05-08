@@ -163,6 +163,13 @@ namespace WaterskiScoringSystem.Trick {
 				return;
 			}
 
+			//Load skier classes to drop down list
+			mySkierClassList = new ListSkierClass();
+			mySkierClassList.ListSkierClassLoad();
+			scoreEventClass.DataSource = mySkierClassList.DropdownList;
+			scoreEventClass.DisplayMember = "ItemName";
+			scoreEventClass.ValueMember = "ItemValue";
+
 			myTourRow = curTourDataTable.Rows[0];
 			myTourRules = (String)myTourRow["Rules"];
 			myTourClass = myTourRow["Class"].ToString().ToUpper();
@@ -193,13 +200,6 @@ namespace WaterskiScoringSystem.Trick {
 			//Retrieve trick list
 			getTrickList( myTourRules );
 			if ( myTrickListDataTable.Rows.Count == 0 ) getTrickList( "awsa" );
-
-			//Load skier classes to drop down list
-			mySkierClassList = new ListSkierClass();
-			mySkierClassList.ListSkierClassLoad();
-			scoreEventClass.DataSource = mySkierClassList.DropdownList;
-			scoreEventClass.DisplayMember = "ItemName";
-			scoreEventClass.ValueMember = "ItemValue";
 
 			myTrickValidation.TourRules = myTourRules;
 			myTrickValidation.SkierClassDataTable = mySkierClassList.SkierClassDataTable;
@@ -2098,34 +2098,46 @@ namespace WaterskiScoringSystem.Trick {
             if ( mySkierClassList.compareClassChange( curEventClass, myTourClass ) < 0 ) {
                 MessageBox.Show( "Class " + curEventClass + " cannot be assigned to a skier in a class " + myTourClass + " tournament" );
                 e.Cancel = true;
-            } else {
-                TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value = curEventClass;
-                try {
-                    Int64 curScorePK = 0;
-                    if ( myScoreRow == null ) {
-                        curScorePK = -1;
-                    } else {
-                        curScorePK = (Int64)myScoreRow["PK"];
-                    }
-                    StringBuilder curSqlStmt = new StringBuilder( "" );
-                    if ( curScorePK > 0 ) {
-                        curSqlStmt.Append( "Update TrickScore Set " );
-                        curSqlStmt.Append( "EventClass = '" + curEventClass + "'" );
-                        curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
-                        curSqlStmt.Append( " Where PK = " + curScorePK.ToString() );
-                        rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                    }
-                } catch ( Exception excp ) {
-                    String curMsg = ":Error attempting to update skier class \n" + excp.Message;
-                    MessageBox.Show( curMsg );
-                    Log.WriteFile( curMethodName + curMsg );
-                }
-
+				return;
             }
-        }
 
-        private void DataGridView_Enter( object sender, EventArgs e ) {
+			DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
+			if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+				bool iwwfMembership = IwwfMembership.validateIwwfMembership(
+					mySanctionNum, (String)this.myTourRow["SanctionEditCode"]
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value
+					, (String)this.myTourRow["EventDates"] );
+				if ( !( iwwfMembership ) ) {
+					curEventClass = "E";
+					scoreEventClass.SelectedValue = curEventClass;
+				}
+			}
+
+			TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value = curEventClass;
+			try {
+				Int64 curScorePK = 0;
+				if ( myScoreRow == null ) {
+					curScorePK = -1;
+				} else {
+					curScorePK = (Int64)myScoreRow["PK"];
+				}
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				if ( curScorePK > 0 ) {
+					curSqlStmt.Append( "Update TrickScore Set " );
+					curSqlStmt.Append( "EventClass = '" + curEventClass + "'" );
+					curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
+					curSqlStmt.Append( " Where PK = " + curScorePK.ToString() );
+					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				}
+			} catch ( Exception excp ) {
+				String curMsg = ":Error attempting to update skier class \n" + excp.Message;
+				MessageBox.Show( curMsg );
+				Log.WriteFile( curMethodName + curMsg );
+			}
+		}
+
+		private void DataGridView_Enter( object sender, EventArgs e ) {
             DataGridView curPassView = (DataGridView)sender;
             curPassView.DefaultCellStyle.BackColor = SystemColors.Window;
             curPassView.DefaultCellStyle.ForeColor = SystemColors.ControlText;
@@ -3888,7 +3900,7 @@ namespace WaterskiScoringSystem.Trick {
 
         private DataTable getTourData( String inSanctionId ) {
             StringBuilder curSqlStmt = new StringBuilder("");
-            curSqlStmt.Append("SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation");
+            curSqlStmt.Append( "SELECT SanctionId, SanctionEditCode, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
             curSqlStmt.Append(", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation ");
             curSqlStmt.Append("FROM Tournament T ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class ");

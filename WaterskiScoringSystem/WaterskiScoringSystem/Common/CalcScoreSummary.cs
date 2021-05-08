@@ -692,7 +692,9 @@ namespace WaterskiScoringSystem.Common {
 			String curPlcmtSlalom, curPlcmtTrick, curPlcmtJump, curPlcmtOverall, curTeamCode;
 			String curScoreName, curPointsName, curRoundName, curGroupName, curTeamName, curOrderName, curClassName, curPass1Name, curPass2Name, curBoatSpeedName;
 			Decimal curScore, curPoints, curFeet, curMeters, curPass1, curPass2, curFinalPassScore, curRampHeight, curMetersBackup, curHCapScore, curHCapBase;
-			bool calcOverallActive = ( inSlalomDataTable != null ) && ( inTrickDataTable != null ) && ( inJumpDataTable != null );
+			bool calcOverallActive = ( inSlalomDataTable != null ) && ( inSlalomDataTable.Rows.Count > 0 )
+				&& ( inTrickDataTable != null ) && ( inTrickDataTable.Rows.Count > 0 )
+				&& ( inJumpDataTable != null ) && ( inTrickDataTable.Rows.Count > 0 );
 
 			Int16 curRound, curScoreTrick;
 			int curDivOrder = 0;
@@ -1662,10 +1664,6 @@ namespace WaterskiScoringSystem.Common {
 			DataTable curEligSkiersDataTable = getOverallSkierList( inSanctionId );
 			DataTable curSummaryDataTable = buildOverallSummaryDataTable();
 
-			//DataTable curEliteSkierScoresDataTable = getEliteSkiersInAgeGroup( "Slalom", (String)inTourRow["SanctionId"] );
-			DataTable curEliteSummaryDataTable = buildOverallSummaryDataTable();
-			checkForEliteOverallDragdown( inTourRow, curEliteSummaryDataTable, "points", "round" );
-
 			try {
 				curSlalomRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
 			} catch {
@@ -1684,6 +1682,15 @@ namespace WaterskiScoringSystem.Common {
 			if ( curSlalomRounds > curTourRounds ) { curTourRounds = curSlalomRounds; }
 			if ( curTrickRounds > curTourRounds ) { curTourRounds = curTrickRounds; }
 			if ( curJumpRounds > curTourRounds ) { curTourRounds = curJumpRounds; }
+
+			DataTable curEliteSummaryDataTable = null;
+			if ( curSlalomRounds > 0 && curTrickRounds  > 0 && curJumpRounds  > 0 ) {
+				curEliteSummaryDataTable = buildOverallSummaryDataTable();
+				checkForEliteOverallDragdown( inTourRow, curEliteSummaryDataTable, "points", "round" );
+			}
+
+
+
 
 			foreach ( DataRow curRow in inMemberData.Rows ) {
 				//Initialize output buffer
@@ -1725,8 +1732,8 @@ namespace WaterskiScoringSystem.Common {
 
 							#region Process slalom information
 							curSlalomDetailRow = getEventMemberEntry( inSlalomDetail, curMemberId, curAgeGroup, curRound );
-							if ( curSlalomDetailRow == null ) curSlalomDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curSlalomDetailRow != null ) {
+							if ( curSlalomDetailRow == null && curEliteSummaryDataTable != null ) curSlalomDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+							if ( curSlalomDetailRow != null && ( ( (String)curSlalomDetailRow["EventClassSlalom"] ).Length > 0 ) ) {
 								curEventCount++;
 								newDataRow["EventClassSlalom"] = (String)curSlalomDetailRow["EventClassSlalom"];
 								newDataRow["ReadyForPlcmtSlalom"] = (String)curSummaryRow["ReadyForPlcmtSlalom"];
@@ -1798,8 +1805,8 @@ namespace WaterskiScoringSystem.Common {
 
 							#region Process trick information
 							curTrickDetailRow = getEventMemberEntry( inTrickDetail, curMemberId, curAgeGroup, curRound );
-							if ( curTrickDetailRow == null ) curTrickDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curTrickDetailRow != null ) {
+							if ( curTrickDetailRow == null && curEliteSummaryDataTable != null ) curTrickDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+							if ( curTrickDetailRow != null && (((String)curTrickDetailRow["EventClassTrick"]).Length > 0 ) ) {
 								curEventCount++;
 								newDataRow["EventClassTrick"] = (String)curTrickDetailRow["EventClassTrick"];
 								newDataRow["ReadyForPlcmtTrick"] = (String)curSummaryRow["ReadyForPlcmtTrick"];
@@ -1823,8 +1830,8 @@ namespace WaterskiScoringSystem.Common {
 
 							#region Process Jump information
 							curJumpDetailRow = getEventMemberEntry( inJumpDetail, curMemberId, curAgeGroup, curRound );
-							if ( curJumpDetailRow == null ) curJumpDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curJumpDetailRow != null ) {
+							if ( curJumpDetailRow == null && curEliteSummaryDataTable != null ) curJumpDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+							if ( curJumpDetailRow != null && ( ( (String)curJumpDetailRow["EventClassJump"] ).Length > 0 ) ) {
 								curEventCount++;
 								newDataRow["EventClassJump"] = (String)curJumpDetailRow["EventClassJump"]; ;
 								newDataRow["ReadyForPlcmtJump"] = (String)curSummaryRow["ReadyForPlcmtJump"];

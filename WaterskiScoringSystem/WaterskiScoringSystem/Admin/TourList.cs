@@ -1295,7 +1295,7 @@ namespace WaterskiScoringSystem.Admin {
                     + "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
             } else {
                 if (Log.isDirectoryValid( curDataLoc )) {
-					if ( EwscMonitor .EwcsWebLocation.Length > 1 ) EwscMonitor.sendExit();
+					if ( EwscMonitor .EwscWebLocation.Length > 1 ) EwscMonitor.sendExit();
 
                     Properties.Settings.Default.AppSanctionNum = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"].Value.ToString();
                     Properties.Settings.Default.ExportDirectory = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();

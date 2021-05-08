@@ -37,7 +37,7 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		private void WaterSkiConnectDialog_Load( object sender, EventArgs e ) {
-			if ( EwscMonitor.EwcsWebLocation.Length > 1 ) {
+			if ( EwscMonitor.EwscWebLocation.Length > 1 ) {
 				MessageLabel.Text = "WaterSkiConnect is connected and active";
 
 			} else {
@@ -74,6 +74,11 @@ namespace WaterskiScoringSystem.Tools {
 				}
 			}
 		}
+
+		private void showAppsConnected_Click( object sender, EventArgs e ) {
+			EwscMonitor.SendAppsConnectedView();
+		}
+
 
 		private void showEwcsPin_Click( object sender, EventArgs e ) {
 			EwscMonitor.showPin();

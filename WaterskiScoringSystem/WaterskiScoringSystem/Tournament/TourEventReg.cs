@@ -198,74 +198,16 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 				curTourEventRegDataTable = getDataBySkierEvent( mySanctionNum, inMemberId, inAgeDiv, inEvent );
+				String curSkierName = (String)curTourRegRow["SkierName"];
 				String curReadyForPlcmt = (String) curTourRegRow["ReadyForPlcmt"];
 
-				if ( inEventClass.Trim().Length > 0 ) {
-					if ( validSkierClass( inEventClass, (String) myTourRow["Class"] ) ) {
-						curEventClass = inEventClass;
-					} else {
-						curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
-					}
-					
-					if ( curEventClass.ToUpper().Equals( "R" ) ) {
-						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-							//Leave class as provided on input
-						
-						} else {
-							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
-								curEventClass = "R";
-							
-							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
-								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
-								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
-								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
-								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
-								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
-							   ) {
-								curEventClass = "E";
-							} else {
-								curEventClass = "L";
-							}
-						}
-					}
-
-				} else {
-					curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
-					if ( ( (String) myTourRow["Class"] ).Equals( "A" )
-						|| ( (String) myTourRow["Class"] ).Equals( "B" )
-						|| ( (String) myTourRow["Class"] ).Equals( "R" ) ) {
-						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-							//Leave class as provided on input
-						} else {
-							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
-								curEventClass = "R";
-							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
-								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
-								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
-								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
-								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
-								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
-							   ) {
-								if ( curEventClass.ToUpper().Equals( "C" ) ) {
-								} else {
-									curEventClass = "E";
-								}
-							} else {
-								if ( curEventClass.ToUpper().Equals( "C" ) || curEventClass.ToUpper().Equals( "E" ) ) {
-								} else {
-									curEventClass = "L";
-								}
-							}
-						}
-					}
-				}
+				curEventClass = setSkierEventClass( inEventClass, inEvent, inAgeDiv );
 
 				//if ( curEventClass )
 				DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
 				if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-					if ( !( IwwfMembership.validateIwwfMembership( inMemberId, (String)this.myTourRow["EventDates"] ) ) ) {
+					if ( !( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], inMemberId, (String)this.myTourRow["EventDates"] ) ) ) {
 						curEventClass = "E";
-						MessageBox.Show( "Skier doesn't have an active IWWF license therefore not permitted to ski in class L/R.  Event class changed to E" );
 					}
 				}
 
@@ -385,6 +327,114 @@ namespace WaterskiScoringSystem.Tournament {
                 return false;
             }
         }
+
+		/*
+				if ( inEventClass.Trim().Length > 0 ) {
+					if ( validSkierClass( inEventClass, (String) myTourRow["Class"] ) ) {
+						curEventClass = inEventClass;
+					} else {
+						curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
+					}
+					
+					if ( curEventClass.ToUpper().Equals( "R" ) ) {
+						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+							//Leave class as provided on input
+						
+						} else {
+							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
+								curEventClass = "R";
+							
+							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
+								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
+								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
+								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
+								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
+								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
+							   ) {
+								curEventClass = "E";
+							} else {
+								curEventClass = "L";
+							}
+						}
+					}
+
+				} else {
+					curEventClass = getSkierTourEventClass( (String) myTourRow["Class"] );
+					if ( ( (String) myTourRow["Class"] ).Equals( "A" )
+						|| ( (String) myTourRow["Class"] ).Equals( "B" )
+						|| ( (String) myTourRow["Class"] ).Equals( "R" ) ) {
+						if ( ( (String) myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+							//Leave class as provided on input
+						} else {
+							if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) {
+								curEventClass = "R";
+							} else if ( inAgeDiv.Equals( "B1" ) || inAgeDiv.Equals( "G1" )
+								|| inAgeDiv.Equals( "B2" ) || inAgeDiv.Equals( "G2" )
+								|| inAgeDiv.Equals( "M8" ) || inAgeDiv.Equals( "W8" )
+								|| inAgeDiv.Equals( "M9" ) || inAgeDiv.Equals( "W9" )
+								|| inAgeDiv.Equals( "MA" ) || inAgeDiv.Equals( "WA" )
+								|| inAgeDiv.Equals( "MB" ) || inAgeDiv.Equals( "WB" )
+							   ) {
+								if ( curEventClass.ToUpper().Equals( "C" ) ) {
+								} else {
+									curEventClass = "E";
+								}
+							} else {
+								if ( curEventClass.ToUpper().Equals( "C" ) || curEventClass.ToUpper().Equals( "E" ) ) {
+								} else {
+									curEventClass = "L";
+								}
+							}
+						}
+					}
+				}
+
+		 */
+		private String setSkierEventClass( String inEventClass, String inEvent, String inAgeDiv ) {
+			String curSkierEventClass = "";
+			String curTourSkierEventClass = getSkierTourEventClass( (String)myTourRow["Class"] );
+			
+			if ( inEventClass.Trim().Length > 0 ) {
+				if ( validSkierClass( inEventClass, (String)myTourRow["Class"] ) ) {
+					curSkierEventClass = inEventClass;
+				} else {
+					curSkierEventClass = curTourSkierEventClass;
+				}
+				
+				/*
+				 * Set the skier event class when the tournament is an R (World Record) tournament
+				 */
+				if ( curTourSkierEventClass.ToUpper().Equals( "R" ) ) {
+					if ( ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) return curSkierEventClass;
+
+					if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) return "R";
+
+					return "L";
+				}
+
+				return curSkierEventClass;
+			}
+
+			/*
+			 * Input record indicates that the class has not been assigned to the skier at this point
+			 * Determine skier event class for Nationals, Regionals, and any class R tournament
+			 */
+			//curSkierEventClass = curTourSkierEventClass;
+			if ( ( (String)myTourRow["Class"] ).Equals( "A" )
+				|| ( (String)myTourRow["Class"] ).Equals( "B" )
+				|| ( (String)myTourRow["Class"] ).Equals( "R" ) ) {
+
+				if ( ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) return inEventClass;
+
+				if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) return "R";
+
+				if ( curTourSkierEventClass.ToUpper().Equals( "C" ) || curTourSkierEventClass.ToUpper().Equals( "E" ) ) return curTourSkierEventClass;
+
+				return "L";
+			}
+
+			return curTourSkierEventClass;
+		}
 
 		public bool addEventRunorder( String inEvent, String inMemberId, String inEventGroup, String inEventClass, int curEventRoundsPaid, String inAgeDiv ) {
 			for(int curEventRound = 1; curEventRound <= curEventRoundsPaid; curEventRound++ ) {
@@ -1064,7 +1114,7 @@ namespace WaterskiScoringSystem.Tournament {
         
         private DataTable getTourData( String inSanctionId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation, TourDataLoc, LastUpdateDate, " );
+            curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation, SanctionEditCode, TourDataLoc, LastUpdateDate, " );
             curSqlStmt.Append( "    SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation, " );
             curSqlStmt.Append( "    HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct " );
             curSqlStmt.Append( "FROM Tournament " );

@@ -339,6 +339,8 @@ PK	RuleCode	TrickCode	NumSkis	StartPos	NumTurns	RuleNum	TypeCode	Points	Descript
 0	awsa	RFFL5F	1	1	1	69	1	950	Reverse Front Flip 540 Back to Front
 0	awsa	FFL5F	9	1	1	69	1	238	Front Flip 540 Back to Front (Kneeboard)
 0	awsa	RFFL5F	9	1	1	69	1	238	Reverse Front Flip 540 Back to Front (Kneeboard)
+0	awsa	BFLSL5F	0	1	1	70	1	475	Back Flip Ski Line 540 Back to Front (Wakeboard)
+0	awsa	BFLSL5F	1	1	1	70	1	950	Back Flip Ski Line 540 Back to Front
 0	awsa	BB	0	1	2	71	0	45	Back to Back (Wakeboard)
 0	awsa	OB	0	1	2	71	0	45	360 Back to Back (Wakeboard)
 0	awsa	RBB	0	1	2	71	0	45	Reverse Back to Back (Wakeboard)

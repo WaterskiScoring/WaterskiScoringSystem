@@ -512,17 +512,16 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	DriverRating	Senior		5	Senior			
 0	DriverRating	Emeritus		6	Emeritus			
 0	EndOfTourReports	F1		1	WWParm.TNY			Tournament parameter file
-0	EndOfTourReports	F4		4	######BT.prn			Boat time report
 0	EndOfTourReports	F5		5	######*.sbk			Scorebook
 0	EndOfTourReports	F6		6	######*.wsp			Water Ski Performance file for ranking list
 0	EndOfTourReports	F8		7	######CJ.PRN			Chief Judge Report (PRN)
 0	EndOfTourReports	F9		8	######CJ.txt			Chief Judge Report data file
 0	EndOfTourReports	F11		9	######CS.htm			Condensed scorebook web report
-0	EndOfTourReports	F13		10	######JT.csv			Jump time data file
-0	EndOfTourReports	F14		11	######OD.txt			Official credit data file
-0	EndOfTourReports	F16		12	######SD.PRN			Safety Director Report (PRN)
-0	EndOfTourReports	F17		13	######SD.txt			Safety Director Report data file
-0	EndOfTourReports	F19		14	######ST.csv			Slalom time data file
+0	EndOfTourReports	F13		10	######JT.txt			Boat Path Analysis Report for Jump as a text file ELR only
+0	EndOfTourReports	F19		11	######ST.txt			Boat Path Analysis Report for Slalom as a text file ELR only
+0	EndOfTourReports	F14		12	######OD.txt			Official credit data file
+0	EndOfTourReports	F16		13	######SD.PRN			Safety Director Report (PRN)
+0	EndOfTourReports	F17		14	######SD.txt			Safety Director Report data file
 0	EndOfTourReports	F20		15	######TS.PRN			Tournament scores and information
 0	EndOfTourReports	F21		16	######TS.txt			Tournament data file
 0	EndOfTourReports	F23		17	######TU.PRN			Towboat Use Report (PRN)
@@ -530,8 +529,6 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	EndOfTourReports	R1		19	######HD.txt			Iwwf Homologation Dossier as a text file ELR only
 0	EndOfTourReports	R2		20	######SV.ZIP			Iwwf Site Survey (optional) ELR only
 0	EndOfTourReports	R3		21	.hom$			IwwfHomologationDossier.txt ELR only
-0	EndOfTourReports	R4		19	######SP.txt			Slalom Pass Detail Report as a text file ELR only
-0	EndOfTourReports	R5		19	######BP.txt			Boat Path Analysis Report as a text file ELR only
 22675	EventType	Chief		1	Chief			
 22676	EventType	AsstChief		2	Assistant Chief			
 22677	EventType	Slalom		3	Slalom			

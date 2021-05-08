@@ -1592,8 +1592,7 @@ namespace WaterskiScoringSystem.Tournament {
 					DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curSkierClass.ToUpper() + "'" )[0];
 					if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
 						//if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-						if ( !( IwwfMembership.validateIwwfMembership( (String)EventRegDataGridView.Rows[myViewIdx].Cells["MemberId"].Value, (String)this.myTourRow["EventDates"] ) ) ) {
-							MessageBox.Show( "Skier doesn't have an active IWWF license therefore not permitted to ski in class L/R.  Event class changed to E" );
+						if ( !( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], (String)EventRegDataGridView.Rows[myViewIdx].Cells["MemberId"].Value, (String)this.myTourRow["EventDates"] ) ) ) {
 							( (ComboBox)EventRegDataGridView.EditingControl ).SelectedValue = "E";
 							e.Cancel = true;
 						}
@@ -2105,7 +2104,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private DataTable getTourData(String inSanctionId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation" );
+            curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation, SanctionEditCode" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation " );
             curSqlStmt.Append(", HcapSlalomBase, HcapSlalomPct, HcapTrickBase, HcapTrickPct, HcapJumpBase, HcapJumpPct ");
             curSqlStmt.Append( "FROM Tournament T " );

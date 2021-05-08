@@ -1013,7 +1013,6 @@ namespace WaterskiScoringSystem.Tournament {
             DataGridViewRow curViewRow = tourRegDataGridView.Rows[myTourRegRowIdx];
             String curMemberId = (String) curViewRow.Cells["MemberId"].Value;
             String curAgeGroup = (String) curViewRow.Cells["AgeGroup"].Value;
-            //if ( myTourEventReg.addEventSlalom( curMemberId, curAgeGroup, (String)myTourRow["Class"], curAgeGroup, "" ) ) {
             if ( myTourEventReg.addEventSlalom(curMemberId, curAgeGroup, "", curAgeGroup, "") ) {
                 curViewRow.Cells["SlalomGroup"].ReadOnly = false;
                 curViewRow.Cells["SlalomGroup"].Value = curAgeGroup;
@@ -1029,7 +1028,6 @@ namespace WaterskiScoringSystem.Tournament {
             DataGridViewRow curViewRow = tourRegDataGridView.Rows[myTourRegRowIdx];
             String curMemberId = (String) curViewRow.Cells["MemberId"].Value;
             String curAgeGroup = (String) curViewRow.Cells["AgeGroup"].Value;
-            //if ( myTourEventReg.addEventTrick( curMemberId, curAgeGroup, (String)myTourRow["Class"], curAgeGroup, "" ) ) {
             if ( myTourEventReg.addEventTrick(curMemberId, curAgeGroup, "", curAgeGroup, "") ) {
                 curViewRow.Cells["TrickGroup"].ReadOnly = false;
                 curViewRow.Cells["TrickGroup"].Value = curAgeGroup;
@@ -1045,7 +1043,6 @@ namespace WaterskiScoringSystem.Tournament {
             DataGridViewRow curViewRow = tourRegDataGridView.Rows[myTourRegRowIdx];
             String curMemberId = (String) curViewRow.Cells["MemberId"].Value;
             String curAgeGroup = (String) curViewRow.Cells["AgeGroup"].Value;
-            //if ( myTourEventReg.addEventJump( curMemberId, curAgeGroup, (String)myTourRow["Class"], curAgeGroup, "" ) ) {
             if ( myTourEventReg.addEventJump(curMemberId, curAgeGroup, "", curAgeGroup, "") ) {
                 curViewRow.Cells["JumpGroup"].ReadOnly = false;
                 if ( curAgeGroup.ToUpper().Equals("B1") ) {

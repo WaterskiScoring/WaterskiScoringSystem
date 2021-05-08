@@ -627,6 +627,59 @@ namespace WaterskiScoringSystem {
 			curForm.Show();
 			mdiStatusMsg.Text = curForm.Name + " open";
 		}
+		private void navBoatPathSlalomImportReport_Click( object sender, EventArgs e ) {
+			BoatPathImportReport curForm = new BoatPathImportReport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Slalom";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+		private void navBoatPathJumpImportReport_Click( object sender, EventArgs e ) {
+			BoatPathImportReport curForm = new BoatPathImportReport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Jump";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+
+		private void navBoatTimeSlalomImportReport_Click( object sender, EventArgs e ) {
+			BoatTimeImportReport curForm = new BoatTimeImportReport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Slalom";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+		private void navBoatTimeJumpImportReport_Click( object sender, EventArgs e ) {
+			BoatTimeImportReport curForm = new BoatTimeImportReport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.ActiveEvent = "Jump";
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+
+		private void navJumpMeasurementImportReport_Click( object sender, EventArgs e ) {
+			JumpMeasurementImportReport curForm = new JumpMeasurementImportReport();
+			mdiStatusMsg.Text = curForm.Name + " opening";
+
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+
+		}
+
 		private void navBoatPathReportJump_Click(object sender, EventArgs e) {
 			BoatPathExport curForm = new BoatPathExport();
 			mdiStatusMsg.Text = curForm.Name + " opening";
@@ -955,7 +1008,6 @@ namespace WaterskiScoringSystem {
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
         }
-
 	}
 }
 

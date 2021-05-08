@@ -31,13 +31,14 @@ namespace WaterskiScoringSystem.Tools {
 			this.eventSubIdTextBox = new System.Windows.Forms.TextBox();
 			this.eventSubIdLabel = new System.Windows.Forms.Label();
 			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
+			this.ViewAppsButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
 			// 
 			this.ShowPinButton.AutoSize = true;
 			this.ShowPinButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ShowPinButton.Location = new System.Drawing.Point(271, 43);
+			this.ShowPinButton.Location = new System.Drawing.Point(176, 43);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(87, 23);
 			this.ShowPinButton.TabIndex = 3;
@@ -48,7 +49,7 @@ namespace WaterskiScoringSystem.Tools {
 			// DisconnectButton
 			// 
 			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.DisconnectButton.Location = new System.Drawing.Point(144, 43);
+			this.DisconnectButton.Location = new System.Drawing.Point(93, 43);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(75, 23);
 			this.DisconnectButton.TabIndex = 2;
@@ -59,7 +60,7 @@ namespace WaterskiScoringSystem.Tools {
 			// ConnectButton
 			// 
 			this.ConnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ConnectButton.Location = new System.Drawing.Point(17, 43);
+			this.ConnectButton.Location = new System.Drawing.Point(10, 43);
 			this.ConnectButton.Name = "ConnectButton";
 			this.ConnectButton.Size = new System.Drawing.Size(75, 23);
 			this.ConnectButton.TabIndex = 1;
@@ -82,7 +83,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.eventSubIdTextBox.Location = new System.Drawing.Point(123, 81);
 			this.eventSubIdTextBox.Name = "eventSubIdTextBox";
 			this.eventSubIdTextBox.Size = new System.Drawing.Size(235, 20);
-			this.eventSubIdTextBox.TabIndex = 4;
+			this.eventSubIdTextBox.TabIndex = 5;
 			// 
 			// eventSubIdLabel
 			// 
@@ -109,12 +110,25 @@ namespace WaterskiScoringSystem.Tools {
 			this.UseJumpTimesCheckBox.Visible = false;
 			this.UseJumpTimesCheckBox.CheckedChanged += new System.EventHandler(this.UseJumpTimesCheckBox_CheckedChanged);
 			// 
+			// ViewAppsButton
+			// 
+			this.ViewAppsButton.AutoSize = true;
+			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.ViewAppsButton.Location = new System.Drawing.Point(271, 43);
+			this.ViewAppsButton.Name = "ViewAppsButton";
+			this.ViewAppsButton.Size = new System.Drawing.Size(87, 23);
+			this.ViewAppsButton.TabIndex = 4;
+			this.ViewAppsButton.Text = "View Apps";
+			this.ViewAppsButton.UseVisualStyleBackColor = true;
+			this.ViewAppsButton.Click += new System.EventHandler(this.showAppsConnected_Click);
+			// 
 			// WaterSkiConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(366, 129);
+			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.UseJumpTimesCheckBox);
 			this.Controls.Add(this.eventSubIdLabel);
 			this.Controls.Add(this.eventSubIdTextBox);
@@ -138,5 +152,6 @@ namespace WaterskiScoringSystem.Tools {
 		private System.Windows.Forms.TextBox eventSubIdTextBox;
 		private System.Windows.Forms.Label eventSubIdLabel;
 		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
+		private System.Windows.Forms.Button ViewAppsButton;
 	}
 }

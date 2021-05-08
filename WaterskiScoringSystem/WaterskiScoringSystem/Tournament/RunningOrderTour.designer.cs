@@ -995,7 +995,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.Controls.Add(this.EventRegDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "RunningOrderTour";
-			this.Text = "0";
+			this.Text = "Running Order ";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RunningOrderTour_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RunningOrderTour_FormClosed);
 			this.Load += new System.EventHandler(this.RunningOrderTour_Load);

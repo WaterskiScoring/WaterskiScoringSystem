@@ -391,7 +391,8 @@ namespace WaterskiScoringSystem.Tournament {
                 editState.Text = "";
             }
             try {
-                editFederation.SelectedValue = (String)myMemberRow["Federation"];
+				String curValue = (String)myMemberRow["Federation"];
+				editFederation.SelectedValue = ((String)myMemberRow["Federation"]).ToLower();
             } catch {
                 editFederation.SelectedValue = "";
             }
@@ -487,7 +488,7 @@ namespace WaterskiScoringSystem.Tournament {
 				editState.Text = "";
 			}
 			try {
-				editFederation.SelectedValue = (String) curDataRow["Federation"];
+				editFederation.SelectedValue = ( (String)curDataRow["Federation"] ).ToLower();
 			} catch {
 				editFederation.SelectedValue = "";
 			}

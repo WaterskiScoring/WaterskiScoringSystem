@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 using Quobject.SocketIoClientDotNet.Client;
@@ -22,12 +23,18 @@ namespace WaterskiScoringSystem.Tools {
 	class EwscMonitor {
 		private static String mySanctionNum;
 		private static String myEventSubId = "";
+
+		private static System.Timers.Timer myConnectStatusTimer; 
 		private static DataRow myTourRow;
+		
 		private static Boolean myConnectActive = false;
 		private static DateTime myCurrentDatetime = DateTime.Now;
+		
 		private static char[] singleQuoteDelim = new char[] { '\'' };
+		
 		private static String myLastConnectResponse = "";
 		private static Boolean myUseJumpTimes = false;
+		private static int myDefaultRound = 0;
 
 		/*
 		 * You can see the different events that are supported here http://www.ewscdata.com/ewscdata_events
@@ -35,16 +42,23 @@ namespace WaterskiScoringSystem.Tools {
 		 * You can see the JSON message formats for the events here http://www.ewscdata.com/ewscdata_data_formats
 		 * 
 		 * I think eventually this might be the address but don't think it is active yet
-		 * private static String EwcsWebLocationDefault = "http://waterskiconnect.com:40000/";
+		 * private static String EwscWebLocationDefault = "http://waterskiconnect.com:40000/";
 		 * 
 		 * ewscdata.com IP Address = 68.66.248.50
 		 * 
 		 */
-		public static String EwcsWebLocation = "";
-		private static String EwcsWebLocationDefault = "http://ewscdata.com:40000/";
-		//private static String EwcsWebLocationDefault = "ws://localhost/chat";
-		//private static String EwcsWebLocationDefault = "http://localhost/chat";
+		public static String EwscWebLocation = "";
+		private static String EwscWebLocationDefault = "http://ewscdata.com:40000/";
+		//private static String EwscWebLocationDefault = "ws://localhost/chat";
+		//private static String EwscWebLocationDefault = "http://localhost/chat";
 		//ws://' + location.host + '/chat
+
+		/*
+		Changes we discussed have been made – below is email sent all the other users detailing what needs to happen
+		You can switch to pass_data message whenever you like
+		Application_key for WSTIMs is CAD2FB59-3CCB-4691-9D26-7D68C2222788
+		Application_key for WSTIMs Listener is 5713D30C-8029-4413-A985-EC4AB5316F2C
+		 */
 
 		private static Quobject.SocketIoClientDotNet.Client.Socket socketClient = null;
 
@@ -71,8 +85,8 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		public static void execEwscMonitoring() {
-			if (EwscMonitor.EwcsWebLocation.Length > 1) return;
-			EwscMonitor.EwcsWebLocation = EwcsWebLocationDefault;
+			if (EwscMonitor.EwscWebLocation.Length > 1) return;
+			EwscMonitor.EwscWebLocation = EwscWebLocationDefault;
 			String returnValue = startEwscMonitoring();
 			MessageBox.Show("WaterSkiConnect: Results=" + returnValue);
 		}
@@ -94,11 +108,12 @@ namespace WaterskiScoringSystem.Tools {
 					, { "application", Properties.Settings.Default.AppTitle }
 					, { "version", Properties.Settings.Default.AppVersion }
 					, { "username", "mawsa@comcast.net" }
+					, { "Application_key", "CAD2FB59-3CCB-4691-9D26-7D68C2222788" }
 				};
 			String jsonData = JsonConvert.SerializeObject(sendConnectionMsg);
 
-			Log.WriteFile(curMethodName + String.Format("Connected to {0}", EwcsWebLocation));
-			socketClient = IO.Socket(EwcsWebLocation);
+			Log.WriteFile(curMethodName + String.Format("Connected to {0}", EwscWebLocation));
+			socketClient = IO.Socket(EwscWebLocation);
 
 			socketClient.On(Socket.EVENT_CONNECT, () => {
 				Log.WriteFile(curMethodName + String.Format("Connection: {0}", jsonData));
@@ -106,14 +121,21 @@ namespace WaterskiScoringSystem.Tools {
 			});
 			startClientListeners();
 
-			while (true) {
+			myConnectStatusTimer = new System.Timers.Timer();
+			myConnectStatusTimer.Interval = 1000 * 60 * 10;
+			myConnectStatusTimer.Elapsed += timerCheckStatus;
+			myConnectStatusTimer.AutoReset = true;
+			myConnectStatusTimer.Enabled = true;
+
+			while ( true) {
 				System.Threading.Thread.Sleep(2000);
 				int returnMsg = checkForMsgToSend();
 				if ( returnMsg > 0 ) {
-					EwscMonitor.EwcsWebLocation = "";
+					EwscMonitor.EwscWebLocation = "";
 					myConnectActive = false;
 					myLastConnectResponse = "";
 					myEventSubId = "";
+					myConnectStatusTimer.Enabled = false;
 					return "Exit WaterSkiConnect";
 				}
 			}
@@ -125,6 +147,26 @@ namespace WaterskiScoringSystem.Tools {
 				Log.WriteFile( String.Format( "connect_confirm {0}", myLastConnectResponse ) );
 				showMsg( "connect_confirm", String.Format("connect_confirm: {0}", data));
 			});
+			
+			socketClient.On( "status_response", ( data ) => {
+				checkConnectStatus( data.ToString() );
+			} );
+			
+			socketClient.On( "connectedapplication_response", ( data ) => {
+				Log.WriteFile( String.Format( "connectedapplication_response {0}", data.ToString() ) );
+				//showMsg( "connectedapplication_response", String.Format( "connectedapplication_response {0}", data ) );
+			} );
+
+			socketClient.On( "connectedapplication_check", ( data ) => {
+				Log.WriteFile( String.Format( "connectedapplication_check {0}", data.ToString() ) );
+				Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
+					 { "application", "WSTIMS" }
+				};
+				//					 { "application", Properties.Settings.Default.AppTitle }
+
+				String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
+				socketClient.Emit( "connectedapplication_response", jsonData );
+			} );
 
 			socketClient.On("boat_times", (data) => {
 				saveBoatTimes(data.ToString());
@@ -148,6 +190,47 @@ namespace WaterskiScoringSystem.Tools {
 			
 		}
 
+		private static void timerCheckStatus( Object source, System.Timers.ElapsedEventArgs e ) {
+			socketClient.Emit( "status_request", "" );
+		}
+
+		private static void checkConnectStatus( String msg ) {
+			Dictionary<string, object> curMsgDataList = null;
+
+			try {
+				Log.WriteFile( "checkConnectStatus: Msg received: " + msg );
+				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
+				String curEventId = getAttributeValue( curMsgDataList, "eventId" );
+
+				if ( curEventId.Equals( mySanctionNum ) ) {
+					if ( myEventSubId.Length > 0 ) return;
+
+					if ( !(getAttributeValue( curMsgDataList, "eventSubId" ).Equals( myEventSubId )) ) {
+						EwscMonitor.EwscWebLocation = "";
+						myConnectActive = false;
+						myLastConnectResponse = "";
+						myEventSubId = "";
+						MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect" );
+					}
+
+				} else {
+					EwscMonitor.EwscWebLocation = "";
+					myConnectActive = false;
+					myLastConnectResponse = "";
+					myEventSubId = "";
+					MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect" );
+				}
+
+			} catch ( Exception ex ) {
+				EwscMonitor.EwscWebLocation = "";
+				myConnectActive = false;
+				myLastConnectResponse = "";
+				myEventSubId = "";
+				MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect" );
+			}
+
+		}
+
 		private static void saveBoatTimes( String msg ) {
 			StringBuilder curSqlStmt = new StringBuilder("");
 			Dictionary<string, object> curMsgDataList = null;
@@ -158,19 +241,13 @@ namespace WaterskiScoringSystem.Tools {
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( "saveBoatTimes: Invalid data encountered: " + ex.Message );
-				try {
-					curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg.Substring( 11 ) );
-
-				} catch ( Exception ex2 ) {
-					Log.WriteFile( "saveBoatTimes: Invalid data encountered: " + ex2.Message );
-					MessageBox.Show( "saveBoatTimes: Invalid data encountered: " + ex2.Message );
-					return;
-				}
+				MessageBox.Show( "saveBoatTimes: Invalid data encountered: " + ex.Message );
+				return;
 			}
 
 			try {
 				int curRound = (int)getAttributeValueNum( curMsgDataList, "round" );
-				if ( curRound == 0 ) curRound = 1;
+				if ( curRound == 0 ) curRound = myDefaultRound;
 				String curEvent = getAttributeValue( curMsgDataList, "athleteEvent" );
 
 				curSqlStmt.Append("Insert BoatTime ( ");
@@ -226,19 +303,13 @@ namespace WaterskiScoringSystem.Tools {
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( "saveBoatPath: Invalid data encountered: " + ex.Message );
-				try {
-					curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg.Substring( 14 ) );
-
-				} catch ( Exception ex2 ) {
-					Log.WriteFile( "saveBoatPath: Invalid data encountered: " + ex2.Message );
-					MessageBox.Show( "saveBoatPath: Invalid data encountered: " + ex2.Message );
-					return;
-				}
+				MessageBox.Show( "saveBoatPath: Invalid data encountered: " + ex.Message );
+				return;
 			}
 
 			try {
 				int curRound = (int)getAttributeValueNum( curMsgDataList, "round" );
-				if ( curRound == 0 ) curRound = 1;
+				if ( curRound == 0 ) curRound = myDefaultRound;
 				String curEvent = getAttributeValue( curMsgDataList, "athleteEvent" );
 
 				curBoatInfo.Append( getAttributeValue( curMsgDataList, "boatManufacturer" ) );
@@ -293,10 +364,6 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
-		/*
-Dave, in the “boatpath_data” message I have added a new Key named “m41” in addition
-to “st”, “nt” (will always be empty), “mt” and “et”.
-		*/
 		private static String getJumpBoatPathAttributes( Dictionary<string, object> curMsgDataList ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			Dictionary<string, object> curBuoyResults = null;
@@ -463,19 +530,13 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( "saveJumpMeasurement: Invalid data encountered: " + ex.Message );
-				try {
-					curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg.Substring( 14 ) );
-
-				} catch ( Exception ex2 ) {
-					Log.WriteFile( "saveJumpMeasurement: Invalid data encountered: " + ex2.Message );
-					MessageBox.Show( "saveJumpMeasurement: Invalid data encountered: " + ex2.Message );
-					return;
-				}
+				MessageBox.Show( "saveJumpMeasurement: Invalid data encountered: " + ex.Message );
+				return;
 			}
 
 			try {
 				int curRound = (int)getAttributeValueNum( curMsgDataList, "round" );
-				if ( curRound == 0 ) curRound = 1;
+				if ( curRound == 0 ) curRound = myDefaultRound;
 
 				curSqlStmt.Append( "Insert JumpMeasurement ( " );
 				curSqlStmt.Append( "SanctionId, MemberId, Event, Round, PassNumber, ScoreFeet, ScoreMeters, InsertDate, LastUpdateDate " );
@@ -545,7 +606,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 				return ( (decimal)msgAttributeList[keyName] ).ToString();
 
 			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType("System.String")) {
-				return ( (String)msgAttributeList[keyName] );
+				return ( (String)msgAttributeList[keyName] ).Trim();
 			}
 
 			return "";
@@ -575,10 +636,11 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 						socketClient.Disconnect();
 					} );
 
-					EwscMonitor.EwcsWebLocation = "";
+					EwscMonitor.EwscWebLocation = "";
 					myConnectActive = false;
 					myLastConnectResponse = "";
 					myEventSubId = "";
+					myConnectStatusTimer.Enabled = false;
 
 					removeEwscMsg( (int)curDataRow["PK"]);
 					return 1;
@@ -592,6 +654,10 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 
 		public static void showPin() {
 			MessageBox.Show(myLastConnectResponse);
+		}
+
+		public static void  SendAppsConnectedView() {
+			socketClient.Emit( "connectedapplication_check", "" );
 		}
 
 		public static Boolean sendBoatData(String boatId, String boatManufacturer, String boatModel
@@ -608,14 +674,16 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			return true;
 		}
 
-		public static Boolean sendAthleteData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div
+		public static Boolean sendPassData(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div, String gender
 			, String round, Int16 passNumber, Int16 speed, String rope, String split, String driverMemberId ) {
 			int curRound = int.Parse( round );
+			myDefaultRound = curRound;
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
 					, { "athleteDivision", div }
+					, { "athleteGender", gender }
 					, { "athleteCountry", athleteCountry.ToUpper() }
 					, { "athleteRegion", athleteRegion.ToUpper() }
 					, { "round", curRound }
@@ -638,7 +706,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 				sendMsg.Add( "driver", buildOfficialEntry( null ) );
 			}
 
-			addEwscMsg("athlete_data", JsonConvert.SerializeObject(sendMsg));
+			addEwscMsg("pass_data", JsonConvert.SerializeObject(sendMsg));
 			myCurrentDatetime = DateTime.Now;
 			return true;
 		}
@@ -797,6 +865,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
 			if ( curEvent.Equals("Jump") && myUseJumpTimes == false ) return new decimal[] { };
+			if (mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 
@@ -835,6 +904,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 
 		public static DataRow getBoatPath(String curEvent, String curMemberId, String curRound, String curPassNum ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return null;
+			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 
@@ -873,6 +943,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 
 		public static decimal[] getJumpMeasurement(String curEvent, String curMemberId, String curRound, String curPassNum) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
+			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 
@@ -927,6 +998,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
         }
 
 		private static DataTable getOfficialAssignments( String inEvent, String inEventGroup, Int16 inRound ) {
+			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append("SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt");
 			curSqlStmt.Append(", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation ");
@@ -944,6 +1016,7 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 		}
 
 		private static DataTable getDriverAssignment(String inEvent, String inEventGroup, String inRound) {
+			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append("SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt");
 			curSqlStmt.Append(", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation ");
@@ -969,7 +1042,6 @@ to “st”, “nt” (will always be empty), “mt” and “et”.
 			curSqlStmt.Append( "  AND T.MemberId = '" + inMemberId + "' " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
-
 
 		private static void getSanctionNum() {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;

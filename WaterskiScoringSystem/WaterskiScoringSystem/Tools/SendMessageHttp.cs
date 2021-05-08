@@ -517,6 +517,14 @@ namespace WaterskiScoringSystem.Tools {
 			} catch ( WebException e ) {
 				using ( WebResponse response = e.Response ) {
 					HttpWebResponse curResp = (HttpWebResponse)response;
+					if ( curResp == null ) {
+						MessageBox.Show( "Exception encountered making request for IWWF license, " + e.Message );
+						return null;
+					}
+					if ( curResp.StatusCode.Equals( "Unauthorized" ) ) {
+						MessageBox.Show( "Requested not Unauthorized" );
+						return null;
+					}
 					String respMsg = getResponseAsString( curResp );
 					return jsonSerializer.Deserialize<Dictionary<string, object>>( respMsg );
 				}
