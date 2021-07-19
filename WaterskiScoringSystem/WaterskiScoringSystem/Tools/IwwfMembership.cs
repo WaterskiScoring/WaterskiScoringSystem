@@ -62,7 +62,7 @@ namespace WaterskiScoringSystem.Tools {
 			try {
 				Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, "USA" + inMemberId, curTourDate );
 				if ( respMsg == null ) {
-					showNoLicenseMsg( inSanctionId, inMemberId, respMsg );
+					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
 					return false;
 				}
 
@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Tools {
 
 				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberId );
 				if ( curDataRow == null || (curDataRow["Federation"] == System.DBNull.Value) || ( (String)curDataRow["Federation"] ).ToLower().Equals( "usa" ) ) {
-					showNoLicenseMsg( inSanctionId, inMemberId, respMsg );
+					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
 					return false;
 				}
 
@@ -90,24 +90,32 @@ namespace WaterskiScoringSystem.Tools {
 			DataRow curRow = curDataTable.Rows[0];
 			String federationCode = (String)curRow["FederationCode"];
 			if ( federationCode.Equals( "USA" ) ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, null );
+				showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 				return false;
 			}
 			String foreignIDStatus = (String)curRow["ForeignIDStatus"];
 			if ( !( foreignIDStatus.Equals( "Available" ) ) ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, null );
+				showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 				return false;
 			}
 			String foreignFederationID = (String)curRow["ForeignFederationID"];
+			if ( foreignFederationID.Length == 0 ) {
+				showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, null );
+				return false;
+			}
+			if ( !(foreignFederationID.Substring(0, federationCode.Length ).Equals( federationCode )) ) foreignFederationID = federationCode + foreignFederationID;
 
-			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, federationCode + foreignFederationID, curTourDate );
+			// Temporarily bypassing license check for foreign skiers that have a ForeignFederationID
+			//if ( foreignFederationID.Length > 0 ) return true;
+
+			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, foreignFederationID, curTourDate );
 			if ( respMsg == null ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, respMsg );
+				showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, respMsg );
 				return false;
 			}
 
 			if ( readRespMsg( respMsg ) ) return true;
-			showNoLicenseMsg( inSanctionId, inMemberId, respMsg );
+			showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, respMsg );
 			return false;
 
 		}
@@ -125,24 +133,29 @@ namespace WaterskiScoringSystem.Tools {
 			return SendMessageHttp.getMessageDictionaryPostMessage( IwwfWebLocation, curHeaderParams, "application/Json", jsonMsg, null, null );
 		}
 
-		private static void showNoLicenseMsg( String inSanctionId, String inMemberId, Dictionary<string, object> respMsg ) {
+		private static void showNoLicenseMsg( String inSanctionId, String inMemberIdAwsa, String inMemberIdForeign, Dictionary<string, object> respMsg ) {
 			String msg = "";
 			String newLine = "\r\n";
 			ShowMessage showMessage = new ShowMessage();
 
 			if ( respMsg == null ) {
-				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberId );
-				showMessage.Message = (String)curDataRow["SkierName"] + " doesn't have an active IWWF license therefore not permitted to ski in class L/R.  Event class changed to E";
+				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberIdAwsa );
+				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
+					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
+					+ "{4}Event class changed to E"
+					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine );
+				showMessage.Message = msg;
 				showMessage.ShowDialog();
 				return;
 			}
 
 			Dictionary<string, object> athleteAttrList = getAttributeDictionary( respMsg, "Athlete" );
 			if ( athleteAttrList == null ) {
-				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberId );
-				msg = String.Format( "{0} doesn't have an IWWF license available "
-					+ "{1}Skier not permitted to ski in class L/R, event class changed to E"
-					, curDataRow["SkierName"], newLine );
+				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberIdAwsa );
+				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
+					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
+					+ "{4}Event class changed to E"
+					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine );
 				Log.WriteFile( msg );
 				Cursor.Current = Cursors.Default;
 				showMessage.Message = msg;
@@ -153,11 +166,13 @@ namespace WaterskiScoringSystem.Tools {
 			String iwwfLicensePurchaseLink = getAttributeValue( respMsg, "PurchaseLink" );
 			ArrayList licenseList = getAttributeList( respMsg, "Licenses" );
 			if ( licenseList == null || licenseList.Count == 0 ) {
-				msg = String.Format( "{0} {1} {2} found but IWWF license not available "
-					+ "{3}Skier not permitted to ski in class L/R, event class changed to E"
-					+ "{4}Skier can purchase a license at"
-					+ "{5}{6}"
-					, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"], newLine, newLine, newLine, iwwfLicensePurchaseLink );
+				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
+					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
+					+ "{4}Event class changed to E"
+					+ "{5}Skier can purchase a license at"
+					+ "{6}{7}"
+					, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine
+					, newLine, newLine, iwwfLicensePurchaseLink );
 				Log.WriteFile( msg );
 				Cursor.Current = Cursors.Default;
 				showMessage.Message = msg;
@@ -165,11 +180,13 @@ namespace WaterskiScoringSystem.Tools {
 				return;
 			}
 
-			msg = String.Format( "{0} {1} {2} found but IWWF license not available"
-				+ "{3}Skier not permitted to ski in class L/R, event class changed to E"
-				+ "{4}Skier can purchase a license at {5}{6}"
-				, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"]
-				, newLine, newLine, newLine, iwwfLicensePurchaseLink );
+			msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
+				+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
+				+ "{4}Event class changed to E"
+				+ "{5}Skier can purchase a license at"
+				+ "{6}{7}"
+				, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine
+				, newLine, newLine, iwwfLicensePurchaseLink );
 			Log.WriteFile( msg  );
 			Cursor.Current = Cursors.Default;
 			showMessage.Message = msg;
@@ -184,8 +201,13 @@ namespace WaterskiScoringSystem.Tools {
 				ArrayList respFailedList = getAttributeList( respMsgModelList, "model.IWWFAthleteId" );
 
 				String respFailedMsg2 = "";
-				if ( respFailedList.Count > 0 ) respFailedMsg2 = (String)respFailedList[0];
-				Log.WriteFile( String.Format( "validateIwwfMembership:Request Failed: {0} {1}", respFailedMsg, respFailedMsg2 ) );
+				if ( respFailedList == null ) {
+					Log.WriteFile( "validateIwwfMembership:Request Failed" );
+				
+				} else {
+					if ( respFailedList.Count > 0 ) respFailedMsg2 = (String)respFailedList[0];
+					Log.WriteFile( String.Format( "validateIwwfMembership:Request Failed: {0} {1}", respFailedMsg, respFailedMsg2 ) );
+				}
 
 				Cursor.Current = Cursors.Default;
 				return false;

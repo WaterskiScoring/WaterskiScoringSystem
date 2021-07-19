@@ -524,7 +524,16 @@ namespace WaterskiScoringSystem.Tools {
         }
 		public bool importMemberDataCurrent(String tourType) {
 			myTourTypePickAndChoose = false;
-			if ( tourType != null && tourType.ToLower().Equals( "pick" ) ) myTourTypePickAndChoose = true;
+			if ( tourType != null && tourType.ToLower().Equals( "pick" ) ) {
+				DialogResult msgResp = MessageBox.Show( "You have choosen to import registrations using a Pick & Choose format."
+					+ "\nThis format will create separate running orders for individual rounds"
+					+ "\nAre you sure you want to continue with this format?"
+					, "Warning",
+					MessageBoxButtons.YesNo,
+					MessageBoxIcon.Warning,
+					MessageBoxDefaultButton.Button1 );
+				if ( msgResp == DialogResult.Yes ) myTourTypePickAndChoose = true;
+			}
 			return importMemberDataDialog( false );
 		}
 		public bool importMemberDataNcwsa( ) {

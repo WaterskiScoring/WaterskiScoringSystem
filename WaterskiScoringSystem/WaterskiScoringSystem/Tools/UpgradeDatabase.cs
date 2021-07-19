@@ -35,13 +35,13 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.22', 22.22, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.31', 22.31, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
                     copyDatabaseFile();
                 }
-                if (myDatabaseVersion < 22.20M ) {
+                if (myDatabaseVersion < 22.29M ) {
                     if (openDbConn()) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );
@@ -52,12 +52,12 @@ namespace WaterskiScoringSystem.Tools {
                         loadTrickList();
                     }
                 }
-                if (myDatabaseVersion < 22.12M) {
+                if (myDatabaseVersion < 22.28M) {
                     if ( openDbConn() ) {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 22.22M ) {
+                if ( myDatabaseVersion < 22.30M ) {
                     if ( openDbConn() ) {
                         loadListValues();
                     }

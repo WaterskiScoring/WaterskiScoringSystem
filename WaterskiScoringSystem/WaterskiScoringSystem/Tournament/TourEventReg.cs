@@ -393,14 +393,15 @@ namespace WaterskiScoringSystem.Tournament {
 		private String setSkierEventClass( String inEventClass, String inEvent, String inAgeDiv ) {
 			String curSkierEventClass = "";
 			String curTourSkierEventClass = getSkierTourEventClass( (String)myTourRow["Class"] );
-			
+			if ( inEventClass.Trim().Length == 0 ) curSkierEventClass = curTourSkierEventClass;
+
 			if ( inEventClass.Trim().Length > 0 ) {
 				if ( validSkierClass( inEventClass, (String)myTourRow["Class"] ) ) {
 					curSkierEventClass = inEventClass;
 				} else {
 					curSkierEventClass = curTourSkierEventClass;
 				}
-				
+
 				/*
 				 * Set the skier event class when the tournament is an R (World Record) tournament
 				 */
@@ -424,7 +425,7 @@ namespace WaterskiScoringSystem.Tournament {
 				|| ( (String)myTourRow["Class"] ).Equals( "B" )
 				|| ( (String)myTourRow["Class"] ).Equals( "R" ) ) {
 
-				if ( ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) return inEventClass;
+				if ( ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) return curSkierEventClass;
 
 				if ( inAgeDiv.Equals( "OM" ) || inAgeDiv.Equals( "OW" ) ) return "R";
 
@@ -443,7 +444,7 @@ namespace WaterskiScoringSystem.Tournament {
 					curSqlStmt.Append("SELECT SanctionId, MemberId, AgeGroup, EventGroup, EventGroup, Event, " + curEventRound + ", RunOrder, GETDATE(), '', RankingScore ");
 					curSqlStmt.Append("FROM EventRunOrder ");
 					curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "' ");
-					curSqlStmt.Append("AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' ");
+					curSqlStmt.Append("AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "' AND Round = " + curEventRound );
 					DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 					if ( curDataTable.Rows.Count == 0 ) {
 						curSqlStmt = new StringBuilder("");
@@ -1033,12 +1034,12 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getDataBySkierEvent( String inSanctionId, String inMemberId, String inAgeGroup, String inEvent ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT E.PK, E.SanctionId, E.MemberId, E.AgeGroup, E.Event, E.EventGroup, E.RunOrder, E.TeamCode, " );
+            curSqlStmt.Append( "SELECT R.PK, R.SanctionId, R.MemberId, R.AgeGroup, E.Event, E.EventGroup, E.RunOrder, E.TeamCode, " );
             curSqlStmt.Append(" E.EventClass, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore, R.SkierName ");
-            curSqlStmt.Append( " FROM EventReg E" );
-            curSqlStmt.Append( "      INNER JOIN TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup" );
-            curSqlStmt.Append( " WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "   AND E.AgeGroup = '" + inAgeGroup + "' AND E.Event = '" + inEvent + "'" );
+            curSqlStmt.Append( " FROM TourReg R" );
+            curSqlStmt.Append( "      LEFT OUTER JOIN EventReg E ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup" );
+            curSqlStmt.Append( " WHERE R.SanctionId = '" + inSanctionId + "' AND R.MemberId = '" + inMemberId + "' AND E.Event = '" + inEvent + "'" );
+            curSqlStmt.Append( "   AND R.AgeGroup = '" + inAgeGroup + "'" );
             curSqlStmt.Append( " ORDER BY SkierName " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}

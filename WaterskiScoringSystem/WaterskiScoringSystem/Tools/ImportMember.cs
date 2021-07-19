@@ -45,7 +45,20 @@ namespace WaterskiScoringSystem.Tools {
 
 		private void initImportMember( DataRow inTourRow, String tourType ) {
 			myTourTypePickAndChoose = false;
-			if ( tourType != null && tourType.ToLower().Equals("pick")) myTourTypePickAndChoose = true;
+			if ( tourType != null && tourType.ToLower().Equals( "pick" ) ) {
+				DialogResult msgResp = MessageBox.Show( "You have choosen to import registrations using a Pick & Choose format."
+					+ "\nThis format will create separate running orders for individual rounds"
+					+ "\nAre you sure you want to continue with this format?"
+					, "Warning",
+					MessageBoxButtons.YesNo,
+					MessageBoxIcon.Warning,
+					MessageBoxDefaultButton.Button1 );
+				if ( msgResp == DialogResult.Yes ) {
+					myTourTypePickAndChoose = true;
+				} else {
+					return;
+				}
+			}
 
 			if ( inTourRow == null ) {
 				mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -633,17 +646,25 @@ namespace WaterskiScoringSystem.Tools {
 			}
 
             String DriverSlalomRating = (String) curImportMemberEntry["DriverSlalom"];
-            String DriverTrickRating = (String) curImportMemberEntry["DriverTrick"];
-            String DriverJumpRating = (String) curImportMemberEntry["DriverJump"];
+			if ( DriverSlalomRating.ToLower().Equals( "unrated" ) ) DriverSlalomRating = "";
+			String DriverTrickRating = (String) curImportMemberEntry["DriverTrick"];
+			if ( DriverTrickRating.ToLower().Equals( "unrated" ) ) DriverTrickRating = "";
+			String DriverJumpRating = (String) curImportMemberEntry["DriverJump"];
+			if ( DriverJumpRating.ToLower().Equals( "unrated" ) ) DriverJumpRating = "";
 
-            String ScorerSlalomRating = (String) curImportMemberEntry["ScorerSlalom"];
-            String ScorerTrickRating = (String) curImportMemberEntry["ScorerTrick"];
-            String ScorerJumpRating = (String) curImportMemberEntry["ScorerJump"];
+			String ScorerSlalomRating = (String) curImportMemberEntry["ScorerSlalom"];
+			if ( ScorerSlalomRating.ToLower().Equals( "unrated" ) ) ScorerSlalomRating = "";
+			String ScorerTrickRating = (String) curImportMemberEntry["ScorerTrick"];
+			if ( ScorerTrickRating.ToLower().Equals( "unrated" ) ) ScorerTrickRating = "";
+			String ScorerJumpRating = (String) curImportMemberEntry["ScorerJump"];
+			if ( ScorerJumpRating.ToLower().Equals( "unrated" ) ) ScorerJumpRating = "";
 
-            String SafetyOfficialRating = (String) curImportMemberEntry["Safety"];
-            String TechControllerRating = (String) curImportMemberEntry["TechController"];
+			String SafetyOfficialRating = (String) curImportMemberEntry["Safety"];
+			if ( SafetyOfficialRating.ToLower().Equals( "unrated" ) ) SafetyOfficialRating = "";
+			String TechControllerRating = (String) curImportMemberEntry["TechController"];
+			if ( TechControllerRating.ToLower().Equals( "unrated" ) ) TechControllerRating = "";
 
-            curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberId + "'");
+			curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberId + "'");
             DataTable curMemberDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 			if ( curMemberDataTable.Rows.Count > 0 ) {
 				lastRecModDate = (DateTime) curMemberDataTable.Rows[0]["UpdateDate"];

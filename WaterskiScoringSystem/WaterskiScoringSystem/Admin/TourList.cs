@@ -526,8 +526,11 @@ namespace WaterskiScoringSystem.Admin {
 
                         foreach ( DataGridViewRow curRow in dataGridView.Rows ) {
                             if ( curRow.Cells["SanctionId"].Value.ToString() == Properties.Settings.Default.AppSanctionNum ) {
-                                this.MdiParent.Text = Properties.Settings.Default.AppTitle + " - " + Properties.Settings.Default.BuildVersion + " - " + Properties.Settings.Default.BuildVersion + " - " + curRow.Cells["TourName"].Value.ToString();
-                                Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
+								this.MdiParent.Text = Properties.Settings.Default.AppTitle
+									+ " - " + Properties.Settings.Default.BuildVersion
+									+ " - " + Properties.Settings.Default.AppSanctionNum
+									+ " - " + dataGridView.Rows[myTourViewIdx].Cells["TourName"].Value.ToString();
+								Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
                             }
                         }
                     } else {
@@ -1210,7 +1213,7 @@ namespace WaterskiScoringSystem.Admin {
                 };
 
                 try {
-                    Log.OpenFile( null );
+                    Log.OpenFile();
                     Log.WriteFile( curMethodName + ":begin: " );
 
                     try {
@@ -1229,8 +1232,6 @@ namespace WaterskiScoringSystem.Admin {
 
                 } catch (Exception excp) {
                     MessageBox.Show( "Error attempting to update tournament information \n" + excp.Message );
-                } finally {
-                    Log.CloseFile();
                 }
             }
         }
@@ -1286,7 +1287,6 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private void setCurrentTournament() {
-            Log.CloseFile();
             MessageBox.Show( "Preparing tournament for scoring.  This will take a moment" );
 
             String curDataLoc = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();
@@ -1299,9 +1299,12 @@ namespace WaterskiScoringSystem.Admin {
 
                     Properties.Settings.Default.AppSanctionNum = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"].Value.ToString();
                     Properties.Settings.Default.ExportDirectory = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();
-                    Log.OpenFile( null );
+                    Log.OpenFile();
 
-                    this.MdiParent.Text = Properties.Settings.Default.AppTitle + " - " + Properties.Settings.Default.BuildVersion + " - " + dataGridView.Rows[myTourViewIdx].Cells["TourName"].Value.ToString();
+                    this.MdiParent.Text = Properties.Settings.Default.AppTitle 
+						+ " - " + Properties.Settings.Default.BuildVersion
+						+ " - " + Properties.Settings.Default.AppSanctionNum
+						+ " - " + dataGridView.Rows[myTourViewIdx].Cells["TourName"].Value.ToString();
                     Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
                     String[] curLog = { "Tournament activated: " + this.MdiParent.Text };
                     Log.WriteFile( curLog );

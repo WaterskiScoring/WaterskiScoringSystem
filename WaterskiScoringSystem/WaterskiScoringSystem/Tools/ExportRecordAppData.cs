@@ -1130,7 +1130,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1202,7 +1202,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1264,7 +1264,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString() );
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1327,7 +1327,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString() );
+					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {

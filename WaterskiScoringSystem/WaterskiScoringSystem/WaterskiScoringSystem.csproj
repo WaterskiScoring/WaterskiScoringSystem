@@ -49,7 +49,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
     <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>7.0.1.%2a</ApplicationVersion>
+    <ApplicationVersion>7.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -389,6 +389,7 @@
       <DependentUpon>TourMergeSanctionNum.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\TourProperties.cs" />
+    <Compile Include="Externalnterface\WscHandler.cs" />
     <Compile Include="Jump\JumpSummaryAwards.cs">
       <SubType>Form</SubType>
     </Compile>

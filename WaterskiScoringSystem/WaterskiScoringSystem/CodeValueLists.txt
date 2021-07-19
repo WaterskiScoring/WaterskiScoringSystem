@@ -295,7 +295,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
 0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		105	(32.0m) 45kph 5ft 7/11/2020 Matthew Greenwood
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
-0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		9530	7/17/2020 Jake Abelson
+0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		11100	5/15/2021 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		112.00	4 bouys at 10.75m @ 58 kph (39 off @ 36 mph) 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		9210	9/12/2020 Erick Macias Sedano
@@ -338,7 +338,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		136	(41.5m) 51kph 5ft 9/8/2018 Frankie Dees
-0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 9/13/2020 Steve Raphael
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.50	2.5 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 6/19/2021 Steve Raphael
 0	AWSARecords	M8-T		142	Mens 8 - Trick		2760	7/17/2014 Stan Switzer
 0	AWSARecords	M8-J		143	Mens 8 - Jump		97	(29.5m) 5 48kph 8/31/2014 Brad Conger
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		88	4 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/25/2018 Jim Kinney 9/29/2019 John Autore
@@ -365,7 +365,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W5-S		221	Womens 5 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 11/7/2019 Jennifer Leachman-LaPoint
 0	AWSARecords	W5-T		222	Womens 5 - Trick		5060	8/18/2007 Kay Nichols 9/18/2016 Lydia Robsham
 0	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.5) 48kph 5ft 8/9/2017 Joy Kelly
-0	AWSARecords	W6-S		231	Womens 6 - Slalom		93	3 bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 7/22/2018 Joy Kelley
+0	AWSARecords	W6-S		231	Womens 6 - Slalom		93	3 bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 7/22/2018 Joy Kelley 6/13/2021 Phillipa Shedd
 0	AWSARecords	W6-T		232	Womens 6 - Trick		3940	7/24/2019 Joy Kelley
 0	AWSARecords	W6-J		233	Womens 6 - Jump		122	 (37.3m) 48kph 5ft 9/1/2018 Joy Kelley
 0	AWSARecords	W7-S		241	Womens 7 - Slalom		86	2 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 6/20/2018 Cyndi Benzel
@@ -517,8 +517,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	EndOfTourReports	F8		7	######CJ.PRN			Chief Judge Report (PRN)
 0	EndOfTourReports	F9		8	######CJ.txt			Chief Judge Report data file
 0	EndOfTourReports	F11		9	######CS.htm			Condensed scorebook web report
-0	EndOfTourReports	F13		10	######JT.txt			Boat Path Analysis Report for Jump as a text file ELR only
-0	EndOfTourReports	F19		11	######ST.txt			Boat Path Analysis Report for Slalom as a text file ELR only
+0	EndOfTourReports	F13		10	######JT.htm			Boat Path Analysis Report for Jump as a HTML file ELR only
+0	EndOfTourReports	F19		11	######ST.htm			Boat Path Analysis Report for Slalom as a HTML file ELR only
 0	EndOfTourReports	F14		12	######OD.txt			Official credit data file
 0	EndOfTourReports	F16		13	######SD.PRN			Safety Director Report (PRN)
 0	EndOfTourReports	F17		14	######SD.txt			Safety Director Report data file
@@ -587,25 +587,26 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	Federation	mri		46	Mauritius			
 0	Federation	mex		47	Mexico			
 0	Federation	mon		48	Monaco			
-0	Federation	nam		49	Namibia			
-0	Federation	ned		50	Netherlands			
-0	Federation	nzl		51	New Zealand			
-0	Federation	nor		52	Norway			
-0	Federation	per		53	Peru			
-0	Federation	phi		54	Philippines			
-0	Federation	pol		55	Poland			
-0	Federation	por		56	Portugal			
-0	Federation	pur		57	Puerto Rico			
-0	Federation	rus		58	Russia			
-0	Federation	ser		59	Serbia			
-0	Federation	sin		60	Singapore			
-0	Federation	svk		61	Slovakia			
-0	Federation	rsa		62	South Africa			
-0	Federation	esp		63	Spain			
-0	Federation	sur		64	Suriname			
-0	Federation	swe		65	Sweden			
-0	Federation	sui		66	Switzerland			
-0	Federation	tha		67	Thailand			
+0	Federation	mar		49	Morrocco			
+0	Federation	nam		50	Namibia			
+0	Federation	ned		51	Netherlands			
+0	Federation	nzl		52	New Zealand			
+0	Federation	nor		53	Norway			
+0	Federation	per		54	Peru			
+0	Federation	phi		55	Philippines			
+0	Federation	pol		56	Poland			
+0	Federation	por		57	Portugal			
+0	Federation	pur		58	Puerto Rico			
+0	Federation	rus		59	Russia			
+0	Federation	ser		60	Serbia			
+0	Federation	sin		61	Singapore			
+0	Federation	svk		62	Slovakia			
+0	Federation	rsa		63	South Africa			
+0	Federation	esp		64	Spain			
+0	Federation	sur		65	Suriname			
+0	Federation	swe		66	Sweden			
+0	Federation	sui		67	Switzerland			
+0	Federation	tha		68	Thailand			
 0	Federation	tur		69	Turkey			
 0	Federation	tkm		70	Turkmenistan			
 0	Federation	ukr		71	Ukraine			
@@ -678,10 +679,10 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfOverallAdj	YG-J		23	10	10	10	Overall Adjustment for Jump
 0	IwwfOverallAdj	JB-S		14	0	0	0	Overall Adjustment for Slalom
 0	IwwfOverallAdj	JB-T		15	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JB-J		16	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	JB-J		16	-10	-10	-10	Overall Adjustment for Jump
 0	IwwfOverallAdj	JG-S		24	0	0	0	Overall Adjustment for Slalom
 0	IwwfOverallAdj	JG-T		25	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JG-J		26	7	7	7	Overall Adjustment for Jump
+0	IwwfOverallAdj	JG-J		26	-7	-7	-7	Overall Adjustment for Jump
 0	IwwfOverallAdj	IB-S		31	0	0	0	Overall Adjustment for Slalom
 0	IwwfOverallAdj	IB-T		32	0	0	0	Overall Adjustment for Trick
 0	IwwfOverallAdj	IB-J		33	-20	-20	-20	Overall Adjustment for Jump
@@ -694,12 +695,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfOverallAdj	IW-S		61	24	24	24	Overall Adjustment for Slalom
 0	IwwfOverallAdj	IW-T		62	0	0	0	Overall Adjustment for Trick
 0	IwwfOverallAdj	IW-J		63	-17	-17	-17	Overall Adjustment for Jump
-0	IwwfOverallAdj	JM-S		71	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JM-S		71	-6	-6	-6	Overall Adjustment for Slalom
 0	IwwfOverallAdj	JM-T		72	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JM-J		73	-25	-25	-25	Overall Adjustment for Jump
-0	IwwfOverallAdj	JW-S		81	24	24	24	Overall Adjustment for Slalom
+0	IwwfOverallAdj	JM-J		73	-20	-20	-20	Overall Adjustment for Jump
+0	IwwfOverallAdj	JW-S		81	-6	-6	-6	Overall Adjustment for Slalom
 0	IwwfOverallAdj	JW-T		82	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JW-J		83	-17	-17	-17	Overall Adjustment for Jump
+0	IwwfOverallAdj	JW-J		83	-13	-13	-13	Overall Adjustment for Jump
 0	IwwfOverallAdj	S1-S		91	12	12	12	Overall Adjustment for Slalom
 0	IwwfOverallAdj	S1-T		92	0	0	0	Overall Adjustment for Trick
 0	IwwfOverallAdj	S1-J		93	-20	-20	-20	Overall Adjustment for Jump
@@ -774,23 +775,24 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22561	IwwfRampMax	L6		86	5 Foot	0.235	5	
 22561	IwwfRampMax	L7		87	5 Foot	0.235	5	
 22561	IwwfRampMax	L8		88	5 Foot	0.235	5	
-0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		55.00	1 bouys at 10.25 @ 58kph 7/12/2020 Federico Jaramillo
+0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		55	1 bouys at 10.75 @ 58kph 6/21/2020 Federico Jaramillo
+0	IwwfRecords	IG-S		481	Intl Girls U17 - Slalom		56	2 bouys at 10.75 @ 55kph 1/8/2017 Brook Baldwin
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
-0	IwwfRecords	IM-O		394	Intl Men Overall		2820.79	4/20/2017 Adam Sedlmajer
+0	IwwfRecords	IM-O		394	Intl Men Overall		2819.76	4/20/2017 Adam Sedlmajer
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		70.50	4.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
 0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
-0	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/25/2016 Jacinta Carroll
-0	IwwfRecords	IW-O		404	Intl Women Overall		3126.52	5/20/2012 Natallia Berdnikava
-0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		63.5	3.5 at 10.75 @ 58kph 1/1/2019 Initial benchmark
-0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12050.00	10/27/2019 Patricio Font
-0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 1/1/2019 Initial benchmark
-0	IwwfRecords	JM-O		414	Intl Junior Men Overall		2200.95	 1/1/2019 Initial benchmark
-0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		62	2 @ 10.75 55 kph 1/1/2019 Initial benchmark
-0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10440	 1/1/2019 Initial benchmark
-0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		46	5ft (1.5m)at 51 kph max 1/1/2019 Initial benchmark
-0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2685.26	 1/1/2019 Initial benchmark
+0	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/27/2016 Jacinta Carroll
+0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26		5/19/2012 Natallia Berdnikava
+0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		63	3 at 10.25 @ 58kph 11/30/2003 William Asher
+0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12220.00	11/18/2020 Patricio Font
+0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 8/8/2010 Tim Bradstreet
+0	IwwfRecords	JM-O		414	Intl Junior Men Overall		2796.92	7/7/2019 Joel Poland
+0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		61.00	1 @ 10.25 55 kph 8/16/2020 Jamie Bull
+0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10530	7/7/2019 Anna Gay
+0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		46	5ft (1.5m)at 51 kph max 1/5/2017 Dominique Grondin-Allard
+0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2685.26	1/8/2017 Brooke Baldwin
 22600	IwwfSlalomMax	YB		51	49kph, 30mph	30	49	
 22601	IwwfSlalomMax	YG		52	49kph, 30mph	30	49	
 22600	IwwfSlalomMax	JB		53	55kph, 34mph	34	55	

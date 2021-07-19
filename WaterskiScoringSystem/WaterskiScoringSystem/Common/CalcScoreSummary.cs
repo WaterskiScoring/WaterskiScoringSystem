@@ -1608,7 +1608,7 @@ namespace WaterskiScoringSystem.Common {
 						+ " And RoundOverall = " + (byte)curEliteRow["Round"];
 					curFindRows = curSummaryDataTable.Select(curFilterCommand);
 					if (curFindRows.Length > 0) {
-						if (((String)curScoreRow["EventClassJump"]).Length == 0) {
+						if ( curScoreRow == null || ( (String)curScoreRow["EventClassJump"]).Length == 0) {
 							curScoreRow = curFindRows[0];
 							if (((String)curScoreRow["EventClassJump"]).Length > 0) curScoreRow = null;
 						}
@@ -5988,7 +5988,7 @@ namespace WaterskiScoringSystem.Common {
 					if ( inRound == Convert.ToInt16( (byte)curRow["Round"] ) ) return Convert.ToInt16( returnValue );
 				}
 			}
-			return (short)0;
+			return (short)returnValue;
 		}
 
 		private DataTable getEliteSkiersInAgeGroup( String inEvent, String inSanctionId ) {

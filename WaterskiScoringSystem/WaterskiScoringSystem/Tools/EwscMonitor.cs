@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Diagnostics;
 using System.Windows.Forms;
 
-using Quobject.SocketIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet;
+using Quobject.SocketIoClientDotNet.Client;
+using Quobject.Collections.Immutable;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,7 +26,6 @@ namespace WaterskiScoringSystem.Tools {
 		private static String mySanctionNum;
 		private static String myEventSubId = "";
 
-		private static System.Timers.Timer myConnectStatusTimer; 
 		private static DataRow myTourRow;
 		
 		private static Boolean myConnectActive = false;
@@ -49,9 +50,6 @@ namespace WaterskiScoringSystem.Tools {
 		 */
 		public static String EwscWebLocation = "";
 		private static String EwscWebLocationDefault = "http://ewscdata.com:40000/";
-		//private static String EwscWebLocationDefault = "ws://localhost/chat";
-		//private static String EwscWebLocationDefault = "http://localhost/chat";
-		//ws://' + location.host + '/chat
 
 		/*
 		Changes we discussed have been made – below is email sent all the other users detailing what needs to happen
@@ -85,6 +83,7 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		public static void execEwscMonitoring() {
+			if ( !( myConnectActive ) ) EwscMonitor.EwscWebLocation = "";
 			if (EwscMonitor.EwscWebLocation.Length > 1) return;
 			EwscMonitor.EwscWebLocation = EwscWebLocationDefault;
 			String returnValue = startEwscMonitoring();
@@ -112,82 +111,94 @@ namespace WaterskiScoringSystem.Tools {
 				};
 			String jsonData = JsonConvert.SerializeObject(sendConnectionMsg);
 
-			Log.WriteFile(curMethodName + String.Format("Connected to {0}", EwscWebLocation));
-			socketClient = IO.Socket(EwscWebLocation);
+			IO.Options connOptions = new IO.Options();
+			connOptions.IgnoreServerCertificateValidation = true;
+			connOptions.Timeout = 500;
+			connOptions.Reconnection = true;
+			connOptions.Transports = Quobject.Collections.Immutable.ImmutableList.Create<string>( "websocket" );
+			socketClient = IO.Socket( EwscWebLocation, connOptions );
 
 			socketClient.On(Socket.EVENT_CONNECT, () => {
 				Log.WriteFile(curMethodName + String.Format("Connection: {0}", jsonData));
 				socketClient.Emit("manual_connection_parameter", jsonData);
 			});
+
 			startClientListeners();
 
-			myConnectStatusTimer = new System.Timers.Timer();
-			myConnectStatusTimer.Interval = 1000 * 60 * 10;
-			myConnectStatusTimer.Elapsed += timerCheckStatus;
-			myConnectStatusTimer.AutoReset = true;
-			myConnectStatusTimer.Enabled = true;
-
 			while ( true) {
-				System.Threading.Thread.Sleep(2000);
-				int returnMsg = checkForMsgToSend();
-				if ( returnMsg > 0 ) {
-					EwscMonitor.EwscWebLocation = "";
-					myConnectActive = false;
-					myLastConnectResponse = "";
-					myEventSubId = "";
-					myConnectStatusTimer.Enabled = false;
-					return "Exit WaterSkiConnect";
+				try {
+					System.Threading.Thread.Sleep( 2000 );
+					int returnMsg = checkForMsgToSend();
+					if ( returnMsg > 0 ) {
+						EwscMonitor.EwscWebLocation = "";
+						myConnectActive = false;
+						myLastConnectResponse = "";
+						myEventSubId = "";
+						return "Exit WaterSkiConnect";
+					}
+				
+				} catch ( Exception ex ) {
+					Log.WriteFile( "startEwscMonitoring: Exception encountered " + ex.Message );
 				}
 			}
 		}
 
 		private static void startClientListeners() {
-			socketClient.On("connect_confirm", (data) => {
-				myLastConnectResponse = data.ToString();
-				Log.WriteFile( String.Format( "connect_confirm {0}", myLastConnectResponse ) );
-				showMsg( "connect_confirm", String.Format("connect_confirm: {0}", data));
-			});
-			
-			socketClient.On( "status_response", ( data ) => {
-				checkConnectStatus( data.ToString() );
-			} );
-			
-			socketClient.On( "connectedapplication_response", ( data ) => {
-				Log.WriteFile( String.Format( "connectedapplication_response {0}", data.ToString() ) );
-				//showMsg( "connectedapplication_response", String.Format( "connectedapplication_response {0}", data ) );
-			} );
+			try {
+				socketClient.On( "connect_confirm", ( data ) => {
+					myLastConnectResponse = data.ToString();
+					Log.WriteFile( String.Format( "connect_confirm {0}", myLastConnectResponse ) );
+					showMsg( "connect_confirm", String.Format( "connect_confirm: {0}", data ) );
+				} );
 
-			socketClient.On( "connectedapplication_check", ( data ) => {
-				Log.WriteFile( String.Format( "connectedapplication_check {0}", data.ToString() ) );
-				Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
-					 { "application", "WSTIMS" }
-				};
-				//					 { "application", Properties.Settings.Default.AppTitle }
+				socketClient.On( "status_response", ( data ) => {
+					checkConnectStatus( data.ToString() );
+				} );
 
-				String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
-				socketClient.Emit( "connectedapplication_response", jsonData );
-			} );
+				socketClient.On( "connectedapplication_response", ( data ) => {
+					Log.WriteFile( String.Format( "connectedapplication_response {0}", data.ToString() ) );
+				} );
 
-			socketClient.On("boat_times", (data) => {
-				saveBoatTimes(data.ToString());
-			});
+				socketClient.On( "connectedapplication_check", ( data ) => {
+					Log.WriteFile( String.Format( "connectedapplication_check {0}", data.ToString() ) );
+					Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
+						{ "application", "WSTIMS" }
+					};
 
-			socketClient.On("scoring_result", (data) => {
-				showMsg("scoring_result", String.Format("scoring_result {0}", data));
-			});
+					String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
+					socketClient.Emit( "connectedapplication_response", jsonData );
+				} );
 
-			socketClient.On("boatpath_data", (data) => {
-				saveBoatPath(data.ToString());
-			});
+				socketClient.On( "boat_times", ( data ) => {
+					saveBoatTimes( data.ToString() );
+				} );
 
-			socketClient.On("trickscoring_detail", (data) => {
-				showMsg("trickscoring_detail", String.Format("trickscoring_detail {0}", data));
-			});
+				socketClient.On( "scoring_result", ( data ) => {
+					showMsg( "scoring_result", String.Format( "scoring_result {0}", data ) );
+				} );
 
-			socketClient.On("jumpmeasurement_score", (data) => {
-				saveJumpMeasurement(data.ToString());
-			});
-			
+				socketClient.On( "boatpath_data", ( data ) => {
+					saveBoatPath( data.ToString() );
+				} );
+
+				socketClient.On( "trickscoring_detail", ( data ) => {
+					showMsg( "trickscoring_detail", String.Format( "trickscoring_detail {0}", data ) );
+				} );
+
+				socketClient.On( "jumpmeasurement_score", ( data ) => {
+					saveJumpMeasurement( data.ToString() );
+				} );
+
+			} catch ( Exception ex ) {
+				Log.WriteFile( "startClientListeners: Exception encountered " + ex.Message );
+				
+				EwscMonitor.EwscWebLocation = "";
+				myConnectActive = false;
+				myLastConnectResponse = "";
+				myEventSubId = "";
+				
+				MessageBox.Show( "startClientListeners terminated: Exception encountered " + ex.Message );
+			}
 		}
 
 		private static void timerCheckStatus( Object source, System.Timers.ElapsedEventArgs e ) {
@@ -198,7 +209,6 @@ namespace WaterskiScoringSystem.Tools {
 			Dictionary<string, object> curMsgDataList = null;
 
 			try {
-				Log.WriteFile( "checkConnectStatus: Msg received: " + msg );
 				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
 				String curEventId = getAttributeValue( curMsgDataList, "eventId" );
 
@@ -236,7 +246,6 @@ namespace WaterskiScoringSystem.Tools {
 			Dictionary<string, object> curMsgDataList = null;
 
 			try {
-				Log.WriteFile( "saveBoatTimes: Msg received: " + msg );
 				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
 
 			} catch ( Exception ex ) {
@@ -284,11 +293,10 @@ namespace WaterskiScoringSystem.Tools {
 				curSqlStmt.Append(", getdate(), getdate()");
 				curSqlStmt.Append(" )");
 				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-				Log.WriteFile(curSqlStmt.ToString());
 
 			} catch (Exception ex) {
-					Log.WriteFile( "saveBoatTimes: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
-					MessageBox.Show("saveBoatTimes: Invalid data encountered: " + ex.Message);
+				Log.WriteFile( "saveBoatTimes: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
+				MessageBox.Show("saveBoatTimes: Invalid data encountered: " + ex.Message);
 			}
 		}
 
@@ -298,7 +306,6 @@ namespace WaterskiScoringSystem.Tools {
 			Dictionary<string, object> curMsgDataList = null;
 
 			try {
-				Log.WriteFile( "saveBoatPath: Msg received: " + msg );
 				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
 
 			} catch ( Exception ex ) {
@@ -356,7 +363,6 @@ namespace WaterskiScoringSystem.Tools {
 
 				curSqlStmt.Append(" )");
 				int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-				Log.WriteFile(curSqlStmt.ToString());
 
 			} catch (Exception ex ) {
 				Log.WriteFile( "saveBoatPath: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
@@ -525,7 +531,6 @@ namespace WaterskiScoringSystem.Tools {
 			Dictionary<string, object> curMsgDataList = null;
 
 			try {
-				Log.WriteFile( "saveJumpMeasurement: Msg received: " + msg );
 				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
 
 			} catch ( Exception ex ) {
@@ -561,11 +566,10 @@ namespace WaterskiScoringSystem.Tools {
 				curSqlStmt.Append( ", getdate(), getdate()" );
 				curSqlStmt.Append( " )" );
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-				Log.WriteFile( curSqlStmt.ToString() );
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "saveJumpMeasurement: Invalid data encountered: " + ex.Message );
 				Log.WriteFile( "saveJumpMeasurement: Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
+				MessageBox.Show( "saveJumpMeasurement: Invalid data encountered: " + ex.Message );
 			}
 		}
 
@@ -627,29 +631,34 @@ namespace WaterskiScoringSystem.Tools {
          * Check for messages to be sent
          */
 		private static int checkForMsgToSend() {
-			DataTable curDataTable = getEwscMsg();
-			foreach (DataRow curDataRow in curDataTable.Rows) {
-				if (((String)curDataRow["MsgType"]).Equals("Exit")) {
+			try {
+				DataTable curDataTable = getEwscMsg();
+				foreach ( DataRow curDataRow in curDataTable.Rows ) {
+					if ( ( (String)curDataRow["MsgType"] ).Equals( "Exit" ) ) {
 
-					socketClient.On( Socket.EVENT_DISCONNECT, () => {
-						Log.WriteFile( "checkForMsgToSend: Disconnection" );
-						socketClient.Disconnect();
-					} );
+						socketClient.On( Socket.EVENT_DISCONNECT, () => {
+							Log.WriteFile( "checkForMsgToSend: Disconnection" );
+							socketClient.Disconnect();
+						} );
 
-					EwscMonitor.EwscWebLocation = "";
-					myConnectActive = false;
-					myLastConnectResponse = "";
-					myEventSubId = "";
-					myConnectStatusTimer.Enabled = false;
+						EwscMonitor.EwscWebLocation = "";
+						myConnectActive = false;
+						myLastConnectResponse = "";
+						myEventSubId = "";
 
-					removeEwscMsg( (int)curDataRow["PK"]);
-					return 1;
+						removeEwscMsg( (int)curDataRow["PK"] );
+						return 1;
+					}
+
+					socketClient.Emit( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
+					removeEwscMsg( (int)curDataRow["PK"] );
 				}
-
-				socketClient.Emit( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
-				removeEwscMsg( (int)curDataRow["PK"]);
+				return 0;
+			
+			} catch ( Exception ex ) {
+				Log.WriteFile( "checkForMsgToSend: Exception encountered " + ex.Message );
+				return -1;
 			}
-			return 0;
 		}
 
 		public static void showPin() {
@@ -711,21 +720,156 @@ namespace WaterskiScoringSystem.Tools {
 			return true;
 		}
 
-		public static Boolean sendAthleteScore(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion
-			, Int16 passNumber, Int16 speed, String rope, String score) {
+		public static Boolean sendAthleteScore(String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String athleteGroup
+			, Int16 round, Int16 passNumber, Int16 speed, String rope, String score) {
+			myDefaultRound = round;
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
 					, { "athleteCountry", athleteCountry.ToUpper() }
 					, { "athleteRegion", athleteRegion.ToUpper() }
+					, { "round", round }
 					, { "passNumber", passNumber }
 					, { "speed", speed }
 					, { "rope", rope }
 					, { "score", score + "@" + speed.ToString() + "/" + rope }
 				};
 			addEwscMsg("scoring_score", JsonConvert.SerializeObject(sendMsg));
+			
+			sendLeaderBoard( athleteId, athleteEvent, athleteGroup, round );
+
 			return true;
+		}
+
+		private static void sendLeaderBoard( String athleteId, String athleteEvent, String athleteGroup, Int16 inRound ) {
+			ArrayList leaderBoard = new ArrayList();
+			Dictionary<string, dynamic> curSkier = null;
+			Dictionary<string, dynamic> curLeader = null;
+			String curFederation = "";
+
+			int curRow = 0;
+			DataTable curDataTable = getLeaderBoardData( athleteEvent, athleteGroup, inRound );
+			if ( curDataTable == null || curDataTable.Rows.Count <= 0 ) return;
+
+			try {
+				foreach ( DataRow curDataRow in curDataTable.Rows ) {
+					if ( ( (String)curDataRow["MemberId"] ).Equals( athleteId ) ) {
+						curFederation = "";
+						if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = (String)curDataRow["Federation"];
+						if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
+						if ( athleteEvent.Equals( "Slalom" ) ) {
+							curSkier = new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["FinalPassScore"], (String)curDataRow["FinalLen"], (byte)curDataRow["FinalSpeedKph"]) }
+							, { "score_buoys", (decimal)curDataRow["Score"] }
+							};
+						
+						} else if ( athleteEvent.Equals( "Jump" ) ) {
+							curSkier = new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+							};
+						}
+
+						break;
+					}
+
+					curRow++;
+				}
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
+			}
+
+			try {
+				curRow = 0;
+				DataRow curDataRow = curDataTable.Rows[0];
+				curFederation = "";
+				if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = (String)curDataRow["Federation"];
+				if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
+				if ( athleteEvent.Equals( "Slalom" ) ) {
+					curLeader = new Dictionary<string, object> {
+						{ "athleteId", (String)curDataRow["MemberId"] }
+						, { "athleteName", (String)curDataRow["SkierName"] }
+						, { "athleteCountry", curFederation.ToUpper() }
+						, { "athleteRegion", (String)curDataRow["State"] }
+						, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+						, { "athleteGroup", (String)curDataRow["EventGroup"] }
+						, { "position_current", Convert.ToInt32(curRow + 1) }
+						, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["FinalPassScore"], (String)curDataRow["FinalLen"], (byte)curDataRow["FinalSpeedKph"]) }
+						, { "score_buoys", (decimal)curDataRow["Score"] }
+					};
+				} else if ( athleteEvent.Equals( "Jump" ) ) {
+					curLeader = new Dictionary<string, object> {
+						{ "athleteId", (String)curDataRow["MemberId"] }
+						, { "athleteName", (String)curDataRow["SkierName"] }
+						, { "athleteCountry", curFederation.ToUpper() }
+						, { "athleteRegion", (String)curDataRow["State"] }
+						, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+						, { "athleteGroup", (String)curDataRow["EventGroup"] }
+						, { "position_current", Convert.ToInt32(curRow + 1) }
+						, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+					};
+				}
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
+			}
+
+			curRow = 0;
+			foreach ( DataRow curDataRow in curDataTable.Rows ) {
+				try {
+					curFederation = "";
+					if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = (String)curDataRow["Federation"];
+					if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
+
+					if ( athleteEvent.Equals( "Slalom" ) ) {
+						leaderBoard.Add( new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["FinalPassScore"], (String)curDataRow["FinalLen"], (byte)curDataRow["FinalSpeedKph"]) }
+							, { "score_buoys", (decimal)curDataRow["Score"] }
+							} );
+
+					} else if ( athleteEvent.Equals( "Jump" ) ) {
+						leaderBoard.Add( new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+							} );
+					}
+
+					curRow++;
+
+				} catch ( Exception ex ) {
+					MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
+					String curValue = ex.Message;
+				}
+			}
+
+			sendLeaderBoardMsg( athleteEvent, inRound, athleteGroup, curSkier, curLeader, leaderBoard );
 		}
 
 		/*
@@ -812,6 +956,28 @@ namespace WaterskiScoringSystem.Tools {
 			addEwscMsg( "start_list", JsonConvert.SerializeObject( startListMsg ) );
 		}
 
+		/*
+		   "leaderboardName": "Open Men Slalom",
+		  "division": "Open Men",
+		  "eventName": "Slalom",
+		  "round": 1,
+		  "current_skier": {
+		*/
+		private static void sendLeaderBoardMsg( String curEvent, int curRound, String curEventGroup, Dictionary<string, dynamic> curSkier, Dictionary<string, dynamic> curLeader, ArrayList leaderBoard ) {
+			Dictionary<string, object> leaderboardMsg = new Dictionary<string, object> {
+					{ "leaderboardName", curEventGroup }
+					, { "division", curEventGroup }
+					, { "eventName", curEvent }
+					, { "round", curRound }
+					, { "current_skier", curSkier }
+					, { "current_leader", curLeader }
+					, { "leaderboard_athletes", leaderBoard }
+				};
+
+			addEwscMsg( "leaderboard", JsonConvert.SerializeObject( leaderboardMsg ) );
+		}
+
+
 		public static Boolean sendOfficialsAssignments(String curEvent, String eventGroup, Int16 round ) {
 			int towerJudgeIdx = 1;
 			Boolean officialsAvailable = false;
@@ -862,83 +1028,156 @@ namespace WaterskiScoringSystem.Tools {
 
 		}
 
-		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal inPassScore ) {
+		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph, Decimal inPassScore ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
 			if ( curEvent.Equals("Jump") && myUseJumpTimes == false ) return new decimal[] { };
 			if (mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 
+			Int64 btPK = getBoatTimeKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
+			if ( btPK <= 0 ) return new decimal[] { };
+
+			/*
+			 * Retrieve boat time record for the specific record found during the search
+			 */
 			StringBuilder curSqlStmt = new StringBuilder("");
+			curSqlStmt.Append("SELECT * FROM BoatTime Where PK = " + btPK );
+			DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			if ( curDataTable.Rows.Count > 0 ) {
+				if ( curEvent.Equals( "Slalom" ) ) {
+					int curPassScore = Convert.ToInt32( Math.Floor( inPassScore ) ) + 1;
+					String timeKey = "BoatTimeBuoy" + curPassScore;
+					return new decimal[] { (decimal)curDataTable.Rows[0][timeKey] };
 
-			for ( int count = 0; count < 2; count++ ) {
-				curSqlStmt = new StringBuilder("");
-				curSqlStmt.Append("SELECT * FROM BoatTime ");
-				curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append("AND MemberId = '" + curMemberId + "' ");
-				curSqlStmt.Append("AND Event = '" + curEvent + "' ");
-				curSqlStmt.Append("AND Round = " + curRound + " ");
-				curSqlStmt.Append("AND PassNumber = " + curPassNum + " ");
-				curSqlStmt.Append("Order by InsertDate ");
-
-				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
-				if (curDataTable.Rows.Count > 0) {
-					if (curEvent.Equals("Slalom")) {
-						int curPassScore = Convert.ToInt32(Math.Floor(inPassScore)) + 1;
-						String timeKey = "BoatTimeBuoy" + curPassScore;
-						return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1][timeKey] };
-
-					} else if (curEvent.Equals("Jump")) {
-						return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy1"]
-							, (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy2"]
-							, (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["BoatTimeBuoy3"]
+				} else if ( curEvent.Equals( "Jump" ) ) {
+					return new decimal[] { (decimal)curDataTable.Rows[0]["BoatTimeBuoy1"]
+							, (decimal)curDataTable.Rows[0]["BoatTimeBuoy2"]
+							, (decimal)curDataTable.Rows[0]["BoatTimeBuoy3"]
 						};
 
-					}
-
-				} else {
-					Thread.Sleep(500);
 				}
 			}
 
 			return new decimal[] { };
 		}
 
-		public static DataRow getBoatPath(String curEvent, String curMemberId, String curRound, String curPassNum ) {
+		public static DataRow getBoatPath(String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return null;
 			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
 
-			StringBuilder curSqlStmt = new StringBuilder("");
+			Int64 bpPK = getBoatPathKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
+			Int64 btPK = getBoatTimeKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
+			if ( btPK <= 0 || bpPK <= 0 ) return null;
 
-			for (int count = 0; count < 2; count++) {
-				curSqlStmt = new StringBuilder("");
-				curSqlStmt.Append( "SELECT P.Event, P.Round, P.PassNumber, P.PassLineLength, P.PassspeedKph" );
-				curSqlStmt.Append( ", P.PathDevBuoy0, P.PathDevCum0, P.PathDevZone0" );
-				curSqlStmt.Append( ", P.PathDevBuoy1, P.PathDevCum1, P.PathDevZone1, T.BoatTimeBuoy1" );
-				curSqlStmt.Append( ", P.PathDevBuoy2, P.PathDevCum2, P.PathDevZone2, T.BoatTimeBuoy2" );
-				curSqlStmt.Append( ", P.PathDevBuoy3, P.PathDevCum3, P.PathDevZone3, T.BoatTimeBuoy3" );
-				curSqlStmt.Append( ", P.PathDevBuoy4, P.PathDevCum4, P.PathDevZone4, T.BoatTimeBuoy4" );
-				curSqlStmt.Append( ", P.PathDevBuoy5, P.PathDevCum5, P.PathDevZone5, T.BoatTimeBuoy5" );
-				curSqlStmt.Append( ", P.PathDevBuoy6, P.PathDevCum6, P.PathDevZone6, T.BoatTimeBuoy6" );
-				curSqlStmt.Append( ", T.BoatTimeBuoy7" );
-				curSqlStmt.Append( ", P.InsertDate, P.LastUpdateDate " );
-				curSqlStmt.Append( "FROM BoatPath P " );
-				curSqlStmt.Append( "Left Outer Join BoatTime T on T.SanctionId = P.SanctionId AND T.MemberId = P.MemberId AND T.Round = P.Round  AND T.PassNumber = P.PassNumber AND T.Event = P.Event " );
-				curSqlStmt.Append("WHERE P.SanctionId = '" + mySanctionNum + "' ");
-				curSqlStmt.Append( "AND P.MemberId = '" + curMemberId + "' ");
-				curSqlStmt.Append( "AND P.Event = '" + curEvent + "' ");
-				curSqlStmt.Append( "AND P.Round = " + curRound + " ");
-				curSqlStmt.Append( "AND P.PassNumber = " + curPassNum + " ");
-				curSqlStmt.Append( "Order by P.InsertDate " );
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT P.Event, P.Round, P.PassNumber, P.PassLineLength, P.PassspeedKph" );
+			curSqlStmt.Append( ", P.PathDevBuoy0, P.PathDevCum0, P.PathDevZone0" );
+			curSqlStmt.Append( ", P.PathDevBuoy1, P.PathDevCum1, P.PathDevZone1, T.BoatTimeBuoy1" );
+			curSqlStmt.Append( ", P.PathDevBuoy2, P.PathDevCum2, P.PathDevZone2, T.BoatTimeBuoy2" );
+			curSqlStmt.Append( ", P.PathDevBuoy3, P.PathDevCum3, P.PathDevZone3, T.BoatTimeBuoy3" );
+			curSqlStmt.Append( ", P.PathDevBuoy4, P.PathDevCum4, P.PathDevZone4, T.BoatTimeBuoy4" );
+			curSqlStmt.Append( ", P.PathDevBuoy5, P.PathDevCum5, P.PathDevZone5, T.BoatTimeBuoy5" );
+			curSqlStmt.Append( ", P.PathDevBuoy6, P.PathDevCum6, P.PathDevZone6, T.BoatTimeBuoy6, T.BoatTimeBuoy7" );
+			curSqlStmt.Append( ", P.InsertDate, P.LastUpdateDate " );
+			curSqlStmt.Append( "FROM BoatPath P " );
+			curSqlStmt.Append( "Left Outer Join BoatTime T on T.PK = " + btPK + " " );
+			curSqlStmt.Append( "WHERE P.PK = " + bpPK );
 
-				DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
-				if (curDataTable.Rows.Count > 0) {
-					return curDataTable.Rows[curDataTable.Rows.Count - 1];
-
-				} else {
-					Thread.Sleep(500);
-				}
-			}
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 
 			return null;
+		}
+
+		/*
+		 * Check for a matching boat time record for the skier, round, and pass
+		 * Search for 2.5 seconds and if a record is not found then return an empty result
+		 * Save the PK index of the first matching record
+		 */
+		private static Int64 getBoatPathKey( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			Int64 bpPK = -1;
+
+
+			curSqlStmt.Append( "SELECT PK FROM BoatPath P " );
+			curSqlStmt.Append( "WHERE P.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "AND P.MemberId = '" + curMemberId + "' " );
+			curSqlStmt.Append( "AND P.Event = '" + curEvent + "' " );
+			curSqlStmt.Append( "AND P.Round = " + curRound + " " );
+			curSqlStmt.Append( "AND P.PassNumber = " + curPassNum + " " );
+			curSqlStmt.Append( "Order by P.PK " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			for ( int count = 0; count < 5; count++ ) {
+				if ( curDataTable.Rows.Count > 0 ) {
+					bpPK = (Int64)curDataTable.Rows[0]["PK"];
+					break;
+				}
+				Thread.Sleep( 500 );
+			}
+			if ( bpPK <= 0 ) return -1;
+			if ( curDataTable.Rows.Count == 1 ) return bpPK;
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT PK FROM BoatPath P " );
+			curSqlStmt.Append( "WHERE P.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "AND P.MemberId = '" + curMemberId + "' " );
+			curSqlStmt.Append( "AND P.Event = '" + curEvent + "' " );
+			curSqlStmt.Append( "AND P.Round = " + curRound + " " );
+			curSqlStmt.Append( "AND P.PassNumber = " + curPassNum + " " );
+			curSqlStmt.Append( "AND P.PassLineLength = " + curPassLineLength + " " );
+			curSqlStmt.Append( "AND P.PassSpeedKph = " + curPassSpeedKph + " " );
+			curSqlStmt.Append( "Order by P.PK " );
+			curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) return (Int64)curDataTable.Rows[0]["PK"];
+
+			return bpPK;
+		}
+
+		/*
+		 * Check for a matching boat time record for the skier, round, and pass
+		 * Search for 2.5 seconds and if a record is not found then return an empty result
+		 * Save the PK index of the first matching record
+		 */
+		private static Int64 getBoatTimeKey( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph ) {
+			Int64 btPK = -1;
+
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT PK FROM BoatTime T " );
+			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "AND T.MemberId = '" + curMemberId + "' " );
+			curSqlStmt.Append( "AND T.Event = '" + curEvent + "' " );
+			curSqlStmt.Append( "AND T.Round = " + curRound + " " );
+			curSqlStmt.Append( "AND T.PassNumber = " + curPassNum + " " );
+			curSqlStmt.Append( "Order by T.PK " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			for ( int count = 0; count < 5; count++ ) {
+				if ( curDataTable.Rows.Count > 0 ) {
+					btPK = (Int64)curDataTable.Rows[0]["PK"];
+					break;
+				}
+				Thread.Sleep( 500 );
+			}
+			if ( btPK <= 0 ) return -1;
+			if ( curDataTable.Rows.Count == 1 ) return btPK;
+
+			/*
+			 * If more than 1 matching record is found then search for a more specific record in case the pass was deleted and retried
+			 */
+			if ( curDataTable.Rows.Count > 1 ) {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT PK FROM BoatTime T " );
+				curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
+				curSqlStmt.Append( "AND T.MemberId = '" + curMemberId + "' " );
+				curSqlStmt.Append( "AND T.Event = '" + curEvent + "' " );
+				curSqlStmt.Append( "AND T.Round = " + curRound + " " );
+				curSqlStmt.Append( "AND T.PassNumber = " + curPassNum + " " );
+				curSqlStmt.Append( "AND T.PassLineLength = " + curPassLineLength + " " );
+				curSqlStmt.Append( "AND T.PassSpeedKph = " + curPassSpeedKph + " " );
+				curSqlStmt.Append( "Order by T.PK " );
+				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) return (Int64)curDataTable.Rows[0]["PK"];
+			}
+
+			return btPK;
 		}
 
 		public static decimal[] getJumpMeasurement(String curEvent, String curMemberId, String curRound, String curPassNum) {
@@ -1075,7 +1314,6 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append(", getdate()");
             curSqlStmt.Append(")");
             int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-			Log.WriteFile(curSqlStmt.ToString());
 		}
 
 		private static void removeEwscMsg( int pkid ) {
@@ -1103,7 +1341,41 @@ namespace WaterskiScoringSystem.Tools {
             return DataAccess.getDataTable(curSqlStmt.ToString());
         }
 
-        public static String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
+		private static DataTable getLeaderBoardData( String athleteEvent, String athleteGroup, Int16 inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			if ( athleteEvent.Equals( "Slalom" ) ) {
+				curSqlStmt.Append( "SELECT TR.MemberId, TR.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, TR.State" );
+				curSqlStmt.Append( ", COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmt, TR.Federation, T.Federation as TourFederation" );
+				curSqlStmt.Append( ", SS.Round, SS.Score, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore " );
+				curSqlStmt.Append( "FROM TourReg TR " );
+				curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN SlalomScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
+				curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.EventGroup = '" + athleteGroup + "' " );
+				curSqlStmt.Append( "AND ER.Event = '" + athleteEvent + "' AND SS.Round = " + inRound + " " );
+				curSqlStmt.Append( "ORDER BY ER.ReadyForPlcmt DESC, ER.EventGroup, SS.Score DESC, TR.SkierName, SS.Round " );
+			
+			} else if ( athleteEvent.Equals( "Jump" ) ) {
+				curSqlStmt.Append( "SELECT TR.MemberId, TR.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, TR.State" );
+				curSqlStmt.Append( ", COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmt, TR.Federation, T.Federation as TourFederation" );
+				curSqlStmt.Append( ", SS.Round, SS.ScoreFeet, SS.ScoreMeters, SS.BoatSpeed " );
+				curSqlStmt.Append( "FROM TourReg TR " );
+				curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN JumpScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
+				curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.EventGroup = '" + athleteGroup + "' " );
+				curSqlStmt.Append( "AND ER.Event = '" + athleteEvent + "' AND SS.Round = " + inRound + " " );
+				curSqlStmt.Append( "ORDER BY ER.ReadyForPlcmt DESC, ER.EventGroup, SS.ScoreMeters DESC, ScoreFeet DESC, TR.SkierName, SS.Round " );
+			} else {
+				return null;
+			}
+
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+
+		}
+
+
+		public static String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
             StringBuilder curNewValue = new StringBuilder("");
 
             String[] curValues = inValue.Split(inCurValue);

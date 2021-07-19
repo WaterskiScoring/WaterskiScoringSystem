@@ -46,6 +46,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private String myTourRules;
 		private String myLastPassSelectValue = "";
 		private String myPrevEventGroup = "";
+		private String myDriverMemberId = "";
 
 		private DataGridViewRow myRecapRow;
 		private DataRow myTourRow;
@@ -250,13 +251,9 @@ namespace WaterskiScoringSystem.Slalom {
 			} else {
 				LiveWebLabel.Visible = false;
 			}
-			if ( EwscMonitor.ConnectActive() ) {
-				WaterskiConnectLabel.Visible = true;
-				myBoatPathDevMax = getBoatPathDevMax();
-
-			} else {
-				WaterskiConnectLabel.Visible = false;
-			}
+			myBoatPathDevMax = getBoatPathDevMax();
+			WaterskiConnectLabel.Visible = false;
+			if ( EwscMonitor.ConnectActive() ) WaterskiConnectLabel.Visible = true;
 
 			Cursor.Current = Cursors.Default;
 		}
@@ -1045,6 +1042,8 @@ namespace WaterskiScoringSystem.Slalom {
 					, "Slalom"
 					, skierFed
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
+					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
+					, Convert.ToInt16( (String)myRecapRow.Cells["RoundRecap"].Value )
 					, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value )
 					, (String)myRecapRow.Cells["PassLineLengthRecap"].Value
@@ -1325,6 +1324,7 @@ namespace WaterskiScoringSystem.Slalom {
 			
 			myCheckOfficials.readOfficialAssignments( mySanctionNum, "Slalom", curEventGroup, roundSelect.RoundValue );
 			DataTable driverAsgmtDataTable = myCheckOfficials.driverAsgmtDataTable;
+			isLoadInProg = true;
 			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
 			driverDropdown.DisplayMember = "MemberName";
 			driverDropdown.ValueMember = "MemberId";
@@ -1332,6 +1332,18 @@ namespace WaterskiScoringSystem.Slalom {
 				driverLabel.ForeColor = Color.Red;
 			} else {
 				driverLabel.ForeColor = Color.Black;
+			}
+			isLoadInProg = false;
+			if ( myDriverMemberId.Length > 0 ) {
+				for (int curIdx = 0; curIdx < driverAsgmtDataTable.Rows.Count; curIdx++ ) {
+					if ( driverAsgmtDataTable.Rows[curIdx]["MemberId"].Equals( myDriverMemberId ) ) {
+						driverDropdown.SelectedValue = myDriverMemberId;
+						driverDropdown.SelectedIndex = curIdx;
+						break;
+					}
+				}
+			} else if ( driverAsgmtDataTable.Rows.Count > 0) {
+				driverDropdown.SelectedIndex = 0;
 			}
 
 			getSkierScoreByRound( curMemberId, curAgeGroup, inRound );
@@ -1607,13 +1619,17 @@ namespace WaterskiScoringSystem.Slalom {
 				scoreEntryInprogress();
 
 				if ( EwscMonitor.ConnectActive() ) {
-					/* 
-					 * Rettrieve boat path data
-					 */
-					loadBoatPathDataGridView( "Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value, (String)myRecapRow.Cells["ScoreRecap"].Value );
-				} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+					WaterskiConnectLabel.Visible = true;
+				} else {
+					WaterskiConnectLabel.Visible = false;
+				}
 
-			if ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
+				/* 
+				 * Retrieve boat path data
+				 */
+				loadBoatPathDataGridView( "Slalom", (String)myRecapRow.Cells["MemberIdRecap"].Value, (String)myRecapRow.Cells["RoundRecap"].Value, (String)myRecapRow.Cells["skierPassRecap"].Value, (String)myRecapRow.Cells["ScoreRecap"].Value );
+				
+				if ( !( isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
 					&& !( isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) )
 					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6
 					&& isObjectEmpty( noteTextBox.Text )
@@ -3486,11 +3502,12 @@ namespace WaterskiScoringSystem.Slalom {
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
 			if ( myRecapRow.Index == e.RowIndex ) {
 				String cellValue = (String)curViewRow.Cells[e.ColumnIndex].Value;
-				if ( cellValue.Length == 0 && EwscMonitor.ConnectActive() ) checkTimeFromBpms( curViewRow, e.ColumnIndex );
+				if ( cellValue.Length == 0 ) checkTimeFromBpms( curViewRow, e.ColumnIndex );
 			}
 		}
 
 		private void slalomRecapDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
+			if ( myRecapRow == null ) return;
 			if ( e.RowIndex < myRecapRow.Index ) return;
 			if ( slalomRecapDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly ) return;
 
@@ -3511,16 +3528,16 @@ namespace WaterskiScoringSystem.Slalom {
 
 			} else if ( curColumnName.StartsWith( "TimeInTolImg" ) ) {
 				String cellValue = (String)curViewRow.Cells["BoatTimeRecap"].Value;
-				if ( cellValue.Length == 0 && EwscMonitor.ConnectActive() ) checkTimeFromBpms( curViewRow, e.ColumnIndex );
+				if ( cellValue.Length == 0 ) checkTimeFromBpms( curViewRow, e.ColumnIndex );
 			}
 		}
 		private void slalomRecapDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
 			if ( myRecapRow == null || isLastPassSelectActive ) return;
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
-			if ( EwscMonitor.ConnectActive()
-				&& ( (String)curViewRow.Cells["BoatTimeRecap"].Value ).Length > 0
-				&& ( (String)curViewRow.Cells["ScoreRecap"].Value ).Length > 0 ) {
+			//if ( EwscMonitor.ConnectActive()
+			if ( ((String)curViewRow.Cells["BoatTimeRecap"].Value ).Length > 0
+				&& ((String)curViewRow.Cells["ScoreRecap"].Value ).Length > 0 ) {
 				/* 
 				 * Rettrieve boat path data
 				 */
@@ -3536,9 +3553,18 @@ namespace WaterskiScoringSystem.Slalom {
 			Decimal curScore = calcScoreForPass();
 			if ( curScore < 0 ) return;
 			curViewRow.Cells["ScoreRecap"].Value = curScore.ToString( "0.00" );
+			decimal[] curBoatTime = new decimal[] { };
 
-			decimal[] curBoatTime = EwscMonitor.getBoatTime( "Slalom", (String)curViewRow.Cells["MemberIdRecap"].Value, (String)curViewRow.Cells["RoundRecap"].Value, (String)curViewRow.Cells["skierPassRecap"].Value, curScore );
-			if ( curBoatTime.Length == 0 ) {
+			try {
+				curBoatTime = EwscMonitor.getBoatTime( "Slalom", (String)curViewRow.Cells["MemberIdRecap"].Value
+					, (String)curViewRow.Cells["RoundRecap"].Value, (String)curViewRow.Cells["skierPassRecap"].Value
+					, Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value )
+					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ), curScore );
+				if ( curBoatTime.Length == 0 ) {
+					boatPathDataGridView.Visible = false;
+					return;
+				}
+			} catch (Exception ex) {
 				boatPathDataGridView.Visible = false;
 				return;
 			}
@@ -3573,7 +3599,13 @@ namespace WaterskiScoringSystem.Slalom {
 
 			try {
 				boatPathDataGridView.Rows.Clear();
-				myBoatPathDataRow = EwscMonitor.getBoatPath( curEvent, curMemberId, curRound, curPassNum );
+				if ( myRecapRow == null || slalomRecapDataGridView.CurrentRow == null ) {
+					boatPathDataGridView.Visible = false;
+					return;
+				}
+				myBoatPathDataRow = EwscMonitor.getBoatPath( curEvent, curMemberId, curRound, curPassNum
+					, Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value )
+					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ) );
 				if ( myBoatPathDataRow == null ) {
 					boatPathDataGridView.Visible = false;
 					return;
@@ -3583,13 +3615,13 @@ namespace WaterskiScoringSystem.Slalom {
 				Font curFont = new Font( "Arial Narrow", 9, FontStyle.Regular );
 
 				Decimal passScore = Convert.ToDecimal( curPassScore );
-				int curViewIdx = 0;
-				while ( curViewIdx < 6 ) {
+				int curViewIdx = -1;
+				while ( curViewIdx < 7 ) {
 					curViewIdx = boatPathDataGridView.Rows.Add();
-					if ( passScore < ( curViewIdx ) ) break;
+					if ( passScore < ( curViewIdx - 1 ) ) break;
 
 					DataGridViewRow curViewRow = boatPathDataGridView.Rows[curViewIdx];
-					curViewRow.Cells["boatPathBuoy"].Style.Font = curFont;
+					curViewRow.Cells["boatPathScoreRange"].Style.Font = curFont;
 					curViewRow.Cells["boatTimeBuoy"].Style.Font = curFont;
 					curViewRow.Cells["boatTimeBuoy"].Style.ForeColor = Color.DarkGreen;
 					curViewRow.Cells["boatPathDev"].Style.Font = curFont;
@@ -3604,10 +3636,8 @@ namespace WaterskiScoringSystem.Slalom {
 					curViewRow.Cells["boatPathCumTol"].Style.ForeColor = Color.DarkGray;
 
 					if ( curViewIdx == 0 ) {
-						curViewRow.Cells["boatPathBuoy"].Value = "G";
-						if ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )] != System.DBNull.Value ) {
-							curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )];
-						}
+						curViewRow.Cells["boatPathPos"].Value = "G";
+						curViewRow.Cells["boatPathScoreRange"].Value = "";
 						curViewRow.Cells["boatPathZoneTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ).ToString( "##0" );
 						curViewRow.Cells["boatPathCumTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MaxDev"] ).ToString( "##0" );
 
@@ -3628,13 +3658,23 @@ namespace WaterskiScoringSystem.Slalom {
 						continue;
 					}
 
-					curViewRow.Cells["boatPathBuoy"].Value = "#" + curViewIdx;
+					if ( curViewIdx < 7 ) curViewRow.Cells["boatPathPos"].Value = "B" + curViewIdx;
+
+					if ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx )] != System.DBNull.Value ) {
+						curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx )];
+					}
+
+					if ( curViewIdx == 1 ) curViewRow.Cells["boatPathScoreRange"].Value = "0 - 0.5";
+					if ( curViewIdx == 2 ) curViewRow.Cells["boatPathScoreRange"].Value = "1 - 1.5";
+					if ( curViewIdx == 3 ) curViewRow.Cells["boatPathScoreRange"].Value = "2 - 2.5";
+					if ( curViewIdx == 4 ) curViewRow.Cells["boatPathScoreRange"].Value = "3 - 3.5";
+					if ( curViewIdx == 5 ) curViewRow.Cells["boatPathScoreRange"].Value = "4 - 4.5";
+					if ( curViewIdx == 6 ) curViewRow.Cells["boatPathScoreRange"].Value = "5 - 5.5";
+					if ( curViewIdx == 7 ) curViewRow.Cells["boatPathScoreRange"].Value = "6";
+					if ( curViewIdx == 7 ) continue;
+
 					curViewRow.Cells["boatPathZoneTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MinDev"] ).ToString( "##0" );
 					curViewRow.Cells["boatPathCumTol"].Value = ( (Decimal)myBoatPathDevMax.Rows[curViewIdx]["MaxDev"] ).ToString( "##0" );
-
-					if ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )] != System.DBNull.Value ) {
-						curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx + 1 )];
-					}
 
 					if ( myBoatPathDataRow["PathDevBuoy" + curViewIdx] != System.DBNull.Value ) {
 						curViewRow.Cells["boatPathDev"].Value = (Decimal)myBoatPathDataRow["PathDevBuoy" + curViewIdx];
@@ -3679,7 +3719,7 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 				}
 
-				boatPathDataGridView.Visible = true;
+				if ( curViewIdx >= 0 ) boatPathDataGridView.Visible = true;
 
 			} catch ( Exception ex ) {
 				MessageBox.Show( "Error retrieving boat times \n" + ex.Message );
@@ -5677,10 +5717,12 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void driverDropdown_SelectedValueChanged( object sender, EventArgs e ) {
+			if ( isLoadInProg ) return;
 			if ( ( (ComboBox)sender ).Items.Count == 0 ) return;
 			if ( ((ComboBox)sender ).SelectedValue == null ) return;
 			String curSelectedValue = ( (ComboBox)sender ).SelectedValue.ToString();
 			if ( curSelectedValue.Length == 0 ) return;
+			myDriverMemberId = curSelectedValue;
 		}
 	}
 }

@@ -44,10 +44,10 @@ SkiYear	Event	AgeGroup	SortSeq	Base	Adj	RatingMedian	RatingRec	RatingOpen	Overal
 21	Jump	M9	3	1500	14.7	39.85	98	0	0	0	2
 21	Slalom	MA	1	1500	0	63.09	77	0	8	0	2
 21	Trick	MA	2	15000	0	865	1600	0	0	0	2
-21	Jump	MA	3	1500	15	84.6	100	0	0	0	2
+21	Jump	MA	3	1500	15	50.0	100	0	0	0	2
 21	Slalom	MB	1	1500	0	6.01	59	0	8	0	2
 21	Trick	MB	2	15000	0	360	1050	0	0	0	2
-21	Jump	MB	3	1500	3.3	0	22	0	0	0	2
+21	Jump	MB	3	1500	3.3	10	22	0	0	0	2
 21	Slalom	G1	1	1500	0	14.4	80	0	40	0	2
 21	Trick	G1	2	15000	0	434	5340	0	0	0	2
 21	Jump	G1	3	1500	149.85	999	999	0	0	0	2
@@ -88,8 +88,8 @@ SkiYear	Event	AgeGroup	SortSeq	Base	Adj	RatingMedian	RatingRec	RatingOpen	Overal
 21	Trick	W8	2	15000	0	899.5	2270	0	0	0	2
 21	Jump	W8	3	1500	8.55	42	57	0	0	0	2
 21	Slalom	W9	1	1500	0	58.915	68	0	8	0	2
-21	Trick	W9	2	15000	0	1550	1670	0	0	0	2
-21	Jump	W9	3	1500	6.75	42.3	45	0	0	0	2
+21	Trick	W9	2	15000	0	750	1670	0	0	0	2
+21	Jump	W9	3	1500	6.75	30.0	45	0	0	0	2
 21	Slalom	WA	1	1500	0	23.85	56	0	8	0	2
 21	Trick	WA	2	15000	0	190	1220	0	0	0	2
 21	Jump	WA	3	1500	4.8	29	32	0	0	0	2

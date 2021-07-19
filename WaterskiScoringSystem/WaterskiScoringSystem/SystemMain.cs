@@ -252,7 +252,7 @@ namespace WaterskiScoringSystem {
                 String mySanctionNum = Properties.Settings.Default.AppSanctionNum;
                 if ( mySanctionNum != null ) {
                     if ( mySanctionNum.Length == 6 ) {
-                        Log.OpenFile( null );
+                        Log.OpenFile();
                         DataTable curTourDataTable = getTourData( mySanctionNum );
                         if (curTourDataTable.Rows.Count > 0) {
                             TourProperties curTourProperties = TourProperties.Instance;
@@ -318,7 +318,6 @@ namespace WaterskiScoringSystem {
 
         private void SystemMain_FormClosed( object sender, FormClosedEventArgs e ) {
             DataAccess.DataAccessClose( true );
-            Log.CloseFile();
             if (this.WindowState == FormWindowState.Normal) {
                 Properties.Settings.Default.Mdi_Width = this.Size.Width;
                 Properties.Settings.Default.Mdi_Height = this.Size.Height;
@@ -427,7 +426,6 @@ namespace WaterskiScoringSystem {
 
         private void navSetDatabase_Click( object sender, EventArgs e ) {
             DataAccess.DataAccessClose( true );
-            Log.CloseFile();
             SetDatabaseLocation curForm = new SetDatabaseLocation();
             curForm.getDatabaseFile( myAppRegKey );
         }

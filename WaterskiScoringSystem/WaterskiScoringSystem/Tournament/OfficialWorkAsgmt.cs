@@ -101,11 +101,10 @@ namespace WaterskiScoringSystem.Tournament {
                         myTourRules = (String)myTourRow["Rules"];
 						myTourClass = myTourRow["Class"].ToString().ToUpper();
 
+						removeUnratedValues();
+						
 						mySkierClassList = new ListSkierClass();
 						mySkierClassList.ListSkierClassLoad();
-						//myClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + myTourClass + "'" )[0];
-						//myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
-						//myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
 
 						setEventList();
                         setAsgmtList();
@@ -168,10 +167,11 @@ namespace WaterskiScoringSystem.Tournament {
             Cursor.Current = Cursors.WaitCursor;
             isLoadActive = true;
 			DataTable curDataTable = myListTourMemberDataTable;
+			curDataTable.DefaultView.RowFilter = "";
 			if ( myMemberSelectFilter.Length > 1 ) {
 				curDataTable.DefaultView.RowFilter = myMemberSelectFilter;
 				curDataTable = curDataTable.DefaultView.ToTable();
-            }
+			}
 			listTourMemberDataGridView.DataSource = curDataTable;
 
 			try {
@@ -227,8 +227,8 @@ namespace WaterskiScoringSystem.Tournament {
             }
             isLoadActive = false;
         }
-
-        private void navRefreshByEvent(  ) {
+		
+		private void navRefreshByEvent(  ) {
             try {
                 if ( isDataModified ) {
                     checkModifyPrompt();
@@ -687,7 +687,7 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
 		private DataGridViewRow addWorkAsgmtRow() {
-			string DateString = DateTime.Now.ToString( "MM/dd/yy hh:mm tt" );
+			string DateString = DateTime.Now.ToString( "MM/dd/yy hh:mm:ss" );
 			DataGridViewRow curViewRow = null;
             try {
 				myViewRowIdx = officialWorkAsgmtDataGridView.Rows.Add();
@@ -1473,7 +1473,85 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-        private DataTable getTourData() {
+		private void removeUnratedValues() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeSlalomRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch (Exception ex) {
+				Log.WriteFile( String.Format("Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString()) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeTrickRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeJumpRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerSlalomRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerTrickRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerJumpRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverSlalomRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverTrickRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverJumpRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set SafetyOfficialRating = '' Where SanctionId = '" + mySanctionNum + "' AND SafetyOfficialRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set TechOfficialRating = '' Where SanctionId = '" + mySanctionNum + "' AND TechOfficialRating = 'Unrated'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+			try {
+				curSqlStmt = new StringBuilder( "Update OfficialWork Set AnncrOfficialRating = '' Where SanctionId = '" + mySanctionNum + "'" );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
+			}
+
+		}
+
+
+		private DataTable getTourData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );

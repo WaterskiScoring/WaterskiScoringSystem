@@ -266,20 +266,24 @@ namespace WaterskiScoringSystem.Common {
 
 			if ( dataGridView.Rows.Count > 0 ) {
 				String curColName = dataGridView.Columns[e.ColumnIndex].Name;
-				if ( curColName.Equals( "SkierMemberId" )
-					|| curColName.Equals( "PassSpeedKph" )
+				String curValue = (String)curViewRow.Cells[e.ColumnIndex].Value;
+				
+				if ( curColName.Equals( "PassSpeedKph" )
 					|| curColName.Equals( "PassLineLength" )
 					|| curColName.Equals( "Round" )
 					|| curColName.Equals( "PassNumber" )
 					) {
-					String curValue = (String)curViewRow.Cells[e.ColumnIndex].Value;
+					if ( curValue != myOrigItemValue ) isDataModified = true;
+				
+				} else if ( curColName.Equals( "SkierMemberId" ) ) {
 					if ( curValue != myOrigItemValue ) {
 						isDataModified = true;
+						curViewRow.Cells["SkierName"].Value = getMemberName( curValue );
 					}
+
 				}
 			}
 		}
-
 
 		private DataTable getBoatTime() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -315,7 +319,17 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
-		
+
+		private String getMemberName( String memberId ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SkierName From TourReg " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "'" );
+			curSqlStmt.Append( "  AND MemberId = '" + memberId + "' " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) return (String)curDataTable.Rows[0]["SkierName"];
+			return "MemberId Not Found";
+		}
+
 		private bool isObjectEmpty( object inObject ) {
 			bool curReturnValue = false;
 			if ( inObject == null ) {

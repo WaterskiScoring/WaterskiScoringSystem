@@ -32,6 +32,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.eventSubIdLabel = new System.Windows.Forms.Label();
 			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
 			this.ViewAppsButton = new System.Windows.Forms.Button();
+			this.MessageHandlerButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
@@ -122,12 +123,25 @@ namespace WaterskiScoringSystem.Tools {
 			this.ViewAppsButton.UseVisualStyleBackColor = true;
 			this.ViewAppsButton.Click += new System.EventHandler(this.showAppsConnected_Click);
 			// 
+			// MessageHandlerButton
+			// 
+			this.MessageHandlerButton.AutoSize = true;
+			this.MessageHandlerButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.MessageHandlerButton.Location = new System.Drawing.Point(374, 43);
+			this.MessageHandlerButton.Name = "MessageHandlerButton";
+			this.MessageHandlerButton.Size = new System.Drawing.Size(100, 23);
+			this.MessageHandlerButton.TabIndex = 7;
+			this.MessageHandlerButton.Text = "Message Handler";
+			this.MessageHandlerButton.UseVisualStyleBackColor = true;
+			this.MessageHandlerButton.Click += new System.EventHandler(this.MessageHandlerButton_Click);
+			// 
 			// WaterSkiConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(366, 129);
+			this.ClientSize = new System.Drawing.Size(492, 129);
+			this.Controls.Add(this.MessageHandlerButton);
 			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.UseJumpTimesCheckBox);
 			this.Controls.Add(this.eventSubIdLabel);
@@ -153,5 +167,6 @@ namespace WaterskiScoringSystem.Tools {
 		private System.Windows.Forms.Label eventSubIdLabel;
 		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
 		private System.Windows.Forms.Button ViewAppsButton;
+		private System.Windows.Forms.Button MessageHandlerButton;
 	}
 }

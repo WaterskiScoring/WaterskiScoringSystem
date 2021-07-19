@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace WaterskiScoringSystem
 {
@@ -12,14 +14,10 @@ namespace WaterskiScoringSystem
         /// </summary>
         [STAThread]
         static void Main() {
-            /*
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault( false );
-            Application.Run( new SystemMain() );
-             */
 
             try {
-                Application.EnableVisualStyles();
+				//Application.SetHighDpiMode( HighDpiMode.SystemAware );
+				Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault( false );
                 Application.SetUnhandledExceptionMode( UnhandledExceptionMode.ThrowException );
                 Application.Run( new SystemMain() );

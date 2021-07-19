@@ -29,18 +29,19 @@ namespace WaterskiScoringSystem.Tools {
                 String curSqlCmd = SqlcommandTextBox.Text.Trim();
                 if (curSqlCmd.ToLower().StartsWith("select")) {
                     try {
-                        //String curTemp = curSqlCmd.Replace("'", "''");
-                        //curSqlCmd = curTemp;
                         myDataTable = DataAccess.getDataTable(curSqlCmd);
-                        this.dataGridView.DataSource = myDataTable;
-                        this.dataGridView.Visible = true;
-                        this.MessageLabel.Text = String.Format("SQL command completed, {0} rows processed", myDataTable.Rows.Count);
-                    } catch (Exception ex) {
+						if ( myDataTable != null ) {
+							this.dataGridView.DataSource = myDataTable;
+							this.dataGridView.Visible = true;
+							this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
+						}
+					} catch (Exception ex) {
                         this.dataGridView.Visible = false;
                         this.MessageLabel.Text = ex.Message;
                     }
                 } else {
 					String[] sqlCommandList = curSqlCmd.Split( ';' );
+					//String[] sqlCommandList = curSqlCmd.Split( '|' );
 
 					if ( sqlCommandList.Length > 0 ) {
 						StringBuilder showMsg = new StringBuilder( "" );

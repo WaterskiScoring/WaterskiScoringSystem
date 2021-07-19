@@ -87,5 +87,10 @@ namespace WaterskiScoringSystem.Tools {
 		private void UseJumpTimesCheckBox_CheckedChanged( object sender, EventArgs e ) {
 			EwscMonitor.useJumpTimes = UseJumpTimesCheckBox.Checked;
 		}
+
+		private void MessageHandlerButton_Click( object sender, EventArgs e ) {
+			//EwscMonitor.startWscMessageHhandler();
+			MessageBox.Show( "Message Handler started" );
+		}
 	}
 }

@@ -1040,3 +1040,10 @@ Update [JumpRecap] Set SkierBoatPath = 'S';
 ## v22.20
 ALTER TABLE [EwscMsg] ALTER COLUMN MsgData ntext ;
 DROP TABLE EwscListenMsg;
+
+## v22.29
+ALTER TABLE [BoatTime] ALTER COLUMN InsertDate datetime NOT NULL;
+ALTER TABLE [BoatPath] ALTER COLUMN InsertDate datetime NOT NULL;
+
+## v22.31
+ALTER TABLE [JumpMeasurement] ALTER COLUMN InsertDate datetime NOT NULL;
