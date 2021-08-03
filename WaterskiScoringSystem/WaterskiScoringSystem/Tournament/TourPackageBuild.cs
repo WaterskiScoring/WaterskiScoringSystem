@@ -513,20 +513,23 @@ namespace WaterskiScoringSystem.Tournament {
                         curFolderDialog.ShowNewFolderButton = true;
                         curFolderDialog.RootFolder = Environment.SpecialFolder.Desktop;
                         curFolderDialog.SelectedPath = @curTourFolder;
-                        if (FolderBrowserLauncher.ShowFolderBrowser( curFolderDialog, Form.ActiveForm ) == DialogResult.OK) {
-                            curTourFolder = curFolderDialog.SelectedPath;
-                        }
+                        if (FolderBrowserLauncher.ShowFolderBrowser( curFolderDialog, Form.ActiveForm ) == DialogResult.OK) curTourFolder = curFolderDialog.SelectedPath;
                     }
 
 					writeTourIdentDataFile( myTourRow, curTourFolder );
 
 					ArrayList curFileFilterList = getEndOfTourReportList( mySanctionNum, myTourClass );
 					if ( (Decimal)myClassRow["ListCodeNum"] > (Decimal)myClassCRow["ListCodeNum"] ) {
-						//curEventClass = "R";
-						//inputFolderPath + @"\" + outputPathAndFile
-						if ( !(File.Exists( curTourFolder + @"\" + this.mySanctionNum + "HD.txt")) ) {
-							MessageBox.Show( "Unable to generate tournament package for record tournament until Homologation Dossier" );
+						if ( !(File.Exists( curTourFolder + @"\" + this.mySanctionNum + "HD.txt")) 
+							&& Directory.GetFiles( curTourFolder, "*.hom" ).Length == 0 ) {
+							MessageBox.Show( "Unable to generate tournament package for record tournament until Homologation Dossier is available"
+								+ "\nMust provide a file named" + this.mySanctionNum + "HD.txt or a .hom file" );
 							return;
+						}
+						if ( File.Exists( curTourFolder + @"\" + this.mySanctionNum + "HD.txt" ) ) {
+							curFileFilterList.Remove( ".hom$" );
+						} else {
+							curFileFilterList.Remove( this.mySanctionNum + "HD.txt" );
 						}
 					}
 

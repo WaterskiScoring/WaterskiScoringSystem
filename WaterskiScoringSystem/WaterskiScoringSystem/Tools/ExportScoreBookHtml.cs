@@ -652,9 +652,9 @@ namespace WaterskiScoringSystem.Tools {
             String curEventClass = "", curColNum = "";
             Int16 curRound = 0;
 
-            bool isRoundScored = true;
-            try {
-                if ( inScoreSummary == null ) {
+			bool isRoundScored = true;
+			try {
+				if ( inScoreSummary == null || inEventScore.Length == 0 ) {
                     isRoundScored = false;
                 } else {
                     try {

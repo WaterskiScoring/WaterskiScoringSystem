@@ -8,11 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Common {
-    public partial class SkierDoneReason : Form {
+    public partial class TourMergeSanctionNum : Form {
         private String myCommandValue = "";
         private String myReason = "";
 
-        public SkierDoneReason() {
+        public TourMergeSanctionNum() {
             InitializeComponent();
         }
 
@@ -34,7 +34,7 @@ namespace WaterskiScoringSystem.Common {
         private void Reason_Load( object sender, EventArgs e ) {
             if ( Properties.Settings.Default.ImportMatch_Location.X > 0
                 && Properties.Settings.Default.ImportMatch_Location.Y > 0 ) {
-                this.Location = Properties.Settings.Default.SkierDoneReason_Location;
+                this.Location = Properties.Settings.Default.TourMergeSanctionNum_Location;
             }
             if ( myCommandValue.ToLower().Equals( "update" ) ) {
                 OkButton.Focus();
@@ -48,7 +48,7 @@ namespace WaterskiScoringSystem.Common {
 
         private void Reason_FormClosed( object sender, FormClosedEventArgs e ) {
             if ( this.WindowState == FormWindowState.Normal ) {
-                Properties.Settings.Default.SkierDoneReason_Location = this.Location;
+                Properties.Settings.Default.TourMergeSanctionNum_Location = this.Location;
             }
         }
 

@@ -24,5 +24,9 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
+		private void ExportButton_Click( object sender, EventArgs e ) {
+			ExportData myExportData = new ExportData();
+			myExportData.exportString( this.MessageTextBox.Text, "IwwfValidateMsgs.txt" );
+		}
 	}
 }

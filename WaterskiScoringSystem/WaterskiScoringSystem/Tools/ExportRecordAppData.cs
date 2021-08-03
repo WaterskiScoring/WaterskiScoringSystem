@@ -67,72 +67,74 @@ namespace WaterskiScoringSystem.Tools {
                 StringBuilder outLine = new StringBuilder( "" );
                 String curFilename = "RecordData_" + inEvent + "_" + inMemberId + "_" + inDiv + "_" + inRound + ".txt";
                 myOutBuffer = getExportFile( curFilename );
-                if (myOutBuffer != null) {
-                    Log.WriteFile( "Export Record Data: " + curFilename );
+				if ( myOutBuffer == null ) return false;
 
-                    DataRow curTourRow = getTourData( inSanctionId );
-                    if (curTourRow == null) {
-                        curMsg = "Tournament data not found, export bypassed";
-                    } else {
-                        writeTourData( outLine, curTourRow );
-                        writeEventOfficials( outLine, curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
-                        writeSkierInfo( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-                        writePerfData( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-                        myOutBuffer.Close();
-                        curMsg = curMethodName + " data successfully completed ";
+				Log.WriteFile( "Export Record Data: " + curFilename );
 
-                        if (myExcelApp != null) {
-                            String curExcelTemplateFileName = myDeploymentDirectory + "\\" + myRecordAppFormFileName;
-                            String curExcelFileName = Properties.Settings.Default.ExportDirectory + "\\RecordData_" + inEvent + "_" + inMemberId + "_" + inDiv + "_" + inRound;
-                            MessageBox.Show( "ExcelFileName: " + curExcelFileName );
+				DataRow curTourRow = getTourData( inSanctionId );
+				if ( curTourRow == null ) {
+					curMsg = "Tournament data not found, export bypassed";
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + ":conplete: " + curMsg );
+					return true;
+				}
 
-                            //Get a new workbook.
-                            myExcelWorkBooks = myExcelApp.GetType().InvokeMember( "Workbooks", BindingFlags.GetProperty, null, myExcelApp, null );
-                            myExcelWorkBook = myExcelWorkBooks.GetType().InvokeMember( "Open", BindingFlags.InvokeMethod, null, myExcelWorkBooks, new object[] { curExcelTemplateFileName, true } );
-                            myExcelSheets = myExcelWorkBook.GetType().InvokeMember( "Worksheets", BindingFlags.GetProperty, null, myExcelWorkBook, null );
-                            myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { 1 } );
-                            // Range = WorkSheet.GetType().InvokeMember("Range",BindingFlags.GetProperty,null,WorkSheet,new object[1] { "A1" });
+				writeTourData( outLine, curTourRow );
+				writeEventOfficials( outLine, curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
+				writeSkierInfo( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
+				writePerfData( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
+				myOutBuffer.Close();
+				curMsg = curMethodName + " data successfully completed ";
 
-                            myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
-                            myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
-                            myExcelWorkBook.GetType().InvokeMember( "SaveAs", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { curExcelFileName } );
+				if ( myExcelApp != null ) {
+					String curExcelTemplateFileName = myDeploymentDirectory + "\\" + myRecordAppFormFileName;
+					String curExcelFileName = Properties.Settings.Default.ExportDirectory + "\\RecordData_" + inEvent + "_" + inMemberId + "_" + inDiv + "_" + inRound;
+					MessageBox.Show( "ExcelFileName: " + curExcelFileName );
 
-                            writeTourDataExcel( curTourRow );
-                            writeEventOfficialsExcel( curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
-                            setCellValue( 14, "D", inEvent );
-                            setCellValue( 14, "B", inDiv );
-                            setCellValue( 16, "G", inRound );
+					//Get a new workbook.
+					myExcelWorkBooks = myExcelApp.GetType().InvokeMember( "Workbooks", BindingFlags.GetProperty, null, myExcelApp, null );
+					myExcelWorkBook = myExcelWorkBooks.GetType().InvokeMember( "Open", BindingFlags.InvokeMethod, null, myExcelWorkBooks, new object[] { curExcelTemplateFileName, true } );
+					myExcelSheets = myExcelWorkBook.GetType().InvokeMember( "Worksheets", BindingFlags.GetProperty, null, myExcelWorkBook, null );
+					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { 1 } );
+					// Range = WorkSheet.GetType().InvokeMember("Range",BindingFlags.GetProperty,null,WorkSheet,new object[1] { "A1" });
 
-                            writeSkierInfoExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-                            writePerfDataExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
+					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
+					myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+					myExcelWorkBook.GetType().InvokeMember( "SaveAs", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { curExcelFileName } );
 
-                            myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
-                            myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+					writeTourDataExcel( curTourRow );
+					writeEventOfficialsExcel( curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
+					setCellValue( 14, "D", inEvent );
+					setCellValue( 14, "B", inDiv );
+					setCellValue( 16, "G", inRound );
 
-                            myExcelWorkBook.GetType().InvokeMember( "Save", BindingFlags.InvokeMethod, null, myExcelWorkBook, null );
-                            myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
-                            myExcelWorkBook.GetType().InvokeMember( "Close", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { true } );
-                            myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
-                            myExcelApp.GetType().InvokeMember( "Quit", System.Reflection.BindingFlags.InvokeMethod, null, myExcelApp, null );
-                        }
-                    }
-                    MessageBox.Show( curMsg );
-                    Log.WriteFile( curMethodName + ":conplete: " + curMsg );
-                    return true;
-                } else {
-                    return false;
-                }
+					writeSkierInfoExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
+					writePerfDataExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
 
-            } catch (Exception ex) {
+					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
+					myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+					myExcelWorkBook.GetType().InvokeMember( "Save", BindingFlags.InvokeMethod, null, myExcelWorkBook, null );
+					myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
+					myExcelWorkBook.GetType().InvokeMember( "Close", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { true } );
+					myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
+					myExcelApp.GetType().InvokeMember( "Quit", System.Reflection.BindingFlags.InvokeMethod, null, myExcelApp, null );
+					MessageBox.Show( curMsg );
+					Log.WriteFile( curMethodName + ":conplete: " + curMsg );
+					return true;
+				}
+				
+			} catch (Exception ex) {
                 MessageBox.Show( "Error:" + curMethodName + " Exception encountered in ExportRecordAppData processing:\n\n" + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
-                return false;
-            }
-        }
+            
+			}
+			return false;
+		}
 
-        //Write tournament information to Excel spreadsheet
-        private bool writeTourDataExcel( DataRow inTourRow) {
+		//Write tournament information to Excel spreadsheet
+		private bool writeTourDataExcel( DataRow inTourRow) {
             try {
                 DataRow curOfficialRow = null;
                 DataRow curTechRow = getTechController( inTourRow["SanctionId"].ToString() );
@@ -1130,7 +1132,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1202,7 +1204,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
+					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1264,7 +1266,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
+					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1327,7 +1329,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), Convert.ToDecimal( (String)curRow["PassLineLengthRecap"] ), Convert.ToInt16( (String)curRow["PassSpeedKphRecap"] ) );
+					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1543,7 +1545,7 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getSkierSlalomRecap(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SkierRunNum, LastUpdateDate, PassLineLength, Score, BoatTime, TimeInTol" );
+            curSqlStmt.Append( "SELECT SkierRunNum, LastUpdateDate, PassLineLength, PassSpeedKph, Score, BoatTime, TimeInTol" );
             curSqlStmt.Append( ", Judge1Score, Judge2Score, Judge3Score, Judge4Score, Judge5Score" );
             //curSqlStmt.Append( ", EntryGate1, EntryGate2, EntryGate3, ExitGate1, ExitGate2, ExitGate3" );
             curSqlStmt.Append( ", Reride, RerideReason, ScoreProt, Note " );

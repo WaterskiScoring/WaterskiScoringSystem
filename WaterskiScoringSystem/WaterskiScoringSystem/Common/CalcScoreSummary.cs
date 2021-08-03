@@ -1503,8 +1503,8 @@ namespace WaterskiScoringSystem.Common {
 						+ " And AgeGroup = '" + (String)curEliteRow["AgeGroup"] + "'"
 						+ " And RoundOverall = " + (byte)curEliteRow["Round"];
 					curFindRows = curSummaryDataTable.Select(curFilterCommand);
-					if (curFindRows.Length > 0) {
-						if (((String)curScoreRow["EventClassSlalom"]).Length == 0) {
+					if (curFindRows.Length > 0 ) {
+						if ( curScoreRow == null || ( (String)curScoreRow["EventClassSlalom"]).Length == 0 ) {
 							curScoreRow = curFindRows[0];
 							if (((String)curScoreRow["EventClassSlalom"]).Length > 0) curScoreRow = null;
 						}
@@ -1561,7 +1561,7 @@ namespace WaterskiScoringSystem.Common {
 						+ " And RoundOverall = " + (byte)curEliteRow["Round"];
 					curFindRows = curSummaryDataTable.Select(curFilterCommand);
 					if (curFindRows.Length > 0) {
-						if (((String)curScoreRow["EventClassTrick"]).Length == 0) {
+						if ( curScoreRow == null || ( (String)curScoreRow["EventClassTrick"]).Length == 0 ) {
 							curScoreRow = curFindRows[0];
 							if (((String)curScoreRow["EventClassTrick"]).Length > 0) curScoreRow = null;
 						}

@@ -1111,7 +1111,7 @@ namespace WaterskiScoringSystem.Tools {
 					bpPK = (Int64)curDataTable.Rows[0]["PK"];
 					break;
 				}
-				Thread.Sleep( 500 );
+				if ( myConnectActive ) Thread.Sleep( 500 );
 			}
 			if ( bpPK <= 0 ) return -1;
 			if ( curDataTable.Rows.Count == 1 ) return bpPK;
@@ -1154,7 +1154,7 @@ namespace WaterskiScoringSystem.Tools {
 					btPK = (Int64)curDataTable.Rows[0]["PK"];
 					break;
 				}
-				Thread.Sleep( 500 );
+				if ( myConnectActive ) Thread.Sleep( 500 );
 			}
 			if ( btPK <= 0 ) return -1;
 			if ( curDataTable.Rows.Count == 1 ) return btPK;
@@ -1186,7 +1186,7 @@ namespace WaterskiScoringSystem.Tools {
 
 			StringBuilder curSqlStmt = new StringBuilder("");
 
-			for (int count = 0; count < 2; count++) {
+			for (int count = 0; count < 5; count++) {
 				curSqlStmt = new StringBuilder("");
 				curSqlStmt.Append("SELECT * FROM JumpMeasurement ");
 				curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' ");
@@ -1201,7 +1201,7 @@ namespace WaterskiScoringSystem.Tools {
 					return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreFeet"], (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreMeters"]};
 
 				} else {
-					Thread.Sleep(500);
+					if ( myConnectActive ) Thread.Sleep( 500 );
 				}
 			}
 

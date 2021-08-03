@@ -1,5 +1,5 @@
 namespace WaterskiScoringSystem.Common {
-    partial class SkierDoneReason {
+    partial class TourMergeSanctionNum {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -72,7 +72,7 @@ namespace WaterskiScoringSystem.Common {
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // SkierDoneReason
+            // TourMergeSanctionNum
             // 
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -82,7 +82,7 @@ namespace WaterskiScoringSystem.Common {
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.ReasonLabel);
             this.Controls.Add(this.ReasonTextbox);
-            this.Name = "SkierDoneReason";
+            this.Name = "TourMergeSanctionNum";
             this.Text = "Merge Sanction Number";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Reason_FormClosed);
             this.Load += new System.EventHandler(this.Reason_Load);

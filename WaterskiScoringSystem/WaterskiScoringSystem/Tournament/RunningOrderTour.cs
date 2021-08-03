@@ -1174,9 +1174,11 @@ namespace WaterskiScoringSystem.Tournament {
                     outLine = new StringBuilder( "</Tournament>" );
                     writeExportFile( outBuffer, outLine, false );
                 }
-            } catch (Exception ex) {
+            
+			} catch (Exception ex) {
                 MessageBox.Show( "Error: Could not write running order data to file\n\nError: " + ex.Message );
-            } finally {
+            
+			} finally {
                 if (outBuffer != null) {
                     outBuffer.Close();
                 }
@@ -1276,59 +1278,64 @@ namespace WaterskiScoringSystem.Tournament {
 
 		private void GroupFilterComboBox_Validated( object sender, EventArgs e ) {
 			if ( ( (ComboBox) sender ).Items.Count == 0 ) return;
+			if ( ( (ComboBox)sender ).SelectedIndex >= 0 ) return;
 
+			String curFilterName = ( (ComboBox)sender ).Text;
+
+			if ( curFilterName.Length == 0 ) return;
+			if ( curFilterName.Equals( "** New Entry **" ) ) return;
+
+			SaveFilterButton_Click( null, null );
+		}
+
+		private void SaveFilterButton_Click( object sender, EventArgs e ) {
+			String methodName = "SaveFilterButton_Click: ";
 			try {
-				if ( ( (ComboBox) sender ).SelectedIndex < 0 ) {
-					String curFilterName = ( (ComboBox) sender ).Text;
+				String curFilterName = GroupFilterComboBox.Text;
+				if ( curFilterName.Length == 0 ) return;
+				if ( curFilterName.Equals( "** New Entry **" ) ) return;
 
-					if ( curFilterName.Length == 0 ) {
-						if ( curFilterName.Length == 0 ) return;
-						if ( curFilterName.Equals( "** New Entry **" ) ) return;
-					} else if ( curFilterName.Equals( "** New Entry **" ) ) return;
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				String curEvent = getCurrentEvent();
 
-					StringBuilder curSqlStmt = new StringBuilder( "" );
-					String curEvent = getCurrentEvent();
+				String curPrintTitle = encodeDataForSql( this.printHeaderNote.Text );
+				myFilterCmd = buildFilterCmd();
+				if ( myOrigGroupFilterValue.Equals( "** New Entry **" ) ) myOrigGroupFilterValue = curFilterName;
 
-					String curPrintTitle = encodeDataForSql( this.printHeaderNote.Text );
-					myFilterCmd = buildFilterCmd();
-					if ( myOrigGroupFilterValue.Equals( "** New Entry **" ) ) myOrigGroupFilterValue = curFilterName;
-
-					curSqlStmt = new StringBuilder( "Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
-					curSqlStmt.Append( "From EventRunOrderFilters " );
+				curSqlStmt = new StringBuilder( "Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
+				curSqlStmt.Append( "From EventRunOrderFilters " );
+				curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
+				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+				curSqlStmt.Append( "AND FilterName = '" + myOrigGroupFilterValue + "' " );
+				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				curSqlStmt = new StringBuilder( "" );
+				if ( curDataTable.Rows.Count > 0 ) {
+					curSqlStmt.Append( "Update EventRunOrderFilters " );
+					curSqlStmt.Append( "Set GroupFilterCriteria = '" + encodeDataForSql( myFilterCmd ) + "' " );
+					curSqlStmt.Append( ", PrintTitle = '" + curPrintTitle + "' " );
+					curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+					curSqlStmt.Append( ", FilterName = '" + curFilterName + "' " );
 					curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
 					curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
 					curSqlStmt.Append( "AND FilterName = '" + myOrigGroupFilterValue + "' " );
-					DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-					curSqlStmt = new StringBuilder( "" );
-					if ( curDataTable.Rows.Count > 0 ) {
-						curSqlStmt.Append( "Update EventRunOrderFilters " );
-						curSqlStmt.Append( "Set GroupFilterCriteria = '" + encodeDataForSql(myFilterCmd) + "' " );
-						curSqlStmt.Append( ", PrintTitle = '" + curPrintTitle + "' " );
-						curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
-						curSqlStmt.Append( ", FilterName = '" + curFilterName + "' " );
-						curSqlStmt.Append( "Where SanctionId = '" + this.mySanctionNum + "' " );
-						curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
-						curSqlStmt.Append( "AND FilterName = '" + myOrigGroupFilterValue + "' " );
 
-					} else {
-						curSqlStmt.Append( "Insert Into EventRunOrderFilters (" );
-						curSqlStmt.Append( "SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
-						curSqlStmt.Append( ") Values ( " );
-						curSqlStmt.Append( "'" + this.mySanctionNum + "', '" + curEvent + "', '" + curFilterName + "', '" + curPrintTitle + "', '" + encodeDataForSql( myFilterCmd ) + "' " );
-						curSqlStmt.Append( ")" );
-					}
-					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-					myOrigGroupFilterValue = curFilterName;
-                    loadGroupFilterComboBox();
-					GroupFilterComboBox.SelectedItem = curFilterName;
-
-					loadEventRegView();
+				} else {
+					curSqlStmt.Append( "Insert Into EventRunOrderFilters (" );
+					curSqlStmt.Append( "SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria " );
+					curSqlStmt.Append( ") Values ( " );
+					curSqlStmt.Append( "'" + this.mySanctionNum + "', '" + curEvent + "', '" + curFilterName + "', '" + curPrintTitle + "', '" + encodeDataForSql( myFilterCmd ) + "' " );
+					curSqlStmt.Append( ")" );
 				}
+				
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				myOrigGroupFilterValue = curFilterName;
+				loadGroupFilterComboBox();
+				GroupFilterComboBox.SelectedItem = curFilterName;
 
+				loadEventRegView();
 			} catch ( Exception ex ) {
-				MessageBox.Show( "GroupFilterComboBox_Validating: Exception encountered: " + ex.Message );
+				MessageBox.Show( methodName + "Exception encountered: " + ex.Message );
 			}
-
 		}
 
 		private void DeleteFilterButton_Click( object sender, EventArgs e ) {
@@ -2173,9 +2180,9 @@ namespace WaterskiScoringSystem.Tournament {
         private StreamWriter getExportFile( String inFileName ) {
             String myFileName;
             StreamWriter outBuffer = null;
-            String curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+			String curFileFilter = "txt files (*.xml;*.txt)|*.xml|All files (*.*)|*.*";
 
-            SaveFileDialog myFileDialog = new SaveFileDialog();
+			SaveFileDialog myFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
             myFileDialog.InitialDirectory = curPath;
             myFileDialog.Filter = curFileFilter;
@@ -2193,7 +2200,7 @@ namespace WaterskiScoringSystem.Tournament {
                         int delimPos = myFileName.LastIndexOf( '\\' );
                         String curFileName = myFileName.Substring( delimPos + 1 );
                         if ( curFileName.IndexOf( '.' ) < 0 ) {
-                            String curDefaultExt = ".txt";
+                            String curDefaultExt = ".xml";
                             String[] curList = curFileFilter.Split( '|' );
                             if ( curList.Length > 0 ) {
                                 int curDelim = curList[1].IndexOf( "." );

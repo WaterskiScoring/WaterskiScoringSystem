@@ -45,9 +45,22 @@ namespace WaterskiScoringSystem.Tools {
 		private static String authApiValueStage2 = "9g2yh2wb2hhs4vc4yzjb1n4tsibs2wfq"; // Staging V2
 		private static String authApiValue = authApiValueProd;
 
+		private static Boolean showWarnMessage = true;
+		private static StringBuilder importWarningMessages = new StringBuilder( "" );
 
 		public static Boolean validateIwwfMembershipTmp( String inMemberId, String inTourDate ) {
 			return true;
+		}
+
+		public static void setShowWarnMessage( Boolean inShowMessage ) {
+			showWarnMessage = inShowMessage;
+			importWarningMessages = new StringBuilder( "" );
+		}
+
+		public static void displayBulkWarnMessage() {
+			ShowMessage showMessage = new ShowMessage();
+			showMessage.Message = importWarningMessages.ToString();
+			showMessage.ShowDialog();
 		}
 
 		public static Boolean validateIwwfMembership( String inSanctionId, String inEditCode, String inMemberId, String inTourDate ) {
@@ -135,17 +148,14 @@ namespace WaterskiScoringSystem.Tools {
 
 		private static void showNoLicenseMsg( String inSanctionId, String inMemberIdAwsa, String inMemberIdForeign, Dictionary<string, object> respMsg ) {
 			String msg = "";
-			String newLine = "\r\n";
-			ShowMessage showMessage = new ShowMessage();
 
 			if ( respMsg == null ) {
 				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberIdAwsa );
 				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
 					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
 					+ "{4}Event class changed to E"
-					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine );
-				showMessage.Message = msg;
-				showMessage.ShowDialog();
+					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine );
+				messageHandler( msg );
 				return;
 			}
 
@@ -155,11 +165,10 @@ namespace WaterskiScoringSystem.Tools {
 				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
 					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
 					+ "{4}Event class changed to E"
-					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine );
+					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine );
 				Log.WriteFile( msg );
 				Cursor.Current = Cursors.Default;
-				showMessage.Message = msg;
-				showMessage.ShowDialog();
+				messageHandler( msg );
 				return;
 			}
 
@@ -171,12 +180,11 @@ namespace WaterskiScoringSystem.Tools {
 					+ "{4}Event class changed to E"
 					+ "{5}Skier can purchase a license at"
 					+ "{6}{7}"
-					, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine
-					, newLine, newLine, iwwfLicensePurchaseLink );
+					, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
+					, System.Environment.NewLine, System.Environment.NewLine, iwwfLicensePurchaseLink );
 				Log.WriteFile( msg );
 				Cursor.Current = Cursors.Default;
-				showMessage.Message = msg;
-				showMessage.ShowDialog();
+				messageHandler( msg );
 				return;
 			}
 
@@ -185,12 +193,22 @@ namespace WaterskiScoringSystem.Tools {
 				+ "{4}Event class changed to E"
 				+ "{5}Skier can purchase a license at"
 				+ "{6}{7}"
-				, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, newLine, newLine
-				, newLine, newLine, iwwfLicensePurchaseLink );
+				, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
+				, System.Environment.NewLine, System.Environment.NewLine, iwwfLicensePurchaseLink );
 			Log.WriteFile( msg  );
 			Cursor.Current = Cursors.Default;
-			showMessage.Message = msg;
-			showMessage.ShowDialog();
+			messageHandler( msg );
+		}
+
+		private static void messageHandler( String msg ) {
+			if ( showWarnMessage ) {
+				ShowMessage showMessage = new ShowMessage();
+				showMessage.Message = msg;
+				showMessage.ShowDialog();
+
+			} else {
+				importWarningMessages.Append( msg + System.Environment.NewLine + System.Environment.NewLine );
+			}
 		}
 
 		private static Boolean readRespMsg( Dictionary<string, object> respMsg ) {

@@ -120,6 +120,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.FilterLabel = new System.Windows.Forms.Label();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.SendSkierListButton = new System.Windows.Forms.Button();
+			this.SaveFilterButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.EventRegDataGridView)).BeginInit();
 			this.TopNavMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -397,7 +398,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.slalomButton.AutoSize = true;
 			this.slalomButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.slalomButton.Location = new System.Drawing.Point(113, 67);
+			this.slalomButton.Location = new System.Drawing.Point(113, 41);
 			this.slalomButton.Name = "slalomButton";
 			this.slalomButton.Size = new System.Drawing.Size(68, 22);
 			this.slalomButton.TabIndex = 1;
@@ -410,7 +411,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.trickButton.AutoSize = true;
 			this.trickButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.trickButton.Location = new System.Drawing.Point(189, 67);
+			this.trickButton.Location = new System.Drawing.Point(189, 41);
 			this.trickButton.Name = "trickButton";
 			this.trickButton.Size = new System.Drawing.Size(54, 22);
 			this.trickButton.TabIndex = 2;
@@ -423,7 +424,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.jumpButton.AutoSize = true;
 			this.jumpButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.jumpButton.Location = new System.Drawing.Point(251, 67);
+			this.jumpButton.Location = new System.Drawing.Point(251, 41);
 			this.jumpButton.Name = "jumpButton";
 			this.jumpButton.Size = new System.Drawing.Size(59, 22);
 			this.jumpButton.TabIndex = 3;
@@ -605,7 +606,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.RowStatusLabel.AutoSize = true;
 			this.RowStatusLabel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(8, 69);
+			this.RowStatusLabel.Location = new System.Drawing.Point(8, 43);
 			this.RowStatusLabel.Name = "RowStatusLabel";
 			this.RowStatusLabel.Size = new System.Drawing.Size(92, 18);
 			this.RowStatusLabel.TabIndex = 0;
@@ -862,16 +863,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.printHeaderNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.printHeaderNote.Font = new System.Drawing.Font("Calibri", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.printHeaderNote.Location = new System.Drawing.Point(416, 66);
+			this.printHeaderNote.Location = new System.Drawing.Point(430, 66);
 			this.printHeaderNote.Name = "printHeaderNote";
-			this.printHeaderNote.Size = new System.Drawing.Size(608, 25);
+			this.printHeaderNote.Size = new System.Drawing.Size(594, 25);
 			this.printHeaderNote.TabIndex = 6;
 			// 
 			// PrintHeaderLabel
 			// 
 			this.PrintHeaderLabel.AutoSize = true;
 			this.PrintHeaderLabel.Font = new System.Drawing.Font("Arial Narrow", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.PrintHeaderLabel.Location = new System.Drawing.Point(322, 68);
+			this.PrintHeaderLabel.Location = new System.Drawing.Point(341, 68);
 			this.PrintHeaderLabel.Name = "PrintHeaderLabel";
 			this.PrintHeaderLabel.Size = new System.Drawing.Size(88, 20);
 			this.PrintHeaderLabel.TabIndex = 0;
@@ -884,9 +885,9 @@ namespace WaterskiScoringSystem.Tournament {
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.EventGroupPanel.AutoScroll = true;
 			this.EventGroupPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.EventGroupPanel.Location = new System.Drawing.Point(140, 93);
+			this.EventGroupPanel.Location = new System.Drawing.Point(9, 93);
 			this.EventGroupPanel.Name = "EventGroupPanel";
-			this.EventGroupPanel.Size = new System.Drawing.Size(883, 50);
+			this.EventGroupPanel.Size = new System.Drawing.Size(1014, 50);
 			this.EventGroupPanel.TabIndex = 10;
 			this.EventGroupPanel.TabStop = true;
 			// 
@@ -909,7 +910,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.GroupFilterComboBox.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.GroupFilterComboBox.FormattingEnabled = true;
-			this.GroupFilterComboBox.Location = new System.Drawing.Point(5, 118);
+			this.GroupFilterComboBox.Location = new System.Drawing.Point(100, 66);
 			this.GroupFilterComboBox.Margin = new System.Windows.Forms.Padding(2);
 			this.GroupFilterComboBox.Name = "GroupFilterComboBox";
 			this.GroupFilterComboBox.Size = new System.Drawing.Size(130, 25);
@@ -920,13 +921,14 @@ namespace WaterskiScoringSystem.Tournament {
 			// DeleteFilterButton
 			// 
 			this.DeleteFilterButton.AutoSize = true;
+			this.DeleteFilterButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.DeleteFilterButton.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DeleteFilterButton.Location = new System.Drawing.Point(93, 87);
+			this.DeleteFilterButton.Location = new System.Drawing.Point(280, 65);
 			this.DeleteFilterButton.Margin = new System.Windows.Forms.Padding(2);
 			this.DeleteFilterButton.Name = "DeleteFilterButton";
-			this.DeleteFilterButton.Size = new System.Drawing.Size(41, 27);
+			this.DeleteFilterButton.Size = new System.Drawing.Size(51, 27);
 			this.DeleteFilterButton.TabIndex = 8;
-			this.DeleteFilterButton.Text = "Del";
+			this.DeleteFilterButton.Text = "Delete";
 			this.DeleteFilterButton.UseVisualStyleBackColor = true;
 			this.DeleteFilterButton.Click += new System.EventHandler(this.DeleteFilterButton_Click);
 			// 
@@ -934,11 +936,11 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.FilterLabel.AutoSize = true;
 			this.FilterLabel.Font = new System.Drawing.Font("Arial Narrow", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FilterLabel.Location = new System.Drawing.Point(5, 90);
+			this.FilterLabel.Location = new System.Drawing.Point(5, 68);
 			this.FilterLabel.Name = "FilterLabel";
-			this.FilterLabel.Size = new System.Drawing.Size(90, 20);
+			this.FilterLabel.Size = new System.Drawing.Size(97, 20);
 			this.FilterLabel.TabIndex = 0;
-			this.FilterLabel.Text = "Group Filters";
+			this.FilterLabel.Text = "Group Filters: ";
 			this.FilterLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// WaterskiConnectLabel
@@ -971,11 +973,26 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SendSkierListButton.Visible = false;
 			this.SendSkierListButton.Click += new System.EventHandler(this.SendSkierListButton_Click);
 			// 
+			// SaveFilterButton
+			// 
+			this.SaveFilterButton.AutoSize = true;
+			this.SaveFilterButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.SaveFilterButton.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SaveFilterButton.Location = new System.Drawing.Point(232, 65);
+			this.SaveFilterButton.Margin = new System.Windows.Forms.Padding(2);
+			this.SaveFilterButton.Name = "SaveFilterButton";
+			this.SaveFilterButton.Size = new System.Drawing.Size(44, 27);
+			this.SaveFilterButton.TabIndex = 31;
+			this.SaveFilterButton.Text = "Save";
+			this.SaveFilterButton.UseVisualStyleBackColor = true;
+			this.SaveFilterButton.Click += new System.EventHandler(this.SaveFilterButton_Click);
+			// 
 			// RunningOrderTour
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1035, 476);
+			this.Controls.Add(this.SaveFilterButton);
 			this.Controls.Add(this.SendSkierListButton);
 			this.Controls.Add(this.WaterskiConnectLabel);
 			this.Controls.Add(this.FilterLabel);
@@ -1081,5 +1098,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.ToolStripButton navWaterSkiConnect;
 		private System.Windows.Forms.Label WaterskiConnectLabel;
 		private System.Windows.Forms.Button SendSkierListButton;
+		private System.Windows.Forms.Button SaveFilterButton;
 	}
 }

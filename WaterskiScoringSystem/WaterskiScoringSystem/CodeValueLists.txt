@@ -551,7 +551,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	Federation	bra		10	Brazil			
 0	Federation	can		11	Canada			
 0	Federation	caf		12	Central African Republic			
-0	Federation	chl		13	Chili			
+0	Federation	chi		13	Chili			
 0	Federation	chn		14	China			
 0	Federation	col		15	Columbia			
 0	Federation	crc		16	Costa Rica			

@@ -33,7 +33,8 @@ namespace WaterskiScoringSystem.Tools {
                 , "TourProperties"
                 , "EventReg"
                 , "EventRunOrder"
-                , "TeamList"
+				, "EventRunOrderFilters"
+				, "TeamList"
                 , "TeamOrder"
                 , "SlalomScore"
                 , "SlalomRecap"
@@ -124,7 +125,36 @@ namespace WaterskiScoringSystem.Tools {
             }
             return returnStatus;
         }
-        public Boolean exportData( String inTableName, String inSelectStmt ) {
+
+		public Boolean exportString (String msg, String inFileName ) {
+			String curMethodName = "exportData";
+			String curMsg = "";
+			StreamWriter outBuffer = null;
+
+			try {
+				outBuffer = getExportFile( null, inFileName );
+				if ( outBuffer == null ) {
+					curMsg = "Export file not available";
+					MessageBox.Show( curMsg );
+					return false;
+				} 
+				
+				outBuffer.WriteLine( msg );
+				
+				return true;
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not write file from data table\n\nError: " + ex.Message );
+				curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+				return false;
+			
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+		}
+
+		public Boolean exportData( String inTableName, String inSelectStmt ) {
             Boolean returnStatus = false;
             StreamWriter outBuffer = getExportFile();
             if ( outBuffer != null ) {
@@ -221,10 +251,11 @@ namespace WaterskiScoringSystem.Tools {
             String curValue;
             int colCount = 0;
             StringBuilder outLine = new StringBuilder( "" );
+			StreamWriter outBuffer = null;
 
             try {
                 Log.WriteFile( curMethodName + ":begin: " + "DataGrid=" + inDataGrid.Name );
-                StreamWriter outBuffer = getExportFile( null, inFullFileName );
+                outBuffer = getExportFile( null, inFullFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Export file not available";
                 } else {
@@ -275,14 +306,20 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     MessageBox.Show( curMsg );
                 }
-                Log.WriteFile( curMethodName + ":conplete:" + curMsg );
-            } catch ( Exception ex ) {
+                
+				Log.WriteFile( curMethodName + ":conplete:" + curMsg );
+            
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error: Could not write file from data table\n\nError: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 returnStatus = false;
-            }
-            return returnStatus;
+			
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+			
+			return returnStatus;
         }
         public Boolean exportData( DataTable inDataTable ) {
             return exportData( inDataTable, null );
@@ -294,10 +331,11 @@ namespace WaterskiScoringSystem.Tools {
             String curValue;
             int colCount = 0;
             StringBuilder outLine = new StringBuilder( "" );
+			StreamWriter outBuffer = null;
 
             try {
                 Log.WriteFile( curMethodName + ":begin: " + "DataTable=" + inDataTable.TableName );
-                StreamWriter outBuffer = getExportFile( null, inFullFileName );
+                outBuffer = getExportFile( null, inFullFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Export file not available";
                 } else {
@@ -340,14 +378,20 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     MessageBox.Show( curMsg );
                 }
-                Log.WriteFile( curMethodName + ":conplete:" + curMsg );
-            } catch ( Exception ex ) {
+                
+				Log.WriteFile( curMethodName + ":conplete:" + curMsg );
+            
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error: Could not write file from data table\n\nException: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 returnStatus = false;
-            }
-            return returnStatus;
+			
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+			
+			return returnStatus;
         }
 
         public Boolean exportDataAsHtml( DataGridView inDataGrid, String inTitle, String inSubTitle, String inFooter ) {
@@ -360,14 +404,16 @@ namespace WaterskiScoringSystem.Tools {
             String curValue;
             String curFileFilter = "HTML files (*.htm)|*.htm|All files (*.*)|*.*";
             StringBuilder outLine = new StringBuilder( "" );
+			StreamWriter outBuffer = null;
 
             try {
                 curMsg = "DataGrid=" + inDataGrid.Name;
                 Log.WriteFile( curMethodName + ":begin: " + curMsg );
-                StreamWriter outBuffer = getExportFile( curFileFilter, inFileName );
+                outBuffer = getExportFile( curFileFilter, inFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Output file not available";
-                } else {
+                
+				} else {
                     String curDateString = DateTime.Now.ToString( "MMMM d, yyyy HH:mm:ss" );
 
                     outLine = new StringBuilder( "" );
@@ -458,16 +504,23 @@ namespace WaterskiScoringSystem.Tools {
                     } else {
                         curMsg = "No rows found";
                     }
-                    MessageBox.Show( curMsg );
+                    
+					MessageBox.Show( curMsg );
                 }
-                Log.WriteFile( curMethodName + ":conplete: " + curMsg );
-            } catch ( Exception ex ) {
+                
+				Log.WriteFile( curMethodName + ":conplete: " + curMsg );
+            
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error: Could not write file from DataGridView\n\nError: " + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 returnStatus = false;
-            }
-            return returnStatus;
+			
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+			
+			return returnStatus;
         }
 
         private StreamWriter getExportFile() {

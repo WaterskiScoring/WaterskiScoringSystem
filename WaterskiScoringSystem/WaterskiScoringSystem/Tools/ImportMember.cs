@@ -135,6 +135,8 @@ namespace WaterskiScoringSystem.Tools {
 				myProgressInfo.setProgressMin( 1 );
 				myProgressInfo.setProgressMax( curResponseDataList.Count );
 
+				IwwfMembership.setShowWarnMessage( false );
+
 				if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
 					Dictionary < String, object> curTeamHeaderList = new Dictionary<String, object>();
 
@@ -162,7 +164,8 @@ namespace WaterskiScoringSystem.Tools {
 
 				Cursor.Current = Cursors.Default;
 				myProgressInfo.Close();
-
+				IwwfMembership.displayBulkWarnMessage();
+				IwwfMembership.setShowWarnMessage( false );
 			}
 
 			displayMemberProcessCounts();
@@ -936,6 +939,8 @@ namespace WaterskiScoringSystem.Tools {
 				curSqlStmt.Append( ", Gender = '" + curGender + "'" );
 				curSqlStmt.Append( ", City = '" + City + "'" );
 				curSqlStmt.Append( ", State = '" + State + "'" );
+				curSqlStmt.Append( ", AwsaMbrshpComment = '" + MemberStatus + "'" );
+				
 				curSqlStmt.Append( ", Federation = '" + Federation + "'" );
 				curSqlStmt.Append( ", LastUpdateDate = getdate() " );
 				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", curSanctionId, curMemberId ) );

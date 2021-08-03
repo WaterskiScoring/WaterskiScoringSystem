@@ -26,6 +26,7 @@ namespace WaterskiScoringSystem.Tools {
 		private void InitializeComponent() {
 			this.MessageTextBox = new System.Windows.Forms.TextBox();
 			this.OKButton = new System.Windows.Forms.Button();
+			this.ExportButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// MessageTextBox
@@ -57,6 +58,16 @@ namespace WaterskiScoringSystem.Tools {
 			this.OKButton.Text = "OK";
 			this.OKButton.UseVisualStyleBackColor = true;
 			// 
+			// ExportButton
+			// 
+			this.ExportButton.Location = new System.Drawing.Point(88, 3);
+			this.ExportButton.Name = "ExportButton";
+			this.ExportButton.Size = new System.Drawing.Size(75, 23);
+			this.ExportButton.TabIndex = 4;
+			this.ExportButton.Text = "Export";
+			this.ExportButton.UseVisualStyleBackColor = true;
+			this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+			// 
 			// ShowMessage
 			// 
 			this.AcceptButton = this.OKButton;
@@ -64,6 +75,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.AutoScroll = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ClientSize = new System.Drawing.Size(665, 338);
+			this.Controls.Add(this.ExportButton);
 			this.Controls.Add(this.OKButton);
 			this.Controls.Add(this.MessageTextBox);
 			this.Name = "ShowMessage";
@@ -78,5 +90,6 @@ namespace WaterskiScoringSystem.Tools {
 
 		private System.Windows.Forms.TextBox MessageTextBox;
 		private System.Windows.Forms.Button OKButton;
+		private System.Windows.Forms.Button ExportButton;
 	}
 }
