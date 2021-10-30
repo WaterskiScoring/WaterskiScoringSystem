@@ -871,8 +871,6 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     curXml.Append( "</Keys>" );
 
-					if ( curDataTable.Rows.Count == 0 ) return "";;
-
                     if (curDataTable.Rows.Count == 0 && inCmd.ToLower().Equals( "delete" )) {
                         //curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
                         String[] curDelimValue = {" And " };
@@ -896,7 +894,9 @@ namespace WaterskiScoringSystem.Tools {
                         curXml.Append( "</Rows>" );
 
 					} else {
-                        curXml.Append( "<Rows count=\"" + curDataTable.Rows.Count + "\">" );
+						if ( curDataTable.Rows.Count == 0 ) return "";
+
+						curXml.Append( "<Rows count=\"" + curDataTable.Rows.Count + "\">" );
                         foreach (DataRow curRow in curDataTable.Rows) {
                             curXml.Append( "<Row colCount=\"" + curDataTable.Columns.Count + "\">" );
                             foreach (DataColumn curColumn in curDataTable.Columns) {

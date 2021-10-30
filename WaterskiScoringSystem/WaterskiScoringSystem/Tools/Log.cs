@@ -45,7 +45,7 @@ namespace WaterskiScoringSystem.Tools {
 					using ( var fileStream = new FileStream( myLogFileName, FileMode.Append ) ) {
 						String dateString = DateTime.Now.ToString( "MMM dd yyyy hh:mm:ss tt" );
 						foreach(String curLogRecord in inLogRecords ) {
-							Byte[] writeData = Encoding.UTF8.GetBytes( Environment.NewLine + dateString + ": " + curLogRecord );
+							Byte[] writeData = Encoding.UTF8.GetBytes( Environment.NewLine + dateString + ": Message: " + curLogRecord );
 							fileStream.Write( writeData, 0, writeData.Length );
 						}
 					}
@@ -62,7 +62,7 @@ namespace WaterskiScoringSystem.Tools {
 				lock ( logWriteLock ) {
 					using ( var fileStream = new FileStream( myLogFileName, FileMode.Append ) ) {
 						String dateString = DateTime.Now.ToString( "MMM dd yyyy hh:mm:ss tt" );
-						Byte[] writeData = Encoding.UTF8.GetBytes( Environment.NewLine + dateString + ": " + inLogRecord );
+						Byte[] writeData = Encoding.UTF8.GetBytes( Environment.NewLine + dateString + ": Message: " + inLogRecord );
 						fileStream.Write( writeData, 0, writeData.Length );
 					}
 				}

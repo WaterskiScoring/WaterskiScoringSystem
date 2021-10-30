@@ -1,22 +1,23 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Common {
-    public partial class SkierDoneReason : Form {
+	public partial class SkierDoneReason : Form {
         private String myCommandValue = "";
         private String myReason = "";
 
-        public SkierDoneReason() {
-            InitializeComponent();
-        }
+		public SkierDoneReason() {
+			InitializeComponent();
+		}
 
-        public String Command {
+		public String Command {
             get {
                 return myCommandValue;
             }
@@ -28,16 +29,19 @@ namespace WaterskiScoringSystem.Common {
             }
             set {
                 myReason = value;
-            }
+				ReasonTextbox.Text = myReason;
+
+			}
         }
 
         private void Reason_Load( object sender, EventArgs e ) {
-            if ( Properties.Settings.Default.ImportMatch_Location.X > 0
-                && Properties.Settings.Default.ImportMatch_Location.Y > 0 ) {
-                this.Location = Properties.Settings.Default.SkierDoneReason_Location;
-            }
+			if ( Properties.Settings.Default.SkierDoneReason_Location.X > 0
+				&& Properties.Settings.Default.SkierDoneReason_Location.Y > 0 ) {
+				this.Location = Properties.Settings.Default.SkierDoneReason_Location;
+			}
+			
             if ( myCommandValue.ToLower().Equals( "update" ) ) {
-                UpdateButton.Focus();
+                //UpdateButton.Focus();
             } else if ( myCommandValue.ToLower().Equals( "cancel" ) ) {
                 CancelButton.Focus();
             } else {
@@ -67,6 +71,9 @@ namespace WaterskiScoringSystem.Common {
         private void ReasonLabel_Click( object sender, EventArgs e ) {
 
         }
-    
-    }
+
+		private void SkierDoneReason_Load( object sender, EventArgs e ) {
+
+		}
+	}
 }

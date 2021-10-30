@@ -58,6 +58,7 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		public static void displayBulkWarnMessage() {
+			if ( importWarningMessages.Length == 0 ) return;
 			ShowMessage showMessage = new ShowMessage();
 			showMessage.Message = importWarningMessages.ToString();
 			showMessage.ShowDialog();
@@ -117,9 +118,6 @@ namespace WaterskiScoringSystem.Tools {
 				return false;
 			}
 			if ( !(foreignFederationID.Substring(0, federationCode.Length ).Equals( federationCode )) ) foreignFederationID = federationCode + foreignFederationID;
-
-			// Temporarily bypassing license check for foreign skiers that have a ForeignFederationID
-			//if ( foreignFederationID.Length > 0 ) return true;
 
 			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, foreignFederationID, curTourDate );
 			if ( respMsg == null ) {

@@ -36,62 +36,62 @@
 			System.Windows.Forms.Label ActiveSkierNameLabel;
 			System.Windows.Forms.Label EventGroupLabel;
 			System.Windows.Forms.Label SkierBoatPathLabel;
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle81 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle82 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle79 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle80 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScoreEntrySeg3));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle83 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle88 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle89 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle90 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle84 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle85 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle86 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle87 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle91 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle99 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle100 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle101 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle92 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle93 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle94 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle95 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle96 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle97 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle98 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle102 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle108 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle109 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle110 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle103 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle104 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle105 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle106 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle107 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.driverLabel = new System.Windows.Forms.Label();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
@@ -223,6 +223,11 @@
 			this.hcapScoreTextBox = new System.Windows.Forms.TextBox();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.boatPathDataGridView = new System.Windows.Forms.DataGridView();
+			this.boatPathBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.boatTimeBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.boatPathDev = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.boatPathZone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.boatPathZoneTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierBoatPathTextBox = new System.Windows.Forms.TextBox();
 			this.SkierBoatPathSelect = new WaterskiScoringSystem.Common.SkierBoatPathSelect();
 			this.RampHeightSelect = new WaterskiScoringSystem.Common.RampHeightSelect();
@@ -230,11 +235,7 @@
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.driverDropdown = new System.Windows.Forms.ComboBox();
-			this.boatPathBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.boatTimeBuoy = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.boatPathDev = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.boatPathZone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.boatPathZoneTol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ResendPassButton = new System.Windows.Forms.Button();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -489,14 +490,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.jumpRecapDataGridView.BackgroundColor = System.Drawing.Color.LightSteelBlue;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.jumpRecapDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle56.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.jumpRecapDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle56;
 			this.jumpRecapDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.jumpRecapDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.RoundRecap,
@@ -532,25 +533,25 @@
             this.Split52TimeTolRecap,
             this.Split82TimeTolRecap,
             this.Split41TimeTolRecap});
-			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle15.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.jumpRecapDataGridView.DefaultCellStyle = dataGridViewCellStyle15;
+			dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle70.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle70.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle70.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle70.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle70.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle70.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.jumpRecapDataGridView.DefaultCellStyle = dataGridViewCellStyle70;
 			this.jumpRecapDataGridView.Location = new System.Drawing.Point(276, 344);
 			this.jumpRecapDataGridView.MinimumSize = new System.Drawing.Size(640, 200);
 			this.jumpRecapDataGridView.Name = "jumpRecapDataGridView";
-			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.jumpRecapDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
+			dataGridViewCellStyle71.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle71.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle71.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle71.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle71.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle71.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.jumpRecapDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle71;
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
 			this.jumpRecapDataGridView.Size = new System.Drawing.Size(943, 249);
@@ -630,11 +631,11 @@
 			// BoatSplitTimeRecap
 			// 
 			this.BoatSplitTimeRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle2.Format = "N2";
-			dataGridViewCellStyle2.NullValue = null;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.BoatSplitTimeRecap.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle57.Format = "N2";
+			dataGridViewCellStyle57.NullValue = null;
+			dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatSplitTimeRecap.DefaultCellStyle = dataGridViewCellStyle57;
 			this.BoatSplitTimeRecap.HeaderText = "Split52 Time";
 			this.BoatSplitTimeRecap.Name = "BoatSplitTimeRecap";
 			this.BoatSplitTimeRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -644,11 +645,11 @@
 			// BoatSplitTime2Recap
 			// 
 			this.BoatSplitTime2Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle3.Format = "N2";
-			dataGridViewCellStyle3.NullValue = null;
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.BoatSplitTime2Recap.DefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle58.Format = "N2";
+			dataGridViewCellStyle58.NullValue = null;
+			dataGridViewCellStyle58.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatSplitTime2Recap.DefaultCellStyle = dataGridViewCellStyle58;
 			this.BoatSplitTime2Recap.HeaderText = "Split82 Time";
 			this.BoatSplitTime2Recap.Name = "BoatSplitTime2Recap";
 			this.BoatSplitTime2Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -658,11 +659,11 @@
 			// BoatEndTimeRecap
 			// 
 			this.BoatEndTimeRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle4.Format = "N2";
-			dataGridViewCellStyle4.NullValue = null;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.BoatEndTimeRecap.DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle59.Format = "N2";
+			dataGridViewCellStyle59.NullValue = null;
+			dataGridViewCellStyle59.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatEndTimeRecap.DefaultCellStyle = dataGridViewCellStyle59;
 			this.BoatEndTimeRecap.HeaderText = "End Time";
 			this.BoatEndTimeRecap.Name = "BoatEndTimeRecap";
 			this.BoatEndTimeRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -672,12 +673,12 @@
 			// Meter1Recap
 			// 
 			this.Meter1Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.Format = "N2";
-			dataGridViewCellStyle5.NullValue = null;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Meter1Recap.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle60.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle60.Format = "N2";
+			dataGridViewCellStyle60.NullValue = null;
+			dataGridViewCellStyle60.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Meter1Recap.DefaultCellStyle = dataGridViewCellStyle60;
 			this.Meter1Recap.HeaderText = "Meter 1";
 			this.Meter1Recap.Name = "Meter1Recap";
 			this.Meter1Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -688,12 +689,12 @@
 			// Meter2Recap
 			// 
 			this.Meter2Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle6.Format = "N2";
-			dataGridViewCellStyle6.NullValue = null;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Meter2Recap.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle61.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle61.Format = "N2";
+			dataGridViewCellStyle61.NullValue = null;
+			dataGridViewCellStyle61.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Meter2Recap.DefaultCellStyle = dataGridViewCellStyle61;
 			this.Meter2Recap.HeaderText = "Meter 2";
 			this.Meter2Recap.Name = "Meter2Recap";
 			this.Meter2Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -704,12 +705,12 @@
 			// Meter3Recap
 			// 
 			this.Meter3Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle7.Format = "N2";
-			dataGridViewCellStyle7.NullValue = null;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Meter3Recap.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle62.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle62.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle62.Format = "N2";
+			dataGridViewCellStyle62.NullValue = null;
+			dataGridViewCellStyle62.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Meter3Recap.DefaultCellStyle = dataGridViewCellStyle62;
 			this.Meter3Recap.HeaderText = "Meter 3";
 			this.Meter3Recap.Name = "Meter3Recap";
 			this.Meter3Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -720,12 +721,12 @@
 			// Meter4Recap
 			// 
 			this.Meter4Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle8.Format = "N2";
-			dataGridViewCellStyle8.NullValue = null;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Meter4Recap.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle63.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle63.Format = "N2";
+			dataGridViewCellStyle63.NullValue = null;
+			dataGridViewCellStyle63.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Meter4Recap.DefaultCellStyle = dataGridViewCellStyle63;
 			this.Meter4Recap.HeaderText = "Meter 4";
 			this.Meter4Recap.Name = "Meter4Recap";
 			this.Meter4Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -736,12 +737,12 @@
 			// Meter5Recap
 			// 
 			this.Meter5Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle9.Format = "N2";
-			dataGridViewCellStyle9.NullValue = null;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Meter5Recap.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle64.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle64.Format = "N2";
+			dataGridViewCellStyle64.NullValue = null;
+			dataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Meter5Recap.DefaultCellStyle = dataGridViewCellStyle64;
 			this.Meter5Recap.HeaderText = "Meter 5";
 			this.Meter5Recap.Name = "Meter5Recap";
 			this.Meter5Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -752,12 +753,12 @@
 			// Meter6Recap
 			// 
 			this.Meter6Recap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle10.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle10.Format = "N2";
-			dataGridViewCellStyle10.NullValue = null;
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Meter6Recap.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle65.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle65.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle65.Format = "N2";
+			dataGridViewCellStyle65.NullValue = null;
+			dataGridViewCellStyle65.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Meter6Recap.DefaultCellStyle = dataGridViewCellStyle65;
 			this.Meter6Recap.HeaderText = "Meter 6";
 			this.Meter6Recap.Name = "Meter6Recap";
 			this.Meter6Recap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -768,11 +769,11 @@
 			// ScoreFeetRecap
 			// 
 			this.ScoreFeetRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle11.Format = "N0";
-			dataGridViewCellStyle11.NullValue = null;
-			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreFeetRecap.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle66.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle66.Format = "N0";
+			dataGridViewCellStyle66.NullValue = null;
+			dataGridViewCellStyle66.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreFeetRecap.DefaultCellStyle = dataGridViewCellStyle66;
 			this.ScoreFeetRecap.HeaderText = "Feet";
 			this.ScoreFeetRecap.Name = "ScoreFeetRecap";
 			this.ScoreFeetRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -782,11 +783,11 @@
 			// ScoreMetersRecap
 			// 
 			this.ScoreMetersRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle12.Format = "N1";
-			dataGridViewCellStyle12.NullValue = null;
-			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreMetersRecap.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle67.Format = "N1";
+			dataGridViewCellStyle67.NullValue = null;
+			dataGridViewCellStyle67.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreMetersRecap.DefaultCellStyle = dataGridViewCellStyle67;
 			this.ScoreMetersRecap.HeaderText = "Meters";
 			this.ScoreMetersRecap.Name = "ScoreMetersRecap";
 			this.ScoreMetersRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -827,11 +828,11 @@
 			// ScoreTriangleRecap
 			// 
 			this.ScoreTriangleRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle13.Format = "N2";
-			dataGridViewCellStyle13.NullValue = null;
-			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreTriangleRecap.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle68.Format = "N2";
+			dataGridViewCellStyle68.NullValue = null;
+			dataGridViewCellStyle68.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreTriangleRecap.DefaultCellStyle = dataGridViewCellStyle68;
 			this.ScoreTriangleRecap.HeaderText = "Score Triangle";
 			this.ScoreTriangleRecap.Name = "ScoreTriangleRecap";
 			this.ScoreTriangleRecap.ReadOnly = true;
@@ -842,10 +843,10 @@
 			// RerideReasonRecap
 			// 
 			this.RerideReasonRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle14.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RerideReasonRecap.DefaultCellStyle = dataGridViewCellStyle14;
+			dataGridViewCellStyle69.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle69.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle69.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RerideReasonRecap.DefaultCellStyle = dataGridViewCellStyle69;
 			this.RerideReasonRecap.HeaderText = "RerideReason";
 			this.RerideReasonRecap.Name = "RerideReasonRecap";
 			this.RerideReasonRecap.ReadOnly = true;
@@ -1000,14 +1001,14 @@
 			this.TourEventRegDataGridView.AllowUserToResizeRows = false;
 			this.TourEventRegDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle17.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold);
-			dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.TourEventRegDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+			dataGridViewCellStyle72.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle72.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle72.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold);
+			dataGridViewCellStyle72.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle72.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle72.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle72.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.TourEventRegDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle72;
 			this.TourEventRegDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.TourEventRegDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.SkierName,
@@ -1032,27 +1033,27 @@
             this.PK,
             this.Federation,
             this.State});
-			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle26.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.TourEventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle26;
+			dataGridViewCellStyle81.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle81.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle81.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle81.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle81.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle81.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle81.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.TourEventRegDataGridView.DefaultCellStyle = dataGridViewCellStyle81;
 			this.TourEventRegDataGridView.Location = new System.Drawing.Point(5, 127);
 			this.TourEventRegDataGridView.MultiSelect = false;
 			this.TourEventRegDataGridView.Name = "TourEventRegDataGridView";
 			this.TourEventRegDataGridView.ReadOnly = true;
 			this.TourEventRegDataGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-			dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.TourEventRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle27;
+			dataGridViewCellStyle82.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle82.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle82.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle82.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle82.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle82.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle82.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.TourEventRegDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle82;
 			this.TourEventRegDataGridView.RowHeadersVisible = false;
 			this.TourEventRegDataGridView.RowHeadersWidth = 26;
 			this.TourEventRegDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -1073,9 +1074,9 @@
 			// AgeGroup
 			// 
 			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle18;
+			dataGridViewCellStyle73.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle73.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle73;
 			this.AgeGroup.HeaderText = "Div";
 			this.AgeGroup.Name = "AgeGroup";
 			this.AgeGroup.ReadOnly = true;
@@ -1107,9 +1108,9 @@
 			// EventClass
 			// 
 			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle19;
+			dataGridViewCellStyle74.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle74.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle74;
 			this.EventClass.HeaderText = "Cls";
 			this.EventClass.Name = "EventClass";
 			this.EventClass.ReadOnly = true;
@@ -1120,9 +1121,9 @@
 			// EventGroup
 			// 
 			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle20;
+			dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle75.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle75;
 			this.EventGroup.HeaderText = "Grp";
 			this.EventGroup.Name = "EventGroup";
 			this.EventGroup.ReadOnly = true;
@@ -1133,9 +1134,9 @@
 			// Score
 			// 
 			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle21;
+			dataGridViewCellStyle76.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle76.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle76;
 			this.Score.HeaderText = "Score";
 			this.Score.Name = "Score";
 			this.Score.ReadOnly = true;
@@ -1155,9 +1156,9 @@
 			// RankingScore
 			// 
 			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle22;
+			dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle77;
 			this.RankingScore.HeaderText = "Rank";
 			this.RankingScore.Name = "RankingScore";
 			this.RankingScore.ReadOnly = true;
@@ -1168,9 +1169,9 @@
 			// HCapBase
 			// 
 			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle23;
+			dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle78.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle78;
 			this.HCapBase.HeaderText = "HBase";
 			this.HCapBase.Name = "HCapBase";
 			this.HCapBase.ReadOnly = true;
@@ -1181,9 +1182,9 @@
 			// HCapScore
 			// 
 			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle24;
+			dataGridViewCellStyle79.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle79.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle79;
 			this.HCapScore.HeaderText = "HCap";
 			this.HCapScore.Name = "HCapScore";
 			this.HCapScore.ReadOnly = true;
@@ -1214,9 +1215,9 @@
 			// Order
 			// 
 			this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Order.DefaultCellStyle = dataGridViewCellStyle25;
+			dataGridViewCellStyle80.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle80.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Order.DefaultCellStyle = dataGridViewCellStyle80;
 			this.Order.HeaderText = "Ord";
 			this.Order.Name = "Order";
 			this.Order.ReadOnly = true;
@@ -1423,14 +1424,14 @@
 			this.listBoatTimesDataGridView.AllowUserToAddRows = false;
 			this.listBoatTimesDataGridView.AllowUserToDeleteRows = false;
 			this.listBoatTimesDataGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listBoatTimesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
+			dataGridViewCellStyle83.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle83.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle83.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle83.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle83.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle83.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle83.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listBoatTimesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle83;
 			this.listBoatTimesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.listBoatTimesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.BoatTimeKey,
@@ -1439,30 +1440,30 @@
             this.ActualTime,
             this.SlowtimeTol,
             this.TimeKeyDesc});
-			dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle33.ForeColor = System.Drawing.Color.Green;
-			dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle33;
+			dataGridViewCellStyle88.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle88.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle88.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle88.ForeColor = System.Drawing.Color.Green;
+			dataGridViewCellStyle88.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle88.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle88.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle88;
 			this.listBoatTimesDataGridView.GridColor = System.Drawing.SystemColors.Control;
 			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(671, 137);
 			this.listBoatTimesDataGridView.MultiSelect = false;
 			this.listBoatTimesDataGridView.Name = "listBoatTimesDataGridView";
 			this.listBoatTimesDataGridView.ReadOnly = true;
-			dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listBoatTimesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle34;
+			dataGridViewCellStyle89.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle89.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle89.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle89.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle89.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle89.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle89.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listBoatTimesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle89;
 			this.listBoatTimesDataGridView.RowHeadersVisible = false;
-			dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Info;
-			this.listBoatTimesDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle35;
+			dataGridViewCellStyle90.BackColor = System.Drawing.SystemColors.Info;
+			this.listBoatTimesDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle90;
 			this.listBoatTimesDataGridView.Size = new System.Drawing.Size(362, 160);
 			this.listBoatTimesDataGridView.TabIndex = 46;
 			// 
@@ -1477,10 +1478,10 @@
 			// ListCodeNum
 			// 
 			this.ListCodeNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle29.Format = "N2";
-			dataGridViewCellStyle29.NullValue = null;
-			this.ListCodeNum.DefaultCellStyle = dataGridViewCellStyle29;
+			dataGridViewCellStyle84.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle84.Format = "N2";
+			dataGridViewCellStyle84.NullValue = null;
+			this.ListCodeNum.DefaultCellStyle = dataGridViewCellStyle84;
 			this.ListCodeNum.HeaderText = "ListCodeNum";
 			this.ListCodeNum.Name = "ListCodeNum";
 			this.ListCodeNum.ReadOnly = true;
@@ -1490,10 +1491,10 @@
 			// FastTimeTol
 			// 
 			this.FastTimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle30.Format = "N2";
-			dataGridViewCellStyle30.NullValue = null;
-			this.FastTimeTol.DefaultCellStyle = dataGridViewCellStyle30;
+			dataGridViewCellStyle85.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle85.Format = "N2";
+			dataGridViewCellStyle85.NullValue = null;
+			this.FastTimeTol.DefaultCellStyle = dataGridViewCellStyle85;
 			this.FastTimeTol.HeaderText = "Fast";
 			this.FastTimeTol.Name = "FastTimeTol";
 			this.FastTimeTol.ReadOnly = true;
@@ -1502,10 +1503,10 @@
 			// ActualTime
 			// 
 			this.ActualTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle31.Format = "N2";
-			dataGridViewCellStyle31.NullValue = null;
-			this.ActualTime.DefaultCellStyle = dataGridViewCellStyle31;
+			dataGridViewCellStyle86.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle86.Format = "N2";
+			dataGridViewCellStyle86.NullValue = null;
+			this.ActualTime.DefaultCellStyle = dataGridViewCellStyle86;
 			this.ActualTime.HeaderText = "Ideal";
 			this.ActualTime.Name = "ActualTime";
 			this.ActualTime.ReadOnly = true;
@@ -1514,10 +1515,10 @@
 			// SlowtimeTol
 			// 
 			this.SlowtimeTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle32.Format = "N2";
-			dataGridViewCellStyle32.NullValue = null;
-			this.SlowtimeTol.DefaultCellStyle = dataGridViewCellStyle32;
+			dataGridViewCellStyle87.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle87.Format = "N2";
+			dataGridViewCellStyle87.NullValue = null;
+			this.SlowtimeTol.DefaultCellStyle = dataGridViewCellStyle87;
 			this.SlowtimeTol.HeaderText = "Slow";
 			this.SlowtimeTol.Name = "SlowtimeTol";
 			this.SlowtimeTol.ReadOnly = true;
@@ -1598,14 +1599,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.listApprovedBoatsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
 			this.listApprovedBoatsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-			dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle36.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listApprovedBoatsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle36;
+			dataGridViewCellStyle91.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle91.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle91.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle91.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle91.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle91.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle91.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listApprovedBoatsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle91;
 			this.listApprovedBoatsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.listApprovedBoatsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.BoatModelApproved,
@@ -1619,30 +1620,30 @@
             this.BoatOwner,
             this.ModelYear,
             this.BoatNotes});
-			dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle44.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle44.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle44.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle44.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.listApprovedBoatsDataGridView.DefaultCellStyle = dataGridViewCellStyle44;
+			dataGridViewCellStyle99.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle99.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle99.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle99.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle99.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle99.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle99.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.listApprovedBoatsDataGridView.DefaultCellStyle = dataGridViewCellStyle99;
 			this.listApprovedBoatsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(276, 383);
 			this.listApprovedBoatsDataGridView.MaximumSize = new System.Drawing.Size(900, 250);
 			this.listApprovedBoatsDataGridView.MinimumSize = new System.Drawing.Size(600, 150);
 			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
-			dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle45.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle45.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle45.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle45.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listApprovedBoatsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle45;
+			dataGridViewCellStyle100.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle100.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle100.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle100.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle100.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle100.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle100.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listApprovedBoatsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle100;
 			this.listApprovedBoatsDataGridView.RowHeadersWidth = 21;
-			dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle46;
+			dataGridViewCellStyle101.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle101;
 			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(724, 187);
 			this.listApprovedBoatsDataGridView.TabIndex = 48;
 			this.listApprovedBoatsDataGridView.TabStop = false;
@@ -1652,9 +1653,9 @@
 			// BoatModelApproved
 			// 
 			this.BoatModelApproved.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle37.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle37;
+			dataGridViewCellStyle92.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle92.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.BoatModelApproved.DefaultCellStyle = dataGridViewCellStyle92;
 			this.BoatModelApproved.HeaderText = "Boat Model";
 			this.BoatModelApproved.Name = "BoatModelApproved";
 			this.BoatModelApproved.ReadOnly = true;
@@ -1663,9 +1664,9 @@
 			// EngineSpec
 			// 
 			this.EngineSpec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle38.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle38;
+			dataGridViewCellStyle93.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle93.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.EngineSpec.DefaultCellStyle = dataGridViewCellStyle93;
 			this.EngineSpec.HeaderText = "Engine Mfr. & Model";
 			this.EngineSpec.Name = "EngineSpec";
 			this.EngineSpec.ReadOnly = true;
@@ -1674,9 +1675,9 @@
 			// SpeedControl
 			// 
 			this.SpeedControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle39.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle39;
+			dataGridViewCellStyle94.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle94.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.SpeedControl.DefaultCellStyle = dataGridViewCellStyle94;
 			this.SpeedControl.HeaderText = "Speed Control";
 			this.SpeedControl.Name = "SpeedControl";
 			this.SpeedControl.ReadOnly = true;
@@ -1685,8 +1686,8 @@
 			// HullStatus
 			// 
 			this.HullStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle40;
+			dataGridViewCellStyle95.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.HullStatus.DefaultCellStyle = dataGridViewCellStyle95;
 			this.HullStatus.HeaderText = "Hull Status";
 			this.HullStatus.MaxInputLength = 16;
 			this.HullStatus.Name = "HullStatus";
@@ -1696,8 +1697,8 @@
 			// FuelDel
 			// 
 			this.FuelDel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle41;
+			dataGridViewCellStyle96.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.FuelDel.DefaultCellStyle = dataGridViewCellStyle96;
 			this.FuelDel.HeaderText = "Fuel Del";
 			this.FuelDel.Name = "FuelDel";
 			this.FuelDel.ReadOnly = true;
@@ -1707,9 +1708,9 @@
 			// Transmission
 			// 
 			this.Transmission.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle42.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Transmission.DefaultCellStyle = dataGridViewCellStyle42;
+			dataGridViewCellStyle97.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle97.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Transmission.DefaultCellStyle = dataGridViewCellStyle97;
 			this.Transmission.HeaderText = "Trans";
 			this.Transmission.Name = "Transmission";
 			this.Transmission.ReadOnly = true;
@@ -1718,9 +1719,9 @@
 			// Prop
 			// 
 			this.Prop.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle43.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Prop.DefaultCellStyle = dataGridViewCellStyle43;
+			dataGridViewCellStyle98.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle98.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Prop.DefaultCellStyle = dataGridViewCellStyle98;
 			this.Prop.HeaderText = "Prop";
 			this.Prop.Name = "Prop";
 			this.Prop.ReadOnly = true;
@@ -2130,14 +2131,14 @@
 			this.boatPathDataGridView.AllowUserToResizeColumns = false;
 			this.boatPathDataGridView.AllowUserToResizeRows = false;
 			this.boatPathDataGridView.BackgroundColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle47.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle47.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle47.ForeColor = System.Drawing.Color.Purple;
-			dataGridViewCellStyle47.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle47.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle47.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle47;
+			dataGridViewCellStyle102.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle102.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle102.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle102.ForeColor = System.Drawing.Color.Purple;
+			dataGridViewCellStyle102.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle102.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle102.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle102;
 			this.boatPathDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.boatPathDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.boatPathBuoy,
@@ -2145,35 +2146,105 @@
             this.boatPathDev,
             this.boatPathZone,
             this.boatPathZoneTol});
-			dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle53.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathDataGridView.DefaultCellStyle = dataGridViewCellStyle53;
+			dataGridViewCellStyle108.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle108.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle108.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle108.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle108.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle108.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle108.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathDataGridView.DefaultCellStyle = dataGridViewCellStyle108;
 			this.boatPathDataGridView.GridColor = System.Drawing.SystemColors.Control;
 			this.boatPathDataGridView.Location = new System.Drawing.Point(1039, 137);
 			this.boatPathDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.boatPathDataGridView.MultiSelect = false;
 			this.boatPathDataGridView.Name = "boatPathDataGridView";
 			this.boatPathDataGridView.ReadOnly = true;
-			dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle54.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle54.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle54.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle54.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle54.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.boatPathDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle54;
+			dataGridViewCellStyle109.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle109.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle109.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle109.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle109.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle109.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle109.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.boatPathDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle109;
 			this.boatPathDataGridView.RowHeadersVisible = false;
-			dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle55.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.boatPathDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle55;
+			dataGridViewCellStyle110.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle110.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.boatPathDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle110;
 			this.boatPathDataGridView.Size = new System.Drawing.Size(180, 160);
 			this.boatPathDataGridView.TabIndex = 112;
 			this.boatPathDataGridView.Visible = false;
+			// 
+			// boatPathBuoy
+			// 
+			this.boatPathBuoy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle103.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle103.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathBuoy.DefaultCellStyle = dataGridViewCellStyle103;
+			this.boatPathBuoy.HeaderText = "Key";
+			this.boatPathBuoy.MaxInputLength = 2;
+			this.boatPathBuoy.Name = "boatPathBuoy";
+			this.boatPathBuoy.ReadOnly = true;
+			this.boatPathBuoy.Width = 45;
+			// 
+			// boatTimeBuoy
+			// 
+			this.boatTimeBuoy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle104.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle104.Format = "N2";
+			dataGridViewCellStyle104.NullValue = null;
+			dataGridViewCellStyle104.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatTimeBuoy.DefaultCellStyle = dataGridViewCellStyle104;
+			this.boatTimeBuoy.HeaderText = "Time";
+			this.boatTimeBuoy.MaxInputLength = 12;
+			this.boatTimeBuoy.Name = "boatTimeBuoy";
+			this.boatTimeBuoy.ReadOnly = true;
+			this.boatTimeBuoy.Width = 45;
+			// 
+			// boatPathDev
+			// 
+			this.boatPathDev.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle105.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle105.Format = "N0";
+			dataGridViewCellStyle105.NullValue = null;
+			dataGridViewCellStyle105.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathDev.DefaultCellStyle = dataGridViewCellStyle105;
+			this.boatPathDev.HeaderText = "Dev";
+			this.boatPathDev.MaxInputLength = 6;
+			this.boatPathDev.Name = "boatPathDev";
+			this.boatPathDev.ReadOnly = true;
+			this.boatPathDev.Width = 45;
+			// 
+			// boatPathZone
+			// 
+			this.boatPathZone.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle106.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle106.Format = "N0";
+			dataGridViewCellStyle106.NullValue = null;
+			dataGridViewCellStyle106.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathZone.DefaultCellStyle = dataGridViewCellStyle106;
+			this.boatPathZone.HeaderText = "Zone";
+			this.boatPathZone.MaxInputLength = 6;
+			this.boatPathZone.Name = "boatPathZone";
+			this.boatPathZone.ReadOnly = true;
+			this.boatPathZone.Visible = false;
+			this.boatPathZone.Width = 40;
+			// 
+			// boatPathZoneTol
+			// 
+			this.boatPathZoneTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle107.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle107.Format = "N0";
+			dataGridViewCellStyle107.NullValue = null;
+			dataGridViewCellStyle107.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.boatPathZoneTol.DefaultCellStyle = dataGridViewCellStyle107;
+			this.boatPathZoneTol.HeaderText = "Tol";
+			this.boatPathZoneTol.MaxInputLength = 6;
+			this.boatPathZoneTol.Name = "boatPathZoneTol";
+			this.boatPathZoneTol.ReadOnly = true;
+			this.boatPathZoneTol.Visible = false;
+			this.boatPathZoneTol.Width = 48;
 			// 
 			// SkierBoatPathTextBox
 			// 
@@ -2265,75 +2336,21 @@
 			this.driverDropdown.TabIndex = 114;
 			this.driverDropdown.SelectedValueChanged += new System.EventHandler(this.driverDropdown_SelectedValueChanged);
 			// 
-			// boatPathBuoy
+			// ResendPassButton
 			// 
-			this.boatPathBuoy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathBuoy.DefaultCellStyle = dataGridViewCellStyle48;
-			this.boatPathBuoy.HeaderText = "Key";
-			this.boatPathBuoy.MaxInputLength = 2;
-			this.boatPathBuoy.Name = "boatPathBuoy";
-			this.boatPathBuoy.ReadOnly = true;
-			this.boatPathBuoy.Width = 45;
-			// 
-			// boatTimeBuoy
-			// 
-			this.boatTimeBuoy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle49.Format = "N2";
-			dataGridViewCellStyle49.NullValue = null;
-			dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatTimeBuoy.DefaultCellStyle = dataGridViewCellStyle49;
-			this.boatTimeBuoy.HeaderText = "Time";
-			this.boatTimeBuoy.MaxInputLength = 12;
-			this.boatTimeBuoy.Name = "boatTimeBuoy";
-			this.boatTimeBuoy.ReadOnly = true;
-			this.boatTimeBuoy.Width = 45;
-			// 
-			// boatPathDev
-			// 
-			this.boatPathDev.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle50.Format = "N0";
-			dataGridViewCellStyle50.NullValue = null;
-			dataGridViewCellStyle50.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathDev.DefaultCellStyle = dataGridViewCellStyle50;
-			this.boatPathDev.HeaderText = "Dev";
-			this.boatPathDev.MaxInputLength = 6;
-			this.boatPathDev.Name = "boatPathDev";
-			this.boatPathDev.ReadOnly = true;
-			this.boatPathDev.Width = 45;
-			// 
-			// boatPathZone
-			// 
-			this.boatPathZone.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle51.Format = "N0";
-			dataGridViewCellStyle51.NullValue = null;
-			dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathZone.DefaultCellStyle = dataGridViewCellStyle51;
-			this.boatPathZone.HeaderText = "Zone";
-			this.boatPathZone.MaxInputLength = 6;
-			this.boatPathZone.Name = "boatPathZone";
-			this.boatPathZone.ReadOnly = true;
-			this.boatPathZone.Visible = false;
-			this.boatPathZone.Width = 40;
-			// 
-			// boatPathZoneTol
-			// 
-			this.boatPathZoneTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle52.Format = "N0";
-			dataGridViewCellStyle52.NullValue = null;
-			dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.boatPathZoneTol.DefaultCellStyle = dataGridViewCellStyle52;
-			this.boatPathZoneTol.HeaderText = "Tol";
-			this.boatPathZoneTol.MaxInputLength = 6;
-			this.boatPathZoneTol.Name = "boatPathZoneTol";
-			this.boatPathZoneTol.ReadOnly = true;
-			this.boatPathZoneTol.Visible = false;
-			this.boatPathZoneTol.Width = 48;
+			this.ResendPassButton.AutoSize = true;
+			this.ResendPassButton.Enabled = false;
+			this.ResendPassButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ResendPassButton.Location = new System.Drawing.Point(499, 316);
+			this.ResendPassButton.Margin = new System.Windows.Forms.Padding(0);
+			this.ResendPassButton.Name = "ResendPassButton";
+			this.ResendPassButton.Padding = new System.Windows.Forms.Padding(1);
+			this.ResendPassButton.Size = new System.Drawing.Size(82, 25);
+			this.ResendPassButton.TabIndex = 115;
+			this.ResendPassButton.Text = "Resend Pass";
+			this.ResendPassButton.UseVisualStyleBackColor = true;
+			this.ResendPassButton.Visible = false;
+			this.ResendPassButton.Click += new System.EventHandler(this.ResendPassButton_Click);
 			// 
 			// ScoreEntrySeg3
 			// 
@@ -2342,6 +2359,7 @@
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
 			this.ClientSize = new System.Drawing.Size(1228, 679);
+			this.Controls.Add(this.ResendPassButton);
 			this.Controls.Add(this.driverLabel);
 			this.Controls.Add(this.driverDropdown);
 			this.Controls.Add(this.SkierBoatPathTextBox);
@@ -2579,5 +2597,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathDev;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathZone;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathZoneTol;
+		private System.Windows.Forms.Button ResendPassButton;
 	}
 }

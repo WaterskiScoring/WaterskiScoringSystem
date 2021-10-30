@@ -287,24 +287,25 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 if ( curLoadActive ) {
                     try {
-                        StringBuilder curSqlStmt = new StringBuilder("Delete DivOrder WHERE SanctionId = '" + mySanctionNum + "' AND Event = '" + curEvent + "'");
+						DataTable curDataTable = null;
+                        String curSqlStmt = String.Format("Delete DivOrder WHERE SanctionId = '{0}' AND Event = '{1}'", mySanctionNum, curEvent ) ;
                         rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt );
 
                         int curInsertCount = 0;
-                        String curSqlStmtInsert = "Insert Into DivOrder ( "
-                            + "SanctionId, Event, AgeGroup, RunOrder, LastUpdateDate "
-                            + ") Values ( '" + mySanctionNum + "', '" + curEvent + "'";
+                        String curSqlStmtInsert = "Insert Into DivOrder ( SanctionId, Event, AgeGroup, RunOrder, LastUpdateDate ) Values ( '{0}', '{1}', '{2}', {3}, getDate() )";
+						String curSqlStmtCheck = "Select * From DivOrder Where SanctionId = '{0}' AND Event = '{1}' AND AgeGroup = '{2}'";
 
-                        foreach ( DataRow curRow in curAgeGroupDropdownList.AgeDivDataTable.Rows ) {
+						foreach ( DataRow curRow in curAgeGroupDropdownList.AgeDivDataTable.Rows ) {
                             if ( !(( (String)curRow["Division"] ).Equals( "OF" ) ) ) {
-                                curSqlStmt = new StringBuilder(curSqlStmtInsert
-                                    + ", '" + (String)curRow["Division"] + "'"
-                                    + ", " + ( ((int)curRow["SortSeq"]) * 10 ).ToString()
-                                    + ", getDate() )");
-                                rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                curInsertCount += rowsProc;
-                            }
+								curSqlStmt = String.Format( curSqlStmtCheck, mySanctionNum, curEvent, (String)curRow["Division"] );
+								curDataTable = DataAccess.getDataTable( curSqlStmt );
+								if ( curDataTable.Rows.Count == 0 ) {
+									curSqlStmt = String.Format( curSqlStmtInsert, mySanctionNum, curEvent, (String)curRow["Division"], ( ( (int)curRow["SortSeq"] ) * 10 ).ToString() );
+									rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+									curInsertCount += rowsProc;
+								}
+							}
                         }
                         Log.WriteFile( curMethodName + ":Rows=" + curInsertCount.ToString() + " " + curSqlStmtInsert );
                         MessageBox.Show( "Added rows=" + curInsertCount.ToString() + " to division order" );

@@ -1678,7 +1678,8 @@ namespace WaterskiScoringSystem.Admin {
 
 			Dictionary<string, object> curSanctionEntry = getSanctionFromUSAWS();
 			if ( curSanctionEntry == null ) {
-				myTourViewRow.Cells["SanctionId"].Value = "";
+				myTourViewRow.Cells["SanctionId"].Value = editSanctionId.Text;
+				myTourViewRow.Cells["SanctionEditCode"].Value = int.Parse( editSanctionEditCode.Text );
 				myTourViewRow.Cells["TourName"].Value = "";
 				myTourViewRow.Cells["TourClass"].Value = "C";
 				myTourViewRow.Cells["TourFederation"].Value = "usa";
@@ -1742,6 +1743,8 @@ namespace WaterskiScoringSystem.Admin {
 
 			String curSanctionNum = curDialog.SanctionId;
 			String curSanctionEditCode = curDialog.EditCode;
+			editSanctionId.Text = curDialog.SanctionId;
+			editSanctionEditCode.Text = curDialog.EditCode;
 
 			/* -----------------------------------------------------------------------
             * Configure URL to retrieve all skiers pre-registered for the active tournament
@@ -1762,7 +1765,7 @@ namespace WaterskiScoringSystem.Admin {
 				return (Dictionary<string, object>) curResponseDataList.ElementAt( 0 );
 
 			} else {
-				MessageBox.Show( "Unable to retrieve attributes for Sanction: " + curSanctionNum );
+				MessageBox.Show( "Sanction not found or hasn't been approved Sanction: " + curSanctionNum );
 				return null;
 			}
 		}

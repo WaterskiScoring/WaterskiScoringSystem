@@ -651,6 +651,7 @@ namespace WaterskiScoringSystem.Tools {
 					}
 
 					socketClient.Emit( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
+					Log.WriteFile( String.Format( "checkForMsgToSend: PK: {0} MsgType: {1} MsgData: {2}", curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
 					removeEwscMsg( (int)curDataRow["PK"] );
 				}
 				return 0;

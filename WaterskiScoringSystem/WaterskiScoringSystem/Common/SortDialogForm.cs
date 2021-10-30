@@ -87,8 +87,25 @@ namespace WaterskiScoringSystem.Common {
         }
 
         private void okButton_Click( object sender, EventArgs e ) {
-            // Build sort command based on data from datagrid
-            StringBuilder myCommand = new StringBuilder("");
+			// Validate that each sort column is defined only once
+			Int16 foundCount = 0;
+			for ( int checkIdx = 0; checkIdx < dataGridView.RowCount; ++checkIdx ) {
+				foundCount = 1;
+				if ( dataGridView.Rows[checkIdx].Cells["ColumnName"].Value == null ) continue;
+				for ( int idx = 0; idx < dataGridView.RowCount; ++idx ) {
+					if ( checkIdx == idx ) continue;
+					if ( dataGridView.Rows[idx].Cells["ColumnName"].Value == null ) continue;
+					if ( dataGridView.Rows[checkIdx].Cells["ColumnName"].Value.Equals( dataGridView.Rows[idx].Cells["ColumnName"].Value ) ) foundCount++;
+				}
+				if ( foundCount > 1 ) {
+					MessageBox.Show( String.Format( "Column {0} is defined twice in sort definition and this is not allowed.", dataGridView.Rows[checkIdx].Cells["ColumnName"].Value ) );
+					this.DialogResult = DialogResult.None;
+					return;
+				}
+			}
+
+			// Build sort command based on data from datagrid
+			StringBuilder myCommand = new StringBuilder("");
             for (int idx = 0; idx < dataGridView.RowCount; ++idx) {
                 if (dataGridView.Rows[idx].Cells["ColumnName"].Value != null
                     && dataGridView.Rows[idx].Cells["SortMode"].Value != null

@@ -147,6 +147,8 @@ namespace WaterskiScoringSystem.Common {
 
 			String curRound = (String)curViewRow.Cells["Round"].Value;
 			String curPassNumber = (String)curViewRow.Cells["PassNumber"].Value;
+			String ScoreFeet = (String)curViewRow.Cells["ScoreFeet"].Value;
+			String ScoreMeters = (String)curViewRow.Cells["ScoreMeters"].Value;
 
 			String curSkierMemberId = (String)curViewRow.Cells["SkierMemberId"].Value;
 
@@ -155,6 +157,8 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( " MemberId = '" + curSkierMemberId + "'" );
 			curSqlStmt.Append( ", Round = " + curRound );
 			curSqlStmt.Append( ", PassNumber = " + curPassNumber );
+			curSqlStmt.Append( ", ScoreFeet = " + ScoreFeet );
+			curSqlStmt.Append( ", ScoreMeters = " + ScoreMeters );
 			curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
 			curSqlStmt.Append( "Where PK = " + curPK );
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -198,6 +202,8 @@ namespace WaterskiScoringSystem.Common {
 					if ( curColName.Equals( "SkierMemberId" )
 						|| curColName.Equals( "Round" )
 						|| curColName.Equals( "PassNumber" )
+						|| curColName.Equals( "ScoreFeet" )
+						|| curColName.Equals( "ScoreMeets" )
 						) {
 						try {
 							myOrigItemValue = (String)dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
@@ -220,6 +226,8 @@ namespace WaterskiScoringSystem.Common {
 				if ( curColName.Equals( "SkierMemberId" )
 					|| curColName.Equals( "Round" )
 					|| curColName.Equals( "PassNumber" )
+					|| curColName.Equals( "ScoreFeet" )
+					|| curColName.Equals( "ScoreMeets" )
 					) {
 					String curValue = (String)curViewRow.Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigItemValue ) {
@@ -228,7 +236,6 @@ namespace WaterskiScoringSystem.Common {
 				}
 			}
 		}
-
 
 		private DataTable getJumpMeasurement() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );

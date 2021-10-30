@@ -9,9 +9,21 @@ namespace WaterskiScoringSystem.Common {
 		private DataTable myOfficialAsgmtDataTable = null;
 		private DataTable myDriverAsgmtDataTable = null;
 
-		public void readOfficialAssignments( String inSanctionNum, String inEvent, String inEventGroup, String inRound ) {
-			myOfficialAsgmtDataTable = getOfficialWorkAsgmt( inSanctionNum, inEvent, inEventGroup, inRound );
-			myDriverAsgmtDataTable = getDriverAsgmt( inSanctionNum, inEvent, inEventGroup, inRound );
+		public void readOfficialAssignments( String inSanctionNum, String inEvent, String inAgeGroup, String inEventGroup, String inRound ) {
+			String curEventGroup = inEventGroup;
+			if ( inSanctionNum.Substring( 2, 1 ).Equals( "U" ) ) {
+				if ( inAgeGroup.Equals( "CM" ) ) {
+					curEventGroup = "MEN A";
+				} else if ( inAgeGroup.Equals( "CW" ) ) {
+					curEventGroup = "WOMEN A";
+				} else if ( inAgeGroup.Equals( "BW" ) ) {
+					curEventGroup = "WOMEN B";
+				} else if ( inAgeGroup.Equals( "BW" ) ) {
+					curEventGroup = "WOMEN B";
+				}
+			}
+			myOfficialAsgmtDataTable = getOfficialWorkAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
+			myDriverAsgmtDataTable = getDriverAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
 		}
 
 		public DataTable officialAsgmtDataTable {

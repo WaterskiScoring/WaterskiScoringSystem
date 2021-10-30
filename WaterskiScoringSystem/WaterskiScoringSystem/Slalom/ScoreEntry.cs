@@ -1322,7 +1322,7 @@ namespace WaterskiScoringSystem.Slalom {
 			driverDropdown.SelectedValue = "";
 			driverDropdown.Text = "";
 			
-			myCheckOfficials.readOfficialAssignments( mySanctionNum, "Slalom", curEventGroup, roundSelect.RoundValue );
+			myCheckOfficials.readOfficialAssignments( mySanctionNum, "Slalom", curAgeGroup, curEventGroup, roundSelect.RoundValue );
 			DataTable driverAsgmtDataTable = myCheckOfficials.driverAsgmtDataTable;
 			isLoadInProg = true;
 			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
@@ -3022,6 +3022,12 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void slalomRecapDataGridView_KeyUp( object sender, KeyEventArgs e ) {
+			if ( sender == null || ((DataGridView)sender ).CurrentCell == null ) {
+				isAddRecapRowInProg = false;
+				e.Handled = true;
+				return;
+			}
+
 			try {
 				myRecapColumn = slalomRecapDataGridView.Columns[( (DataGridView)sender ).CurrentCell.ColumnIndex].Name;
 				if ( slalomRecapDataGridView != null ) {

@@ -48,8 +48,8 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>7.0.2.%2a</ApplicationVersion>
+    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationVersion>7.0.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -294,6 +294,12 @@
     <Compile Include="Common\SkierBoatPathSelect.Designer.cs">
       <DependentUpon>SkierBoatPathSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\SkierDoneReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\SkierDoneReason.Designer.cs">
+      <DependentUpon>SkierDoneReason.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\StateDropdownList.cs" />
     <Compile Include="Common\RegionDropdownList.cs" />
     <Compile Include="Common\FormReportToFile.cs" />
@@ -450,7 +456,6 @@
     </Compile>
     <Compile Include="Tools\EwscMonitor.cs" />
     <Compile Include="Tools\ExportBoatUse.cs" />
-    <Compile Include="Tools\ExportLiveSms.cs" />
     <Compile Include="Tools\ExportLiveWeb.cs" />
     <Compile Include="Tools\ExportLiveWebDialog.cs">
       <SubType>Form</SubType>
@@ -694,6 +699,9 @@
     <EmbeddedResource Include="Common\RoundSelect.resx">
       <DependentUpon>RoundSelect.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\SkierDoneReason.resx">
+      <DependentUpon>SkierDoneReason.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\SlalomLineSelect.resx">
       <DependentUpon>SlalomLineSelect.cs</DependentUpon>

@@ -15,7 +15,8 @@ namespace WscMessageHandler {
 				Application.SetHighDpiMode( HighDpiMode.SystemAware );
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
-				Application.Run( new StartForm() );
+				Application.Run( new MessageController() );
+			
 			} catch ( Exception excp ) {
 				//Not sure how or why it gets here but adding a try catch to ensure exception is handled.
 				MessageBox.Show( "An exception has been enountered."

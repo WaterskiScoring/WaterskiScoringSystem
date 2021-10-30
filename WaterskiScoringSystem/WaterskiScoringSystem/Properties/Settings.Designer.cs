@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.2.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.4")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.2.7 7/14/2021")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.4 10/7/2021")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2301,42 +2301,6 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["RegionJuniorInfo_Location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("allendbj")]
-        public string TwilioAccount {
-            get {
-                return ((string)(this["TwilioAccount"]));
-            }
-            set {
-                this["TwilioAccount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Token")]
-        public string TwilioAccountToken {
-            get {
-                return ((string)(this["TwilioAccountToken"]));
-            }
-            set {
-                this["TwilioAccountToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15082766610")]
-        public string TwilioFromPhoneNumber {
-            get {
-                return ((string)(this["TwilioFromPhoneNumber"]));
-            }
-            set {
-                this["TwilioFromPhoneNumber"] = value;
             }
         }
         

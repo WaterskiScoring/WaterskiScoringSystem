@@ -307,6 +307,13 @@ namespace WaterskiScoringSystem.Tools {
 					} else if ( ((String) curImportMemberEntry["ApptdOfficial"]).Length > 0 ) {
 						curPreRegNote = "Appointed Official";
 					}
+					if ( mySanctionNum.Substring( 2, 1 ).Equals( "U" ) ) {
+						try {
+							curPreRegNote += ", EventWaiver=" + (String)curImportMemberEntry["EventWaiver"];
+						} catch {
+							curPreRegNote += ", EventWaiver=N/A";
+						}
+					}
 
 				} else if ( curImportMemberEntry.ContainsKey( "Note" ) ) {
 					curPreRegNote = (String) curImportMemberEntry["Note"];
@@ -627,7 +634,6 @@ namespace WaterskiScoringSystem.Tools {
 			} catch {
 				MemberStatus = (String)curImportMemberEntry["ActiveMember"];
 			}
-
 
 			String JudgeSlalomRating = (String)curImportMemberEntry["JudgeSlalom"];
 			if ( curImportMemberEntry.Keys.Contains("JudgePanAmSlalom")) {

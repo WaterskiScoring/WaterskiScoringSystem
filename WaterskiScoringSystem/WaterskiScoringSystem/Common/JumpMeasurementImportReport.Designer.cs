@@ -244,7 +244,6 @@ namespace WaterskiScoringSystem.Common {
 			this.ScoreFeet.DefaultCellStyle = dataGridViewCellStyle4;
 			this.ScoreFeet.HeaderText = "Score Feet";
 			this.ScoreFeet.Name = "ScoreFeet";
-			this.ScoreFeet.ReadOnly = true;
 			this.ScoreFeet.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreFeet.Width = 50;
 			// 
@@ -255,7 +254,6 @@ namespace WaterskiScoringSystem.Common {
 			this.ScoreMeters.DefaultCellStyle = dataGridViewCellStyle5;
 			this.ScoreMeters.HeaderText = "Score Meters";
 			this.ScoreMeters.Name = "ScoreMeters";
-			this.ScoreMeters.ReadOnly = true;
 			this.ScoreMeters.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreMeters.Width = 50;
 			// 

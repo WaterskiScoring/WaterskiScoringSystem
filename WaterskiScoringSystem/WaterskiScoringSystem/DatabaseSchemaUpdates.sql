@@ -1047,3 +1047,5 @@ ALTER TABLE [BoatPath] ALTER COLUMN InsertDate datetime NOT NULL;
 
 ## v22.31
 ALTER TABLE [JumpMeasurement] ALTER COLUMN InsertDate datetime NOT NULL;
+## v22.34
+ALTER TABLE EventRunOrderFilters ALTER COLUMN GroupFilterCriteria nvarchar(1024) NULL;

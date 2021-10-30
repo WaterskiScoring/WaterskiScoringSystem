@@ -71,8 +71,7 @@ namespace WaterskiScoringSystem.Trick {
         private CheckEventRecord myCheckEventRecord;
 		private CheckOfficials myCheckOfficials;
 
-		private ArrayList mySpecialFlipList = new ArrayList();
-        private String[] myAllowedRepeatReverseList = {"RS", "RTS", "RB", "RF", "RTB", "RTF"};
+		//private ArrayList mySpecialFlipList = new ArrayList();
 		#endregion
 
 		public ScoreCalc() {
@@ -84,8 +83,9 @@ namespace WaterskiScoringSystem.Trick {
             myTrickValidation = new Validation();
 
             ScoreList.Add( new Common.ScoreEntry( "Trick", 0, "", 0 ) );
-            
-            mySpecialFlipList.Add( "BFLB" );
+
+			/*
+			mySpecialFlipList.Add( "BFLB" );
             mySpecialFlipList.Add( "RBFLB" );
             mySpecialFlipList.Add( "BFLF" );
             mySpecialFlipList.Add( "RBFLF" );
@@ -93,9 +93,10 @@ namespace WaterskiScoringSystem.Trick {
             mySpecialFlipList.Add( "RBFLLB" );
             mySpecialFlipList.Add( "FFLF" );
             mySpecialFlipList.Add( "FFLB" );
-        }
+             */
+		}
 
-        private void ScoreCalc_Load(object sender, EventArgs e) {
+		private void ScoreCalc_Load(object sender, EventArgs e) {
             if (Properties.Settings.Default.TrickCalc_Width > 0) {
                 this.Width = Properties.Settings.Default.TrickCalc_Width;
             }
@@ -890,7 +891,7 @@ namespace WaterskiScoringSystem.Trick {
 												curPassTerm = true;
 											}
                                         } else if ( curPassRow.Cells[curColPrefix + "Results"].Value.ToString().ToUpper().Equals( "FALL" ) ) {
-                                            if ( curPassRow.Index < ( Pass1DataGridView.Rows.Count - 1 ) ) {
+                                            if ( curPassRow.Index == ( Pass1DataGridView.Rows.Count - 1 ) ) {
 												curPassTerm = true;
 											}
                                         }
@@ -993,9 +994,11 @@ namespace WaterskiScoringSystem.Trick {
 
 					foreach ( DataGridViewRow curPassRow in Pass1DataGridView.Rows ) {
 						curPass1Score += Convert.ToInt16( curPassRow.Cells["Pass1Points"].Value );
+						curPassRow.Cells["Pass1PointsTotal"].Value = curPass1Score.ToString();
 					}
 					foreach ( DataGridViewRow curPassRow in Pass2DataGridView.Rows ) {
 						curPass2Score += Convert.ToInt16( curPassRow.Cells["Pass2Points"].Value );
+						curPassRow.Cells["Pass2PointsTotal"].Value = curPass2Score.ToString();
 					}
 
 					curTotalScore = curPass1Score + curPass2Score;
@@ -2406,8 +2409,8 @@ namespace WaterskiScoringSystem.Trick {
                         curViewRow.Cells[curColPrefix + "RuleNum"].Value = curRuleNum.ToString();
                         curViewRow.Cells[curColPrefix + "TypeCode"].Value = ( (Byte)curTrickRow["TypeCode"] ).ToString();
                     }
-                }
-            }
+				}
+			}
             isLoadInProg = false;
         }
 
@@ -2471,9 +2474,9 @@ namespace WaterskiScoringSystem.Trick {
                     curDataRow["NumTurns"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "NumTurns"].Value);
                     curDataRow["TypeCode"] = Byte.Parse((String) curViewRow.Cells[curColPrefix + "TypeCode"].Value);
                     curDataRow["RuleNum"] = Int16.Parse((String) curViewRow.Cells[curColPrefix + "RuleNum"].Value);
-                }
+				}
 
-                curDataTable.Rows.Add(curDataRow);
+				curDataTable.Rows.Add(curDataRow);
             }
 
             return curDataTable;
@@ -2833,16 +2836,19 @@ namespace WaterskiScoringSystem.Trick {
                             }
 
 							String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
+							String curAgeGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString();
 							if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-								myCheckOfficials.readOfficialAssignments( mySanctionNum, "Trick", curEventGroup, roundSelect.RoundValue );
 
 								/*
 								 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 								 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 								 */
 								if ( (Decimal)myClassTourEventScoreRow["ListCodeNum"] >= (Decimal)myClassERow["ListCodeNum"] ) {
-									MessageBox.Show( "No officials have been assigned for this event group and round "
+									myCheckOfficials.readOfficialAssignments( mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundSelect.RoundValue );
+									if ( myCheckOfficials.officialAsgmtCount == 0 ) {
+										MessageBox.Show( "No officials have been assigned for this event group and round "
 										+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
+									}
 								}
 							}
 							myPrevEventGroup = curEventGroup;
@@ -3252,13 +3258,13 @@ namespace WaterskiScoringSystem.Trick {
                         prevTrickRows[1]["NumSkis"] = this.myTrickValidation.validateNumSkis((String) inPassView.Rows[curIdx].Cells[inColPrefix + "Skis"].Value, this.myTourRules);
                     }
                 }
-            }
+			}
 
-            /*
+			/*
               Note: If return code is true than use method UpdatedTrickCode to retrieve the trick code as modified by the validation processing
                     If return code is false then use method ValidationMessage to retrieve the message associated with the reason it failed validation
             */
-            curIdx = inPassRowIdx;
+			curIdx = inPassRowIdx;
             bool returnStatus = myTrickValidation.validateTrickCode(inCode, inNumSkis, curSkierClass, prevTrickRows);
             if ( returnStatus ) {
                 inPassView.Rows[curIdx].Cells[inColPrefix + "Code"].Value = myTrickValidation.UpdatedTrickCode;
@@ -3285,62 +3291,62 @@ namespace WaterskiScoringSystem.Trick {
             //calcPoints( DataTable inPass1DataTable, DataTable inPass2DataTable, DataRow inViewRow, int inRowIdx, String inColPrefix, String inSkierClass )
             Int16 returnPoints = myTrickValidation.calcPoints( curPass1DataTable, curPass2DataTable, curViewRow, inPassRow.Index, inColPrefix, curSkierEventClass );
             if ( returnPoints < 0 ) {
-                returnPoints = 0;
                 MessageBox.Show(myTrickValidation.ValidationMessage);
-            } else {
-                //Update row on DataGridView using curViewRow which should have been updated
-                inPassRow.Cells[inColPrefix + "Code"].Value = curViewRow["Code"];
-                inPassRow.Cells[inColPrefix + "Results"].Value = curViewRow["Results"];
-                inPassRow.Cells[inColPrefix + "StartPos"].Value = curViewRow["StartPos"].ToString();
-                inPassRow.Cells[inColPrefix + "NumTurns"].Value = curViewRow["NumTurns"].ToString();
-                inPassRow.Cells[inColPrefix + "TypeCode"].Value = curViewRow["TypeCode"].ToString();
-                inPassRow.Cells[inColPrefix + "RuleNum"].Value = curViewRow["RuleNum"].ToString();
-                inPassRow.Cells[inColPrefix + "Points"].Value = returnPoints.ToString();
+				return 0;
+			}
+			
+			//Update row on DataGridView using curViewRow which should have been updated
+			inPassRow.Cells[inColPrefix + "Code"].Value = curViewRow["Code"];
+			inPassRow.Cells[inColPrefix + "Results"].Value = curViewRow["Results"];
+			inPassRow.Cells[inColPrefix + "StartPos"].Value = curViewRow["StartPos"].ToString();
+			inPassRow.Cells[inColPrefix + "NumTurns"].Value = curViewRow["NumTurns"].ToString();
+			inPassRow.Cells[inColPrefix + "TypeCode"].Value = curViewRow["TypeCode"].ToString();
+			inPassRow.Cells[inColPrefix + "RuleNum"].Value = curViewRow["RuleNum"].ToString();
+			inPassRow.Cells[inColPrefix + "Points"].Value = returnPoints.ToString();
 
-				if ( inColPrefix.Equals( "Pass1" ) ) {
-					curPass1DataTable.Rows[inPassRow.Index]["Score"] = returnPoints;
-                } else {
-					curPass2DataTable.Rows[inPassRow.Index]["Score"] = returnPoints;
+			if ( inColPrefix.Equals( "Pass1" ) ) {
+				curPass1DataTable.Rows[inPassRow.Index]["Score"] = returnPoints;
+			} else {
+				curPass2DataTable.Rows[inPassRow.Index]["Score"] = returnPoints;
+			}
+
+			int passScore = 0;
+			int curViewIdx = 0;
+			foreach ( DataRow curDataRow in curPass1DataTable.Rows ) {
+				Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value = curDataRow["Results"];
+				Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Points"].Value = ( (Int16)curDataRow["Score"] ).ToString();
+				passScore += (Int16)curDataRow["Score"];
+				Pass1DataGridView.Rows[curViewIdx].Cells["Pass1PointsTotal"].Value = passScore.ToString();
+
+				if ( !( Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value.ToString().ToUpper().Equals( "CREDIT" ) ) ) {
+					Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.ForeColor = Color.Red;
+					Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.BackColor = Color.LightBlue;
 				}
 
-				int passScore = 0;
-                int curViewIdx = 0;
-                foreach ( DataRow curDataRow in curPass1DataTable.Rows ) {
-                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value = curDataRow["Results"];
-                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Points"].Value = ( (Int16) curDataRow["Score"] ).ToString();
-                    passScore += (Int16) curDataRow["Score"];
-                    Pass1DataGridView.Rows[curViewIdx].Cells["Pass1PointsTotal"].Value = passScore.ToString();
+				curViewIdx++;
+			}
 
-                    if ( !( Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Results"].Value.ToString().ToUpper().Equals("CREDIT") ) ) {
-                        Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.ForeColor = Color.Red;
-                        Pass1DataGridView.Rows[curViewIdx].Cells["Pass1Code"].Style.BackColor = Color.LightBlue;
-                    }
+			passScore = 0;
+			curViewIdx = 0;
+			foreach ( DataRow curDataRow in curPass2DataTable.Rows ) {
+				Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value = curDataRow["Results"];
+				Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Points"].Value = ( (Int16)curDataRow["Score"] ).ToString();
+				passScore += (Int16)curDataRow["Score"];
+				Pass2DataGridView.Rows[curViewIdx].Cells["Pass2PointsTotal"].Value = passScore.ToString();
 
-                    curViewIdx++;
-                }
+				if ( !( Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value.ToString().ToUpper().Equals( "CREDIT" ) ) ) {
+					Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.ForeColor = Color.Red;
+					Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.BackColor = Color.LightBlue;
+				}
 
-                passScore = 0;
-                curViewIdx = 0;
-                foreach ( DataRow curDataRow in curPass2DataTable.Rows ) {
-                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value = curDataRow["Results"];
-                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Points"].Value = ( (Int16) curDataRow["Score"] ).ToString();
-                    passScore += (Int16) curDataRow["Score"];
-                    Pass2DataGridView.Rows[curViewIdx].Cells["Pass2PointsTotal"].Value = passScore.ToString();
+				curViewIdx++;
+			}
 
-                    if ( !( Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Results"].Value.ToString().ToUpper().Equals("CREDIT") ) ) {
-                        Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.ForeColor = Color.Red;
-                        Pass2DataGridView.Rows[curViewIdx].Cells["Pass2Code"].Style.BackColor = Color.LightBlue;
-                    }
+			if ( myTrickValidation.ValidationMessage.Length > 0 ) {
+				MessageBox.Show( myTrickValidation.ValidationMessage );
+			}
 
-                    curViewIdx++;
-                }
-
-                if ( myTrickValidation.ValidationMessage.Length > 0 ) {
-                    MessageBox.Show(myTrickValidation.ValidationMessage);
-                }
-            }
-
-            return returnPoints;
+			return returnPoints;
         }
 
         private Int16 checkForRepeat( Int16 curRuleNum, Int16 tempRuleNum, DataGridViewRow curViewRow, DataGridViewRow curActivePassRow, String inColPrefix, Int16 curActivePoints ) {
@@ -4098,15 +4104,9 @@ namespace WaterskiScoringSystem.Trick {
             curFoundList = myTrickListDataTable.Select( "TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies );
             if (curFoundList.Length > 0) {
                 curReturnRow = curFoundList[0];
+			}
 
-                if ( mySkierClassList.compareClassChange(inSkierClass, "L") <= 0 ) {
-                    if ( mySpecialFlipList.Contains(inTrickCode) ) {
-                        curReturnRow["NumTurns"] = Convert.ToByte("3");
-                    }
-                }
-            }
-
-            return curReturnRow;
+			return curReturnRow;
         }
         
         private void getTrickList( String inRuleCode ) {
