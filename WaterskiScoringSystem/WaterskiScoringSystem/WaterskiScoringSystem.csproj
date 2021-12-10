@@ -282,6 +282,8 @@
     <Compile Include="Common\BoatPathExport.Designer.cs">
       <DependentUpon>BoatPathExport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\CommonFunctions.cs" />
+    <Compile Include="Common\EventGroupCommon.cs" />
     <Compile Include="Common\JumpMeasurementImportReport.cs">
       <SubType>Form</SubType>
     </Compile>

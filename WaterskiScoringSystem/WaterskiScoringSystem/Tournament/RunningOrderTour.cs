@@ -100,7 +100,8 @@ namespace WaterskiScoringSystem.Tournament {
 				SendSkierListButton.Enabled = true;
 			}
 
-			String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt", "RankingScore", "RankingRating", "JumpHeight", "TrickBoat", "HCapBase", "HCapScore" };
+			String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt"
+					, "RankingScore", "RankingRating", "JumpHeight", "TrickBoat", "HCapBase", "HCapScore" };
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
@@ -228,8 +229,6 @@ namespace WaterskiScoringSystem.Tournament {
 
             //Retrieve data for current tournament
             //Used for initial load and to refresh data after updates
-            winStatusMsg.Text = "Retrieving tournament entries";
-            Cursor.Current = Cursors.WaitCursor;
 
             if (slalomButton.Checked) {
                 TrickBoat.Visible = false;
@@ -248,137 +247,145 @@ namespace WaterskiScoringSystem.Tournament {
 				EventRegDataGridView.Rows.Clear();
 				//Retrieve running order data for display
 				myEventRegDataTable = getEventRegData();
-				if ( myEventRegDataTable.Rows.Count > 0 ) {
-                    DataGridViewRow curViewRow;
-                    foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
-                        isDataModified = false;
-                        myViewIdx = EventRegDataGridView.Rows.Add();
-                        curViewRow = EventRegDataGridView.Rows[myViewIdx];
-                        curViewRow.Cells["Updated"].Value = "N";
-                        curViewRow.Cells["PK"].Value = ( (Int64)curDataRow["PK"] ).ToString();
-                        curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
-                        curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
-                        curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
-                        curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
-                        curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
-                        
-                        try {
-                            curViewRow.Cells["TrickBoat"].Value = (String)curDataRow["TrickBoat"];
-                        } catch {
-                            curViewRow.Cells["TrickBoat"].Value = "";
-                        }
-                        try {
-                            curJumpHeight = (Decimal)curDataRow["JumpHeight"];
-                            if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
-                                curViewRow.Cells["JumpHeight"].Value = "5";
-                            } else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
-                                curViewRow.Cells["JumpHeight"].Value = "H";
-                            } else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
-                                curViewRow.Cells["JumpHeight"].Value = "6";
-                            } else {
-                                if ( curJumpHeight < 1M ) {
-                                    if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
-                                        curViewRow.Cells["JumpHeight"].Value = "4";
-                                    } else {
-                                        curViewRow.Cells["JumpHeight"].Value = "";
-                                    }
-                                } else {
-                                    if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
-                                        curViewRow.Cells["JumpHeight"].Value = "4";
-                                    } else {
-                                        curViewRow.Cells["JumpHeight"].Value = "";
-                                    }
-                                }
-                            }
-                        } catch {
-                            curViewRow.Cells["JumpHeight"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["State"].Value = (String)curDataRow["State"];
-                        } catch {
-                            curViewRow.Cells["State"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["City"].Value = (String)curDataRow["City"];
-                        } catch {
-                            curViewRow.Cells["City"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-                        } catch {
-                            curViewRow.Cells["EventGroup"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["ReadyForPlcmt"].Value = (String) curDataRow["ReadyForPlcmt"];
-                        } catch {
-                            curViewRow.Cells["ReadyForPlcmt"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
-                        } catch {
-                            curViewRow.Cells["EventClass"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["RunOrder"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString( "##0" );
-                        } catch {
-                            curViewRow.Cells["RunOrder"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
-                        } catch {
-                            curViewRow.Cells["TeamCode"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["RankingRating"].Value = (String)curDataRow["RankingRating"];
-                        } catch {
-                            curViewRow.Cells["RankingRating"].Value = "";
-                        }
-                        if ( trickButton.Checked ) {
-                            try {
-                                curRankingScore = (Decimal)curDataRow["RankingScore"];
-                                curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "####0" );
-                            } catch {
-                                curViewRow.Cells["RankingScore"].Value = "";
-                            }
-                            try {
-                                curHCapBase = (Decimal)curDataRow["HCapBase"];
-                                curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "####0" );
-                            } catch {
-                                curViewRow.Cells["HCapBase"].Value = "";
-                            }
-                            try {
-                                curHCapScore = (Decimal)curDataRow["HCapScore"];
-                                curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "####0" );
-                            } catch {
-                                curViewRow.Cells["HCapScore"].Value = "";
-                            }
-                        } else {
-                            try {
-                                curRankingScore = (Decimal)curDataRow["RankingScore"];
-                                curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "##0.0" );
-                            } catch {
-                                curViewRow.Cells["RankingScore"].Value = "";
-                            }
-                            try {
-                                curHCapBase = (Decimal)curDataRow["HCapBase"];
-                                curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "##0.0" );
-                            } catch {
-                                curViewRow.Cells["HCapBase"].Value = "";
-                            }
-                            try {
-                                curHCapScore = (Decimal)curDataRow["HCapScore"];
-                                curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "##0.0" );
-                            } catch {
-                                curViewRow.Cells["HCapScore"].Value = "";
-                            }
-                        }
-                    }
-                    if (EventRegDataGridView.Rows.Count > 0) {
-                        myViewIdx = 0;
-                        EventRegDataGridView.CurrentCell = EventRegDataGridView.Rows[myViewIdx].Cells["SkierName"];
-                    }
-                }
-            } catch ( Exception ex ) {
+				if ( myEventRegDataTable == null || myEventRegDataTable.Rows.Count == 0 ) {
+					MessageBox.Show( "No event registration entries found" );
+					return;
+				}
+
+				winStatusMsg.Text = "Retrieving tournament entries";
+				Cursor.Current = Cursors.WaitCursor;
+
+				DataGridViewRow curViewRow;
+				foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
+					isDataModified = false;
+					myViewIdx = EventRegDataGridView.Rows.Add();
+					curViewRow = EventRegDataGridView.Rows[myViewIdx];
+					curViewRow.Cells["Updated"].Value = "N";
+					curViewRow.Cells["PK"].Value = ( (Int64)curDataRow["PK"] ).ToString();
+					curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
+					curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
+					curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
+					curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
+					curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
+
+					try {
+						curViewRow.Cells["TrickBoat"].Value = (String)curDataRow["TrickBoat"];
+					} catch {
+						curViewRow.Cells["TrickBoat"].Value = "";
+					}
+					try {
+						curJumpHeight = (Decimal)curDataRow["JumpHeight"];
+						if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
+							curViewRow.Cells["JumpHeight"].Value = "5";
+						} else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
+							curViewRow.Cells["JumpHeight"].Value = "H";
+						} else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
+							curViewRow.Cells["JumpHeight"].Value = "6";
+						} else {
+							if ( curJumpHeight < 1M ) {
+								if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
+									curViewRow.Cells["JumpHeight"].Value = "4";
+								} else {
+									curViewRow.Cells["JumpHeight"].Value = "";
+								}
+							} else {
+								if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
+									curViewRow.Cells["JumpHeight"].Value = "4";
+								} else {
+									curViewRow.Cells["JumpHeight"].Value = "";
+								}
+							}
+						}
+					} catch {
+						curViewRow.Cells["JumpHeight"].Value = "";
+					}
+					try {
+						curViewRow.Cells["State"].Value = (String)curDataRow["State"];
+					} catch {
+						curViewRow.Cells["State"].Value = "";
+					}
+					try {
+						curViewRow.Cells["City"].Value = (String)curDataRow["City"];
+					} catch {
+						curViewRow.Cells["City"].Value = "";
+					}
+					try {
+						curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
+					} catch {
+						curViewRow.Cells["EventGroup"].Value = "";
+					}
+					try {
+						curViewRow.Cells["ReadyForPlcmt"].Value = (String)curDataRow["ReadyForPlcmt"];
+					} catch {
+						curViewRow.Cells["ReadyForPlcmt"].Value = "";
+					}
+					try {
+						curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
+					} catch {
+						curViewRow.Cells["EventClass"].Value = "";
+					}
+					try {
+						curViewRow.Cells["RunOrder"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString( "##0" );
+					} catch {
+						curViewRow.Cells["RunOrder"].Value = "0";
+					}
+					try {
+						curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
+					} catch {
+						curViewRow.Cells["TeamCode"].Value = "";
+					}
+					try {
+						curViewRow.Cells["RankingRating"].Value = (String)curDataRow["RankingRating"];
+					} catch {
+						curViewRow.Cells["RankingRating"].Value = "";
+					}
+					if ( trickButton.Checked ) {
+						try {
+							curRankingScore = (Decimal)curDataRow["RankingScore"];
+							curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "####0" );
+						} catch {
+							curViewRow.Cells["RankingScore"].Value = "";
+						}
+						try {
+							curHCapBase = (Decimal)curDataRow["HCapBase"];
+							curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "####0" );
+						} catch {
+							curViewRow.Cells["HCapBase"].Value = "";
+						}
+						try {
+							curHCapScore = (Decimal)curDataRow["HCapScore"];
+							curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "####0" );
+						} catch {
+							curViewRow.Cells["HCapScore"].Value = "";
+						}
+					} else {
+						try {
+							curRankingScore = (Decimal)curDataRow["RankingScore"];
+							curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "##0.0" );
+						} catch {
+							curViewRow.Cells["RankingScore"].Value = "";
+						}
+						try {
+							curHCapBase = (Decimal)curDataRow["HCapBase"];
+							curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "##0.0" );
+						} catch {
+							curViewRow.Cells["HCapBase"].Value = "";
+						}
+						try {
+							curHCapScore = (Decimal)curDataRow["HCapScore"];
+							curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "##0.0" );
+						} catch {
+							curViewRow.Cells["HCapScore"].Value = "";
+						}
+					}
+				}
+				
+				if ( EventRegDataGridView.Rows.Count > 0 ) {
+					myViewIdx = 0;
+					EventRegDataGridView.CurrentCell = EventRegDataGridView.Rows[myViewIdx].Cells["SkierName"];
+				}
+			
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error retrieving tournament entries \n" + ex.Message );
             }
 
@@ -406,9 +413,6 @@ namespace WaterskiScoringSystem.Tournament {
 
             //Retrieve data for current tournament
             //Used for initial load and to refresh data after updates
-            winStatusMsg.Text = "Retrieving tournament entries";
-            Cursor.Current = Cursors.WaitCursor;
-
 			PrintHcapBase.Visible = false;
 			PrintRankingRating.Visible = false;
 			PrintReadyForPlcmt.Visible = false;
@@ -416,197 +420,201 @@ namespace WaterskiScoringSystem.Tournament {
 			PrintHCapScore.Visible = false;
 
 			try {
-                if ( myEventRegDataTable.Rows.Count > 0 ) {
-                    PrintDataGridView.Rows.Clear();
-                    if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                        PrintEventRotation.Visible = true;
-                        PrintEventGroup.Visible = false;
-                    } else {
-                        PrintEventRotation.Visible = false;
-                        PrintEventGroup.Visible = true;
-                        try {
-                            if ((Int16)myEventRegDataTable.Rows[0]["Rotation"] > 0) {
-                                PrintEventRotation.Visible = true;
-                            } else {
-                                PrintEventRotation.Visible = false;
-                            }
-                        } catch (Exception e) {
-                            PrintEventRotation.Visible = false;
-                        }
-                    }
-                    if ( slalomButton.Checked ) {
-                        PrintTrickBoat.Visible = false;
-                        PrintJumpHeight.Visible = false;
+				if ( myEventRegDataTable == null || myEventRegDataTable.Rows.Count == 0 ) return;
 
-					} else if ( trickButton.Checked ) {
-                        PrintTrickBoat.Visible = true;
-                        PrintJumpHeight.Visible = false;
+				winStatusMsg.Text = "Retrieving tournament entries";
+				Cursor.Current = Cursors.WaitCursor;
 
-					} else if ( jumpButton.Checked ) {
-                        PrintTrickBoat.Visible = false;
-                        PrintJumpHeight.Visible = true;
-                    }
-
-                    foreach ( DataRow curTeamRow in myEventRegDataTable.Rows ) {
-                        curPrintIdx = PrintDataGridView.Rows.Add();
-                        curPrintRow = PrintDataGridView.Rows[curPrintIdx];
-
-                        try {
-                            if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                                curPrintGroup = (String)curTeamRow["AgeGroup"] + "-" + (String)curTeamRow["EventGroup"];
-                                curPageBreakGroup = (String)curTeamRow["AgeGroup"];
-                            } else {
-                                curPrintGroup = (String)curTeamRow["EventGroup"];
-                                curPageBreakGroup = (String)curTeamRow["EventGroup"];
-                            }
-                        } catch {
-                            curPrintGroup = "";
-                        }
-
-                        curPrintCount++;
-                        if (!( curPrintGroup.Equals( prevPrintGroup ) )) {
-                            curGroupCount = 1;
-                            if (curPrintIdx > 0) {
-                                if (!( curPageBreakGroup.Equals( prevPageBreakGroup ) )) {
-                                    curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
-                                    curPrintRow.Height = 8;
-                                }
-                                curPrintIdx = PrintDataGridView.Rows.Add();
-                                curPrintRow = PrintDataGridView.Rows[curPrintIdx];
-                            }
-                        } else {
-                            curGroupCount++;
-                        }
-
-                        curPrintRow.Cells["PrintGroupCount"].Value = curGroupCount;
-                        curPrintRow.Cells["PrintCount"].Value = curPrintCount;
-                        curPrintRow.Cells["PrintSkierName"].Value = (String)curTeamRow["SkierName"];
-                        curPrintRow.Cells["PrintEvent"].Value = (String)curTeamRow["Event"];
-                        curPrintRow.Cells["PrintAgeGroup"].Value = (String)curTeamRow["AgeGroup"];
-                        curPrintRow.Cells["PrintEventGroup"].Value = (String) curTeamRow["EventGroup"];
-						if ( PrintEventRotation.Visible ) {
-							try {
-								curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
-							} catch {
-								curPrintRow.Cells["PrintEventRotation"].Value = "";
-							}
+				PrintDataGridView.Rows.Clear();
+				if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+					PrintEventRotation.Visible = true;
+					PrintEventGroup.Visible = false;
+				} else {
+					PrintEventRotation.Visible = false;
+					PrintEventGroup.Visible = true;
+					try {
+						if ( (Int16)myEventRegDataTable.Rows[0]["Rotation"] > 0 ) {
+							PrintEventRotation.Visible = true;
 						} else {
+							PrintEventRotation.Visible = false;
+						}
+					} catch ( Exception e ) {
+						PrintEventRotation.Visible = false;
+					}
+				}
+				if ( slalomButton.Checked ) {
+					PrintTrickBoat.Visible = false;
+					PrintJumpHeight.Visible = false;
+
+				} else if ( trickButton.Checked ) {
+					PrintTrickBoat.Visible = true;
+					PrintJumpHeight.Visible = false;
+
+				} else if ( jumpButton.Checked ) {
+					PrintTrickBoat.Visible = false;
+					PrintJumpHeight.Visible = true;
+				}
+
+				foreach ( DataRow curTeamRow in myEventRegDataTable.Rows ) {
+					curPrintIdx = PrintDataGridView.Rows.Add();
+					curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+
+					try {
+						if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+							curPrintGroup = (String)curTeamRow["AgeGroup"] + "-" + (String)curTeamRow["EventGroup"];
+							curPageBreakGroup = (String)curTeamRow["AgeGroup"];
+						} else {
+							curPrintGroup = (String)curTeamRow["EventGroup"];
+							curPageBreakGroup = (String)curTeamRow["EventGroup"];
+						}
+					} catch {
+						curPrintGroup = "";
+					}
+
+					curPrintCount++;
+					if ( !( curPrintGroup.Equals( prevPrintGroup ) ) ) {
+						curGroupCount = 1;
+						if ( curPrintIdx > 0 ) {
+							if ( !( curPageBreakGroup.Equals( prevPageBreakGroup ) ) ) {
+								curPrintRow.DefaultCellStyle.BackColor = Color.DarkGray;
+								curPrintRow.Height = 8;
+							}
+							curPrintIdx = PrintDataGridView.Rows.Add();
+							curPrintRow = PrintDataGridView.Rows[curPrintIdx];
+						}
+					} else {
+						curGroupCount++;
+					}
+
+					curPrintRow.Cells["PrintGroupCount"].Value = curGroupCount;
+					curPrintRow.Cells["PrintCount"].Value = curPrintCount;
+					curPrintRow.Cells["PrintSkierName"].Value = (String)curTeamRow["SkierName"];
+					curPrintRow.Cells["PrintEvent"].Value = (String)curTeamRow["Event"];
+					curPrintRow.Cells["PrintAgeGroup"].Value = (String)curTeamRow["AgeGroup"];
+					curPrintRow.Cells["PrintEventGroup"].Value = (String)curTeamRow["EventGroup"];
+					if ( PrintEventRotation.Visible ) {
+						try {
+							curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
+						} catch {
 							curPrintRow.Cells["PrintEventRotation"].Value = "";
 						}
+					} else {
+						curPrintRow.Cells["PrintEventRotation"].Value = "";
+					}
+					try {
+						curPrintRow.Cells["PrintEventClass"].Value = (String)curTeamRow["EventClass"];
+					} catch {
+						curPrintRow.Cells["PrintEventClass"].Value = "";
+					}
+					try {
+						curPrintRow.Cells["PrintReadyForPlcmt"].Value = (String)curTeamRow["ReadyForPlcmt"];
+					} catch {
+						curPrintRow.Cells["PrintReadyForPlcmt"].Value = "";
+					}
+					try {
+						if ( ( (String)curTeamRow["ReadyForPlcmt"] ).Equals( "N" ) ) {
+							curPrintRow.Cells["PrintRunOrder"].Value = "**";
+						} else {
+							curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16)curTeamRow["RunOrder"] ).ToString( "##0" );
+						}
+					} catch {
+						curPrintRow.Cells["PrintRunOrder"].Value = "0";
+					}
+					try {
+						curPrintRow.Cells["PrintTeam"].Value = (String)curTeamRow["TeamCode"];
+					} catch {
+						curPrintRow.Cells["PrintTeam"].Value = "";
+					}
+
+					if ( slalomButton.Checked ) {
+						curPrintRow.Cells["PrintTrickBoat"].Value = "";
+						curPrintRow.Cells["PrintJumpHeight"].Value = "";
+					} else if ( trickButton.Checked ) {
+						curPrintRow.Cells["PrintJumpHeight"].Value = "";
 						try {
-                            curPrintRow.Cells["PrintEventClass"].Value = (String)curTeamRow["EventClass"];
-                        } catch {
-                            curPrintRow.Cells["PrintEventClass"].Value = "";
-                        }
-                        try {
-                            curPrintRow.Cells["PrintReadyForPlcmt"].Value = (String) curTeamRow["ReadyForPlcmt"];
-                        } catch {
-                            curPrintRow.Cells["PrintReadyForPlcmt"].Value = "";
-                        }
-                        try {
-                            if ( ((String) curTeamRow["ReadyForPlcmt"]).Equals("N") ) {
-                                curPrintRow.Cells["PrintRunOrder"].Value = "**";
-                            } else {
-                                curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16) curTeamRow["RunOrder"] ).ToString("##0");
-                            }
-                        } catch {
-                            curPrintRow.Cells["PrintRunOrder"].Value = "0";
-                        }
-                        try {
-                            curPrintRow.Cells["PrintTeam"].Value = (String)curTeamRow["TeamCode"];
-                        } catch {
-                            curPrintRow.Cells["PrintTeam"].Value = "";
-                        }
+							curPrintRow.Cells["PrintTrickBoat"].Value = (String)curTeamRow["TrickBoat"];
+						} catch {
+							curPrintRow.Cells["PrintTrickBoat"].Value = "";
+						}
+					} else if ( jumpButton.Checked ) {
+						try {
+							curJumpHeight = (Decimal)curTeamRow["JumpHeight"];
+							if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
+								curPrintRow.Cells["PrintJumpHeight"].Value = "5";
+							} else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
+								curPrintRow.Cells["PrintJumpHeight"].Value = "H";
+							} else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
+								curPrintRow.Cells["PrintJumpHeight"].Value = "6";
+							} else {
+								if ( curJumpHeight < 1M ) {
+									if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
+										curPrintRow.Cells["PrintJumpHeight"].Value = "4";
+									} else {
+										curPrintRow.Cells["PrintJumpHeight"].Value = "";
+									}
+								} else {
+									if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
+										curPrintRow.Cells["PrintJumpHeight"].Value = "4";
+									} else {
+										curPrintRow.Cells["PrintJumpHeight"].Value = "";
+									}
+								}
+							}
+						} catch {
+							curPrintRow.Cells["PrintJumpHeight"].Value = "";
+						}
 
-                        if ( slalomButton.Checked ) {
-                            curPrintRow.Cells["PrintTrickBoat"].Value = "";
-                            curPrintRow.Cells["PrintJumpHeight"].Value = "";
-                        } else if ( trickButton.Checked ) {
-                            curPrintRow.Cells["PrintJumpHeight"].Value = "";
-                            try {
-                                curPrintRow.Cells["PrintTrickBoat"].Value = (String)curTeamRow["TrickBoat"];
-                            } catch {
-                                curPrintRow.Cells["PrintTrickBoat"].Value = "";
-                            }
-                        } else if ( jumpButton.Checked ) {
-                            try {
-                                curJumpHeight = (Decimal)curTeamRow["JumpHeight"];
-                                if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
-                                    curPrintRow.Cells["PrintJumpHeight"].Value = "5";
-                                } else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
-                                    curPrintRow.Cells["PrintJumpHeight"].Value = "H";
-                                } else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
-                                    curPrintRow.Cells["PrintJumpHeight"].Value = "6";
-                                } else {
-                                    if ( curJumpHeight < 1M ) {
-                                        if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
-                                            curPrintRow.Cells["PrintJumpHeight"].Value = "4";
-                                        } else {
-                                            curPrintRow.Cells["PrintJumpHeight"].Value = "";
-                                        }
-                                    } else {
-                                        if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
-                                            curPrintRow.Cells["PrintJumpHeight"].Value = "4";
-                                        } else {
-                                            curPrintRow.Cells["PrintJumpHeight"].Value = "";
-                                        }
-                                    }
-                                }
-                            } catch {
-                                curPrintRow.Cells["PrintJumpHeight"].Value = "";
-                            }
+					}
+					if ( trickButton.Checked ) {
+						try {
+							curRankingScore = (Decimal)curTeamRow["RankingScore"];
+							curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "####0" );
+						} catch {
+							curPrintRow.Cells["PrintRankingScore"].Value = "";
+						}
+						try {
+							curHCapBase = (Decimal)curTeamRow["HCapBase"];
+							curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "####0" );
+						} catch {
+							curPrintRow.Cells["PrintHCapBase"].Value = "";
+						}
+						try {
+							curHCapScore = (Decimal)curTeamRow["HCapScore"];
+							curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "####0" );
+						} catch {
+							curPrintRow.Cells["PrintHCapScore"].Value = "";
+						}
+					} else {
+						try {
+							curRankingScore = (Decimal)curTeamRow["RankingScore"];
+							curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "##0.0" );
+						} catch {
+							curPrintRow.Cells["PrintRankingScore"].Value = "";
+						}
+						try {
+							curHCapBase = (Decimal)curTeamRow["HCapBase"];
+							curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "##0.0" );
+						} catch {
+							curPrintRow.Cells["PrintHCapBase"].Value = "";
+						}
+						try {
+							curHCapScore = (Decimal)curTeamRow["HCapScore"];
+							curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "##0.0" );
+						} catch {
+							curPrintRow.Cells["PrintHCapScore"].Value = "";
+						}
+					}
+					try {
+						curPrintRow.Cells["PrintRankingRating"].Value = (String)curTeamRow["RankingRating"];
+					} catch {
+						curPrintRow.Cells["PrintRankingRating"].Value = "";
+					}
 
-                        }
-                        if ( trickButton.Checked ) {
-                            try {
-                                curRankingScore = (Decimal)curTeamRow["RankingScore"];
-                                curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "####0" );
-                            } catch {
-                                curPrintRow.Cells["PrintRankingScore"].Value = "";
-                            }
-                            try {
-                                curHCapBase = (Decimal)curTeamRow["HCapBase"];
-                                curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "####0" );
-                            } catch {
-                                curPrintRow.Cells["PrintHCapBase"].Value = "";
-                            }
-                            try {
-                                curHCapScore = (Decimal)curTeamRow["HCapScore"];
-                                curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "####0" );
-                            } catch {
-                                curPrintRow.Cells["PrintHCapScore"].Value = "";
-                            }
-                        } else {
-                            try {
-                                curRankingScore = (Decimal)curTeamRow["RankingScore"];
-                                curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "##0.0" );
-                            } catch {
-                                curPrintRow.Cells["PrintRankingScore"].Value = "";
-                            }
-                            try {
-                                curHCapBase = (Decimal)curTeamRow["HCapBase"];
-                                curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "##0.0" );
-                            } catch {
-                                curPrintRow.Cells["PrintHCapBase"].Value = "";
-                            }
-                            try {
-                                curHCapScore = (Decimal)curTeamRow["HCapScore"];
-                                curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "##0.0" );
-                            } catch {
-                                curPrintRow.Cells["PrintHCapScore"].Value = "";
-                            }
-                        }
-                        try {
-                            curPrintRow.Cells["PrintRankingRating"].Value = (String)curTeamRow["RankingRating"];
-                        } catch {
-                            curPrintRow.Cells["PrintRankingRating"].Value = "";
-                        }
+					prevPrintGroup = curPrintGroup;
+					prevPageBreakGroup = curPageBreakGroup;
+				}
 
-                        prevPrintGroup = curPrintGroup;
-                        prevPageBreakGroup = curPageBreakGroup;
-                    }
-                }
-            } catch ( Exception ex ) {
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error retrieving tournament entries \n" + ex.Message );
             }
 

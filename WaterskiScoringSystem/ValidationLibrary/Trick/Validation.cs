@@ -913,26 +913,29 @@ namespace ValidationLibrary.Trick {
 
             Int16 retPoints = inActivePoints;
             if ( curRuleNum == prevRuleNum ) {
-                retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
-
-            } else if ( curRuleNum > 100 && curRuleNum < 200 ) {
+                return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
+            } 
+			
+			if ( curRuleNum > 100 && curRuleNum < 200 ) {
                 if ( ( curRuleNum + 200 ) == prevRuleNum ) {
                     if ( inActiveView ) {
                         if ( inRowViewIdx > inRowCheckedIdx ) {
-                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum);
+                            return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum);
                         }
                     } else {
                         if ( inColPrefix.Equals("Pass2") ) {
-                            retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
+                            return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
                         }
                     }
                 }
-            } else if ( curRuleNum > 200 && curRuleNum < 300 ) {
+            
+			} else if ( curRuleNum > 200 && curRuleNum < 300 ) {
                 if ( ( curRuleNum + 200 ) == prevRuleNum ) {
-                    retPoints = checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
+                    return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
                 }
             }
-            return retPoints;
+            
+			return retPoints;
         }
 
         private Int16 checkCreditAndPoints( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
@@ -1116,24 +1119,10 @@ namespace ValidationLibrary.Trick {
             return getTrickRow((String) inDataRow["Code"], (Int16)((Byte) inDataRow["Skis"]), inSkierClass);
         }
         public DataRow getTrickRow( String inTrickCode, Int16 inNumSkies, String inSkierClass ) {
-            DataRow curReturnRow = null;
-            DataRow[] curFoundList;
+			DataRow[] curFoundList = myTrickListDataTable.Select("TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies);
+            if ( curFoundList.Length > 0 ) return curFoundList[0];
 
-            curFoundList = myTrickListDataTable.Select("TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies);
-            if ( curFoundList.Length > 0 ) {
-                curReturnRow = curFoundList[0];
-
-                DataRow curSkierClassRow = mySkierClassDataTable.Select("ListCode = '" + inSkierClass + "'")[0];
-				/*
-                if ( (Decimal) curSkierClassRow["ListCodeNum"] <= (Decimal) myClassERow["ListCodeNum"] ) {
-                    if ( mySpecialFlipList.Contains(inTrickCode) ) {
-                        curReturnRow["NumTurns"] = Convert.ToByte("3");
-                    }
-                }
-				 */
-			}
-
-			return curReturnRow;
+			return null;
         }
 
     }
