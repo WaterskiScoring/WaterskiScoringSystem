@@ -14,8 +14,9 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>WaterskiScoringSystem.Program</StartupObject>
-    <ManifestCertificateThumbprint>54B879B9591678CB26EF5690E69F6EBBEE110104</ManifestCertificateThumbprint>
-    <ManifestKeyFile>WaterskiScoringSystem_2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>4EDB79F450D05CC225623F8CD1EC1F47C685A66A</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>true</SignManifests>
@@ -102,13 +103,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EngineIoClientDotNet.0.9.22\lib\net45\EngineIoClientDotNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="H.WebSockets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H.WebSockets.1.0.0\lib\netstandard2.0\H.WebSockets.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.1.271, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
@@ -119,11 +113,8 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketIoClientDotNet, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocketIoClientDotNet.0.9.13\lib\net45\SocketIoClientDotNet.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System">
@@ -175,13 +166,6 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Websocket.Client, Version=4.3.0.0, Culture=neutral, PublicKeyToken=ae648c6d12f59b1b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Websocket.Client.4.3.12\lib\netstandard2.0\Websocket.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -456,7 +440,6 @@
     <Compile Include="Slalom\SlalomSummaryAwards.Designer.cs">
       <DependentUpon>SlalomSummaryAwards.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\EwscMonitor.cs" />
     <Compile Include="Tools\ExportBoatUse.cs" />
     <Compile Include="Tools\ExportLiveWeb.cs" />
     <Compile Include="Tools\ExportLiveWebDialog.cs">
@@ -496,12 +479,6 @@
     </Compile>
     <Compile Include="Tools\UpgradeDatabase.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tools\WaterSkiConnectDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tools\WaterSkiConnectDialog.Designer.cs">
-      <DependentUpon>WaterSkiConnectDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Tournament\OfficialImport.cs">
       <SubType>Form</SubType>
@@ -820,9 +797,6 @@
     <EmbeddedResource Include="Tools\SqlCommandTool.resx">
       <DependentUpon>SqlCommandTool.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\WaterSkiConnectDialog.resx">
-      <DependentUpon>WaterSkiConnectDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Tournament\OfficialImport.resx">
       <DependentUpon>OfficialImport.cs</DependentUpon>
     </EmbeddedResource>
@@ -977,6 +951,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -1364,6 +1341,10 @@
     <ProjectReference Include="..\ValidationLibrary\ValidationLibrary.csproj">
       <Project>{1aa042a1-74e1-4edd-8b07-5a007da5ba67}</Project>
       <Name>ValidationLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WscMessageHandler\WscMessageHandler.csproj">
+      <Project>{f8ba3cae-f5e3-4a60-9709-e49cab480c4b}</Project>
+      <Name>WscMessageHandler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

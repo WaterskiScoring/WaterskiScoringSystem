@@ -601,8 +601,6 @@ namespace WaterskiScoringSystem.Tools {
 			}
 
 			String MemberStatus = "In-Active";
-			Type activeMemberType = curImportMemberEntry["ActiveMember"].GetType();
-			String curActiveMemberType = activeMemberType.ToString();
 			Boolean ActiveMember = false;
 			String EffTo = (String)curImportMemberEntry["EffTo"];
 			if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.Boolean" ) ) {

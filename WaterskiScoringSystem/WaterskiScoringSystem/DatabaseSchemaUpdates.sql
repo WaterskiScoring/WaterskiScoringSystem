@@ -1049,3 +1049,33 @@ ALTER TABLE [BoatPath] ALTER COLUMN InsertDate datetime NOT NULL;
 ALTER TABLE [JumpMeasurement] ALTER COLUMN InsertDate datetime NOT NULL;
 ## v22.34
 ALTER TABLE EventRunOrderFilters ALTER COLUMN GroupFilterCriteria nvarchar(1024) NULL;
+
+## v22.50
+DROP TABLE EwscMsg;
+
+CREATE TABLE WscMsgListen (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgData     ntext NOT NULL,
+    CreateDate  datetime
+);
+
+ALTER TABLE WscMsgListen ADD PRIMARY KEY ([PK]);
+
+CREATE TABLE WscMsgSend (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgData     ntext NOT NULL,
+    CreateDate  datetime
+);
+
+ALTER TABLE WscMsgSend ADD PRIMARY KEY ([PK]);
+
+## v22.51
+CREATE TABLE WscMonitor (
+    SanctionId  nchar(6) NOT NULL,
+    MonitorName nvarchar(32) NOT NULL,
+    HeartBeat  datetime
+);

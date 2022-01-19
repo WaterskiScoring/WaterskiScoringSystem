@@ -9,9 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Reflection;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
-using System.Reflection;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tools {
     class ExportRecordAppData {
@@ -1132,7 +1134,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
+					boatPathRow = WscHandler.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1204,7 +1206,7 @@ namespace WaterskiScoringSystem.Tools {
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = EwscMonitor.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
+					boatPathRow = WscHandler.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1266,7 +1268,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
+					boatPathRow = WscHandler.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {
@@ -1329,7 +1331,7 @@ namespace WaterskiScoringSystem.Tools {
 				Boolean writeHeader = true;
 				foreach ( DataRow curRow in curDataTable.Rows ) {
 					passNum = (byte)curRow["PassNum"];
-					boatPathRow = EwscMonitor.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
+					boatPathRow = WscHandler.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
 					if ( boatPathRow == null ) continue;
 
 					if ( writeHeader ) {

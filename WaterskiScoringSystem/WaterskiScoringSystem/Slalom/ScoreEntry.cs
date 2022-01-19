@@ -10,9 +10,11 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Tournament;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Slalom {
 	public partial class ScoreEntry : Form {
@@ -251,7 +253,7 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 			myBoatPathDevMax = getBoatPathDevMax();
 			WaterskiConnectLabel.Visible = false;
-			if ( EwscMonitor.ConnectActive() ) WaterskiConnectLabel.Visible = true;
+			if ( WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = true;
 
 			Cursor.Current = Cursors.Default;
 		}
@@ -932,12 +934,12 @@ namespace WaterskiScoringSystem.Slalom {
 				String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
 				ExportLiveWeb.exportCurrentSkierSlalom( mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum, curEventGroup );
 			}
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
 				String skierFed = (String)myTourRow["Federation"];
 				if ( ( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value ).Length > 1 ) {
 					skierFed = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value;
 				}
-				EwscMonitor.sendAthleteScore( (String)myRecapRow.Cells["MemberIdRecap"].Value
+				WscHandler.sendAthleteScore( (String)myRecapRow.Cells["MemberIdRecap"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value
 					, "Slalom"
 					, skierFed
@@ -948,7 +950,7 @@ namespace WaterskiScoringSystem.Slalom {
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value )
 					, (String)myRecapRow.Cells["PassLineLengthRecap"].Value
 					, (String)myRecapRow.Cells["ScoreRecap"].Value );
-			} else if ( !WaterskiConnectLabel.Visible) WaterskiConnectLabel.Visible = false;
+			} else if ( WaterskiConnectLabel.Visible) WaterskiConnectLabel.Visible = false;
 		}
 
 		private void loadTourEventRegView() {
@@ -1355,7 +1357,7 @@ namespace WaterskiScoringSystem.Slalom {
 				myRecapRow = slalomRecapDataGridView.Rows[curViewIdxMax];
 				scoreEntryInprogress();
 
-				if ( EwscMonitor.ConnectActive() ) {
+				if ( WscHandler.isConnectActive ) {
 					WaterskiConnectLabel.Visible = true;
 				} else {
 					WaterskiConnectLabel.Visible = false;
@@ -1515,9 +1517,9 @@ namespace WaterskiScoringSystem.Slalom {
 				setEventRegRowStatus( "2-InProg" );
 
 				String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
-				if ( EwscMonitor.ConnectActive() ) {
-					EwscMonitor.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundSelect.RoundValue ) );
-				} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+				if ( WscHandler.isConnectActive ) {
+					WscHandler.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundSelect.RoundValue ) );
+				} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					/*
@@ -1532,7 +1534,7 @@ namespace WaterskiScoringSystem.Slalom {
 				myPrevEventGroup = curEventGroup;
 			}
 
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 			} else {
 				WaterskiConnectLabel.Visible = false;
@@ -1669,7 +1671,7 @@ namespace WaterskiScoringSystem.Slalom {
 				deletePassButton.Enabled = true;
 				ForceCompButton.Enabled = true;
 
-				if ( EwscMonitor.ConnectActive() ) {
+				if ( WscHandler.isConnectActive ) {
 					ResendPassButton.Enabled = true;
 					ResendPassButton.Visible = true;
 				}
@@ -2300,12 +2302,12 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void sendPassDataEwsc( DataGridViewRow tourEventRegRow, Int16 curPassSpeedKph, decimal curPassLineLengthMeters ) {
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
 				String skierFed = (String)myTourRow["Federation"];
 				if ( ( (String)tourEventRegRow.Cells["Federation"].Value ).Length > 1 ) {
 					skierFed = (String)tourEventRegRow.Cells["Federation"].Value;
 				}
-				EwscMonitor.sendPassData( (String)myRecapRow.Cells["MemberIdRecap"].Value
+				WscHandler.sendPassData( (String)myRecapRow.Cells["MemberIdRecap"].Value
 					, (String)tourEventRegRow.Cells["SkierName"].Value
 					, "Slalom"
 					, skierFed
@@ -2319,7 +2321,7 @@ namespace WaterskiScoringSystem.Slalom {
 					, curPassLineLengthMeters.ToString( "00.00" )
 					, "0"
 					, (String)driverDropdown.SelectedValue );
-			} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+			} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 
 		}
 
@@ -2646,17 +2648,15 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			// Display the form as a modal dialog box.
-			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
-			waterSkiConnectDialogDialog.setEvent( "Slalom" );
-			waterSkiConnectDialogDialog.ShowDialog();
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
+				WaterskiConnectLabel.Visible = true;
+				return;
+			}
+
+			WscHandler.startWscMessageHhandler();
+			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				myBoatPathDevMax = getBoatPathDevMax();
-				if ( slalomRecapDataGridView.Rows.Count > 0 ) {
-					ResendPassButton.Enabled = true;
-					ResendPassButton.Visible = true;
-				}
 				return;
 			}
 			WaterskiConnectLabel.Visible = false;
@@ -3239,7 +3239,7 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( myRecapRow == null || isLastPassSelectActive ) return;
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
-			//if ( EwscMonitor.ConnectActive()
+			//if ( WscHandler.isConnectActive
 			if ( ((String)curViewRow.Cells["BoatTimeRecap"].Value ).Length > 0
 				&& ((String)curViewRow.Cells["ScoreRecap"].Value ).Length > 0 ) {
 				/* 
@@ -3260,7 +3260,7 @@ namespace WaterskiScoringSystem.Slalom {
 			decimal[] curBoatTime = new decimal[] { };
 
 			try {
-				curBoatTime = EwscMonitor.getBoatTime( "Slalom", (String)curViewRow.Cells["MemberIdRecap"].Value
+				curBoatTime = WscHandler.getBoatTime( "Slalom", (String)curViewRow.Cells["MemberIdRecap"].Value
 					, (String)curViewRow.Cells["RoundRecap"].Value, (String)curViewRow.Cells["skierPassRecap"].Value
 					, Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value )
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ), curScore );
@@ -3307,7 +3307,7 @@ namespace WaterskiScoringSystem.Slalom {
 					boatPathDataGridView.Visible = false;
 					return;
 				}
-				myBoatPathDataRow = EwscMonitor.getBoatPath( curEvent, curMemberId, curRound, curPassNum
+				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum
 					, Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value )
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ) );
 				if ( myBoatPathDataRow == null ) {
@@ -4682,7 +4682,7 @@ namespace WaterskiScoringSystem.Slalom {
 				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 				//String boatId, String boatManufacturer, String boatModel, Int16 boatYear, String boatColor, String boatComment
-				if ( EwscMonitor.ConnectActive() ) {
+				if ( WscHandler.isConnectActive ) {
 					String curBoatModelName = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatModelApproved"].Value;
 					Int16 curBoatModelYear = Convert.ToInt16( (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["ModelYear"].Value );
 					String curBoatNotes = (String)listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatNotes"].Value;
@@ -4690,8 +4690,8 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( curBoatModelName.Contains( "Malibu" ) ) curManufacturer = "Malibu";
 					if ( curBoatModelName.Contains( "Nautique" ) ) curManufacturer = "Nautique";
 					if ( curBoatModelName.Contains( "Master" ) ) curManufacturer = "Masctercraft";
-					EwscMonitor.sendBoatData( curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes );
-				} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+					WscHandler.sendBoatData( curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes );
+				} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 
 			} catch ( Exception excp ) {
 				curMsg = ":Error attempting to update boat selection \n" + excp.Message;
@@ -5312,94 +5312,56 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private bool isEntryGatesGood() {
 			int curGateEntryValue = 0;
+
+			if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateEntry1Recap", "false" ) ) ) curGateEntryValue++;
 			if ( myNumJudges > 1 ) {
-				
-				if ( Convert.ToBoolean( myRecapRow.Cells["GateEntry1Recap"].Value ) ) curGateEntryValue++;
-				if ( Convert.ToBoolean( myRecapRow.Cells["GateEntry2Recap"].Value ) ) curGateEntryValue++;
-				if ( Convert.ToBoolean( myRecapRow.Cells["GateEntry3Recap"].Value ) ) curGateEntryValue++;
-				if ( curGateEntryValue > 1 ) {
-					return true;
-				} else {
-					return false;
-				}
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateEntry2Recap", "false" ) ) ) curGateEntryValue++;
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateEntry3Recap", "false" ) ) ) curGateEntryValue++;
+			}
+
+			if ( myNumJudges == 1 ) {
+				if ( curGateEntryValue == 1 ) return true;
+				return false;
+			
 			} else {
-				if ( Convert.ToBoolean( myRecapRow.Cells["GateEntry1Recap"].Value ) ) curGateEntryValue++;
-				if ( curGateEntryValue > 0 ) {
-					return true;
-				} else {
-					return false;
-				}
+				if ( curGateEntryValue > 1 ) return true;
+				return false;
 			}
 		}
 
 		private bool isExitGatesGood( DataRow inRow ) {
-			Boolean curGatesGood = true;
-			Boolean curGateValue;
-
 			int curGateExitValue = 0;
-			try {
-				curGateValue = (Boolean)inRow["ExitGate1"];
-			} catch ( Exception ex ) {
-				curGateValue = false;
-				MessageBox.Show( "isExitGatesGood Exception:" + ex.Message );
-			}
-			if ( !( curGateValue ) ) curGateExitValue++;
-
+			if ( CommonFunctions.isValueTrue( CommonFunctions.getDataRowColValue( inRow, "GateExit1Recap", "false" ) ) ) curGateExitValue++;
 			if ( myNumJudges > 1 ) {
-				try {
-					curGateValue = (Boolean)inRow["ExitGate2"];
-				} catch {
-					curGateValue = false;
-				}
-				if ( !( curGateValue ) ) curGateExitValue++;
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getDataRowColValue( inRow, "GateExit2Recap", "false" ) ) ) curGateExitValue++;
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getDataRowColValue( inRow, "GateExit3Recap", "false" ) ) ) curGateExitValue++;
 			}
-			if ( myNumJudges > 2 ) {
-				try {
-					curGateValue = (Boolean)inRow["ExitGate3"];
-				} catch {
-					curGateValue = false;
-				}
-				if ( !( curGateValue ) ) curGateExitValue++;
-			}
-			if ( myNumJudges > 2 ) {
-				if ( curGateExitValue < 2 ) {
-					curGatesGood = true;
-				} else {
-					curGatesGood = false;
-				}
+
+			if ( myNumJudges == 1 ) {
+				if ( curGateExitValue == 1 ) return true;
+				return false;
+
 			} else {
-				if ( curGateExitValue < 2 ) {
-					curGatesGood = true;
-				} else {
-					curGatesGood = false;
-				}
+				if ( curGateExitValue > 1 ) return true;
+				return false;
 			}
-			return curGatesGood;
 		}
 		private bool isExitGatesGood() {
-			Boolean curGatesGood = true;
 			int curGateExitValue = 0;
-			if ( !( (Boolean)myRecapRow.Cells["GateExit1Recap"].Value ) ) curGateExitValue++;
+			if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateExit1Recap", "false" ) ) ) curGateExitValue++;
 			if ( myNumJudges > 1 ) {
-				if ( !( (Boolean)myRecapRow.Cells["GateExit2Recap"].Value ) ) curGateExitValue++;
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateExit2Recap", "false" ) ) ) curGateExitValue++;
+				if ( CommonFunctions.isValueTrue( CommonFunctions.getViewRowColValue( myRecapRow, "GateExit3Recap", "false" ) ) ) curGateExitValue++;
 			}
-			if ( myNumJudges > 2 ) {
-				if ( !( (Boolean)myRecapRow.Cells["GateExit3Recap"].Value ) ) curGateExitValue++;
-			}
-			if ( myNumJudges > 2 ) {
-				if ( curGateExitValue < 2 ) {
-					curGatesGood = true;
-				} else {
-					curGatesGood = false;
-				}
+
+			if ( myNumJudges == 1 ) {
+				if ( curGateExitValue == 1 ) return true;
+				return false;
+
 			} else {
-				if ( curGateExitValue < 2 ) {
-					curGatesGood = true;
-				} else {
-					curGatesGood = false;
-				}
+				if ( curGateExitValue > 1 ) return true;
+				return false;
 			}
-			return curGatesGood;
 		}
 
 		private void driverDropdown_SelectedValueChanged( object sender, EventArgs e ) {

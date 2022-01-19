@@ -11,9 +11,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tournament;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Admin {
     public partial class TourList : Form {
@@ -1295,7 +1297,7 @@ namespace WaterskiScoringSystem.Admin {
                     + "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
             } else {
                 if (Log.isDirectoryValid( curDataLoc )) {
-					if ( EwscMonitor .EwscWebLocation.Length > 1 ) EwscMonitor.sendExit();
+					if ( WscHandler.isConnectActive ) WscHandler.sendExit();
 
                     Properties.Settings.Default.AppSanctionNum = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"].Value.ToString();
                     Properties.Settings.Default.ExportDirectory = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();

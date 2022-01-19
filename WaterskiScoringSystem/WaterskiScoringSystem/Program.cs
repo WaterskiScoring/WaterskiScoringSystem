@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem
 {
@@ -21,10 +22,12 @@ namespace WaterskiScoringSystem
                 Application.SetCompatibleTextRenderingDefault( false );
                 Application.SetUnhandledExceptionMode( UnhandledExceptionMode.ThrowException );
                 Application.Run( new SystemMain() );
+
             } catch (Exception excp) {
-                //Not sure how or why it gets here but adding a try catch to ensure exception is handled.
-                MessageBox.Show( "An exception has been enountered."
-                + "\n If error is persistent and you can identify your most recent activities, please submit issue to development team. \n\n" + excp.Message );
+				Log.WriteFile( "WaterskiScoringSystem:Main: An exception has been enountered. Exception: " + excp.Message + ": StackTrace: " + excp.StackTrace );
+				MessageBox.Show( "An exception has been enountered."
+					+ "\n Exception: " + excp.Message
+					+ "\n Please contact the development team and send the [SanctionId]-log.log file" );
             }
         }
     }

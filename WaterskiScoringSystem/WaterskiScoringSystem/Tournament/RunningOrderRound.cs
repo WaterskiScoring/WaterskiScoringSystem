@@ -10,8 +10,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
     public partial class RunningOrderRound : Form {
@@ -85,7 +87,7 @@ namespace WaterskiScoringSystem.Tournament {
 			WaterskiConnectLabel.Visible = false;
 			SendSkierListButton.Visible = false;
 			SendSkierListButton.Enabled = false;
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				SendSkierListButton.Visible = true;
 				SendSkierListButton.Enabled = true;
@@ -425,7 +427,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private void SendSkierListButton_Click( object sender, EventArgs e ) {
 			DataTable curDataTable = getEventRoundSkierOrder( Convert.ToInt16( roundActiveSelect.RoundValue ), myPlcmtOrg, myCommandType );
 			if ( curDataTable.Rows.Count > 0 ) {
-				EwscMonitor.sendRunningOrder( myEvent, Convert.ToInt16( roundActiveSelect.RoundValue ), curDataTable );
+				WscHandler.sendRunningOrder( myEvent, Convert.ToInt16( roundActiveSelect.RoundValue ), curDataTable );
 				MessageBox.Show( "Running order has been sent to WaterSkiConnect" );
 			}
 

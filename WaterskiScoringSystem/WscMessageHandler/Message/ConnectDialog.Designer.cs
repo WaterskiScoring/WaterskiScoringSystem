@@ -1,6 +1,6 @@
 ﻿
-namespace WaterskiScoringSystem.Tools {
-	partial class WaterSkiConnectDialog {
+namespace WscMessageHandler.Message {
+	partial class ConnectDialog {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -32,31 +32,31 @@ namespace WaterskiScoringSystem.Tools {
 			this.eventSubIdLabel = new System.Windows.Forms.Label();
 			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
 			this.ViewAppsButton = new System.Windows.Forms.Button();
-			this.MessageHandlerButton = new System.Windows.Forms.Button();
+			this.CancelButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
 			// 
 			this.ShowPinButton.AutoSize = true;
 			this.ShowPinButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ShowPinButton.Location = new System.Drawing.Point(176, 43);
+			this.ShowPinButton.Location = new System.Drawing.Point(182, 43);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(87, 23);
 			this.ShowPinButton.TabIndex = 3;
 			this.ShowPinButton.Text = "Show Pin";
 			this.ShowPinButton.UseVisualStyleBackColor = true;
-			this.ShowPinButton.Click += new System.EventHandler(this.showEwcsPin_Click);
+			this.ShowPinButton.Click += new System.EventHandler(this.showWscPin_Click);
 			// 
 			// DisconnectButton
 			// 
-			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.DisconnectButton.Location = new System.Drawing.Point(93, 43);
+			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.DisconnectButton.Location = new System.Drawing.Point(96, 43);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(75, 23);
 			this.DisconnectButton.TabIndex = 2;
 			this.DisconnectButton.Text = "Disconnect";
 			this.DisconnectButton.UseVisualStyleBackColor = true;
-			this.DisconnectButton.Click += new System.EventHandler(this.execEwcsClose_Click);
+			this.DisconnectButton.Click += new System.EventHandler(this.execWscClose_Click);
 			// 
 			// ConnectButton
 			// 
@@ -67,7 +67,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.ConnectButton.TabIndex = 1;
 			this.ConnectButton.Text = "Connect";
 			this.ConnectButton.UseVisualStyleBackColor = true;
-			this.ConnectButton.Click += new System.EventHandler(this.execEwcsConnect_Click);
+			this.ConnectButton.Click += new System.EventHandler(this.execWscConnect_Click);
 			// 
 			// MessageLabel
 			// 
@@ -75,9 +75,9 @@ namespace WaterskiScoringSystem.Tools {
 			this.MessageLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MessageLabel.Location = new System.Drawing.Point(10, 9);
 			this.MessageLabel.Name = "MessageLabel";
-			this.MessageLabel.Size = new System.Drawing.Size(183, 14);
+			this.MessageLabel.Size = new System.Drawing.Size(121, 14);
 			this.MessageLabel.TabIndex = 0;
-			this.MessageLabel.Text = "WaterSkiConnect Message";
+			this.MessageLabel.Text = "Connect Message";
 			// 
 			// eventSubIdTextBox
 			// 
@@ -115,7 +115,7 @@ namespace WaterskiScoringSystem.Tools {
 			// 
 			this.ViewAppsButton.AutoSize = true;
 			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ViewAppsButton.Location = new System.Drawing.Point(271, 43);
+			this.ViewAppsButton.Location = new System.Drawing.Point(280, 43);
 			this.ViewAppsButton.Name = "ViewAppsButton";
 			this.ViewAppsButton.Size = new System.Drawing.Size(87, 23);
 			this.ViewAppsButton.TabIndex = 4;
@@ -123,25 +123,23 @@ namespace WaterskiScoringSystem.Tools {
 			this.ViewAppsButton.UseVisualStyleBackColor = true;
 			this.ViewAppsButton.Click += new System.EventHandler(this.showAppsConnected_Click);
 			// 
-			// MessageHandlerButton
+			// CancelButton
 			// 
-			this.MessageHandlerButton.AutoSize = true;
-			this.MessageHandlerButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.MessageHandlerButton.Location = new System.Drawing.Point(374, 43);
-			this.MessageHandlerButton.Name = "MessageHandlerButton";
-			this.MessageHandlerButton.Size = new System.Drawing.Size(100, 23);
-			this.MessageHandlerButton.TabIndex = 7;
-			this.MessageHandlerButton.Text = "Message Handler";
-			this.MessageHandlerButton.UseVisualStyleBackColor = true;
-			this.MessageHandlerButton.Click += new System.EventHandler(this.MessageHandlerButton_Click);
+			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.CancelButton.Location = new System.Drawing.Point(378, 42);
+			this.CancelButton.Name = "CancelButton";
+			this.CancelButton.Size = new System.Drawing.Size(75, 23);
+			this.CancelButton.TabIndex = 7;
+			this.CancelButton.Text = "Cancel";
+			this.CancelButton.UseVisualStyleBackColor = true;
 			// 
-			// WaterSkiConnectDialog
+			// ConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(492, 129);
-			this.Controls.Add(this.MessageHandlerButton);
+			this.ClientSize = new System.Drawing.Size(462, 129);
+			this.Controls.Add(this.CancelButton);
 			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.UseJumpTimesCheckBox);
 			this.Controls.Add(this.eventSubIdLabel);
@@ -150,9 +148,9 @@ namespace WaterskiScoringSystem.Tools {
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ConnectButton);
 			this.Controls.Add(this.MessageLabel);
-			this.Name = "WaterSkiConnectDialog";
-			this.Text = "WaterSkiConnect";
-			this.Load += new System.EventHandler(this.WaterSkiConnectDialog_Load);
+			this.Name = "ConnectDialog";
+			this.Text = "Connect";
+			this.Load += new System.EventHandler(this.ConnectDialog_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -167,6 +165,6 @@ namespace WaterskiScoringSystem.Tools {
 		private System.Windows.Forms.Label eventSubIdLabel;
 		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
 		private System.Windows.Forms.Button ViewAppsButton;
-		private System.Windows.Forms.Button MessageHandlerButton;
+		private System.Windows.Forms.Button CancelButton;
 	}
 }

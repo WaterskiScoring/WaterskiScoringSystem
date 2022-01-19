@@ -10,8 +10,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
     public partial class RunningOrderTour : Form {
@@ -94,7 +96,7 @@ namespace WaterskiScoringSystem.Tournament {
             isLoadInProg = true;
             myTourProperties = TourProperties.Instance;
 
-			if ( EwscMonitor.ConnectActive() ) {
+			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				SendSkierListButton.Visible = true;
 				SendSkierListButton.Enabled = true;
@@ -1904,16 +1906,16 @@ namespace WaterskiScoringSystem.Tournament {
 		private void SendSkierListButton_Click( object sender, EventArgs e ) {
 			myEventRegDataTable = getEventRegData();
 			if ( myEventRegDataTable.Rows.Count > 0 ) {
-				EwscMonitor.sendRunningOrder( getCurrentEvent(), 0, myEventRegDataTable );
+				WscHandler.sendRunningOrder( getCurrentEvent(), 0, myEventRegDataTable );
 				MessageBox.Show( "Running order has been sent to WaterSkiConnect" );
 			}
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
-			waterSkiConnectDialogDialog.setEvent( "RunOrder" );
-			waterSkiConnectDialogDialog.ShowDialog();
-			if ( EwscMonitor.ConnectActive() ) {
+			//WaterSkiConnectDialog waterSkiConnectDialogDialog = new WaterSkiConnectDialog();
+			//waterSkiConnectDialogDialog.setEvent( "RunOrder" );
+			//waterSkiConnectDialogDialog.ShowDialog();
+			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				SendSkierListButton.Visible = true;
 				SendSkierListButton.Enabled = true;

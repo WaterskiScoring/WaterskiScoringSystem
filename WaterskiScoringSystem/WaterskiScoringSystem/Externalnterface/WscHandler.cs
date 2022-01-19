@@ -2,32 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading;
+using System.Diagnostics;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Tools;
+
+using WscMessageHandler;
 
 namespace WaterskiScoringSystem.Externalnterface {
 	class WscHandler {
+		private static Boolean myConnectActive = false;
+		private static Boolean myUseJumpTimes = false;
 		private static String mySanctionNum;
+		private static int myDefaultRound = 0;
 
 		private static DataRow myTourRow;
+		private static DataTable myMonitorDataTable = null;
 
-		private static Boolean myConnectActive = false;
-		private static DateTime myCurrentDatetime = DateTime.Now;
+		private static readonly char[] singleQuoteDelim = new char[] { '\'' };
 
-		private static char[] singleQuoteDelim = new char[] { '\'' };
-
-		private static String myLastConnectResponse = "";
-		private static Boolean myUseJumpTimes = false;
-		private static int myDefaultRound = 0;
+		public static Boolean isConnectActive {
+			get {
+				return myConnectActive;
+			}
+			set {
+				myConnectActive = value;
+			}
+		}
 
 		public static Boolean useJumpTimes {
 			get {
@@ -39,15 +46,76 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static void startWscMessageHhandler() {
-			Process exeProcess = new Process();
-			//exeProcess.
-			exeProcess.StartInfo.FileName = "Notepad.exe";
-			exeProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
-			exeProcess.Start();
+			String curMethodName = "startWscMessageHhandler: ";
+
+			try {
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Delete FROM WscMsgSend WHERE SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' AND MsgType = 'EXIT' " );
+				int rowsDeleted = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				if ( rowsDeleted > 0 ) Log.WriteFile( curMethodName + String.Format( "Old EXIT requests {0} cleaned from queue", rowsDeleted ) );
+
+				ProcessStartInfo start = new ProcessStartInfo();
+				// Enter in the command line arguments, everything you would enter after the executable name itself
+				start.Arguments = String.Format( "{0} {1} {2}", Properties.Settings.Default.AppSanctionNum
+					, CommonFunctions.getDatabaseFilenameFromConnectString()
+					, Properties.Settings.Default.ExportDirectory );
+
+				// Enter the executable to run, including the complete path
+				start.FileName = "WscMessageHandler.exe";
+
+				// Do you want to show a console window?
+				//start.WindowStyle = ProcessWindowStyle.Hidden;
+				start.WindowStyle = ProcessWindowStyle.Normal;
+				start.CreateNoWindow = true;
+				Process proc = Process.Start( start );
+
+				myConnectActive = true;
+
+			} catch (Exception ex ) {
+				MessageBox.Show( "Exception trying to connect to WaterSkiConnect: " + ex.Message );
+			}
+		}
+		
+		private static void checkWscConnectStatus() {
+			String curMethodName = "checkWscConnectStatus: ";
+			DataTable curMonitorDataTable = getMonitorHeartBeatAll();
+			if ( curMonitorDataTable == null || curMonitorDataTable.Rows.Count != 3 ) {
+				myConnectActive = false;
+				String msg = String.Format( "WaterSkiConnect handler is not currently active", curMethodName );
+				Log.WriteFile( msg );
+				MessageBox.Show( msg );
+				return;
+			}
+			
+			if ( myMonitorDataTable == null ) {
+				myMonitorDataTable = curMonitorDataTable;
+				myConnectActive = true;
+				return;
+			}
+			
+			foreach ( DataRow curMonitorHeartBeat in curMonitorDataTable.Rows ) {
+				String curMonitorName = (String)curMonitorHeartBeat["MonitorName"];
+				DataRow[] prevMonitorHeartBeat = myMonitorDataTable.Select( "MonitorName = '" + curMonitorName + "'" );
+				if ( prevMonitorHeartBeat.Length > 0 ) {
+					if ( (DateTime)curMonitorHeartBeat["HeartBeat"] <= (DateTime)prevMonitorHeartBeat[0]["HeartBeat"] ) {
+						myConnectActive = false;
+						String msg = String.Format( "WaterSkiConnect handler is not currently active", curMethodName );
+						Log.WriteFile( msg );
+						MessageBox.Show( msg );
+						return;
+					}
+				}
+			}
+
+			myMonitorDataTable = curMonitorDataTable;
+			myConnectActive = true;
+			return;
 		}
 
-		public static void showPin() {
-			MessageBox.Show( myLastConnectResponse );
+		public static Boolean sendExit() {
+			addWscMsgSend( "Exit", "Exit WaterSkiConnect" );
+			myConnectActive = false;
+			return true;
 		}
 
 		public static Boolean sendBoatData( String boatId, String boatManufacturer, String boatModel
@@ -60,15 +128,18 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "boatColor", boatColor }
 					, { "boatComment", boatComment }
 				};
-			addEwscMsg( "boat_data", JsonConvert.SerializeObject( sendMsg ) );
+			addWscMsgSend( "boat_data", JsonConvert.SerializeObject( sendMsg ) );
 			return true;
 		}
 
 		public static Boolean sendPassData( String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div, String gender
 			, String round, Int16 passNumber, Int16 speed, String rope, String split, String driverMemberId ) {
+			String curMethodName = "sendBoatData: ";
 			int curRound = int.Parse( round );
 			myDefaultRound = curRound;
-			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
+
+			try {
+				Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
@@ -83,28 +154,35 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "split", split }
 				};
 
-			if ( driverMemberId != null && driverMemberId.Length > 0 ) {
-				DataTable curDataTable = getDriverAssignment( driverMemberId );
-				if ( curDataTable.Rows.Count > 0 ) {
-					DataRow curDataRow = curDataTable.Rows[( curDataTable.Rows.Count - 1 )];
-					sendMsg.Add( "driver", buildOfficialEntry( curDataRow ) );
+				if ( driverMemberId != null && driverMemberId.Length > 0 ) {
+					DataTable curDataTable = getDriverAssignment( driverMemberId );
+					if ( curDataTable.Rows.Count > 0 ) {
+						DataRow curDataRow = curDataTable.Rows[( curDataTable.Rows.Count - 1 )];
+						sendMsg.Add( "driver", buildOfficialEntry( curDataRow ) );
+					} else {
+						sendMsg.Add( "driver", buildOfficialEntry( null ) );
+					}
+
 				} else {
 					sendMsg.Add( "driver", buildOfficialEntry( null ) );
 				}
 
-			} else {
-				sendMsg.Add( "driver", buildOfficialEntry( null ) );
+				addWscMsgSend( "pass_data", JsonConvert.SerializeObject( sendMsg ) );
+				checkWscConnectStatus();
+				return true;
+			
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0} Exception encountered {1}", curMethodName, ex.Message ) );
+				return false;
 			}
-
-			addEwscMsg( "pass_data", JsonConvert.SerializeObject( sendMsg ) );
-			myCurrentDatetime = DateTime.Now;
-			return true;
 		}
 
 		public static Boolean sendAthleteScore( String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String athleteGroup
 			, Int16 round, Int16 passNumber, Int16 speed, String rope, String score ) {
+			String curMethodName = "sendAthleteScore: ";
 			myDefaultRound = round;
-			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
+			try {
+				Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
 					, { "athleteEvent", athleteEvent }
@@ -116,11 +194,16 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "rope", rope }
 					, { "score", score + "@" + speed.ToString() + "/" + rope }
 				};
-			addEwscMsg( "scoring_score", JsonConvert.SerializeObject( sendMsg ) );
+				addWscMsgSend( "scoring_score", JsonConvert.SerializeObject( sendMsg ) );
 
-			sendLeaderBoard( athleteId, athleteEvent, athleteGroup, round );
+				sendLeaderBoard( athleteId, athleteEvent, athleteGroup, round );
 
-			return true;
+				return true;
+			
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0} Exception encountered {1}", curMethodName, ex.Message ) );
+				return false;
+			}
 		}
 
 		private static void sendLeaderBoard( String athleteId, String athleteEvent, String athleteGroup, Int16 inRound ) {
@@ -270,7 +353,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				, { "mt", splitTime2.ToString("0.00") }
 				, { "et", endTime.ToString("0.00") }
 				};
-			addEwscMsg( "boat_times_scoring", JsonConvert.SerializeObject( sendMsg ) );
+			addWscMsgSend( "boat_times_scoring", JsonConvert.SerializeObject( sendMsg ) );
 		}
 
 		public static Boolean sendRunningOrder( String curEvent, int curRound, DataTable curDataTable ) {
@@ -315,6 +398,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			if ( startListAthletes.Count > 0 ) {
 				sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
+				checkWscConnectStatus();
 			}
 
 			return true;
@@ -362,7 +446,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 			}
 			if ( officialsAvailable ) {
-				addEwscMsg( "officials_data", JsonConvert.SerializeObject( curEventOfficials ) );
+				addWscMsgSend( "officials_data", JsonConvert.SerializeObject( curEventOfficials ) );
 				return true;
 			}
 
@@ -430,6 +514,34 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return null;
 		}
 
+		public static decimal[] getJumpMeasurement( String curEvent, String curMemberId, String curRound, String curPassNum ) {
+			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
+			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			for ( int count = 0; count < 5; count++ ) {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT * FROM JumpMeasurement " );
+				curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+				curSqlStmt.Append( "AND MemberId = '" + curMemberId + "' " );
+				curSqlStmt.Append( "AND Event = '" + curEvent + "' " );
+				curSqlStmt.Append( "AND Round = " + curRound + " " );
+				curSqlStmt.Append( "AND PassNumber = " + curPassNum + " " );
+				curSqlStmt.Append( "Order by InsertDate " );
+
+				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count > 0 ) {
+					return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreFeet"], (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreMeters"] };
+
+				} else {
+					if ( myConnectActive ) Thread.Sleep( 500 );
+				}
+			}
+
+			return new decimal[] { };
+		}
+
 		private static void sendRunningOrderForGroup( String curEvent, int curRound, String curEventGroup, ArrayList startListAthletes ) {
 			Dictionary<string, object> startListMsg = new Dictionary<string, object> {
 					{ "startlistName", "EventGroup " + curEventGroup }
@@ -443,7 +555,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "startlist_athletes", startListAthletes }
 				};
 
-			addEwscMsg( "start_list", JsonConvert.SerializeObject( startListMsg ) );
+			addWscMsgSend( "start_list", JsonConvert.SerializeObject( startListMsg ) );
 		}
 
 		private static void sendLeaderBoardMsg( String curEvent, int curRound, String curEventGroup, Dictionary<string, dynamic> curSkier, Dictionary<string, dynamic> curLeader, ArrayList leaderBoard ) {
@@ -457,14 +569,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "leaderboard_athletes", leaderBoard }
 				};
 
-			addEwscMsg( "leaderboard", JsonConvert.SerializeObject( leaderboardMsg ) );
+			addWscMsgSend( "leaderboard", JsonConvert.SerializeObject( leaderboardMsg ) );
 		}
 
-		private static void addEwscMsg( String msgType, String msgData ) {
+		private static void addWscMsgSend( String msgType, String msgData ) {
+#pragma warning restore IDE1006 // Naming Styles
 			String curMsgData = stringReplace( msgData, singleQuoteDelim, "''" );
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "Insert EwscMsg ( " );
+			curSqlStmt.Append( "Insert WscMsgSend ( " );
 			curSqlStmt.Append( "SanctionId, MsgType, MsgData, CreateDate " );
 			curSqlStmt.Append( ") Values ( " );
 			curSqlStmt.Append( "'" + mySanctionNum + "'" );
@@ -718,5 +831,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
+		private static DataTable getMonitorHeartBeatAll() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, MonitorName,HeartBeat " );
+			curSqlStmt.Append( "FROM WscMonitor " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
 	}
 }

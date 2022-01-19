@@ -2,29 +2,32 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WscMessageHandler.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AppConnectName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">waterskiConnectionLocalString</Value>
+    <Setting Name="SanctionNum" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AppExeName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">WscMessageHandler.exe</Value>
-    </Setting>
-    <Setting Name="AppTitle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">WaterSkiConnect Message Handler</Value>
-    </Setting>
-    <Setting Name="AppVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.0.0</Value>
-    </Setting>
-    <Setting Name="waterskiConnectionStringApp" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=|DataDirectory|\waterski.sdf;Password=waterski;Persist Security Info=True</Value>
-    </Setting>
-    <Setting Name="MessageController_Height" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="DatabaseFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)">waterski.sdf</Value>
     </Setting>
     <Setting Name="MessageController_Width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="MessageController_Height" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
     <Setting Name="MessageController_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
+    </Setting>
+    <Setting Name="DatabaseConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AppTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Water Ski Scoring Message Handler</Value>
+    </Setting>
+    <Setting Name="DataDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AppVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.0.0 1/1/2022</Value>
     </Setting>
   </Settings>
 </SettingsFile>

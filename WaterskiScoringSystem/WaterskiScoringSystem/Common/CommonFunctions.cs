@@ -10,6 +10,26 @@ using System.Windows.Forms;
 namespace WaterskiScoringSystem.Common {
 	class CommonFunctions {
 
+		public static String getDatabaseFilenameFromConnectString() {
+			String curDatabaseFilename = "";
+			String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+
+			String[] curAttrEntry;
+			String[] curConnAttrList = curAppConnectString.Split( ';' );
+			for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
+				curAttrEntry = curConnAttrList[idx].Split( '=' );
+				if ( curAttrEntry[0].ToLower().Trim().Equals( "data source" ) ) {
+					if ( curAttrEntry[1].StartsWith( "|DataDirectory|\\" ) ) {
+						curDatabaseFilename = AppDomain.CurrentDomain.GetData( "DataDirectory" ) + "\\" + curAttrEntry[1].Substring( 16 );
+					} else {
+						curDatabaseFilename = curAttrEntry[1];
+					}
+					break;
+				}
+			}
+			return curDatabaseFilename;
+		}
+
 		public static String getEventGroupFilterNcwsa( String inGroupValue ) {
 			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "AgeGroup = 'CM' ";
 			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "AgeGroup = 'CW' ";
@@ -29,14 +49,7 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static ArrayList buildEventGroupListNcwsa() {
-			ArrayList curEventGroupList = new ArrayList();
-			curEventGroupList.Add( "All" );
-			curEventGroupList.Add( "Men A" );
-			curEventGroupList.Add( "Women A" );
-			curEventGroupList.Add( "Men B" );
-			curEventGroupList.Add( "Women B" );
-			curEventGroupList.Add( "Non Team" );
-			return curEventGroupList;
+			return new ArrayList() { "All", "Men A", "Women A", "Men B", "Women B", "Non Team" };
 		}
 
 		public static ArrayList buildEventGroupList( String inSanctionNum, String inEvent, int inRound) {
@@ -76,6 +89,17 @@ namespace WaterskiScoringSystem.Common {
 			return curReturnValue;
 		}
 
+		public static bool isValueTrue( String inValue ) {
+			String checkValue = inValue.Trim().ToLower();
+			if ( checkValue.Equals( "true" ) ) return true;
+			if ( checkValue.Equals( "false" ) ) return false;
+			if ( checkValue.Equals( "yes" ) ) return true;
+			if ( checkValue.Equals( "no" ) ) return false;
+			if ( checkValue.Equals( "1" ) ) return true;
+			if ( checkValue.Equals( "0" ) ) return false;
+			return false;
+		}
+
 		public static String getDataRowColValueDecimal( DataRow dataRow, String colName, String defaultValue, int numDecimals ) {
 			try {
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
@@ -106,20 +130,32 @@ namespace WaterskiScoringSystem.Common {
 				return defaultValue;
 			}
 		}
+		
 		public static String getViewRowColValue( DataGridViewRow viewRow, String colName, String defaultValue ) {
-			String returnValue = defaultValue;
+			String curColValue = "";
 			try {
 				if ( viewRow.Cells[colName].Value == null ) return defaultValue;
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof(String) ) ) returnValue = ((String)viewRow.Cells[colName].Value).Trim();
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( int ) ) ) returnValue = ( (int)viewRow.Cells[colName].Value ).ToString();
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int16 ) ) ) returnValue = ( (Int16)viewRow.Cells[colName].Value ).ToString();
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( byte ) ) ) returnValue = ( (byte)viewRow.Cells[colName].Value ).ToString();
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) returnValue = ( (decimal)viewRow.Cells[colName].Value ).ToString( "##,###0.00" );
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) returnValue = ( (bool)viewRow.Cells[colName].Value ).ToString();
-
-				if ( returnValue.Length < 1 ) return defaultValue;
-				return returnValue;
-
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( String ) ) ) {
+					curColValue = ( (String)viewRow.Cells[colName].Value ).Trim();
+				}
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( int ) ) ) {
+					curColValue = ( (int)viewRow.Cells[colName].Value ).ToString();
+				}
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int16 ) ) ) {
+					curColValue = ( (Int16)viewRow.Cells[colName].Value ).ToString();
+				}
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( byte ) ) ) {
+					curColValue = ( (byte)viewRow.Cells[colName].Value ).ToString();
+				}
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) {
+					curColValue = ( (decimal)viewRow.Cells[colName].Value ).ToString( "##,###0.00" );
+				}
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) {
+					curColValue = ( (bool)viewRow.Cells[colName].Value ).ToString();
+				}
+				if ( curColValue.Length <= 0 ) return defaultValue;
+				return curColValue;
+			
 			} catch {
 				return defaultValue;
 			}

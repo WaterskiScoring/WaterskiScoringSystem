@@ -44,12 +44,8 @@ namespace WaterskiScoringSystem {
             Properties.Settings.Default.AppRegistryName = curAppRegName;
 
             #region Set application window attributes from application configuration file
-            if ( Properties.Settings.Default.Mdi_Width > 0 ) {
-                this.Width = Properties.Settings.Default.Mdi_Width;
-            }
-            if ( Properties.Settings.Default.Mdi_Height > 0 ) {
-                this.Height = Properties.Settings.Default.Mdi_Height;
-            }
+            if ( Properties.Settings.Default.Mdi_Width > 0 ) this.Width = Properties.Settings.Default.Mdi_Width;
+            if ( Properties.Settings.Default.Mdi_Height > 0 ) this.Height = Properties.Settings.Default.Mdi_Height;
             if ( Properties.Settings.Default.Mdi_Location.X > 0
                 && Properties.Settings.Default.Mdi_Location.Y > 0 ) {
                 this.Location = Properties.Settings.Default.Mdi_Location;

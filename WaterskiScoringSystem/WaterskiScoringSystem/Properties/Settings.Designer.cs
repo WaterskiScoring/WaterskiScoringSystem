@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.5")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.4 10/7/2021")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.0.3.5 1/19/2022")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2517,6 +2517,18 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["TourMergeSanctionNum_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point WscDialog_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["WscDialog_Location"]));
+            }
+            set {
+                this["WscDialog_Location"] = value;
             }
         }
     }
