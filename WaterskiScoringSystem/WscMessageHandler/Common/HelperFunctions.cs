@@ -19,20 +19,20 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
 			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
-			DataTable curDataTable = HandlerDataAccess.getDataTable( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 			return null;
 		}
 
 		public static void cleanMsgQueues() {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete From WscMsgSend Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
-			HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			
 			curSqlStmt = new StringBuilder( "Delete From WscMsgListen Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
-			HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 			curSqlStmt = new StringBuilder( "Delete From WscMonitor Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
-			HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
 		public static void addMsgSendQueue( String msgType, String msgData ) {
@@ -47,7 +47,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( ", '" + curMsgData + "'" );
 			curSqlStmt.Append( ", getdate()" );
 			curSqlStmt.Append( ")" );
-			int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
 		public static void addMsgListenQueue( String msgType, String msgData ) {
@@ -62,7 +62,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( ", '" + curMsgData + "'" );
 			curSqlStmt.Append( ", getdate()" );
 			curSqlStmt.Append( ")" );
-			int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
 		public static void updateMonitorHeartBeat( String monitorName ) {
@@ -71,7 +71,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( "Set HeartBeat = getdate() " );
 			curSqlStmt.Append( "Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
 			curSqlStmt.Append( "And MonitorName = '" + monitorName + "'" );
-			int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			if ( rowsProc == 0 ) {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert WscMonitor ( " );
@@ -81,7 +81,7 @@ namespace WscMessageHandler.Common {
 				curSqlStmt.Append( ", '" + monitorName + "'" );
 				curSqlStmt.Append( ", getdate()" );
 				curSqlStmt.Append( ")" );
-				rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( "Delete From WscMonitor " );
 			curSqlStmt.Append( "Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
 			curSqlStmt.Append( "And MonitorName = '" + monitorName + "'" );
-			HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
 		public static DataRow getMonitorHeartBeat( String monitorName ) {
@@ -99,7 +99,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( "FROM WscMonitor " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
 			curSqlStmt.Append( "And MonitorName = '" + monitorName + "'" );
-			DataTable curDataTable = HandlerDataAccess.getDataTable( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 			return null;
 		}
@@ -109,7 +109,7 @@ namespace WscMessageHandler.Common {
 			curSqlStmt.Append( "SELECT SanctionId, MonitorName,HeartBeat " );
 			curSqlStmt.Append( "FROM WscMonitor " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
-			return HandlerDataAccess.getDataTable( curSqlStmt.ToString() );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
 		public static Dictionary<string, object> getAttributeList( Dictionary<string, object> msgAttributeList, String keyName ) {

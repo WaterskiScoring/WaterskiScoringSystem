@@ -4,7 +4,7 @@ using System.Data.SqlServerCe;
 using System.Windows.Forms;
 
 namespace WscMessageHandler.Common {
-	class HandlerDataAccess {
+	class DataAccess {
 		private static int DataAccessOpenCount = 0;
 		private static int DataAccessEmbeddedTransactionCount = 0;
 
@@ -13,7 +13,7 @@ namespace WscMessageHandler.Common {
 		private static SqlCeDataAdapter DataAccessDataAdapter = null;
 		private static SqlCeCommand DataAccessCommand = null;
 
-		public HandlerDataAccess() {
+		public DataAccess() {
 		}
 
 		public static bool DataAccessOpen() {

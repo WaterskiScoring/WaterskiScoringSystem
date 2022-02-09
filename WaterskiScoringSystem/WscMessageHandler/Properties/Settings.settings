@@ -6,7 +6,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DatabaseFilename" Type="System.String" Scope="User">
-      <Value Profile="(Default)">waterski.sdf</Value>
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DataDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DatabaseConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AppTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MessageController_Width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -16,18 +25,6 @@
     </Setting>
     <Setting Name="MessageController_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
-    </Setting>
-    <Setting Name="DatabaseConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AppTitle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Water Ski Scoring Message Handler</Value>
-    </Setting>
-    <Setting Name="DataDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AppVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.0.0 1/1/2022</Value>
     </Setting>
   </Settings>
 </SettingsFile>

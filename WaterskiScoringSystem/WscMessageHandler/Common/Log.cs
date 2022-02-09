@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace WscMessageHandler.Common {
 
 	class Log {
-		private static String myLogFileExtn = "-Handler.log";
+		private static String myLogFileExtn = "-MessageHandler.log";
 		private static String myLogFileName = "";
 		private static object logWriteLock = new object();
 
@@ -16,13 +16,13 @@ namespace WscMessageHandler.Common {
 			// Load data rating values
 		}
 
-		public static bool OpenFile() {
+		public static bool OpenFile( String filename ) {
 			String curPath = Properties.Settings.Default.DataDirectory;
 			if ( curPath.EndsWith( "\\" ) ) {
-				myLogFileName = curPath + Properties.Settings.Default.SanctionNum.Trim() + myLogFileExtn;
+				myLogFileName = curPath + filename + myLogFileExtn;
 
 			} else {
-				myLogFileName = curPath + "\\" + Properties.Settings.Default.SanctionNum.Trim() + myLogFileExtn;
+				myLogFileName = curPath + "\\" + filename + myLogFileExtn;
 			}
 			try {
 				if ( !( File.Exists( myLogFileName ) ) ) {

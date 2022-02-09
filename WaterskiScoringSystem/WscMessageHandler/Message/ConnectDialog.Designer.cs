@@ -33,6 +33,10 @@ namespace WscMessageHandler.Message {
 			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
 			this.ViewAppsButton = new System.Windows.Forms.Button();
 			this.CancelButton = new System.Windows.Forms.Button();
+			this.serverUriTextBox = new System.Windows.Forms.TextBox();
+			this.serverUriLabel = new System.Windows.Forms.Label();
+			this.sanctionlabel = new System.Windows.Forms.Label();
+			this.sanctionNumTextbox = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
@@ -81,16 +85,16 @@ namespace WscMessageHandler.Message {
 			// 
 			// eventSubIdTextBox
 			// 
-			this.eventSubIdTextBox.Location = new System.Drawing.Point(123, 81);
+			this.eventSubIdTextBox.Location = new System.Drawing.Point(155, 136);
 			this.eventSubIdTextBox.Name = "eventSubIdTextBox";
 			this.eventSubIdTextBox.Size = new System.Drawing.Size(235, 20);
-			this.eventSubIdTextBox.TabIndex = 5;
+			this.eventSubIdTextBox.TabIndex = 8;
 			// 
 			// eventSubIdLabel
 			// 
 			this.eventSubIdLabel.AutoSize = true;
 			this.eventSubIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.eventSubIdLabel.Location = new System.Drawing.Point(10, 82);
+			this.eventSubIdLabel.Location = new System.Drawing.Point(46, 137);
 			this.eventSubIdLabel.Name = "eventSubIdLabel";
 			this.eventSubIdLabel.Size = new System.Drawing.Size(107, 18);
 			this.eventSubIdLabel.TabIndex = 0;
@@ -102,10 +106,10 @@ namespace WscMessageHandler.Message {
 			this.UseJumpTimesCheckBox.AutoSize = true;
 			this.UseJumpTimesCheckBox.Enabled = false;
 			this.UseJumpTimesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.UseJumpTimesCheckBox.Location = new System.Drawing.Point(127, 108);
+			this.UseJumpTimesCheckBox.Location = new System.Drawing.Point(155, 167);
 			this.UseJumpTimesCheckBox.Name = "UseJumpTimesCheckBox";
 			this.UseJumpTimesCheckBox.Size = new System.Drawing.Size(143, 20);
-			this.UseJumpTimesCheckBox.TabIndex = 6;
+			this.UseJumpTimesCheckBox.TabIndex = 9;
 			this.UseJumpTimesCheckBox.Text = "Use Jump Times";
 			this.UseJumpTimesCheckBox.UseVisualStyleBackColor = true;
 			this.UseJumpTimesCheckBox.Visible = false;
@@ -129,16 +133,56 @@ namespace WscMessageHandler.Message {
 			this.CancelButton.Location = new System.Drawing.Point(378, 42);
 			this.CancelButton.Name = "CancelButton";
 			this.CancelButton.Size = new System.Drawing.Size(75, 23);
-			this.CancelButton.TabIndex = 7;
+			this.CancelButton.TabIndex = 5;
 			this.CancelButton.Text = "Cancel";
 			this.CancelButton.UseVisualStyleBackColor = true;
+			// 
+			// serverUriTextBox
+			// 
+			this.serverUriTextBox.Location = new System.Drawing.Point(155, 74);
+			this.serverUriTextBox.Name = "serverUriTextBox";
+			this.serverUriTextBox.Size = new System.Drawing.Size(295, 20);
+			this.serverUriTextBox.TabIndex = 6;
+			// 
+			// serverUriLabel
+			// 
+			this.serverUriLabel.AutoSize = true;
+			this.serverUriLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.serverUriLabel.Location = new System.Drawing.Point(58, 75);
+			this.serverUriLabel.Name = "serverUriLabel";
+			this.serverUriLabel.Size = new System.Drawing.Size(95, 18);
+			this.serverUriLabel.TabIndex = 0;
+			this.serverUriLabel.Text = "Server URI:";
+			this.serverUriLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// sanctionlabel
+			// 
+			this.sanctionlabel.AutoSize = true;
+			this.sanctionlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.sanctionlabel.Location = new System.Drawing.Point(10, 106);
+			this.sanctionlabel.Name = "sanctionlabel";
+			this.sanctionlabel.Size = new System.Drawing.Size(143, 18);
+			this.sanctionlabel.TabIndex = 0;
+			this.sanctionlabel.Text = "Sanction Number:";
+			this.sanctionlabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// sanctionNumTextbox
+			// 
+			this.sanctionNumTextbox.Location = new System.Drawing.Point(155, 105);
+			this.sanctionNumTextbox.Name = "sanctionNumTextbox";
+			this.sanctionNumTextbox.Size = new System.Drawing.Size(84, 20);
+			this.sanctionNumTextbox.TabIndex = 7;
 			// 
 			// ConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(462, 129);
+			this.ClientSize = new System.Drawing.Size(462, 195);
+			this.Controls.Add(this.sanctionlabel);
+			this.Controls.Add(this.sanctionNumTextbox);
+			this.Controls.Add(this.serverUriLabel);
+			this.Controls.Add(this.serverUriTextBox);
 			this.Controls.Add(this.CancelButton);
 			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.UseJumpTimesCheckBox);
@@ -149,7 +193,7 @@ namespace WscMessageHandler.Message {
 			this.Controls.Add(this.ConnectButton);
 			this.Controls.Add(this.MessageLabel);
 			this.Name = "ConnectDialog";
-			this.Text = "Connect";
+			this.Text = "Connect to WaterSkiConnect";
 			this.Load += new System.EventHandler(this.ConnectDialog_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -166,5 +210,9 @@ namespace WscMessageHandler.Message {
 		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
 		private System.Windows.Forms.Button ViewAppsButton;
 		private System.Windows.Forms.Button CancelButton;
+		private System.Windows.Forms.TextBox serverUriTextBox;
+		private System.Windows.Forms.Label serverUriLabel;
+		private System.Windows.Forms.Label sanctionlabel;
+		private System.Windows.Forms.TextBox sanctionNumTextbox;
 	}
 }

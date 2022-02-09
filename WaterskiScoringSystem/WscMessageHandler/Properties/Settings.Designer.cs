@@ -37,13 +37,49 @@ namespace WscMessageHandler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("waterski.sdf")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DatabaseFilename {
             get {
                 return ((string)(this["DatabaseFilename"]));
             }
             set {
                 this["DatabaseFilename"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DataDirectory {
+            get {
+                return ((string)(this["DataDirectory"]));
+            }
+            set {
+                this["DataDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DatabaseConnectionString {
+            get {
+                return ((string)(this["DatabaseConnectionString"]));
+            }
+            set {
+                this["DatabaseConnectionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AppTitle {
+            get {
+                return ((string)(this["AppTitle"]));
+            }
+            set {
+                this["AppTitle"] = value;
             }
         }
         
@@ -80,54 +116,6 @@ namespace WscMessageHandler.Properties {
             }
             set {
                 this["MessageController_Location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseConnectionString {
-            get {
-                return ((string)(this["DatabaseConnectionString"]));
-            }
-            set {
-                this["DatabaseConnectionString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Water Ski Scoring Message Handler")]
-        public string AppTitle {
-            get {
-                return ((string)(this["AppTitle"]));
-            }
-            set {
-                this["AppTitle"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DataDirectory {
-            get {
-                return ((string)(this["DataDirectory"]));
-            }
-            set {
-                this["DataDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.0.0 1/1/2022")]
-        public string AppVersion {
-            get {
-                return ((string)(this["AppVersion"]));
-            }
-            set {
-                this["AppVersion"] = value;
             }
         }
     }

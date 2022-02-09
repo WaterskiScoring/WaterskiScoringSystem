@@ -1,25 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
-using WscMessageHandler.Common;
 
 namespace WscMessageHandler.Message {
 	public partial class ConnectDialog : Form {
+		private static String myWscWebLocation = "";
+		private static readonly String myWscWebLocationDefault = "http://ewscdata.com:40000/";
+		
 		private String myDialogCommand = "";
+		private String mySanctionNum = "";
 		private String myEventSubId = "";
 		private bool myUseJumpTimes = false;
 		private bool myWscConnected = false;
-		private System.Drawing.Point myWindowLocation = new System.Drawing.Point( 0,0);
+		private Point myWindowLocation = new Point( 0,0);
 
 		public ConnectDialog() {
 			InitializeComponent();
 		}
+
+		public static String WscWebLocation {
+			get { return myWscWebLocation; }
+			set { myWscWebLocation = value; }
+		}
+
 		public String dialogCommand {
 			get { return myDialogCommand; }
 			set { myDialogCommand = value; }
@@ -28,6 +31,11 @@ namespace WscMessageHandler.Message {
 		public System.Drawing.Point windowLocation {
 			get { return myWindowLocation; }
 			set { myWindowLocation = value; }
+		}
+
+		public String sanctionNum {
+			get { return mySanctionNum; }
+			set { mySanctionNum = value; }
 		}
 
 		public String eventSubId {
@@ -45,6 +53,9 @@ namespace WscMessageHandler.Message {
 		}
 
 		private void ConnectDialog_Load( object sender, EventArgs e ) {
+			myWscWebLocation = myWscWebLocationDefault;
+			sanctionNumTextbox.Text = mySanctionNum;
+			serverUriTextBox.Text = myWscWebLocation;
 			eventSubIdTextBox.Text = myEventSubId;
 			UseJumpTimesCheckBox.Checked = myUseJumpTimes;
 			this.Location = myWindowLocation;

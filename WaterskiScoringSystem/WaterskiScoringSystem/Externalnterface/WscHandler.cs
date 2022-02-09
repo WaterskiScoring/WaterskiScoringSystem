@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
@@ -12,8 +11,6 @@ using Newtonsoft.Json;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
-
-using WscMessageHandler;
 
 namespace WaterskiScoringSystem.Externalnterface {
 	class WscHandler {
@@ -87,26 +84,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return;
 			}
 			
-			if ( myMonitorDataTable == null ) {
-				myMonitorDataTable = curMonitorDataTable;
-				myConnectActive = true;
-				return;
-			}
-			
-			foreach ( DataRow curMonitorHeartBeat in curMonitorDataTable.Rows ) {
-				String curMonitorName = (String)curMonitorHeartBeat["MonitorName"];
-				DataRow[] prevMonitorHeartBeat = myMonitorDataTable.Select( "MonitorName = '" + curMonitorName + "'" );
-				if ( prevMonitorHeartBeat.Length > 0 ) {
-					if ( (DateTime)curMonitorHeartBeat["HeartBeat"] <= (DateTime)prevMonitorHeartBeat[0]["HeartBeat"] ) {
-						myConnectActive = false;
-						String msg = String.Format( "WaterSkiConnect handler is not currently active", curMethodName );
-						Log.WriteFile( msg );
-						MessageBox.Show( msg );
-						return;
-					}
-				}
-			}
-
 			myMonitorDataTable = curMonitorDataTable;
 			myConnectActive = true;
 			return;
@@ -573,7 +550,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static void addWscMsgSend( String msgType, String msgData ) {
-#pragma warning restore IDE1006 // Naming Styles
 			String curMsgData = stringReplace( msgData, singleQuoteDelim, "''" );
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );

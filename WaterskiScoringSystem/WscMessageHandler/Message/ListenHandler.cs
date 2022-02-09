@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-
-using System.Windows.Forms;
-
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 
 using WscMessageHandler.Common;
 
@@ -14,7 +12,7 @@ namespace WscMessageHandler.Message {
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
 		private static bool myUseJumpTimes = false;
-		private static int myDefaultRound = 1;
+		private static readonly int myDefaultRound = 1;
 		private static bool myListenHandlerActive = false;
 
 		private static DataRow myTourRow = null;
@@ -49,7 +47,6 @@ namespace WscMessageHandler.Message {
 			readProcessTimer.Elapsed += readProcessMessages;
 			readProcessTimer.AutoReset = true;
 			readProcessTimer.Enabled = true;
-
 		}
 
 		private static void readProcessMessages( object sender, EventArgs e ) {
@@ -59,14 +56,17 @@ namespace WscMessageHandler.Message {
 		}
 
 		public static int disconnect() {
+			String curMethodName = "ListenHandler:disconnect: ";
+			
 			readProcessTimer.Stop();
-			readProcessTimer.Elapsed += readProcessMessages;
+			readProcessTimer.Elapsed -= readProcessMessages;
 			
 			myEventSubId = "";
 			mySanctionNum = "";
 			myTourRow = null;
 			myListenHandlerActive = false;
 			HelperFunctions.deleteMonitorHeartBeat( "ListenHandler" );
+			Log.WriteFile( String.Format( "{0}Disconnection request processed", curMethodName ) );
 			return 1;
 		}
 
@@ -85,7 +85,8 @@ namespace WscMessageHandler.Message {
 						connectConfirm( msgType, msgData );
 
 					} else if ( msgType.Equals( "connectedapplication_check" ) ) {
-						updateMonitorHeartBeat();
+						HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+						Log.WriteFile( String.Format( "{0}connectedapplication_check", curMethodName ) );
 
 					} else if ( msgType.Equals( "boat_times" ) ) {
 						saveBoatTimes( msgData );
@@ -118,13 +119,8 @@ namespace WscMessageHandler.Message {
 
 		private static void connectConfirm( String msgType, String msg ) {
 			String curMethodName = "ListenHandler: connectConfirm:  ";
-			Log.WriteFile( String.Format( "{0} connect_confirm {1} {2}", curMethodName, msgType, msg ) );
-		}
-
-		private static void updateMonitorHeartBeat() {
+			Log.WriteFile( String.Format( "{0}{1} {2}", curMethodName, msgType, msg ) );
 			HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
-			HelperFunctions.updateMonitorHeartBeat( "Listener" );
-			HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
 		}
 
 		private static void saveBoatTimes( String msg ) {
@@ -179,7 +175,7 @@ namespace WscMessageHandler.Message {
 
 				curSqlStmt.Append( ", getdate(), getdate()" );
 				curSqlStmt.Append( " )" );
-				int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
@@ -250,7 +246,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( ", getdate(), getdate()" );
 
 				curSqlStmt.Append( " )" );
-				int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
@@ -454,7 +450,7 @@ namespace WscMessageHandler.Message {
 
 				curSqlStmt.Append( ", getdate(), getdate()" );
 				curSqlStmt.Append( " )" );
-				int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
@@ -472,12 +468,12 @@ namespace WscMessageHandler.Message {
 			curSqlStmt.Append( "FROM WscMsgListen " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( "Order by CreateDate " );
-			return HandlerDataAccess.getDataTable( curSqlStmt.ToString() );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
 		private static void removeWscMsgHandled( int pkid ) {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM WscMsgListen Where PK = " + pkid );
-			int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 	}
 }

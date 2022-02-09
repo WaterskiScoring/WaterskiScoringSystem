@@ -2,41 +2,128 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-
 using System.Windows.Forms;
 
-//using Quobject.EngineIoClientDotNet;
-using Quobject.SocketIoClientDotNet.Client;
-//using Quobject.Collections.Immutable;
-
 using Newtonsoft.Json;
-//using System.Web.Script.Serialization;
 
 using WscMessageHandler.Common;
+
+using SocketIOClient;
+using SocketIOClient.Transport;
 
 namespace WscMessageHandler.Message {
 	class Transmitter {
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
 
-		private static Quobject.SocketIoClientDotNet.Client.Socket socketClient = null;
+		private static String myLastConnectResponse = "";
+		private static SocketIO socketClient = null;
 
 		private static DataRow myTourRow = null;
-		private static System.Timers.Timer heartBeatTimer;
-		private static System.Timers.Timer readMessagesTimer;
+		private static System.Timers.Timer heartBeatTimer = null;
+		private static System.Timers.Timer readMessagesTimer = null;
 
 		public static void startWscTransmitter( String sanctionNum, String eventSubId ) {
 			String curMethodName = "Transmitter: startWscTransmitter: ";
 			mySanctionNum = sanctionNum;
 			myEventSubId = eventSubId;
+			Log.WriteFile( String.Format( "{0}start in progress, {1}/{2}", curMethodName, mySanctionNum, myEventSubId ) );
 
 			myTourRow = HelperFunctions.getTourData();
 			if ( myTourRow == null ) {
-				String curMsg = curMethodName + String.Format( "Tournament data for {0} was not found, terminating attempt to starting listener", mySanctionNum );
+				String curMsg = String.Format( "{0}Tournament data for {1} was not found, terminating attempt to starting listener", curMethodName, mySanctionNum );
 				Log.WriteFile( curMsg );
 				MessageBox.Show( curMsg );
 				return;
 			}
+
+			try {
+				/*
+				 * Documentation of options
+				 * https://github.com/doghappy/socket.io-client-csharp#options
+				 * EIO 4 Default 
+				 * if your server is using socket.io server v2.x, please explicitly set it to 3
+				 */
+				socketClient = new SocketIO( ConnectDialog.WscWebLocation, new SocketIOOptions {
+					Transport = TransportProtocol.WebSocket
+					, Reconnection = true
+					, ReconnectionDelay = 1000
+					, ReconnectionAttempts = 25
+					, EIO = 3
+				} );
+
+				clientListeners();
+				
+				Log.WriteFile( String.Format( "{0}ClientListeners started, begin monitoring for messages from {1}", curMethodName, ConnectDialog.WscWebLocation ) );
+				socketClient.ConnectAsync();
+				Log.WriteFile( String.Format( "{0}ConnectAsync", curMethodName ) );
+
+			} catch ( Exception ex ) {
+				String curMsg = String.Format( "{0}Exception encounter {1}: {2}", curMethodName, ex.Message, ex.StackTrace );
+				Log.WriteFile( curMsg );
+
+				ConnectDialog.WscWebLocation = "";
+				myLastConnectResponse = "";
+				myEventSubId = "";
+
+				MessageBox.Show( curMsg );
+			}
+		}
+
+		private static void checkMonitorHeartBeat( object sender, EventArgs e ) {
+			socketClient.EmitAsync( "connectedapplication_check", "" );
+			Log.WriteFile( "Transmitter: checkMonitorHeartBeat: Emit connectedapplication_check" );
+		}
+		private static void readSendMessages( object sender, EventArgs e ) {
+			int returnMsg = checkForMsgToSend();
+			if ( returnMsg > 0 ) return;
+		}
+
+		private static void clientListeners() {
+			String curMethodName = "Transmitter: clientListeners: ";
+			Log.WriteFile( String.Format( "{0}", curMethodName ) );
+
+			try {
+				socketClient.OnConnected += handleSocketOnConnected;
+
+				socketClient.OnPing += handleSocketOnPing;
+
+				socketClient.OnDisconnected += handleSocketOnDisconnected;
+
+				socketClient.OnReconnectAttempt += handleSocketOnReconnecting;
+
+				socketClient.On( "connect_confirm", ( response ) => {
+					handleWscConnectConfirm( "connect_confirm", response.GetValue<string>() );
+				} );
+
+				socketClient.On( "connectedapplication_check", ( response ) => {
+					handleConnectHeartBeat( "connectedapplication_check", response.GetValue<string>() );
+				} );
+
+				/*
+				socketClient.OnPong += handleSocketOnPong;
+
+				socketClient.OnAny( ( name, response ) => {
+					Log.WriteFile( String.Format( "{0}Default SocketClient callback handler: Name: {1}, Data: {2}", curMethodName, name, response == null ? "Null" : response.GetValue<string>() ) );
+				} );
+				 */
+
+			} catch ( Exception ex ) {
+				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
+				Log.WriteFile( curMsg );
+
+				ConnectDialog.WscWebLocation = "";
+				myLastConnectResponse = "";
+				myEventSubId = "";
+
+				MessageBox.Show( curMsg );
+			}
+		}
+
+		private static void handleSocketOnConnected( object sender, EventArgs argData ) {
+			String curMethodName = "Transmitter: handleSocketOnConnected: ";
+			Log.WriteFile( String.Format( "{0}Socket.Id: {1}, Connected: {2}, ServerUri: {3}, argData={4}"
+				, curMethodName, socketClient.Id, socketClient.Connected, socketClient.ServerUri, argData == null ? "Null" : argData.ToString() ) );
 
 			Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
 					{ "loggingdetail", "no" }
@@ -50,23 +137,35 @@ namespace WscMessageHandler.Message {
 					, { "Application_key", Listener.myWscApplicationKey }
 				};
 			String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
+			socketClient.EmitAsync( "manual_connection_parameter", jsonData );
+			Log.WriteFile( String.Format( "{0}Submitting manual server request for monitoring connection: {1}", curMethodName, jsonData ) );
+		}
 
-			IO.Options connOptions = new IO.Options();
-			connOptions.IgnoreServerCertificateValidation = true;
-			connOptions.Timeout = 500;
-			connOptions.Reconnection = true;
-			connOptions.Transports = Quobject.Collections.Immutable.ImmutableList.Create<string>( "websocket" );
-			socketClient = IO.Socket( Listener.myWscWebLocation, connOptions );
+		private static void handleSocketOnPing( object sender, EventArgs argData ) {
+			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+			//String curMethodName = "Transmitter: handleSocketOnPing: ";
+			//Log.WriteFile( String.Format( "{0}, Connected:{1}, argData={2}", curMethodName, socketClient.Connected, argData == null ? "Null" : argData.ToString() ) );
+		}
 
-			socketClient.On( Socket.EVENT_CONNECT, () => {
-				Log.WriteFile( String.Format( curMethodName + "Connection submitted for transmitting to connection: {0}", jsonData ) );
-				socketClient.Emit( "manual_connection_parameter", jsonData );
-			} );
+		private static void handleSocketOnReconnecting( object sender, int argData ) {
+			String curMethodName = "Transmitter: handleSocketOnReconnecting: ";
+			Log.WriteFile( String.Format( "{0}Attempt: {1}", curMethodName, argData ) );
+		}
 
-			startClientListeners();
+		private static void handleSocketOnDisconnected( object sender, String argData ) {
+			String curMethodName = "Transmitter: handleSocketOnDisconnected: ";
+			Log.WriteFile( String.Format( "{0}argData: {1}", curMethodName, argData ) );
+		}
 
-			// Create a timer with 2 minute interval.
-			heartBeatTimer = new System.Timers.Timer( 120000 );
+		private static void handleWscConnectConfirm(String txnName, String argData ) {
+			String curMethodName = "Transmitter: handleWscConnectConfirm: ";
+			myLastConnectResponse = argData;
+			Log.WriteFile( String.Format( "{0}{1} {2}", curMethodName, txnName, argData ) );
+			HelperFunctions.addMsgListenQueue( "connect_confirm_transmitter", myLastConnectResponse );
+			HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+
+			// Create a timer with 5 minute interval.
+			heartBeatTimer = new System.Timers.Timer( 300000 );
 			heartBeatTimer.Elapsed += checkMonitorHeartBeat;
 			heartBeatTimer.AutoReset = true;
 			heartBeatTimer.Enabled = true;
@@ -77,40 +176,16 @@ namespace WscMessageHandler.Message {
 			readMessagesTimer.AutoReset = true;
 			readMessagesTimer.Enabled = true;
 		}
-		
-		private static void checkMonitorHeartBeat( object sender, EventArgs e ) {
-			socketClient.Emit( "connectedapplication_check", "" );
-			Log.WriteFile( "Transmitter: checkMonitorHeartBeat: Emit connectedapplication_check" );
-		}
-		private static void readSendMessages( object sender, EventArgs e ) {
-			int returnMsg = checkForMsgToSend();
-			if ( returnMsg > 0 ) return;
-		}
 
-		private static void startClientListeners() {
-			String curMethodName = "Transmitter: startClientListeners: ";
-
-			try {
-				socketClient.On( "connect_confirm", ( data ) => {
-					Log.WriteFile( String.Format( "{0} connect_confirm {1}", curMethodName, data.ToString() ) );
-					HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
-					HelperFunctions.addMsgListenQueue( "connect_confirm_transmitter", data.ToString() );
-				} );
-			
-			} catch ( Exception ex ) {
-				String curMsg = curMethodName + String.Format( "{0} Exception encounter {1}", curMethodName, ex.Message );
-				Log.WriteFile( curMsg );
-
-				myEventSubId = "";
-				mySanctionNum = "";
-				myTourRow = null;
-
-				MessageBox.Show( curMsg );
-			}
+		private static void handleConnectHeartBeat( String txnName, String argData ) {
+			String curMethodName = "Transmitter: handleConnectHeartBeat: ";
+			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+			Log.WriteFile( String.Format( "{0}{1}, Connected: {2}, Msg: {3}", curMethodName, txnName, socketClient.Connected, argData ) );
 		}
 
 		private static int checkForMsgToSend() {
-				String curMethodName = "Transmitter: checkForMsgToSend: ";
+			String curMethodName = "Transmitter: checkForMsgToSend: ";
+
 			try {
 				DataTable curDataTable = getWscMsgSend();
 				foreach ( DataRow curDataRow in curDataTable.Rows ) {
@@ -118,14 +193,15 @@ namespace WscMessageHandler.Message {
 						return disconnect( (int)curDataRow["PK"] );
 					}
 
-					socketClient.Emit( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
-					Log.WriteFile( curMethodName + String.Format( "PK: {0} MsgType: {1} MsgData: {2}", curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
+					socketClient.EmitAsync( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
+					Log.WriteFile( String.Format( "{0}PK: {1} MsgType: {2} MsgData: {3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
 					removeWscMsgSent( (int)curDataRow["PK"] );
 				}
 				return 0;
 
 			} catch ( Exception ex ) {
-				Log.WriteFile( curMethodName + "checkForMsgToSend: Exception encountered " + ex.Message );
+				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
+				Log.WriteFile( curMsg );
 				return -1;
 			}
 		}
@@ -133,16 +209,20 @@ namespace WscMessageHandler.Message {
 		public static int disconnect( int inMsgPk ) {
 			String curMethodName = "Transmitter: disconnect: ";
 			Log.WriteFile( curMethodName + "EXIT request received and being processed" );
-			
-			socketClient.On( Socket.EVENT_DISCONNECT, () => {
-				Log.WriteFile( curMethodName + "Disconnected" );
-				socketClient.Disconnect();
-			} );
 
-			heartBeatTimer.Stop();
-			heartBeatTimer.Elapsed -= checkMonitorHeartBeat;
-			readMessagesTimer.Stop();
-			readMessagesTimer.Elapsed -= readSendMessages;
+			if ( socketClient != null ) {
+				Log.WriteFile( curMethodName + "Disconnected" );
+				socketClient.DisconnectAsync();
+			}
+
+			if ( heartBeatTimer != null ) {
+				heartBeatTimer.Stop();
+				heartBeatTimer.Elapsed -= checkMonitorHeartBeat;
+			}
+			if ( readMessagesTimer != null ) {
+				readMessagesTimer.Stop();
+				readMessagesTimer.Elapsed -= readSendMessages;
+			}
 
 			myEventSubId = "";
 			mySanctionNum = "";
@@ -159,12 +239,12 @@ namespace WscMessageHandler.Message {
 			curSqlStmt.Append( "FROM WscMsgSend " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( "Order by CreateDate " );
-			return HandlerDataAccess.getDataTable( curSqlStmt.ToString() );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 		
 		private static void removeWscMsgSent( int pkid ) {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM WscMsgSend Where PK = " + pkid );
-			int rowsProc = HandlerDataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 	}
 }

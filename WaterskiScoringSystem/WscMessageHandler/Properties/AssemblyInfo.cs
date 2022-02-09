@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle( "WscMessageHandler" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Socket IO Interface for WaterskiConnect" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "Waterski Scoring System" )]
 [assembly: AssemblyProduct( "WscMessageHandler" )]
-[assembly: AssemblyCopyright( "Copyright ©  2021" )]
+[assembly: AssemblyCopyright( "Copyright ©  2022" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible( false )]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid( "f8ba3cae-f5e3-4a60-9709-e49cab480c4b" )]
+[assembly: Guid( "5aafb110-53ec-4ee7-b994-1435afb84a3b" )]
 
 // Version information for an assembly consists of the following four values:
 //

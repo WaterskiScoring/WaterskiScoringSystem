@@ -950,7 +950,8 @@ namespace WaterskiScoringSystem.Slalom {
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value )
 					, (String)myRecapRow.Cells["PassLineLengthRecap"].Value
 					, (String)myRecapRow.Cells["ScoreRecap"].Value );
-			} else if ( WaterskiConnectLabel.Visible) WaterskiConnectLabel.Visible = false;
+			}
+			if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 		}
 
 		private void loadTourEventRegView() {
@@ -1517,9 +1518,8 @@ namespace WaterskiScoringSystem.Slalom {
 				setEventRegRowStatus( "2-InProg" );
 
 				String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
-				if ( WscHandler.isConnectActive ) {
-					WscHandler.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundSelect.RoundValue ) );
-				} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+				if ( WscHandler.isConnectActive ) WscHandler.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundSelect.RoundValue ) );
+				if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					/*
@@ -2321,7 +2321,8 @@ namespace WaterskiScoringSystem.Slalom {
 					, curPassLineLengthMeters.ToString( "00.00" )
 					, "0"
 					, (String)driverDropdown.SelectedValue );
-			} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+			}
+			if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
 		}
 
@@ -3239,7 +3240,6 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( myRecapRow == null || isLastPassSelectActive ) return;
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];
-			//if ( WscHandler.isConnectActive
 			if ( ((String)curViewRow.Cells["BoatTimeRecap"].Value ).Length > 0
 				&& ((String)curViewRow.Cells["ScoreRecap"].Value ).Length > 0 ) {
 				/* 
@@ -4691,7 +4691,8 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( curBoatModelName.Contains( "Nautique" ) ) curManufacturer = "Nautique";
 					if ( curBoatModelName.Contains( "Master" ) ) curManufacturer = "Masctercraft";
 					WscHandler.sendBoatData( curBoatCode, curManufacturer, curBoatModelName, curBoatModelYear, "Color", curBoatNotes );
-				} else if ( WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+				}
+				if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
 			} catch ( Exception excp ) {
 				curMsg = ":Error attempting to update boat selection \n" + excp.Message;

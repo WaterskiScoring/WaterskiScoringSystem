@@ -25,6 +25,7 @@ namespace WscMessageHandler.Message {
 		/// </summary>
 		private void InitializeComponent() {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Controller));
 			this.MessageView = new System.Windows.Forms.DataGridView();
 			this.CreationDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,7 +49,7 @@ namespace WscMessageHandler.Message {
 			this.MessageView.Location = new System.Drawing.Point(5, 33);
 			this.MessageView.Name = "MessageView";
 			this.MessageView.ReadOnly = true;
-			this.MessageView.Size = new System.Drawing.Size(565, 187);
+			this.MessageView.Size = new System.Drawing.Size(890, 530);
 			this.MessageView.TabIndex = 1;
 			// 
 			// CreationDatetime
@@ -110,11 +111,12 @@ namespace WscMessageHandler.Message {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(574, 220);
+			this.ClientSize = new System.Drawing.Size(899, 563);
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ShowPinButton);
 			this.Controls.Add(this.WaterSkiConnectButton);
 			this.Controls.Add(this.MessageView);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Controller";
 			this.Text = "WaterSkiController Message Listener Controller";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Controller_FormClosing);
