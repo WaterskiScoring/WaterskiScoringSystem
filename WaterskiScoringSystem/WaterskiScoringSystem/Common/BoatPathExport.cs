@@ -84,6 +84,7 @@ namespace WaterskiScoringSystem.Common {
 
 				ScoreFeet.Visible = false;
 				ScoreMeters.Visible = false;
+				
 				BoatSplitTime.Visible = false;
 				BoatSplitTime2.Visible = false;
 				BoatEndTime.Visible = false;
@@ -99,6 +100,13 @@ namespace WaterskiScoringSystem.Common {
 				Score.Visible = false;
 				PassScore.Visible = false;
 				BoatTime.Visible = false;
+				
+				BoatSplitTime.Visible = false;
+				BoatSplitTime2.Visible = false;
+				BoatEndTime.Visible = false;
+				BoatTimeBuoy1.Visible = false;
+				BoatTimeBuoy2.Visible = false;
+				BoatTimeBuoy3.Visible = false;
 
 				this.PathDevZone0.Visible = false;
 				this.PathDevZone1.Visible = false;

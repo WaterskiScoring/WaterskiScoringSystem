@@ -1,5 +1,5 @@
 ﻿
-namespace WscMessageHandler.Message {
+namespace BoatPathMonitorSim.Message {
 	partial class Controller {
 		/// <summary>
 		/// Required designer variable.
@@ -118,7 +118,7 @@ namespace WscMessageHandler.Message {
 			this.Controls.Add(this.MessageView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Controller";
-			this.Text = "Message Handling Controller";
+			this.Text = "Boat Path Monitor Simulator";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Controller_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Controller_FormClosed);
 			this.Load += new System.EventHandler(this.Controller_Load);

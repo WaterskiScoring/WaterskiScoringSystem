@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 using Newtonsoft.Json;
 
-using WscMessageHandler.Common;
+using BoatPathMonitorSim.Common;
 
 using SocketIOClient;
 using SocketIOClient.Transport;
 
-namespace WscMessageHandler.Message {
+namespace BoatPathMonitorSim.Message {
 	class Transmitter {
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
@@ -23,8 +23,8 @@ namespace WscMessageHandler.Message {
 		private static System.Timers.Timer heartBeatTimer = null;
 		private static System.Timers.Timer readMessagesTimer = null;
 
-		public static void startWscTransmitter( String sanctionNum, String eventSubId ) {
-			String curMethodName = "Transmitter: startWscTransmitter: ";
+		public static void startTransmitter( String sanctionNum, String eventSubId ) {
+			String curMethodName = "Transmitter: startTransmitter: ";
 			mySanctionNum = sanctionNum;
 			myEventSubId = eventSubId;
 			Log.WriteFile( String.Format( "{0}start in progress, {1}/{2}", curMethodName, mySanctionNum, myEventSubId ) );
@@ -71,7 +71,7 @@ namespace WscMessageHandler.Message {
 		}
 
 		private static void checkMonitorHeartBeat( object sender, EventArgs e ) {
-			socketClient.EmitAsync( "connectedapplication_check", "WscMessageHandler: Transmitter: checkMonitorHeartBeat" );
+			socketClient.EmitAsync( "connectedapplication_check", "BoatPathMonitorSim: Transmitter: checkMonitorHeartBeat" );
 			Log.WriteFile( "Transmitter: checkMonitorHeartBeat: Emit connectedapplication_check" );
 		}
 		private static void readSendMessages( object sender, EventArgs e ) {
@@ -131,7 +131,7 @@ namespace WscMessageHandler.Message {
 					, { "eventid", mySanctionNum }
 					, { "eventsubid", myEventSubId }
 					, { "provider", "Mass Water Ski Association" }
-					, { "application", "WSTIMS Transmitter" }
+					, { "application", "WSTIMS BPMS SIM Transmitter" }
 					, { "version", "2.0" }
 					, { "username", "mawsa@comcast.net" }
 					, { "Application_key", Listener.myWscApplicationKey }

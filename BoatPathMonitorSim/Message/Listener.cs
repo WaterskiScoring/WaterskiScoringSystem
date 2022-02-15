@@ -1,33 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
 
-using WscMessageHandler.Common;
+using BoatPathMonitorSim.Common;
 
 using SocketIOClient;
 using SocketIOClient.Transport;
 
-namespace WscMessageHandler.Message {
-	class Transmitter {
+namespace BoatPathMonitorSim.Message {
+	class Listener {
+		public static readonly String myWscApplicationKey = "CAD2FB59-3CCB-4691-9D26-7D68C2222788";
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
-
 		private static String myLastConnectResponse = "";
+
 		private static SocketIO socketClient = null;
 
 		private static DataRow myTourRow = null;
-		private static System.Timers.Timer heartBeatTimer = null;
-		private static System.Timers.Timer readMessagesTimer = null;
 
-		public static void startWscTransmitter( String sanctionNum, String eventSubId ) {
-			String curMethodName = "Transmitter: startWscTransmitter: ";
+		public static bool isWscConnected {
+			get { return ( ConnectDialog.WscWebLocation.Length > 0 && myLastConnectResponse.Length > 0 ); }
+		}
+
+		public static void showPin() {
+			MessageBox.Show( myLastConnectResponse );
+		}
+
+		public static void startListener( String sanctionNum, String eventSubId ) {
+			String curMethodName = "Listener: startListener: ";
+			myLastConnectResponse = "";
 			mySanctionNum = sanctionNum;
 			myEventSubId = eventSubId;
 			Log.WriteFile( String.Format( "{0}start in progress, {1}/{2}", curMethodName, mySanctionNum, myEventSubId ) );
+
+			if ( !(DataAccess.DataAccessOpen()) ) {
+				String curMsg = curMethodName + String.Format( "Database not found at the specified location {0}", Properties.Settings.Default.DatabaseConnectionString);
+				Log.WriteFile( curMsg );
+				MessageBox.Show( curMsg );
+				return;
+			}
 
 			myTourRow = HelperFunctions.getTourData();
 			if ( myTourRow == null ) {
@@ -70,18 +84,8 @@ namespace WscMessageHandler.Message {
 			}
 		}
 
-		private static void checkMonitorHeartBeat( object sender, EventArgs e ) {
-			socketClient.EmitAsync( "connectedapplication_check", "WscMessageHandler: Transmitter: checkMonitorHeartBeat" );
-			Log.WriteFile( "Transmitter: checkMonitorHeartBeat: Emit connectedapplication_check" );
-		}
-		private static void readSendMessages( object sender, EventArgs e ) {
-			int returnMsg = checkForMsgToSend();
-			if ( returnMsg > 0 ) return;
-		}
-
 		private static void clientListeners() {
-			String curMethodName = "Transmitter: clientListeners: ";
-			Log.WriteFile( String.Format( "{0}", curMethodName ) );
+			String curMethodName = "Listener: clientListeners: ";
 
 			try {
 				socketClient.OnConnected += handleSocketOnConnected;
@@ -100,13 +104,14 @@ namespace WscMessageHandler.Message {
 					handleConnectHeartBeat( "connectedapplication_check", response.GetValue<string>() );
 				} );
 
-				/*
-				socketClient.OnPong += handleSocketOnPong;
-
-				socketClient.OnAny( ( name, response ) => {
-					Log.WriteFile( String.Format( "{0}Default SocketClient callback handler: Name: {1}, Data: {2}", curMethodName, name, response == null ? "Null" : response.GetValue<string>() ) );
+				socketClient.On( "status_response", ( response ) => {
+					checkConnectStatus( response.GetValue<string>() );
 				} );
-				 */
+
+				socketClient.On( "pass_data", ( data ) => {
+					HelperFunctions.addMsgListenQueue( "pass_data", data.ToString() );
+					Log.WriteFile( String.Format( "{0} pass_data {1}", curMethodName, data.ToString() ) );
+				} );
 
 			} catch ( Exception ex ) {
 				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
@@ -121,7 +126,7 @@ namespace WscMessageHandler.Message {
 		}
 
 		private static void handleSocketOnConnected( object sender, EventArgs argData ) {
-			String curMethodName = "Transmitter: handleSocketOnConnected: ";
+			String curMethodName = "Listener: handleSocketOnConnected: ";
 			Log.WriteFile( String.Format( "{0}Socket.Id: {1}, Connected: {2}, ServerUri: {3}, argData={4}"
 				, curMethodName, socketClient.Id, socketClient.Connected, socketClient.ServerUri, argData == null ? "Null" : argData.ToString() ) );
 
@@ -131,120 +136,97 @@ namespace WscMessageHandler.Message {
 					, { "eventid", mySanctionNum }
 					, { "eventsubid", myEventSubId }
 					, { "provider", "Mass Water Ski Association" }
-					, { "application", "WSTIMS Transmitter" }
+					, { "application", "WSTIMS BPMS SIM Listener" }
 					, { "version", "2.0" }
 					, { "username", "mawsa@comcast.net" }
 					, { "Application_key", Listener.myWscApplicationKey }
 				};
 			String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
 			socketClient.EmitAsync( "manual_connection_parameter", jsonData );
-			Log.WriteFile( String.Format( "{0}Submitting manual server request for monitoring connection: {1}", curMethodName, jsonData ) );
+			Log.WriteFile( String.Format( "{0}Connection manual server request for monitoring connection: {1}", curMethodName, jsonData ) );
 		}
 
 		private static void handleSocketOnPing( object sender, EventArgs argData ) {
-			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
-			//String curMethodName = "Transmitter: handleSocketOnPing: ";
+			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Listener" );
+			//String curMethodName = "Listener: handleSocketOnPing: ";
 			//Log.WriteFile( String.Format( "{0}, Connected:{1}, argData={2}", curMethodName, socketClient.Connected, argData == null ? "Null" : argData.ToString() ) );
 		}
 
 		private static void handleSocketOnReconnecting( object sender, int argData ) {
-			String curMethodName = "Transmitter: handleSocketOnReconnecting: ";
+			String curMethodName = "Listener: handleSocketOnReconnecting: ";
 			Log.WriteFile( String.Format( "{0}Attempt: {1}", curMethodName, argData ) );
 		}
 
 		private static void handleSocketOnDisconnected( object sender, String argData ) {
-			String curMethodName = "Transmitter: handleSocketOnDisconnected: ";
+			String curMethodName = "Listener: handleSocketOnDisconnected: ";
 			Log.WriteFile( String.Format( "{0}argData: {1}", curMethodName, argData ) );
 		}
 
-		private static void handleWscConnectConfirm(String txnName, String argData ) {
-			String curMethodName = "Transmitter: handleWscConnectConfirm: ";
+		private static void handleWscConnectConfirm( String txnName, String argData ) {
+			String curMethodName = "Listener: handleWscConnectConfirm: ";
 			myLastConnectResponse = argData;
 			Log.WriteFile( String.Format( "{0}{1} {2}", curMethodName, txnName, argData ) );
-			HelperFunctions.addMsgListenQueue( "connect_confirm_transmitter", myLastConnectResponse );
-			HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
-
-			// Create a timer with 5 minute interval.
-			heartBeatTimer = new System.Timers.Timer( 300000 );
-			heartBeatTimer.Elapsed += checkMonitorHeartBeat;
-			heartBeatTimer.AutoReset = true;
-			heartBeatTimer.Enabled = true;
-
-			// Create a timer with 2 second interval.
-			readMessagesTimer = new System.Timers.Timer( 2000 );
-			readMessagesTimer.Elapsed += readSendMessages;
-			readMessagesTimer.AutoReset = true;
-			readMessagesTimer.Enabled = true;
+			HelperFunctions.addMsgListenQueue( "connect_confirm_listener", myLastConnectResponse );
+			HelperFunctions.updateMonitorHeartBeat( "Listener" );
 		}
 
 		private static void handleConnectHeartBeat( String txnName, String argData ) {
-			String curMethodName = "Transmitter: handleConnectHeartBeat: ";
-			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+			String curMethodName = "Listener: handleConnectHeartBeat: ";
+			HelperFunctions.addMsgListenQueue( "connectedapplication_check", argData );
+			if ( socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Listener" );
 			Log.WriteFile( String.Format( "{0}{1}, Connected: {2}, Msg: {3}", curMethodName, txnName, socketClient.Connected, argData ) );
 		}
 
-		private static int checkForMsgToSend() {
-			String curMethodName = "Transmitter: checkForMsgToSend: ";
+		private static void checkConnectStatus( String msg ) {
+			Dictionary<string, object> curMsgDataList = null;
 
 			try {
-				DataTable curDataTable = getWscMsgSend();
-				foreach ( DataRow curDataRow in curDataTable.Rows ) {
-					if ( ( (String)curDataRow["MsgType"] ).Equals( "Exit" ) ) {
-						return disconnect( (int)curDataRow["PK"] );
+				curMsgDataList = socketClient.JsonSerializer.Deserialize<Dictionary<string, object>>( msg );
+				String curEventId = HelperFunctions.getAttributeValue( curMsgDataList, "eventId" );
+
+				if ( curEventId.Equals( mySanctionNum ) ) {
+					if ( myEventSubId.Length > 0 ) return;
+
+					if ( !( HelperFunctions.getAttributeValue( curMsgDataList, "eventSubId" ).Equals( myEventSubId ) ) ) {
+						ConnectDialog.WscWebLocation = "";
+						myLastConnectResponse = "";
+						myEventSubId = "";
+						MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect" );
 					}
 
-					socketClient.EmitAsync( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
-					Log.WriteFile( String.Format( "{0}PK: {1} MsgType: {2} MsgData: {3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
-					removeWscMsgSent( (int)curDataRow["PK"] );
+				} else {
+					ConnectDialog.WscWebLocation = "";
+					myLastConnectResponse = "";
+					myEventSubId = "";
+					MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect" );
 				}
-				return 0;
 
 			} catch ( Exception ex ) {
-				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
-				Log.WriteFile( curMsg );
-				return -1;
+				ConnectDialog.WscWebLocation = "";
+				myLastConnectResponse = "";
+				myEventSubId = "";
+				MessageBox.Show( "** WARNING ** System is no longer connected to WaterskiConnect: " + ex.Message );
 			}
 		}
 
-		public static int disconnect( int inMsgPk ) {
-			String curMethodName = "Transmitter: disconnect: ";
+		public static int disconnect() {
+			String curMethodName = "Listener: disconnect: ";
 			Log.WriteFile( curMethodName + "EXIT request received and being processed" );
 
-			if ( socketClient != null ) {
-				Log.WriteFile( curMethodName + "Disconnected" );
+			if ( socketClient != null && isWscConnected ) {
+				Log.WriteFile( curMethodName + "disconnected" );
 				socketClient.DisconnectAsync();
-			}
-
-			if ( heartBeatTimer != null ) {
-				heartBeatTimer.Stop();
-				heartBeatTimer.Elapsed -= checkMonitorHeartBeat;
-			}
-			if ( readMessagesTimer != null ) {
-				readMessagesTimer.Stop();
-				readMessagesTimer.Elapsed -= readSendMessages;
 			}
 
 			myEventSubId = "";
 			mySanctionNum = "";
+			ConnectDialog.WscWebLocation = "";
+			myLastConnectResponse = "";
 			myTourRow = null;
-			if ( inMsgPk > 0 ) removeWscMsgSent( inMsgPk );
-			HelperFunctions.deleteMonitorHeartBeat( "Transmitter" );
+			HelperFunctions.deleteMonitorHeartBeat( "Listener" );
 			Log.WriteFile( curMethodName + "EXIT request processed and all threads closed" );
-			return 1;
-		}
 
-		private static DataTable getWscMsgSend() {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT PK, SanctionId, MsgType, MsgData, CreateDate " );
-			curSqlStmt.Append( "FROM WscMsgSend " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append( "Order by CreateDate " );
-			return DataAccess.getDataTable( curSqlStmt.ToString() );
-		}
-		
-		private static void removeWscMsgSent( int pkid ) {
-			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM WscMsgSend Where PK = " + pkid );
-			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			return 1;
 		}
 	}
 }
