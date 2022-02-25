@@ -54,7 +54,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				ProcessStartInfo start = new ProcessStartInfo();
 				// Enter in the command line arguments, everything you would enter after the executable name itself
 				start.Arguments = String.Format( "{0} {1} {2}", Properties.Settings.Default.AppSanctionNum
-					, CommonFunctions.getDatabaseFilenameFromConnectString()
+					, HelperFunctions.getDatabaseFilenameFromConnectString()
 					, Properties.Settings.Default.ExportDirectory );
 
 				// Enter the executable to run, including the complete path
@@ -550,7 +550,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static void addWscMsgSend( String msgType, String msgData ) {
-			String curMsgData = stringReplace( msgData, singleQuoteDelim, "''" );
+			String curMsgData = HelperFunctions.stringReplace( msgData, singleQuoteDelim, "''" );
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Insert WscMsgSend ( " );
@@ -562,27 +562,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 			curSqlStmt.Append( ", getdate()" );
 			curSqlStmt.Append( ")" );
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-		}
-
-		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
-			StringBuilder curNewValue = new StringBuilder( "" );
-
-			String[] curValues = inValue.Split( inCurValue );
-			if ( curValues.Length > 1 ) {
-				int curCount = 0;
-				foreach ( String curValue in curValues ) {
-					curCount++;
-					if ( curCount < curValues.Length ) {
-						curNewValue.Append( curValue + inReplValue );
-					} else {
-						curNewValue.Append( curValue );
-					}
-				}
-			} else {
-				curNewValue.Append( inValue );
-			}
-
-			return curNewValue.ToString();
 		}
 
 		private static void getSanctionNum() {

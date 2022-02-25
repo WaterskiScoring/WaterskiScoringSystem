@@ -857,12 +857,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22726	JumpBoatTime3Seg	57-R-41M		113	2.4	2.36	2.46	57kph,35.4mph 41M Segment Record Tolerance
 22727	JumpBoatTime3Seg	57-R-Balk		115	5.18	5.06	5.25	57kph,35.4mph Balk Record Tolerance
 22728	JumpBoatTime3Seg	57-R-41M-RTB		116	2.4	2.36	2.66	57kph,35.4mph 41M Segment RTB Record Tolerance
-22729	JumpBoatTime3Seg	54-R-52M		121	3.49	3.43	3.55	54kph,33.6mph 52M Segment Record Tolerance
+22729	JumpBoatTime3Seg	54-R-52M		121	3.49	3.43	3.56	54kph,33.6mph 52M Segment Record Tolerance
 22730	JumpBoatTime3Seg	54-R-82M		122	5.47	5.39	5.55	54kph,33.6mph 82M Segment Record Tolerance
 22731	JumpBoatTime3Seg	54-R-41M		123	2.59	2.54	2.66	54kph,33.6mph 41M Segment Record Tolerance
 22732	JumpBoatTime3Seg	54-R-Balk		125	5.47	5.34	5.55	54kph,33.6mph Balk Record Tolerance
 22733	JumpBoatTime3Seg	54-R-41M-RTB		126	2.59	2.54	2.81	54kph,33.6mph 41M Segment RTB Record Tolerance
-22734	JumpBoatTime3Seg	51-R-52M		131	3.69	3.63	3.76	51kph,31.7mph 52M Segment Record Tolerance
+22734	JumpBoatTime3Seg	51-R-52M		131	3.69	3.63	3.78	51kph,31.7mph 52M Segment Record Tolerance
 22735	JumpBoatTime3Seg	51-R-82M		132	5.79	5.7	5.88	51kph,31.7mph 82M Segment Record Tolerance
 22736	JumpBoatTime3Seg	51-R-41M		133	2.73	2.68	2.81	51kph,31.7mph 41M Segment Record Tolerance
 22737	JumpBoatTime3Seg	51-R-Balk		135	5.79	5.65	5.88	51kph,31.7mph Balk Record Tolerance

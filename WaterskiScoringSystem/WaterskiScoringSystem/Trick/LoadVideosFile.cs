@@ -2,16 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Trick {
@@ -227,7 +225,6 @@ namespace WaterskiScoringSystem.Trick {
         }
 
         private void ReviewButton_Click( object sender, EventArgs e ) {
-            String curMethodName = "ViewButton_Click";
 			ReviewVideoMatchDataGridView.DataSource = null;
 			ReviewVideoMatchDataGridView.Visible = true;
 
@@ -726,9 +723,9 @@ namespace WaterskiScoringSystem.Trick {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "Update TrickVideo set " );
                     if (inSkierVideoEntry.Pass == 1) {
-                        curSqlStmt.Append( "Pass1VideoUrl = '" + escapeString( curVideoUrl ) + "' " );
+                        curSqlStmt.Append( "Pass1VideoUrl = '" + HelperFunctions.escapeString( curVideoUrl ) + "' " );
                     } else {
-                        curSqlStmt.Append( "Pass2VideoUrl = '" + escapeString( curVideoUrl ) + "' " );
+                        curSqlStmt.Append( "Pass2VideoUrl = '" + HelperFunctions.escapeString( curVideoUrl ) + "' " );
                     }
                     curSqlStmt.Append( ", LastUpdateDate = GetDate() " );
                     curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
@@ -855,33 +852,6 @@ namespace WaterskiScoringSystem.Trick {
 
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private String escapeString(String inValue) {
-            String curReturnValue = "";
-            char[] singleQuoteDelim = new char[] { '\'' };
-            curReturnValue = stringReplace( inValue, singleQuoteDelim, "''" );
-            return curReturnValue;
-        }
-        private String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
-            StringBuilder curNewValue = new StringBuilder( "" );
-
-            String[] curValues = inValue.Split( inCurValue );
-            if (curValues.Length > 1) {
-                int curCount = 0;
-                foreach (String curValue in curValues) {
-                    curCount++;
-                    if ( curCount < curValues.Length ) {
-                        curNewValue.Append(curValue + inReplValue);
-                    } else {
-                        curNewValue.Append(curValue);
-                    }
-                }
-            } else {
-                curNewValue.Append( inValue );
-            }
-
-            return curNewValue.ToString();
         }
 
         private void DataGridView_RowEnter(object sender, DataGridViewCellEventArgs e) {

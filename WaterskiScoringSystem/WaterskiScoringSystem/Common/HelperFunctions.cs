@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Common {
-	class CommonFunctions {
+	class HelperFunctions {
+		public static char[] TabDelim = new char[] { '\t' };
+		public static char[] SingleQuoteDelim = new char[] { '\'' };
 
 		public static String getDatabaseFilenameFromConnectString() {
 			String curDatabaseFilename = "";
@@ -76,28 +78,50 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static bool isObjectEmpty( object inObject ) {
-			bool curReturnValue = false;
-			if ( inObject == null ) {
-				curReturnValue = true;
-			} else if ( inObject == System.DBNull.Value ) {
-				curReturnValue = true;
-			} else if ( inObject.ToString().Length > 0 ) {
-				curReturnValue = false;
-			} else {
-				curReturnValue = true;
-			}
-			return curReturnValue;
+			if ( inObject == null ) return true;
+			else if ( inObject == System.DBNull.Value ) return true;
+			else if ( inObject.ToString().Length > 0 ) return false;
+			else return true;
 		}
 
 		public static bool isValueTrue( String inValue ) {
 			String checkValue = inValue.Trim().ToLower();
 			if ( checkValue.Equals( "true" ) ) return true;
-			if ( checkValue.Equals( "false" ) ) return false;
-			if ( checkValue.Equals( "yes" ) ) return true;
-			if ( checkValue.Equals( "no" ) ) return false;
-			if ( checkValue.Equals( "1" ) ) return true;
-			if ( checkValue.Equals( "0" ) ) return false;
-			return false;
+			else if ( checkValue.Equals( "false" ) ) return false;
+			else if ( checkValue.Equals( "yes" ) ) return true;
+			else if ( checkValue.Equals( "no" ) ) return false;
+			else if ( checkValue.Equals( "1" ) ) return true;
+			else if ( checkValue.Equals( "0" ) ) return false;
+			else return false;
+		}
+
+		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
+			StringBuilder curNewValue = new StringBuilder( "" );
+
+			String[] curValues = inValue.Split( inCurValue );
+			if ( curValues.Length > 1 ) {
+				int curCount = 0;
+				foreach ( String curValue in curValues ) {
+					curCount++;
+					if ( curCount < curValues.Length ) {
+						curNewValue.Append( curValue + inReplValue );
+					} else {
+						curNewValue.Append( curValue );
+					}
+				}
+			
+			} else {
+				curNewValue.Append( inValue );
+			}
+
+			return curNewValue.ToString();
+		}
+
+		public static String escapeString( String inValue ) {
+			String curReturnValue = "";
+			char[] singleQuoteDelim = new char[] { '\'' };
+			curReturnValue = HelperFunctions.stringReplace( inValue, singleQuoteDelim, "''" );
+			return curReturnValue;
 		}
 
 		public static String getDataRowColValueDecimal( DataRow dataRow, String colName, String defaultValue, int numDecimals ) {
@@ -160,5 +184,77 @@ namespace WaterskiScoringSystem.Common {
 				return defaultValue;
 			}
 		}
+		
+		public static String getRegion( String inSanctionId ) {
+			String curValue = inSanctionId.Substring( 2, 1 );
+			String returnValue = curValue;
+
+			if ( curValue.ToUpper().Equals( "E" ) ) {
+				returnValue = "EAST";
+			} else if ( curValue.ToUpper().Equals( "W" ) ) {
+				returnValue = "WEST";
+			} else if ( curValue.ToUpper().Equals( "S" ) ) {
+				returnValue = "SOUTH";
+			} else if ( curValue.ToUpper().Equals( "C" ) ) {
+				returnValue = "SOUTHCENTRAL";
+			} else if ( curValue.ToUpper().Equals( "M" ) ) {
+				returnValue = "MIDWEST";
+			} else {
+				returnValue = curValue;
+			}
+			return returnValue;
+		}
+
+		public static Dictionary<string, object> getAttributeDictionary( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
+			return (Dictionary<string, object>)msgAttributeList[keyName];
+		}
+
+		public static ArrayList getAttributeList( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
+			return (ArrayList)msgAttributeList[keyName];
+		}
+
+		public static decimal getAttributeValueNum( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return 0;
+
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
+				if ( Decimal.TryParse( ( (int)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) {
+					return returnValue;
+				}
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
+				if ( Decimal.TryParse( ( (decimal)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) {
+					return returnValue;
+				}
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
+				if ( Decimal.TryParse( (String)msgAttributeList[keyName], out decimal returnValue ) ) {
+					return returnValue;
+				}
+			}
+
+			return 0;
+		}
+
+		public static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return "";
+
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
+				return ( (int)msgAttributeList[keyName] ).ToString();
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
+				return ( (decimal)msgAttributeList[keyName] ).ToString();
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
+				return ( (String)msgAttributeList[keyName] );
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Boolean" ) ) {
+				return ( (Boolean)msgAttributeList[keyName] ).ToString();
+			}
+
+			return "";
+		}
+
 	}
 }

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WaterskiScoringSystem.Common;
+
 using WaterskiScoringSystem.Admin;
+using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -129,7 +126,8 @@ namespace WaterskiScoringSystem.Tournament {
 							 * Add or update member information for selected skier using imported data
 							 */
 							if ( curMemberId.Equals( curMemberIdSelected ) ) {
-								importMember.importMemberWithRatings(SendMessageHttp.convertDataRowToDictionary(curDataRow));
+								importMember.importMemberFromAwsa( SendMessageHttp.convertDataRowToDictionary( curDataRow ), true, false );
+								//importMember.importMemberWithRatings(SendMessageHttp.convertDataRowToDictionary(curDataRow));
 								break;
 							}
 						}
@@ -605,11 +603,11 @@ namespace WaterskiScoringSystem.Tournament {
 
 			String curLastName = "";
 			if ( inLastName != null ) {
-				curLastName = stringReplace( inLastName, mySingleQuoteDelim, "''" );
+				curLastName = HelperFunctions.stringReplace( inLastName, mySingleQuoteDelim, "''" );
 			}
 			String curFirstName = "";
 			if ( inFirstName != null ) {
-				curFirstName = stringReplace( inFirstName, mySingleQuoteDelim, "''" );
+				curFirstName = HelperFunctions.stringReplace( inFirstName, mySingleQuoteDelim, "''" );
 			}
 			String curState = "";
 			if ( inState != null ) {
@@ -703,27 +701,6 @@ namespace WaterskiScoringSystem.Tournament {
 			} else {
 				return null;
 			}
-		}
-
-		private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
-			StringBuilder curNewValue = new StringBuilder( "" );
-
-			String[] curValues = inValue.Split( inCurValue );
-			if ( curValues.Length > 1 ) {
-				int curCount = 0;
-				foreach ( String curValue in curValues ) {
-					curCount++;
-					if ( curCount < curValues.Length ) {
-						curNewValue.Append( curValue + inReplValue );
-					} else {
-						curNewValue.Append( curValue );
-					}
-				}
-			} else {
-				curNewValue.Append( inValue );
-			}
-
-			return curNewValue.ToString();
 		}
 
 	}

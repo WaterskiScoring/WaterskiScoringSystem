@@ -199,9 +199,9 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( ", " + curSplitTime82M.ToString( "0.00" ) ); //14. (4 Num) 1st & 2nd segment 82M Time
                         outLine.Append( ", " + curBoatEndTime.ToString( "0.00" ) ); //15. (4 Num) 3rd segment 41M Time
 
-                        outLine.Append( ", " + curActualSeg52m.ToString( "0.00" ) ); //16. (4 Num) 1st segment 30M Actual
-                        outLine.Append( ", " + curActualSeg30m.ToString( "0.00" ) ); //17. (4 Num) 2nd segment 52M Actual
-                        outLine.Append( ", " + curActualSeg82m.ToString( "0.00" ) ); //18. (4 Num) 1st & 2nd segment 82M Actual
+						outLine.Append( ", " + curActualSeg30m.ToString( "0.00" ) ); //16. (4 Num) 1st segment 30M Actual
+						outLine.Append( ", " + curActualSeg52m.ToString( "0.00" ) ); //17. (4 Num) 2nd segment 52M Actual
+						outLine.Append( ", " + curActualSeg82m.ToString( "0.00" ) ); //18. (4 Num) 1st & 2nd segment 82M Actual
                         outLine.Append( ", " + curActualSeg41m.ToString( "0.00" ) ); //19. (4 Num) 3rd segment 41M Actual
 
                         //Write output line to file

@@ -5,16 +5,16 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Security;
-using System.Reflection;
 using System.Web.Script.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace WaterskiScoringSystem.Tools {
+using WaterskiScoringSystem.Tools;
+
+namespace WaterskiScoringSystem.Externalnterface {
     class SendMessageHttp {
         private static ManualResetEvent myManualResetEvent = new ManualResetEvent( false );
 
@@ -748,7 +748,8 @@ namespace WaterskiScoringSystem.Tools {
                 }
 
             } catch (Exception ex) {
-                return false;
+				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				return false;
             }
 
             return true;

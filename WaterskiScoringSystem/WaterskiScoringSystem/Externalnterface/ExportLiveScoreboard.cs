@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.SqlServerCe;
+
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Common;
 
-namespace WaterskiScoringSystem.Tools {
+namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveScoreboard {
         private int myTourRounds;
         public static String myScoreboardLocation = "";

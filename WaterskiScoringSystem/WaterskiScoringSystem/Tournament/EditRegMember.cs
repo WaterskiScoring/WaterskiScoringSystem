@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Admin;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
     public partial class EditRegMember : Form {
@@ -126,7 +121,11 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                     }
                     if (curContinueUpdate) {
-                        bool curReqstStatus = myTourEventReg.addTourReg( editMemberId.Text, "Registration added", AgeGroupSelect.CurrentValue, "", "" );
+						MemberEntry curMemberEntry = new MemberEntry();
+						curMemberEntry.MemberId = editMemberId.Text;
+						curMemberEntry.AgeGroup = AgeGroupSelect.CurrentValue;
+						curMemberEntry.Note = "Registration added";
+						bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
                         if (curReqstStatus) {
                             myReqstStatus = "Added";
                         } else {

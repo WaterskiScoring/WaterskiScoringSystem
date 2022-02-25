@@ -1,4 +1,4 @@
-﻿namespace WaterskiScoringSystem.Tools {
+﻿namespace WaterskiScoringSystem.Externalnterface {
     partial class ExportLiveWebDialog {
         /// <summary>
         /// Required designer variable.

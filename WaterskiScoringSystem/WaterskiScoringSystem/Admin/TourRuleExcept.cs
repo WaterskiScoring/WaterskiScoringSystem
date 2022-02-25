@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -95,17 +91,17 @@ namespace WaterskiScoringSystem.Admin {
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "Update Tournament Set " );
                 curSqlStmt.Append( "LastUpdateDate = getdate() " );
-                curSqlStmt.Append( ",RuleExceptions = '" + escapeString(ruleExceptionsTextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleExceptQ1 = '" + escapeString(ruleExceptQ1TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleExceptQ2 = '" + escapeString(ruleExceptQ2TextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleExceptions = '" + HelperFunctions.escapeString(ruleExceptionsTextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleExceptQ1 = '" + HelperFunctions.escapeString(ruleExceptQ1TextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleExceptQ2 = '" + HelperFunctions.escapeString(ruleExceptQ2TextBox.Text) + "'" );
                 curSqlStmt.Append( ",RuleExceptQ3 = '" + ruleExceptQ3TextBox.Text + "'" );
                 curSqlStmt.Append( ",RuleExceptQ4 = '" + ruleExceptQ4TextBox.Text + "'" );
-                curSqlStmt.Append( ",RuleInterpretations = '" + escapeString(ruleInterpretationsTextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleInterQ1 = '" + escapeString(ruleInterQ1TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleInterQ2 = '" + escapeString(ruleInterQ2TextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleInterpretations = '" + HelperFunctions.escapeString(ruleInterpretationsTextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleInterQ1 = '" + HelperFunctions.escapeString(ruleInterQ1TextBox.Text) + "'" );
+                curSqlStmt.Append( ",RuleInterQ2 = '" + HelperFunctions.escapeString(ruleInterQ2TextBox.Text) + "'" );
                 curSqlStmt.Append( ",RuleInterQ3 = '" + ruleInterQ3TextBox.Text + "'" );
                 curSqlStmt.Append( ",RuleInterQ4 = '" + ruleInterQ4TextBox.Text + "'" );
-                curSqlStmt.Append( ",SafetyDirPerfReport = '" + escapeString(safetyDirPerfReportTextBox.Text) + "'" );
+                curSqlStmt.Append( ",SafetyDirPerfReport = '" + HelperFunctions.escapeString(safetyDirPerfReportTextBox.Text) + "'" );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
 
                 mySqlStmt.CommandText = curSqlStmt.ToString();
@@ -135,22 +131,22 @@ namespace WaterskiScoringSystem.Admin {
                         String curValue = "";
                         DataRow curRow = myDataTable.Rows[0];
 
-                        if (isObjectEmpty( curRow["RuleExceptions"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptions"] )) {
                             ruleExceptionsTextBox.Text = "";
                         } else {
                             ruleExceptionsTextBox.Text = (String)curRow["RuleExceptions"];
                         }
-                        if (isObjectEmpty( curRow["RuleExceptQ1"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ1"] )) {
                             ruleExceptQ1TextBox.Text = "";
                         } else {
                             ruleExceptQ1TextBox.Text = (String)curRow["RuleExceptQ1"];
                         }
-                        if (isObjectEmpty( curRow["RuleExceptQ2"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ2"] )) {
                             ruleExceptQ2TextBox.Text = "";
                         } else {
                             ruleExceptQ2TextBox.Text = (String)curRow["RuleExceptQ2"];
                         }
-                        if (isObjectEmpty( curRow["RuleExceptQ3"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ3"] )) {
                             curValue = "";
                         } else {
                             curValue = (String)curRow["RuleExceptQ3"];
@@ -165,7 +161,7 @@ namespace WaterskiScoringSystem.Admin {
                         } else {
                             RuleExceptQ3NA.Checked = true;
                         }
-                        if (isObjectEmpty( curRow["RuleExceptQ4"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ4"] )) {
                             curValue = "";
                         } else {
                             curValue = (String)curRow["RuleExceptQ4"];
@@ -181,23 +177,23 @@ namespace WaterskiScoringSystem.Admin {
                             RuleExceptQ4NA.Checked = true;
                         }
 
-                        if (isObjectEmpty( curRow["RuleInterpretations"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterpretations"] )) {
                             ruleInterpretationsTextBox.Text = "";
                         } else {
                             ruleInterpretationsTextBox.Text = (String)curRow["RuleInterpretations"];
                         }
-                        if (isObjectEmpty( curRow["RuleInterQ1"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ1"] )) {
                             ruleInterQ1TextBox.Text = "";
                         } else {
                             ruleInterQ1TextBox.Text = (String)curRow["RuleInterQ1"];
                         }
 
-                        if (isObjectEmpty( curRow["RuleInterQ2"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ2"] )) {
                             ruleInterQ2TextBox.Text = "";
                         } else {
                             ruleInterQ2TextBox.Text = (String)curRow["RuleInterQ2"];
                         }
-                        if (isObjectEmpty( curRow["RuleInterQ3"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ3"] )) {
                             curValue = "";
                         } else {
                             curValue = (String)curRow["RuleInterQ3"];
@@ -213,7 +209,7 @@ namespace WaterskiScoringSystem.Admin {
                             RuleInterQ3NA.Checked = true;
                         }
 
-                        if (isObjectEmpty( curRow["RuleInterQ4"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ4"] )) {
                             curValue = "";
                         } else {
                             curValue = (String)curRow["RuleInterQ4"];
@@ -229,12 +225,12 @@ namespace WaterskiScoringSystem.Admin {
                             RuleInterQ4NA.Checked = true;
                         }
 
-                        if (isObjectEmpty( curRow["ChiefSafetyName"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["ChiefSafetyName"] )) {
                             SafetyDirNameTextBox.Text = "";
                         } else {
                             SafetyDirNameTextBox.Text = (String)curRow["ChiefSafetyName"];
                         }
-                        if (isObjectEmpty( curRow["SafetyDirPerfReport"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["SafetyDirPerfReport"] )) {
                             safetyDirPerfReportTextBox.Text = "";
                         } else {
                             safetyDirPerfReportTextBox.Text = (String)curRow["SafetyDirPerfReport"];
@@ -371,47 +367,5 @@ namespace WaterskiScoringSystem.Admin {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-        private bool isObjectEmpty(object inObject) {
-            bool curReturnValue = false;
-            if (inObject == null) {
-                curReturnValue = true;
-            } else if (inObject == System.DBNull.Value) {
-                curReturnValue = true;
-            } else if (inObject.ToString().Length > 0) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
-
-        private String escapeString(String inValue) {
-            String curReturnValue = "";
-            char[] singleQuoteDelim = new char[] { '\'' };
-            //char[] doubleQuoteDelim = new char[] { '"' };
-            curReturnValue = stringReplace( inValue, singleQuoteDelim, "''" );
-            //curReturnValue = stringReplace( curValue1, doubleQuoteDelim, "\\\"" );
-            return curReturnValue;
-        }
-        private String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
-            StringBuilder curNewValue = new StringBuilder( "" );
-
-            String[] curValues = inValue.Split( inCurValue );
-            if (curValues.Length > 1) {
-                int curCount = 0;
-                foreach (String curValue in curValues) {
-                    curCount++;
-                    if (curCount < curValues.Length) {
-                        curNewValue.Append( curValue + inReplValue );
-                    } else {
-                        curNewValue.Append( curValue );
-                    }
-                }
-            } else {
-                curNewValue.Append( inValue );
-            }
-
-            return curNewValue.ToString();
-        }
     }
 }

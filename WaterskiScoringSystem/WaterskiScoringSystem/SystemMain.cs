@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Configuration;
 using System.Deployment.Application;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlServerCe;
-using System.Threading.Tasks;
 
-using WaterskiScoringSystem.Tools;
-using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Admin;
-using WaterskiScoringSystem.Tournament;
-using WaterskiScoringSystem.Slalom;
-using WaterskiScoringSystem.Trick;
+using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Jump;
+using WaterskiScoringSystem.Slalom;
+using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Tournament;
+using WaterskiScoringSystem.Trick;
 
 using Microsoft.Win32;
 

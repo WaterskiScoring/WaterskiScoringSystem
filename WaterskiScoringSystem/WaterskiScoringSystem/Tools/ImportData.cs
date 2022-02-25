@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using WaterskiScoringSystem.Tournament;
+
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Tournament;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tools {
     class ImportData {

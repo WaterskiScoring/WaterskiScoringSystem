@@ -90,21 +90,21 @@ namespace WaterskiScoringSystem.Admin {
                 StringBuilder curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append("Update Tournament Set");
                 curSqlStmt.Append(" ContactMemberId = '" + contactNameSelect.SelectedValue + "'");
-                curSqlStmt.Append( ", ContactAddress = '" + escapeString(contactAddressTextBox.Text) + "'" );
+                curSqlStmt.Append( ", ContactAddress = '" + HelperFunctions.escapeString(contactAddressTextBox.Text) + "'" );
                 curSqlStmt.Append(", ContactPhone = '" + contactPhoneTextBox.Text + "'");
-                curSqlStmt.Append(", ContactEmail = '" + escapeString(contactEmailTextBox.Text) + "'");
-                curSqlStmt.Append(", ChiefJudgeAddress = '" + escapeString(chiefJudgeAddressTextBox.Text) + "'");
+                curSqlStmt.Append(", ContactEmail = '" + HelperFunctions.escapeString(contactEmailTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefJudgeAddress = '" + HelperFunctions.escapeString(chiefJudgeAddressTextBox.Text) + "'");
                 curSqlStmt.Append(", ChiefJudgePhone = '" + chiefJudgePhoneTextBox.Text + "'");
-                curSqlStmt.Append(", ChiefJudgeEmail = '" + escapeString(chiefJudgeEmailTextBox.Text) + "'");
-                curSqlStmt.Append(", ChiefDriverAddress = '" + escapeString(chiefDriverAddressTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefJudgeEmail = '" + HelperFunctions.escapeString(chiefJudgeEmailTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefDriverAddress = '" + HelperFunctions.escapeString(chiefDriverAddressTextBox.Text) + "'");
                 curSqlStmt.Append(", ChiefDriverPhone = '" + chiefDriverPhoneTextBox.Text + "'");
-                curSqlStmt.Append(", ChiefDriverEmail = '" + escapeString(chiefDriverEmailTextBox.Text) + "'");
-                curSqlStmt.Append(", ChiefScorerAddress = '" + escapeString(chiefScorerAddressTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefDriverEmail = '" + HelperFunctions.escapeString(chiefDriverEmailTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefScorerAddress = '" + HelperFunctions.escapeString(chiefScorerAddressTextBox.Text) + "'");
                 curSqlStmt.Append(", ChiefScorerPhone = '" + chiefScorerPhoneTextBox.Text + "'");
-                curSqlStmt.Append(", ChiefScorerEmail = '" + escapeString(chiefScorerEmailTextBox.Text) + "'");
-                curSqlStmt.Append(", SafetyDirAddress = '" + escapeString(safetyDirAddressTextBox.Text) + "'");
+                curSqlStmt.Append(", ChiefScorerEmail = '" + HelperFunctions.escapeString(chiefScorerEmailTextBox.Text) + "'");
+                curSqlStmt.Append(", SafetyDirAddress = '" + HelperFunctions.escapeString(safetyDirAddressTextBox.Text) + "'");
                 curSqlStmt.Append(", SafetyDirPhone = '" + safetyDirPhoneTextBox.Text + "'");
-                curSqlStmt.Append( ", SafetyDirEmail = '" + escapeString( safetyDirEmailTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", SafetyDirEmail = '" + HelperFunctions.escapeString( safetyDirEmailTextBox.Text ) + "'" );
                 curSqlStmt.Append(", LastUpdateDate = getdate() ");
                 curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "'");
                 rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -386,47 +386,6 @@ namespace WaterskiScoringSystem.Admin {
 
         private DataTable getData( String inSelectStmt ) {
             return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
-
-        private String escapeString(String inValue) {
-            String curReturnValue = "";
-            char[] singleQuoteDelim = new char[] { '\'' };
-            curReturnValue = stringReplace( inValue, singleQuoteDelim, "''" );
-            return curReturnValue;
-        }
-        private String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
-            StringBuilder curNewValue = new StringBuilder( "" );
-
-            String[] curValues = inValue.Split( inCurValue );
-            if (curValues.Length > 1) {
-                int curCount = 0;
-                foreach (String curValue in curValues) {
-                    curCount++;
-                    if (curCount < curValues.Length) {
-                        curNewValue.Append( curValue + inReplValue );
-                    } else {
-                        curNewValue.Append( curValue );
-                    }
-                }
-            } else {
-                curNewValue.Append( inValue );
-            }
-
-            return curNewValue.ToString();
         }
 
 		private void textItem_Validated( object sender, EventArgs e ) {

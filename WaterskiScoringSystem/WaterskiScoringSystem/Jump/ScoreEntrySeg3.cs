@@ -513,7 +513,7 @@ namespace WaterskiScoringSystem.Jump {
 			}
 
 			int curIdx = myRecapRow.Index;
-			String curUpdateStatus = CommonFunctions.getViewRowColValue( myRecapRow, "Updated", "N" );
+			String curUpdateStatus = HelperFunctions.getViewRowColValue( myRecapRow, "Updated", "N" );
 			if ( !( curUpdateStatus.ToUpper().Equals( "Y" ) ) ) {
 				isDataModified = false;
 				return false;
@@ -532,10 +532,10 @@ namespace WaterskiScoringSystem.Jump {
 				}
 			}
 
-			String curSanctionId = CommonFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
-			String curMemberId = CommonFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
-			String curAgeGroup = CommonFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
-			byte curRound = Convert.ToByte( CommonFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
+			String curSanctionId = HelperFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
+			String curMemberId = HelperFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
+			String curAgeGroup = HelperFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
+			byte curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
 			Int16 curPassNum = Convert.ToInt16( (String)myRecapRow.Cells["PassNumRecap"].Value );
 
 			// Update skier total score for round
@@ -619,12 +619,12 @@ namespace WaterskiScoringSystem.Jump {
 			String curMethodName = "Jump:ScoreEntrySeg3:saveSkierScore: ";
 			int rowsProc = 0;
 
-			String curSanctionId = CommonFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
-			String curMemberId = CommonFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
-			String curAgeGroup = CommonFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
+			String curSanctionId = HelperFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
+			String curMemberId = HelperFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
+			String curAgeGroup = HelperFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
 			String curTeamCode = TeamCodeTextBox.Text;
 			String curEventClass = (String)scoreEventClass.SelectedValue;
-			byte curRound = Convert.ToByte( CommonFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
+			byte curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
 
 			Int64 curScorePK = 0;
 			getSkierScoreByRound( curMemberId, curAgeGroup, curRound );
@@ -724,49 +724,49 @@ namespace WaterskiScoringSystem.Jump {
 			String curMethodName = "Jump:ScoreEntrySeg3:saveSkierRecapScore: ";
 			int rowsProc = 0;
 
-			String curSanctionId = CommonFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
-			String curMemberId = CommonFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
-			String curAgeGroup = CommonFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
+			String curSanctionId = HelperFunctions.getViewRowColValue( myRecapRow, "SanctionIdRecap", "" );
+			String curMemberId = HelperFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" );
+			String curAgeGroup = HelperFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
 			String curTeamCode = TeamCodeTextBox.Text;
 			String curEventClass = (String)scoreEventClass.SelectedValue;
-			byte curRound = Convert.ToByte( CommonFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
+			byte curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "0" ) );
 			String curRampHeight = RampHeightSelect.CurrentValue.ToString( "0.0" );
 			if ( curRampHeight.Length == 0 ) curRampHeight = "Null";
 
 			Int64 curRecapPK = Convert.ToInt64( myRecapRow.Cells["PKRecap"].Value );
 			Int16 curPassNum = Convert.ToInt16( (String)myRecapRow.Cells["PassNumRecap"].Value );
 
-			String curMeter1 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter1Recap", "Null" );
-			String curMeter2 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter2Recap", "Null" );
-			String curMeter3 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter3Recap", "Null" );
-			String curMeter4 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter4Recap", "Null" );
-			String curMeter5 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter5Recap", "Null" );
-			String curMeter6 = CommonFunctions.getViewRowColValue( myRecapRow, "Meter6Recap", "Null" );
+			String curMeter1 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter1Recap", "Null" );
+			String curMeter2 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter2Recap", "Null" );
+			String curMeter3 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter3Recap", "Null" );
+			String curMeter4 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter4Recap", "Null" );
+			String curMeter5 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter5Recap", "Null" );
+			String curMeter6 = HelperFunctions.getViewRowColValue( myRecapRow, "Meter6Recap", "Null" );
 
 
-			String curResults = CommonFunctions.getViewRowColValue( myRecapRow, "ResultsRecap", "Jump" );
-			String curScoreTriangle = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreTriangleRecap", "Null" );
-			String curBoatSpeed = CommonFunctions.getViewRowColValue( myRecapRow, "BoatSpeedRecap", "Null" );
-			String curScoreFeet = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreFeetRecap", "Null" );
-			String curScoreMeters = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "Null" );
-			String curReride = CommonFunctions.getViewRowColValue( myRecapRow, "RerideRecap", "Null" );
+			String curResults = HelperFunctions.getViewRowColValue( myRecapRow, "ResultsRecap", "Jump" );
+			String curScoreTriangle = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreTriangleRecap", "Null" );
+			String curBoatSpeed = HelperFunctions.getViewRowColValue( myRecapRow, "BoatSpeedRecap", "Null" );
+			String curScoreFeet = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreFeetRecap", "Null" );
+			String curScoreMeters = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "Null" );
+			String curReride = HelperFunctions.getViewRowColValue( myRecapRow, "RerideRecap", "Null" );
 
-			String curBoatSplitTime = CommonFunctions.getViewRowColValue( myRecapRow, "BoatSplitTimeRecap", "Null" );
-			String curBoatSplitTime2 = CommonFunctions.getViewRowColValue( myRecapRow, "BoatSplitTime2Recap", "Null" );
-			String curBoatEndTime = CommonFunctions.getViewRowColValue( myRecapRow, "BoatEndTimeRecap", "Null" );
+			String curBoatSplitTime = HelperFunctions.getViewRowColValue( myRecapRow, "BoatSplitTimeRecap", "Null" );
+			String curBoatSplitTime2 = HelperFunctions.getViewRowColValue( myRecapRow, "BoatSplitTime2Recap", "Null" );
+			String curBoatEndTime = HelperFunctions.getViewRowColValue( myRecapRow, "BoatEndTimeRecap", "Null" );
 
-			String curSplit52TimeTol = CommonFunctions.getViewRowColValue( myRecapRow, "Split52TimeTolRecap", "0" );
-			String curSplit82TimeTol = CommonFunctions.getViewRowColValue( myRecapRow, "Split82TimeTolRecap", "0" );
-			String curSplit41TimeTol = CommonFunctions.getViewRowColValue( myRecapRow, "Split41TimeTolRecap", "0" );
+			String curSplit52TimeTol = HelperFunctions.getViewRowColValue( myRecapRow, "Split52TimeTolRecap", "0" );
+			String curSplit82TimeTol = HelperFunctions.getViewRowColValue( myRecapRow, "Split82TimeTolRecap", "0" );
+			String curSplit41TimeTol = HelperFunctions.getViewRowColValue( myRecapRow, "Split41TimeTolRecap", "0" );
 
-			String curTimeInTol = CommonFunctions.getViewRowColValue( myRecapRow, "TimeInTolRecap", "N" );
-			String curScoreProt = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreProtRecap", "N" );
-			String curReturnToBase = CommonFunctions.getViewRowColValue( myRecapRow, "ReturnToBaseRecap", "N" );
+			String curTimeInTol = HelperFunctions.getViewRowColValue( myRecapRow, "TimeInTolRecap", "N" );
+			String curScoreProt = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreProtRecap", "N" );
+			String curReturnToBase = HelperFunctions.getViewRowColValue( myRecapRow, "ReturnToBaseRecap", "N" );
 
-			String curSkierBoatPath = CommonFunctions.getViewRowColValue( myRecapRow, "SkierBoatPathRecap", SkierBoatPathSelect.DefaultValue );
-			String curRerideReason = CommonFunctions.getViewRowColValue( myRecapRow, "RerideReasonRecap", "" );
+			String curSkierBoatPath = HelperFunctions.getViewRowColValue( myRecapRow, "SkierBoatPathRecap", SkierBoatPathSelect.DefaultValue );
+			String curRerideReason = HelperFunctions.getViewRowColValue( myRecapRow, "RerideReasonRecap", "" );
 			curRerideReason = curRerideReason.Replace( "'", "''" );
-			String curNote = CommonFunctions.getViewRowColValue( myRecapRow, "NoteRecap", "" );
+			String curNote = HelperFunctions.getViewRowColValue( myRecapRow, "NoteRecap", "" );
 			curNote = curNote.Replace( "'", "''" );
 
 			try {
@@ -863,7 +863,7 @@ namespace WaterskiScoringSystem.Jump {
 
 		private String setEventRegRowStatus( DataGridViewRow curViewRow ) {
 			String curStatus = "TBD";
-			String curValue = CommonFunctions.getViewRowColValue( curViewRow, "Status", "TBD" );
+			String curValue = HelperFunctions.getViewRowColValue( curViewRow, "Status", "TBD" );
 			if ( curValue.Equals( "4-Done" ) ) curStatus = "Complete";
 			if ( curValue.Equals( "2-InProg" ) ) curStatus = "InProg";
 			if ( curValue.Equals( "3-Error" ) ) curStatus = "Error";
@@ -1317,12 +1317,12 @@ namespace WaterskiScoringSystem.Jump {
 			curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
 			}
 
 			curSelectCommand[1] = "Select * from EventReg XT ";
-			if ( CommonFunctions.isObjectEmpty( curFilterCmd ) ) {
+			if ( HelperFunctions.isObjectEmpty( curFilterCmd ) ) {
 				curSelectCommand[1] = curSelectCommand[1]
 					+ " Where SanctionId = '" + mySanctionNum + "'"
 					+ " And Event = 'Jump'";
@@ -1340,7 +1340,7 @@ namespace WaterskiScoringSystem.Jump {
 			}
 
 			curSelectCommand[2] = "Select * from EventRunOrder XT ";
-			if ( CommonFunctions.isObjectEmpty( curFilterCmd ) ) {
+			if ( HelperFunctions.isObjectEmpty( curFilterCmd ) ) {
 				curSelectCommand[2] = curSelectCommand[2]
 					+ " Where SanctionId = '" + mySanctionNum + "'"
 					+ " And Event = 'Jump' And Round = " + roundActiveSelect.RoundValue + " ";
@@ -1360,14 +1360,14 @@ namespace WaterskiScoringSystem.Jump {
 			curSelectCommand[3] = "SELECT XT.* FROM JumpScore XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
 			curSelectCommand[4] = "SELECT XT.* FROM JumpRecap XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' And Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
 			}
 
@@ -1387,27 +1387,27 @@ namespace WaterskiScoringSystem.Jump {
 			curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round = " + roundActiveSelect.RoundValue + " "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' ";
-			if ( !( CommonFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
 				curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
 			}
 
 			curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( !( CommonFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
 				curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
 			}
 			curSelectCommand[6] = curSelectCommand[6] + "Union "
 				+ "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round = " + roundActiveSelect.RoundValue + " "
 				+ "Where XT.SanctionId = '" + mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( !( CommonFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
 				curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
 			}
 
 			curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
 				+ " Where SanctionId = '" + mySanctionNum + "' And Event = 'Jump' And Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( tmpFilterCmd ) ) && tmpFilterCmd.Length > 0 ) {
 				curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
 			}
 
@@ -1418,7 +1418,7 @@ namespace WaterskiScoringSystem.Jump {
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
@@ -1426,7 +1426,7 @@ namespace WaterskiScoringSystem.Jump {
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
@@ -1434,7 +1434,7 @@ namespace WaterskiScoringSystem.Jump {
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round = " + roundActiveSelect.RoundValue + " ";
-			if ( !( CommonFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
+			if ( !( HelperFunctions.isObjectEmpty( curFilterCmd ) ) && curFilterCmd.Length > 0 ) {
 				curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
 			}
 
@@ -1458,7 +1458,7 @@ namespace WaterskiScoringSystem.Jump {
 			String curGroupValue = "All";
 			curGroupValue = EventGroupList.SelectedItem.ToString();
 			if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-				myFilterCmd = CommonFunctions.getEventGroupFilterNcwsa( curGroupValue );
+				myFilterCmd = HelperFunctions.getEventGroupFilterNcwsa( curGroupValue );
 
 			} else {
 				if ( curGroupValue.ToLower().Equals( "all" ) ) {
@@ -1493,9 +1493,9 @@ namespace WaterskiScoringSystem.Jump {
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) ) {
 					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 						try {
-							String curEventGroup = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
-							String curMemberId = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
-							String curAgeGroup = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
+							String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
+							String curMemberId = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
+							String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
 							ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
 						} catch {
@@ -1515,10 +1515,10 @@ namespace WaterskiScoringSystem.Jump {
 				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "DiableSkier" ) ) {
 					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
 						try {
-							String curEventGroup = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
-							String curMemberId = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
-							String curAgeGroup = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
-							String curTeamCode = CommonFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "TeamCode", "" );
+							String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
+							String curMemberId = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
+							String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
+							String curTeamCode = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "TeamCode", "" );
 							byte curRound = Convert.ToByte( roundSelect.RoundValue );
 							if ( ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup ) == false ) {
 								MessageBox.Show( "Error encountered sending score to LiveWeb" );
@@ -1578,7 +1578,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 			}
 			if ( TourEventRegDataGridView.Rows.Count > 0 ) {
-				if ( !( CommonFunctions.isObjectEmpty( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
 					jumpRecapDataGridView.Rows.Clear();
 					setJumpScoreEntry( Convert.ToInt16( roundSelect.RoundValue ) );
 					setJumpRecapEntry( Convert.ToInt16( roundSelect.RoundValue ) );
@@ -1652,11 +1652,11 @@ namespace WaterskiScoringSystem.Jump {
 
 			if ( jumpRecapDataGridView.Rows.Count > 0 ) {
 				if ( myRecapRow.Index == ( jumpRecapDataGridView.Rows.Count - 1 ) ) {
-					if ( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value )
-						&& CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) ) {
+					if ( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value )
+						&& HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) ) {
 						myRecapRow.Cells["BoatSpeedRecap"].Value = JumpSpeedSelect.CurrentValue.ToString();
-						if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
-							&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+						if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+							&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
 							) {
 							TimeValidate();
 						}
@@ -1792,7 +1792,7 @@ namespace WaterskiScoringSystem.Jump {
 					myEventRegViewIdx = e.RowIndex;
 					int curRowPos = e.RowIndex + 1;
 					RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + myDataView.Rows.Count.ToString();
-					if ( !( CommonFunctions.isObjectEmpty( myDataView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
+					if ( !( HelperFunctions.isObjectEmpty( myDataView.Rows[myEventRegViewIdx].Cells["MemberId"].Value ) ) ) {
 						setJumpScoreEntry( Convert.ToInt16( roundActiveSelect.RoundValue ) );
 						setJumpRecapEntry( Convert.ToInt16( roundActiveSelect.RoundValue ) );
 
@@ -1888,23 +1888,23 @@ namespace WaterskiScoringSystem.Jump {
 					curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
 					curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
 
-					String curEventGroup = CommonFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
-					String curRunOrderGroup = CommonFunctions.getDataRowColValue( curDataRow, "RunOrderGroup", "" );
+					String curEventGroup = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+					String curRunOrderGroup = HelperFunctions.getDataRowColValue( curDataRow, "RunOrderGroup", "" );
 					if ( curRunOrderGroup.Length > 0 ) {
 						curViewRow.Cells["EventGroup"].Value = curEventGroup + "-" + curRunOrderGroup;
 					} else {
 						curViewRow.Cells["EventGroup"].Value = curEventGroup;
 					}
 
-					curViewRow.Cells["AgeGroup"].Value = CommonFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
-					curViewRow.Cells["Gender"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Gender", "" );
-					curViewRow.Cells["EventClass"].Value = CommonFunctions.getDataRowColValue( curDataRow, "EventClass", "" );
-					curViewRow.Cells["TeamCode"].Value = CommonFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
-					curViewRow.Cells["Order"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Order", "0" );
+					curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+					curViewRow.Cells["Gender"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
+					curViewRow.Cells["EventClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventClass", "" );
+					curViewRow.Cells["TeamCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
+					curViewRow.Cells["Order"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Order", "0" );
 					if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
-						curViewRow.Cells["Score"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "ScoreMeters", "", 1 );
+						curViewRow.Cells["Score"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "ScoreMeters", "", 1 );
 					} else {
-						curViewRow.Cells["Score"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ScoreFeet", "" );
+						curViewRow.Cells["Score"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScoreFeet", "" );
 					}
 
 					try {
@@ -1913,22 +1913,22 @@ namespace WaterskiScoringSystem.Jump {
 						} else {
 							curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["ScoreFeet"] + (Decimal)curDataRow["HCapScore"] ).ToString( "##0.0" );
 						}
-						hcapScoreTextBox.Text = CommonFunctions.getDataRowColValue( curDataRow, "ScoreWithHcap", "0" );
+						hcapScoreTextBox.Text = HelperFunctions.getDataRowColValue( curDataRow, "ScoreWithHcap", "0" );
 					} catch {
 						curViewRow.Cells["ScoreWithHcap"].Value = "";
 						hcapScoreTextBox.Text = "";
 					}
 
-					curViewRow.Cells["RankingScore"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "", 1 );
-					curViewRow.Cells["HCapBase"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "", 1 );
-					curViewRow.Cells["HCapScore"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "", 1 );
-					curViewRow.Cells["RankingRating"].Value = CommonFunctions.getDataRowColValue( curDataRow, "RankingRating", "" );
-					curViewRow.Cells["JumpHeight"].Value = CommonFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
-					curViewRow.Cells["SkiYearAge"].Value = CommonFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "" );
+					curViewRow.Cells["RankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "", 1 );
+					curViewRow.Cells["HCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "", 1 );
+					curViewRow.Cells["HCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "", 1 );
+					curViewRow.Cells["RankingRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RankingRating", "" );
+					curViewRow.Cells["JumpHeight"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
+					curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "" );
 					if ( curViewRow.Cells["SkiYearAge"].Value.ToString().Equals( "" ) ) curViewRow.Cells["SkiYearAge"].Value = "1";
-					setEventRegRowStatus( CommonFunctions.getDataRowColValue( curDataRow, "Status", "" ) );
-					curViewRow.Cells["State"].Value = CommonFunctions.getDataRowColValue( curDataRow, "State", "" );
-					curViewRow.Cells["Federation"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Federation", "" );
+					setEventRegRowStatus( HelperFunctions.getDataRowColValue( curDataRow, "Status", "" ) );
+					curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+					curViewRow.Cells["Federation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" );
 				}
 				myEventRegViewIdx = 0;
 				TourEventRegDataGridView.CurrentCell = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"];
@@ -1970,7 +1970,7 @@ namespace WaterskiScoringSystem.Jump {
 			isLoadInProg = true;
 			if ( EventGroupList.DataSource == null ) {
 				if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-					EventGroupList.DataSource = CommonFunctions.buildEventGroupListNcwsa();
+					EventGroupList.DataSource = HelperFunctions.buildEventGroupListNcwsa();
 				} else {
 					loadEventGroupListFromData( inRound );
 				}
@@ -1982,7 +1982,7 @@ namespace WaterskiScoringSystem.Jump {
 					}
 				} else {
 					if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-						EventGroupList.DataSource = CommonFunctions.buildEventGroupListNcwsa();
+						EventGroupList.DataSource = HelperFunctions.buildEventGroupListNcwsa();
 					} else {
 						loadEventGroupListFromData( inRound );
 					}
@@ -2003,7 +2003,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 			}
 
-			EventGroupList.DataSource = CommonFunctions.buildEventGroupList( mySanctionNum, "Jump", inRound );
+			EventGroupList.DataSource = HelperFunctions.buildEventGroupList( mySanctionNum, "Jump", inRound );
 			if ( curGroupValue.Length > 0 ) {
 				foreach ( String curValue in (ArrayList)EventGroupList.DataSource ) {
 					if ( curValue.Equals( curGroupValue ) ) {
@@ -2125,12 +2125,12 @@ namespace WaterskiScoringSystem.Jump {
 						curViewIdx = listBoatTimesDataGridView.Rows.Add();
 						curViewRow = listBoatTimesDataGridView.Rows[curViewIdx];
 
-						curViewRow.Cells["BoatTimeKey"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ListCode", "" );
-						curViewRow.Cells["ListCodeNum"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ListCodeNum", "" );
-						curViewRow.Cells["ActualTime"].Value = CommonFunctions.getDataRowColValue( curDataRow, "CodeValue", "" );
-						curViewRow.Cells["FastTimeTol"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "MinValue", "", 2 );
-						curViewRow.Cells["SlowtimeTol"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "MaxValue", "", 2 );
-						curViewRow.Cells["TimeKeyDesc"].Value = CommonFunctions.getDataRowColValue( curDataRow, "CodeDesc", "" );
+						curViewRow.Cells["BoatTimeKey"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ListCode", "" );
+						curViewRow.Cells["ListCodeNum"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ListCodeNum", "" );
+						curViewRow.Cells["ActualTime"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CodeValue", "" );
+						curViewRow.Cells["FastTimeTol"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "MinValue", "", 2 );
+						curViewRow.Cells["SlowtimeTol"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "MaxValue", "", 2 );
+						curViewRow.Cells["TimeKeyDesc"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CodeDesc", "" );
 					}
 					listBoatTimesDataGridView.CurrentCell = listBoatTimesDataGridView.Rows[0].Cells["BoatTimeKey"];
 				}
@@ -2205,12 +2205,12 @@ namespace WaterskiScoringSystem.Jump {
 			getSkierScoreByRound( curMemberId, curAgeGroup, inRound );
 			if ( myScoreDataTable.Rows.Count > 0 ) {
 				myScoreRow = myScoreDataTable.Rows[0];
-				scoreEventClass.SelectedValue = CommonFunctions.getDataRowColValue( myScoreRow, "EventClass", CommonFunctions.getViewRowColValue( curEventRegRow, "EventClass", this.myTourClass ) );
-				roundSelect.RoundValue = CommonFunctions.getDataRowColValue( myScoreRow, "EventClass", "1" );
+				scoreEventClass.SelectedValue = HelperFunctions.getDataRowColValue( myScoreRow, "EventClass", HelperFunctions.getViewRowColValue( curEventRegRow, "EventClass", this.myTourClass ) );
+				roundSelect.RoundValue = HelperFunctions.getDataRowColValue( myScoreRow, "EventClass", "1" );
 
-				scoreFeetTextBox.Text = CommonFunctions.getDataRowColValueDecimal( myScoreRow, "ScoreFeet", "0", 0 );
-				scoreMetersTextBox.Text = CommonFunctions.getDataRowColValueDecimal( myScoreRow, "ScoreMeters", "0", 1 );
-				nopsScoreTextBox.Text = CommonFunctions.getDataRowColValueDecimal( myScoreRow, "NopsScore", "0", 1 );
+				scoreFeetTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "ScoreFeet", "0", 0 );
+				scoreMetersTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "ScoreMeters", "0", 1 );
+				nopsScoreTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "NopsScore", "0", 1 );
 				try {
 					if ( this.myTourRules.Equals( "IWWF" ) ) {
 						hcapScoreTextBox.Text = ( (Decimal)myScoreRow["ScoreMeters"] + (Decimal)myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
@@ -2220,17 +2220,17 @@ namespace WaterskiScoringSystem.Jump {
 				} catch {
 					hcapScoreTextBox.Text = "";
 				}
-				noteTextBox.Text = CommonFunctions.getDataRowColValue( myScoreRow, "Note", "" );
-				RampHeightSelect.CurrentValue = Convert.ToDecimal( CommonFunctions.getDataRowColValue( myScoreRow, "RampHeight", myJumpHeight.ToString( "0.0" ) ) );
+				noteTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "Note", "" );
+				RampHeightSelect.CurrentValue = Convert.ToDecimal( HelperFunctions.getDataRowColValue( myScoreRow, "RampHeight", myJumpHeight.ToString( "0.0" ) ) );
 				myJumpHeight = RampHeightSelect.CurrentValue;
 				RampHeightTextBox.Text = myJumpHeight.ToString( "0.0" );
 
-				JumpSpeedSelect.CurrentValue = Convert.ToInt16( CommonFunctions.getDataRowColValue( myScoreRow, "BoatSpeed", myMaxSpeed.ToString( "00" ) ) );
+				JumpSpeedSelect.CurrentValue = Convert.ToInt16( HelperFunctions.getDataRowColValue( myScoreRow, "BoatSpeed", myMaxSpeed.ToString( "00" ) ) );
 				BoatSpeedTextBox.Text = "";
 
-				TeamCodeTextBox.Text = CommonFunctions.getDataRowColValue( myScoreRow, "TeamCode", "" );
+				TeamCodeTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "TeamCode", "" );
 
-				TourBoatTextbox.Text = CommonFunctions.getDataRowColValue( myScoreRow, "Boat", "" );
+				TourBoatTextbox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "Boat", "" );
 				if ( TourBoatTextbox.Text.Length == 0 ) {
 					TourBoatTextbox.Text = setApprovedBoatSelectEntry( (String)myScoreRow["Boat"] );
 					TourBoatTextbox.Select( 0, 0 );
@@ -2307,43 +2307,43 @@ namespace WaterskiScoringSystem.Jump {
 					curViewRow.Cells["RoundRecap"].ToolTipText = ( (DateTime)curDataRow["LastUpdateDate"] ).ToString( "MM/dd HH:mm:ss" );
 					curViewRow.Cells["PassNumRecap"].Value = ( curViewIdx + 1 ).ToString();
 
-					curViewRow.Cells["BoatSpeedRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "BoatSpeed", JumpSpeedSelect.CurrentValue.ToString( "00" ) );
-					curViewRow.Cells["SkierBoatPathRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "SkierBoatPath", SkierBoatPathSelect.DefaultValue );
+					curViewRow.Cells["BoatSpeedRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "BoatSpeed", JumpSpeedSelect.CurrentValue.ToString( "00" ) );
+					curViewRow.Cells["SkierBoatPathRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkierBoatPath", SkierBoatPathSelect.DefaultValue );
 					SkierBoatPathSelect.CurrentValue = (String)curViewRow.Cells["SkierBoatPathRecap"].Value;
-					curViewRow.Cells["ReturnToBaseRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ReturnToBase", "" );
-					curViewRow.Cells["ResultsRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Results", "Jump" );
+					curViewRow.Cells["ReturnToBaseRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReturnToBase", "" );
+					curViewRow.Cells["ResultsRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Results", "Jump" );
 
-					curViewRow.Cells["Meter1Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter1", "" );
-					curViewRow.Cells["Meter2Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter2", "" );
-					curViewRow.Cells["Meter3Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter3", "" );
-					curViewRow.Cells["Meter4Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter4", "" );
-					curViewRow.Cells["Meter5Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter5", "" );
-					curViewRow.Cells["Meter6Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Meter6", "" );
+					curViewRow.Cells["Meter1Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter1", "" );
+					curViewRow.Cells["Meter2Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter2", "" );
+					curViewRow.Cells["Meter3Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter3", "" );
+					curViewRow.Cells["Meter4Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter4", "" );
+					curViewRow.Cells["Meter5Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter5", "" );
+					curViewRow.Cells["Meter6Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Meter6", "" );
 
-					curViewRow.Cells["BoatSplitTimeRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "BoatSplitTime", "" );
-					curViewRow.Cells["BoatSplitTime2Recap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "BoatSplitTime2", "" );
-					curViewRow.Cells["BoatEndTimeRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "BoatEndTime", "" );
+					curViewRow.Cells["BoatSplitTimeRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "BoatSplitTime", "" );
+					curViewRow.Cells["BoatSplitTime2Recap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "BoatSplitTime2", "" );
+					curViewRow.Cells["BoatEndTimeRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "BoatEndTime", "" );
 
-					curViewRow.Cells["Split52TimeTolRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Split52TimeTol", "" );
-					curViewRow.Cells["Split82TimeTolRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Split82TimeTol", "" );
-					curViewRow.Cells["Split41TimeTolRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Split41TimeTol", "" );
+					curViewRow.Cells["Split52TimeTolRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Split52TimeTol", "" );
+					curViewRow.Cells["Split82TimeTolRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Split82TimeTol", "" );
+					curViewRow.Cells["Split41TimeTolRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Split41TimeTol", "" );
 
-					curViewRow.Cells["ScoreFeetRecap"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "ScoreFeet", "", 0 );
-					curViewRow.Cells["ScoreMetersRecap"].Value = CommonFunctions.getDataRowColValueDecimal( curDataRow, "ScoreMeters", "", 1 );
+					curViewRow.Cells["ScoreFeetRecap"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "ScoreFeet", "", 0 );
+					curViewRow.Cells["ScoreMetersRecap"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "ScoreMeters", "", 1 );
 
-					curViewRow.Cells["TimeInTolRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "TimeInTol", "N" );
+					curViewRow.Cells["TimeInTolRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TimeInTol", "N" );
 					if ( curViewRow.Cells["TimeInTolRecap"].Value.ToString().Equals( "Y" ) ) {
 						curViewRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeInTol;
 					} else {
 						curViewRow.Cells["TimeInTolImg"].Value = WaterskiScoringSystem.Properties.Resources.TimeOutTol;
 					}
-					curViewRow.Cells["RerideRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Reride", "N" );
-					curViewRow.Cells["ScoreProtRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ScoreProt", "N" );
-					curViewRow.Cells["ScoreTriangleRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "ScoreTriangle", "0" );
+					curViewRow.Cells["RerideRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Reride", "N" );
+					curViewRow.Cells["ScoreProtRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScoreProt", "N" );
+					curViewRow.Cells["ScoreTriangleRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScoreTriangle", "0" );
 					curViewRow.Cells["RampHeightRecap"].Value = RampHeightTextBox.Text;
 
-					curViewRow.Cells["RerideReasonRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "RerideReason", "" );
-					curViewRow.Cells["NoteRecap"].Value = CommonFunctions.getDataRowColValue( curDataRow, "Note", "" );
+					curViewRow.Cells["RerideReasonRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RerideReason", "" );
+					curViewRow.Cells["NoteRecap"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Note", "" );
 
 					if ( curViewIdx < curViewIdxMax ) {
 						foreach ( DataGridViewCell curCell in curViewRow.Cells ) {
@@ -2438,7 +2438,7 @@ namespace WaterskiScoringSystem.Jump {
 		private void jumpRecapDataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
 			DataGridView curView = (DataGridView)sender;
 			DataGridViewRow curViewRow = curView.Rows[e.RowIndex];
-			if ( CommonFunctions.isObjectEmpty( (String)curViewRow.Cells["PKRecap"].Value ) ) return;
+			if ( HelperFunctions.isObjectEmpty( (String)curViewRow.Cells["PKRecap"].Value ) ) return;
 
 			Int64 curPK = Convert.ToInt64( (String)curViewRow.Cells["PKRecap"].Value );
 			if ( curPK > 0 ) skierPassMsg.Text = (String)curViewRow.Cells["RerideReasonRecap"].Value;
@@ -2738,7 +2738,7 @@ namespace WaterskiScoringSystem.Jump {
 			if ( myRecapRow.Cells[e.ColumnIndex].Value == null ) return;
 
 			if ( curColName.StartsWith( "Meter" ) ) {
-				if ( CommonFunctions.isObjectEmpty( e.FormattedValue ) ) return;
+				if ( HelperFunctions.isObjectEmpty( e.FormattedValue ) ) return;
 
 				try {
 					myModCellValue = "";
@@ -2759,7 +2759,7 @@ namespace WaterskiScoringSystem.Jump {
 
 			} else if ( curColName.Equals( "BoatSplitTimeRecap" ) || curColName.Equals( "BoatSplitTime2Recap" ) || curColName.Equals( "BoatEndTimeRecap" ) ) {
 				String curValue = (String)e.FormattedValue;
-				if ( CommonFunctions.isObjectEmpty( curValue ) || curValue.Equals( myOrigCellValue ) ) return;
+				if ( HelperFunctions.isObjectEmpty( curValue ) || curValue.Equals( myOrigCellValue ) ) return;
 
 				myModCellValue = "";
 				if ( curValue.ToUpper().Equals( "OK" ) ) {
@@ -2777,13 +2777,13 @@ namespace WaterskiScoringSystem.Jump {
 				}
 
 			} else if ( curColName.Equals( "ScoreFeetRecap" ) ) {
-				if ( ( myNumJudges > 0 ) || CommonFunctions.isObjectEmpty( e.FormattedValue ) ) return;
+				if ( ( myNumJudges > 0 ) || HelperFunctions.isObjectEmpty( e.FormattedValue ) ) return;
 
 				try {
 					Decimal scoreFeet = Convert.ToDecimal( e.FormattedValue );
 
-					String curCellValue = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "" );
-					if ( CommonFunctions.isObjectEmpty( curCellValue ) ) return;
+					String curCellValue = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "" );
+					if ( HelperFunctions.isObjectEmpty( curCellValue ) ) return;
 
 					// Check that feet and meters are properly equivalent, otherwise error
 					Decimal scoreMeters = Convert.ToDecimal( curCellValue );
@@ -2801,7 +2801,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 
 			} else if ( curColName.Equals( "ScoreMetersRecap" ) ) {
-				if ( ( myNumJudges > 0 ) || CommonFunctions.isObjectEmpty( e.FormattedValue ) ) return;
+				if ( ( myNumJudges > 0 ) || HelperFunctions.isObjectEmpty( e.FormattedValue ) ) return;
 
 				try {
 					//isRecapRowEnterHandled = true;
@@ -2816,8 +2816,8 @@ namespace WaterskiScoringSystem.Jump {
 					}
 					Decimal scoreMeters = Convert.ToDecimal( myModCellValue );
 
-					curCellValue = CommonFunctions.getViewRowColValue( myRecapRow, "ScoreFeetRecap", "" );
-					if ( CommonFunctions.isObjectEmpty( curCellValue ) ) return;
+					curCellValue = HelperFunctions.getViewRowColValue( myRecapRow, "ScoreFeetRecap", "" );
+					if ( HelperFunctions.isObjectEmpty( curCellValue ) ) return;
 					Decimal scoreFeet = Convert.ToDecimal( (String)myRecapRow.Cells["ScoreFeetRecap"].Value );
 
 					// Check that feet and meters are properly equivalent, otherwise error
@@ -2860,16 +2860,16 @@ namespace WaterskiScoringSystem.Jump {
 			} else if ( curColName.Equals( "ScoreFeetRecap" ) ) {
 				if ( myNumJudges > 0 ) return;
 
-				String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
-				if ( CommonFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
+				String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+				if ( HelperFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
 
 				myOrigCellValue = (String)myRecapRow.Cells["ScoreFeetRecap"].Value;
 				isDataModified = true;
 				myRecapRow.Cells["Updated"].Value = "Y";
-				if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) )
-					&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
-					&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
-					&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+				if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) )
+					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
+					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
 					) {
 					TimeValidate();
 					CalcDist();
@@ -2878,28 +2878,28 @@ namespace WaterskiScoringSystem.Jump {
 			} else if ( curColName.Equals( "ScoreMetersRecap" ) ) {
 				if ( myNumJudges > 0 ) return;
 				
-				String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
-				if ( CommonFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
+				String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+				if ( HelperFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
 
 				jumpRecapDataGridView_CellValidatedScoreMeters( curColName, curColValue );
 
 			} else if ( curColName.Equals( "RerideRecap" ) ) {
-				String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
-				if ( CommonFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
+				String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+				if ( HelperFunctions.isObjectEmpty( curColValue ) || curColValue.Equals( myOrigCellValue ) ) return;
 				jumpRecapDataGridView_CellValidatedReride( curColName, curColValue );
 
 			} else if ( curColName.Equals( "ResultsRecap" ) ) {
-				String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+				String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
 				jumpRecapDataGridView_CellValidatedResults( curColName, curColValue );
 			
 			} else if ( curColName.Equals( "ReturnToBaseRecap" ) ) {
 				#region Validate ReturnToBase attribute
-				String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+				String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
 				if ( curColValue.Equals( myOrigCellValue ) ) return;
 
 				winStatusMsg.Text = "ReturnToBaseRecap = " + curColValue;
-				if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
-					&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+				if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
 					) {
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
@@ -2941,8 +2941,8 @@ namespace WaterskiScoringSystem.Jump {
 
 		// Validate meter attributes
 		private void jumpRecapDataGridView_CellValidatedMeters( String curColName ) {
-			String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
-			if ( CommonFunctions.isObjectEmpty( curColValue ) ) {
+			String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+			if ( HelperFunctions.isObjectEmpty( curColValue ) ) {
 				if ( curColValue.Equals( myOrigCellValue ) ) return;
 
 				isDataModified = true;
@@ -2966,18 +2966,18 @@ namespace WaterskiScoringSystem.Jump {
 				}
 			}
 
-			if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter1Recap"].Value ) )
-				&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter2Recap"].Value ) )
-				&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter3Recap"].Value ) )
+			if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter1Recap"].Value ) )
+				&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter2Recap"].Value ) )
+				&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter3Recap"].Value ) )
 				) {
 				if ( myNumJudges == 3 ) {
 					bool curCalcComp = CalcDistByMeters();
 					checkRoundCalcSkierScore();
 
 				} else if ( myNumJudges == 6 ) {
-					if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter4Recap"].Value ) )
-						&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter5Recap"].Value ) )
-						&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["Meter6Recap"].Value ) )
+					if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter4Recap"].Value ) )
+						&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter5Recap"].Value ) )
+						&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["Meter6Recap"].Value ) )
 						) {
 						bool curCalcComp = CalcDistByMeters();
 						checkRoundCalcSkierScore();
@@ -2988,9 +2988,9 @@ namespace WaterskiScoringSystem.Jump {
 
 		// Validate boat times if entered
 		private void jumpRecapDataGridView_CellValidatedBoatTimes( String curColName ) {
-			String curColValue = CommonFunctions.getViewRowColValue( myRecapRow, curColName, "" );
+			String curColValue = HelperFunctions.getViewRowColValue( myRecapRow, curColName, "" );
 
-			if ( CommonFunctions.isObjectEmpty( curColValue ) ) {
+			if ( HelperFunctions.isObjectEmpty( curColValue ) ) {
 				myRecapRow.Cells["TimeInTolRecap"].Value = "N";
 				return;
 			}
@@ -3014,7 +3014,7 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private void jumpRecapDataGridView_CellValidatedScoreMeters( String curColName, String curColValue ) {
-			if ( CommonFunctions.isObjectEmpty( curColValue ) ) {
+			if ( HelperFunctions.isObjectEmpty( curColValue ) ) {
 				if ( curColValue.Equals( myOrigCellValue ) ) {
 					if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
 						if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" )
@@ -3050,12 +3050,12 @@ namespace WaterskiScoringSystem.Jump {
 				}
 				if ( curColValue.Equals( myOrigCellValue ) ) {
 					if ( myRecapRow.Cells["Updated"].Value.Equals( "Y" ) ) {
-						if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
+						if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
 							if ( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreFeetRecap"].Value ) > 0
 								&& Convert.ToDecimal( curColValue ) > 0
-								&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
-								&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
-								&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+								&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+								&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
+								&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
 								) {
 								checkRoundCalcSkierScore();
 							}
@@ -3076,12 +3076,12 @@ namespace WaterskiScoringSystem.Jump {
 					isRecapRowEnterHandled = true;
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
-					if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
+					if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) ) ) {
 						if ( Convert.ToDecimal( (String)myRecapRow.Cells["ScoreFeetRecap"].Value ) > 0
 							&& Convert.ToDecimal( curColValue ) > 0
-							&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
-							&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
-							&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+							&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+							&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value ) )
+							&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
 							) {
 							if ( (Decimal)myClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) TimeValidate();
 							checkRoundCalcSkierScore();
@@ -3093,10 +3093,10 @@ namespace WaterskiScoringSystem.Jump {
 
 		private void jumpRecapDataGridView_CellValidatedReride( String curColName, String curColValue ) {
 			if ( curColValue.Equals( "Y" ) ) {
-				if ( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value )
-					|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value )
-					|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
-					|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+				if ( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value )
+					|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value )
+					|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+					|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
 					) {
 					myRecapRow.Cells["ResultsRecap"].Value = "Pass";
 				}
@@ -3131,15 +3131,15 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curColValue.Equals( "Jump" )
 				&& !( curColValue.Equals( myOrigCellValue ) )
 				) {
-				if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
-					&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
+				if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value ) )
+					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) )
 					) {
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
 					TimeValidate();
 
-					if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) )
-						&& !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) )
+					if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreFeetRecap"].Value ) )
+						&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreMetersRecap"].Value ) )
 						) {
 						CalcDist();
 						saveScore();
@@ -3154,8 +3154,8 @@ namespace WaterskiScoringSystem.Jump {
 				}
 			
 			} else if ( curColValue.Equals( "Fall" ) && !( curColValue.Equals( myOrigCellValue ) ) ) {
-				if ( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
-					|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+				if ( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+					|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
 					) {
 					return;
 
@@ -3164,7 +3164,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 
 			} else if ( curColValue.Equals( "Pass" ) && !( curColValue.Equals( myOrigCellValue ) ) ) {
-				if ( !( CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value ) ) ) {
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
 					TimeValidate();
@@ -3182,10 +3182,10 @@ namespace WaterskiScoringSystem.Jump {
             myRecapRow.Cells["Updated"].Value = "Y";
 
             // BoatSplitTime (52M segment)
-            if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) ) return;
+            if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["BoatSplitTimeRecap"].Value) ) return;
 
             // BoatSplitTime2 (82M segment)
-            if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) ) return;
+            if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["BoatSplitTime2Recap"].Value) ) return;
 
             if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals("Pass") ) {
                 // Validate times
@@ -3196,7 +3196,7 @@ namespace WaterskiScoringSystem.Jump {
 
             } else if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals("Fall") ) {
                 // BoatEndTime (41M segment)
-                if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
+                if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
 
                 // Validate times
                 TimeValidate();
@@ -3205,14 +3205,14 @@ namespace WaterskiScoringSystem.Jump {
                 checkRoundCalcSkierScore();
 
             } else {
-                if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
+                if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["BoatEndTimeRecap"].Value) ) return;
 
                 // Validate times
                 TimeValidate();
 
                 // If feet and meters have been entered then check to determine if score for round should be update
-                if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["ScoreFeetRecap"].Value) ) return;
-                if ( CommonFunctions.isObjectEmpty(myRecapRow.Cells["ScoreMetersRecap"].Value) ) return;
+                if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["ScoreFeetRecap"].Value) ) return;
+                if ( HelperFunctions.isObjectEmpty(myRecapRow.Cells["ScoreMetersRecap"].Value) ) return;
                 checkRoundCalcSkierScore();
             }
         }
@@ -3230,7 +3230,7 @@ namespace WaterskiScoringSystem.Jump {
                 curTimerObj.Tick += new EventHandler( addRecapRowTimer );
                 curTimerObj.Start();
             
-			} else if ( !(CommonFunctions.isObjectEmpty( inRerideInd ) ) ) {
+			} else if ( !(HelperFunctions.isObjectEmpty( inRerideInd ) ) ) {
                 if ( inRerideInd.Equals( "Y" ) ) {
                     isAddRecapRowInProg = true;
                     Timer curTimerObj = new Timer();
@@ -3248,20 +3248,20 @@ namespace WaterskiScoringSystem.Jump {
 
 			if ( myRecapRow.Cells["ResultsRecap"].Value.Equals( "Jump" )
 				&& (
-				CommonFunctions.isObjectEmpty( scoreFeetTextBox.Text )
-				|| CommonFunctions.isObjectEmpty( scoreMetersTextBox.Text )
-				|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
-				|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
-				|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+				HelperFunctions.isObjectEmpty( scoreFeetTextBox.Text )
+				|| HelperFunctions.isObjectEmpty( scoreMetersTextBox.Text )
+				|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+				|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
+				|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
 				) ) {
 				return false;
 			}
 
 			if ( myRecapRow.Cells["ResultsRecap"].Value.Equals( "fall" )
 				&& (
-				CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
-				|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
-				|| CommonFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
+				HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTimeRecap"].Value )
+				|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatSplitTime2Recap"].Value )
+				|| HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatEndTimeRecap"].Value )
 				) ) {
 				return false;
 			}
@@ -3388,17 +3388,17 @@ namespace WaterskiScoringSystem.Jump {
 
 			passResults.skierRoundStatus = "2-InProg";
 			DataGridViewRow curRow = jumpRecapDataGridView.Rows[jumpRecapDataGridView.Rows.Count - 1];
-			if ( !( CommonFunctions.isObjectEmpty( curRow.Cells["ScoreFeetRecap"].Value ) )
-				&& !( CommonFunctions.isObjectEmpty( curRow.Cells["ScoreMetersRecap"].Value ) )
-				&& !( CommonFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) )
-				&& !( CommonFunctions.isObjectEmpty( curRow.Cells["BoatEndTimeRecap"].Value ) )
+			if ( !( HelperFunctions.isObjectEmpty( curRow.Cells["ScoreFeetRecap"].Value ) )
+				&& !( HelperFunctions.isObjectEmpty( curRow.Cells["ScoreMetersRecap"].Value ) )
+				&& !( HelperFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) )
+				&& !( HelperFunctions.isObjectEmpty( curRow.Cells["BoatEndTimeRecap"].Value ) )
 				) {
 				return true;
 
 			} else {
 				if ( curRow.Cells["ResultsRecap"].Value.Equals( "Fall" ) ) {
-					if ( !( CommonFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) )
-						&& !( CommonFunctions.isObjectEmpty( curRow.Cells["BoatEndTimeRecap"].Value ) )
+					if ( !( HelperFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) )
+						&& !( HelperFunctions.isObjectEmpty( curRow.Cells["BoatEndTimeRecap"].Value ) )
 					) {
 						return true;
 					}
@@ -3407,7 +3407,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 
 				if ( curRow.Cells["ResultsRecap"].Value.Equals( "Pass" ) ) {
-					if ( CommonFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) ) {
+					if ( HelperFunctions.isObjectEmpty( curRow.Cells["BoatSplitTimeRecap"].Value ) ) {
 						if ( curRow.Cells["RerideRecap"].Value.ToString().Equals( "Y" ) ) return true;
 						return false;
 					}
@@ -3442,7 +3442,7 @@ namespace WaterskiScoringSystem.Jump {
 				}
 				if ( curRow.Cells["RerideRecap"].Value.ToString().Equals( "Y" ) ) {
 					if ( curRow.Cells["TimeInTolRecap"].Value.ToString().Equals( "Y" ) ) {
-						if ( CommonFunctions.isObjectEmpty( curRow.Cells["RerideReasonRecap"].Value ) ) {
+						if ( HelperFunctions.isObjectEmpty( curRow.Cells["RerideReasonRecap"].Value ) ) {
 							passResults.skierRoundStatus = "3-Error";
 							passResults.passCountAcpt++;
 							MessageBox.Show( "Reride request must have a reason when times are in tolerance" );
@@ -4205,10 +4205,10 @@ namespace WaterskiScoringSystem.Jump {
             DataRow[] curJump3TimesDiv = getJump3TimesDiv( curDiv );
 
 			// Get score and tolerance data needed for making time validation determinations.
-			Decimal curScoreMeters = Convert.ToDecimal( CommonFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "0" ) );
-			Decimal curBoatEndTime = Convert.ToDecimal( CommonFunctions.getViewRowColValue( myRecapRow, "BoatEndTimeRecap", "0" ) );
-			Decimal curBoatSplit52Time = Convert.ToDecimal( CommonFunctions.getViewRowColValue( myRecapRow, "BoatSplitTimeRecap", "0" ) );
-			Decimal curBoatSplit82Time = Convert.ToDecimal( CommonFunctions.getViewRowColValue( myRecapRow, "BoatSplitTime2Recap", "0" ) );
+			Decimal curScoreMeters = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreMetersRecap", "0" ) );
+			Decimal curBoatEndTime = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "BoatEndTimeRecap", "0" ) );
+			Decimal curBoatSplit52Time = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "BoatSplitTimeRecap", "0" ) );
+			Decimal curBoatSplit82Time = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "BoatSplitTime2Recap", "0" ) );
             
 			String curEventClass = getSkierClass();
 
@@ -5555,7 +5555,7 @@ namespace WaterskiScoringSystem.Jump {
                 }
                 if (!(inEventGroup.ToLower().Equals( "all" ))) {
                     if (myTourRules.ToLower().Equals( "ncwsa" )) {
-						curSqlStmt.Append( CommonFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+						curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
                     
 					} else {
                         if (curIdx == 0) {

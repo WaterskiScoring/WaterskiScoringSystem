@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Globalization;
-using System.Linq;
-//using System.Web;
-using System.Xml;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Data.SqlServerCe;
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Tools;
 
-namespace WaterskiScoringSystem.Tools {
+namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveWeb {
         private static int myTourRounds;
         private static ExportLiveWebDialog myLiveWebDialog = null;
@@ -904,11 +896,10 @@ namespace WaterskiScoringSystem.Tools {
                                     if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
                                         curValue = ( (DateTime)curRow[curColumn.ColumnName] ).ToString( "yyyy-MM-dd HH:mm:ss" );
                                         curValue = encodeXmlValue( curValue );
-                                        //curValue = stringReplace( curValue, singleQuoteDelim, "''" );
                                         curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
                                     } else {
                                         curValue = stripLineFeedChar( curRow[curColumn.ColumnName].ToString() );
-                                        curValue = stringReplace( curValue, singleQuoteDelim, "''" );
+                                        curValue = HelperFunctions.stringReplace( curValue, singleQuoteDelim, "''" );
                                         curValue = encodeXmlValue( curValue );
                                         curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
                                     }
@@ -920,7 +911,6 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     curXml.Append( "</Table>" );
                     Log.WriteFile( curMethodName + ":" + curXml.ToString() );
-                    //MessageBox.Show( curXml.ToString() );
                 }
                 if (curMsg.Length > 1) {
                     MessageBox.Show( curMsg );
@@ -947,26 +937,6 @@ namespace WaterskiScoringSystem.Tools {
             curValue = curValue.Replace( '\r', ' ' );
             curValue = curValue.Replace( '\t', ' ' );
             return curValue;
-        }
-        public static String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
-            StringBuilder curNewValue = new StringBuilder( "" );
-
-            String[] curValues = inValue.Split( inCurValue );
-            if (curValues.Length > 1) {
-                int curCount = 0;
-                foreach (String curValue in curValues) {
-                    curCount++;
-                    if ( curCount < curValues.Length) {
-                        curNewValue.Append( curValue + inReplValue );
-                    } else {
-                        curNewValue.Append( curValue );
-                    }
-                }
-            } else {
-                curNewValue.Append( inValue );
-            }
-
-            return curNewValue.ToString();
         }
 
     }

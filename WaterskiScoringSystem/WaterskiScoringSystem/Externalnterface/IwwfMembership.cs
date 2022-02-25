@@ -3,16 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
 
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Tools;
 
-namespace WaterskiScoringSystem.Tools {
+namespace WaterskiScoringSystem.Externalnterface {
 	class IwwfMembership {
 
 		/*
@@ -34,33 +33,35 @@ namespace WaterskiScoringSystem.Tools {
 		 * http://usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
 		 */
 
-		private static String IwwfWebLocationStage = "http://iwwfsc.qubiteq.com/staging/api/licenses/check";
+		//private static String IwwfWebLocationStage = "http://iwwfsc.qubiteq.com/staging/api/licenses/check";
 		private static String IwwfWebLocationProd = "https://ems.iwwf.sport/api/licenses/check";
 		private static String GetForeignMember = "http://usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=";
 		private static String IwwfWebLocation = IwwfWebLocationProd;
 
 		private static String authApiKey = "IWWF";
 		private static String authApiValueProd = "uppdxfsblcgefnrprowjtwjjrnrhismf"; // Prod
-		private static String authApiValueStage1 = "cf1vfhl587mtny2eaeri6wfujusrfrnb"; // Staging
-		private static String authApiValueStage2 = "9g2yh2wb2hhs4vc4yzjb1n4tsibs2wfq"; // Staging V2
+		//private static String authApiValueStage1 = "cf1vfhl587mtny2eaeri6wfujusrfrnb"; // Staging
+		//private static String authApiValueStage2 = "9g2yh2wb2hhs4vc4yzjb1n4tsibs2wfq"; // Staging V2
 		private static String authApiValue = authApiValueProd;
 
-		private static Boolean showWarnMessage = true;
-		private static StringBuilder importWarningMessages = new StringBuilder( "" );
+		//private static Boolean showWarnMessage = true;
+		//private static StringBuilder importWarningMessages = new StringBuilder( "" );
+		private static Boolean myWarnMessageActive = true;
+		private static StringBuilder myImportWarningMessages = new StringBuilder( "" );
 
-		public static Boolean validateIwwfMembershipTmp( String inMemberId, String inTourDate ) {
-			return true;
+		public static Boolean warnMessageActive {
+			get => myWarnMessageActive;
+			set {
+				myWarnMessageActive = value;
+				myImportWarningMessages = new StringBuilder( "" );
+			}
 		}
 
-		public static void setShowWarnMessage( Boolean inShowMessage ) {
-			showWarnMessage = inShowMessage;
-			importWarningMessages = new StringBuilder( "" );
-		}
+		public static void showBulkWarnMessage() {
+			if ( myImportWarningMessages.Length == 0 ) return;
 
-		public static void displayBulkWarnMessage() {
-			if ( importWarningMessages.Length == 0 ) return;
 			ShowMessage showMessage = new ShowMessage();
-			showMessage.Message = importWarningMessages.ToString();
+			showMessage.Message = myImportWarningMessages.ToString();
 			showMessage.ShowDialog();
 		}
 
@@ -153,11 +154,12 @@ namespace WaterskiScoringSystem.Tools {
 					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
 					+ "{4}Event class changed to E"
 					, (String)curDataRow["SkierName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine );
+				Cursor.Current = Cursors.Default;
 				messageHandler( msg );
 				return;
 			}
 
-			Dictionary<string, object> athleteAttrList = getAttributeDictionary( respMsg, "Athlete" );
+			Dictionary<string, object> athleteAttrList = HelperFunctions.getAttributeDictionary( respMsg, "Athlete" );
 			if ( athleteAttrList == null ) {
 				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberIdAwsa );
 				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
@@ -170,8 +172,8 @@ namespace WaterskiScoringSystem.Tools {
 				return;
 			}
 
-			String iwwfLicensePurchaseLink = getAttributeValue( respMsg, "PurchaseLink" );
-			ArrayList licenseList = getAttributeList( respMsg, "Licenses" );
+			String iwwfLicensePurchaseLink =  HelperFunctions.getAttributeValue( respMsg, "PurchaseLink" );
+			ArrayList licenseList =  HelperFunctions.getAttributeList( respMsg, "Licenses" );
 			if ( licenseList == null || licenseList.Count == 0 ) {
 				msg = String.Format( "Skier {0} with AWSA MemberId {1} (Foreign MemberId {2})"
 					+ "{3}doesn't have an active IWWF license therefore not permitted to ski in class L/R"
@@ -199,22 +201,22 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		private static void messageHandler( String msg ) {
-			if ( showWarnMessage ) {
+			if ( myWarnMessageActive ) {
 				ShowMessage showMessage = new ShowMessage();
 				showMessage.Message = msg;
 				showMessage.ShowDialog();
 
 			} else {
-				importWarningMessages.Append( msg + System.Environment.NewLine + System.Environment.NewLine );
+				myImportWarningMessages.Append( msg + System.Environment.NewLine + System.Environment.NewLine );
 			}
 		}
 
 		private static Boolean readRespMsg( Dictionary<string, object> respMsg ) {
-			Dictionary<string, object> athleteAttrList = getAttributeDictionary( respMsg, "Athlete" );
+			Dictionary<string, object> athleteAttrList =  HelperFunctions.getAttributeDictionary( respMsg, "Athlete" );
 			if ( athleteAttrList == null ) {
-				String respFailedMsg = getAttributeValue( respMsg, "Message" );
-				Dictionary<string, object> respMsgModelList = getAttributeDictionary( respMsg, "ModelState" );
-				ArrayList respFailedList = getAttributeList( respMsgModelList, "model.IWWFAthleteId" );
+				String respFailedMsg =  HelperFunctions.getAttributeValue( respMsg, "Message" );
+				Dictionary<string, object> respMsgModelList =  HelperFunctions.getAttributeDictionary( respMsg, "ModelState" );
+				ArrayList respFailedList = HelperFunctions.getAttributeList( respMsgModelList, "model.IWWFAthleteId" );
 
 				String respFailedMsg2 = "";
 				if ( respFailedList == null ) {
@@ -229,10 +231,10 @@ namespace WaterskiScoringSystem.Tools {
 				return false;
 			}
 
-			String iwwfLicensePurchaseLink = getAttributeValue( respMsg, "PurchaseLink" );
-			ArrayList licenseList = getAttributeList( respMsg, "Licenses" );
+			String iwwfLicensePurchaseLink =  HelperFunctions.getAttributeValue( respMsg, "PurchaseLink" );
+			ArrayList licenseList =  HelperFunctions.getAttributeList( respMsg, "Licenses" );
 			if ( licenseList == null || licenseList.Count == 0 ) {
-				String bulkLicenseAvailable = getAttributeValue( respMsg, "FedBulkAgreement" );
+				String bulkLicenseAvailable =  HelperFunctions.getAttributeValue( respMsg, "FedBulkAgreement" );
 				if ( bulkLicenseAvailable.ToLower().Equals( "true" ) ) return true;
 
 				Log.WriteFile( String.Format( "validateIwwfMembership:Skier found but no IWWF license found for skier {0} {1} {2}" +
@@ -256,51 +258,25 @@ namespace WaterskiScoringSystem.Tools {
 		}
 		
 		private static Boolean readLicenseEntry( Dictionary<string, object> licenseEntry ) {
-			String licenseType = getAttributeValue( licenseEntry, "LicenseDescription" );
-			String licenseAvailable = getAttributeValue( licenseEntry, "Available" );
-			String licenseEvent = getAttributeValue( licenseEntry, "UsedInCompetition" );
+			String licenseType =  HelperFunctions.getAttributeValue( licenseEntry, "LicenseDescription" );
+			String licenseAvailable =  HelperFunctions.getAttributeValue( licenseEntry, "Available" );
+			String licenseEvent =  HelperFunctions.getAttributeValue( licenseEntry, "UsedInCompetition" );
 
 			if ( licenseAvailable.Equals( "True" ) ) {
 				Cursor.Current = Cursors.Default;
 				return true;
 			}
 
+			/*
 			if ( licenseType.Equals( "Single Competition" ) && licenseEvent.Equals( Properties.Settings.Default.AppSanctionNum ) ) {
 				Cursor.Current = Cursors.Default;
 				return true;
 			}
+			 */
 
 			return false;
 		}
 
-		private static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {
-			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return "";
-
-			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-				return ( (int)msgAttributeList[keyName] ).ToString();
-
-			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-				return ( (decimal)msgAttributeList[keyName] ).ToString();
-
-			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
-				return ( (String)msgAttributeList[keyName] );
-			
-			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Boolean" ) ) {
-				return ((Boolean)msgAttributeList[keyName] ).ToString();
-			}
-
-			return "";
-		}
-
-		private static Dictionary<string, object> getAttributeDictionary( Dictionary<string, object> msgAttributeList, String keyName ) {
-			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
-			return (Dictionary<string, object>)msgAttributeList[keyName];
-		}
-
-		private static ArrayList getAttributeList( Dictionary<string, object> msgAttributeList, String keyName ) {
-			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
-			return (ArrayList)msgAttributeList[keyName];
-		}
 		private static DataRow getMemberTourReg( String inSanctionId, String inMemberId ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT Distinct TR.MemberId, TR.SkierName, TR.Federation " );

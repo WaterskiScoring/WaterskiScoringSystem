@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Security;
 using System.Security.Cryptography;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Web;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
-using WaterskiScoringSystem.Common;
 
-namespace WaterskiScoringSystem.Tools {
+using WaterskiScoringSystem.Tools;
+
+namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveTwitter {
         private int myTourRounds;
         private static String myDefaultConsumerKey = "82KGGTUQ2pIydfkLiHg9g";

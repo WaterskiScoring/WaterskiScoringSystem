@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Admin;
-using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
     public partial class TourRegRankEquiv : Form {
@@ -352,27 +347,6 @@ namespace WaterskiScoringSystem.Tournament {
 			} else {
 				return null;
 			}
-		}
-
-		private String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
-			StringBuilder curNewValue = new StringBuilder( "" );
-
-			String[] curValues = inValue.Split( inCurValue );
-			if ( curValues.Length > 1 ) {
-				int curCount = 0;
-				foreach ( String curValue in curValues ) {
-					curCount++;
-					if ( curCount < curValues.Length ) {
-						curNewValue.Append( curValue + inReplValue );
-					} else {
-						curNewValue.Append( curValue );
-					}
-				}
-			} else {
-				curNewValue.Append( inValue );
-			}
-
-			return curNewValue.ToString();
 		}
 
 	}

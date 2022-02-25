@@ -79,8 +79,20 @@ namespace WaterskiScoringSystem.Common {
         }
 
 		private void setColumnsView() {
+			bool showBoatTimes = true;
+
+			PathDevZone0.Visible = false;
+			PathDevZone1.Visible = false;
+			PathDevZone2.Visible = false;
+			PathDevZone3.Visible = false;
+			PathDevZone4.Visible = false;
+			PathDevZone5.Visible = false;
+			PathDevZone6.Visible = false;
+
 			if ( myEvent.Equals( "Slalom" ) ) {
 				this.Text += " - Slalom";
+
+				BoatTime.Visible = showBoatTimes;
 
 				ScoreFeet.Visible = false;
 				ScoreMeters.Visible = false;
@@ -91,7 +103,7 @@ namespace WaterskiScoringSystem.Common {
 				BoatTimeBuoy1.Visible = false;
 				BoatTimeBuoy2.Visible = false;
 				BoatTimeBuoy3.Visible = false;
-				dataGridView.Rows.Clear();
+				//dataGridView.Rows.Clear();
 
 			} else {
 				this.Text += " - Jump";
@@ -101,36 +113,29 @@ namespace WaterskiScoringSystem.Common {
 				PassScore.Visible = false;
 				BoatTime.Visible = false;
 				
-				BoatSplitTime.Visible = false;
-				BoatSplitTime2.Visible = false;
-				BoatEndTime.Visible = false;
-				BoatTimeBuoy1.Visible = false;
-				BoatTimeBuoy2.Visible = false;
-				BoatTimeBuoy3.Visible = false;
+				BoatSplitTime.Visible = showBoatTimes;
+				BoatSplitTime2.Visible = showBoatTimes;
+				BoatEndTime.Visible = showBoatTimes;
+				
+				BoatTimeBuoy1.Visible = showBoatTimes;
+				BoatTimeBuoy2.Visible = showBoatTimes;
+				BoatTimeBuoy3.Visible = showBoatTimes;
 
-				this.PathDevZone0.Visible = false;
-				this.PathDevZone1.Visible = false;
-				this.PathDevZone2.Visible = false;
-				this.PathDevZone3.Visible = false;
-				this.PathDevZone4.Visible = false;
-				this.PathDevZone5.Visible = false;
-				this.PathDevZone6.Visible = false;
+				PathDevBuoy0.HeaderText = "Dev 180M";
+				PathDevBuoy1.HeaderText = "Dev ST";
+				PathDevBuoy2.HeaderText = "Dev 52M";
+				PathDevBuoy3.HeaderText = "Dev 82M";
+				PathDevBuoy4.HeaderText = "Dev 41M";
+				PathDevBuoy5.HeaderText = "Dev EC";
+				PathDevBuoy6.Visible = false;
 
-				this.PathDevBuoy0.HeaderText = "Dev 180M";
-				this.PathDevBuoy1.HeaderText = "Dev ST";
-				this.PathDevBuoy2.HeaderText = "Dev 52M";
-				this.PathDevBuoy3.HeaderText = "Dev 82M";
-				this.PathDevBuoy4.HeaderText = "Dev 41M";
-				this.PathDevBuoy5.HeaderText = "Dev EC";
-				this.PathDevBuoy6.Visible = false;
-
-				this.PathDevCum0.Visible = false;
-				this.PathDevCum1.Visible = false;
-				this.PathDevCum2.Visible = false;
-				this.PathDevCum3.Visible = false;
-				this.PathDevCum4.Visible = false;
-				this.PathDevCum5.Visible = false;
-				this.PathDevCum6.Visible = false;
+				PathDevCum0.Visible = false;
+				PathDevCum1.Visible = false;
+				PathDevCum2.Visible = false;
+				PathDevCum3.Visible = false;
+				PathDevCum4.Visible = false;
+				PathDevCum5.Visible = false;
+				PathDevCum6.Visible = false;
 			}
 
 		}

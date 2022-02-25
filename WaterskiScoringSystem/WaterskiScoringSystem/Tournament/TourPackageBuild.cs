@@ -614,13 +614,22 @@ namespace WaterskiScoringSystem.Tournament {
         private void exportBoatTimesButton_Click( object sender, EventArgs e ) {
             String mySanctionNum = Properties.Settings.Default.AppSanctionNum.Trim();
 
-			BoatPathExport myExportDataReport = new BoatPathExport();
+			ExportBoatTimeReport myExportTimeDataReport = new ExportBoatTimeReport();
+			myExportTimeDataReport.exportBoatTimes( mySanctionNum );
+			
+			BoatPathExport myExportBoatPathReport = new BoatPathExport();
 			if ( (Byte)this.myTourRow["SlalomRounds"] > 0 ) {
-				myExportDataReport.exportReport( mySanctionNum, "Slalom" );
+				ExportBoatTimesSlalom myExportDataSlalom = new ExportBoatTimesSlalom();
+				myExportDataSlalom.exportBoatTimes( mySanctionNum );
+
+				myExportBoatPathReport.exportReport( mySanctionNum, "Slalom" );
 			}
 
 			if ( (Byte)this.myTourRow["JumpRounds"] > 0 ) {
-				myExportDataReport.exportReport( mySanctionNum, "Jump" );
+				ExportBoatTimesJump myExportDataJump = new ExportBoatTimesJump();
+				myExportDataJump.exportBoatTimes( mySanctionNum );
+				
+				myExportBoatPathReport.exportReport( mySanctionNum, "Jump" );
 			}
 		}
 

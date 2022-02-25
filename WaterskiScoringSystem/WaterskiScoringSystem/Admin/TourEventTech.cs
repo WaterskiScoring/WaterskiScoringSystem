@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -122,7 +118,7 @@ namespace WaterskiScoringSystem.Admin {
                     + ";" + Rope3Line1075TextBox.Text
                     + ";" + Rope3Line1025TextBox.Text
                     ;
-                curValue = escapeString( curSlalomRopesSpecs );
+                curValue = HelperFunctions.escapeString( curSlalomRopesSpecs );
                 curSlalomRopesSpecs = curValue;
 
                 String curRopeHandlesSpecs = "Rope Handle"
@@ -131,7 +127,7 @@ namespace WaterskiScoringSystem.Admin {
                     + ";" + RopeHandle3TextBox.Text
                     + ";" + RopeHandle4TextBox.Text
                     ;
-                curValue = escapeString( curRopeHandlesSpecs );
+                curValue = HelperFunctions.escapeString( curRopeHandlesSpecs );
                 curRopeHandlesSpecs = curValue;
 
                 String curJumpRopesSpecs = "Jump Line"
@@ -145,7 +141,7 @@ namespace WaterskiScoringSystem.Admin {
                     + ";" + JumpHandle3TextBox.Text
                     + ";" + JumpHandle4TextBox.Text
                     ;
-                curValue = escapeString( curJumpRopesSpecs );
+                curValue = HelperFunctions.escapeString( curJumpRopesSpecs );
                 curJumpRopesSpecs = curValue;
 
                 myDbConn.Open();
@@ -158,10 +154,10 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( ", SlalomRopesSpecs = '" + curSlalomRopesSpecs + "'" );
                 curSqlStmt.Append( ", RopeHandlesSpecs = '" + curRopeHandlesSpecs + "'" );
                 curSqlStmt.Append( ", JumpRopesSpecs = '" + curJumpRopesSpecs + "'" );
-                curSqlStmt.Append( ", SlalomCourseSpecs = '" + escapeString(slalomCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", JumpCourseSpecs = '" + escapeString(jumpCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", TrickCourseSpecs = '" + escapeString(trickCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", BuoySpecs = '" + escapeString(buoySpecsTextBox.Text) + "' " );
+                curSqlStmt.Append( ", SlalomCourseSpecs = '" + HelperFunctions.escapeString(slalomCourseSpecsTextBox.Text) + "'" );
+                curSqlStmt.Append( ", JumpCourseSpecs = '" + HelperFunctions.escapeString(jumpCourseSpecsTextBox.Text) + "'" );
+                curSqlStmt.Append( ", TrickCourseSpecs = '" + HelperFunctions.escapeString(trickCourseSpecsTextBox.Text) + "'" );
+                curSqlStmt.Append( ", BuoySpecs = '" + HelperFunctions.escapeString(buoySpecsTextBox.Text) + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
 
                 mySqlStmt.CommandText = curSqlStmt.ToString();
@@ -190,7 +186,7 @@ namespace WaterskiScoringSystem.Admin {
                     if (myDataTable.Rows.Count > 0) {
                         String[] curValueList;
                         DataRow curRow = myDataTable.Rows[0];
-                        if ( isObjectEmpty( curRow["SlalomRopesSpecs"]) ) {
+                        if ( HelperFunctions.isObjectEmpty( curRow["SlalomRopesSpecs"]) ) {
                         } else {
                             curValueList = ( (String)curRow["SlalomRopesSpecs"] ).Split( ';' );
 
@@ -223,7 +219,7 @@ namespace WaterskiScoringSystem.Admin {
                             Rope3Line1025TextBox.Text = curValueList[29];
                         }
 
-                        if ( isObjectEmpty( curRow["RopeHandlesSpecs"]) ) {
+                        if ( HelperFunctions.isObjectEmpty( curRow["RopeHandlesSpecs"]) ) {
                         } else {
                             curValueList = ( (String)curRow["RopeHandlesSpecs"] ).Split( ';' );
                             RopeHandle1TextBox.Text = curValueList[1];
@@ -232,7 +228,7 @@ namespace WaterskiScoringSystem.Admin {
                             RopeHandle4TextBox.Text = curValueList[4];
                         }
 
-                        if ( isObjectEmpty( curRow["JumpRopesSpecs"]) ) {
+                        if ( HelperFunctions.isObjectEmpty( curRow["JumpRopesSpecs"]) ) {
                         } else {
                             curValueList = ( (String)curRow["JumpRopesSpecs"] ).Split( ';' );
                             JumpLine1TextBox.Text = curValueList[1];
@@ -244,22 +240,22 @@ namespace WaterskiScoringSystem.Admin {
                             JumpHandle3TextBox.Text = curValueList[8];
                             JumpHandle4TextBox.Text = curValueList[9];
                         }
-                        if (isObjectEmpty( curRow["SlalomCourseSpecs"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["SlalomCourseSpecs"] )) {
                             slalomCourseSpecsTextBox.Text = "";
                         } else {
                             slalomCourseSpecsTextBox.Text = (String)curRow["SlalomCourseSpecs"];
                         }
-                        if (isObjectEmpty( curRow["JumpCourseSpecs"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["JumpCourseSpecs"] )) {
                             jumpCourseSpecsTextBox.Text = "";
                         } else {
                             jumpCourseSpecsTextBox.Text = (String)curRow["JumpCourseSpecs"];
                         }
-                        if (isObjectEmpty( curRow["TrickCourseSpecs"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["TrickCourseSpecs"] )) {
                             trickCourseSpecsTextBox.Text = "";
                         } else {
                             trickCourseSpecsTextBox.Text = (String)curRow["TrickCourseSpecs"];
                         }
-                        if (isObjectEmpty( curRow["BuoySpecs"] )) {
+                        if (HelperFunctions.isObjectEmpty( curRow["BuoySpecs"] )) {
                             buoySpecsTextBox.Text = "";
                         } else {
                             buoySpecsTextBox.Text = (String)curRow["BuoySpecs"];
@@ -296,49 +292,6 @@ namespace WaterskiScoringSystem.Admin {
 
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty(object inObject) {
-            bool curReturnValue = false;
-            if (inObject == null) {
-                curReturnValue = true;
-            } else if (inObject == System.DBNull.Value) {
-                curReturnValue = true;
-            } else if (inObject.ToString().Length > 0) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
-
-        private String escapeString(String inValue) {
-            String curReturnValue = "";
-            char[] singleQuoteDelim = new char[] { '\'' };
-            //char[] doubleQuoteDelim = new char[] { '"' };
-            curReturnValue = stringReplace( inValue, singleQuoteDelim, "''" );
-            //curReturnValue = stringReplace( curValue1, doubleQuoteDelim, "\\\"" );
-            return curReturnValue;
-        }
-        private String stringReplace(String inValue, char[] inCurValue, String inReplValue) {
-            StringBuilder curNewValue = new StringBuilder( "" );
-
-            String[] curValues = inValue.Split( inCurValue );
-            if (curValues.Length > 1) {
-                int curCount = 0;
-                foreach (String curValue in curValues) {
-                    curCount++;
-                    if (curCount < curValues.Length) {
-                        curNewValue.Append( curValue + inReplValue );
-                    } else {
-                        curNewValue.Append( curValue );
-                    }
-                }
-            } else {
-                curNewValue.Append( inValue );
-            }
-
-            return curNewValue.ToString();
         }
 
     }

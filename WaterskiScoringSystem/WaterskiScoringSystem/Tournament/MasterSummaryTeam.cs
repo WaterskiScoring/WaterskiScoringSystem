@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -1552,7 +1550,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curXmlTemp.Append("<SanctionId>" + mySanctionNum + "</SanctionId>");
                     curXmlTemp.Append("<TeamCode>" + (String) curViewRow.Cells["TeamCode"].Value + "</TeamCode>");
                     curXmlTemp.Append("<AgeGroup>" + (String) curViewRow.Cells["TeamDiv"].Value + "</AgeGroup>");
-                    curXmlTemp.Append("<Name>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["TeamName"].Value, singleQuoteDelim, "''" ) ) + "</Name>");
+                    curXmlTemp.Append("<Name>" + ExportLiveWeb.encodeXmlValue(HelperFunctions.stringReplace((String) curViewRow.Cells["TeamName"].Value, singleQuoteDelim, "''" ) ) + "</Name>");
 
                     curXmlTemp.Append("<ReportFormat>");
                     if ( myTourRules.ToLower().Equals("awsa") ) {
@@ -1614,7 +1612,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
             curXmlTemp.Append("</Rows>");
             curXmlTemp.Append("</Table>");
-            curXml.Append(ExportLiveWeb.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
+            curXml.Append(HelperFunctions.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
 
             curKeyColumns = new String[]{ "SanctionId", "TeamCode", "AgeGroup", "LineNum" };
             curColumns = new String[] { "SanctionId", "TeamCode", "AgeGroup", "SkierCategory", "LineNum"
@@ -1686,7 +1684,7 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 					Decimal curDecimalValue = 0;
 					if ( curSlalomSkierName.Length > 0 ) {
-                        curXmlTemp.Append("<SlalomSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameSlalom"].Value, singleQuoteDelim, "''")) + "</SlalomSkierName>");
+                        curXmlTemp.Append("<SlalomSkierName>" + ExportLiveWeb.encodeXmlValue(HelperFunctions.stringReplace((String) curViewRow.Cells["PrintSkierNameSlalom"].Value, singleQuoteDelim, "''")) + "</SlalomSkierName>");
                         curXmlTemp.Append("<SlalomPlcmt>" + (String) curViewRow.Cells["PrintPlcmtSlalom"].Value + "</SlalomPlcmt>");
                         try {
 							Decimal.TryParse( (String)curViewRow.Cells["PrintScoreSlalom"].Value, out curDecimalValue );
@@ -1714,7 +1712,7 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
                     if ( curTrickSkierName.Length > 0 ) {
-                        curXmlTemp.Append("<TrickSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameTrick"].Value, singleQuoteDelim, "''" ) ) + "</TrickSkierName>");
+                        curXmlTemp.Append("<TrickSkierName>" + ExportLiveWeb.encodeXmlValue(HelperFunctions.stringReplace((String) curViewRow.Cells["PrintSkierNameTrick"].Value, singleQuoteDelim, "''" ) ) + "</TrickSkierName>");
                         curXmlTemp.Append("<TrickPlcmt>" + (String) curViewRow.Cells["PrintPlcmtTrick"].Value + "</TrickPlcmt>");
                         try {
 							Decimal.TryParse( (String) curViewRow.Cells["PrintScoreTrick"].Value, out curDecimalValue );
@@ -1742,7 +1740,7 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
                     if ( curJumpSkierName.Length > 0 ) {
-                        curXmlTemp.Append("<JumpSkierName>" + ExportLiveWeb.encodeXmlValue(ExportLiveWeb.stringReplace((String) curViewRow.Cells["PrintSkierNameJump"].Value, singleQuoteDelim, "''" ) ) + "</JumpSkierName>");
+                        curXmlTemp.Append("<JumpSkierName>" + ExportLiveWeb.encodeXmlValue(HelperFunctions.stringReplace((String) curViewRow.Cells["PrintSkierNameJump"].Value, singleQuoteDelim, "''" ) ) + "</JumpSkierName>");
                         curXmlTemp.Append("<JumpPlcmt>" + (String) curViewRow.Cells["PrintPlcmtJump"].Value + "</JumpPlcmt>");
                         try {
 							Decimal.TryParse( (String) curViewRow.Cells["PrintScoreJump"].Value, out curDecimalValue );
@@ -1776,7 +1774,7 @@ namespace WaterskiScoringSystem.Tournament {
 
             curXmlTemp.Append("</Rows>");
             curXmlTemp.Append("</Table>");
-            curXml.Append(ExportLiveWeb.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
+            curXml.Append(HelperFunctions.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
 
             curXml.Append("</LiveWebRequest>");
 

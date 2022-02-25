@@ -277,7 +277,7 @@ namespace WaterskiScoringSystem.Tournament {
             //Open main file to append data
             int curInputLineCount = 0;
             String inputBuffer = "", outputBuffer = "", tempBuffer = "";
-            String curRegion = getRegion(inSanctionId);
+            String curRegion = HelperFunctions.getRegion(inSanctionId);
 
             try {
                 using ( StreamReader curReader = new StreamReader(Path.Combine(curAdminTourDataLoc, curAdminTourFile)) ) {
@@ -354,47 +354,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getData( String inSelectStmt ) {
             return DataAccess.getDataTable(inSelectStmt);
-        }
-
-        private String getRegion(String inSanctionId) {
-            String curValue = inSanctionId.Substring(2, 1);
-            String returnValue = curValue;
-
-            if ( curValue.ToUpper().Equals("E") ) {
-                returnValue = "EAST";
-            } else if ( curValue.ToUpper().Equals("W") ) {
-                returnValue = "WEST";
-            } else if ( curValue.ToUpper().Equals("S") ) {
-                returnValue = "SOUTH";
-            } else if ( curValue.ToUpper().Equals("C") ) {
-                returnValue = "SOUTHCENTRAL";
-            } else if ( curValue.ToUpper().Equals("M") ) {
-                returnValue = "MIDWEST";
-            } else {
-                returnValue = curValue;
-            }
-            return returnValue;
-        }
-
-        private String stringReplace( String inValue, char inCurValue, String inReplValue ) {
-            StringBuilder curNewValue = new StringBuilder("");
-
-            String[] curValues = inValue.Split(inCurValue);
-            if ( curValues.Length > 1 ) {
-                int curCount = 0;
-                foreach ( String curValue in curValues ) {
-                    curCount++;
-                    if ( curCount < curValues.Length ) {
-                        curNewValue.Append(curValue + inReplValue);
-                    } else {
-                        curNewValue.Append(curValue);
-                    }
-                }
-            } else {
-                curNewValue.Append(inValue);
-            }
-
-            return curNewValue.ToString();
         }
 
     }

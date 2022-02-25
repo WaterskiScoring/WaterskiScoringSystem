@@ -35,9 +35,6 @@
 			this.memberImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportTourReg = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportTourRegPick = new System.Windows.Forms.ToolStripMenuItem();
-			this.currentFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.standardRegistrationForPickChooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.collegiateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportDataWstims = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTournament = new System.Windows.Forms.ToolStripMenuItem();
 			this.navRegistration = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,6 +85,7 @@
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.navBoatPathImportSlalomReport = new System.Windows.Forms.ToolStripMenuItem();
 			this.navBoatTimeImportJumpReport = new System.Windows.Forms.ToolStripMenuItem();
+			this.navJumpMeasurementImportReport = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.navVideoJumpSetup = new System.Windows.Forms.ToolStripMenuItem();
 			this.navMeterSetup = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +113,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.navJumpMeasurementImportReport = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -180,14 +177,14 @@
 			// navTournamentList
 			// 
 			this.navTournamentList.Name = "navTournamentList";
-			this.navTournamentList.Size = new System.Drawing.Size(159, 22);
+			this.navTournamentList.Size = new System.Drawing.Size(180, 22);
 			this.navTournamentList.Text = "&Tournament List";
 			this.navTournamentList.Click += new System.EventHandler(this.navTournamentList_Click);
 			// 
 			// navMemberList
 			// 
 			this.navMemberList.Name = "navMemberList";
-			this.navMemberList.Size = new System.Drawing.Size(159, 22);
+			this.navMemberList.Size = new System.Drawing.Size(180, 22);
 			this.navMemberList.Text = "&Member List";
 			this.navMemberList.Click += new System.EventHandler(this.navMemberList_Click);
 			// 
@@ -196,53 +193,30 @@
 			this.memberImportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navImportTourReg,
             this.navImportTourRegPick,
-            this.currentFormatToolStripMenuItem,
-            this.standardRegistrationForPickChooseToolStripMenuItem,
-            this.collegiateToolStripMenuItem,
             this.navImportDataWstims});
 			this.memberImportToolStripMenuItem.Name = "memberImportToolStripMenuItem";
-			this.memberImportToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+			this.memberImportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.memberImportToolStripMenuItem.Text = "Import";
 			this.memberImportToolStripMenuItem.Click += new System.EventHandler(this.navImportNcwsaFile_Click);
 			// 
 			// navImportTourReg
 			// 
 			this.navImportTourReg.Name = "navImportTourReg";
-			this.navImportTourReg.Size = new System.Drawing.Size(280, 22);
+			this.navImportTourReg.Size = new System.Drawing.Size(252, 22);
 			this.navImportTourReg.Text = "Import Online Registrations (OLR)";
 			this.navImportTourReg.Click += new System.EventHandler(this.navImportTourReg_Click);
 			// 
 			// navImportTourRegPick
 			// 
 			this.navImportTourRegPick.Name = "navImportTourRegPick";
-			this.navImportTourRegPick.Size = new System.Drawing.Size(280, 22);
+			this.navImportTourRegPick.Size = new System.Drawing.Size(252, 22);
 			this.navImportTourRegPick.Text = "Import OLR - Pick&&Choose";
 			this.navImportTourRegPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
-			// 
-			// currentFormatToolStripMenuItem
-			// 
-			this.currentFormatToolStripMenuItem.Name = "currentFormatToolStripMenuItem";
-			this.currentFormatToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
-			this.currentFormatToolStripMenuItem.Text = "Standard Registration Template";
-			this.currentFormatToolStripMenuItem.Click += new System.EventHandler(this.navImportFile_Click);
-			// 
-			// standardRegistrationForPickChooseToolStripMenuItem
-			// 
-			this.standardRegistrationForPickChooseToolStripMenuItem.Name = "standardRegistrationForPickChooseToolStripMenuItem";
-			this.standardRegistrationForPickChooseToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
-			this.standardRegistrationForPickChooseToolStripMenuItem.Text = "Standard Registration for Pick&&Choose";
-			// 
-			// collegiateToolStripMenuItem
-			// 
-			this.collegiateToolStripMenuItem.Name = "collegiateToolStripMenuItem";
-			this.collegiateToolStripMenuItem.Size = new System.Drawing.Size(280, 22);
-			this.collegiateToolStripMenuItem.Text = "Collegiate Registration Template";
-			this.collegiateToolStripMenuItem.Click += new System.EventHandler(this.navImportNcwsaFile_Click);
 			// 
 			// navImportDataWstims
 			// 
 			this.navImportDataWstims.Name = "navImportDataWstims";
-			this.navImportDataWstims.Size = new System.Drawing.Size(280, 22);
+			this.navImportDataWstims.Size = new System.Drawing.Size(252, 22);
 			this.navImportDataWstims.Text = "WSTIMS For Windows";
 			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
 			// 
@@ -629,6 +603,13 @@
 			this.navBoatTimeImportJumpReport.Text = "BoatTime Import Report";
 			this.navBoatTimeImportJumpReport.Click += new System.EventHandler(this.navBoatTimeJumpImportReport_Click);
 			// 
+			// navJumpMeasurementImportReport
+			// 
+			this.navJumpMeasurementImportReport.Name = "navJumpMeasurementImportReport";
+			this.navJumpMeasurementImportReport.Size = new System.Drawing.Size(256, 22);
+			this.navJumpMeasurementImportReport.Text = "Jump Measurement Import Report";
+			this.navJumpMeasurementImportReport.Click += new System.EventHandler(this.navJumpMeasurementImportReport_Click);
+			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -835,13 +816,6 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
-			// navJumpMeasurementImportReport
-			// 
-			this.navJumpMeasurementImportReport.Name = "navJumpMeasurementImportReport";
-			this.navJumpMeasurementImportReport.Size = new System.Drawing.Size(256, 22);
-			this.navJumpMeasurementImportReport.Text = "Jump Measurement Import Report";
-			this.navJumpMeasurementImportReport.Click += new System.EventHandler(this.navJumpMeasurementImportReport_Click);
-			// 
 			// SystemMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -918,8 +892,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem navTeamSummary;
         private System.Windows.Forms.ToolStripMenuItem navMasterSummary;
-        private System.Windows.Forms.ToolStripMenuItem collegiateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem currentFormatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navImportDataWstims;
         private System.Windows.Forms.ToolStripMenuItem navOfficialWorkAsgmt;
         private System.Windows.Forms.ToolStripMenuItem navTourPackage;
@@ -946,7 +918,6 @@
 		private System.Windows.Forms.ToolStripMenuItem navImportTourRegPick;
 		private System.Windows.Forms.ToolStripMenuItem navImportOLR;
 		private System.Windows.Forms.ToolStripMenuItem navImportOLRPick;
-		private System.Windows.Forms.ToolStripMenuItem standardRegistrationForPickChooseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem navBoatPathReportSlalom;
 		private System.Windows.Forms.ToolStripMenuItem boatPathReportToolStripMenuItem;
