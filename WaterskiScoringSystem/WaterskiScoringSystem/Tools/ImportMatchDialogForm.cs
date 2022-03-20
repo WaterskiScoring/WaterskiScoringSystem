@@ -50,7 +50,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public String MatchCommand {
             get {
-                return myMatchCommand;
+                return myMatchCommand.ToLower();
             }
             set {
                 myMatchCommand = value;

@@ -18,11 +18,10 @@ namespace WaterskiScoringSystem.Tournament {
         private String myAgeGroup;
 
         private DataRow myTourRow;
-		private DataRow myMemberRow;
+		//private DataRow myMemberRow;
 
 		private TourEventReg myTourEventReg;
         private FedDropdownList myFedDropdownList;
-        private MemberStatusDropdownList myMemberStatusDropdownList;
         private MemberIdValidate myMemberIdValidate;
 
         public EditRegMember() {
@@ -61,7 +60,6 @@ namespace WaterskiScoringSystem.Tournament {
                             + mySanctionNum.Substring( 0, 2 );
 
                         myFedDropdownList = new FedDropdownList();
-                        myMemberStatusDropdownList = new MemberStatusDropdownList();
                         myTourEventReg = new TourEventReg();
                         myMemberIdValidate = new MemberIdValidate();
     
@@ -69,20 +67,9 @@ namespace WaterskiScoringSystem.Tournament {
                         editFederation.DisplayMember = "ItemName";
                         editFederation.ValueMember = "ItemValue";
 
-                        editMemberStatus.DataSource = myMemberStatusDropdownList.DropdownList;
-                        editMemberStatus.DisplayMember = "ItemName";
-                        editMemberStatus.ValueMember = "ItemValue";
-
                         editGenderSelect.addClickEvent( editGenderSelect_Click );
 
-                        if ( myAgeGroup.Length > 0 ) {
-                            this.Text = "Edit Member Registration";
-                            editMemberDataLoad( myMemberId, myAgeGroup );
-
-						} else {
-							this.Text = "Add Registration for Member";
-							editMemberDataLoad( myMemberId );
-						}
+						editMemberDataLoad( myMemberId, myAgeGroup );
 
 					} else {
                         MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
@@ -106,113 +93,106 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void saveButton_Click( object sender, EventArgs e ) {
-            bool curContinueUpdate = true;
-            if ( editMemberId_Validation() ) {
-                if ( editAgeGroup_Validation() ) {
-                    if (isMemberIdChanged || isAgeGroupChanged) {
-                        if (isAgeGroupChanged) {
-                            if (checkSkierEventReg()) {
-                                updateMemberKey();
-                            } else {
-                                curContinueUpdate = false;
-                            }
-                        } else {
-                            updateMemberKey();
-                        }
-                    }
-                    if (curContinueUpdate) {
-						MemberEntry curMemberEntry = new MemberEntry();
-						curMemberEntry.MemberId = editMemberId.Text;
-						curMemberEntry.AgeGroup = AgeGroupSelect.CurrentValue;
-						curMemberEntry.Note = "Registration added";
-						bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
-                        if (curReqstStatus) {
-                            myReqstStatus = "Added";
-                        } else {
-                            myReqstStatus = "Skipped";
-                        }
-                        updateMemberData();
-                        DialogResult = DialogResult.OK;
-                    } else {
-                        //DialogResult = DialogResult.Cancel;
-                    }
-                }
-            } else {
-                //Invalid data, don't close window
-            }
-        }
+			if ( !( editMemberId_Validation() ) ) return;
+			if ( !(editAgeGroup_Validation()) ) return;
+			
+			MemberEntry curMemberEntry = new MemberEntry();
+			curMemberEntry.MemberId = editMemberId.Text;
+			curMemberEntry.AgeGroup = AgeGroupSelect.CurrentValue;
+			curMemberEntry.Note = "Registration added";
+			
+			if ( isMemberIdChanged || isAgeGroupChanged ) {
+				if ( isAgeGroupChanged ) {
+					if ( checkSkierEventReg() ) {
+						updateMemberKey( curMemberEntry );
+					} else {
+						return;
+					}
+				} else {
+					updateMemberKey( curMemberEntry );
+				}
+			}
 
-        private void updateMemberKey() {
+			if ( updateMemberData( curMemberEntry ) ) {
+				bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
+				if ( curReqstStatus ) {
+					myReqstStatus = "Added";
+				} else {
+					myReqstStatus = "Skipped";
+				}
+				DialogResult = DialogResult.OK;
+			}
+		}
+
+		private void updateMemberKey( MemberEntry curMemberEntry ) {
             int rowsProc = 0;
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            String curMemberId = editMemberId.Text;
-            String curAgeGroup = AgeGroupSelect.CurrentValue;
 
             //Remove all record and update all scores for current tournament
             try {
-                curSqlStmt.Append( "Update MemberList Set MemberId = '" + curMemberId + "' " );
+                curSqlStmt.Append( "Update MemberList Set MemberId = '" + curMemberEntry.MemberId + "' " );
                 curSqlStmt.Append( "Where MemberId = '" + myMemberId + "' " );
-                curSqlStmt.Append( "  And not exists (Select 1 From MemberList Where MemberId = '" + curMemberId + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From MemberList Where MemberId = '" + curMemberEntry.MemberId + "')" );
                 rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
                 curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update TourReg Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update TourReg Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "' " );
-                curSqlStmt.Append( "  And not exists (Select 1 From TourReg Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From TourReg Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update EventReg Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update EventReg Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "' " );
-                curSqlStmt.Append( "  And not exists (Select 1 From EventReg Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From EventReg Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update SlalomRecap Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update SlalomRecap Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From SlalomRecap Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From SlalomRecap Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update SlalomScore Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update SlalomScore Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From SlalomScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From SlalomScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update TrickPass Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update TrickPass Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From TrickPass Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From TrickPass Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update TrickScore Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update TrickScore Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From TrickScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From TrickScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update JumpRecap Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update JumpRecap Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From JumpRecap Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From JumpRecap Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update JumpScore Set MemberId = '" + curMemberId + "', AgeGroup = '" + curAgeGroup + "' " );
+                curSqlStmt.Append( "Update JumpScore Set MemberId = '" + curMemberEntry.MemberId + "', AgeGroup = '" + curMemberEntry.AgeGroup + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "' AND AgeGroup = '" + myAgeGroup + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From JumpScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From JumpScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "' AND AgeGroup = '" + curMemberEntry.AgeGroup + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update OfficialWork Set MemberId = '" + curMemberId + "' " );
+                curSqlStmt.Append( "Update OfficialWork Set MemberId = '" + curMemberEntry.MemberId + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From OfficialWork Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From OfficialWork Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update OfficialWorkAsgmt Set MemberId = '" + curMemberId + "' " );
+                curSqlStmt.Append( "Update OfficialWorkAsgmt Set MemberId = '" + curMemberEntry.MemberId + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + myMemberId + "'" );
-                curSqlStmt.Append( "  And not exists (Select 1 From TrickScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "')" );
+                curSqlStmt.Append( "  And not exists (Select 1 From TrickScore Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "')" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				isMemberIdChanged = false;
@@ -220,107 +200,73 @@ namespace WaterskiScoringSystem.Tournament {
             } catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to change member id \n" + excp.Message );
             }
-
-            updateMemberData();
         }
 
-        private void updateMemberData() {
-            String curMemberId = "", curLastName = "", curFirstName = "", curCity = "", curState = "",
-                curFed = "", curGender = "", curAgeGroup = "", curMemberStatus = "", curReadyToSki = "N";
-            byte curSkiYearAge = 0;
-            bool curValidStatus = true;
+        private bool updateMemberData( MemberEntry curMemberEntry ) {
+			string curReadyToSki = "N";
 
-            if ( editMemberId_Validation() ) {
-                curMemberId = editMemberId.Text;
-            } else {
-                curValidStatus = false;
-            }
-            if ( editFirstName_Validation() ) {
-                curFirstName = editFirstName.Text;
-            } else {
-                curValidStatus = false;
-            }
-            if ( editLastName_Validation() ) {
-                curLastName = editLastName.Text;
-                curLastName = curLastName.Replace( "'", "''" );
-            } else {
-                curValidStatus = false;
-            }
-            if ( editGenderSelect_Validation() ) {
-                curGender = editGenderSelect.RatingValue;
-                String curValue = (String)editGenderSelect.Tag;
-            } else {
-                curValidStatus = false;
-            }
-            if ( editSkiYearAge_Validation() ) {
-                curSkiYearAge = Convert.ToByte( editSkiYearAge.Text );
-            } else {
-                curValidStatus = false;
-            }
-            if ( editAgeGroup_Validation() ) {
-                curAgeGroup = AgeGroupSelect.CurrentValue;
-            } else {
-                curValidStatus = false;
-            }
-            if ( editMemberStatus_Validation() ) {
-				curMemberStatus = editMemberStatus.SelectedValue.ToString();
-                if ( curMemberStatus.ToUpper().Equals( "ACTIVE" ) ) {
-                    curReadyToSki = "Y";
-                }
-            } else {
-                curValidStatus = false;
-            }
-            if ( editState_Validation() ) {
-                curState = editState.Text;
-            } else {
-                curValidStatus = false;
-            }
-            if (editCity_Validation()) {
-                curCity = editCity.Text;
-                curCity = curCity.Replace("'", "''");
-            } else {
-                curValidStatus = false;
-            }
-            if (editFederation_Validation()) {
-                curFed = (String)editFederation.SelectedValue;
-            } else {
-                curValidStatus = false;
-            }
+			if ( curMemberEntry.AgeGroup == null || curMemberEntry.AgeGroup.Length == 0 ) {
+				if ( !( editAgeGroup_Validation() ) ) return false;
+				curMemberEntry.AgeGroup = AgeGroupSelect.CurrentValue;
+			}
+
+			if ( !( editFirstName_Validation() ) ) return false;
+			curMemberEntry.FirstName = editFirstName.Text;
+			if ( !( editLastName_Validation() ) ) return false;
+			curMemberEntry.LastName = editLastName.Text;
+
+			if ( !( editGenderSelect_Validation() ) ) return false;
+			curMemberEntry.Gender = editGenderSelect.RatingValue;
+            String curGenderSelect = (String)editGenderSelect.Tag;
+
+			if ( !( editSkiYearAge_Validation() ) ) return false;
+			curMemberEntry.SkiYearAge = Convert.ToByte( editSkiYearAge.Text );
+
+			curMemberEntry.MemberStatus = showMemberStatus.Text;
+            if ( curMemberEntry.MemberStatus.ToUpper().Equals( "ACTIVE" ) ) curReadyToSki = "Y";
+
+            if ( !(editState_Validation()) ) return false;
+			curMemberEntry.State = editState.Text;
+			if ( !( editCity_Validation() ) ) return false;
+			curMemberEntry.City = editCity.Text;
+			if ( !( editFederation_Validation() ) ) return false;
+			curMemberEntry.Federation = (String)editFederation.SelectedValue;
 
             StringBuilder curSqlStmt = new StringBuilder( "" );
             try {
-                if ( curValidStatus ) {
-                    curSqlStmt.Append( "Update MemberList " );
-                    curSqlStmt.Append( " Set FirstName = '" + curFirstName + "'" );
-                    curSqlStmt.Append( ", LastName = '" + curLastName + "'" );
-                    curSqlStmt.Append( ", State = '" + curState + "'" );
-                    curSqlStmt.Append( ", City = '" + curCity + "'" );
-                    curSqlStmt.Append( ", Federation = '" + curFed + "'" );
-                    curSqlStmt.Append( ", SkiYearAge = " + curSkiYearAge.ToString() );
-                    curSqlStmt.Append( ", Gender = '" + curGender + "'" );
-                    curSqlStmt.Append( ", MemberStatus = '" + curMemberStatus + "'" );
-                    curSqlStmt.Append( ", UpdateDate = getdate() " );
-                    curSqlStmt.Append( " Where MemberId = '" + curMemberId + "'" );
-					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				curSqlStmt.Append( "Update MemberList " );
+				curSqlStmt.Append( " Set FirstName = '" + curMemberEntry.getFirstNameForDB() + "'" );
+				curSqlStmt.Append( ", LastName = '" + curMemberEntry.getLastNameForDB() + "'" );
+				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
+				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
+				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
+				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
+				curSqlStmt.Append( ", MemberStatus = '" + curMemberEntry.MemberStatus + "'" );
+				curSqlStmt.Append( ", UpdateDate = getdate() " );
+				curSqlStmt.Append( " Where MemberId = '" + curMemberEntry.MemberId + "'" );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
-					curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "Update TourReg " );
-                    curSqlStmt.Append( " Set SkierName = '" + curLastName + ", " + curFirstName + "'" );
-                    curSqlStmt.Append( ", City = '" + curCity + "'" );
-                    curSqlStmt.Append( ", State = '" + curState + "'" );
-                    curSqlStmt.Append( ", Federation = '" + curFed + "'" );
-                    curSqlStmt.Append( ", SkiYearAge = " + curSkiYearAge.ToString() );
-                    curSqlStmt.Append( ", Gender = '" + curGender + "'" );
-                    curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
-					curSqlStmt.Append(", AwsaMbrshpComment = '" + curMemberStatus + "'");
-					curSqlStmt.Append( ", LastUpdateDate = getdate() " );
-                    curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberId + "'" );
-					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Update TourReg " );
+				curSqlStmt.Append( " Set SkierName = '" + curMemberEntry.getSkierNameForDB() + "'" );
+				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
+				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
+				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
+				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
+				curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
+				curSqlStmt.Append( ", AwsaMbrshpComment = '" + curMemberEntry.MemberStatus + "'" );
+				curSqlStmt.Append( ", LastUpdateDate = getdate() " );
+				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "'" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
-					isDataModified = false;
-                }
-            } catch ( Exception excp ) {
+				isDataModified = false;
+				return true;
+            
+			} catch ( Exception excp ) {
                 MessageBox.Show( "Error attempting to update member data \n" + excp.Message );
+				return false;
             }
         }
 
@@ -335,119 +281,42 @@ namespace WaterskiScoringSystem.Tournament {
             return true;
         }
 
-		private void editMemberDataLoad(String inMemberId ) {
-			myMemberRow = getMemberData( myMemberId );
-			if ( myMemberRow == null ) {
-				MessageBox.Show( "Member data not found for MemberId " + myMemberId );
-				return;
-			}
-			editMemberId.Text = (String)myMemberRow["MemberId"];
-            try {
-                editFirstName.Text = (String)myMemberRow["FirstName"];
-                editLastName.Text = (String)myMemberRow["LastName"];
-            } catch {
-                String curSkierName = (String)myMemberRow["SkierName"];
-                String[] curNameList = curSkierName.Split( ',' );
-                if ( curNameList.Length > 1 ) {
-                    editLastName.Text = curNameList[0].Trim();
-                    editFirstName.Text = curNameList[1].Trim();
-                } else {
-                    editLastName.Text = curNameList[0].Trim();
-                    editFirstName.Text = "";
-                }
-            }
-            try {
-                editGenderSelect.RatingValue = (String)myMemberRow["Gender"];
-            } catch {
-                editGenderSelect.RatingValue = "";
-            }
-            try {
-                editSkiYearAge.Text = ((Byte) myMemberRow["SkiYearAge"]).ToString();
-			} catch {
-                if (editGenderSelect.RatingValue.Length > 0) {
-                    AgeGroupSelect.SelectList_Load( editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
-                } else {
-                    AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
-                }
-                AgeGroupSelect.CurrentValue = "";
-                editSkiYearAge.Text = "0";
-            }
-            LoadAgeGroupList();
-
-            try {
-                editMemberStatus.Text = (String)myMemberRow["MemberStatus"];
-            } catch {
-                editMemberStatus.Text = "";
-            }
-            try {
-                editCity.Text = (String)myMemberRow["City"];
-            } catch {
-                editCity.Text = "";
-            }
-            try {
-                editState.Text = (String)myMemberRow["State"];
-            } catch {
-                editState.Text = "";
-            }
-            try {
-				String curValue = (String)myMemberRow["Federation"];
-				editFederation.SelectedValue = ((String)myMemberRow["Federation"]).ToLower();
-            } catch {
-                editFederation.SelectedValue = "";
-            }
-
-			showMemberRegList();
-        }
-
 		private void editMemberDataLoad(String inMemberId, String inAgeGroup) {
+			this.Text = "Edit Member Registration";
 			DataRow curDataRow = getMemberTourReg( inMemberId, inAgeGroup );
 			if ( curDataRow == null ) {
-				MessageBox.Show( "Tournament registration entry not found for member " + inMemberId + " in division " + inAgeGroup );
-				return;
+				this.Text = "Add Registration for Member";
+				curDataRow = getMemberData( myMemberId );
+				if ( curDataRow == null ) {
+					MessageBox.Show( "Member entry not found in tournament registration or local member list " + inMemberId + " in division " + inAgeGroup );
+					return;
+				}
 			}
 
 			editMemberId.Text = (String) curDataRow["MemberId"];
-			try {
-				String curFirstName = "", curLastName = "", curSkierName = "";
-				if ( curDataRow["SkierName"] != System.DBNull.Value ) {
-					curSkierName = (String) curDataRow["SkierName"];
-				}
-				if ( curDataRow["FirstName"] != System.DBNull.Value) {
-					curFirstName = (String) curDataRow["FirstName"];
-				}
-				if ( curDataRow["FirstName"] != System.DBNull.Value ) {
-					curLastName = (String) curDataRow["LastName"];
-				}
-				if ( curSkierName .Length == 0 ) {
-					curSkierName = curLastName + ", " + curFirstName;
-                }
-				if ( curFirstName.Length > 0 && curLastName.Length > 0 ) {
-					editFirstName.Text = curFirstName;
-					editLastName.Text = curLastName;
+			string curSkierName = HelperFunctions.getDataRowColValue( curDataRow, "SkierName", "" );
+			string curFirstName = HelperFunctions.getDataRowColValue( curDataRow, "FirstName", "" );
+			string curLastName = HelperFunctions.getDataRowColValue( curDataRow, "LastName", "" );
+			if ( curSkierName.Length == 0 ) curSkierName = curLastName + ", " + curFirstName;
+			if ( curFirstName.Length > 0 && curLastName.Length > 0 ) {
+				editFirstName.Text = curFirstName;
+				editLastName.Text = curLastName;
+
+			} else {
+				String[] curNameList = curSkierName.Split( ',' );
+				if ( curNameList.Length > 1 ) {
+					editFirstName.Text = curNameList[1].Trim();
+					editLastName.Text = curNameList[0].Trim();
 
 				} else {
-					String[] curNameList = curSkierName.Split( ',' );
-					if ( curNameList.Length > 1 ) {
-						editFirstName.Text = curNameList[1].Trim();
-						editLastName.Text = curNameList[0].Trim();
-
-					} else {
-						editFirstName.Text = "";
-						editLastName.Text = curNameList[0].Trim();
-					}
+					editFirstName.Text = "";
+					editLastName.Text = curNameList[0].Trim();
 				}
+			}
 
-			} catch {
-				editFirstName.Text = "";
-				editLastName.Text = "";
-			}
 			try {
-				editGenderSelect.RatingValue = (String) curDataRow["Gender"];
-			} catch {
-				editGenderSelect.RatingValue = "";
-			}
-			try {
-				Byte curValue = (byte) curDataRow["SkiYearAge"];
+				editGenderSelect.RatingValue = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
+				Byte curValue = Convert.ToByte( HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "0" ) );
 				editSkiYearAge.Text = curValue.ToString();
 				if ( curValue > 1 && curValue < 100 ) {
 					if ( editGenderSelect.RatingValue.Length > 0 ) {
@@ -464,7 +333,9 @@ namespace WaterskiScoringSystem.Tournament {
 					}
 					editSkiYearAge.Text = "";
 				}
-				AgeGroupSelect.CurrentValue = (String) curDataRow["AgeGroup"];
+				String curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+				if ( curAgeGroup.Length == 0 ) curAgeGroup = inAgeGroup;
+				AgeGroupSelect.CurrentValue = curAgeGroup;
 
 			} catch {
 				if ( editGenderSelect.RatingValue.Length > 0 ) {
@@ -476,49 +347,10 @@ namespace WaterskiScoringSystem.Tournament {
 				editSkiYearAge.Text = "";
 			}
 
-			try {
-				editCity.Text = (String) curDataRow["City"];
-			} catch {
-				editCity.Text = "";
-			}
-			try {
-				editState.Text = (String) curDataRow["State"];
-			} catch {
-				editState.Text = "";
-			}
-			try {
-				editFederation.SelectedValue = ( (String)curDataRow["Federation"] ).ToLower();
-			} catch {
-				editFederation.SelectedValue = "";
-			}
-			if ( curDataRow["MemberStatus"] != System.DBNull.Value && ( (String) curDataRow["MemberStatus"]).Length > 0 ) {
-				String curMemberStatus = (String)curDataRow["MemberStatus"];
-				int idx = editMemberStatus.FindStringExact(curMemberStatus);
-				if ( idx < 0 ) {
-					//editMemberStatus.Items.Add(new ListItem(curMemberStatus, curMemberStatus));
-					myMemberStatusDropdownList.addNewValue(curMemberStatus);
-
-					editMemberStatus.DataSource = null;
-					editMemberStatus.Items.Clear();
-					editMemberStatus.DataSource = myMemberStatusDropdownList.DropdownList;
-					editMemberStatus.DisplayMember = "ItemName";
-					editMemberStatus.ValueMember = "ItemValue";
-
-				}
-				editMemberStatus.SelectedIndex = editMemberStatus.FindStringExact(curMemberStatus);
-				editMemberStatus.Text = curMemberStatus;
-
-			} else {
-				try {
-					if ( ( (String) curDataRow["ReadyToSki"] ).Equals( "Y" ) ) {
-						editMemberStatus.Text = "Active";
-					} else {
-						editMemberStatus.Text = "Inactive";
-					}
-				} catch {
-					editMemberStatus.Text = "Inactive";
-				}
-			}
+			editCity.Text = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
+			editState.Text = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+			editFederation.SelectedValue = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToLower();
+			showMemberStatus.Text = HelperFunctions.getDataRowColValue( curDataRow, "MemberStatus", "Inactive" );
 
 			showMemberRegList();
 		}
@@ -842,16 +674,6 @@ namespace WaterskiScoringSystem.Tournament {
             if ( editGenderSelect.RatingValue.Trim().Length != 1 ) {
                 curReturnStatus = false;
                 MessageBox.Show( "Gender is a required field" );
-            }
-            return curReturnStatus;
-        }
-
-        private bool editMemberStatus_Validation() {
-            bool curReturnStatus = true;
-            isDataModified = true;
-            if ( editMemberStatus.Text.Trim().Length == 0 ) {
-                curReturnStatus = false;
-                MessageBox.Show( "Member status is a required field" );
             }
             return curReturnStatus;
         }

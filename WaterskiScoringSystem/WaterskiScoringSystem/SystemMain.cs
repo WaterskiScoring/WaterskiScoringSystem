@@ -367,6 +367,12 @@ namespace WaterskiScoringSystem {
 			mdiStatusMsg.Text = "Import tournament registrations opening";
 			curImportMember.importPreRegMembers();
 		}
+		
+		private void navImportMemberFile_Click( object sender, EventArgs e ) {
+			ImportMemberFile curImportMemberFile = new ImportMemberFile();
+			mdiStatusMsg.Text = "Import member file";
+			curImportMemberFile.importData();
+		}
 
 		private void navImportTourRegPick_Click( object sender, EventArgs e ) {
 			ImportMember curImportMember = new ImportMember( null, "pick" );
@@ -888,28 +894,7 @@ namespace WaterskiScoringSystem {
 
         }
 
-        private void navImportFile_Click( object sender, EventArgs e ) {
-            ImportData myImportData = new ImportData();
-            if ( myImportData.importMemberDataCurrent() ) {
-                MessageBox.Show( "Member data import complete." );
-            }
-        }
-
-		private void navImportPickFile_Click( object sender, EventArgs e ) {
-			ImportData myImportData = new ImportData();
-			if ( myImportData.importMemberDataCurrent("Pick") ) {
-				MessageBox.Show( "Member data import complete." );
-			}
-		}
-
-		private void navImportNcwsaFile_Click( object sender, EventArgs e ) {
-            ImportData myImportData = new ImportData();
-            if ( myImportData.importMemberDataNcwsa() ) {
-                MessageBox.Show( "Member data import complete." );
-            }
-        }
-
-        private void overviewToolStripMenuItem_Click( object sender, EventArgs e ) {
+		private void overviewToolStripMenuItem_Click( object sender, EventArgs e ) {
             MessageBox.Show( "See the Wstims For Windows Newsletter Archive \nhttp://www.waterskiresults.com/filelist.php?FolderName=Newsletters");
 		}
 
@@ -996,6 +981,10 @@ namespace WaterskiScoringSystem {
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
         }
+
+		private void importMemberFileToolStripMenuItem1_Click( object sender, EventArgs e ) {
+
+		}
 	}
 }
 

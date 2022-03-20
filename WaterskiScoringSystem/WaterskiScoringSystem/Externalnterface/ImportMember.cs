@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tournament;
+using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Externalnterface {
 	class ImportMember {
@@ -32,6 +33,26 @@ namespace WaterskiScoringSystem.Externalnterface {
         private ProgressWindow myProgressInfo = null;
         private MemberIdValidate myMemberIdValidate;
 		private TourEventReg myTourEventReg;
+
+		public static int MembershipStatusCodeActive = 1;
+		public static string MembershipStatusNone = "No Membership Status";
+
+		private static Dictionary<int, string> myMembershipStatus = new Dictionary<int, string> {
+			{ 0, "No Membership Status" }
+			, { 1, "Active" }
+			, { 2, "Expired" }
+			, { 3, "Waiting - Safe Sport" }
+			, { 4, "Pending - Safe Sport Course Required" }
+			, { 5, "Pending - Signed Waiver" }
+			, { 6, "Pending - Safe Sport & Signed Waiver" }
+			, { 7, "Suspended" }
+			, { 8, "Deceased" }
+		};
+
+		public static string getMembershipStatus(int inStatusCode ) {
+			if ( myMembershipStatus.ContainsKey(inStatusCode)) return myMembershipStatus[inStatusCode];
+			return MembershipStatusNone;
+		}
 
 		public ImportMember( DataRow inTourRow ) {
 			initImportMember( inTourRow, null );
@@ -143,7 +164,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					myCountMemberInput++;
 					myProgressInfo.setProgressValue( myCountMemberInput );
 
-					importNcwsMemberFromAwsa( curEntry );
+					importMemberFromAwsa( curEntry, true, true );
 
 					buildNcwsaTeamHeader( curEntry, curTeamHeaderList );
 				}
@@ -178,19 +199,24 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			try {
 				if ( curImportMemberEntry.ContainsKey( "MemberID" ) ) {
-					curMemberEntry.MemberId = (String)curImportMemberEntry["MemberID"];
+					curMemberEntry.MemberId = HelperFunctions.getAttributeValue( curImportMemberEntry, "MemberID" );
 				} else {
-					curMemberEntry.MemberId = (String)curImportMemberEntry["MemberId"];
+					curMemberEntry.MemberId = HelperFunctions.getAttributeValue( curImportMemberEntry, "MemberId" );
 				}
 				if ( !( myMemberIdValidate.checkMemberId( curMemberEntry.MemberId ) ) ) {
 					MessageBox.Show( String.Format( "Invalid member id {0}, checksum validation failed", curMemberEntry.MemberId ) );
 					return false;
 				}
 
+				curMemberEntry.Federation = HelperFunctions.getAttributeValue( curImportMemberEntry, "Federation" );
+				curMemberEntry.City = HelperFunctions.getAttributeValue( curImportMemberEntry, "City" );
+				curMemberEntry.State = HelperFunctions.getAttributeValue( curImportMemberEntry, "State" );
+				curMemberEntry.Team = HelperFunctions.getAttributeValue( curImportMemberEntry, "Team" ).ToUpper();
+
 				if ( curImportMemberEntry.ContainsKey( "AgeGroup" ) ) {
-					curMemberEntry.AgeGroup = ( (String)curImportMemberEntry["AgeGroup"] ).ToUpper();
+					curMemberEntry.AgeGroup = HelperFunctions.getAttributeValue( curImportMemberEntry, "AgeGroup" ).ToUpper();
 				} else if ( curImportMemberEntry.ContainsKey( "Div" ) ) {
-					curMemberEntry.AgeGroup = ( (String)curImportMemberEntry["Div"] ).ToUpper();
+					curMemberEntry.AgeGroup = HelperFunctions.getAttributeValue( curImportMemberEntry, "Div" ).ToUpper();
 				}
 				curMemberEntry.FirstName = (String)curImportMemberEntry["FirstName"];
 				curMemberEntry.LastName = (String)curImportMemberEntry["LastName"];
@@ -200,22 +226,40 @@ namespace WaterskiScoringSystem.Externalnterface {
 				} else if ( curMemberEntry.AgeGroup.Length > 1 ) {
 					curMemberEntry.Gender = myTourEventReg.getGenderOfAgeDiv( curMemberEntry.AgeGroup );
 				}
-				
-				if ( curImportMemberEntry.ContainsKey( "Team" ) ) {
-					curMemberEntry.Team = ( (String)curImportMemberEntry["Team"] ).ToUpper().Trim();
+
+				if ( curImportMemberEntry.ContainsKey( "SkiYearAge" ) ) {
+					curMemberEntry.SkiYearAge = Convert.ToInt16( HelperFunctions.getAttributeValueNum( curImportMemberEntry, "SkiYearAge" ) );
+
+				} else if ( curImportMemberEntry.ContainsKey( "Age" ) ) {
+					if ( curImportMemberEntry["Age"].GetType() == System.Type.GetType( "System.String" ) ) {
+						String tempSkiYearAge = (String)curImportMemberEntry["Age"];
+						if ( tempSkiYearAge.Length > 0 ) {
+							int numCk;
+							if ( int.TryParse( tempSkiYearAge, out numCk ) ) {
+								if ( numCk < 0 ) curMemberEntry.SkiYearAge = 0;
+								else curMemberEntry.SkiYearAge = Convert.ToInt16( numCk );
+							} else {
+								curMemberEntry.SkiYearAge = 0;
+							}
+						} else {
+							curMemberEntry.SkiYearAge = 0;
+						}
+
+					} else if ( curImportMemberEntry["Age"].GetType() == System.Type.GetType( "System.Int32" ) ) {
+						curMemberEntry.SkiYearAge = Convert.ToInt16( (int)curImportMemberEntry["Age"] );
+					}
 				}
 
 				//For collegiate divisions determine if data is valid for collegiate tournaments
-				curMemberEntry.EventGroupSlalom = ( (String)curImportMemberEntry["EventSlalom"] ).Trim();
-				if ( curMemberEntry.EventGroupSlalom.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupSlalom = "";
-				curMemberEntry.EventGroupTrick = ( (String)curImportMemberEntry["EventTrick"] ).Trim();
-				if ( curMemberEntry.EventGroupTrick.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupTrick = "";
-				curMemberEntry.EventGroupJump = ( (String)curImportMemberEntry["EventJump"] ).Trim();
-				if ( curMemberEntry.EventGroupJump.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupJump = "";
+				curMemberEntry.EventGroupSlalom = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventSlalom" ).Trim().ToUpper();
+				if ( curMemberEntry.EventGroupSlalom.Equals( "OF" ) ) curMemberEntry.EventGroupSlalom = "";
+				curMemberEntry.EventGroupTrick = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventTrick" ).Trim().ToUpper();
+				if ( curMemberEntry.EventGroupTrick.Equals( "OF" ) ) curMemberEntry.EventGroupTrick = "";
+				curMemberEntry.EventGroupJump = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventJump" ).Trim().ToUpper();
+				if ( curMemberEntry.EventGroupJump.Equals( "OF" ) ) curMemberEntry.EventGroupJump = "";
 
-				importMemberEntry( curImportMemberEntry, curMemberEntry, inTourReg, inNcwsa );
-
-				return true;
+				if ( inNcwsa ) return importMemberEntryNcwsa( curImportMemberEntry, curMemberEntry );
+				return importMemberEntry( curImportMemberEntry, curMemberEntry, inTourReg, inNcwsa );
 
 			} catch ( Exception ex ) {
 				MessageBox.Show( String.Format( "importMemberFromAwsa: Error processing member"
@@ -224,6 +268,162 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, curMemberEntry.MemberId, curMemberEntry.FirstName, curMemberEntry.LastName, curMemberEntry.AgeGroup, ex.Message ) );
 				return false;
 			}
+		}
+		
+		public bool importMemberEntryNcwsa( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry ) {
+			String curTeamSlalom = "", curTeamTrick = "", curTeamJump = "";
+			bool curDataValid = true;
+
+			/*
+			 * If a member entry is assigned a group code for any event then assuming this is a non skiing official 
+			 */
+			if ( curMemberEntry.EventGroupSlalom.Length == 0
+				&& curMemberEntry.EventGroupTrick.Length == 0
+				&& curMemberEntry.EventGroupJump.Length == 0
+				) {
+				curMemberEntry.Note = "Official";
+				importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+				return true;
+			}
+
+			if ( curMemberEntry.AgeGroup.ToUpper().Equals( "CM" )
+				|| curMemberEntry.AgeGroup.ToUpper().Equals( "CW" )
+				|| curMemberEntry.AgeGroup.ToUpper().Equals( "BM" )
+				|| curMemberEntry.AgeGroup.ToUpper().Equals( "BW" )
+				) {
+
+				// Validate event groups for collegiate divisions which must include rotation sequence
+				curDataValid = isValidNcwsaEventGroup( "Slalom", curMemberEntry.EventGroupSlalom, curMemberEntry );
+				if ( curDataValid && curMemberEntry.EventGroupSlalom.Length > 1 ) curTeamSlalom = curMemberEntry.EventGroupSlalom.Substring( 0, 1 ).ToUpper();
+
+				curDataValid = isValidNcwsaEventGroup( "Trick", curMemberEntry.EventGroupTrick, curMemberEntry );
+				if ( curDataValid && curMemberEntry.EventGroupTrick.Length > 1 ) curTeamTrick = curMemberEntry.EventGroupTrick.Substring( 0, 1 ).ToUpper();
+
+				curDataValid = isValidNcwsaEventGroup( "Jump", curMemberEntry.EventGroupJump, curMemberEntry );
+				if ( curDataValid && curMemberEntry.EventGroupJump.Length > 1 ) curTeamJump = curMemberEntry.EventGroupJump.Substring( 0, 1 ).ToUpper();
+
+				if ( !( curDataValid ) ) return curDataValid;
+				// Collegiate skier is not registered for any events, treat as an error because it shouldn't get to this point
+				if ( curTeamSlalom.Length == 0 && curTeamSlalom.Length == 0 && curTeamJump.Length == 0 ) return false;
+
+				#region Check data to determine team assignments (A or B)
+
+				// Check if skier registered for slalom only
+				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length == 0 && curTeamJump.Length == 0 ) {
+					if ( curTeamSlalom.Equals( "B" ) ) {
+						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+						else curMemberEntry.AgeGroup = "BW";
+					}
+
+					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+					return curDataValid;
+				}
+
+				// Check if skier registered for trick only
+				if ( curTeamSlalom.Length == 0 && curTeamTrick.Length > 0 && curTeamJump.Length == 0 ) {
+					if ( curTeamTrick.Equals( "B" ) ) {
+						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+						else curMemberEntry.AgeGroup = "BW";
+					}
+
+					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+					return curDataValid;
+				}
+
+				// Check if skier registered for jump only
+				if ( curTeamSlalom.Length == 0 && curTeamTrick.Length == 0 && curTeamJump.Length > 0 ) {
+					if ( curTeamJump.Equals( "B" ) ) {
+						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+						else curMemberEntry.AgeGroup = "BW";
+					}
+
+					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+					return curDataValid;
+				}
+
+				// Check if skier is registered in all 3 events
+				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length > 0 && curTeamJump.Length > 0 ) {
+					if ( curTeamSlalom.Equals( "A" ) && curTeamTrick.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else if ( curTeamSlalom.Equals( "B" ) && curTeamTrick.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
+						if ( curTeamSlalom.Equals( "B" ) ) {
+							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+							else curMemberEntry.AgeGroup = "BW";
+						}
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else {
+						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
+					}
+					return curDataValid;
+				}
+
+				// Check if skier is registered for slalom and trick only 
+				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length > 0 && curTeamJump.Length == 0 ) {
+					if ( curTeamSlalom.Equals( "A" ) && curTeamTrick.Equals( "A" ) ) {
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else if ( curTeamSlalom.Equals( "B" ) && curTeamTrick.Equals( "B" ) ) {
+						if ( curTeamSlalom.Equals( "B" ) ) {
+							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+							else curMemberEntry.AgeGroup = "BW";
+						}
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else {
+						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
+					}
+					return curDataValid;
+				}
+
+				// Check if skier is registered for slalom and jump only 
+				if ( curTeamSlalom.Length > 0 && curTeamJump.Length > 0 ) {
+					if ( curTeamSlalom.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else if ( curTeamSlalom.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
+						if ( curTeamSlalom.Equals( "B" ) ) {
+							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+							else curMemberEntry.AgeGroup = "BW";
+						}
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else {
+						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
+					}
+					return curDataValid;
+				}
+
+				// Check if skier is registered for trick and jump only 
+				if ( curTeamTrick.Length > 0 && curTeamJump.Length > 0 ) {
+					if ( curTeamTrick.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else if ( curTeamTrick.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
+						if ( curTeamTrick.Equals( "B" ) ) {
+							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
+							else curMemberEntry.AgeGroup = "BW";
+						}
+						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+
+					} else {
+						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
+					}
+					return curDataValid;
+				}
+
+				#endregion
+
+			} else {
+				// Check group to validate for appropriate skiing officials
+				if ( curMemberEntry.EventGroupSlalom.Length > 0 ) curMemberEntry.Team = "OFF";
+				if ( curMemberEntry.EventGroupTrick.Length > 0 ) curMemberEntry.Team = "OFF";
+				if ( curMemberEntry.EventGroupJump.Length > 0 ) curMemberEntry.Team = "OFF";
+				importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+			}
+
+			return curDataValid;
 		}
 
 		/*
@@ -239,9 +439,19 @@ namespace WaterskiScoringSystem.Externalnterface {
 					myProgressInfo.Refresh();
 				}
 
-				String curTrickBoat = "", curJumpHeight = "0";
-				curTrickBoat = (String)curImportMemberEntry["TrickBoat"];
-				curJumpHeight = (String)curImportMemberEntry["JumpHeight"];
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Select MemberId, SkierName, AgeGroup, Withdrawn FROM TourReg " );
+				curSqlStmt.Append( String.Format( "Where MemberId = '{0}' AND SanctionId = '{1}' AND AgeGroup = '{2}'"
+					, curMemberEntry.MemberId, mySanctionNum, curMemberEntry.AgeGroup ) );
+				DataTable curMemberDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curMemberDataTable.Rows.Count > 0 ) {
+					String curWithdrawn = HelperFunctions.getDataRowColValue( curMemberDataTable.Rows[0], "Withdrawn", "N" );
+					if ( curWithdrawn.Equals( "Y" ) ) return false;
+				}
+
+				String curTrickBoat = HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickBoat" );
+				String curJumpHeight = "0";
+				curJumpHeight = HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpHeight" );
 				if ( curJumpHeight.Length > 0 ) {
 					try {
 						Decimal tmpJumpHeight = Convert.ToDecimal( curJumpHeight );
@@ -263,7 +473,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 				if ( curImportMemberEntry.ContainsKey( "Prereg" ) ) {
-					String curPrereg = (String)curImportMemberEntry["Prereg"];
+					String curPrereg = HelperFunctions.getAttributeValue( curImportMemberEntry, "Prereg" );
 					if ( curPrereg == null ) curPrereg = "";
 					if ( curPrereg.Equals( "YES" ) ) {
 						curMemberEntry.Note = "OLR";
@@ -276,7 +486,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curMemberEntry.Note = (String)curImportMemberEntry["Note"];
 				}
 
-				if ( mySanctionNum.Substring( 2, 1 ).Equals( "U" ) ) {
+				if ( inNcwsa ) {
 					if ( curMemberEntry.Note.Length == 0 ) curMemberEntry.Note = "Team Template";
 					try {
 						curMemberEntry.Note += ", EventWaiver=" + (String)curImportMemberEntry["EventWaiver"];
@@ -287,6 +497,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				importMemberWithRatings( curImportMemberEntry, curMemberEntry );
 
+				#region Register skier for specified events
 				bool curReqstStatus = false;
 				if ( curMemberEntry.AgeGroup.Equals( "OF" ) ) {
 					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
@@ -321,6 +532,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 					}
 				}
+				#endregion
 
 				#region Analyze and process official ratings for member
 				/*
@@ -466,42 +678,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 			int rowsProc = 0;
 
 			#region Retrieve all member attributes and prepare for processing
-            if ( curImportMemberEntry["Federation"] != null ) {
-				curMemberEntry.Federation = (String) curImportMemberEntry["Federation"];
-            }
-
-			if ( curImportMemberEntry.ContainsKey( "Gender" ) ) {
-				curMemberEntry.Gender = (String) curImportMemberEntry["Gender"];
-			} else if ( curMemberEntry.AgeGroup.Length > 1 ) {
-				curMemberEntry.Gender = myTourEventReg.getGenderOfAgeDiv( curMemberEntry.AgeGroup );
-			}
-
-			curMemberEntry.City = (String) curImportMemberEntry["City"];
-			curMemberEntry.State = (String) curImportMemberEntry["State"];
-
-			if (curImportMemberEntry.ContainsKey("SkiYearAge")) {
-				curMemberEntry.SkiYearAge = ((Int16)curImportMemberEntry["SkiYearAge"]);
-			
-			} else if (curImportMemberEntry.ContainsKey("Age")) {
-				if (curImportMemberEntry["Age"].GetType() == System.Type.GetType("System.String")) {
-					String tempSkiYearAge = (String)curImportMemberEntry["Age"];
-					if ( tempSkiYearAge.Length > 0 ) {
-						int numCk;
-						if ( int.TryParse( tempSkiYearAge, out numCk ) ) {
-							if ( numCk < 0 ) curMemberEntry.SkiYearAge = 0;
-							else curMemberEntry.SkiYearAge = Convert.ToInt16( numCk );
-						} else {
-							curMemberEntry.SkiYearAge = 0;
-						}
-					} else {
-						curMemberEntry.SkiYearAge = 0;
-					}
-				
-				} else if (curImportMemberEntry["Age"].GetType() == System.Type.GetType("System.Int32")) {
-					curMemberEntry.SkiYearAge = Convert.ToInt16((int)curImportMemberEntry["Age"]);
-				}
-			}
-
 			if (curImportMemberEntry.ContainsKey("CanSki")) {
 				if (curImportMemberEntry["CanSki"] != null) {
 					if (curImportMemberEntry["CanSki"].GetType() == System.Type.GetType("System.String")) {
@@ -527,40 +703,24 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curMemberEntry.WaiverSigned = HelperFunctions.isValueTrue( ((int)curImportMemberEntry["Waiver"]).ToString() );
 				}
 			}
-
-			//String MemTypeDesc = (String)curImportMemberEntry["MemTypeDesc"];
-			curMemberEntry.MemberStatus = "In-Active";
-			Boolean ActiveMember = false;
-			String EffTo = (String)curImportMemberEntry["EffTo"];
-			if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.Boolean" ) ) {
-				ActiveMember = (Boolean)curImportMemberEntry["ActiveMember"];
-			} else if ( curImportMemberEntry["ActiveMember"].GetType() == System.Type.GetType( "System.String" ) ) {
-				String curValue = (String)curImportMemberEntry["ActiveMember"];
-				if ( curValue.ToLower().Equals( "true" ) ) ActiveMember = true;
-			}
-			if ( ActiveMember ) curMemberEntry.MemberStatus = "Active";
+			
+			DateTime curMemExpireDate = new DateTime(); 
 			try {
-				DateTime curEffToDate = Convert.ToDateTime(EffTo);
-				EffTo = curEffToDate.ToString("MM/dd/yy");
-
-				DateTime curTourDate = Convert.ToDateTime(myTourRow["EventDates"]);
-				if ((curEffToDate >= curTourDate) && curMemberEntry.CanSki ) {
-					curMemberEntry.MemberStatus = "Active";
-					if (curMemberEntry.WaiverSigned.Equals("0") ) curMemberEntry.MemberStatus += " ** Needs Annual Waiver";
-					if ( curMemberEntry.CanSkiGR ) curMemberEntry.MemberStatus += " ** Grass Roots Only";
-					if ( !curMemberEntry.CanSki ) curMemberEntry.MemberStatus = "Needs Upgrade";
-
-				} else {
-					if ( curMemberEntry.CanSki ) {
-						curMemberEntry.MemberStatus = "Needs Renew";
-					} else {
-						curMemberEntry.MemberStatus = "Needs Renew/Upgrade";
-					}
-				}
-
-			} catch {
-				curMemberEntry.MemberStatus = (String)curImportMemberEntry["ActiveMember"];
+				curMemExpireDate = Convert.ToDateTime( HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" ) );
+			} catch (Exception ex ) {
+				Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
+					, HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" ), ex.Message ) );
 			}
+
+			curMemberEntry.MemberStatus = calcMemberStatus(
+				HelperFunctions.getAttributeValue( curImportMemberEntry, "MemTypeDesc" )
+				, curMemExpireDate
+				, HelperFunctions.getAttributeValue( curImportMemberEntry, "membershipStatusCode" )
+				, HelperFunctions.getAttributeValue( curImportMemberEntry, "membershipStatusText" )
+				, curMemberEntry.CanSki
+				, curMemberEntry.CanSkiGR
+				, curMemberEntry.WaiverSigned
+				, Convert.ToDateTime( myTourRow["EventDates"] ) );
 
 			curMemberEntry.JudgeSlalomRating = (String)curImportMemberEntry["JudgeSlalom"];
 			if ( curImportMemberEntry.Keys.Contains("JudgePanAmSlalom")) {
@@ -602,8 +762,8 @@ namespace WaterskiScoringSystem.Externalnterface {
             }
 			#endregion
 
+			#region Insert or update member information
 			if ( newMember ) {
-                #region Insert new member to databse
                 curSqlStmt = new StringBuilder("");
                 curSqlStmt.Append("Insert MemberList (");
                 curSqlStmt.Append("MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, Federation, MemberStatus");
@@ -634,15 +794,13 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curSqlStmt.Append(", '" + curMemberEntry.SafetyOfficialRating + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.TechControllerRating + "'");
 				curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
-                curSqlStmt.Append(", '" + EffTo + "'");
+                curSqlStmt.Append(", '" + curMemExpireDate.ToString( "MM/dd/yy") + "'");
                 curSqlStmt.Append(", getdate(), getdate() )");
 
                 rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                 if ( rowsProc > 0 ) myCountMemberAdded++;
-                #endregion
 
             } else {
-                #region Update member data
                 curSqlStmt = new StringBuilder("");
                 curSqlStmt.Append("Update MemberList ");
                 curSqlStmt.Append(" Set LastName = '" + curMemberEntry.getLastNameForDB() + "'");
@@ -654,7 +812,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curSqlStmt.Append(", Federation = '" + curMemberEntry.Federation + "'");
                 curSqlStmt.Append(", MemberStatus = '" + curMemberEntry.MemberStatus + "'");
                 curSqlStmt.Append(", Note = '" + curMemberEntry.Note +"'");
-                curSqlStmt.Append(", MemberExpireDate = '" + EffTo + "'");
+                curSqlStmt.Append(", MemberExpireDate = '" + Convert.ToDateTime( curMemExpireDate ).ToString( "MM/dd/yy" ) + "'");
                 curSqlStmt.Append(", UpdateDate = getdate()");
                 curSqlStmt.Append(", JudgeSlalomRating = '" + curMemberEntry.JudgeSlalomRating + "'");
                 curSqlStmt.Append(", JudgeTrickRating = '" + curMemberEntry.JudgeTrickRating + "'");
@@ -670,8 +828,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curSqlStmt.Append(" Where MemberId = '" + curMemberEntry.MemberId + "'");
                 rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                 if ( rowsProc > 0 ) myCountMemberUpdated++;
-                #endregion
             }
+			#endregion
 
 			#region Insert or update skier slalom ranking data
 			if ( curImportMemberEntry.Keys.Contains( "SlalomRank" ) ) {
@@ -1000,199 +1158,39 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return true;
 		}
 
-		public bool importNcwsMemberFromAwsa( Dictionary<string, object> curImportMemberEntry ) {
-			String curTeamSlalom = "", curTeamTrick = "", curTeamJump = "";
-			MemberEntry curMemberEntry = new MemberEntry();
-			bool curDataValid = true;
+		public static String calcMemberStatus( String inMemTypeDesc, DateTime inMemExpireDate
+			, String membershipStatusCode, String membershipStatusText
+			, bool inCanSki, bool inCanSkiGR, bool inWaiverSigned
+			, DateTime inTourDate ) {
 
-			if ( curImportMemberEntry.ContainsKey( "MemberID" ) ) {
-				curMemberEntry.MemberId = (String) curImportMemberEntry["MemberID"];
-			} else {
-				curMemberEntry.MemberId = (String) curImportMemberEntry["MemberId"];
-			}
-			if ( !(myMemberIdValidate.checkMemberId( curMemberEntry.MemberId )) ) {
-				MessageBox.Show( String.Format("Invalid member id {0}, checksum validation failed", curMemberEntry.MemberId ) );
-				return false;
-			}
-
-			if ( curImportMemberEntry.ContainsKey( "AgeGroup" ) ) {
-				curMemberEntry.AgeGroup = ( (String) curImportMemberEntry["AgeGroup"] ).ToUpper();
-			} else if ( curImportMemberEntry.ContainsKey( "Div" ) ) {
-				curMemberEntry.AgeGroup = ( (String) curImportMemberEntry["Div"] ).ToUpper();
-			}
-			String curTeam = ( (String) curImportMemberEntry["Team"] ).ToUpper().Trim();
-
-			curMemberEntry.FirstName = (String)curImportMemberEntry[ "FirstName"];
-			curMemberEntry.LastName = (String)curImportMemberEntry[ "LastName"];
-			
-			if ( curImportMemberEntry.ContainsKey( "Gender" ) ) {
-				curMemberEntry.Gender = (String)curImportMemberEntry["Gender"];
-			} else if ( curMemberEntry.AgeGroup.Length > 1 ) {
-				curMemberEntry.Gender = myTourEventReg.getGenderOfAgeDiv( curMemberEntry.AgeGroup );
+			string returnMembershipStatus = "";
+			int curMembershipStatusCode = 0;
+			try {
+				curMembershipStatusCode = Convert.ToInt32( membershipStatusCode );
+				returnMembershipStatus = getMembershipStatus( curMembershipStatusCode );
+			} catch {
+				return getMembershipStatus( 0 );
 			}
 
-			if ( curImportMemberEntry.ContainsKey( "Team" ) ) {
-				curMemberEntry.Team = ( (String)curImportMemberEntry["Team"] ).ToUpper().Trim();
-			}
+			if ( inMemExpireDate >= inTourDate ) {
+				if ( curMembershipStatusCode == MembershipStatusCodeActive ) return returnMembershipStatus;
 
-			//For collegiate divisions determine if data is valid for collegiate tournaments
-			curMemberEntry.EventGroupSlalom = ( (String)curImportMemberEntry["EventSlalom"] ).Trim();
-			if ( curMemberEntry.EventGroupSlalom.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupSlalom = "";
-			curMemberEntry.EventGroupTrick = ( (String)curImportMemberEntry["EventTrick"] ).Trim();
-			if ( curMemberEntry.EventGroupTrick.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupTrick = "";
-			curMemberEntry.EventGroupJump = ( (String)curImportMemberEntry["EventJump"] ).Trim();
-			if ( curMemberEntry.EventGroupJump.ToLower().Equals( "of" ) ) curMemberEntry.EventGroupJump = "";
-
-			/*
-			 * If a member entry is assigned a group code for any event then assuming this is a non skiing official 
-			 */
-			if ( curMemberEntry.EventGroupSlalom.Length == 0
-				&& curMemberEntry.EventGroupTrick.Length == 0
-				&& curMemberEntry.EventGroupJump.Length == 0
-				) {
-				curMemberEntry.Note = "Official";
-				importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-				return curDataValid;
-			}
-
-			if ( curMemberEntry.AgeGroup.ToUpper().Equals( "CM" )
-				|| curMemberEntry.AgeGroup.ToUpper().Equals( "CW" )
-				|| curMemberEntry.AgeGroup.ToUpper().Equals( "BM" )
-				|| curMemberEntry.AgeGroup.ToUpper().Equals( "BW" )
-				) {
-				
-				// Validate event groups for collegiate divisions which must include rotation sequence
-				curDataValid = isValidNcwsaEventGroup( "Slalom", curMemberEntry.EventGroupSlalom, curMemberEntry );
-				if ( curDataValid && curMemberEntry.EventGroupSlalom.Length > 1 ) curTeamSlalom = curMemberEntry.EventGroupSlalom.Substring( 0, 1 ).ToUpper();
-
-				curDataValid = isValidNcwsaEventGroup( "Trick", curMemberEntry.EventGroupTrick, curMemberEntry );
-				if ( curDataValid && curMemberEntry.EventGroupTrick.Length > 1 ) curTeamTrick = curMemberEntry.EventGroupTrick.Substring( 0, 1 ).ToUpper();
-
-				curDataValid = isValidNcwsaEventGroup( "Jump", curMemberEntry.EventGroupJump, curMemberEntry );
-				if ( curDataValid && curMemberEntry.EventGroupJump.Length > 1 ) curTeamJump = curMemberEntry.EventGroupJump.Substring( 0, 1 ).ToUpper();
-
-				if ( !(curDataValid) ) return curDataValid;
-				// Collegiate skier is not registered for any events, treat as an error because it shouldn't get to this point
-				if ( curTeamSlalom.Length == 0 && curTeamSlalom.Length == 0 && curTeamJump.Length == 0 ) return false;
-
-				#region Check data to determine team assignments (A or B)
-
-				// Check if skier registered for slalom only
-				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length == 0 && curTeamJump.Length == 0 ) {
-					if ( curTeamSlalom.Equals( "B" ) ) {
-						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-						else curMemberEntry.AgeGroup = "BW";
-					}
-
-					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-					return curDataValid;
+				if ( returnMembershipStatus.Equals(MembershipStatusNone) ) {
+					returnMembershipStatus += " ** " + inMemTypeDesc;
+					if ( inWaiverSigned ) returnMembershipStatus += " ** Needs Annual Waiver";
+					if ( inCanSki ) returnMembershipStatus += " ** Needs Upgrade";
+					if ( !(inCanSki) && inCanSkiGR ) returnMembershipStatus += " ** Grass Roots Only";
 				}
-
-				// Check if skier registered for trick only
-				if ( curTeamSlalom.Length == 0 && curTeamTrick.Length > 0 && curTeamJump.Length == 0 ) {
-					if ( curTeamTrick.Equals( "B" ) ) {
-						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-						else curMemberEntry.AgeGroup = "BW";
-					}
-
-					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-					return curDataValid;
-				}
-
-				// Check if skier registered for jump only
-				if ( curTeamSlalom.Length == 0 && curTeamTrick.Length == 0 && curTeamJump.Length > 0 ) {
-					if ( curTeamJump.Equals( "B" ) ) {
-						if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-						else curMemberEntry.AgeGroup = "BW";
-					}
-					
-					importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-					return curDataValid;
-				}
-
-				// Check if skier is registered in all 3 events
-				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length > 0 && curTeamJump.Length > 0 ) {
-					if ( curTeamSlalom.Equals( "A" ) && curTeamTrick.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-					
-					} else if ( curTeamSlalom.Equals( "B" ) && curTeamTrick.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
-						if ( curTeamSlalom.Equals( "B" ) ) {
-							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-							else curMemberEntry.AgeGroup = "BW";
-						}
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-					
-					} else {
-						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
-					}
-					return curDataValid;
-				}
-
-				// Check if skier is registered for slalom and trick only 
-				if ( curTeamSlalom.Length > 0 && curTeamTrick.Length > 0 && curTeamJump.Length == 0 ) {
-					if ( curTeamSlalom.Equals( "A" ) && curTeamTrick.Equals( "A" ) ) {
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else if ( curTeamSlalom.Equals( "B" ) && curTeamTrick.Equals( "B" ) ) {
-						if ( curTeamSlalom.Equals( "B" ) ) {
-							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-							else curMemberEntry.AgeGroup = "BW";
-						}
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else {
-						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
-					}
-					return curDataValid;
-				}
-
-				// Check if skier is registered for slalom and jump only 
-				if ( curTeamSlalom.Length > 0 && curTeamJump.Length > 0 ) {
-					if ( curTeamSlalom.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else if ( curTeamSlalom.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
-						if ( curTeamSlalom.Equals( "B" ) ) {
-							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-							else curMemberEntry.AgeGroup = "BW";
-						}
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else {
-						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
-					}
-					return curDataValid;
-				}
-
-				// Check if skier is registered for trick and jump only 
-				if ( curTeamTrick.Length > 0 && curTeamJump.Length > 0 ) {
-					if ( curTeamTrick.Equals( "A" ) && curTeamJump.Equals( "A" ) ) {
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else if ( curTeamTrick.Equals( "B" ) && curTeamJump.Equals( "B" ) ) {
-						if ( curTeamTrick.Equals( "B" ) ) {
-							if ( curMemberEntry.Gender.Equals( "M" ) ) curMemberEntry.AgeGroup = "BM";
-							else curMemberEntry.AgeGroup = "BW";
-						}
-						importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
-
-					} else {
-						createSplitTeamEntries( curImportMemberEntry, curMemberEntry, curTeamSlalom, curTeamTrick, curTeamJump );
-					}
-					return curDataValid;
-				}
-
-				#endregion
 
 			} else {
-				// Check group to validate for appropriate skiing officials
-				if ( curMemberEntry.EventGroupSlalom.Length > 0 ) curMemberEntry.Team = "OFF";
-				if ( curMemberEntry.EventGroupTrick.Length > 0 ) curMemberEntry.Team = "OFF";
-				if ( curMemberEntry.EventGroupJump.Length > 0 ) curMemberEntry.Team = "OFF";
-				importMemberEntry( curImportMemberEntry, curMemberEntry, true, true );
+				if ( returnMembershipStatus.Equals( MembershipStatusNone ) ) {
+					returnMembershipStatus += " ** Needs Renew/Upgrade";
+				} else if ( inCanSki ) {
+					returnMembershipStatus += " ** Needs Renew";
+				}
 			}
 
-			return curDataValid;
+			return returnMembershipStatus;
 		}
 
 		/*

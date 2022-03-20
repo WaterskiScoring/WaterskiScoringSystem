@@ -106,6 +106,7 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridViewSelectedRowCollection selectedRows = DataGridView.SelectedRows;
                 foreach ( DataGridViewRow curViewRow in selectedRows ) {
 					String curMemberIdSelected = (String)curViewRow.Cells["MemberId"].Value;
+					String curMemberAgeGroupSelected = (String)curViewRow.Cells["Div"].Value;
 					if ( usawsSearchLoc.Checked ) {
 						ImportMember importMember = new ImportMember( myTourRow );
 
@@ -113,7 +114,7 @@ namespace WaterskiScoringSystem.Tournament {
 						 * Search imported records to find the matching record to the selected skier currently being processed
 						 */
 						foreach ( DataRow curDataRow in myMemberListDataTable.Rows) {
-							String curMemberId = "";
+							String curMemberId = "", curAgeGroup = ""; ;
 							if (myMemberListDataTable.Columns.Contains( "MemberID" ) ) {
 								curMemberId = (String)curDataRow["MemberID"];
 							} else {
@@ -122,12 +123,15 @@ namespace WaterskiScoringSystem.Tournament {
 							if ( curMemberId.Length == 11 ) {
 								curMemberId = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
 							}
+
+							curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
+							if ( curAgeGroup.Length == 0 ) curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+
 							/*
 							 * Add or update member information for selected skier using imported data
 							 */
-							if ( curMemberId.Equals( curMemberIdSelected ) ) {
+							if ( curMemberId.Equals( curMemberIdSelected ) && curAgeGroup.Equals( curMemberAgeGroupSelected ) ) {
 								importMember.importMemberFromAwsa( SendMessageHttp.convertDataRowToDictionary( curDataRow ), true, false );
-								//importMember.importMemberWithRatings(SendMessageHttp.convertDataRowToDictionary(curDataRow));
 								break;
 							}
 						}
@@ -136,7 +140,7 @@ namespace WaterskiScoringSystem.Tournament {
 					/*
 					 * Processed selected skier to add to the tournament registration
 					 */
-					myEditRegMemberDialog.editMember( curMemberIdSelected, "" );
+					myEditRegMemberDialog.editMember( curMemberIdSelected, curMemberAgeGroupSelected );
                     myEditRegMemberDialog.ShowDialog();
                     curReqstStatus = myEditRegMemberDialog.ReqstStatus;
                     if ( curReqstStatus.Equals( "Added" ) ) {
@@ -198,7 +202,8 @@ namespace WaterskiScoringSystem.Tournament {
             //Retrieve data for current tournament
             //Used for initial load and to refresh data after updates
             Cursor.Current = Cursors.WaitCursor;
-            int curRowIdx;
+			String curDataValue = "";
+			int curRowIdx;
             DateTime curEffTo, curTourDate;
 			DataGridView.Rows.Clear();
 
@@ -331,215 +336,78 @@ namespace WaterskiScoringSystem.Tournament {
 
 					} else {
 						#region Member record retrieved from USA Water Ski
-						try {
-							String curMemberId = (String) curDataRow["MemberId"];
+						String curMemberId = HelperFunctions.getDataRowColValue( curDataRow, "MemberId", "" );
+						if ( curMemberId.Length > 10) {
 							curViewRow.Cells["MemberId"].Value = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
-						} catch {
+						} else {
 							curViewRow.Cells["MemberId"].Value = "";
 						}
-						try {
-							curViewRow.Cells["SkiYearAge"].Value = (String) curDataRow["Age"];
-						} catch {
-							curViewRow.Cells["SkiYearAge"].Value = "";
-						}
-						try {
-							curViewRow.Cells["Div"].Value = (String) curDataRow["Div"];
-						} catch {
-							curViewRow.Cells["Div"].Value = "";
-						}
-						try {
-							curViewRow.Cells["OffCode"].Value = (String) curDataRow["OffCode"];
-						} catch {
-							curViewRow.Cells["OffCode"].Value = "";
-						}
-						try {
-							curViewRow.Cells["SlalomRank"].Value = (String) curDataRow["SlalomRank"];
-						} catch {
-							curViewRow.Cells["SlalomRank"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TrickRank"].Value = (String) curDataRow["TrickRank"];
-						} catch {
-							curViewRow.Cells["TrickRank"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JumpRank"].Value = (String) curDataRow["JumpRank"];
-						} catch {
-							curViewRow.Cells["JumpRank"].Value = "";
-						}
-						try {
-							curViewRow.Cells["SlalomRating"].Value = (String) curDataRow["SlalomRating"];
-						} catch {
-							curViewRow.Cells["SlalomRating"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TrickRating"].Value = (String) curDataRow["TrickRating"];
-						} catch {
-							curViewRow.Cells["TrickRating"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JumpRating"].Value = (String) curDataRow["JumpRating"];
-						} catch {
-							curViewRow.Cells["JumpRating"].Value = "";
-						}
-						try {
-							curViewRow.Cells["OverallRating"].Value = (String) curDataRow["OverallRating"];
-						} catch {
-							curViewRow.Cells["OverallRating"].Value = "";
-						}
-						try {
-							curViewRow.Cells["SlmQfy"].Value = (String) curDataRow["SlalomQfy"];
-						} catch {
-							curViewRow.Cells["SlmQfy"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TrkQfy"].Value = (String) curDataRow["TrickQfy"];
-						} catch {
-							curViewRow.Cells["TrkQfy"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JmpQfy"].Value = (String) curDataRow["JumpQfy"];
-						} catch {
-							curViewRow.Cells["JmpQfy"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TtrickBoat"].Value = (String) curDataRow["TtrickBoat"];
-						} catch {
-							curViewRow.Cells["TtrickBoat"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JumpRamp"].Value = (String) curDataRow["JumpHeight"];
-						} catch {
-							curViewRow.Cells["JumpRamp"].Value = "";
-						}
-						try {
-							if ( ( (String) curDataRow["Prereg"] ).ToLower().Equals( "yes" ) ) {
-								curViewRow.Cells["Prereg"].Value = true;
-							} else {
-								curViewRow.Cells["Prereg"].Value = false;
-							}
-						} catch {
-							curViewRow.Cells["Prereg"].Value = false;
-						}
-						try {
-							curViewRow.Cells["SlalomClass"].Value = (String) curDataRow["SlalomPaid"];
-						} catch {
-							curViewRow.Cells["SlalomClass"].Value = "";
-						}
-						try {
-							curViewRow.Cells["TrickClass"].Value = (String) curDataRow["TrickPaid"];
-						} catch {
-							curViewRow.Cells["TrickClass"].Value = "";
-						}
-						try {
-							curViewRow.Cells["JumpClass"].Value = (String) curDataRow["JumpPaid"];
-						} catch {
-							curViewRow.Cells["JumpClass"].Value = "";
-						}
-						try {
-							curViewRow.Cells["Memtype"].Value = (String) curDataRow["Memtype"];
-						} catch {
-							curViewRow.Cells["Memtype"].Value = "";
-						}
-						try {
-							curViewRow.Cells["MemCode"].Value = (String) curDataRow["MemCode"];
-						} catch {
-							curViewRow.Cells["MemCode"].Value = "";
-						}
+						curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Age", "0" );
+						curViewRow.Cells["Div"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
+						curViewRow.Cells["OffCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OffCode", "" );
+						curViewRow.Cells["SlalomRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRank", "" );
+						curViewRow.Cells["TrickRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRank", "" );
+						curViewRow.Cells["JumpRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRank", "" );
+						curViewRow.Cells["SlalomRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRating", "" );
+						curViewRow.Cells["TrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRating", "" );
+						curViewRow.Cells["JumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRating", "" );
+						curViewRow.Cells["OverallRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRating", "" );
+						curViewRow.Cells["SlmQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlmQfy", "" );
+						curViewRow.Cells["TrkQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrkQfy", "" );
+						curViewRow.Cells["JmpQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JmpQfy", "" );
+						curViewRow.Cells["TtrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TtrickBoat", "" );
+						curViewRow.Cells["JumpRamp"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRamp", "" );
+						
+						curViewRow.Cells["Prereg"].Value = false;
+						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "Prereg", "" ).ToLower();
+						if ( curDataValue.Equals( "yes" ) ) curViewRow.Cells["Prereg"].Value = true;
+						
+						curViewRow.Cells["SlalomClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomPaid", "" );
+						curViewRow.Cells["TrickClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickPaid", "" );
+						curViewRow.Cells["JumpClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpPaid", "" );
+						curViewRow.Cells["Memtype"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Memtype", "" );
+						curViewRow.Cells["MemCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MemCode", "" );
 
 						/*
 						 * Analyze information and determine membership status 
 						 */
-						Boolean curCanSki = false, curCanSkiGR = false, curWaiver = false;
-						try {
-							if ( ( (String) curDataRow["CanSki"] ).ToUpper().Equals( "TRUE" ) ) {
-								curCanSki = true;
-							} else {
-								curCanSki = false;
-							}
-						} catch {
-							curCanSki = false;
-						}
-						try {
-							if ( ( (String) curDataRow["CanSkiGR"] ).ToUpper().Equals( "TRUE" ) ) {
-								curCanSkiGR = true;
-							} else {
-								curCanSkiGR = false;
-							}
-						} catch {
-							curCanSkiGR = false;
-						}
-						try {
-							if ( ( (String) curDataRow["Waiver"] ).Equals( "1" ) ) {
-								curWaiver = true;
-							} else {
-								curWaiver = false;
-							}
-						} catch {
-							curWaiver = false;
-						}
+						bool curCanSki = false;
+						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "CanSki", "false" ).ToLower();
+						if ( curDataValue.Equals( "true" ) ) curCanSki = true;
+						curViewRow.Cells["CanSki"].Value = curCanSki;
+
+						bool curCanSkiGR = false;
+						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "CanSkiGR", "false" ).ToLower();
+						if ( curDataValue.Equals( "true" ) ) curCanSkiGR = true;
+						curViewRow.Cells["CanSkiGR"].Value = curCanSkiGR;
+
+						bool curWaiver = false;
+						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "Waiver", "0" );
+						if ( curDataValue.Equals( "1" ) ) curWaiver = true;
 						curViewRow.Cells["Waiver"].Value = curWaiver;
 
+						DateTime curMemExpireDate = new DateTime();
 						try {
-							curEffTo = Convert.ToDateTime( (String) curDataRow["EffTo"] );
-							curViewRow.Cells["EffTo"].Value = curEffTo.ToString( "MM/dd/yy" );
-							if ( curEffTo >= curTourDate && curCanSki && curWaiver ) {
-								curViewRow.Cells["CanSki"].Value = curCanSki;
-								curViewRow.Cells["CanSkiGR"].Value = true;
-								curViewRow.Cells["MembershipRate"].Value = "";
-								curViewRow.Cells["CostToUpgrade"].Value = "";
-
-								try {
-									if ( ( (String) curDataRow["ActiveMember"] ).ToLower().Equals( "true" ) ) {
-										curViewRow.Cells["MemberStatus"].Value = "Active - " + (String) curDataRow["MemTypeDesc"];
-									} else {
-										curViewRow.Cells["MemberStatus"].Value = "In-Active - " + (String) curDataRow["MemTypeDesc"];
-									}
-								} catch {
-									curViewRow.Cells["MemberStatus"].Value = "";
-								}
-
-							} else {
-								curViewRow.Cells["CanSki"].Value = false;
-								curViewRow.Cells["CanSkiGR"].Value = false;
-								try {
-									curViewRow.Cells["MembershipRate"].Value = (String) curDataRow["MembershipRate"];
-								} catch {
-									curViewRow.Cells["MembershipRate"].Value = "";
-								}
-								try {
-									curViewRow.Cells["CostToUpgrade"].Value = (String) curDataRow["CostToUpgrade"];
-								} catch {
-									curViewRow.Cells["CostToUpgrade"].Value = "";
-								}
-
-								if ( curEffTo < curTourDate ) {
-									if ( curCanSki ) {
-										curViewRow.Cells["MemberStatus"].Value = "Needs Renew";
-
-									} else {
-										curViewRow.Cells["MemberStatus"].Value = "Needs Renew/Upgrade";
-									}
-
-								} else {
-									if ( curCanSkiGR ) {
-										curViewRow.Cells["MemberStatus"].Value = "** Grass Roots Only";
-
-									} else if ( curCanSki ) {
-										curViewRow.Cells["MemberStatus"].Value = "Needs Annual Waiver";
-										curViewRow.Cells["MembershipRate"].Value = "";
-										curViewRow.Cells["CostToUpgrade"].Value = "";
-
-									} else {
-										curViewRow.Cells["MemberStatus"].Value = "Needs Upgrade";
-									}
-								}
-
-							}
-						} catch {
-							curViewRow.Cells["EffTo"].Value = "";
+							curMemExpireDate = Convert.ToDateTime( HelperFunctions.getDataRowColValue( curDataRow, "EffTo", "" ) );
+							curViewRow.Cells["EffTo"].Value = curMemExpireDate.ToString( "MM/dd/yy" );
+						} catch ( Exception ex ) {
+							Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
+								, HelperFunctions.getDataRowColValue( curDataRow, "EffTo", "" ), ex.Message ) );
 						}
 
+						curViewRow.Cells["MembershipRate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MembershipRate", "" );
+						curViewRow.Cells["CostToUpgrade"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CostToUpgrade", "" );
+
+						curViewRow.Cells["MemberStatus"].Value = ImportMember.calcMemberStatus(
+							HelperFunctions.getDataRowColValue( curDataRow, "MemTypeDesc", "" )
+							, curMemExpireDate
+							, HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusCode", "" )
+							, HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusText", "" )
+							, curCanSki
+							, curCanSkiGR
+							, curWaiver
+							, Convert.ToDateTime( myTourRow["EventDates"] ) );
+						
 						#endregion
 					}
 				}

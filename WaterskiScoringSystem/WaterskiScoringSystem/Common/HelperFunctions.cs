@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Common {
 	class HelperFunctions {
@@ -130,6 +130,8 @@ namespace WaterskiScoringSystem.Common {
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 0 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 1 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.0" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 2 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
+				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == -1 ) return ( (decimal)dataRow[colName] ).ToString( "##,####.#" );
+				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == -2 ) return ( (decimal)dataRow[colName] ).ToString( "##,####.##" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
 
 				return ( (String)dataRow[colName] ).ToString();
@@ -147,6 +149,7 @@ namespace WaterskiScoringSystem.Common {
 				if ( dataRow[colName].GetType().Equals( typeof( byte ) ) ) return ( (byte)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( bool ) ) ) return ( (bool)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
+				if ( dataRow[colName].GetType().Equals( typeof( DateTime ) ) ) return ( (DateTime)dataRow[colName] ).ToString( "yyyy/MM/dd HH:mm:ss" );
 
 				return ( (String)dataRow[colName] ).ToString();
 			
@@ -207,16 +210,19 @@ namespace WaterskiScoringSystem.Common {
 
 		public static Dictionary<string, object> getAttributeDictionary( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
+			if ( msgAttributeList[keyName] == null ) return null;
 			return (Dictionary<string, object>)msgAttributeList[keyName];
 		}
 
 		public static ArrayList getAttributeList( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
+			if ( msgAttributeList[keyName] == null ) return null;
 			return (ArrayList)msgAttributeList[keyName];
 		}
 
 		public static decimal getAttributeValueNum( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return 0;
+			if ( msgAttributeList[keyName] == null ) return 0;
 
 			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
 				if ( Decimal.TryParse( ( (int)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) {
@@ -238,7 +244,8 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {
-			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return "";
+			if ( !msgAttributeList.ContainsKey( keyName ) ) return "";
+			if ( msgAttributeList[keyName] == null ) return "";
 
 			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
 				return ( (int)msgAttributeList[keyName] ).ToString();
@@ -256,5 +263,11 @@ namespace WaterskiScoringSystem.Common {
 			return "";
 		}
 
+		public static bool isColumnObsolete( string colName, string tablename ) {
+			foreach( DatabaseUpgradeRemovedColumn curEntry in UpgradeDatabase.removedColumns ) {
+				if ( curEntry.Equals( colName ) && curEntry.TableName.Equals( tablename ) ) return true;
+			}
+			return false;
+		}
 	}
 }

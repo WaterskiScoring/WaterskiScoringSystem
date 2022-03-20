@@ -834,7 +834,8 @@ Update MemberList Set ScorerSlalomRating = 'Regular'  Where ScorerSlalomRating =
 Update MemberList Set ScorerJumpRating = 'Regular'  Where ScorerJumpRating = 'R';
 Update MemberList Set ScorerTrickRating = 'Senior'  Where ScorerTrickRating = 'S';	
 Update MemberList Set ScorerSlalomRating = 'Senior'  Where ScorerSlalomRating = 'S';	
-Update MemberList Set ScorerJumpRating = 'Senior'  Where ScorerJumpRating = 'S';
+Update 
+Set ScorerJumpRating = 'Senior'  Where ScorerJumpRating = 'S';
 Update MemberList Set ScorerTrickRating = 'Emeritus'  Where ScorerTrickRating = 'E';	
 Update MemberList Set ScorerSlalomRating = 'Emeritus'  Where ScorerSlalomRating = 'E';	
 Update MemberList Set ScorerJumpRating = 'Emeritus'  Where ScorerJumpRating = 'E';
@@ -848,7 +849,8 @@ Update MemberList Set SafetyOfficialRating = 'Emeritus'  Where SafetyOfficialRat
 Update MemberList Set TechOfficialRating = 'Assistant'  Where TechOfficialRating = 'A';
 Update MemberList Set TechOfficialRating = 'Regular'  Where TechOfficialRating = 'R';
 Update MemberList Set TechOfficialRating = 'Senior'  Where TechOfficialRating = 'S';
-Update MemberList Set TechOfficialRating = 'Emeritus'  Where TechOfficialRating = 'E';
+Update 
+Set TechOfficialRating = 'Emeritus'  Where TechOfficialRating = 'E';
 
 Update MemberList Set AnncrOfficialRating = 'State'  Where AnncrOfficialRating = 'S';
 Update MemberList Set AnncrOfficialRating = 'Regional'  Where AnncrOfficialRating = 'R';
@@ -917,9 +919,6 @@ CREATE TABLE EwscListenMsg (
 );
 
 ALTER TABLE [EwscListenMsg] ADD PRIMARY KEY ([PK]);
-
-## v21.26
-ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(64);
 
 
 ## v22.09
@@ -1079,3 +1078,11 @@ CREATE TABLE WscMonitor (
     MonitorName nvarchar(32) NOT NULL,
     HeartBeat  datetime
 );
+
+## v22.53
+ALTER TABLE [TourReg] ADD COLUMN Withdrawn nchar(1);
+Update TourReg Set Withdrawn = 'N' Where Withdrawn is null;
+
+## v22.59
+ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(256);
+

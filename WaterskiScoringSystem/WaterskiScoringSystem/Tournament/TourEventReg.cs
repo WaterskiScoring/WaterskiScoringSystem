@@ -464,90 +464,51 @@ namespace WaterskiScoringSystem.Tournament {
 			return true;
 		}
 
+		/*
+		 * Add skier to active tournament for the specified event 
+		 * Add skier to list of participants available to be officials 
+		 * Bypass if already registered for the event
+		 */
 		public bool addTourReg( MemberEntry curMemberEntry, String inTrickBoat, String inJumpHeight ) {
             String curMethodName = "Tournament:TourEventReg:addTourReg";
             String curMsg = "";
-            String curReadyToSki = "", curReadyForPlcmt = "", curJumpHeight = "0", curFed = "", curCity = "", curState = "", curGender = "";
-            String curFirstName = "", curLastName = "";
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            Int16 curSkiYearAge = 0;
 
 			try {
 				if ( myTourRow == null ) return false;
 				if ( getTourMemberRow( mySanctionNum, curMemberEntry.MemberId, curMemberEntry.AgeGroup ) != null ) return false;
-
 				DataRow curMemberRow = getMemberRow( curMemberEntry.MemberId );
 				if ( curMemberRow == null ) return false;
 
-				#region Add skier to active tournament for the specified event but bypass if already registered for the event
-				String memberStatus = "";
-				try {
-					memberStatus = (String)curMemberRow["MemberStatus"];
-					if ( memberStatus.ToLower().Equals( "active" ) ) {
-						curReadyToSki = "Y";
-					} else {
-						curReadyToSki = "N";
-					}
-				} catch {
-					curReadyToSki = "N";
-					memberStatus = "";
-				}
-				curReadyForPlcmt = curReadyToSki;
+				String curReadyToSki = "N";
+				//String memberStatus = HelperFunctions.getDataRowColValue( curMemberRow, "MemberStatus", "Inactive" );
+				if ( curMemberEntry.MemberStatus.ToLower().Equals( "active" ) ) curReadyToSki = "Y";
+				String curReadyForPlcmt = curReadyToSki;
 
-				try {
-					if ( inJumpHeight.Length == 0 ) {
-						curJumpHeight = "0";
-					} else {
-						curJumpHeight = inJumpHeight;
-					}
-				} catch {
-					curJumpHeight = "0";
-				}
-				try {
-					curFed = (String) curMemberRow["Federation"];
-				} catch {
-					curFed = "";
-				}
-				try {
-					curCity = (String) curMemberRow["City"];
-				} catch {
-					curCity = "";
-				}
-				try {
-					curState = (String) curMemberRow["State"];
-				} catch {
-					curState = "";
-				}
-				try {
-					curGender = (String) curMemberRow["Gender"];
-				} catch {
-					curGender = "";
-				}
-				try {
-					curSkiYearAge = (Byte) curMemberRow["SkiYearAge"];
-				} catch {
-					curSkiYearAge = 0;
-				}
+				String curJumpHeight = "0";
+				if ( inJumpHeight.Length > 0 ) curJumpHeight = inJumpHeight;
+
+				//String curFed = HelperFunctions.getDataRowColValue( curMemberRow, "Federation", "" );
+				//String curCity = HelperFunctions.getDataRowColValue( curMemberRow, "City", "" );
+				//String curState = HelperFunctions.getDataRowColValue( curMemberRow, "State", "" );
+
+				//String curGender = HelperFunctions.getDataRowColValue( curMemberRow, "Gender", "" );
+				/*
+				Int16 curSkiYearAge = Convert.ToInt16(HelperFunctions.getDataRowColValue( curMemberRow, "SkiYearAge", "0" ));
 				if ( curSkiYearAge < 1 ) {
-					try {
-						Int16 curBirthYear = Convert.ToInt16( Convert.ToDateTime( curMemberRow["DateOfBirth"].ToString() ).ToString( "yy" ) );
-						Int16 curTourYear = Convert.ToInt16( mySanctionNum.Substring( 0, 2 ) );
-						curTourYear += 100;
-						curSkiYearAge = Convert.ToInt16( curTourYear - curBirthYear );
-					} catch {
-						curSkiYearAge = 0;
+					String curDateOfBirth = HelperFunctions.getDataRowColValue( curMemberRow, "DateOfBirth", "" );
+					if ( curDateOfBirth.Length > 8 ) {
+						try {
+							int curBirthYear = Convert.ToDateTime( curDateOfBirth ).Year;
+							int curTourYear = 2000 + Convert.ToInt32( mySanctionNum.Substring( 0, 2 ) );
+							curSkiYearAge = Convert.ToInt16( curTourYear - curBirthYear );
+						} catch {
+							curSkiYearAge = 0;
+						}
 					}
 				}
-				try {
-					curLastName = ( (String) curMemberRow["LastName"] ).Replace( "'", "''" );
-				} catch {
-					curLastName = "";
-				}
-				try {
-					curFirstName = ( (String) curMemberRow["FirstName"] ).Replace( "'", "''" );
-				} catch {
-					curFirstName = "";
-				}
+				 */
+
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert TourReg (" );
 				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight " );
@@ -555,19 +516,19 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
-				curSqlStmt.Append( ", '" + HelperFunctions.stringReplace( curLastName, mySingleQuoteDelim, "''" ) + ", " + HelperFunctions.stringReplace( curFirstName, mySingleQuoteDelim, "''" ) + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.getSkierNameForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
 				curSqlStmt.Append( ", '" + curReadyToSki + "'" );
 				curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
 				curSqlStmt.Append( ", '" + inTrickBoat + "'" );
 				curSqlStmt.Append( ", " + curJumpHeight );
-				curSqlStmt.Append( ", '" + curFed + "'" );
-				curSqlStmt.Append( ", '" + curGender + "'" );
-				curSqlStmt.Append( ", '" + HelperFunctions.stringReplace( curCity, mySingleQuoteDelim, "''" ) + "'" );
-				curSqlStmt.Append( ", '" + curState + "'" );
-				curSqlStmt.Append( ", " + curSkiYearAge );
+				curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.Gender + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.getCityForDB() + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.State + "'" );
+				curSqlStmt.Append( ", " + curMemberEntry.SkiYearAge );
 				curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
-				curSqlStmt.Append(", '" + memberStatus + "'");
+				curSqlStmt.Append( ", '" + curMemberEntry.MemberStatus + "'" );
 				curSqlStmt.Append( ", getdate() )" );
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
@@ -628,7 +589,6 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 				return true;
-				#endregion
 
 			} catch ( Exception ex ) {
 				curMsg = " Exception encountered adding skier to tournament \n" + ex.Message + "\n\n" + curSqlStmt.ToString();

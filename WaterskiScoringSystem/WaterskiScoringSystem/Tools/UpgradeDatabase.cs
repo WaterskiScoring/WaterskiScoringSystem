@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Deployment.Application;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -19,7 +17,20 @@ namespace WaterskiScoringSystem.Tools {
         private SqlCeCommand mySqlStmt = null;
         private ProgressWindow myProgressInfo;
 
-        public UpgradeDatabase() {
+		public static DatabaseUpgradeRemovedColumn[] removedColumns = new DatabaseUpgradeRemovedColumn[] {
+			new DatabaseUpgradeRemovedColumn("TimeInTol1", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("TimeInTol2", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("TimeInTol3", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("BoatSplitTimeTol", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("BoatSplitTime2Tol", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("BoatEndTimeTol", "JumpRecap")
+			, new DatabaseUpgradeRemovedColumn("Pass1VideoUrl", "TrickScore")
+			, new DatabaseUpgradeRemovedColumn("Pass2VideoUrl", "TrickScore")
+			, new DatabaseUpgradeRemovedColumn("FinalPassNum", "SlalomScore")
+			, new DatabaseUpgradeRemovedColumn("PassNum", "SlalomRecap")
+		};
+
+		public UpgradeDatabase() {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             String curSqlStmt = "SELECT ListName, ListCode, CodeValue as VersionNumText, MinValue as VersionNum "
                 + "FROM CodeValueList WHERE ListName = 'DatabaseVersion'";
@@ -35,13 +46,13 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturnValue = true;
 
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.52', 22.52, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.59', 22.59, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
                 if ( myDatabaseVersion < curVersion ) {
                     copyDatabaseFile();
                 }
-                if (myDatabaseVersion < 22.51M ) {
+                if (myDatabaseVersion < 22.55M ) {
                     if (openDbConn()) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );
@@ -57,7 +68,7 @@ namespace WaterskiScoringSystem.Tools {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 22.52M ) {
+                if ( myDatabaseVersion < 22.59M ) {
                     if ( openDbConn() ) {
                         loadListValues();
                     }
@@ -662,4 +673,17 @@ namespace WaterskiScoringSystem.Tools {
             return DataAccess.getDataTable( inSelectStmt );
         }
     }
+
+	class DatabaseUpgradeRemovedColumn {
+		private string colName;
+		private string tableName;
+
+		public DatabaseUpgradeRemovedColumn( string inColName, string inTableName ) {
+			colName = inColName;
+			tableName = inTableName;
+		}
+
+		public string ColName { get => colName.ToLower(); set => colName = value; }
+		public string TableName { get => tableName.ToLower(); set => tableName =  value ; }
+	}
 }

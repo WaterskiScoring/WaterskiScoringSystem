@@ -27,7 +27,8 @@ namespace WaterskiScoringSystem
 				Log.WriteFile( "WaterskiScoringSystem:Main: An exception has been enountered. Exception: " + excp.Message + ": StackTrace: " + excp.StackTrace );
 				MessageBox.Show( "An exception has been enountered."
 					+ "\n Exception: " + excp.Message
-					+ "\n Please contact the development team and send the [SanctionId]-log.log file" );
+					+ "\n Please contact the development team and send the [SanctionId]-log.log file"
+					+ "\n StackTrace: " + excp.StackTrace );
             }
         }
     }

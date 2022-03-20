@@ -178,7 +178,6 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.DataGridView.AllowUserToAddRows = false;
 			this.DataGridView.AllowUserToDeleteRows = false;
-			this.DataGridView.AllowUserToResizeColumns = false;
 			this.DataGridView.AllowUserToResizeRows = false;
 			this.DataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -672,12 +671,14 @@ namespace WaterskiScoringSystem.Tournament {
 			// newMemberButton
 			// 
 			this.newMemberButton.AutoSize = true;
+			this.newMemberButton.Enabled = false;
 			this.newMemberButton.Location = new System.Drawing.Point(222, 39);
 			this.newMemberButton.Name = "newMemberButton";
 			this.newMemberButton.Size = new System.Drawing.Size(80, 23);
 			this.newMemberButton.TabIndex = 12;
 			this.newMemberButton.Text = "New Member";
 			this.newMemberButton.UseVisualStyleBackColor = true;
+			this.newMemberButton.Visible = false;
 			this.newMemberButton.Click += new System.EventHandler(this.newMemberButton_Click);
 			// 
 			// searchLocGroupBox

@@ -998,10 +998,15 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22867	JumpTriangleZero	$		14	0.4921	0.492	0.15	
 22868	JumpTriangleZero	P		15	0.4921	0.492	0.15	
 22869	JumpTriangleZero	Q		16	0.4921	0.492	0.15	
-22870	MemberStatus	 		1	None			
-22871	MemberStatus	Active		2	Active			
-22872	MemberStatus	Inactive		3	Inactive			
-22873	MemberStatus	Supporting		4	Supporting			
+0	MemberStatus	Inactive 		0	Membership Not Active
+0	MemberStatus	Active		1	Active			
+0	MemberStatus	Expired		2	Expired			
+0	MemberStatus	Waiting		3	Waiting - Safe Sport			
+0	MemberStatus	Pending4		4	Pending - Safe Sport Course Required			
+0	MemberStatus	Pending5		5	Pending - Signed Waiver			
+0	MemberStatus	Pending6		6	Pending - Safe Sport & Signed Waiver			
+0	MemberStatus	Suspended		7	Suspended			
+0	MemberStatus	Deceased		8	Deceased			
 22874	NcwsaAgeGroup	CM		1	College Men A Team	1	99	
 22875	NcwsaAgeGroup	CW		2	College Women A Team	1	99	
 22876	NcwsaAgeGroup	BM		3	College Men B Team	1	99	

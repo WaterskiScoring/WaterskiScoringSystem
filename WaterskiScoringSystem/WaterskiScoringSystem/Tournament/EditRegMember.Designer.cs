@@ -34,6 +34,7 @@
 			System.Windows.Forms.Label skiYearAgeLabel;
 			System.Windows.Forms.Label memberStatusLabel;
 			System.Windows.Forms.Label cityLabel;
+			this.showMemberStatus = new System.Windows.Forms.Label();
 			this.AgeAsOfLabel = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.cancelButton = new System.Windows.Forms.Button();
@@ -43,8 +44,6 @@
 			this.reqdFlagFirstName = new System.Windows.Forms.Label();
 			this.reqdFlagLastName = new System.Windows.Forms.Label();
 			this.reqdFlagMemberId = new System.Windows.Forms.Label();
-			this.reqdFlagMemberStatus = new System.Windows.Forms.Label();
-			this.editMemberStatus = new System.Windows.Forms.ComboBox();
 			this.editFederation = new System.Windows.Forms.ComboBox();
 			this.editMemberId = new System.Windows.Forms.TextBox();
 			this.editLastName = new System.Windows.Forms.TextBox();
@@ -52,8 +51,6 @@
 			this.editState = new System.Windows.Forms.TextBox();
 			this.editSkiYearAge = new System.Windows.Forms.TextBox();
 			this.DataGridView = new System.Windows.Forms.DataGridView();
-			this.RegListLabel = new System.Windows.Forms.Label();
-			this.editCity = new System.Windows.Forms.TextBox();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,6 +61,8 @@
 			this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ReadyToSki = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.MemberStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RegListLabel = new System.Windows.Forms.Label();
+			this.editCity = new System.Windows.Forms.TextBox();
 			this.AgeGroupSelect = new WaterskiScoringSystem.Common.AgeGroupSelect();
 			this.editGenderSelect = new WaterskiScoringSystem.Common.GenderSelect();
 			reqdFlagInfo = new System.Windows.Forms.Label();
@@ -149,7 +148,7 @@
 			// 
 			stateLabel.AutoSize = true;
 			stateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			stateLabel.Location = new System.Drawing.Point(179, 198);
+			stateLabel.Location = new System.Drawing.Point(179, 171);
 			stateLabel.Name = "stateLabel";
 			stateLabel.Size = new System.Drawing.Size(38, 15);
 			stateLabel.TabIndex = 116;
@@ -160,7 +159,7 @@
 			// 
 			federationLabel.AutoSize = true;
 			federationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			federationLabel.Location = new System.Drawing.Point(148, 253);
+			federationLabel.Location = new System.Drawing.Point(148, 226);
 			federationLabel.Name = "federationLabel";
 			federationLabel.Size = new System.Drawing.Size(69, 15);
 			federationLabel.TabIndex = 117;
@@ -183,7 +182,7 @@
 			memberStatusLabel.AutoSize = true;
 			memberStatusLabel.CausesValidation = false;
 			memberStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			memberStatusLabel.Location = new System.Drawing.Point(123, 170);
+			memberStatusLabel.Location = new System.Drawing.Point(126, 259);
 			memberStatusLabel.Margin = new System.Windows.Forms.Padding(0);
 			memberStatusLabel.Name = "memberStatusLabel";
 			memberStatusLabel.Size = new System.Drawing.Size(94, 15);
@@ -195,12 +194,28 @@
 			// 
 			cityLabel.AutoSize = true;
 			cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			cityLabel.Location = new System.Drawing.Point(179, 225);
+			cityLabel.Location = new System.Drawing.Point(179, 198);
 			cityLabel.Name = "cityLabel";
 			cityLabel.Size = new System.Drawing.Size(26, 15);
 			cityLabel.TabIndex = 0;
 			cityLabel.Text = "City";
 			cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// showMemberStatus
+			// 
+			this.showMemberStatus.AutoEllipsis = true;
+			this.showMemberStatus.AutoSize = true;
+			this.showMemberStatus.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.showMemberStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.showMemberStatus.CausesValidation = false;
+			this.showMemberStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.showMemberStatus.Location = new System.Drawing.Point(224, 259);
+			this.showMemberStatus.Margin = new System.Windows.Forms.Padding(0);
+			this.showMemberStatus.MinimumSize = new System.Drawing.Size(150, 0);
+			this.showMemberStatus.Name = "showMemberStatus";
+			this.showMemberStatus.Size = new System.Drawing.Size(150, 17);
+			this.showMemberStatus.TabIndex = 0;
+			this.showMemberStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// AgeAsOfLabel
 			// 
@@ -216,7 +231,7 @@
 			this.label2.BackColor = System.Drawing.Color.Transparent;
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label2.ForeColor = System.Drawing.Color.Red;
-			this.label2.Location = new System.Drawing.Point(399, 108);
+			this.label2.Location = new System.Drawing.Point(399, 107);
 			this.label2.Margin = new System.Windows.Forms.Padding(0);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(10, 12);
@@ -304,33 +319,11 @@
 			this.reqdFlagMemberId.TabIndex = 129;
 			this.reqdFlagMemberId.Text = "*";
 			// 
-			// reqdFlagMemberStatus
-			// 
-			this.reqdFlagMemberStatus.BackColor = System.Drawing.Color.Transparent;
-			this.reqdFlagMemberStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.reqdFlagMemberStatus.ForeColor = System.Drawing.Color.Red;
-			this.reqdFlagMemberStatus.Location = new System.Drawing.Point(115, 168);
-			this.reqdFlagMemberStatus.Margin = new System.Windows.Forms.Padding(0);
-			this.reqdFlagMemberStatus.Name = "reqdFlagMemberStatus";
-			this.reqdFlagMemberStatus.Size = new System.Drawing.Size(10, 12);
-			this.reqdFlagMemberStatus.TabIndex = 131;
-			this.reqdFlagMemberStatus.Text = "*";
-			// 
-			// editMemberStatus
-			// 
-			this.editMemberStatus.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.editMemberStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editMemberStatus.FormattingEnabled = true;
-			this.editMemberStatus.Location = new System.Drawing.Point(224, 166);
-			this.editMemberStatus.Name = "editMemberStatus";
-			this.editMemberStatus.Size = new System.Drawing.Size(179, 23);
-			this.editMemberStatus.TabIndex = 60;
-			// 
 			// editFederation
 			// 
 			this.editFederation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.editFederation.FormattingEnabled = true;
-			this.editFederation.Location = new System.Drawing.Point(224, 249);
+			this.editFederation.Location = new System.Drawing.Point(224, 222);
 			this.editFederation.Name = "editFederation";
 			this.editFederation.Size = new System.Drawing.Size(125, 23);
 			this.editFederation.TabIndex = 80;
@@ -367,7 +360,7 @@
 			// editState
 			// 
 			this.editState.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editState.Location = new System.Drawing.Point(224, 195);
+			this.editState.Location = new System.Drawing.Point(224, 168);
 			this.editState.MaxLength = 2;
 			this.editState.Name = "editState";
 			this.editState.Size = new System.Drawing.Size(30, 21);
@@ -412,26 +405,6 @@
 			this.DataGridView.RowHeadersWidth = 31;
 			this.DataGridView.Size = new System.Drawing.Size(576, 105);
 			this.DataGridView.TabIndex = 120;
-			// 
-			// RegListLabel
-			// 
-			this.RegListLabel.AutoSize = true;
-			this.RegListLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RegListLabel.Location = new System.Drawing.Point(153, 332);
-			this.RegListLabel.Name = "RegListLabel";
-			this.RegListLabel.Size = new System.Drawing.Size(266, 14);
-			this.RegListLabel.TabIndex = 0;
-			this.RegListLabel.Text = "Existing registrations for this individual";
-			// 
-			// editCity
-			// 
-			this.editCity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editCity.Location = new System.Drawing.Point(224, 222);
-			this.editCity.MaxLength = 129;
-			this.editCity.Name = "editCity";
-			this.editCity.Size = new System.Drawing.Size(120, 21);
-			this.editCity.TabIndex = 71;
-			this.editCity.WordWrap = false;
 			// 
 			// MemberId
 			// 
@@ -518,6 +491,26 @@
 			this.MemberStatus.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.MemberStatus.Width = 65;
 			// 
+			// RegListLabel
+			// 
+			this.RegListLabel.AutoSize = true;
+			this.RegListLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RegListLabel.Location = new System.Drawing.Point(153, 332);
+			this.RegListLabel.Name = "RegListLabel";
+			this.RegListLabel.Size = new System.Drawing.Size(266, 14);
+			this.RegListLabel.TabIndex = 0;
+			this.RegListLabel.Text = "Existing registrations for this individual";
+			// 
+			// editCity
+			// 
+			this.editCity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.editCity.Location = new System.Drawing.Point(224, 195);
+			this.editCity.MaxLength = 129;
+			this.editCity.Name = "editCity";
+			this.editCity.Size = new System.Drawing.Size(120, 21);
+			this.editCity.TabIndex = 71;
+			this.editCity.WordWrap = false;
+			// 
 			// AgeGroupSelect
 			// 
 			this.AgeGroupSelect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -525,9 +518,9 @@
 			this.AgeGroupSelect.AutoScroll = true;
 			this.AgeGroupSelect.BackColor = System.Drawing.Color.Silver;
 			this.AgeGroupSelect.CurrentValue = "";
-			this.AgeGroupSelect.Location = new System.Drawing.Point(409, 128);
+			this.AgeGroupSelect.Location = new System.Drawing.Point(409, 129);
 			this.AgeGroupSelect.Name = "AgeGroupSelect";
-			this.AgeGroupSelect.Size = new System.Drawing.Size(172, 137);
+			this.AgeGroupSelect.Size = new System.Drawing.Size(172, 125);
 			this.AgeGroupSelect.TabIndex = 55;
 			// 
 			// editGenderSelect
@@ -546,6 +539,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(586, 462);
+			this.Controls.Add(this.showMemberStatus);
 			this.Controls.Add(cityLabel);
 			this.Controls.Add(this.editCity);
 			this.Controls.Add(this.AgeGroupSelect);
@@ -562,9 +556,7 @@
 			this.Controls.Add(this.reqdFlagLastName);
 			this.Controls.Add(this.reqdFlagMemberId);
 			this.Controls.Add(labelGender);
-			this.Controls.Add(this.reqdFlagMemberStatus);
 			this.Controls.Add(ageGroupLabel);
-			this.Controls.Add(this.editMemberStatus);
 			this.Controls.Add(this.editFederation);
 			this.Controls.Add(memberIdLabel);
 			this.Controls.Add(this.editMemberId);
@@ -599,8 +591,6 @@
         private System.Windows.Forms.Label reqdFlagFirstName;
         private System.Windows.Forms.Label reqdFlagLastName;
         private System.Windows.Forms.Label reqdFlagMemberId;
-        private System.Windows.Forms.Label reqdFlagMemberStatus;
-        private System.Windows.Forms.ComboBox editMemberStatus;
         private System.Windows.Forms.ComboBox editFederation;
         private System.Windows.Forms.TextBox editMemberId;
         private System.Windows.Forms.TextBox editLastName;
@@ -622,5 +612,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ReadyToSki;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberStatus;
+		private System.Windows.Forms.Label showMemberStatus;
 	}
 }

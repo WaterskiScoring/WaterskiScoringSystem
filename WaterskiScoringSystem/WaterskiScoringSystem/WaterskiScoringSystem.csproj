@@ -66,6 +66,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>IDE0049, IDE1006, IDE0059</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -353,8 +354,6 @@
     <Compile Include="Common\ListItem.cs" />
     <Compile Include="Common\ListSkierClass.cs" />
     <Compile Include="Common\MemberIdValidate.cs" />
-    <Compile Include="Common\MemberStatusDropdownList.cs">
-    </Compile>
     <Compile Include="Common\ProgressWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -400,6 +399,7 @@
     </Compile>
     <Compile Include="Common\TourProperties.cs" />
     <Compile Include="Externalnterface\AwsaMembership.cs" />
+    <Compile Include="Externalnterface\ImportMemberFile.cs" />
     <Compile Include="Externalnterface\MemberEntry.cs" />
     <Compile Include="Externalnterface\WscHandler.cs" />
     <Compile Include="Jump\JumpSummaryAwards.cs">

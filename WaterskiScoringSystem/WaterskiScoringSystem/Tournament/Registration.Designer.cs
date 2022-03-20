@@ -60,12 +60,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.RegCountLabel = new System.Windows.Forms.Label();
 			this.SearchButton = new System.Windows.Forms.Button();
 			this.SearchTextbox = new System.Windows.Forms.TextBox();
+			this.navWithdraw = new System.Windows.Forms.ToolStripButton();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ReadyToSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.ReadyForPlcmt = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Withdrawn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.SlalomReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.TrickReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.JumpReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -112,6 +114,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.AgeGroup,
             this.ReadyToSki,
             this.ReadyForPlcmt,
+            this.Withdrawn,
             this.SlalomReg,
             this.TrickReg,
             this.JumpReg,
@@ -186,6 +189,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navAdd,
             this.navEdit,
             this.navRemove,
+            this.navWithdraw,
             this.navSaveAs,
             this.navImportRankEquiv,
             this.navShowMember});
@@ -386,6 +390,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SearchTextbox.TabIndex = 2;
 			this.SearchTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchTextbox_KeyUp);
 			// 
+			// navWithdraw
+			// 
+			this.navWithdraw.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
+			this.navWithdraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navWithdraw.Name = "navWithdraw";
+			this.navWithdraw.Size = new System.Drawing.Size(62, 39);
+			this.navWithdraw.Text = "Withdraw";
+			this.navWithdraw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navWithdraw.Click += new System.EventHandler(this.navWithdraw_Click);
+			// 
 			// MemberId
 			// 
 			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -457,6 +471,18 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ReadyForPlcmt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
 			this.ReadyForPlcmt.TrueValue = "Y";
 			this.ReadyForPlcmt.Width = 50;
+			// 
+			// Withdrawn
+			// 
+			this.Withdrawn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Withdrawn.FalseValue = "N";
+			this.Withdrawn.HeaderText = "WD";
+			this.Withdrawn.IndeterminateValue = "N";
+			this.Withdrawn.Name = "Withdrawn";
+			this.Withdrawn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Withdrawn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.Withdrawn.TrueValue = "Y";
+			this.Withdrawn.Width = 40;
 			// 
 			// SlalomReg
 			// 
@@ -684,12 +710,14 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.Button SearchButton;
 		private System.Windows.Forms.TextBox SearchTextbox;
 		private System.Windows.Forms.ToolStripButton navShowMember;
+		private System.Windows.Forms.ToolStripButton navWithdraw;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyToSki;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyForPlcmt;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn Withdrawn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn SlalomReg;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn TrickReg;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn JumpReg;

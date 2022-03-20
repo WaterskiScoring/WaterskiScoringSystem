@@ -76,7 +76,7 @@
 			this.navExport.Image = global::WaterskiScoringSystem.Properties.Resources.DVDVR;
 			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(44, 35);
+			this.navExport.Size = new System.Drawing.Size(45, 35);
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.ToolTipText = "Export member list as shown to tab delimited text file";
@@ -116,12 +116,14 @@
 			// 
 			// navAddNewItem
 			// 
+			this.navAddNewItem.Enabled = false;
 			this.navAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("navAddNewItem.Image")));
 			this.navAddNewItem.Name = "navAddNewItem";
 			this.navAddNewItem.RightToLeftAutoMirrorImage = true;
 			this.navAddNewItem.Size = new System.Drawing.Size(40, 35);
 			this.navAddNewItem.Text = "Insert";
 			this.navAddNewItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navAddNewItem.Visible = false;
 			this.navAddNewItem.Click += new System.EventHandler(this.navInsert_Click);
 			// 
 			// navRemoveAll
