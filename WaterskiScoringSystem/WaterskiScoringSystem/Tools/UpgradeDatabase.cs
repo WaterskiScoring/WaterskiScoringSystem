@@ -5,7 +5,9 @@ using System.Deployment.Application;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+
 using Microsoft.Win32;
+
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
@@ -13,8 +15,6 @@ namespace WaterskiScoringSystem.Tools {
         private String mySanctionNum;
         private String myNewVersionStmt;
         private decimal myDatabaseVersion = 0.00M;
-        private SqlCeConnection myDbConn = null;
-        private SqlCeCommand mySqlStmt = null;
         private ProgressWindow myProgressInfo;
 
 		public static DatabaseUpgradeRemovedColumn[] removedColumns = new DatabaseUpgradeRemovedColumn[] {
@@ -43,391 +43,217 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public bool checkForUpgrade() {
-            bool curReturnValue = true;
-
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.59', 22.59, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.66', 22.66, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
-                if ( myDatabaseVersion < curVersion ) {
-                    copyDatabaseFile();
-                }
-                if (myDatabaseVersion < 22.55M ) {
-                    if (openDbConn()) {
+				if ( myDatabaseVersion >= curVersion ) return true;
+
+                copyDatabaseFile();
+                
+				if (myDatabaseVersion < 22.55M ) {
+                    if ( DataAccess.DataAccessOpen() ) {
                         String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
-                if (myDatabaseVersion < 22.40M ) {
-                    if ( openDbConn() ) {
+
+				if ( myDatabaseVersion < 22.66M ) {
+					if ( DataAccess.DataAccessOpen() ) {
+						loadListValues();
+					}
+				}
+
+				if ( myDatabaseVersion < 22.40M ) {
+                    if ( DataAccess.DataAccessOpen() ) {
                         loadTrickList();
                     }
                 }
+
                 if (myDatabaseVersion < 22.28M) {
-                    if ( openDbConn() ) {
+                    if ( DataAccess.DataAccessOpen() ) {
                         loadNopsData();
                     }
                 }
-                if ( myDatabaseVersion < 22.59M ) {
-                    if ( openDbConn() ) {
-                        loadListValues();
-                    }
-                }
+
                 if (myDatabaseVersion < curVersion ) {
-                    if (openDbConn()) {
+                    if (DataAccess.DataAccessOpen()) {
                         addNewData();
                     }
                 }
+
+				return true;
+
             } catch ( Exception ex ) {
                 String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error: Performing SQL operations"
-                    + "\n\nError: " + ExcpMsg
-                    );
-            } finally {
-                if ( myDbConn != null ) {
-                    myDbConn.Close();
-                }
+                MessageBox.Show( "Error: Performing SQL operations" + "\n\nError: " + ExcpMsg );
+				return false;
             }
-
-            return curReturnValue;
-        }
-
-        private bool openDbConn() {
-            bool curReturnValue = true;
-            try {
-                if ( myDbConn == null ) {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
-                } else {
-                    String curState = myDbConn.State.ToString();
-                    if ( curState.ToUpper().Equals( "CLOSED" ) ) {
-                        myDbConn.Open();
-                    }
-                }
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                MessageBox.Show( "Error connecting to database " + "\n\nError: " + ExcpMsg );
-            }
-            return curReturnValue;
         }
 
         private bool addNewData() {
-            bool curReturnValue = true;
             int rowsProc = 0;
+			StringBuilder curSqltStmt = new StringBuilder( "" );
 
-            try {
-                mySqlStmt = myDbConn.CreateCommand();
+			try {
+				// Update database version
+				curSqltStmt.Append("Delete CodeValueList Where ListName = 'DatabaseVersion'");
+				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
+				
+				curSqltStmt = new StringBuilder( "" );
+				curSqltStmt.Append( "Insert CodeValueList (" );
+				curSqltStmt.Append( " ListName, ListCode, CodeValue, MinValue, SortSeq " );
+				curSqltStmt.Append(String.Format( ") Values ( {0} )", myNewVersionStmt ) );
+				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
+				return true;
 
-                #region Update database version
-                mySqlStmt.CommandText = "Delete CodeValueList Where ListName = 'DatabaseVersion'";
-                rowsProc = mySqlStmt.ExecuteNonQuery();
-                mySqlStmt.CommandText = "Insert CodeValueList ("
-                    + " ListName, ListCode, CodeValue, MinValue, SortSeq "
-                    + ") Values ("
-                    + myNewVersionStmt + ")";
-                rowsProc = mySqlStmt.ExecuteNonQuery();
-                #endregion
-
-            } catch ( Exception ex ) {
-                curReturnValue = false;
+			} catch ( Exception ex ) {
                 String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error during addVerion optionation" + "\n\nError: " + ExcpMsg );
+                if ( curSqltStmt != null ) ExcpMsg += "\n" + curSqltStmt.ToString();
+				MessageBox.Show( "addNewData: Exception encountered:" + "\n\nError: " + ExcpMsg );
+				return false;
             }
-
-            return curReturnValue;
         }
 
-        private bool loadNopsData() {
-            bool curReturnValue = true;
-            int rowsProc = 0;
+		// Insert current NOPS values
+		private bool loadNopsData() {
+			StringBuilder curSqltStmt = new StringBuilder( "" );
+			int rowsProc = 0;
 
             try {
-                #region Insert current NOPS values
-                mySqlStmt = myDbConn.CreateCommand();
+				curSqltStmt.Append("Delete NopsData");
+				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
-                mySqlStmt.CommandText = "Delete NopsData";
-                rowsProc = mySqlStmt.ExecuteNonQuery();
-
-                String curFileRef = Application.StartupPath + "\\NopsData.txt";
+				String curFileRef = Application.StartupPath + "\\NopsData.txt";
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
+				
+				return true;
 
-                #endregion
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error during addVerion optionation" + "\n\nError: " + ExcpMsg );
-            }
+			} catch ( Exception ex ) {
+				String ExcpMsg = ex.Message;
+				if ( curSqltStmt != null ) ExcpMsg += "\n" + curSqltStmt.ToString();
+				MessageBox.Show( "loadNopsData: Exception encountered:" + "\n\nError: " + ExcpMsg );
+				return false;
+			}
+		}
 
-            return curReturnValue;
-        }
-
-        private bool loadTrickList() {
-            bool curReturnValue = true;
-            int rowsProc = 0;
+		// Insert current NOPS values
+		private bool loadTrickList() {
+			StringBuilder curSqltStmt = new StringBuilder( "" );
+			int rowsProc = 0;
 
             try {
-                #region Insert current NOPS values
-                mySqlStmt = myDbConn.CreateCommand();
-
-                mySqlStmt.CommandText = "Delete TrickList";
-                rowsProc = mySqlStmt.ExecuteNonQuery();
+				curSqltStmt.Append( "Delete TrickList" );
+				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
                 String curFileRef = Application.StartupPath + "\\TrickList.txt";
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
+				return true;
 
-                #endregion
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error during addVerion optionation" + "\n\nError: " + ExcpMsg );
-            }
+			} catch ( Exception ex ) {
+				String ExcpMsg = ex.Message;
+				if ( curSqltStmt != null ) ExcpMsg += "\n" + curSqltStmt.ToString();
+				MessageBox.Show( "loadTrickList: Exception encountered:" + "\n\nError: " + ExcpMsg );
+				return false;
+			}
 
-            return curReturnValue;
         }
 
         private bool loadListValues() {
-            bool curReturnValue = true;
-            int rowsProc = 0;
+			StringBuilder curSqltStmt = new StringBuilder( "" );
+			int rowsProc = 0;
 
-            try {
-                mySqlStmt = myDbConn.CreateCommand();
-
-                mySqlStmt.CommandText = "Delete CodeValueList";
-                rowsProc = mySqlStmt.ExecuteNonQuery();
+			try {
+				curSqltStmt.Append( "Delete CodeValueList" );
+				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
                 String curFileRef = Application.StartupPath + "\\CodeValueLists.txt";
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
+				return true;
 
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error during addVerion optionation" + "\n\nError: " + ExcpMsg );
-            }
-
-            return curReturnValue;
+			} catch ( Exception ex ) {
+				MessageBox.Show( "loadListValues: Exception encountered:" + "\n\nError: " + ex.Message );
+				return false;
+			}
         }
 
-        private bool updateSchemaUpgrade(String inFileRef) {
-            bool curReturnValue = true;
+		/*
+		 * Update the database schema using commands provided
+		 * Commands processed is determined based on current database version
+		 */
+		private bool updateSchemaUpgrade(String inFileRef) {
             int curDelimIdx;
             decimal curDatabaseVersion = 0.00M;
             String inputBuffer, curSqlStmt = "";
             StringBuilder curInputCmd = new StringBuilder("");
-            ImportData curImportData = new ImportData();
-            StreamReader myReader;
+            
+			ImportData curImportData = new ImportData();
+			StreamReader myReader = null;
             myProgressInfo = new ProgressWindow();
 
-            try {
-                #region Process all commands in the input file
-                myReader = getImportFile(inFileRef);
-                if (myReader != null) {
-                    int curInputLineCount = 0;
-                    try {
-                        MessageBox.Show("Your database is about to be upgraded.  Please click OK or continue to any dialogs.");
+			try {
+				myReader = getImportFile( inFileRef );
+				if ( myReader == null ) return false;
+				int curInputLineCount = 0;
 
-                        while ((inputBuffer = myReader.ReadLine()) != null) {
-                            curInputLineCount++;
-                            myProgressInfo.setProgressValue(curInputLineCount);
+				MessageBox.Show( "Your database is about to be upgraded.  Please click OK or continue to any dialogs." );
 
-                            if (inputBuffer.TrimStart(' ').StartsWith("## ")) {
-                                curDatabaseVersion = Convert.ToDecimal(inputBuffer.Substring(4));
-                            }
-                            if (inputBuffer.TrimStart(' ').StartsWith("//") || inputBuffer.TrimStart(' ').StartsWith("##")) {
-                            } else {
-                                if (curDatabaseVersion > myDatabaseVersion) {
-                                    curDelimIdx = inputBuffer.IndexOf(';');
-                                    if (curDelimIdx >= 0) {
-                                        if (curDelimIdx > 0) {
-                                            curInputCmd.Append(inputBuffer.Substring(0, curDelimIdx));
-                                        }
-                                        curSqlStmt = curInputCmd.ToString();
-                                        curSqlStmt.TrimStart(' ');
-                                        if (curSqlStmt.Trim().ToUpper().StartsWith("DROP ")) {
-                                            execDropTable(replaceLinefeed(curSqlStmt));
-                                        } else if (curSqlStmt.Trim().ToUpper().StartsWith("CREATE ")) {
-                                            execCreateTable(replaceLinefeed(curSqlStmt));
-                                            curInputCmd = new StringBuilder("");
-                                        } else {
-                                            execSchemaCmd(replaceLinefeed(curSqlStmt));
-                                        }
-                                        curInputCmd = new StringBuilder("");
+				while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
+					curInputLineCount++;
+					myProgressInfo.setProgressValue( curInputLineCount );
 
-                                    } else {
-                                        curInputCmd.Append(inputBuffer);
-                                    }
-                                }
-                            }
-                        }
+					if ( inputBuffer.TrimStart( ' ' ).StartsWith( "## " ) ) {
+						curDatabaseVersion = Convert.ToDecimal( inputBuffer.Substring( 4 ) );
+					}
+					
+					if ( inputBuffer.TrimStart( ' ' ).StartsWith( "//" ) || inputBuffer.TrimStart( ' ' ).StartsWith( "##" ) ) continue;
+					if ( curDatabaseVersion <= myDatabaseVersion ) continue;
 
-                        curSqlStmt = "";
-                        System.Data.SqlServerCe.SqlCeEngine mySqlEngine = new SqlCeEngine();
-                        mySqlEngine.LocalConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                        mySqlEngine.Shrink();
+					curDelimIdx = inputBuffer.IndexOf( ';' );
+					if ( curDelimIdx >= 0 ) {
+						if ( curDelimIdx > 0 ) curInputCmd.Append( inputBuffer.Substring( 0, curDelimIdx ) );
+						curSqlStmt = curInputCmd.ToString();
+						curSqlStmt.TrimStart( ' ' );
+						if ( curSqlStmt.Trim().ToUpper().StartsWith( "DROP " ) ) {
+							execDropTable( replaceLinefeed( curSqlStmt ) );
 
-                    } catch (Exception ex) {
-                        curReturnValue = false;
-                        String ExcpMsg = ex.Message;
-                        if (mySqlStmt != null) {
-                            ExcpMsg += "\n" + curSqlStmt;
-                        }
-                        MessageBox.Show("Error attempting to update database schema" + "\n\nError: " + ExcpMsg);
-                    }
-                }
-                #endregion
+						} else if ( curSqlStmt.Trim().ToUpper().StartsWith( "CREATE " ) ) {
+							execCreateTable( replaceLinefeed( curSqlStmt ) );
+							curInputCmd = new StringBuilder( "" );
 
-            } catch (Exception ex) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if (mySqlStmt != null) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show("Error attempting to update database schema" + "\n\nError: " + ExcpMsg);
-            }
-            myProgressInfo.Close();
+						} else {
+							execSchemaCmd( replaceLinefeed( curSqlStmt ) );
+						}
+						curInputCmd = new StringBuilder( "" );
 
-            return curReturnValue;
-        }
+					} else {
+						curInputCmd.Append( inputBuffer );
+					}
+				}
 
-        private bool updateSchema(String inFileRef) {
-            bool curReturnValue = true;
-            int curDelimIdx;
-            String inputBuffer, curSqlStmt = "";
-            StringBuilder curInputCmd = new StringBuilder( "" );
-            ImportData curImportData = new ImportData();
-            StreamReader myReader;
-            myProgressInfo = new ProgressWindow();
+				curSqlStmt = "";
+				SqlCeEngine mySqlEngine = new SqlCeEngine();
+				mySqlEngine.LocalConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
+				mySqlEngine.Shrink();
 
-            try {
-                #region Process all commands in the input file
-                myReader = getImportFile( inFileRef );
-                if ( myReader != null ) {
-                    int curInputLineCount = 0;
-                    try {
-                        MessageBox.Show( "Your database is about to be upgraded.  Please click OK or continue to any dialogs." );
+				return true;
 
-                        while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
-                            curInputLineCount++;
-                            myProgressInfo.setProgressValue( curInputLineCount );
-
-                            if ( inputBuffer.TrimStart( ' ' ).StartsWith( "//" ) ) {
-                            } else {
-                                curDelimIdx = inputBuffer.IndexOf( ';' );
-                                if ( curDelimIdx >= 0 ) {
-                                    if ( curDelimIdx > 0 ) {
-                                        curInputCmd.Append( inputBuffer.Substring( 0, curDelimIdx ) );
-                                    }
-                                    curSqlStmt = curInputCmd.ToString();
-                                    curSqlStmt.TrimStart( ' ' );
-                                    if ( curSqlStmt.Trim().ToUpper().StartsWith( "DROP " ) ) {
-                                        execDropTable( replaceLinefeed(curSqlStmt) );
-                                    } else if ( curSqlStmt.Trim().ToUpper().StartsWith( "CREATE " ) ) {
-                                        execCreateTable( replaceLinefeed(curSqlStmt) );
-                                        curInputCmd = new StringBuilder( "" );
-                                    } else {
-                                        execSchemaCmd( replaceLinefeed(curSqlStmt) );
-                                    }
-                                    curInputCmd = new StringBuilder( "" );
-
-                                } else {
-                                    curInputCmd.Append( inputBuffer );
-                                }
-                            }
-
-                        }
-                        curSqlStmt = "";
-                        System.Data.SqlServerCe.SqlCeEngine mySqlEngine = new SqlCeEngine();
-                        mySqlEngine.LocalConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                        mySqlEngine.Shrink();
-
-                    } catch ( Exception ex ) {
-                        curReturnValue = false;
-                        String ExcpMsg = ex.Message;
-                        if ( mySqlStmt != null ) {
-                            ExcpMsg += "\n" + curSqlStmt;
-                        }
-                        MessageBox.Show( "Error attempting to update database schema" + "\n\nError: " + ExcpMsg );
-                    }
-                }
-                #endregion
-
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n" + mySqlStmt.CommandText;
-                }
-                MessageBox.Show( "Error attempting to update database schema" + "\n\nError: " + ExcpMsg );
-            }
-            myProgressInfo.Close();
-
-            return curReturnValue;
-        }
-
-        private bool updateTourRegCity() {
-            bool curReturnValue = true;
-            int rowsProc = 0, curRowsUpdate = 0;
-            StringBuilder curSqlStmt = new StringBuilder("");
-            curSqlStmt.Append( "SELECT Distinct MemberList.MemberId, MemberList.UpdateDate, MemberList.City FROM MemberList " );
-            curSqlStmt.Append( "Inner Join TourReg ON MemberList.MemberId = TourReg.MemberId ");
-            curSqlStmt.Append( "Where MemberList.City is not null " );
-            curSqlStmt.Append( "Order by MemberList.MemberId, MemberList.UpdateDate" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            if (curDataTable.Rows.Count > 0) {
-                if ( openDbConn() ) {
-                    try {
-                        foreach (DataRow curRow in curDataTable.Rows) {
-                            curSqlStmt = new StringBuilder( "" );
-                            curSqlStmt.Append( "Update TourReg Set City = '" + (String)curRow["City"] + "' " );
-                            curSqlStmt.Append( "Where MemberId = '" + (String)curRow["MemberId"] + "' " );
-
-                            mySqlStmt = myDbConn.CreateCommand();
-                            mySqlStmt.CommandText = curSqlStmt.ToString();
-                            rowsProc = mySqlStmt.ExecuteNonQuery();
-                            curRowsUpdate += rowsProc;
-                        }
-                    } catch (Exception ex) {
-                        curReturnValue = false;
-                        if (mySqlStmt == null) {
-                        } else {
-                            MessageBox.Show( "Error: updateTourRegCity"
-                                + "\n\nSqlStmt: " + curSqlStmt.ToString()
-                                + "\n\nError: " + ex.Message
-                                );
-                        }
-                    }
-                    MessageBox.Show( "Total records updated " + curRowsUpdate );
-                } else {
-                    curReturnValue = false;
-                }
-            } else {
-                curReturnValue = false;
-            }
-
-            return curReturnValue;
-        }
+			} catch ( Exception ex ) {
+				String ExcpMsg = ex.Message;
+				if ( curInputCmd != null ) ExcpMsg += "\n" + curInputCmd.ToString();
+				MessageBox.Show( "updateSchemaUpgrade: Exception encountered:" + "\n\nError: " + ExcpMsg );
+				return false;
+			
+			} finally {
+				myProgressInfo.Close();
+				if ( myReader != null ) myReader.Close();
+			}
+		}
 
         private bool execDropTable( String inSqlStmt ) {
-            bool curReturnValue = true;
             int curDelimIdx, curDelimIdx2, curValueLen;
             ExportData curExportData = new ExportData();
             String[] curTableName = new String[1];
@@ -454,19 +280,14 @@ namespace WaterskiScoringSystem.Tools {
                         }
                     }
                 }
-            } catch ( Exception ex ) {
-                /*
-                MessageBox.Show( "Error: Executing drop table command " + inSqlStmt
-                    + "\n\nException: " + ex.Message
-                 );
-                 */
-                curReturnValue = false;
+				return true;
+
+            } catch {
+                return false;
             }
-            return curReturnValue;
         }
 
         private bool execCreateTable( String inSqlStmt ) {
-            bool curReturnValue = true;
             int curDelimIdx, curDelimIdx2, curValueLen;
             ImportData curImportData = new ImportData();
             String[] curTableName = new String[1];
@@ -490,43 +311,29 @@ namespace WaterskiScoringSystem.Tools {
                         }
                     }
                 }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Executing drop table command " + inSqlStmt
-                    + "\n\nException: " + ex.Message
-                 );
-                curReturnValue = false;
-            }
-            return curReturnValue;
-
+				return true;
+			
+			} catch ( Exception ex ) {
+				String ExcpMsg = ex.Message;
+				if ( inSqlStmt.Length > 0 ) ExcpMsg += "\n" + inSqlStmt;
+				MessageBox.Show( "execCreateTable: Exception encountered:" + "\n\nError: " + ExcpMsg );
+				return false;
+			}
         }
 
         private bool execSchemaCmd( String inSqlStmt ) {
-            bool curReturnValue = true;
             try {
-                if ( openDbConn() ) {
-                    mySqlStmt = myDbConn.CreateCommand();
-                    mySqlStmt.CommandText = inSqlStmt;
-                    int rowsProc = mySqlStmt.ExecuteNonQuery();
-                }
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n\n" + mySqlStmt.CommandText;
-                    if ( inSqlStmt.Trim().ToLower().StartsWith( "drop table" ) ) {
-                        //Skip exception message for drop statements
-                    } else {
-                        MessageBox.Show( "Error: execSchemaCmd"
-                            + "\n\nSqlStmt: " + inSqlStmt
-                            + "\n\nError: " + ExcpMsg );
-                    }
-                }
-            } finally {
-                if ( myDbConn != null ) {
-                    myDbConn.Close();
-                }
+				int rowsProc = DataAccess.ExecuteCommand( inSqlStmt );
+				return true;
+            
+			} catch ( Exception ex ) {
+				if ( inSqlStmt.Trim().ToLower().StartsWith( "drop table" ) ) return false;
+
+				MessageBox.Show( "execSchemaCmd: Exception encountered: "
+					+ "\n\nSqlStmt: " + inSqlStmt
+					+ "\n\nError: " + ex.Message );
+				return false;
             }
-            return curReturnValue;
         }
 
         private bool deleteTempFile( String inFileName ) {
@@ -543,7 +350,8 @@ namespace WaterskiScoringSystem.Tools {
                 System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
                 curOSProcess.Close();
                 return true;
-            } catch ( Exception ex ) {
+            
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error: Deleting temp file " + inFileName
                     + "\n\nException: " + ex.Message
                  );
@@ -554,8 +362,7 @@ namespace WaterskiScoringSystem.Tools {
         private bool copyDatabaseFile() {
             bool curReturn = false;
             int delimPos = 0;
-            String curDataDirectory = "", curFileName = null, curDatabaseFileName = "", curSourDir = "";
-            String curDestFileName = "", curDestDatabaseRef = "";
+            String curDataDirectory = "", curDatabaseFileName = "", curDestFileName = "";
 
             try {
                 String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
@@ -623,10 +430,12 @@ namespace WaterskiScoringSystem.Tools {
                     System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
                     curOSProcess.Close();
                 }
-            } catch ( Exception ex ) {
+            
+			} catch ( Exception ex ) {
                 MessageBox.Show( "Error backing up current database file " + "\n\nError: " + ex.Message );
             }
-            return curReturn;
+            
+			return curReturn;
         }
 
         private String replaceLinefeed( String inValue ) {

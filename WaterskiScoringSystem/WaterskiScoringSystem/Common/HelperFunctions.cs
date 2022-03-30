@@ -139,6 +139,15 @@ namespace WaterskiScoringSystem.Common {
 				return "";
 			}
 		}
+		public static decimal getDataRowColValueDecimal( DataRow dataRow, String colName, decimal defaultValue ) {
+			try {
+				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
+				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return (decimal)dataRow[colName];
+				return Convert.ToDecimal( (String)dataRow[colName] );
+			} catch {
+				return defaultValue;
+			}
+		}
 
 		public static String getDataRowColValue( DataRow dataRow, String colName, String defaultValue ) {
 			try {

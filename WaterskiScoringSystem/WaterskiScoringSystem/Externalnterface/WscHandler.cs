@@ -434,7 +434,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public static decimal[] getBoatTime( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph, Decimal inPassScore ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
 			if ( curEvent.Equals( "Jump" ) && myUseJumpTimes == false ) return new decimal[] { };
-			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+			getSanctionNum();
 
 			Int64 btPK = getBoatTimeKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
 			if ( btPK <= 0 ) return new decimal[] { };
@@ -465,7 +465,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		public static DataRow getBoatPath( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return null;
-			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+			getSanctionNum();
 
 			Int64 bpPK = getBoatPathKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
 			Int64 btPK = getBoatTimeKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
@@ -493,7 +493,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		public static decimal[] getJumpMeasurement( String curEvent, String curMemberId, String curRound, String curPassNum ) {
 			if ( curEvent.Length == 0 || curMemberId.Length == 0 || curRound.Length == 0 || curPassNum.Length == 0 ) return new decimal[] { };
-			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+			getSanctionNum();
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 
@@ -512,7 +512,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreFeet"], (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreMeters"] };
 
 				} else {
-					if ( myConnectActive ) Thread.Sleep( 500 );
+					if ( myConnectActive ) Thread.Sleep( 200 );
 				}
 			}
 
@@ -565,6 +565,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static void getSanctionNum() {
+			if ( mySanctionNum != null && mySanctionNum.Equals( Properties.Settings.Default.AppSanctionNum ) ) return;
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 			if ( mySanctionNum == null ) {
 				String msg = "An active tournament must be selected from the Administration menu Tournament List option";
@@ -609,7 +610,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			Int64 bpPK = -1;
 
+			// If no boat path records available for tournament then assume not being used.
+			curSqlStmt.Append( "SELECT count(*) FROM BoatPath WHERE SanctionId = '" + mySanctionNum + "'" );
+			int curReadCount = (Int32)DataAccess.ExecuteScalarCommand( curSqlStmt.ToString() );
+			if ( curReadCount == 0 ) return bpPK;
 
+			// Check boat path table and if only one is found for specified skier pass then use the available PK reference
+			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT PK FROM BoatPath P " );
 			curSqlStmt.Append( "WHERE P.SanctionId = '" + mySanctionNum + "' " );
 			curSqlStmt.Append( "AND P.MemberId = '" + curMemberId + "' " );
@@ -623,11 +630,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 					bpPK = (Int64)curDataTable.Rows[0]["PK"];
 					break;
 				}
-				Thread.Sleep( 500 );
+				Thread.Sleep( 100 );
 			}
 			if ( bpPK <= 0 ) return -1;
 			if ( curDataTable.Rows.Count == 1 ) return bpPK;
 
+			// More than one record was for found for specified skier pass there take first one matching rope and speed
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT PK FROM BoatPath P " );
 			curSqlStmt.Append( "WHERE P.SanctionId = '" + mySanctionNum + "' " );
@@ -650,11 +658,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 * Save the PK index of the first matching record
 		 */
 		private static Int64 getBoatTimeKey( String curEvent, String curMemberId, String curRound, String curPassNum, Decimal curPassLineLength, Int16 curPassSpeedKph ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
 			Int64 btPK = -1;
 
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT count(*) as rowCount FROM BoatTime T WHERE T.SanctionId = '" + mySanctionNum + "' " );
+			// If no boat path records available for tournament then assume not being used.
+			curSqlStmt.Append( "SELECT count(*) FROM BoatTime WHERE SanctionId = '" + mySanctionNum + "'" );
+			int curReadCount = (Int32)DataAccess.ExecuteScalarCommand( curSqlStmt.ToString() );
+			if ( curReadCount == 0 ) return btPK;
 
+			// Check boat time table and if only one is found for specified skier pass then use the available PK reference
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT PK FROM BoatTime T " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
@@ -669,14 +681,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 					btPK = (Int64)curDataTable.Rows[0]["PK"];
 					break;
 				}
-				Thread.Sleep( 500 );
+				Thread.Sleep( 100 );
 			}
 			if ( btPK <= 0 ) return -1;
 			if ( curDataTable.Rows.Count == 1 ) return btPK;
 
-			/*
-			 * If more than 1 matching record is found then search for a more specific record in case the pass was deleted and retried
-			 */
+			// If more than 1 matching record is found then search for a more specific record in case the pass was deleted and retried
 			if ( curDataTable.Rows.Count > 1 ) {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "SELECT PK FROM BoatTime T " );
@@ -696,7 +706,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static DataTable getOfficialAssignments( String inEvent, String inEventGroup, Int16 inRound ) {
-			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+			getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt" );
 			curSqlStmt.Append( ", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation " );
@@ -714,7 +724,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static DataTable getDriverAssignment( String inEvent, String inEventGroup, String inRound ) {
-			if ( mySanctionNum == null || mySanctionNum.Length == 0 ) getSanctionNum();
+			getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt" );
 			curSqlStmt.Append( ", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation " );
