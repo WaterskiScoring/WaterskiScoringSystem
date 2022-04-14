@@ -9,7 +9,7 @@ using WscMessageHandler.Common;
 
 namespace WscMessageHandler.Message {
 	public partial class Controller : Form {
-		public static readonly String myDisplayDateFormat = "ddd MMM dd H:mm:ss";
+		private static readonly String myDisplayDateFormat = "ddd MMM dd H:mm:ss";
 		private static readonly Font myMsgFontBold = new Font( "Arial Narrow", 12, FontStyle.Bold );
 		private static readonly int myCountHeartBeatFailedMax = 4;
 
@@ -17,7 +17,6 @@ namespace WscMessageHandler.Message {
 		private int myCountConnectCheckFailed = 0;
 		private int myCountHeartBeatFailed = 0;
 		private int myHeartBeatViewRowIdx = 0;
-		private String myEventSubId = "";
 
 		private Timer myConnectTimer = null;
 		private Timer myHeartBeatTimer = null;
@@ -36,18 +35,16 @@ namespace WscMessageHandler.Message {
 				this.Location = Properties.Settings.Default.MessageController_Location;
 			}
 
-			Log.OpenFile( Properties.Settings.Default.SanctionNum );
 			WaterSkiConnectButton.Visible = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+			String curMsg = "";
 
-			if ( DataAccess.DataAccessOpen() ) {
-				Log.WriteFile( String.Format( "{0}Connected to database {1}", curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
-
-				String curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
+			if ( ConnectMgmtData.initConnectMgmtData() ) {
+				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
 				addViewMessage( curMsg, false, false );
 
-				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, Properties.Settings.Default.SanctionNum );
+				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, false, false );
 
 				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
@@ -58,9 +55,9 @@ namespace WscMessageHandler.Message {
 				curTimerObj.Start();
 
 			} else {
-				String msg = String.Format("{0}Unable to connect to database {1}", curMethodName, Properties.Settings.Default.DatabaseConnectionString);
-				Log.WriteFile( msg );
-				MessageBox.Show( msg );
+				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}", curMethodName, ConnectMgmtData.sanctionNum );
+				Log.WriteFile( curMsg );
+				addViewMessage( curMsg, true, true );
 			}
 		}
 
@@ -102,19 +99,20 @@ namespace WscMessageHandler.Message {
 			// Display the form as a modal dialog box.
 			ConnectDialog connectDialog = new ConnectDialog() {
 				windowLocation = new System.Drawing.Point( this.Location.X + 100, this.Location.Y + 100 )
-				, sanctionNum = Properties.Settings.Default.SanctionNum
 			};
 			DialogResult connectDialogResult = connectDialog.ShowDialog();
 			if ( connectDialogResult == DialogResult.OK ) {
 				if ( connectDialog.dialogCommand.Equals( "Connected" ) ) {
-					execHandlerConnectTasks( connectDialog.eventSubId, connectDialog.useJumpTimes );
+					execHandlerConnectTasks();
 
 				} else if ( connectDialog.dialogCommand.Equals( "Disconnected" ) ) {
 					try {
 						terminateMonitors( "" );
 
 					} catch ( Exception ex ) {
-						MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+						String curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
+						Log.WriteFile( curMsg );
+						MessageBox.Show( curMsg );
 					}
 
 				} else if ( connectDialog.dialogCommand.Equals( "ShowPin" ) ) {
@@ -125,35 +123,59 @@ namespace WscMessageHandler.Message {
 			}
 		}
 
-		private void execHandlerConnectTasks( String eventSubId, bool useJumpTimes ) {
+		private void execHandlerConnectTasks() {
 			String curMethodName = "Controller: execHandlerConnectTasks: ";
 			bool boldMsg = false, errorMsg = false ;
+			String curMsg = "";
 			myCountConnectCheckFailed = 0;
-			myEventSubId = eventSubId;
+			
+			try {
+				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}"
+					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				addViewMessage( curMsg, boldMsg, errorMsg );
 
-			String curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}", curMethodName, Properties.Settings.Default.SanctionNum, myEventSubId );
-			addViewMessage( curMsg, boldMsg, errorMsg );
+				HelperFunctions.cleanMsgQueues();
+				curMsg = String.Format( "{0}message queues cleaned for {1} / {2}"
+					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				addViewMessage( curMsg, boldMsg, errorMsg );
 
-			HelperFunctions.cleanMsgQueues();
-			curMsg = String.Format( "{0}message queues cleaned for {1} / {2}", curMethodName, Properties.Settings.Default.SanctionNum, myEventSubId );
-			addViewMessage( curMsg, boldMsg, errorMsg );
+				Task.Factory.StartNew( () => ListenHandler.startWscMessageHandler() );
+				curMsg = String.Format( "{0}activating ListenHandler for {1} / {2}"
+					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				addViewMessage( curMsg, boldMsg, errorMsg );
 
-			Task.Factory.StartNew( () => ListenHandler.startWscMessageHandler( Properties.Settings.Default.SanctionNum, myEventSubId, useJumpTimes ) );
-			curMsg = String.Format( "{0}activating ListenHandler for {1} / {2}", curMethodName, Properties.Settings.Default.SanctionNum, myEventSubId );
-			addViewMessage( curMsg, boldMsg, errorMsg );
+				//Task.Factory.StartNew( () => Listener.startWscListener( ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId ) );
+				Listener.startWscListener();
+				//waitforConnectConfirm();
+				curMsg = String.Format( "{0}starting Listener for {1} / {2}"
+					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				addViewMessage( curMsg, boldMsg, errorMsg );
 
-			Task.Factory.StartNew( () => Listener.startWscListener( Properties.Settings.Default.SanctionNum, myEventSubId ) );
-			curMsg = String.Format( "{0}starting Listener for {1} / {2}", curMethodName, Properties.Settings.Default.SanctionNum, myEventSubId );
-			addViewMessage( curMsg, boldMsg, errorMsg );
+				//Task.Factory.StartNew( () => Transmitter.startWscTransmitter( ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId ) );
+				Transmitter.startWscTransmitter();
+				curMsg = String.Format( "{0}starting Transmitter for {1} / {2}"
+					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				addViewMessage( curMsg, boldMsg, errorMsg );
 
-			Task.Factory.StartNew( () => Transmitter.startWscTransmitter( Properties.Settings.Default.SanctionNum, myEventSubId ) );
-			curMsg = String.Format( "{0}starting Transmitter for {1} / {2}", curMethodName, Properties.Settings.Default.SanctionNum, myEventSubId );
-			addViewMessage( curMsg, boldMsg, errorMsg );
+				// Create a timer with 2.5 second interval
+				myConnectTimer = new Timer() { Interval = 2500 };
+				myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
+				myConnectTimer.Start();
 
-			// Create a timer with 2.5 second interval
-			myConnectTimer = new Timer() { Interval = 2500 };
-			myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
-			myConnectTimer.Start();
+			} catch ( Exception ex ) {
+				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
+				Log.WriteFile( curMsg );
+				MessageBox.Show( curMsg );
+			}
+		}
+
+		private void waitforConnectConfirm() {
+			while(true) {
+				DataRow curListenerRow = HelperFunctions.getMonitorHeartBeat( "Listener" );
+				if ( curListenerRow != null ) return;
+				//MessageBox.Show( "waitforConnectConfirm" );
+				System.Threading.Thread.Sleep( 1000 );
+			}
 		}
 
 		private void showHeartBeatMsg() {
@@ -204,10 +226,12 @@ namespace WscMessageHandler.Message {
 				if ( myCountConnectCheckFailed < 120 ) return;
 				
 				connectStatus = "failed";
-				curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}", curMethodName, connectStatus, Properties.Settings.Default.SanctionNum, myEventSubId );
+				curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}"
+					, curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, true, true );
 
-				curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}", curMethodName, connectStatus, Properties.Settings.Default.SanctionNum, myEventSubId );
+				curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}"
+					, curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, true, true );
 
 				myConnectTimer.Stop();
@@ -224,10 +248,10 @@ namespace WscMessageHandler.Message {
 			myConnectTimer = null;
 
 			connectStatus = "completed";
-			curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}", curMethodName, connectStatus, Properties.Settings.Default.SanctionNum, myEventSubId );
+			curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}", curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 			addViewMessage( curMsg, false, false );
 
-			curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}", curMethodName, connectStatus, Properties.Settings.Default.SanctionNum, myEventSubId );
+			curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}", curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 			addViewMessage( curMsg, false, false );
 
 			myCountHeartBeatFailed = 0;

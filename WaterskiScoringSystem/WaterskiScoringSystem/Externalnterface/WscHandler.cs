@@ -54,8 +54,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				ProcessStartInfo start = new ProcessStartInfo();
 				// Enter in the command line arguments, everything you would enter after the executable name itself
 				start.Arguments = String.Format( "{0} {1} {2}", Properties.Settings.Default.AppSanctionNum
-					, HelperFunctions.getDatabaseFilenameFromConnectString()
-					, Properties.Settings.Default.ExportDirectory );
+					, "\"" + HelperFunctions.getDatabaseFilenameFromConnectString() + "\""
+					, "\"" + Properties.Settings.Default.ExportDirectory + "\"" );
 
 				// Enter the executable to run, including the complete path
 				start.FileName = "WscMessageHandler.exe";
@@ -73,7 +73,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 		
-		private static void checkWscConnectStatus() {
+		public static void checkWscConnectStatus() {
 			String curMethodName = "checkWscConnectStatus: ";
 			DataTable curMonitorDataTable = getMonitorHeartBeatAll();
 			if ( curMonitorDataTable == null || curMonitorDataTable.Rows.Count != 3 ) {

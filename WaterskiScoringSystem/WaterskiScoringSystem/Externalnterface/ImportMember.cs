@@ -190,6 +190,78 @@ namespace WaterskiScoringSystem.Externalnterface {
 			displayMemberProcessCounts();
         }
 
+		public void importWwsRegistrations() {
+			/* -----------------------------------------------------------------------
+            * Configure URL to retrieve all skiers pre-registered for the active tournament
+			* This will include all appointed officials
+			* https://global.api.worldwaterskiers.com/wstims/getParticipantsBySanctionID?apiToken=wstims&sanctionID=22S085R
+			* ----------------------------------------------------------------------- 
+			*/
+			if ( !(mySanctionNum.Equals( "22S085" )) ) {
+				MessageBox.Show( "This test can only be done using sanction 22S085" );
+				return;
+			}
+			//String curQueryString = "&SanctionID=" + mySanctionNum;
+			String curQueryString = "&sanctionID=22S085R";
+			String curContentType = "application/json; charset=UTF-8";
+			String curRegExportListUrl = "https://global.api.worldwaterskiers.com/wstims/getParticipantsBySanctionID?apiToken=wstims";
+			String curReqstUrl = curRegExportListUrl + curQueryString;
+			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
+			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
+				MessageBox.Show( "Sanction edit code is required to retrieve skier registrations and member information.  Enter required value on Tournament Form" );
+				return;
+			}
+
+			NameValueCollection curHeaderParams = new NameValueCollection();
+			List<object> curResponseDataList = null;
+
+			Cursor.Current = Cursors.WaitCursor;
+			//curResponseDataList = SendMessageHttp.getMessageResponseJsonArray(curReqstUrl, curHeaderParams, curContentType, "wstims", "Slalom38tTrick13Jump250", false);
+			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+			if ( curResponseDataList == null || curResponseDataList.Count == 0 ) {
+				displayMemberProcessCounts();
+				return;
+			}
+
+			myProgressInfo = new ProgressWindow();
+			myProgressInfo.setProgressMin( 1 );
+			myProgressInfo.setProgressMax( curResponseDataList.Count );
+
+			IwwfMembership.warnMessageActive = false;
+
+			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+				Dictionary<String, object> curTeamHeaderList = new Dictionary<String, object>();
+
+				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+					myCountMemberInput++;
+					myProgressInfo.setProgressValue( myCountMemberInput );
+
+					importMemberFromAwsa( curEntry, true, true );
+
+					buildNcwsaTeamHeader( curEntry, curTeamHeaderList );
+				}
+
+				foreach ( Dictionary<string, object> curEntry in curTeamHeaderList.Values ) {
+					procTeamHeaderInput( curEntry, true );
+				}
+
+			} else {
+				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+					myCountMemberInput++;
+					myProgressInfo.setProgressValue( myCountMemberInput );
+
+					importMemberFromAwsa( curEntry, true, false );
+				}
+			}
+
+			Cursor.Current = Cursors.Default;
+			myProgressInfo.Close();
+			IwwfMembership.showBulkWarnMessage();
+			IwwfMembership.warnMessageActive = false;
+
+			displayMemberProcessCounts();
+		}
+
 		/*
 		 * Update the memeber data record and also update tournament registration record for the member data
 		 */
@@ -472,27 +544,19 @@ namespace WaterskiScoringSystem.Externalnterface {
 					}
 				}
 
-				if ( curImportMemberEntry.ContainsKey( "Prereg" ) ) {
-					String curPrereg = HelperFunctions.getAttributeValue( curImportMemberEntry, "Prereg" );
-					if ( curPrereg == null ) curPrereg = "";
-					if ( curPrereg.Equals( "YES" ) ) {
-						curMemberEntry.Note = "OLR";
+				String curPrereg = HelperFunctions.getAttributeValue( curImportMemberEntry, "Prereg" );
+				String curApptOfficial = HelperFunctions.getAttributeValue( curImportMemberEntry, "ApptdOfficial" );
+				String curNote = HelperFunctions.getAttributeValue( curImportMemberEntry, "Note" );
 
-					} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Length > 0 ) {
-						curMemberEntry.Note = "Appointed Official";
-					}
-
-				} else if ( curImportMemberEntry.ContainsKey( "Note" ) ) {
-					curMemberEntry.Note = (String)curImportMemberEntry["Note"];
-				}
+				if ( curPrereg == null ) curPrereg = "";
+				if ( curPrereg.ToUpper().Equals( "YES" ) ) curMemberEntry.Note = "OLR";
+				else if ( curApptOfficial.Length > 0 ) curMemberEntry.Note = "Appointed Official";
+				else if ( curNote.Length > 0 ) curMemberEntry.Note = curNote;
 
 				if ( inNcwsa ) {
 					if ( curMemberEntry.Note.Length == 0 ) curMemberEntry.Note = "Team Template";
-					try {
-						curMemberEntry.Note += ", EventWaiver=" + (String)curImportMemberEntry["EventWaiver"];
-					} catch {
-						curMemberEntry.Note += ", EventWaiver=N/A";
-					}
+					String curEventWaiver = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventWaiver" );
+					if ( curEventWaiver.Length > 0 ) curMemberEntry.Note += ", EventWaiver=" + curEventWaiver;
 				}
 
 				importMemberWithRatings( curImportMemberEntry, curMemberEntry );
@@ -538,75 +602,77 @@ namespace WaterskiScoringSystem.Externalnterface {
 				/*
 				 * Mark officials that are indicated as the chief, assistant chief, or appointed official ratings
 				*/
-				if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CJ" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeChief" );
+				if ( curApptOfficial.Length > 0 ) {
+					if ( curApptOfficial.ToUpper().Equals( "CJ" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "ACJ" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAsstChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "ACJ" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAsstChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "APTJ" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAppointed" );
+					} else if ( curApptOfficial.ToUpper().Equals( "APTJ" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAppointed" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CD" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "CD" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "ACD" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAsstChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "ACD" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAsstChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "APTD" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAppointed" );
+					} else if ( curApptOfficial.ToUpper().Equals( "APTD" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAppointed" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CC" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "CC" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "ACC" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAsstChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "ACC" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAsstChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "APTS" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAppointed" );
+					} else if ( curApptOfficial.ToUpper().Equals( "APTS" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAppointed" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CS" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "CS" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "ACS" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyAsstChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "ACS" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyAsstChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CT" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "CT" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "ACT" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechAsstChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "ACT" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechAsstChief" );
 
-				} else if ( ( (String)curImportMemberEntry["ApptdOfficial"] ).Equals( "CA" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-					if ( curReqstStatus ) myCountTourRegAdded++;
-					curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "AnncrChief" );
+					} else if ( curApptOfficial.ToUpper().Equals( "CA" ) ) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTourRegAdded++;
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "AnncrChief" );
+					}
 				}
 				#endregion
 
@@ -722,35 +788,29 @@ namespace WaterskiScoringSystem.Externalnterface {
 				, curMemberEntry.WaiverSigned
 				, Convert.ToDateTime( myTourRow["EventDates"] ) );
 
-			curMemberEntry.JudgeSlalomRating = (String)curImportMemberEntry["JudgeSlalom"];
-			if ( curImportMemberEntry.Keys.Contains("JudgePanAmSlalom")) {
-				if ( ( (String) curImportMemberEntry["JudgePanAmSlalom"] ).ToLower().Equals( "int" ) ) {
-					curMemberEntry.JudgeSlalomRating = "PanAm";
-				}
-			}
-			curMemberEntry.JudgeTrickRating = (String) curImportMemberEntry["JudgeTrick"];
-			if ( curImportMemberEntry.Keys.Contains( "JudgePanAmTrick") ) {
-				if ( ( (String) curImportMemberEntry["JudgePanAmTrick"] ).ToLower().Equals( "int" ) ) {
-					curMemberEntry.JudgeTrickRating = "PanAm";
-				}
-			}
-			curMemberEntry.JudgeJumpRating = (String) curImportMemberEntry["JudgeJump"];
-			if ( curImportMemberEntry.Keys.Contains( "JudgePanAmJump" ) ) {
-				if ( ( (String) curImportMemberEntry["JudgePanAmJump"] ).ToLower().Equals( "int" ) ) {
-					curMemberEntry.JudgeJumpRating = "PanAm";
-				}
-			}
+			
+			curMemberEntry.JudgeSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeSlalom" );
+			String curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmSlalom" );
+			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeSlalomRating = "PanAm";
 
-			curMemberEntry.DriverSlalomRating = (String) curImportMemberEntry["DriverSlalom"];
-			curMemberEntry.DriverTrickRating = (String) curImportMemberEntry["DriverTrick"];
-			curMemberEntry.DriverJumpRating = (String) curImportMemberEntry["DriverJump"];
+			curMemberEntry.JudgeTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeTrick" );
+			curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmTrick" );
+			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeTrickRating = "PanAm";
 
-			curMemberEntry.ScorerSlalomRating = (String) curImportMemberEntry["ScorerSlalom"];
-			curMemberEntry.ScorerTrickRating = (String) curImportMemberEntry["ScorerTrick"];
-			curMemberEntry.ScorerJumpRating = (String) curImportMemberEntry["ScorerJump"];
+			curMemberEntry.JudgeJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeJump" );
+			curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmJump" );
+			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeJumpRating = "PanAm";
 
-			curMemberEntry.SafetyOfficialRating = (String) curImportMemberEntry["Safety"];
-			curMemberEntry.TechControllerRating = (String) curImportMemberEntry["TechController"];
+			curMemberEntry.DriverSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "DriverSlalom" );
+			curMemberEntry.DriverTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "DriverTrick" );
+			curMemberEntry.DriverJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "DriverJump" );
+
+			curMemberEntry.ScorerSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "ScorerSlalom" );
+			curMemberEntry.ScorerTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "ScorerTrick" );
+			curMemberEntry.ScorerJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "ScorerJump" );
+
+			curMemberEntry.SafetyOfficialRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "Safety" );
+			curMemberEntry.TechControllerRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechController" );
 
 			curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberEntry.MemberId + "'");
             DataTable curMemberDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
@@ -832,13 +892,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Insert or update skier slalom ranking data
-			if ( curImportMemberEntry.Keys.Contains( "SlalomRank" ) ) {
-				if ( curImportMemberEntry["SlalomRank"].GetType() == System.Type.GetType( "System.String" ) ) {
-					Decimal.TryParse( (String) curImportMemberEntry["SlalomRank"], out curSlalom );
-				} else if ( curImportMemberEntry["SlalomRank"].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-					curSlalom = (Decimal) curImportMemberEntry["SlalomRank"];
-				}
-			}
+			String curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRank" );
+			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
 			if ( curSlalom > 0 ) {
 				curEvent = "Slalom";
 				curOverall += curSlalom;
@@ -890,13 +945,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Insert or update skier trick ranking data
-			if ( curImportMemberEntry.Keys.Contains( "TrickRank" ) ) {
-				if ( curImportMemberEntry["TrickRank"].GetType() == System.Type.GetType( "System.String" ) ) {
-					Decimal.TryParse( (String) curImportMemberEntry["TrickRank"], out curTrick );
-				} else if ( curImportMemberEntry["TrickRank"].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-					curTrick = (Decimal) curImportMemberEntry["TrickRank"];
-				}
-			}
+			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRank" );
+			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
 			if ( curTrick > 0 ) {
 				curEvent = "Trick";
 				curOverall += curTrick;
@@ -948,13 +998,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Insert or update skier jump ranking data
-			if ( curImportMemberEntry.Keys.Contains( "JumpRank" ) ) {
-				if ( curImportMemberEntry["JumpRank"].GetType() == System.Type.GetType( "System.String" ) ) {
-					Decimal.TryParse( (String) curImportMemberEntry["JumpRank"], out curJump );
-				} else if ( curImportMemberEntry["JumpRank"].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-					curJump = (Decimal) curImportMemberEntry["JumpRank"];
-				}
-			}
+			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRank" );
+			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
 			if ( curJump > 0 ) {
 				curEvent = "Jump";
 				curOverall += curJump;
@@ -1023,7 +1068,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", AwsaMbrshpComment = '" + curMemberEntry.MemberStatus + "'" );
-				
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
 				curSqlStmt.Append( ", LastUpdateDate = getdate() " );
 				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", curSanctionId, curMemberEntry.MemberId ) );

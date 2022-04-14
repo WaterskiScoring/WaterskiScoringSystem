@@ -2,17 +2,15 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+using BoatPathMonitorSim.Common;
+
 namespace BoatPathMonitorSim.Message {
 	public partial class ConnectDialog : Form {
 		private static String myWscWebLocation = "";
-		private static readonly String myWscWebLocationDefault = "http://ewscdata.com:40000/";
-		
+
 		private String myDialogCommand = "";
-		private String mySanctionNum = "";
-		private String myEventSubId = "";
-		private bool myUseJumpTimes = false;
 		private bool myWscConnected = false;
-		private Point myWindowLocation = new Point( 0,0);
+		private Point myWindowLocation = new Point( 0, 0 );
 
 		public ConnectDialog() {
 			InitializeComponent();
@@ -33,32 +31,19 @@ namespace BoatPathMonitorSim.Message {
 			set { myWindowLocation = value; }
 		}
 
-		public String sanctionNum {
-			get { return mySanctionNum; }
-			set { mySanctionNum = value; }
-		}
-
-		public String eventSubId {
-			get { return myEventSubId; }
-			set { myEventSubId = value; }
-		}
-
-		public Boolean useJumpTimes {
-			get { return myUseJumpTimes; }
-			set { myUseJumpTimes = value; }
-		}
 		public Boolean isWscConnected {
 			get { return myWscConnected; }
 			set { myWscConnected = value; }
 		}
 
 		private void ConnectDialog_Load( object sender, EventArgs e ) {
-			myWscWebLocation = myWscWebLocationDefault;
-			sanctionNumTextbox.Text = mySanctionNum;
-			serverUriTextBox.Text = myWscWebLocation;
-			eventSubIdTextBox.Text = myEventSubId;
-			UseJumpTimesCheckBox.Checked = myUseJumpTimes;
 			this.Location = myWindowLocation;
+
+			myWscWebLocation = ConnectMgmtData.wscWebLocationDefault;
+			sanctionNumTextbox.Text = ConnectMgmtData.sanctionNum;
+			serverUriTextBox.Text = myWscWebLocation;
+			eventSubIdTextBox.Text = ConnectMgmtData.eventSubId;
+			UseJumpTimesCheckBox.Checked = ConnectMgmtData.useJumpTimes;
 
 			if ( isWscConnected ) {
 				MessageLabel.Text = "Listener is connected and active";
@@ -69,7 +54,10 @@ namespace BoatPathMonitorSim.Message {
 		}
 
 		private void execWscConnect_Click( object sender, EventArgs e ) {
-			myEventSubId = eventSubIdTextBox.Text;
+			ConnectMgmtData.sanctionNum = sanctionNumTextbox.Text;
+			ConnectMgmtData.eventSubId = eventSubIdTextBox.Text;
+			ConnectMgmtData.useJumpTimes = false;
+			if ( UseJumpTimesCheckBox.Checked ) ConnectMgmtData.useJumpTimes = true;
 			myDialogCommand = "Connected";
 		}
 
@@ -87,8 +75,8 @@ namespace BoatPathMonitorSim.Message {
 		}
 
 		private void UseJumpTimesCheckBox_CheckedChanged( object sender, EventArgs e ) {
-			myUseJumpTimes = UseJumpTimesCheckBox.Checked;
+			this.Location = myWindowLocation;
+			ConnectMgmtData.useJumpTimes = UseJumpTimesCheckBox.Checked;
 		}
-
 	}
 }

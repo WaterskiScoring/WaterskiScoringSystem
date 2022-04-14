@@ -112,6 +112,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -193,7 +194,8 @@
             this.navImportTourReg,
             this.navImportTourRegPick,
             this.toolStripMenuItem5,
-            this.navImportDataWstims});
+            this.navImportDataWstims,
+            this.importRegistrationsForWorldWaterSkiersToolStripMenuItem});
 			this.memberImportToolStripMenuItem.Name = "memberImportToolStripMenuItem";
 			this.memberImportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.memberImportToolStripMenuItem.Text = "Import";
@@ -201,28 +203,28 @@
 			// navImportTourReg
 			// 
 			this.navImportTourReg.Name = "navImportTourReg";
-			this.navImportTourReg.Size = new System.Drawing.Size(252, 22);
+			this.navImportTourReg.Size = new System.Drawing.Size(301, 22);
 			this.navImportTourReg.Text = "Import Online Registrations (OLR)";
 			this.navImportTourReg.Click += new System.EventHandler(this.navImportTourReg_Click);
 			// 
 			// navImportTourRegPick
 			// 
 			this.navImportTourRegPick.Name = "navImportTourRegPick";
-			this.navImportTourRegPick.Size = new System.Drawing.Size(252, 22);
+			this.navImportTourRegPick.Size = new System.Drawing.Size(301, 22);
 			this.navImportTourRegPick.Text = "Import OLR - Pick&&Choose";
 			this.navImportTourRegPick.Click += new System.EventHandler(this.navImportTourRegPick_Click);
 			// 
 			// toolStripMenuItem5
 			// 
 			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(252, 22);
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(301, 22);
 			this.toolStripMenuItem5.Text = "Import Member File";
 			this.toolStripMenuItem5.Click += new System.EventHandler(this.navImportMemberFile_Click);
 			// 
 			// navImportDataWstims
 			// 
 			this.navImportDataWstims.Name = "navImportDataWstims";
-			this.navImportDataWstims.Size = new System.Drawing.Size(252, 22);
+			this.navImportDataWstims.Size = new System.Drawing.Size(301, 22);
 			this.navImportDataWstims.Text = "WSTIMS For Windows";
 			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
 			// 
@@ -806,6 +808,15 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
+			// importRegistrationsForWorldWaterSkiersToolStripMenuItem
+			// 
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Enabled = false;
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Name = "importRegistrationsForWorldWaterSkiersToolStripMenuItem";
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Size = new System.Drawing.Size(301, 22);
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Text = "Import Registrations for World Water Skiers";
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Visible = false;
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Click += new System.EventHandler(this.importRegistrationsForWorldWaterSkiersToolStripMenuItem_Click);
+			// 
 			// SystemMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -919,6 +930,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 		private System.Windows.Forms.ToolStripMenuItem navJumpMeasurementImportReport;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+		private System.Windows.Forms.ToolStripMenuItem importRegistrationsForWorldWaterSkiersToolStripMenuItem;
 	}
 }
 

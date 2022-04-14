@@ -10,24 +10,35 @@
     <AssemblyName>BoatPathMonitorSim</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>C:\WaterskiScoring\GitHub\WaterskiScoringSystem\BoatPathMonitorSim\publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <MapFileExtensions>false</MapFileExtensions>
+    <InstallUrl>http://www.waterskiresults.com/BoatPathSimulator/</InstallUrl>
+    <UpdateUrl>http://www.waterskiresults.com/BoatPathSimulator/</UpdateUrl>
+    <SupportUrl>http://waterskiresults.com/</SupportUrl>
+    <ProductName>Boat Path Rover Simulation</ProductName>
+    <PublisherName>Mass Water Ski Association</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <TrustUrlParameters>true</TrustUrlParameters>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -53,6 +64,21 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>SimulatorDriveDar.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>EC1153B93F886DC993938693C8BC88746C725BC1</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>BoatPathMonitorSim_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BoatPathMonitorSim.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JWT, Version=8.0.0.0, Culture=neutral, PublicKeyToken=6f98bca0f40f2ecf, processorArchitecture=MSIL">
@@ -117,6 +143,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ConnectMgmtData.cs" />
     <Compile Include="Common\DataAccess.cs" />
     <Compile Include="Common\HelperFunctions.cs" />
     <Compile Include="Common\Log.cs" />
@@ -154,6 +181,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="BoatPathMonitorSim_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -190,11 +218,8 @@
     <Content Include="AMD64\sqlcese35.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Light-Grey-Gear.ico" />
     <Content Include="SimulatorDriveDar.ico" />
     <None Include="Resources\SimulatorDriveDar.ico" />
-    <None Include="Resources\Monitor2.ico" />
-    <None Include="Resources\Monitor.ico" />
     <Content Include="X86\sqlceca35.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

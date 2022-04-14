@@ -11,13 +11,9 @@ using BoatPathMonitorSim.Common;
 
 namespace BoatPathMonitorSim.Message {
 	class ListenHandler {
-		private static String mySanctionNum = "";
-		private static String myEventSubId = "";
-		private static bool myUseJumpTimes = false;
 		private static readonly int myDefaultRound = 1;
 		private static bool myListenHandlerActive = false;
 
-		private static DataRow myTourRow = null;
 		private static System.Timers.Timer readProcessTimer;
 
 		public static Boolean isConnectConfirmed {
@@ -25,21 +21,11 @@ namespace BoatPathMonitorSim.Message {
 			set { myListenHandlerActive = value; }
 		}
 
-		public static void startMessageHandler( String sanctionNum, String eventSubId, bool useJumpTimes ) {
+		public static void startMessageHandler() {
 			String curMethodName = "ListenHandler:startMessageHandler: ";
-			mySanctionNum = sanctionNum;
-			myEventSubId = eventSubId;
-			myUseJumpTimes = useJumpTimes;
 			myListenHandlerActive = false;
-			Log.WriteFile( String.Format( curMethodName + "Sanction: {0}, myEventSubId: {1}, myUseJumpTimes={2}", mySanctionNum, myEventSubId, myUseJumpTimes ) );
-
-			myTourRow = HelperFunctions.getTourData();
-			if ( myTourRow == null ) {
-				String curMsg = curMethodName + String.Format( "Tournament data for {0} was not found, terminating attempt to starting listener", mySanctionNum );
-				Log.WriteFile( curMsg );
-				MessageBox.Show( curMsg );
-				return;
-			}
+			Log.WriteFile( String.Format( curMethodName + "Sanction: {0}, eventSubId: {1}, useJumpTimes={2}"
+				, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId, ConnectMgmtData.useJumpTimes ) );
 
 			HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
 			myListenHandlerActive = true;
@@ -47,25 +33,25 @@ namespace BoatPathMonitorSim.Message {
 			// Create a timer with 2 second interval.
 			readProcessTimer = new System.Timers.Timer( 2000 );
 			readProcessTimer.Elapsed += readProcessMessages;
-			readProcessTimer.AutoReset = true;
+			readProcessTimer.AutoReset = false;
 			readProcessTimer.Enabled = true;
 		}
 
 		private static void readProcessMessages( object sender, EventArgs e ) {
+			readProcessTimer.Stop();
+			readProcessTimer.Elapsed -= readProcessMessages;
+
 			int returnMsg = checkForMsgToHandler();
 			if ( returnMsg > 0 ) return;
-			if ( mySanctionNum.Length == 0 ) return;
+			if ( ConnectMgmtData.sanctionNum.Length == 0 ) return;
 		}
 
 		public static int disconnect() {
 			String curMethodName = "ListenHandler:disconnect: ";
-			
+
 			readProcessTimer.Stop();
 			readProcessTimer.Elapsed -= readProcessMessages;
-			
-			myEventSubId = "";
-			mySanctionNum = "";
-			myTourRow = null;
+
 			myListenHandlerActive = false;
 			HelperFunctions.deleteMonitorHeartBeat( "ListenHandler" );
 			Log.WriteFile( String.Format( "{0}Disconnection request processed", curMethodName ) );
@@ -77,35 +63,46 @@ namespace BoatPathMonitorSim.Message {
 			String msgType = "", msgData = "", msgDataTemp = "";
 			try {
 				DataTable curDataTable = getWscMsgReceived();
-				foreach ( DataRow curDataRow in curDataTable.Rows ) {
-					msgType = (String)curDataRow["MsgType"];
-					msgDataTemp = (String)curDataRow["MsgData"];
-					if ( msgDataTemp.Length > 4 && msgDataTemp.StartsWith("[" ) ) {
-						msgData = msgDataTemp.Substring( 2, msgDataTemp.Length - 4 );
-					} else {
-						msgData = msgDataTemp;
+				if ( curDataTable != null ) {
+					foreach ( DataRow curDataRow in curDataTable.Rows ) {
+						msgType = (String)curDataRow["MsgType"];
+						msgDataTemp = (String)curDataRow["MsgData"];
+						removeWscMsgHandled( (int)curDataRow["PK"] );
+
+						if ( msgDataTemp.Length > 4 && msgDataTemp.StartsWith( "[" ) ) {
+							msgData = msgDataTemp.Substring( 2, msgDataTemp.Length - 4 );
+						} else {
+							msgData = msgDataTemp;
+						}
+
+						if ( msgType.Equals( "connect_confirm_listener" ) ) {
+							connectConfirm( msgType, msgData );
+
+						} else if ( msgType.Equals( "heartbeat" ) ) {
+							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
+
+						} else if ( msgType.Equals( "connectedapplication_check" ) ) {
+							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+							Log.WriteFile( String.Format( "{0}connectedapplication_check", curMethodName ) );
+
+						} else if ( msgType.Equals( "pass_data" ) ) {
+							sendBoatPathData( msgType, msgData );
+							sendBoatTimeData( msgType, msgData );
+							sendJumpDistances( msgType, msgData );
+
+						} else {
+							showMsg( msgType, msgData );
+						}
+
 					}
-					if ( msgType.Equals( "connect_confirm_listener" ) ) {
-						connectConfirm( msgType, msgData );
-
-					} else if ( msgType.Equals( "connect_confirm_transmitter" ) ) {
-						connectConfirm( msgType, msgData );
-
-					} else if ( msgType.Equals( "connectedapplication_check" ) ) {
-						HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
-						Log.WriteFile( String.Format( "{0}connectedapplication_check", curMethodName ) );
-					
-					} else if ( msgType.Equals( "pass_data" ) ) {
-						sendBoatPathData( msgType, msgData );
-						sendBoatTimeData( msgType, msgData );
-						sendJumpDistances( msgType, msgData );
-
-					} else {
-						showMsg( msgType, msgData );
-					}
-
-					removeWscMsgHandled( (int)curDataRow["PK"] );
 				}
+
+				readProcessTimer = new System.Timers.Timer( 2000 );
+				readProcessTimer.Elapsed += readProcessMessages;
+				readProcessTimer.AutoReset = false;
+				readProcessTimer.Enabled = true;
+
 				return 0;
 
 			} catch ( Exception ex ) {
@@ -128,7 +125,7 @@ namespace BoatPathMonitorSim.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT PK, SanctionId, MsgType, MsgData, CreateDate " );
 			curSqlStmt.Append( "FROM WscMsgListen " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( "Order by CreateDate " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
@@ -155,7 +152,7 @@ namespace BoatPathMonitorSim.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select * from BoatPath P " );
 			curSqlStmt.Append( "INNER JOIN TourReg R ON R.SanctionId = P.SanctionId AND R.MemberId = P.MemberId " );
-			curSqlStmt.Append( "Where P.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "Where P.SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( " AND P.Event = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" ) + "' " );
 			curSqlStmt.Append( " AND P.MemberId = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "' " );
 			curSqlStmt.Append( " AND P.round = " + HelperFunctions.getAttributeValue( curMsgDataList, "round" ) + " " );
@@ -292,7 +289,7 @@ namespace BoatPathMonitorSim.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select * from BoatTime P " );
 			curSqlStmt.Append( "INNER JOIN TourReg R ON R.SanctionId = P.SanctionId AND R.MemberId = P.MemberId " );
-			curSqlStmt.Append( "Where P.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "Where P.SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( " AND P.Event = 'Slalom' " );
 			curSqlStmt.Append( " AND P.MemberId = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "' " );
 			curSqlStmt.Append( " AND P.round = " + HelperFunctions.getAttributeValue( curMsgDataList, "round" ) + " " );
@@ -369,7 +366,7 @@ namespace BoatPathMonitorSim.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select * from JumpMeasurement P " );
 			curSqlStmt.Append( "INNER JOIN TourReg R ON R.SanctionId = P.SanctionId AND R.MemberId = P.MemberId " );
-			curSqlStmt.Append( "Where P.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "Where P.SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( " AND P.Event = 'Jump' " );
 			curSqlStmt.Append( " AND P.MemberId = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "' " );
 			curSqlStmt.Append( " AND P.round = " + HelperFunctions.getAttributeValue( curMsgDataList, "round" ) + " " );
@@ -402,7 +399,7 @@ namespace BoatPathMonitorSim.Message {
 			curSqlStmt.Append( "Insert WscMsgSend ( " );
 			curSqlStmt.Append( "SanctionId, MsgType, MsgData, CreateDate " );
 			curSqlStmt.Append( ") Values ( " );
-			curSqlStmt.Append( "'" + mySanctionNum + "'" );
+			curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
 			curSqlStmt.Append( ", '" + msgType + "'" );
 			curSqlStmt.Append( ", '" + curMsgData + "'" );
 			curSqlStmt.Append( ", getdate()" );

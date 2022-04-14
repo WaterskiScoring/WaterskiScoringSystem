@@ -22,6 +22,8 @@ namespace BoatPathMonitorSim {
 					Properties.Settings.Default.DatabaseConnectionString =
 						String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True", Properties.Settings.Default.DatabaseFilename );
 
+					Log.OpenFile( Properties.Settings.Default.SanctionNum );
+
 					Application.Run( new Controller() );
 
 				} else {

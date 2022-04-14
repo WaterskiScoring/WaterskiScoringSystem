@@ -44,13 +44,13 @@
     <UpdateUrl>http://www.waterskiresults.com/</UpdateUrl>
     <SupportUrl>http://waterskiresults.com/</SupportUrl>
     <ProductName>WSTIMS For Windows</ProductName>
-    <PublisherName>Water Ski Scoring</PublisherName>
+    <PublisherName>Mass Water Ski Association</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>6</ApplicationRevision>
-    <ApplicationVersion>7.0.3.%2a</ApplicationVersion>
+    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationVersion>7.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -155,8 +155,8 @@
     <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.6.0.0\lib\net461\System.Text.Json.dll</HintPath>
+    <Reference Include="System.Text.Json, Version=6.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.6.0.3\lib\net461\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Channels, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Channels.4.7.0\lib\netstandard2.0\System.Threading.Channels.dll</HintPath>
@@ -970,7 +970,6 @@
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="RecordApplicationFormTemplate.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1255,7 +1254,9 @@
     <None Include="Resources\TrickFormTiming.png" />
     <None Include="Resources\SlalomJudgeForm.bmp" />
     <None Include="Resources\SlalomJudgesForm.png" />
+    <Content Include="Resources\JumpSkierSpecForm.jpg" />
     <Content Include="Resources\magnifying-glass-with-eye.jpg" />
+    <Content Include="Resources\TrickSkierSpecForm.jpg" />
     <Content Include="waterski.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1352,12 +1353,12 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
+  <Import Project="..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

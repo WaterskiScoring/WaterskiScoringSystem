@@ -367,7 +367,13 @@ namespace WaterskiScoringSystem {
 			mdiStatusMsg.Text = "Import tournament registrations opening";
 			curImportMember.importPreRegMembers();
 		}
-		
+
+		private void importRegistrationsForWorldWaterSkiersToolStripMenuItem_Click( object sender, EventArgs e ) {
+			ImportMember curImportMember = new ImportMember( null );
+			mdiStatusMsg.Text = "Import tournament registrations opening";
+			curImportMember.importWwsRegistrations();
+		}
+
 		private void navImportMemberFile_Click( object sender, EventArgs e ) {
 			ImportMemberFile curImportMemberFile = new ImportMemberFile();
 			mdiStatusMsg.Text = "Import member file";

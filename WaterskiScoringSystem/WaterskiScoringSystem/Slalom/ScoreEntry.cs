@@ -639,7 +639,8 @@ namespace WaterskiScoringSystem.Slalom {
 			String curFinalRopeOff = ( (String)myPassRow["LineLengthOffDesc"] ).Substring( 0, ( (String)myPassRow["LineLengthOffDesc"] ).IndexOf( " - " ) );
 			Decimal curPassSpeedMph = Convert.ToInt16( (Decimal)myPassRow["SpeedMph"] );
 			Int16 curPassSpeedKph = Convert.ToInt16( (Decimal)myPassRow["SpeedKph"] );
-			Decimal curPassLineLengthMeters = 0;
+			Decimal curPassLineLengthMeters = (Decimal)myPassRow["LineLengthMeters"];
+			//Decimal curPassLineLengthMeters = 0;
 
 			if ( curScoreRecap == 6M && curStatus != "Complete" && curReride != "Y" ) {
 				myPassRowLastCompleted = getPassRow( curPassSpeedKph, SlalomLineSelect.CurrentShowValueNum );
@@ -2634,8 +2635,11 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
 			if ( WscHandler.isConnectActive ) {
-				WaterskiConnectLabel.Visible = true;
-				return;
+				WscHandler.checkWscConnectStatus();
+				if ( WscHandler.isConnectActive ) {
+					WaterskiConnectLabel.Visible = true;
+					return;
+				}
 			}
 
 			WscHandler.startWscMessageHhandler();

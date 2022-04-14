@@ -90,8 +90,14 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AnnouncerRating	R	3	3	Regional			
 0	AnnouncerRating	N	4	4	National			
 0	AnnouncerRating	E	5	5	Emeritus			
+0	ApprovedBoats	MATXI-53-22	220001	1220001	Malibu Response Txi 5.3L			2022 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MATXI-62-22	220002	1220002	Malibu Response Txi 6.2L			2022 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MCPro-60-22	220003	1220003	MasterCraft ProStar 6.0L			2022 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
+0	ApprovedBoats	MCPro-62-22	220004	1220004	MasterCraft ProStar 6.2L			2022 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ 867-MF 3 14 x 13.5 Nibral | ZO-S
+0	ApprovedBoats	CC000-22	220005	1220005	Nautique			2022 | PCM H5 (5.3L), PCM ZR4 (6.0L), PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 654* 4 12.5 x 15 Nibral, AC 1458 3 13 x 14 Nibral, AC 668* 4 12.5 x 15.5 Nibral | ZO-S
+0	ApprovedBoats	CC200-22	220006	1220006	Nautique 200			2022 | PCM ZR4 (6.0L), PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 1458 3 13 x 14 Nibral | ZO-S
 0	ApprovedBoats	MATXI-53-21	210001	1210001	Malibu Response Txi 5.3L			2021 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
-0	ApprovedBoats	MATXI-62-21	210002	1210002	Malibu Response Txi 6.2L			2021 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC 525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MATXI-62-21	210002	1210002	Malibu Response Txi 6.2L			2021 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
 0	ApprovedBoats	MCPro-60-21	210003	1210003	MasterCraft ProStar 6.0L			2021 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
 0	ApprovedBoats	MCPro-62-21	210004	1210004	MasterCraft ProStar 6.2L			2021 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ 867-MF 3 14 x 13 Nibral | ZO-S
 0	ApprovedBoats	CC000-21	210005	1210005	Nautique			2021 | PCM H5 (5.3L), PCM ZR4 (6.0L), PCM H6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 654* 4 12.5 x 15 Nibral, AC 1458 3 13 x 14 Nibral, AC 668* 4 12.5 x 15.5 Nibral | ZO-S

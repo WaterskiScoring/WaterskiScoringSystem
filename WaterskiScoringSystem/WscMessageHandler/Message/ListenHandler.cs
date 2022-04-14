@@ -9,35 +9,16 @@ using WscMessageHandler.Common;
 
 namespace WscMessageHandler.Message {
 	class ListenHandler {
-		private static String mySanctionNum = "";
-		private static String myEventSubId = "";
-		private static bool myUseJumpTimes = false;
 		private static readonly int myDefaultRound = 1;
 		private static bool myListenHandlerActive = false;
 
-		private static DataRow myTourRow = null;
 		private static System.Timers.Timer readProcessTimer;
 
-		public static Boolean isConnectConfirmed {
-			get { return myListenHandlerActive; }
-			set { myListenHandlerActive = value; }
-		}
-
-		public static void startWscMessageHandler( String sanctionNum, String eventSubId, bool useJumpTimes ) {
+		public static void startWscMessageHandler() {
 			String curMethodName = "ListenHandler:startWscMessageHandler: ";
-			mySanctionNum = sanctionNum;
-			myEventSubId = eventSubId;
-			myUseJumpTimes = useJumpTimes;
 			myListenHandlerActive = false;
-			Log.WriteFile( String.Format( curMethodName + "Sanction: {0}, myEventSubId: {1}, myUseJumpTimes={2}", mySanctionNum, myEventSubId, myUseJumpTimes ) );
-
-			myTourRow = HelperFunctions.getTourData();
-			if ( myTourRow == null ) {
-				String curMsg = curMethodName + String.Format( "Tournament data for {0} was not found, terminating attempt to starting listener", mySanctionNum );
-				Log.WriteFile( curMsg );
-				MessageBox.Show( curMsg );
-				return;
-			}
+			Log.WriteFile( String.Format( curMethodName + "Sanction: {0}, eventSubId: {1}, useJumpTimes={2}"
+				, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId, ConnectMgmtData.useJumpTimes ) );
 
 			HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
 			myListenHandlerActive = true;
@@ -45,14 +26,17 @@ namespace WscMessageHandler.Message {
 			// Create a timer with 2 second interval.
 			readProcessTimer = new System.Timers.Timer( 2000 );
 			readProcessTimer.Elapsed += readProcessMessages;
-			readProcessTimer.AutoReset = true;
+			readProcessTimer.AutoReset = false;
 			readProcessTimer.Enabled = true;
 		}
 
 		private static void readProcessMessages( object sender, EventArgs e ) {
+			readProcessTimer.Stop();
+			readProcessTimer.Elapsed -= readProcessMessages;
+			
 			int returnMsg = checkForMsgToHandler();
 			if ( returnMsg > 0 ) return;
-			if ( mySanctionNum.Length == 0 ) return;
+			if ( ConnectMgmtData.sanctionNum.Length == 0 ) return;
 		}
 
 		public static int disconnect() {
@@ -61,9 +45,6 @@ namespace WscMessageHandler.Message {
 			readProcessTimer.Stop();
 			readProcessTimer.Elapsed -= readProcessMessages;
 			
-			myEventSubId = "";
-			mySanctionNum = "";
-			myTourRow = null;
 			myListenHandlerActive = false;
 			HelperFunctions.deleteMonitorHeartBeat( "ListenHandler" );
 			Log.WriteFile( String.Format( "{0}Disconnection request processed", curMethodName ) );
@@ -75,40 +56,49 @@ namespace WscMessageHandler.Message {
 			String msgType = "", msgData = "";
 			try {
 				DataTable curDataTable = getWscMsgReceived();
-				foreach ( DataRow curDataRow in curDataTable.Rows ) {
-					msgType = (String)curDataRow["MsgType"];
-					msgData = (String)curDataRow["MsgData"];
-					if ( msgType.Equals( "connect_confirm_listener" ) ) {
-						connectConfirm( msgType, msgData );
+				if ( curDataTable != null ) {
+					foreach ( DataRow curDataRow in curDataTable.Rows ) {
+						msgType = (String)curDataRow["MsgType"];
+						msgData = (String)curDataRow["MsgData"];
+						removeWscMsgHandled( (int)curDataRow["PK"] );
 
-					} else if ( msgType.Equals( "connect_confirm_transmitter" ) ) {
-						connectConfirm( msgType, msgData );
+						if ( msgType.Equals( "connect_confirm_listener" ) ) {
+							connectConfirm( msgType, msgData );
 
-					} else if ( msgType.Equals( "connectedapplication_check" ) ) {
-						HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
-						Log.WriteFile( String.Format( "{0}connectedapplication_check", curMethodName ) );
+						} else if ( msgType.Equals( "heartbeat" ) ) {
+							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
 
-					} else if ( msgType.Equals( "boat_times" ) ) {
-						saveBoatTimes( msgData );
+						} else if ( msgType.Equals( "?????connectedapplication_check" ) ) {
+							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
 
-					} else if ( msgType.Equals( "boatpath_data" ) ) {
-						saveBoatPath( msgData );
+						} else if ( msgType.Equals( "boat_times" ) ) {
+							saveBoatTimes( msgData );
 
-					} else if ( msgType.Equals( "jumpmeasurement_score" ) ) {
-						saveJumpMeasurement( msgData );
+						} else if ( msgType.Equals( "boatpath_data" ) ) {
+							saveBoatPath( msgData );
 
-					} else if ( msgType.Equals( "trickscoring_detail" ) ) {
-						showMsg( "scoring_result", msgData );
+						} else if ( msgType.Equals( "jumpmeasurement_score" ) ) {
+							saveJumpMeasurement( msgData );
 
-					} else if ( msgType.Equals( "scoring_result" ) ) {
-						showMsg( "scoring_result", msgData );
+						} else if ( msgType.Equals( "trickscoring_detail" ) ) {
+							showMsg( "scoring_result", msgData );
 
-					} else {
-						showMsg( msgType, msgData );
+						} else if ( msgType.Equals( "scoring_result" ) ) {
+							showMsg( "scoring_result", msgData );
+
+						} else {
+							showMsg( msgType, msgData );
+						}
 					}
-
-					removeWscMsgHandled( (int)curDataRow["PK"] );
 				}
+
+				readProcessTimer = new System.Timers.Timer( 2000 );
+				readProcessTimer.Elapsed += readProcessMessages;
+				readProcessTimer.AutoReset = false;
+				readProcessTimer.Enabled = true;
+				
 				return 0;
 
 			} catch ( Exception ex ) {
@@ -148,7 +138,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( ", BoatTimeBuoy1, BoatTimeBuoy2, BoatTimeBuoy3,BoatTimeBuoy4, BoatTimeBuoy5, BoatTimeBuoy6, BoatTimeBuoy7" );
 				curSqlStmt.Append( ", InsertDate, LastUpdateDate " );
 				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + mySanctionNum + "'" );
+				curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "'" );
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" ) + "'" );
 
@@ -222,7 +212,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( ", PathDevBuoy6, PathDevCum6, PathDevZone6" );
 				curSqlStmt.Append( ", RerideNote, InsertDate, LastUpdateDate " );
 				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + mySanctionNum + "'" );
+				curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "'" );
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" ) + "'" );
 
@@ -431,7 +421,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( "Insert JumpMeasurement ( " );
 				curSqlStmt.Append( "SanctionId, MemberId, Event, Round, PassNumber, ScoreFeet, ScoreMeters, InsertDate, LastUpdateDate " );
 				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + mySanctionNum + "'" );
+				curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
 
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "'" );
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" ) + "'" );
@@ -466,7 +456,7 @@ namespace WscMessageHandler.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT PK, SanctionId, MsgType, MsgData, CreateDate " );
 			curSqlStmt.Append( "FROM WscMsgListen " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( "Order by CreateDate " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}

@@ -1848,7 +1848,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintForm.ShowDataTable = myEventRegDataTable;
 
                         curPrintForm.Print();
-                    } else if (curPrintReport.Equals( "SlalomRecapForm" )) {
+                    
+					} else if (curPrintReport.Equals( "SlalomRecapForm" )) {
                         PrintSlalomRecapForm curPrintForm = new PrintSlalomRecapForm();
                         curPrintForm.PrintLandscape = true;
                         curPrintForm.ReportHeader = printHeaderNote.Text;
@@ -1862,7 +1863,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curPrintForm.Print();
                     }
                 }
-            } else if (jumpButton.Checked) {
+            
+			} else if (jumpButton.Checked) {
                 PrintJumpRecapJudgeForm curPrintForm = new PrintJumpRecapJudgeForm();
                 curPrintForm.PrintLandscape = true;
                 curPrintForm.ReportHeader = printHeaderNote.Text;
@@ -1874,7 +1876,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curPrintForm.ShowDataTable = myEventRegDataTable;
 
                 curPrintForm.Print();
-            } else if (trickButton.Checked) {
+            
+			} else if (trickButton.Checked) {
                 PrintTrickJudgeForm curPrintForm = new PrintTrickJudgeForm();
                 curPrintForm.PrintLandscape = true;
                 curPrintForm.ReportHeader = printHeaderNote.Text;

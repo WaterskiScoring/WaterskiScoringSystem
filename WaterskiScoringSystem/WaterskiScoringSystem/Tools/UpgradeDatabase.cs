@@ -44,7 +44,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.66', 22.66, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '22.68', 22.68, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
@@ -58,7 +58,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
 
-				if ( myDatabaseVersion < 22.66M ) {
+				if ( myDatabaseVersion < 22.67M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}
@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
 
-                if (myDatabaseVersion < 22.28M) {
+                if (myDatabaseVersion < 22.68M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         loadNopsData();
                     }
@@ -337,7 +337,8 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool deleteTempFile( String inFileName ) {
-            try {
+			String curMethodName = "UpgradeDatabase: deleteTempFile: ";
+			try {
                 //Declare and instantiate a new process component.
                 System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
 
@@ -352,10 +353,9 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
             
 			} catch ( Exception ex ) {
-                MessageBox.Show( "Error: Deleting temp file " + inFileName
-                    + "\n\nException: " + ex.Message
-                 );
-                return false;
+				Log.WriteFile( String.Format( "{0}Error: CDeleting temp file {1}\n\nError: {2}"
+					, curMethodName, inFileName, ex.Message ) );
+				return false;
             }
         }
 
@@ -447,7 +447,8 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private StreamReader getImportFile( String inFileName ) {
-            StreamReader myReader = null;
+			String curMethodName = "UpgradeDatabase: getImportFile: ";
+			StreamReader myReader = null;
             try {
                 if ( inFileName != null ) {
                     myReader = new StreamReader( inFileName );
@@ -465,17 +466,22 @@ namespace WaterskiScoringSystem.Tools {
                         myReader.Close();
                         myProgressInfo.setProgressMin( 1 );
                         myProgressInfo.setProgressMax( curInputLineCount );
-                    } catch ( Exception ex ) {
-                        MessageBox.Show( "Error: Could not read file" + inFileName + "\n\nError: " + ex.Message );
+                    
+					} catch ( Exception ex ) {
+						Log.WriteFile( String.Format( "{0}Error: Could not read file {1}\n\nError: {2}"
+							, curMethodName, inFileName, ex.Message ) );
                         return null;
                     }
                     myReader = new StreamReader( inFileName );
                 }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Unable to access or read input file " + inFileName + "\n\nError: " + ex.Message );
-            }
+            
+			} catch ( Exception ex ) {
+				Log.WriteFile( String.Format( "{0}Error: Unable to access or read input file {1}\n\nError: {2}"
+					, curMethodName, inFileName, ex.Message ) );
+				return null;
+			}
 
-            return myReader;
+			return myReader;
         }
 
         private DataTable getData( String inSelectStmt ) {

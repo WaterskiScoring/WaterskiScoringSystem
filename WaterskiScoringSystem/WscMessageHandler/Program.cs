@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using WscMessageHandler.Common;
@@ -16,6 +13,7 @@ namespace WscMessageHandler {
 		/// [STAThread]
 		public static void Main( String[] args ) {
 			try {
+				Console.WriteLine( "WscMessageHandler:Program: NumArgs=" + args.Length );
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
 
@@ -25,6 +23,8 @@ namespace WscMessageHandler {
 					Properties.Settings.Default.DataDirectory = args[2];
 					Properties.Settings.Default.DatabaseConnectionString = 
 						String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True", Properties.Settings.Default.DatabaseFilename );
+					
+					Log.OpenFile( Properties.Settings.Default.SanctionNum );
 
 					Application.Run( new Controller() );
 
@@ -33,8 +33,10 @@ namespace WscMessageHandler {
 				}
 
 			} catch ( Exception excp ) {
-				Log.WriteFile( "WscMessageHandler:Main: An exception has been enountered. Exception: " + excp.Message + ": StackTrace: " + excp.StackTrace );
-				MessageBox.Show( "An exception has been enountered."
+				Log.WriteFile( "WscMessageHandler:Program: An exception has been enountered. Exception: " 
+					+ excp.Message + ": StackTrace: " 
+					+ excp.StackTrace );
+				MessageBox.Show( "WscMessageHandler:Program: An exception has been enountered."
 					+ "\n Exception: " + excp.Message
 					+ "\n Please contact the development team and send the [SanctionId]-log.log file"
 					+ "\n StackTrace: " + excp.StackTrace );

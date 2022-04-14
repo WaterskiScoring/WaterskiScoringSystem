@@ -523,6 +523,7 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
         private StreamReader getImportFile(String curFileName ) {
+			String curMethodName = "ImportData: getImportFile: ";
 			StreamReader curReader = null;
 			
 			try {
@@ -544,7 +545,12 @@ namespace WaterskiScoringSystem.Tools {
 				return new StreamReader( curFileName );
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "Error: Could not read file" + curFileName + "\n\nError: " + ex.Message );
+				if ( curFileName.EndsWith( ".tmp" ) ) {
+					Log.WriteFile( String.Format( "{0}Error: Unable to access or read input file {1}\n\nError: {2}"
+						, curMethodName, curFileName, ex.Message ) );
+				} else {
+					MessageBox.Show( "Error: Could not read file" + curFileName + "\n\nError: " + ex.Message );
+				}
 				return null;
 
 			} finally {
