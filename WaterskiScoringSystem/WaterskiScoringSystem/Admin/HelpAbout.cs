@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Deployment.Application;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
 using Microsoft.Win32;
+
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Admin {

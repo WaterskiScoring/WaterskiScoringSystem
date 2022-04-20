@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Deployment.Application;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using System.Diagnostics;
 
 using Newtonsoft.Json;
 
@@ -42,45 +42,43 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-		public static void startWscMessageHhandler() {
-			String curMethodName = "startWscMessageHhandler: ";
-
-			try {
-				StringBuilder curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "Delete FROM WscMsgSend WHERE SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' AND MsgType = 'EXIT' " );
-				int rowsDeleted = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-				if ( rowsDeleted > 0 ) Log.WriteFile( curMethodName + String.Format( "Old EXIT requests {0} cleaned from queue", rowsDeleted ) );
-
-				ProcessStartInfo start = new ProcessStartInfo();
-				// Enter in the command line arguments, everything you would enter after the executable name itself
-				start.Arguments = String.Format( "{0} {1} {2}", Properties.Settings.Default.AppSanctionNum
-					, "\"" + HelperFunctions.getDatabaseFilenameFromConnectString() + "\""
-					, "\"" + Properties.Settings.Default.ExportDirectory + "\"" );
-
-				// Enter the executable to run, including the complete path
-				start.FileName = "WscMessageHandler.exe";
-
-				// Do you want to show a console window?
-				//start.WindowStyle = ProcessWindowStyle.Hidden;
-				start.WindowStyle = ProcessWindowStyle.Normal;
-				start.CreateNoWindow = true;
-				Process proc = Process.Start( start );
-
-				myConnectActive = true;
-
-			} catch (Exception ex ) {
-				MessageBox.Show( "Exception trying to connect to WaterSkiConnect: " + ex.Message );
-			}
-		}
-		
 		public static void checkWscConnectStatus() {
 			String curMethodName = "checkWscConnectStatus: ";
+			String curDatabaseFilename = "";
+			getSanctionNum();
 			DataTable curMonitorDataTable = getMonitorHeartBeatAll();
 			if ( curMonitorDataTable == null || curMonitorDataTable.Rows.Count != 3 ) {
+				String curConnFilename = "\\Not available";
+				String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
+				int curDelimPos1 = curConnString.IndexOf( "\\" );
+				int curDelimPos2 = curConnString.IndexOf( ";" );
+				if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
+				try {
+					curDatabaseFilename = ApplicationDeployment.CurrentDeployment.DataDirectory + curConnFilename;
+				} catch {
+					curDatabaseFilename = curConnFilename;
+				}
+				
 				myConnectActive = false;
-				String msg = String.Format( "WaterSkiConnect handler is not currently active", curMethodName );
+				String msg = String.Format( "WscMessageHandler is not currently active", curMethodName );
 				Log.WriteFile( msg );
-				MessageBox.Show( msg );
+
+				StringBuilder curWarnMessage = new StringBuilder( msg );
+				curWarnMessage.Append( System.Environment.NewLine + System.Environment.NewLine );
+				curWarnMessage.Append( "Open your WscMessageHandler application using the desktop shortcut." );
+				curWarnMessage.Append( System.Environment.NewLine );
+				curWarnMessage.Append( "Be sure to set the database to the following filename" );
+				curWarnMessage.Append( System.Environment.NewLine );
+				curWarnMessage.Append( curDatabaseFilename );
+				curWarnMessage.Append( System.Environment.NewLine + System.Environment.NewLine );
+				curWarnMessage.Append( "If you don't have the shortcut, install the application using the following " );
+				curWarnMessage.Append( System.Environment.NewLine + System.Environment.NewLine );
+				curWarnMessage.Append( "http://www.waterskiresults.com/WscMessageHandler/publish.htm" );
+
+				ShowMessage showMessage = new ShowMessage();
+				showMessage.Message = curWarnMessage.ToString();
+				showMessage.ShowDialog();
+
 				return;
 			}
 			
@@ -90,6 +88,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean sendExit() {
+			getSanctionNum();
 			addWscMsgSend( "Exit", "Exit WaterSkiConnect" );
 			myConnectActive = false;
 			return true;
@@ -97,6 +96,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		public static Boolean sendBoatData( String boatId, String boatManufacturer, String boatModel
 			, Int16 boatYear, String boatColor, String boatComment ) {
+			getSanctionNum();
 			Dictionary<string, string> sendMsg = new Dictionary<string, string> {
 					{ "boatId", boatId }
 					, { "boatManufacturer", boatManufacturer }
@@ -114,6 +114,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			String curMethodName = "sendBoatData: ";
 			int curRound = int.Parse( round );
 			myDefaultRound = curRound;
+			getSanctionNum();
 
 			try {
 				Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
@@ -158,6 +159,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			, Int16 round, Int16 passNumber, Int16 speed, String rope, String score ) {
 			String curMethodName = "sendAthleteScore: ";
 			myDefaultRound = round;
+			getSanctionNum();
+			
 			try {
 				Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
@@ -318,6 +321,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 */
 		public static void sendJumpBoatTimes( String athleteId, String athleteName, String athleteEvent
 			, Int16 round, Int16 passNumber, Int16 speed, decimal splitTime, decimal splitTime2, decimal endTime ) {
+			getSanctionNum();
+			
 			Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 				{ "athleteId", athleteId }
 				, { "athleteName", athleteName }
@@ -335,6 +340,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		public static Boolean sendRunningOrder( String curEvent, int curRound, DataTable curDataTable ) {
 			ArrayList startListAthletes = new ArrayList();
+			getSanctionNum();
 
 			int curRow = 0;
 			String curEventGroup = "", prevEventGroup = "";
@@ -385,6 +391,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			int towerJudgeIdx = 1;
 			Boolean officialsAvailable = false;
 			Dictionary<string, object> curEventOfficials = new Dictionary<string, object>();
+			getSanctionNum();
 
 			DataTable curDataTable = getOfficialAssignments( curEvent, eventGroup, round );
 			foreach ( DataRow curDataRow in curDataTable.Rows ) {
@@ -706,7 +713,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static DataTable getOfficialAssignments( String inEvent, String inEventGroup, Int16 inRound ) {
-			getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt" );
 			curSqlStmt.Append( ", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation " );
@@ -724,7 +730,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static DataTable getDriverAssignment( String inEvent, String inEventGroup, String inRound ) {
-			getSanctionNum();
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT O.PK, O.SanctionId, O.MemberId, O.Event, O.EventGroup, O.Round, O.WorkAsgmt" );
 			curSqlStmt.Append( ", T.SkierName AS MemberName, T.State, T.Federation, X.Federation as TourFederation " );

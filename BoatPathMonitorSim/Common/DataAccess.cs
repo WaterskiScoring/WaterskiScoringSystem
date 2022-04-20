@@ -20,9 +20,16 @@ namespace BoatPathMonitorSim.Common {
 			String curMethodName = "DataAccess:DataAccessOpen";
 			// Open database connection if needed
 			try {
+				if ( Properties.Settings.Default.DatabaseConnectionString.Length <= 0 ) {
+					String curMsg = "DatabaseConnectionString is not available";
+					Log.WriteFile( curMethodName + curMsg );
+					MessageBox.Show( curMethodName + curMsg );
+					throw new Exception( curMsg );
+				}
+
 				if ( DataAccessConnection == null ) {
 					DataAccessOpenCount = 1;
-					DataAccessConnection = new SqlCeConnection( global::BoatPathMonitorSim.Properties.Settings.Default.DatabaseConnectionString );
+					DataAccessConnection = new SqlCeConnection( Properties.Settings.Default.DatabaseConnectionString );
 					DataAccessConnection.Open();
 
 				} else {
@@ -252,5 +259,45 @@ namespace BoatPathMonitorSim.Common {
 			return curReturnValue;
 		}
 
+		public static bool getNewDatabaseFile() {
+			String curDatabaseDirectory = "";
+
+			if ( Properties.Settings.Default.DatabaseFilename.Length > 0 ) {
+				MessageBox.Show( String.Format( "Current Database File={0}"
+					+ "\n\nCurrent Sanction={1}"
+					+ "\nCurrent Data location={2}"
+					, Properties.Settings.Default.DatabaseFilename
+					, Properties.Settings.Default.SanctionNum
+					, Properties.Settings.Default.DataDirectory ) );
+
+				int delimPos = Properties.Settings.Default.DatabaseFilename.LastIndexOf( '\\' );
+				curDatabaseDirectory = Properties.Settings.Default.DatabaseFilename.Substring( 0, delimPos - 1 );
+			}
+
+			OpenFileDialog myFileDialog = new OpenFileDialog();
+			if ( curDatabaseDirectory.Length > 0 ) myFileDialog.InitialDirectory = curDatabaseDirectory;
+			myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
+			myFileDialog.FilterIndex = 0;
+			myFileDialog.CheckPathExists = false;
+			myFileDialog.CheckFileExists = false;
+			try {
+				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
+					String curFileName = myFileDialog.FileName;
+					if ( curFileName != null ) {
+						Properties.Settings.Default.DatabaseFilename = curFileName;
+						Properties.Settings.Default.DatabaseConnectionString =
+							String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True"
+							, Properties.Settings.Default.DatabaseFilename );
+						return true;
+					}
+				}
+
+				return false;
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not get database file " + "\n\nError: " + ex.Message );
+				return false;
+			}
+		}
 	}
 }

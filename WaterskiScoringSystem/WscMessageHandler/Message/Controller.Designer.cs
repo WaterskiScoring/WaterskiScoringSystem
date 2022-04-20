@@ -77,7 +77,7 @@ namespace WscMessageHandler.Message {
 			// WaterSkiConnectButton
 			// 
 			this.WaterSkiConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.WaterSkiConnectButton.Location = new System.Drawing.Point(66, 4);
+			this.WaterSkiConnectButton.Location = new System.Drawing.Point(5, 4);
 			this.WaterSkiConnectButton.Name = "WaterSkiConnectButton";
 			this.WaterSkiConnectButton.Size = new System.Drawing.Size(145, 23);
 			this.WaterSkiConnectButton.TabIndex = 2;
@@ -88,7 +88,7 @@ namespace WscMessageHandler.Message {
 			// ShowPinButton
 			// 
 			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ShowPinButton.Location = new System.Drawing.Point(229, 4);
+			this.ShowPinButton.Location = new System.Drawing.Point(158, 4);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(104, 23);
 			this.ShowPinButton.TabIndex = 3;
@@ -99,7 +99,7 @@ namespace WscMessageHandler.Message {
 			// DisconnectButton
 			// 
 			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisconnectButton.Location = new System.Drawing.Point(348, 4);
+			this.DisconnectButton.Location = new System.Drawing.Point(270, 4);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(145, 23);
 			this.DisconnectButton.TabIndex = 4;

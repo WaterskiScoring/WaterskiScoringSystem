@@ -37,15 +37,20 @@ namespace WscMessageHandler.Message {
 			this.serverUriLabel = new System.Windows.Forms.Label();
 			this.sanctionlabel = new System.Windows.Forms.Label();
 			this.sanctionNumTextbox = new System.Windows.Forms.TextBox();
+			this.SelectDatabaseButton = new System.Windows.Forms.Button();
+			this.TourListComboBox = new System.Windows.Forms.ComboBox();
+			this.DatabaseFilenameLabel = new System.Windows.Forms.Label();
+			this.databaseFilenameTextBox = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// ShowPinButton
 			// 
 			this.ShowPinButton.AutoSize = true;
 			this.ShowPinButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ShowPinButton.Location = new System.Drawing.Point(182, 43);
+			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ShowPinButton.Location = new System.Drawing.Point(327, 43);
 			this.ShowPinButton.Name = "ShowPinButton";
-			this.ShowPinButton.Size = new System.Drawing.Size(87, 23);
+			this.ShowPinButton.Size = new System.Drawing.Size(87, 25);
 			this.ShowPinButton.TabIndex = 3;
 			this.ShowPinButton.Text = "Show Pin";
 			this.ShowPinButton.UseVisualStyleBackColor = true;
@@ -53,10 +58,12 @@ namespace WscMessageHandler.Message {
 			// 
 			// DisconnectButton
 			// 
+			this.DisconnectButton.AutoSize = true;
 			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.DisconnectButton.Location = new System.Drawing.Point(96, 43);
+			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.DisconnectButton.Location = new System.Drawing.Point(239, 43);
 			this.DisconnectButton.Name = "DisconnectButton";
-			this.DisconnectButton.Size = new System.Drawing.Size(75, 23);
+			this.DisconnectButton.Size = new System.Drawing.Size(88, 25);
 			this.DisconnectButton.TabIndex = 2;
 			this.DisconnectButton.Text = "Disconnect";
 			this.DisconnectButton.UseVisualStyleBackColor = true;
@@ -64,10 +71,12 @@ namespace WscMessageHandler.Message {
 			// 
 			// ConnectButton
 			// 
+			this.ConnectButton.AutoSize = true;
 			this.ConnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ConnectButton.Location = new System.Drawing.Point(10, 43);
+			this.ConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ConnectButton.Location = new System.Drawing.Point(164, 43);
 			this.ConnectButton.Name = "ConnectButton";
-			this.ConnectButton.Size = new System.Drawing.Size(75, 23);
+			this.ConnectButton.Size = new System.Drawing.Size(75, 25);
 			this.ConnectButton.TabIndex = 1;
 			this.ConnectButton.Text = "Connect";
 			this.ConnectButton.UseVisualStyleBackColor = true;
@@ -85,16 +94,16 @@ namespace WscMessageHandler.Message {
 			// 
 			// eventSubIdTextBox
 			// 
-			this.eventSubIdTextBox.Location = new System.Drawing.Point(155, 136);
+			this.eventSubIdTextBox.Location = new System.Drawing.Point(164, 164);
 			this.eventSubIdTextBox.Name = "eventSubIdTextBox";
 			this.eventSubIdTextBox.Size = new System.Drawing.Size(235, 20);
-			this.eventSubIdTextBox.TabIndex = 8;
+			this.eventSubIdTextBox.TabIndex = 11;
 			// 
 			// eventSubIdLabel
 			// 
 			this.eventSubIdLabel.AutoSize = true;
 			this.eventSubIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.eventSubIdLabel.Location = new System.Drawing.Point(46, 137);
+			this.eventSubIdLabel.Location = new System.Drawing.Point(55, 165);
 			this.eventSubIdLabel.Name = "eventSubIdLabel";
 			this.eventSubIdLabel.Size = new System.Drawing.Size(107, 18);
 			this.eventSubIdLabel.TabIndex = 0;
@@ -106,10 +115,10 @@ namespace WscMessageHandler.Message {
 			this.UseJumpTimesCheckBox.AutoSize = true;
 			this.UseJumpTimesCheckBox.Enabled = false;
 			this.UseJumpTimesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.UseJumpTimesCheckBox.Location = new System.Drawing.Point(155, 167);
+			this.UseJumpTimesCheckBox.Location = new System.Drawing.Point(164, 193);
 			this.UseJumpTimesCheckBox.Name = "UseJumpTimesCheckBox";
 			this.UseJumpTimesCheckBox.Size = new System.Drawing.Size(143, 20);
-			this.UseJumpTimesCheckBox.TabIndex = 9;
+			this.UseJumpTimesCheckBox.TabIndex = 12;
 			this.UseJumpTimesCheckBox.Text = "Use Jump Times";
 			this.UseJumpTimesCheckBox.UseVisualStyleBackColor = true;
 			this.UseJumpTimesCheckBox.Visible = false;
@@ -119,9 +128,10 @@ namespace WscMessageHandler.Message {
 			// 
 			this.ViewAppsButton.AutoSize = true;
 			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ViewAppsButton.Location = new System.Drawing.Point(280, 43);
+			this.ViewAppsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ViewAppsButton.Location = new System.Drawing.Point(414, 43);
 			this.ViewAppsButton.Name = "ViewAppsButton";
-			this.ViewAppsButton.Size = new System.Drawing.Size(87, 23);
+			this.ViewAppsButton.Size = new System.Drawing.Size(87, 25);
 			this.ViewAppsButton.TabIndex = 4;
 			this.ViewAppsButton.Text = "View Apps";
 			this.ViewAppsButton.UseVisualStyleBackColor = true;
@@ -129,26 +139,28 @@ namespace WscMessageHandler.Message {
 			// 
 			// CancelButton
 			// 
+			this.CancelButton.AutoSize = true;
 			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CancelButton.Location = new System.Drawing.Point(378, 42);
+			this.CancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CancelButton.Location = new System.Drawing.Point(623, 43);
 			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(75, 23);
-			this.CancelButton.TabIndex = 5;
+			this.CancelButton.Size = new System.Drawing.Size(75, 25);
+			this.CancelButton.TabIndex = 6;
 			this.CancelButton.Text = "Cancel";
 			this.CancelButton.UseVisualStyleBackColor = true;
 			// 
 			// serverUriTextBox
 			// 
-			this.serverUriTextBox.Location = new System.Drawing.Point(155, 74);
+			this.serverUriTextBox.Location = new System.Drawing.Point(164, 77);
 			this.serverUriTextBox.Name = "serverUriTextBox";
-			this.serverUriTextBox.Size = new System.Drawing.Size(295, 20);
-			this.serverUriTextBox.TabIndex = 6;
+			this.serverUriTextBox.Size = new System.Drawing.Size(534, 20);
+			this.serverUriTextBox.TabIndex = 7;
 			// 
 			// serverUriLabel
 			// 
 			this.serverUriLabel.AutoSize = true;
 			this.serverUriLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.serverUriLabel.Location = new System.Drawing.Point(58, 75);
+			this.serverUriLabel.Location = new System.Drawing.Point(67, 78);
 			this.serverUriLabel.Name = "serverUriLabel";
 			this.serverUriLabel.Size = new System.Drawing.Size(95, 18);
 			this.serverUriLabel.TabIndex = 0;
@@ -159,7 +171,7 @@ namespace WscMessageHandler.Message {
 			// 
 			this.sanctionlabel.AutoSize = true;
 			this.sanctionlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.sanctionlabel.Location = new System.Drawing.Point(10, 106);
+			this.sanctionlabel.Location = new System.Drawing.Point(19, 136);
 			this.sanctionlabel.Name = "sanctionlabel";
 			this.sanctionlabel.Size = new System.Drawing.Size(143, 18);
 			this.sanctionlabel.TabIndex = 0;
@@ -168,17 +180,61 @@ namespace WscMessageHandler.Message {
 			// 
 			// sanctionNumTextbox
 			// 
-			this.sanctionNumTextbox.Location = new System.Drawing.Point(155, 105);
+			this.sanctionNumTextbox.Enabled = false;
+			this.sanctionNumTextbox.Location = new System.Drawing.Point(164, 135);
 			this.sanctionNumTextbox.Name = "sanctionNumTextbox";
 			this.sanctionNumTextbox.Size = new System.Drawing.Size(84, 20);
-			this.sanctionNumTextbox.TabIndex = 7;
+			this.sanctionNumTextbox.TabIndex = 9;
+			// 
+			// SelectDatabaseButton
+			// 
+			this.SelectDatabaseButton.AutoSize = true;
+			this.SelectDatabaseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SelectDatabaseButton.Location = new System.Drawing.Point(501, 43);
+			this.SelectDatabaseButton.Name = "SelectDatabaseButton";
+			this.SelectDatabaseButton.Size = new System.Drawing.Size(122, 25);
+			this.SelectDatabaseButton.TabIndex = 5;
+			this.SelectDatabaseButton.Text = "Select Database";
+			this.SelectDatabaseButton.UseVisualStyleBackColor = true;
+			this.SelectDatabaseButton.Click += new System.EventHandler(this.SelectDatabaseButton_Click);
+			// 
+			// TourListComboBox
+			// 
+			this.TourListComboBox.FormattingEnabled = true;
+			this.TourListComboBox.Location = new System.Drawing.Point(255, 135);
+			this.TourListComboBox.Name = "TourListComboBox";
+			this.TourListComboBox.Size = new System.Drawing.Size(443, 21);
+			this.TourListComboBox.TabIndex = 10;
+			this.TourListComboBox.SelectedIndexChanged += new System.EventHandler(this.TourListComboBox_SelectedIndexChanged);
+			// 
+			// DatabaseFilenameLabel
+			// 
+			this.DatabaseFilenameLabel.AutoSize = true;
+			this.DatabaseFilenameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.DatabaseFilenameLabel.Location = new System.Drawing.Point(5, 107);
+			this.DatabaseFilenameLabel.Name = "DatabaseFilenameLabel";
+			this.DatabaseFilenameLabel.Size = new System.Drawing.Size(157, 18);
+			this.DatabaseFilenameLabel.TabIndex = 0;
+			this.DatabaseFilenameLabel.Text = "Database Filename:";
+			this.DatabaseFilenameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// databaseFilenameTextBox
+			// 
+			this.databaseFilenameTextBox.Location = new System.Drawing.Point(164, 106);
+			this.databaseFilenameTextBox.Name = "databaseFilenameTextBox";
+			this.databaseFilenameTextBox.Size = new System.Drawing.Size(534, 20);
+			this.databaseFilenameTextBox.TabIndex = 8;
 			// 
 			// ConnectDialog
 			// 
 			this.AcceptButton = this.ConnectButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(462, 195);
+			this.ClientSize = new System.Drawing.Size(708, 224);
+			this.Controls.Add(this.DatabaseFilenameLabel);
+			this.Controls.Add(this.databaseFilenameTextBox);
+			this.Controls.Add(this.TourListComboBox);
+			this.Controls.Add(this.SelectDatabaseButton);
 			this.Controls.Add(this.sanctionlabel);
 			this.Controls.Add(this.sanctionNumTextbox);
 			this.Controls.Add(this.serverUriLabel);
@@ -214,5 +270,9 @@ namespace WscMessageHandler.Message {
 		private System.Windows.Forms.Label serverUriLabel;
 		private System.Windows.Forms.Label sanctionlabel;
 		private System.Windows.Forms.TextBox sanctionNumTextbox;
+		private System.Windows.Forms.Button SelectDatabaseButton;
+		private System.Windows.Forms.ComboBox TourListComboBox;
+		private System.Windows.Forms.Label DatabaseFilenameLabel;
+		private System.Windows.Forms.TextBox databaseFilenameTextBox;
 	}
 }

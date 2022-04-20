@@ -11,14 +11,17 @@ namespace BoatPathMonitorSim.Common {
 		public static char[] singleQuoteDelim = new char[] { '\'' };
 
 		public static DataRow getTourData() {
+			return getTourData( Properties.Settings.Default.SanctionNum );
+		}
+		public static DataRow getTourData( String sanctionNum ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
-			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
+			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation, TourDataLoc" );
 			curSqlStmt.Append( ", ContactPhone, ContactEmail, M.LastName + ', ' + M.FirstName AS ContactName " );
 			curSqlStmt.Append( "FROM Tournament T " );
 			curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
 			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
-			curSqlStmt.Append( "WHERE T.SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
+			curSqlStmt.Append( "WHERE T.SanctionId = '" + sanctionNum + "' " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 			return null;

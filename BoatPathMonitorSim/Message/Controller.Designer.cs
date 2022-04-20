@@ -118,7 +118,8 @@ namespace BoatPathMonitorSim.Message {
 			this.Controls.Add(this.MessageView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Controller";
-			this.Text = "Boat Path Monitor Simulator";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "Boat Path Rover Simulator";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Controller_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Controller_FormClosed);
 			this.Load += new System.EventHandler(this.Controller_Load);

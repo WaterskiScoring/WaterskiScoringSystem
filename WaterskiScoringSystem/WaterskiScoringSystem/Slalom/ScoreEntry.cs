@@ -1158,7 +1158,7 @@ namespace WaterskiScoringSystem.Slalom {
 				myScoreRow = myScoreDataTable.Rows[0];
 				roundSelect.RoundValue = ( (Byte)myScoreRow["Round"] ).ToString();
 
-				SlalomLineSelect.CurrentValue = HelperFunctions.getDataRowColValue( myScoreRow, "StartSpeed", "" );
+				SlalomLineSelect.CurrentValue = HelperFunctions.getDataRowColValue( myScoreRow, "StartLen", "" );
 				if ( SlalomLineSelect.CurrentValue.Length == 0 ) {
 					DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select( "ListCodeNum = 18.25" );
 					SlalomLineSelect.CurrentValue = (String)curLineRow[0]["ListCode"];
@@ -2634,21 +2634,15 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			if ( WscHandler.isConnectActive ) {
-				WscHandler.checkWscConnectStatus();
-				if ( WscHandler.isConnectActive ) {
-					WaterskiConnectLabel.Visible = true;
-					return;
-				}
-			}
-
-			WscHandler.startWscMessageHhandler();
+			WscHandler.checkWscConnectStatus();
 			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				myBoatPathDevMax = getBoatPathDevMax();
 				return;
 			}
+			
 			WaterskiConnectLabel.Visible = false;
+			return;
 		}
 
 		private void loadEventGroupList( int inRound ) {

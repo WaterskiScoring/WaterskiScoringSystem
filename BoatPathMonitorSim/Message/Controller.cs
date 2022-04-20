@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Deployment.Application;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -26,39 +27,27 @@ namespace BoatPathMonitorSim.Message {
 		}
 
 		private void Controller_Load( object sender, EventArgs e ) {
-			String curMethodName = "Controller: Controller_Load: ";
-			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
 			if ( Properties.Settings.Default.MessageController_Width > 0 ) this.Width = Properties.Settings.Default.MessageController_Width;
 			if ( Properties.Settings.Default.MessageController_Height > 0 ) this.Height = Properties.Settings.Default.MessageController_Height;
 			if ( Properties.Settings.Default.MessageController_Location.X > 0
 				&& Properties.Settings.Default.MessageController_Location.Y > 0 ) {
 				this.Location = Properties.Settings.Default.MessageController_Location;
 			}
+			try {
+				this.Text += " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+				Properties.Settings.Default.AppTitle = this.Text;
+			} catch {
+				if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
+			}
+
 
 			WaterSkiConnectButton.Visible = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
-			String curMsg = "";
 
-			if ( ConnectMgmtData.initConnectMgmtData() ) {
-				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
-				addViewMessage( curMsg, false, false );
-
-				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
-				addViewMessage( curMsg, false, false );
-
-				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
-				addViewMessage( curMsg, false, false );
-
-				Timer curTimerObj = new Timer() { Interval = 50 };
-				curTimerObj.Tick += new EventHandler( execConnectDialog );
-				curTimerObj.Start();
-
-			} else {
-				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}", curMethodName, ConnectMgmtData.sanctionNum );
-				Log.WriteFile( curMsg );
-				addViewMessage( curMsg, true, true );
-			}
+			Timer curTimerObj = new Timer() { Interval = 50 };
+			curTimerObj.Tick += new EventHandler( execConnectDialog );
+			curTimerObj.Start();
 		}
 
 		private void Controller_FormClosing( object sender, FormClosingEventArgs e ) {
@@ -88,9 +77,26 @@ namespace BoatPathMonitorSim.Message {
 			Log.WriteFile( "Controller_FormClosed: WaterSkiConnect handler closed" );
 		}
 
+		private void WaterSkiConnectButton_Click( object sender, EventArgs e ) {
+			execConnectDialog( null, null );
+		}
+
+		private void ShowPinButton_Click( object sender, EventArgs e ) {
+			String curMethodName = "Controller: DisconnectButton_Click: ";
+			try {
+				Listener.showPin();
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+			}
+		}
+
+		private void DisconnectButton_Click( object sender, EventArgs e ) {
+			terminateMonitors( "" );
+		}
+		
 		private void execConnectDialog( object sender, EventArgs e ) {
 			String curMethodName = "Controller: execConnectDialog: ";
-			if ( sender  != null ) {
+			if ( sender != null ) {
 				Timer curTimerObj = (Timer)sender;
 				curTimerObj.Stop();
 				curTimerObj.Tick -= new EventHandler( execConnectDialog );
@@ -130,6 +136,8 @@ namespace BoatPathMonitorSim.Message {
 			myCountConnectCheckFailed = 0;
 
 			try {
+				ActivateTournament();
+
 				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}"
 					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, boldMsg, errorMsg );
@@ -161,10 +169,47 @@ namespace BoatPathMonitorSim.Message {
 				myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
 				myConnectTimer.Start();
 
+				WaterSkiConnectButton.Enabled = false;
+				DisconnectButton.Enabled = true;
+				ShowPinButton.Enabled = true;
+			
 			} catch ( Exception ex ) {
 				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
 				MessageBox.Show( curMsg );
+
+				WaterSkiConnectButton.Enabled = true;
+				DisconnectButton.Enabled = false;
+				ShowPinButton.Enabled = false;
+			}
+		}
+
+		private void ActivateTournament() {
+			String curMethodName = "Controller: ActivateTournament: ";
+			String curMsg = "";
+			if ( ConnectMgmtData.initConnectMgmtData() ) {
+				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
+				addViewMessage( curMsg, false, false );
+
+				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
+				addViewMessage( curMsg, false, false );
+
+				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
+				addViewMessage( curMsg, false, false );
+
+				WaterSkiConnectButton.Enabled = false;
+				DisconnectButton.Enabled = true;
+				ShowPinButton.Enabled = true;
+
+			} else {
+				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
+					, curMethodName, ConnectMgmtData.sanctionNum );
+				Log.WriteFile( curMsg );
+				addViewMessage( curMsg, true, true );
+
+				WaterSkiConnectButton.Enabled = true;
+				DisconnectButton.Enabled = false;
+				ShowPinButton.Enabled = false;
 			}
 		}
 
@@ -320,30 +365,14 @@ namespace BoatPathMonitorSim.Message {
 
 			myMonitorDataTable = null;
 			WaterSkiConnectButton.Visible = true;
+			WaterSkiConnectButton.Enabled = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+
 			myCountHeartBeatFailed = 0;
 
 			if ( msg.Length > 0 ) MessageBox.Show( msg );
 		}
-
-		private void WaterSkiConnectButton_Click( object sender, EventArgs e ) {
-			execConnectDialog( null, null);
-		}
-
-		private void ShowPinButton_Click( object sender, EventArgs e ) {
-			String curMethodName = "Controller: DisconnectButton_Click: ";
-			try {
-				Listener.showPin();
-			} catch ( Exception ex ) {
-				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
-			}
-		}
-
-		private void DisconnectButton_Click( object sender, EventArgs e ) {
-			terminateMonitors( "" );
-		}
-
 	}
 }
 

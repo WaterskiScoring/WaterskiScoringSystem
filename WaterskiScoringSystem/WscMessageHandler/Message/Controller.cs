@@ -26,7 +26,6 @@ namespace WscMessageHandler.Message {
 		}
 
 		private void Controller_Load( object sender, EventArgs e ) {
-			String curMethodName = "Controller: Controller_Load: ";
 			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
 			if ( Properties.Settings.Default.MessageController_Width > 0 ) this.Width = Properties.Settings.Default.MessageController_Width;
 			if ( Properties.Settings.Default.MessageController_Height > 0 ) this.Height = Properties.Settings.Default.MessageController_Height;
@@ -35,30 +34,20 @@ namespace WscMessageHandler.Message {
 				this.Location = Properties.Settings.Default.MessageController_Location;
 			}
 
-			WaterSkiConnectButton.Visible = true;
-			DisconnectButton.Visible = false;
-			ShowPinButton.Visible = false;
-			String curMsg = "";
+			/*
+			Properties.Settings.Default.SanctionNum = "";
+			Properties.Settings.Default.DatabaseConnectionString = "";
+			Properties.Settings.Default.DatabaseFilename = "";
+			Properties.Settings.Default.DataDirectory = "";
+			 */
 
-			if ( ConnectMgmtData.initConnectMgmtData() ) {
-				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
-				addViewMessage( curMsg, false, false );
+			WaterSkiConnectButton.Enabled = true;
+			DisconnectButton.Enabled = false;
+			ShowPinButton.Enabled = false;
 
-				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
-				addViewMessage( curMsg, false, false );
-
-				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
-				addViewMessage( curMsg, false, false );
-
-				Timer curTimerObj = new Timer() { Interval = 50 };
-				curTimerObj.Tick += new EventHandler( execConnectDialog );
-				curTimerObj.Start();
-
-			} else {
-				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}", curMethodName, ConnectMgmtData.sanctionNum );
-				Log.WriteFile( curMsg );
-				addViewMessage( curMsg, true, true );
-			}
+			Timer curTimerObj = new Timer() { Interval = 50 };
+			curTimerObj.Tick += new EventHandler( execConnectDialog );
+			curTimerObj.Start();
 		}
 
 		private void Controller_FormClosing( object sender, FormClosingEventArgs e ) {
@@ -86,6 +75,23 @@ namespace WscMessageHandler.Message {
 			}
 			Properties.Settings.Default.Save();
 			Log.WriteFile( "Controller_FormClosed: WaterSkiConnect handler closed" );
+		}
+		
+		private void WaterSkiConnectButton_Click( object sender, EventArgs e ) {
+			execConnectDialog( null, null );
+		}
+
+		private void ShowPinButton_Click( object sender, EventArgs e ) {
+			String curMethodName = "Controller: DisconnectButton_Click: ";
+			try {
+				Listener.showPin();
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+			}
+		}
+
+		private void DisconnectButton_Click( object sender, EventArgs e ) {
+			terminateMonitors( "" );
 		}
 
 		private void execConnectDialog( object sender, EventArgs e ) {
@@ -130,6 +136,8 @@ namespace WscMessageHandler.Message {
 			myCountConnectCheckFailed = 0;
 			
 			try {
+				ActivateTournament();
+
 				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}"
 					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, boldMsg, errorMsg );
@@ -144,14 +152,11 @@ namespace WscMessageHandler.Message {
 					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
-				//Task.Factory.StartNew( () => Listener.startWscListener( ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId ) );
 				Listener.startWscListener();
-				//waitforConnectConfirm();
 				curMsg = String.Format( "{0}starting Listener for {1} / {2}"
 					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
-				//Task.Factory.StartNew( () => Transmitter.startWscTransmitter( ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId ) );
 				Transmitter.startWscTransmitter();
 				curMsg = String.Format( "{0}starting Transmitter for {1} / {2}"
 					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
@@ -162,19 +167,47 @@ namespace WscMessageHandler.Message {
 				myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
 				myConnectTimer.Start();
 
+				WaterSkiConnectButton.Enabled = false;
+				DisconnectButton.Enabled = true;
+				ShowPinButton.Enabled = true;
+			
 			} catch ( Exception ex ) {
 				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
 				MessageBox.Show( curMsg );
+			
+				WaterSkiConnectButton.Enabled = true;
+				DisconnectButton.Enabled = false;
+				ShowPinButton.Enabled = false;
 			}
 		}
 
-		private void waitforConnectConfirm() {
-			while(true) {
-				DataRow curListenerRow = HelperFunctions.getMonitorHeartBeat( "Listener" );
-				if ( curListenerRow != null ) return;
-				//MessageBox.Show( "waitforConnectConfirm" );
-				System.Threading.Thread.Sleep( 1000 );
+		private void ActivateTournament() {
+			String curMethodName = "Controller: ActivateTournament: ";
+			String curMsg = "";
+			if ( ConnectMgmtData.initConnectMgmtData() ) {
+				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
+				addViewMessage( curMsg, false, false );
+
+				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
+				addViewMessage( curMsg, false, false );
+
+				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
+				addViewMessage( curMsg, false, false );
+
+				WaterSkiConnectButton.Enabled = false;
+				DisconnectButton.Enabled = true;
+				ShowPinButton.Enabled = true;
+
+			} else {
+				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
+					, curMethodName, ConnectMgmtData.sanctionNum );
+				Log.WriteFile( curMsg );
+				addViewMessage( curMsg, true, true );
+
+				WaterSkiConnectButton.Enabled = true;
+				DisconnectButton.Enabled = false;
+				ShowPinButton.Enabled = false;
 			}
 		}
 
@@ -330,28 +363,13 @@ namespace WscMessageHandler.Message {
 
 			myMonitorDataTable = null;
 			WaterSkiConnectButton.Visible = true;
+			WaterSkiConnectButton.Enabled = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+
 			myCountHeartBeatFailed = 0;
 
 			if ( msg.Length > 0 ) MessageBox.Show( msg );
-		}
-
-		private void WaterSkiConnectButton_Click( object sender, EventArgs e ) {
-			execConnectDialog( null, null);
-		}
-
-		private void ShowPinButton_Click( object sender, EventArgs e ) {
-			String curMethodName = "Controller: DisconnectButton_Click: ";
-			try {
-				Listener.showPin();
-			} catch ( Exception ex ) {
-				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
-			}
-		}
-
-		private void DisconnectButton_Click( object sender, EventArgs e ) {
-			terminateMonitors( "" );
 		}
 
 	}

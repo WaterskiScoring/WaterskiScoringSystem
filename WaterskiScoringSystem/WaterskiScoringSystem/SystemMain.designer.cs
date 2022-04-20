@@ -37,6 +37,7 @@
 			this.navImportTourRegPick = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportDataWstims = new System.Windows.Forms.ToolStripMenuItem();
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTournament = new System.Windows.Forms.ToolStripMenuItem();
 			this.navRegistration = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTourRunningOrder = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +113,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -177,14 +177,14 @@
 			// navTournamentList
 			// 
 			this.navTournamentList.Name = "navTournamentList";
-			this.navTournamentList.Size = new System.Drawing.Size(180, 22);
+			this.navTournamentList.Size = new System.Drawing.Size(159, 22);
 			this.navTournamentList.Text = "&Tournament List";
 			this.navTournamentList.Click += new System.EventHandler(this.navTournamentList_Click);
 			// 
 			// navMemberList
 			// 
 			this.navMemberList.Name = "navMemberList";
-			this.navMemberList.Size = new System.Drawing.Size(180, 22);
+			this.navMemberList.Size = new System.Drawing.Size(159, 22);
 			this.navMemberList.Text = "&Member List";
 			this.navMemberList.Click += new System.EventHandler(this.navMemberList_Click);
 			// 
@@ -197,7 +197,7 @@
             this.navImportDataWstims,
             this.importRegistrationsForWorldWaterSkiersToolStripMenuItem});
 			this.memberImportToolStripMenuItem.Name = "memberImportToolStripMenuItem";
-			this.memberImportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.memberImportToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.memberImportToolStripMenuItem.Text = "Import";
 			// 
 			// navImportTourReg
@@ -227,6 +227,15 @@
 			this.navImportDataWstims.Size = new System.Drawing.Size(301, 22);
 			this.navImportDataWstims.Text = "WSTIMS For Windows";
 			this.navImportDataWstims.Click += new System.EventHandler(this.navImportData_Click);
+			// 
+			// importRegistrationsForWorldWaterSkiersToolStripMenuItem
+			// 
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Enabled = false;
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Name = "importRegistrationsForWorldWaterSkiersToolStripMenuItem";
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Size = new System.Drawing.Size(301, 22);
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Text = "Import Registrations for World Water Skiers";
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Visible = false;
+			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Click += new System.EventHandler(this.importRegistrationsForWorldWaterSkiersToolStripMenuItem_Click);
 			// 
 			// navTournament
 			// 
@@ -782,14 +791,14 @@
 			// gettingStartedToolStripMenuItem
 			// 
 			this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-			this.gettingStartedToolStripMenuItem.Text = "&User Guide";
+			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.gettingStartedToolStripMenuItem.Text = "&Newsletters";
 			this.gettingStartedToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// navHelpAbout
 			// 
 			this.navHelpAbout.Name = "navHelpAbout";
-			this.navHelpAbout.Size = new System.Drawing.Size(131, 22);
+			this.navHelpAbout.Size = new System.Drawing.Size(180, 22);
 			this.navHelpAbout.Text = "About";
 			this.navHelpAbout.Click += new System.EventHandler(this.navHelpAbout_Click);
 			// 
@@ -807,15 +816,6 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
-			// 
-			// importRegistrationsForWorldWaterSkiersToolStripMenuItem
-			// 
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Enabled = false;
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Name = "importRegistrationsForWorldWaterSkiersToolStripMenuItem";
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Size = new System.Drawing.Size(301, 22);
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Text = "Import Registrations for World Water Skiers";
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Visible = false;
-			this.importRegistrationsForWorldWaterSkiersToolStripMenuItem.Click += new System.EventHandler(this.importRegistrationsForWorldWaterSkiersToolStripMenuItem_Click);
 			// 
 			// SystemMain
 			// 

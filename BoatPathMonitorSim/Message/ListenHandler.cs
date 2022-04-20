@@ -157,7 +157,7 @@ namespace BoatPathMonitorSim.Message {
 			curSqlStmt.Append( " AND P.MemberId = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "' " );
 			curSqlStmt.Append( " AND P.round = " + HelperFunctions.getAttributeValue( curMsgDataList, "round" ) + " " );
 			curSqlStmt.Append( " AND P.passNumber = " + HelperFunctions.getAttributeValue( curMsgDataList, "passNumber" ) + " " );
-			curSqlStmt.Append( "Order by InsertDate DESC " );
+			curSqlStmt.Append( "Order by InsertDate " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count == 0 ) return;
 
@@ -294,7 +294,7 @@ namespace BoatPathMonitorSim.Message {
 			curSqlStmt.Append( " AND P.MemberId = '" + HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" ) + "' " );
 			curSqlStmt.Append( " AND P.round = " + HelperFunctions.getAttributeValue( curMsgDataList, "round" ) + " " );
 			curSqlStmt.Append( " AND P.passNumber = " + HelperFunctions.getAttributeValue( curMsgDataList, "passNumber" ) + " " );
-			curSqlStmt.Append( "Order by InsertDate DESC " );
+			curSqlStmt.Append( "Order by InsertDate " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count == 0 ) return;
 

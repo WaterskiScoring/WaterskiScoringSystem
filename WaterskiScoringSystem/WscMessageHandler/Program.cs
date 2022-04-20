@@ -10,38 +10,25 @@ namespace WscMessageHandler {
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
-		/// [STAThread]
-		public static void Main( String[] args ) {
+		[STAThread]
+		static void Main() {
+
 			try {
-				Console.WriteLine( "WscMessageHandler:Program: NumArgs=" + args.Length );
+				//Application.SetHighDpiMode( HighDpiMode.SystemAware );
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
-
-				if ( args.Length >= 3 ) {
-					Properties.Settings.Default.SanctionNum = args[0];
-					Properties.Settings.Default.DatabaseFilename = args[1];
-					Properties.Settings.Default.DataDirectory = args[2];
-					Properties.Settings.Default.DatabaseConnectionString = 
-						String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True", Properties.Settings.Default.DatabaseFilename );
-					
-					Log.OpenFile( Properties.Settings.Default.SanctionNum );
-
-					Application.Run( new Controller() );
-
-				} else {
-					throw new Exception( "Program start requires 3 parameters (SanctionNumber, DatabaseFileUri, DataDirectory" );
-				}
+				Application.SetUnhandledExceptionMode( UnhandledExceptionMode.ThrowException );
+				Application.Run( new Controller() );
 
 			} catch ( Exception excp ) {
-				Log.WriteFile( "WscMessageHandler:Program: An exception has been enountered. Exception: " 
-					+ excp.Message + ": StackTrace: " 
+				Log.WriteFile( "WscMessageHandler:Program: An exception has been enountered. Exception: "
+					+ excp.Message + ": StackTrace: "
 					+ excp.StackTrace );
 				MessageBox.Show( "WscMessageHandler:Program: An exception has been enountered."
 					+ "\n Exception: " + excp.Message
-					+ "\n Please contact the development team and send the [SanctionId]-log.log file"
+					+ "\n Please contact the development team and send the [SanctionId]-MessageHandler.log file"
 					+ "\n StackTrace: " + excp.StackTrace );
 			}
-
 		}
 	}
 }

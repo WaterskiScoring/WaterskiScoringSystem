@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Windows.Forms;
 
 using SocketIOClient;
 
@@ -42,11 +43,13 @@ namespace WscMessageHandler.Common {
 			String curMethodName = "ConnectMgmtData:initConnectMgmtData: ";
 
 			mySanctionNum = Properties.Settings.Default.SanctionNum;
+			Log.OpenFile( mySanctionNum );
 
 			bool curDbOpen = DataAccess.DataAccessOpen();
 			if ( !( curDbOpen ) ) {
-				Log.WriteFile( String.Format( "{0}Unable to connect to database {1}"
-					, curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
+				String curMsg = String.Format( "{0}Unable to connect to database {1}"
+					, curMethodName, Properties.Settings.Default.DatabaseConnectionString );
+				Log.WriteFile( curMsg );
 				return false;
 			}
 
@@ -55,9 +58,10 @@ namespace WscMessageHandler.Common {
 
 			tourRow = HelperFunctions.getTourData();
 			if ( tourRow == null ) {
-				String curMsg = String.Format( "{0}Tournament data for {1} was not found, terminating attempt to starting listener"
+				String curMsg = String.Format( "{0}Tournament data for {1} was not found"
 					, curMethodName, mySanctionNum );
 				Log.WriteFile( curMsg );
+				MessageBox.Show( curMsg );
 				return false;
 			}
 			return true;

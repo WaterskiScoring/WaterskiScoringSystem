@@ -49,7 +49,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>7.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -970,6 +970,7 @@
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="RecordApplicationFormTemplate.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1346,10 +1347,6 @@
     <ProjectReference Include="..\ValidationLibrary\ValidationLibrary.csproj">
       <Project>{1aa042a1-74e1-4edd-8b07-5a007da5ba67}</Project>
       <Name>ValidationLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WscMessageHandler\WscMessageHandler.csproj">
-      <Project>{5aafb110-53ec-4ee7-b994-1435afb84a3b}</Project>
-      <Name>WscMessageHandler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

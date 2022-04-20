@@ -42,6 +42,7 @@ namespace BoatPathMonitorSim.Common {
 			String curMethodName = "ConnectMgmtData:initConnectMgmtData: ";
 
 			mySanctionNum = Properties.Settings.Default.SanctionNum;
+			Log.OpenFile( mySanctionNum );
 
 			bool curDbOpen = DataAccess.DataAccessOpen();
 			if ( !( curDbOpen ) ) {

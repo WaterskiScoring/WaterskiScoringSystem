@@ -1547,18 +1547,15 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			if ( WscHandler.isConnectActive ) {
-				WaterskiConnectLabel.Visible = true;
-				return;
-			}
-
-			WscHandler.startWscMessageHhandler();
+			WscHandler.checkWscConnectStatus();
 			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				myBoatPathDevMax = getBoatPathDevMax();
 				return;
 			}
+
 			WaterskiConnectLabel.Visible = false;
+			return;
 		}
 
 		private void roundSelect_Load( object sender, EventArgs e ) {
