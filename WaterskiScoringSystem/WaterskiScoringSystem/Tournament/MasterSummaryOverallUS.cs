@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -557,8 +558,14 @@ namespace WaterskiScoringSystem.Tournament {
             myExportData.exportDataAsHtml( scoreSummaryDataGridView, printTitle, printSubtitle, printFooter );
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+		private void navPublish_Click( object sender, EventArgs e ) {
+			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			printReport( false );
+		}
+		private bool printReport( bool inPublish ) {
+			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             Font saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
             scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 10, FontStyle.Regular );
@@ -569,7 +576,8 @@ namespace WaterskiScoringSystem.Tournament {
             Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
             Font fontPrintFooter = new Font("Times New Roman", 10);
 
-            curPrintDialog.AllowCurrentPage = true;
+			bool returnValue = true;
+			curPrintDialog.AllowCurrentPage = true;
             curPrintDialog.AllowPrintToFile = false;
             curPrintDialog.AllowSelection = true;
             curPrintDialog.AllowSomePages = true;
@@ -580,15 +588,18 @@ namespace WaterskiScoringSystem.Tournament {
             curPrintDialog.PrinterSettings.DefaultPageSettings.Landscape = true;
 
             if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + this.Text;
-                myPrintDoc = new PrintDocument();
+				StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+				printTitle.Append( "\n Sanction " + mySanctionNum );
+				printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+				printTitle.Append( "\n" + this.Text );
+				if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
+				
+				myPrintDoc = new PrintDocument();
                 myPrintDoc.DocumentName = this.Text;
                 myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
                 myPrintDoc.DefaultPageSettings.Landscape = true;
                 myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
+                    CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 myPrintDataGrid.SubtitleList();
                 StringRowPrinter mySubtitle;
@@ -639,13 +650,18 @@ namespace WaterskiScoringSystem.Tournament {
                 myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
                 curPreviewDialog.Document = myPrintDoc;
                 curPreviewDialog.ShowDialog();
-            }
+				returnValue = true;
+			
+			} else {
+				returnValue = false;
+			}
 
-            scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
-        }
+			scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+			return returnValue;
+		}
 
-        // The PrintPage action for the PrintDocument control
-        private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
+		// The PrintPage action for the PrintDocument control
+		private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
             bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
             if ( more == true )
                 e.HasMorePages = true;
@@ -705,5 +721,5 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-    }
+	}
 }

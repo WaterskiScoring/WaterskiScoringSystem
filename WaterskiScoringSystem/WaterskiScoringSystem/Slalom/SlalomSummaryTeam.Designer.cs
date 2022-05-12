@@ -106,9 +106,6 @@ namespace WaterskiScoringSystem.Slalom {
 			this.totalScoreButton = new System.Windows.Forms.RadioButton();
 			this.bestScoreButton = new System.Windows.Forms.RadioButton();
 			this.PrintDataGridView = new System.Windows.Forms.DataGridView();
-			this.ViewReportButton = new System.Windows.Forms.Button();
-			this.label2 = new System.Windows.Forms.Label();
-			this.EventGroupList = new System.Windows.Forms.ComboBox();
 			this.PrintTeamPlcmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintTeamDiv = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintTeam = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -124,6 +121,10 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalSpeedKph = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintFinalLen = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintFinalPassScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ViewReportButton = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.EventGroupList = new System.Windows.Forms.ComboBox();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.teamSummaryDataGridView)).BeginInit();
 			this.winStatus.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -166,12 +167,11 @@ namespace WaterskiScoringSystem.Slalom {
 			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.teamSummaryDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
-			this.teamSummaryDataGridView.Location = new System.Drawing.Point(7, 151);
-			this.teamSummaryDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.teamSummaryDataGridView.Location = new System.Drawing.Point(5, 123);
 			this.teamSummaryDataGridView.Name = "teamSummaryDataGridView";
 			this.teamSummaryDataGridView.RowHeadersVisible = false;
 			this.teamSummaryDataGridView.RowTemplate.Height = 26;
-			this.teamSummaryDataGridView.Size = new System.Drawing.Size(467, 342);
+			this.teamSummaryDataGridView.Size = new System.Drawing.Size(350, 278);
 			this.teamSummaryDataGridView.TabIndex = 101;
 			this.teamSummaryDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.teamSummaryDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.teamSummaryDataGridView_RowEnter);
@@ -237,10 +237,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 504);
+			this.winStatus.Location = new System.Drawing.Point(0, 405);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-			this.winStatus.Size = new System.Drawing.Size(1384, 22);
+			this.winStatus.Size = new System.Drawing.Size(1038, 22);
 			this.winStatus.TabIndex = 8;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -251,10 +250,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// ShowTeamButton
 			// 
-			this.ShowTeamButton.Location = new System.Drawing.Point(437, 118);
-			this.ShowTeamButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ShowTeamButton.Location = new System.Drawing.Point(328, 96);
 			this.ShowTeamButton.Name = "ShowTeamButton";
-			this.ShowTeamButton.Size = new System.Drawing.Size(156, 27);
+			this.ShowTeamButton.Size = new System.Drawing.Size(117, 22);
 			this.ShowTeamButton.TabIndex = 61;
 			this.ShowTeamButton.Text = "Show Team Skiers";
 			this.ShowTeamButton.UseVisualStyleBackColor = true;
@@ -262,10 +260,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// ShowAllButton
 			// 
-			this.ShowAllButton.Location = new System.Drawing.Point(600, 118);
-			this.ShowAllButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ShowAllButton.Location = new System.Drawing.Point(450, 96);
 			this.ShowAllButton.Name = "ShowAllButton";
-			this.ShowAllButton.Size = new System.Drawing.Size(143, 27);
+			this.ShowAllButton.Size = new System.Drawing.Size(107, 22);
 			this.ShowAllButton.TabIndex = 62;
 			this.ShowAllButton.Text = "Show All Skiers";
 			this.ShowAllButton.UseVisualStyleBackColor = true;
@@ -277,11 +274,12 @@ namespace WaterskiScoringSystem.Slalom {
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navPrint,
+            this.navPublish,
             this.navExport,
             this.navExportHtml});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(1384, 47);
+			this.toolStrip1.Size = new System.Drawing.Size(1038, 42);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "navToolStrip";
 			// 
@@ -290,7 +288,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
 			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navRefresh.Name = "navRefresh";
-			this.navRefresh.Size = new System.Drawing.Size(62, 44);
+			this.navRefresh.Size = new System.Drawing.Size(50, 39);
 			this.navRefresh.Text = "Refresh";
 			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
@@ -300,7 +298,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
 			this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navPrint.Name = "navPrint";
-			this.navPrint.Size = new System.Drawing.Size(43, 44);
+			this.navPrint.Size = new System.Drawing.Size(36, 39);
 			this.navPrint.Text = "Print";
 			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navPrint.Click += new System.EventHandler(this.navPrint_Click);
@@ -310,7 +308,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
 			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(56, 44);
+			this.navExport.Size = new System.Drawing.Size(45, 39);
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -321,7 +319,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.navExportHtml.Image = ((System.Drawing.Image)(resources.GetObject("navExportHtml.Image")));
 			this.navExportHtml.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExportHtml.Name = "navExportHtml";
-			this.navExportHtml.Size = new System.Drawing.Size(46, 44);
+			this.navExportHtml.Size = new System.Drawing.Size(38, 39);
 			this.navExportHtml.Text = "Html";
 			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
@@ -329,20 +327,18 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			// NumPerTeamTextBox
 			// 
-			this.NumPerTeamTextBox.Location = new System.Drawing.Point(207, 119);
-			this.NumPerTeamTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.NumPerTeamTextBox.Location = new System.Drawing.Point(155, 97);
 			this.NumPerTeamTextBox.Name = "NumPerTeamTextBox";
-			this.NumPerTeamTextBox.Size = new System.Drawing.Size(45, 22);
+			this.NumPerTeamTextBox.Size = new System.Drawing.Size(35, 20);
 			this.NumPerTeamTextBox.TabIndex = 51;
 			this.NumPerTeamTextBox.TextChanged += new System.EventHandler(this.NumPerTeamTextBox_TextChanged);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(3, 124);
-			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label1.Location = new System.Drawing.Point(2, 101);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(192, 17);
+			this.label1.Size = new System.Drawing.Size(144, 13);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Number of Scores Per Team:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -390,12 +386,11 @@ namespace WaterskiScoringSystem.Slalom {
 			dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.scoreSummaryDataGridView.DefaultCellStyle = dataGridViewCellStyle18;
-			this.scoreSummaryDataGridView.Location = new System.Drawing.Point(484, 151);
-			this.scoreSummaryDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoreSummaryDataGridView.Location = new System.Drawing.Point(363, 123);
 			this.scoreSummaryDataGridView.Name = "scoreSummaryDataGridView";
 			this.scoreSummaryDataGridView.RowHeadersVisible = false;
 			this.scoreSummaryDataGridView.RowTemplate.Height = 26;
-			this.scoreSummaryDataGridView.Size = new System.Drawing.Size(884, 342);
+			this.scoreSummaryDataGridView.Size = new System.Drawing.Size(663, 278);
 			this.scoreSummaryDataGridView.TabIndex = 111;
 			// 
 			// MemberId
@@ -552,11 +547,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PointsMethodGroupBox.Controls.Add(this.kBasePointsButton);
 			this.PointsMethodGroupBox.Controls.Add(this.plcmtPointsButton);
 			this.PointsMethodGroupBox.Controls.Add(this.nopsPointsButton);
-			this.PointsMethodGroupBox.Location = new System.Drawing.Point(185, 48);
-			this.PointsMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PointsMethodGroupBox.Location = new System.Drawing.Point(139, 39);
 			this.PointsMethodGroupBox.Name = "PointsMethodGroupBox";
-			this.PointsMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.PointsMethodGroupBox.Size = new System.Drawing.Size(317, 68);
+			this.PointsMethodGroupBox.Size = new System.Drawing.Size(238, 55);
 			this.PointsMethodGroupBox.TabIndex = 105;
 			this.PointsMethodGroupBox.TabStop = false;
 			this.PointsMethodGroupBox.Text = "Points Calculation Method ";
@@ -565,10 +558,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.ratioPointsButton.AutoSize = true;
 			this.ratioPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ratioPointsButton.Location = new System.Drawing.Point(111, 44);
-			this.ratioPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ratioPointsButton.Location = new System.Drawing.Point(83, 36);
 			this.ratioPointsButton.Name = "ratioPointsButton";
-			this.ratioPointsButton.Size = new System.Drawing.Size(98, 21);
+			this.ratioPointsButton.Size = new System.Drawing.Size(77, 17);
 			this.ratioPointsButton.TabIndex = 44;
 			this.ratioPointsButton.TabStop = true;
 			this.ratioPointsButton.Text = "Base Ratio";
@@ -578,10 +570,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.handicapPointsButton.AutoSize = true;
 			this.handicapPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.handicapPointsButton.Location = new System.Drawing.Point(111, 18);
-			this.handicapPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.handicapPointsButton.Location = new System.Drawing.Point(83, 15);
 			this.handicapPointsButton.Name = "handicapPointsButton";
-			this.handicapPointsButton.Size = new System.Drawing.Size(89, 21);
+			this.handicapPointsButton.Size = new System.Drawing.Size(71, 17);
 			this.handicapPointsButton.TabIndex = 43;
 			this.handicapPointsButton.TabStop = true;
 			this.handicapPointsButton.Text = "Handicap";
@@ -591,10 +582,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.kBasePointsButton.AutoSize = true;
 			this.kBasePointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.kBasePointsButton.Location = new System.Drawing.Point(7, 44);
-			this.kBasePointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.kBasePointsButton.Location = new System.Drawing.Point(5, 36);
 			this.kBasePointsButton.Name = "kBasePointsButton";
-			this.kBasePointsButton.Size = new System.Drawing.Size(97, 21);
+			this.kBasePointsButton.Size = new System.Drawing.Size(76, 17);
 			this.kBasePointsButton.TabIndex = 42;
 			this.kBasePointsButton.TabStop = true;
 			this.kBasePointsButton.Text = "1000 Base";
@@ -604,10 +594,10 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.plcmtPointsButton.AutoSize = true;
 			this.plcmtPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtPointsButton.Location = new System.Drawing.Point(212, 18);
+			this.plcmtPointsButton.Location = new System.Drawing.Point(159, 15);
 			this.plcmtPointsButton.Margin = new System.Windows.Forms.Padding(0);
 			this.plcmtPointsButton.Name = "plcmtPointsButton";
-			this.plcmtPointsButton.Size = new System.Drawing.Size(95, 21);
+			this.plcmtPointsButton.Size = new System.Drawing.Size(75, 17);
 			this.plcmtPointsButton.TabIndex = 45;
 			this.plcmtPointsButton.TabStop = true;
 			this.plcmtPointsButton.Text = "Placement";
@@ -618,10 +608,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.nopsPointsButton.AutoSize = true;
 			this.nopsPointsButton.Checked = true;
 			this.nopsPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsPointsButton.Location = new System.Drawing.Point(7, 18);
-			this.nopsPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.nopsPointsButton.Location = new System.Drawing.Point(5, 15);
 			this.nopsPointsButton.Name = "nopsPointsButton";
-			this.nopsPointsButton.Size = new System.Drawing.Size(68, 21);
+			this.nopsPointsButton.Size = new System.Drawing.Size(55, 17);
 			this.nopsPointsButton.TabIndex = 41;
 			this.nopsPointsButton.TabStop = true;
 			this.nopsPointsButton.Text = "NOPS";
@@ -632,11 +621,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.plcmtGroupBox.Controls.Add(this.groupPlcmtButton);
 			this.plcmtGroupBox.Controls.Add(this.plcmtTourButton);
 			this.plcmtGroupBox.Controls.Add(this.divPlcmtButton);
-			this.plcmtGroupBox.Location = new System.Drawing.Point(732, 48);
-			this.plcmtGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtGroupBox.Location = new System.Drawing.Point(549, 39);
 			this.plcmtGroupBox.Name = "plcmtGroupBox";
-			this.plcmtGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.plcmtGroupBox.Size = new System.Drawing.Size(213, 68);
+			this.plcmtGroupBox.Size = new System.Drawing.Size(160, 55);
 			this.plcmtGroupBox.TabIndex = 104;
 			this.plcmtGroupBox.TabStop = false;
 			this.plcmtGroupBox.Text = "Placement";
@@ -646,10 +633,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.groupPlcmtButton.AutoSize = true;
 			this.groupPlcmtButton.Checked = true;
 			this.groupPlcmtButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.groupPlcmtButton.Location = new System.Drawing.Point(8, 43);
-			this.groupPlcmtButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.groupPlcmtButton.Location = new System.Drawing.Point(6, 35);
 			this.groupPlcmtButton.Name = "groupPlcmtButton";
-			this.groupPlcmtButton.Size = new System.Drawing.Size(89, 21);
+			this.groupPlcmtButton.Size = new System.Drawing.Size(69, 17);
 			this.groupPlcmtButton.TabIndex = 33;
 			this.groupPlcmtButton.TabStop = true;
 			this.groupPlcmtButton.Text = "By Group";
@@ -660,10 +646,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.plcmtTourButton.AutoSize = true;
 			this.plcmtTourButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtTourButton.Location = new System.Drawing.Point(108, 18);
-			this.plcmtTourButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtTourButton.Location = new System.Drawing.Point(81, 15);
 			this.plcmtTourButton.Name = "plcmtTourButton";
-			this.plcmtTourButton.Size = new System.Drawing.Size(92, 21);
+			this.plcmtTourButton.Size = new System.Drawing.Size(72, 17);
 			this.plcmtTourButton.TabIndex = 32;
 			this.plcmtTourButton.TabStop = true;
 			this.plcmtTourButton.Tag = "";
@@ -676,10 +661,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.divPlcmtButton.AutoSize = true;
 			this.divPlcmtButton.Checked = true;
 			this.divPlcmtButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.divPlcmtButton.Location = new System.Drawing.Point(7, 18);
-			this.divPlcmtButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.divPlcmtButton.Location = new System.Drawing.Point(5, 15);
 			this.divPlcmtButton.Name = "divPlcmtButton";
-			this.divPlcmtButton.Size = new System.Drawing.Size(69, 21);
+			this.divPlcmtButton.Size = new System.Drawing.Size(56, 17);
 			this.divPlcmtButton.TabIndex = 31;
 			this.divPlcmtButton.TabStop = true;
 			this.divPlcmtButton.Text = "By Div";
@@ -690,11 +674,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.plcmtMethodGroupBox.Controls.Add(this.pointsScoreButton);
 			this.plcmtMethodGroupBox.Controls.Add(this.rawScoreButton);
-			this.plcmtMethodGroupBox.Location = new System.Drawing.Point(517, 48);
-			this.plcmtMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtMethodGroupBox.Location = new System.Drawing.Point(388, 39);
 			this.plcmtMethodGroupBox.Name = "plcmtMethodGroupBox";
-			this.plcmtMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.plcmtMethodGroupBox.Size = new System.Drawing.Size(200, 43);
+			this.plcmtMethodGroupBox.Size = new System.Drawing.Size(150, 35);
 			this.plcmtMethodGroupBox.TabIndex = 103;
 			this.plcmtMethodGroupBox.TabStop = false;
 			this.plcmtMethodGroupBox.Text = "Placement Method";
@@ -703,10 +685,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.pointsScoreButton.AutoSize = true;
 			this.pointsScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pointsScoreButton.Location = new System.Drawing.Point(120, 18);
-			this.pointsScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.pointsScoreButton.Location = new System.Drawing.Point(90, 15);
 			this.pointsScoreButton.Name = "pointsScoreButton";
-			this.pointsScoreButton.Size = new System.Drawing.Size(68, 21);
+			this.pointsScoreButton.Size = new System.Drawing.Size(54, 17);
 			this.pointsScoreButton.TabIndex = 22;
 			this.pointsScoreButton.TabStop = true;
 			this.pointsScoreButton.Text = "Points";
@@ -717,10 +698,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.rawScoreButton.AutoSize = true;
 			this.rawScoreButton.Checked = true;
 			this.rawScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.rawScoreButton.Location = new System.Drawing.Point(8, 18);
-			this.rawScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.rawScoreButton.Location = new System.Drawing.Point(6, 15);
 			this.rawScoreButton.Name = "rawScoreButton";
-			this.rawScoreButton.Size = new System.Drawing.Size(97, 21);
+			this.rawScoreButton.Size = new System.Drawing.Size(78, 17);
 			this.rawScoreButton.TabIndex = 21;
 			this.rawScoreButton.TabStop = true;
 			this.rawScoreButton.Text = "Raw Score";
@@ -731,11 +711,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.scoresPlcmtGroupBox.Controls.Add(this.finalScoreButton);
 			this.scoresPlcmtGroupBox.Controls.Add(this.totalScoreButton);
 			this.scoresPlcmtGroupBox.Controls.Add(this.bestScoreButton);
-			this.scoresPlcmtGroupBox.Location = new System.Drawing.Point(4, 48);
-			this.scoresPlcmtGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.scoresPlcmtGroupBox.Location = new System.Drawing.Point(3, 39);
 			this.scoresPlcmtGroupBox.Name = "scoresPlcmtGroupBox";
-			this.scoresPlcmtGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.scoresPlcmtGroupBox.Size = new System.Drawing.Size(167, 68);
+			this.scoresPlcmtGroupBox.Size = new System.Drawing.Size(125, 55);
 			this.scoresPlcmtGroupBox.TabIndex = 102;
 			this.scoresPlcmtGroupBox.TabStop = false;
 			this.scoresPlcmtGroupBox.Text = "Scores to Use";
@@ -744,10 +722,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.finalScoreButton.AutoSize = true;
 			this.finalScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.finalScoreButton.Location = new System.Drawing.Point(16, 44);
-			this.finalScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.finalScoreButton.Location = new System.Drawing.Point(12, 36);
 			this.finalScoreButton.Name = "finalScoreButton";
-			this.finalScoreButton.Size = new System.Drawing.Size(59, 21);
+			this.finalScoreButton.Size = new System.Drawing.Size(47, 17);
 			this.finalScoreButton.TabIndex = 13;
 			this.finalScoreButton.TabStop = true;
 			this.finalScoreButton.Text = "Final";
@@ -757,10 +734,9 @@ namespace WaterskiScoringSystem.Slalom {
 			// 
 			this.totalScoreButton.AutoSize = true;
 			this.totalScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.totalScoreButton.Location = new System.Drawing.Point(85, 18);
-			this.totalScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.totalScoreButton.Location = new System.Drawing.Point(64, 15);
 			this.totalScoreButton.Name = "totalScoreButton";
-			this.totalScoreButton.Size = new System.Drawing.Size(61, 21);
+			this.totalScoreButton.Size = new System.Drawing.Size(49, 17);
 			this.totalScoreButton.TabIndex = 12;
 			this.totalScoreButton.TabStop = true;
 			this.totalScoreButton.Text = "Total";
@@ -771,10 +747,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.bestScoreButton.AutoSize = true;
 			this.bestScoreButton.Checked = true;
 			this.bestScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bestScoreButton.Location = new System.Drawing.Point(16, 18);
-			this.bestScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.bestScoreButton.Location = new System.Drawing.Point(12, 15);
 			this.bestScoreButton.Name = "bestScoreButton";
-			this.bestScoreButton.Size = new System.Drawing.Size(57, 21);
+			this.bestScoreButton.Size = new System.Drawing.Size(46, 17);
 			this.bestScoreButton.TabIndex = 11;
 			this.bestScoreButton.TabStop = true;
 			this.bestScoreButton.Text = "Best";
@@ -826,8 +801,7 @@ namespace WaterskiScoringSystem.Slalom {
 			dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintDataGridView.DefaultCellStyle = dataGridViewCellStyle32;
 			this.PrintDataGridView.Enabled = false;
-			this.PrintDataGridView.Location = new System.Drawing.Point(144, 272);
-			this.PrintDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PrintDataGridView.Location = new System.Drawing.Point(108, 221);
 			this.PrintDataGridView.Name = "PrintDataGridView";
 			this.PrintDataGridView.ReadOnly = true;
 			this.PrintDataGridView.RowHeadersVisible = false;
@@ -835,40 +809,9 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintDataGridView.RowTemplate.Height = 28;
 			this.PrintDataGridView.RowTemplate.ReadOnly = true;
 			this.PrintDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintDataGridView.Size = new System.Drawing.Size(961, 122);
+			this.PrintDataGridView.Size = new System.Drawing.Size(721, 99);
 			this.PrintDataGridView.TabIndex = 125;
 			this.PrintDataGridView.Visible = false;
-			// 
-			// ViewReportButton
-			// 
-			this.ViewReportButton.Location = new System.Drawing.Point(273, 118);
-			this.ViewReportButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.ViewReportButton.Name = "ViewReportButton";
-			this.ViewReportButton.Size = new System.Drawing.Size(156, 27);
-			this.ViewReportButton.TabIndex = 126;
-			this.ViewReportButton.Text = "View Team Results";
-			this.ViewReportButton.UseVisualStyleBackColor = true;
-			this.ViewReportButton.Click += new System.EventHandler(this.ViewReportButton_Click);
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(897, 124);
-			this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(253, 17);
-			this.label2.TabIndex = 127;
-			this.label2.Text = "Select a division and click Refresh icon";
-			// 
-			// EventGroupList
-			// 
-			this.EventGroupList.FormattingEnabled = true;
-			this.EventGroupList.Location = new System.Drawing.Point(751, 119);
-			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.EventGroupList.Name = "EventGroupList";
-			this.EventGroupList.Size = new System.Drawing.Size(132, 24);
-			this.EventGroupList.TabIndex = 128;
-			this.EventGroupList.SelectedIndexChanged += new System.EventHandler(this.EventGroupList_SelectedIndexChanged);
 			// 
 			// PrintTeamPlcmt
 			// 
@@ -882,7 +825,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintTeamPlcmt.ReadOnly = true;
 			this.PrintTeamPlcmt.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintTeamPlcmt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintTeamPlcmt.Width = 56;
+			this.PrintTeamPlcmt.Width = 45;
 			// 
 			// PrintTeamDiv
 			// 
@@ -895,7 +838,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintTeamDiv.ReadOnly = true;
 			this.PrintTeamDiv.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintTeamDiv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintTeamDiv.Width = 40;
+			this.PrintTeamDiv.Width = 33;
 			// 
 			// PrintTeam
 			// 
@@ -905,7 +848,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintTeam.ReadOnly = true;
 			this.PrintTeam.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintTeam.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintTeam.Width = 55;
+			this.PrintTeam.Width = 43;
 			// 
 			// PrintTeamScoreSlalom
 			// 
@@ -918,7 +861,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintTeamScoreSlalom.ReadOnly = true;
 			this.PrintTeamScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintTeamScoreSlalom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintTeamScoreSlalom.Width = 58;
+			this.PrintTeamScoreSlalom.Width = 47;
 			// 
 			// PrintSkierSep
 			// 
@@ -944,7 +887,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintSkierPlcmtSlalom.ReadOnly = true;
 			this.PrintSkierPlcmtSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintSkierPlcmtSlalom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierPlcmtSlalom.Width = 56;
+			this.PrintSkierPlcmtSlalom.Width = 45;
 			// 
 			// PrintSkierNameSlalom
 			// 
@@ -954,7 +897,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintSkierNameSlalom.ReadOnly = true;
 			this.PrintSkierNameSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintSkierNameSlalom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierNameSlalom.Width = 57;
+			this.PrintSkierNameSlalom.Width = 46;
 			// 
 			// PrintSkierScoreSlalom
 			// 
@@ -967,7 +910,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintSkierScoreSlalom.ReadOnly = true;
 			this.PrintSkierScoreSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintSkierScoreSlalom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierScoreSlalom.Width = 58;
+			this.PrintSkierScoreSlalom.Width = 47;
 			// 
 			// PrintSkierPointsSlalom
 			// 
@@ -980,7 +923,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintSkierPointsSlalom.ReadOnly = true;
 			this.PrintSkierPointsSlalom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintSkierPointsSlalom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierPointsSlalom.Width = 62;
+			this.PrintSkierPointsSlalom.Width = 50;
 			// 
 			// PrintSkierSep2
 			// 
@@ -1002,7 +945,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalSpeedMph.ReadOnly = true;
 			this.PrintFinalSpeedMph.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintFinalSpeedMph.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintFinalSpeedMph.Width = 49;
+			this.PrintFinalSpeedMph.Width = 39;
 			// 
 			// PrintFinalLenOff
 			// 
@@ -1015,7 +958,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalLenOff.ReadOnly = true;
 			this.PrintFinalLenOff.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintFinalLenOff.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintFinalLenOff.Width = 54;
+			this.PrintFinalLenOff.Width = 44;
 			// 
 			// PrintFinalSpeedKph
 			// 
@@ -1028,7 +971,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalSpeedKph.ReadOnly = true;
 			this.PrintFinalSpeedKph.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintFinalSpeedKph.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintFinalSpeedKph.Width = 46;
+			this.PrintFinalSpeedKph.Width = 38;
 			// 
 			// PrintFinalLen
 			// 
@@ -1041,7 +984,7 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalLen.ReadOnly = true;
 			this.PrintFinalLen.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintFinalLen.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintFinalLen.Width = 54;
+			this.PrintFinalLen.Width = 44;
 			// 
 			// PrintFinalPassScore
 			// 
@@ -1054,13 +997,51 @@ namespace WaterskiScoringSystem.Slalom {
 			this.PrintFinalPassScore.ReadOnly = true;
 			this.PrintFinalPassScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintFinalPassScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintFinalPassScore.Width = 62;
+			this.PrintFinalPassScore.Width = 50;
+			// 
+			// ViewReportButton
+			// 
+			this.ViewReportButton.Location = new System.Drawing.Point(205, 96);
+			this.ViewReportButton.Name = "ViewReportButton";
+			this.ViewReportButton.Size = new System.Drawing.Size(117, 22);
+			this.ViewReportButton.TabIndex = 126;
+			this.ViewReportButton.Text = "View Team Results";
+			this.ViewReportButton.UseVisualStyleBackColor = true;
+			this.ViewReportButton.Click += new System.EventHandler(this.ViewReportButton_Click);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(673, 101);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(193, 13);
+			this.label2.TabIndex = 127;
+			this.label2.Text = "Select a division and click Refresh icon";
+			// 
+			// EventGroupList
+			// 
+			this.EventGroupList.FormattingEnabled = true;
+			this.EventGroupList.Location = new System.Drawing.Point(563, 97);
+			this.EventGroupList.Name = "EventGroupList";
+			this.EventGroupList.Size = new System.Drawing.Size(100, 21);
+			this.EventGroupList.TabIndex = 128;
+			this.EventGroupList.SelectedIndexChanged += new System.EventHandler(this.EventGroupList_SelectedIndexChanged);
+			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 39);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
 			// 
 			// SlalomSummaryTeam
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1384, 526);
+			this.ClientSize = new System.Drawing.Size(1038, 427);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.EventGroupList);
 			this.Controls.Add(this.ViewReportButton);
@@ -1078,7 +1059,6 @@ namespace WaterskiScoringSystem.Slalom {
 			this.Controls.Add(this.winStatus);
 			this.Controls.Add(this.teamSummaryDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "SlalomSummaryTeam";
 			this.Text = "Slalom Team Summary";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SlalomSummaryTeam_FormClosed);
@@ -1173,5 +1153,6 @@ namespace WaterskiScoringSystem.Slalom {
 		private System.Windows.Forms.DataGridViewTextBoxColumn PrintFinalSpeedKph;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PrintFinalLen;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PrintFinalPassScore;
+		private System.Windows.Forms.ToolStripButton navPublish;
 	}
 }

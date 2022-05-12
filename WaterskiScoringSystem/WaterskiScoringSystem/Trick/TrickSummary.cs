@@ -729,22 +729,29 @@ namespace WaterskiScoringSystem.Trick {
             RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + scoreSummaryDataGridView.Rows.Count.ToString();
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            if (h2hScoreButton.Checked) {
+		private void navPublish_Click( object sender, EventArgs e ) {
+			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Trick", mySanctionNum );
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			printReport( false );
+		}
+		private bool printReport( bool inPublish ) {
+			if ( h2hScoreButton.Checked) {
                 if (mySummaryDataTable.Rows.Count > 0) {
                     printHeadToHeadAwards();
-                    return;
-                } else {
-                    return;
-                }
-            }
+					return true;
+				} else {
+					return false;
+				}
+			}
 
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             Font saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
             scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
 
-            bool CenterOnPage = true;
+			bool returnValue = true;
+			bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
             Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
@@ -760,25 +767,31 @@ namespace WaterskiScoringSystem.Trick {
             curPrintDialog.UseEXDialog = true;
 
             if (curPrintDialog.ShowDialog() == DialogResult.OK) {
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + this.Text;
+				StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+				printTitle.Append( "\n Sanction " + mySanctionNum );
+				printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+				printTitle.Append( "\n" + this.Text );
+				if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
 
-                myPrintDoc = new PrintDocument();
+				myPrintDoc = new PrintDocument();
                 myPrintDoc.DocumentName = this.Text;
                 myPrintDoc.DefaultPageSettings.Margins = new Margins(25, 25, 25, 25);
                 myPrintDoc.DefaultPageSettings.Landscape = false;
                 myPrintDataGrid = new DataGridViewPrinter(scoreSummaryDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging);
+                    CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging);
                 
                 myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
                 myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
                 myPrintDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
                 curPreviewDialog.Document = myPrintDoc;
                 curPreviewDialog.ShowDialog();
-            }
+				returnValue = true;
+			} else {
+				returnValue = false;
+			}
 
-            scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+			scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+			return returnValue;
         }
 
         // The PrintPage action for the PrintDocument control
@@ -922,5 +935,5 @@ namespace WaterskiScoringSystem.Trick {
             return DataAccess.getDataTable( inSelectStmt );
         }
 
-    }
+	}
 }

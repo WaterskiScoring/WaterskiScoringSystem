@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Slalom {
@@ -798,52 +799,63 @@ namespace WaterskiScoringSystem.Slalom {
             myExportData.exportDataAsHtml( PrintDataGridView, printTitle, printSubtitle, printFooter );
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+		private void navPublish_Click( object sender, EventArgs e ) {
+			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Slalom", mySanctionNum );
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			printReport( false );
+		}
+		private bool printReport( bool inPublish ) {
+			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             TeamPrintDialogForm curTeamPrintDialog = new TeamPrintDialogForm();
-            if ( curTeamPrintDialog.ShowDialog() == DialogResult.OK ) {
-                String curPrintReport = curTeamPrintDialog.ReportName;
-                bool CenterOnPage = true;
-                bool WithTitle = true;
-                bool WithPaging = true;
-                Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
-                Font fontPrintFooter = new Font( "Times New Roman", 10 );
+			if ( curTeamPrintDialog.ShowDialog() != DialogResult.OK ) return false;
 
-                curPrintDialog.AllowCurrentPage = true;
-                curPrintDialog.AllowPrintToFile = true;
-                curPrintDialog.AllowSelection = false;
-                curPrintDialog.AllowSomePages = true;
-                curPrintDialog.PrintToFile = false;
-                curPrintDialog.ShowHelp = false;
-                curPrintDialog.ShowNetwork = false;
-                curPrintDialog.UseEXDialog = true;
+			String curPrintReport = curTeamPrintDialog.ReportName;
+			bool CenterOnPage = true;
+			bool WithTitle = true;
+			bool WithPaging = true;
+			Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
+			Font fontPrintFooter = new Font( "Times New Roman", 10 );
 
-                if (curPrintDialog.ShowDialog() == DialogResult.OK) {
-                    String printTitle = Properties.Settings.Default.Mdi_Title
-                        + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                        + "\n" + this.Text;
-                    myPrintDoc = new PrintDocument();
-                    myPrintDoc.DocumentName = this.Text;
-                    myPrintDoc.DefaultPageSettings.Margins = new Margins( 50, 50, 75, 75 );
-                    myPrintDoc.DefaultPageSettings.Landscape = false;
+			curPrintDialog.AllowCurrentPage = true;
+			curPrintDialog.AllowPrintToFile = true;
+			curPrintDialog.AllowSelection = false;
+			curPrintDialog.AllowSomePages = true;
+			curPrintDialog.PrintToFile = false;
+			curPrintDialog.ShowHelp = false;
+			curPrintDialog.ShowNetwork = false;
+			curPrintDialog.UseEXDialog = true;
 
-                    if (curPrintReport.Equals( "TeamResults" )) {
-                        myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
-                            CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
-                    } else {
-                        printTitle += " - Skier List";
-                        myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-                            CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
-                    }
+			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return false;
 
-                    myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                    myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                    myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-                    curPreviewDialog.Document = myPrintDoc;
-                    curPreviewDialog.ShowDialog();
-                }
-            }
+			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+			printTitle.Append( "\n Sanction " + mySanctionNum );
+			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+			printTitle.Append( "\n" + this.Text );
+			if ( !( curPrintReport.Equals( "TeamResults" ) ) ) printTitle.Append( " - Skier List" );
+			if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
+
+			myPrintDoc = new PrintDocument();
+			myPrintDoc.DocumentName = this.Text;
+			myPrintDoc.DefaultPageSettings.Margins = new Margins( 50, 50, 75, 75 );
+			myPrintDoc.DefaultPageSettings.Landscape = false;
+
+			if ( curPrintReport.Equals( "TeamResults" ) ) {
+				myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
+					CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+			} else {
+				myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
+					CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+			}
+
+			myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+			curPreviewDialog.Document = myPrintDoc;
+			curPreviewDialog.ShowDialog();
+
+			return true;
         }
 
         // The PrintPage action for the PrintDocument control

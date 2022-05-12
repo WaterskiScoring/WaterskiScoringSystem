@@ -1295,41 +1295,46 @@ namespace WaterskiScoringSystem.Admin {
             if (isObjectEmpty( curDataLoc )) {
                 MessageBox.Show( "A data directory must be supplied before the tournament can be selected"
                     + "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
-            } else {
-                if (Log.isDirectoryValid( curDataLoc )) {
-					if ( WscHandler.isConnectActive ) WscHandler.sendExit();
-
-                    Properties.Settings.Default.AppSanctionNum = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"].Value.ToString();
-                    Properties.Settings.Default.ExportDirectory = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();
-                    Log.OpenFile();
-
-                    this.MdiParent.Text = Properties.Settings.Default.AppTitle 
-						+ " - " + Properties.Settings.Default.BuildVersion
-						+ " - " + Properties.Settings.Default.AppSanctionNum
-						+ " - " + dataGridView.Rows[myTourViewIdx].Cells["TourName"].Value.ToString();
-                    Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
-                    String[] curLog = { "Tournament activated: " + this.MdiParent.Text };
-                    Log.WriteFile( curLog );
-                    bool curResults = myTourProperties.loadProperties( (String)editRules.SelectedValue, (String)editClass.SelectedValue );
-                    if (curResults == false) {
-                        ReportPropButton_Click( null, null );
-                    }
-
-                    MessageBox.Show( "Setting current application tournament to "
-                        + Properties.Settings.Default.AppSanctionNum
-                        + "\n\n Tournament data location: "
-                        + Properties.Settings.Default.ExportDirectory
-                        );
-
-                    checkDivOrderStatus();
-                } else {
-                    MessageBox.Show( "A valid local data directory must be selected before this tournament can be selected for scoring."
-                        + "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
-                }
+				return;
             }
-        }
 
-        private void checkDivOrderStatus() {
+			if ( !(Log.isDirectoryValid( curDataLoc )) ) {
+				MessageBox.Show( "A valid local data directory must be selected before this tournament can be selected for scoring."
+					+ "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
+				return;
+			}
+
+			if ( WscHandler.isConnectActive ) WscHandler.sendExit();
+
+			Properties.Settings.Default.AppSanctionNum = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"].Value.ToString();
+			Properties.Settings.Default.ExportDirectory = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();
+			if ( !( Log.OpenFile() ) ) {
+				MessageBox.Show( "Issue encountered opening log file.  Unable to activate tournament" );
+				return;
+			}
+
+			this.MdiParent.Text = Properties.Settings.Default.AppTitle
+				+ " - " + Properties.Settings.Default.BuildVersion
+				+ " - " + Properties.Settings.Default.AppSanctionNum
+				+ " - " + dataGridView.Rows[myTourViewIdx].Cells["TourName"].Value.ToString();
+			Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
+			String[] curLog = { "Tournament activated: " + this.MdiParent.Text };
+			Log.WriteFile( curLog );
+			bool curResults = myTourProperties.loadProperties( (String)editRules.SelectedValue, (String)editClass.SelectedValue );
+			if ( curResults == false ) {
+				ReportPropButton_Click( null, null );
+			}
+
+			MessageBox.Show( "Setting current application tournament to "
+				+ Properties.Settings.Default.AppSanctionNum
+				+ "\n\n Tournament data location: "
+				+ Properties.Settings.Default.ExportDirectory
+				);
+
+			checkDivOrderStatus();
+		}
+
+		private void checkDivOrderStatus() {
             Int16 curSlalomRounds = 0;
             try {
                 curSlalomRounds = Convert.ToInt16( editSlalomRounds.Text );

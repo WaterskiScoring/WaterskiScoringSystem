@@ -4,13 +4,8 @@
  * 
 */
 using System;
-using System.Drawing;
-using System.Drawing.Printing;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing.Imaging;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -68,8 +63,8 @@ namespace WaterskiScoringSystem.Common {
             StringBuilder outLine = new StringBuilder( "" );
             StreamWriter outBuffer = null;
             try {
-                outBuffer = getExportFile( inFileName );
-                //myPrintDoc.Print();
+				String curFileFilter = "prn files (*.prn)|*.prn|All files (*.*)|*.*";
+				outBuffer = HelperFunctions.getExportFile( curFileFilter, inFileName );
                 if (outBuffer != null) {
                     outLine = new StringBuilder( "Report Name: " + inFileName );
                     outBuffer.WriteLine( outLine.ToString() );
@@ -329,33 +324,6 @@ namespace WaterskiScoringSystem.Common {
                         return s.Substring( 0, i );
                 return s;
             }
-        }
-
-        private StreamWriter getExportFile(String inFileName) {
-            StreamWriter outBuffer = null;
-
-            SaveFileDialog myFileDialog = new SaveFileDialog();
-            String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
-
-            try {
-                if (myFileDialog.ShowDialog() == DialogResult.OK) {
-                    String myFileName = myFileDialog.FileName;
-                    if (myFileName != null) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if (curFileName.IndexOf( '.' ) < 0) {
-                            myFileName += ".prn";
-                        }
-                        outBuffer = File.CreateText( myFileName );
-                    }
-                }
-            } catch (Exception ex) {
-                MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
-            }
-
-            return outBuffer;
         }
 
         static int CompareLineListControl(KeyValuePair<int, Control> a, KeyValuePair<int, Control> b) {

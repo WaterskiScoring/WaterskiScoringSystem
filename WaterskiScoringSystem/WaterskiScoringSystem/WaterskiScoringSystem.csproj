@@ -49,7 +49,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>7.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -287,6 +287,7 @@
     </Compile>
     <Compile Include="Common\HelperFunctions.cs" />
     <Compile Include="Common\EventGroupCommon.cs" />
+    <Compile Include="Common\HelperPrintFunctions.cs" />
     <Compile Include="Common\JumpMeasurementImportReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -421,6 +422,13 @@
     <Compile Include="Jump\JumpScorebook.Designer.cs">
       <DependentUpon>JumpScorebook.cs</DependentUpon>
     </Compile>
+    <Compile Include="Jump\PrintJumpFormDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Jump\PrintJumpFormDialog.Designer.cs">
+      <DependentUpon>PrintJumpFormDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Jump\PrintJumpSkierSpecForm.cs" />
     <Compile Include="Jump\ScoreEntrySeg3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -447,6 +455,12 @@
     </Compile>
     <Compile Include="Slalom\NextPassDialog.Designer.cs">
       <DependentUpon>NextPassDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Slalom\PrintSlalomFormDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Slalom\PrintSlalomFormDialog.Designer.cs">
+      <DependentUpon>PrintSlalomFormDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Slalom\SlalomPassDetailExport.cs">
       <SubType>Form</SubType>
@@ -484,6 +498,13 @@
     </Compile>
     <Compile Include="Tools\LogRecoveryUtility.Designer.cs">
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\PrintEventForms.cs" />
+    <Compile Include="Tools\PublishReportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\PublishReportDialog.Designer.cs">
+      <DependentUpon>PublishReportDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\RegionalJuniorScoreAnalysis.cs">
       <SubType>Form</SubType>
@@ -526,16 +547,16 @@
       <DependentUpon>LoadVideosFile.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\PrintHeadToHeadAwards.cs" />
-    <Compile Include="Tools\PrintJumpRecapJudgeForm.cs" />
-    <Compile Include="Tools\PrintOfficialFormDialog.cs">
+    <Compile Include="Jump\PrintJumpRecapJudgeForm.cs" />
+    <Compile Include="Slalom\PrintSlalomJudgeForms.cs" />
+    <Compile Include="Slalom\PrintSlalomRecapForm.cs" />
+    <Compile Include="Trick\PrintTrickFormDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\PrintOfficialFormDialog.Designer.cs">
-      <DependentUpon>PrintOfficialFormDialog.cs</DependentUpon>
+    <Compile Include="Trick\PrintTrickFormDialog.Designer.cs">
+      <DependentUpon>PrintTrickFormDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\PrintSlalomJudgeForms.cs" />
-    <Compile Include="Tools\PrintSlalomRecapForm.cs" />
-    <Compile Include="Tools\PrintTrickJudgeForm.cs" />
+    <Compile Include="Trick\PrintTrickJudgeForm.cs" />
     <Compile Include="Tools\RunOrderClassForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -592,6 +613,8 @@
     <Compile Include="Tournament\RunningOrderRound.Designer.cs">
       <DependentUpon>RunningOrderRound.cs</DependentUpon>
     </Compile>
+    <Compile Include="Trick\PrintTrickSkierSpecForm.cs" />
+    <Compile Include="Trick\PrintTrickTimingForm.cs" />
     <Compile Include="Trick\SkierVideoMatchDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -727,6 +750,9 @@
       <DependentUpon>JumpScorebook.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Jump\PrintJumpFormDialog.resx">
+      <DependentUpon>PrintJumpFormDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Jump\ScoreEntrySeg3.resx">
       <DependentUpon>ScoreEntrySeg3.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -750,6 +776,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Slalom\NextPassDialog.resx">
       <DependentUpon>NextPassDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Slalom\PrintSlalomFormDialog.resx">
+      <DependentUpon>PrintSlalomFormDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Slalom\SlalomPassDetailExport.resx">
       <DependentUpon>SlalomPassDetailExport.cs</DependentUpon>
@@ -802,6 +831,9 @@
     <EmbeddedResource Include="Tools\LogRecoveryUtility.resx">
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\PublishReportDialog.resx">
+      <DependentUpon>PublishReportDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\RegionalJuniorScoreAnalysis.resx">
       <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
     </EmbeddedResource>
@@ -831,9 +863,6 @@
     <EmbeddedResource Include="Tools\NopsCalcForm.resx">
       <DependentUpon>NopsCalcForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tools\PrintOfficialFormDialog.resx">
-      <DependentUpon>PrintOfficialFormDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\RunOrderClassForm.resx">
       <DependentUpon>RunOrderClassForm.cs</DependentUpon>
@@ -933,6 +962,9 @@
     <EmbeddedResource Include="Tournament\TourRegAddMember.resx">
       <DependentUpon>TourRegAddMember.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trick\PrintTrickFormDialog.resx">
+      <DependentUpon>PrintTrickFormDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Trick\SkierVideoMatchDialogForm.resx">
       <DependentUpon>SkierVideoMatchDialogForm.cs</DependentUpon>
@@ -1255,9 +1287,9 @@
     <None Include="Resources\TrickFormTiming.png" />
     <None Include="Resources\SlalomJudgeForm.bmp" />
     <None Include="Resources\SlalomJudgesForm.png" />
-    <Content Include="Resources\JumpSkierSpecForm.jpg" />
+    <None Include="Resources\JumpSkierSpecForm.png" />
     <Content Include="Resources\magnifying-glass-with-eye.jpg" />
-    <Content Include="Resources\TrickSkierSpecForm.jpg" />
+    <None Include="Resources\TrickSkierSpecForm.png" />
     <Content Include="waterski.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -35,6 +35,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private TourEventReg myTourEventReg;
 
 		public static int MembershipStatusCodeActive = 1;
+		public static string MembershipStatusTextActive = "Active";
 		public static string MembershipStatusNone = "No Membership Status";
 
 		private static Dictionary<int, string> myMembershipStatus = new Dictionary<int, string> {
@@ -782,13 +783,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 				HelperFunctions.getAttributeValue( curImportMemberEntry, "MemTypeDesc" )
 				, curMemExpireDate
 				, HelperFunctions.getAttributeValue( curImportMemberEntry, "membershipStatusCode" )
-				, HelperFunctions.getAttributeValue( curImportMemberEntry, "membershipStatusText" )
 				, curMemberEntry.CanSki
 				, curMemberEntry.CanSkiGR
 				, curMemberEntry.WaiverSigned
 				, Convert.ToDateTime( myTourRow["EventDates"] ) );
 
-			
 			curMemberEntry.JudgeSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeSlalom" );
 			String curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmSlalom" );
 			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeSlalomRating = "PanAm";
@@ -1069,6 +1068,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", AwsaMbrshpComment = '" + curMemberEntry.MemberStatus + "'" );
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
+				curSqlStmt.Append( ", ReadyToSki = '" + curMemberEntry.ReadyToSki + "'" );
 				curSqlStmt.Append( ", LastUpdateDate = getdate() " );
 				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", curSanctionId, curMemberEntry.MemberId ) );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1203,7 +1203,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static String calcMemberStatus( String inMemTypeDesc, DateTime inMemExpireDate
-			, String membershipStatusCode, String membershipStatusText
+			, String membershipStatusCode
 			, bool inCanSki, bool inCanSkiGR, bool inWaiverSigned
 			, DateTime inTourDate ) {
 

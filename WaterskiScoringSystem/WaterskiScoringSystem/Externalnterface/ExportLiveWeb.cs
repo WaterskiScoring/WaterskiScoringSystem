@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -11,8 +14,12 @@ namespace WaterskiScoringSystem.Externalnterface {
         private static ExportLiveWebDialog myLiveWebDialog = null;
         
         public static String LiveWebLocation = "";
+		
+		private static String myReportFileUploadUrl = "http://www.waterskiresults.com/WfwWeb/WfwFileUpload.php";
+		private static String myReportFileUploadContentType = "application/x-www-form-urlencoded;charset=UTF-8";
 
-        public ExportLiveWeb() {
+
+		public ExportLiveWeb() {
         }
 
         public static ExportLiveWebDialog LiveWebDialog {
@@ -25,7 +32,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static Boolean exportCurrentSkiers(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
-            String curMethodName = "exportCurrentSlalomSkiers";
+            String curMethodName = "ExportLiveWeb: exportCurrentSlalomSkiers: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             Boolean returnStatus = false;
             int curLineCount = 0;
@@ -101,14 +108,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 					if ( returnStatus ) {
 						continue;
 					} else {
-						MessageBox.Show( String.Format( "Error encountered sending {0} scores for {1} {2}, terminating request", inEvent, curAgeGroup, curSkierName ) );
+						Log.WriteFile( String.Format( "Error encountered sending {0} scores for {1} {2}, terminating request", inEvent, curAgeGroup, curSkierName ) );
 						break;
 					}
 				}
 
 			} catch (Exception ex) {
-				MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 
 			} finally {
@@ -119,7 +125,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static Boolean exportCurrentSkierSlalom(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum, String inEventGroup) {
-            String curMethodName = "exportCurrentSkierSlalom";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkierSlalom: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
             Boolean returnStatus = false;
@@ -200,8 +206,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( returnStatus == false ) return false;
 
 			} catch (Exception ex) {
-				MessageBox.Show( "Error encountered trying to send slalom scores to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -209,7 +214,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static Boolean exportCurrentSkierTrick(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum, String inEventGroup) {
-            String curMethodName = "exportCurrentSkierTrick";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkierTrick: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
             Boolean returnStatus = false;
@@ -290,8 +295,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( returnStatus == false ) return false;
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "Error encountered trying to send trick scores to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -299,7 +303,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean exportCurrentSkierTrickVideo(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound) {
-            String curMethodName = "exportCurrentSkierTrickVideo";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkierTrickVideo: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
             Boolean returnStatus = false;
@@ -319,8 +323,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( returnStatus == false ) return false;
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "Error encountered trying to send trick videos to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -328,7 +331,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static Boolean exportCurrentSkierJump(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum, String inEventGroup) {
-            String curMethodName = "exportCurrentSkierJump";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkierJump: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
             Boolean returnStatus = false;
@@ -409,8 +412,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( returnStatus == false ) return false;
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "Error encountered trying to send jump scores to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -418,7 +420,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean exportCurrentSkiersRunOrder(String inTourRules, String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
-            String curMethodName = "exportCurrentSkiersRunOrder";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkiersRunOrder: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
             Boolean returnStatus = false;
@@ -563,8 +565,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( "Error encountered trying to send running orders to web location \n\nError: " + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 
 			} finally {
@@ -575,7 +576,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static Boolean exportTourData(String inSanctionId) {
-            String curMethodName = "exportTourData";
+            String curMethodName = "ExportLiveWeb: exportTourData: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             StringBuilder curXml = new StringBuilder( "" );
 
@@ -600,15 +601,52 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 			} catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception=" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
 		}
 
+		public static Boolean uploadReportFile( String inReportType, String inEvent, String inSanctionId ) {
+			String curFileFormName = "PublishReport";
+			NameValueCollection curHeaderParams = null;
+			NameValueCollection curFormData = new NameValueCollection();
+
+			String curReportFileName = getImportFile();
+			if ( curReportFileName == null ) return false;
+
+			PublishReportDialog curDialog = new PublishReportDialog();
+			curDialog.ReportType = inReportType;
+			curDialog.Event = inEvent;
+			curDialog.ReportFileName = curReportFileName;
+			curDialog.ReportTitle = Path.GetFileName( curReportFileName );
+			DialogResult curDialogResult = curDialog.ShowDialog();
+			if ( curDialogResult != DialogResult.OK ) return false;
+
+			String curUploadUrl = String.Format( "{0}?reportType={1}&skiEvent={2}&sanctionNum={3}&reportTitle={4}"
+				, myReportFileUploadUrl, inReportType, inEvent, inSanctionId, curDialog.ReportTitle );
+			curFormData.Add( "reportFilename", curReportFileName );
+			curFormData.Add( "reportFilenameBase", Path.GetFileName( curReportFileName ) );
+
+			Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( 
+				curUploadUrl, curReportFileName, curFileFormName, curHeaderParams, curFormData, null, null );
+			if ( curResponseDataList == null ) return false;
+
+			String curMessage = "";
+			foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
+				if ( ((String)curEntry.Key).Equals( "Message" ) ) {
+					curMessage = (String)curEntry.Value;
+					break;
+				}
+			}
+			if ( curMessage.Length == 0 ) curMessage = "No message returned from report upload service";
+			MessageBox.Show( curMessage );
+
+			return true;
+		}
+
 		public static Boolean disableCurrentSkiers(String inEvent, String inSanctionId, byte inRound, String inEventGroup) {
-			String curMethodName = "disableCurrentSkiers";
+			String curMethodName = "ExportLiveWeb: disableCurrentSkiers: ";
 			StringBuilder curSqlStmt = new StringBuilder("");
 			Boolean returnStatus = false;
 			int curLineCount = 0;
@@ -690,8 +728,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 			} catch (Exception ex) {
-				MessageBox.Show("Error encountered trying to send data to web location \n\nError: " + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 
 			} finally {
@@ -702,7 +739,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean disableCurrentSkierSlalom(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
-			String curMethodName = "disableCurrentSkierSlalom";
+			String curMethodName = "ExportLiveWeb: disableCurrentSkierSlalom: ";
 			StringBuilder curSqlStmt = new StringBuilder("");
 			StringBuilder curXml = new StringBuilder("");
 			Boolean returnStatus = false;
@@ -728,8 +765,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if (returnStatus == false) return false;
 
 			} catch (Exception ex) {
-				MessageBox.Show("Error encountered trying to send slalom scores to web location \n\nError: " + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -737,7 +773,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean disableCurrentSkierTrick(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
-			String curMethodName = "disableCurrentSkierTrick";
+			String curMethodName = "ExportLiveWeb: disableCurrentSkierTrick: ";
 			StringBuilder curSqlStmt = new StringBuilder("");
 			StringBuilder curXml = new StringBuilder("");
 			Boolean returnStatus = false;
@@ -763,8 +799,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if (returnStatus == false) return false;
 
 			} catch (Exception ex) {
-				MessageBox.Show("Error encountered trying to send trick scores to web location \n\nError: " + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -772,7 +807,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean disableCurrentSkierTrickVideo(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound) {
-			String curMethodName = "disableCurrentSkierTrickVideo";
+			String curMethodName = "ExportLiveWeb: disableCurrentSkierTrickVideo: ";
 			StringBuilder curSqlStmt = new StringBuilder("");
 			StringBuilder curXml = new StringBuilder("");
 			Boolean returnStatus = false;
@@ -792,8 +827,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if (returnStatus == false) return false;
 
 			} catch (Exception ex) {
-				MessageBox.Show("Error encountered trying to send trick videos to web location \n\nError: " + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -801,7 +835,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean disableCurrentSkierJump(String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, String inEventGroup) {
-			String curMethodName = "disableCurrentSkierJump";
+			String curMethodName = "ExportLiveWeb: disableCurrentSkierJump: ";
 			StringBuilder curSqlStmt = new StringBuilder("");
 			StringBuilder curXml = new StringBuilder("");
 			Boolean returnStatus = false;
@@ -827,8 +861,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if (returnStatus == false) return false;
 
 			} catch (Exception ex) {
-				MessageBox.Show("Error encountered trying to send jump scores to web location \n\nError: " + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				return false;
 			}
 
@@ -836,7 +869,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
-            String curMethodName = "exportData";
+            String curMethodName = "ExportLiveWeb: exportData: ";
             char[] singleQuoteDelim = new char[] { '\'' };
             String curMsg = "";
             String curValue;
@@ -918,12 +951,10 @@ namespace WaterskiScoringSystem.Externalnterface {
                 Log.WriteFile( curMethodName + ":conplete:" + curMsg );
 
 			} catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+			}
 
-            return curXml.ToString();
+			return curXml.ToString();
         }
 
         public static String encodeXmlValue(String inValue) {
@@ -939,5 +970,26 @@ namespace WaterskiScoringSystem.Externalnterface {
             return curValue;
         }
 
-    }
+		private static String getImportFile() {
+			OpenFileDialog myFileDialog = new OpenFileDialog();
+
+			try {
+				String curPath = Properties.Settings.Default.ExportDirectory;
+				if ( curPath.Length < 2 ) curPath = System.IO.Directory.GetCurrentDirectory();
+				myFileDialog.InitialDirectory = curPath;
+				myFileDialog.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
+				myFileDialog.FilterIndex = 2;
+				if ( myFileDialog.ShowDialog() != DialogResult.OK ) return null;
+
+				String curFileName = myFileDialog.FileName;
+				if ( curFileName == null ) return null;
+				return curFileName;
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not select a report file" + "\n\nError: " + ex.Message );
+				return null;
+			}
+		}
+
+	}
 }

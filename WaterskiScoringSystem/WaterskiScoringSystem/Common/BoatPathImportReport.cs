@@ -123,9 +123,6 @@ namespace WaterskiScoringSystem.Common {
 			myExportData.exportData( dataGridView, filename );
 		}
 
-		private void RunButton_Click( object sender, EventArgs e ) {
-		}
-
 		private void loadDataGrid() {
 			if ( myDataTable.Rows.Count == 0 ) return;
 
@@ -142,6 +139,7 @@ namespace WaterskiScoringSystem.Common {
 				curViewRow.Cells["SanctionId"].Value = (String)curRow["SanctionId"];
 				curViewRow.Cells["SkierMemberId"].Value = (String)curRow["MemberId"];
 				if ( curRow["SkierName"] != System.DBNull.Value ) curViewRow.Cells["SkierName"].Value = (String)curRow["SkierName"];
+				if ( curRow["homologation"] != System.DBNull.Value ) curViewRow.Cells["EventClass"].Value = (String)curRow["homologation"];
 				curViewRow.Cells["Event"].Value = (String)curRow["Event"];
 				curViewRow.Cells["Round"].Value = ((Byte)curRow["Round"]).ToString();
 				curViewRow.Cells["PassNumber"].Value = ((Byte)curRow["PassNumber"] ).ToString();
@@ -321,7 +319,7 @@ namespace WaterskiScoringSystem.Common {
 
 		private DataTable getBoatPath() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT B.PK, B.SanctionId, B.MemberId, T.SkierName, Event" );
+			curSqlStmt.Append( "SELECT B.PK, B.SanctionId, B.MemberId, T.SkierName, Event, COALESCE(B.homologation, '') as homologation" );
 			curSqlStmt.Append( ", B.Round, B.PassNumber, B.PassLineLength, B.PassSpeedKph" );
 			curSqlStmt.Append( ", BoatDescription, DriverMemberId, DriverName, B.RerideNote" );
 			curSqlStmt.Append( ", PathDevBuoy0, PathDevCum0, PathDevZone0" );

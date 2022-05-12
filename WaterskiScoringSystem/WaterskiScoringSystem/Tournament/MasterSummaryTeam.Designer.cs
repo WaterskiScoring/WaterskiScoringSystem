@@ -229,16 +229,17 @@ namespace WaterskiScoringSystem.Tournament {
 			this.EventGroupList = new System.Windows.Forms.ComboBox();
 			this.LiveWebLabel = new System.Windows.Forms.Label();
 			this.CategoryGroupBox = new System.Windows.Forms.GroupBox();
+			this.Category3Button = new System.Windows.Forms.RadioButton();
+			this.Category2Button = new System.Windows.Forms.RadioButton();
+			this.Category1Button = new System.Windows.Forms.RadioButton();
+			this.CategoryAllButton = new System.Windows.Forms.RadioButton();
 			this.EventGroupBox = new System.Windows.Forms.GroupBox();
 			this.EventJumpButton = new System.Windows.Forms.RadioButton();
 			this.EventTrickButton = new System.Windows.Forms.RadioButton();
 			this.EventSlalomButton = new System.Windows.Forms.RadioButton();
 			this.EventAllButton = new System.Windows.Forms.RadioButton();
-			this.Category3Button = new System.Windows.Forms.RadioButton();
-			this.Category2Button = new System.Windows.Forms.RadioButton();
-			this.Category1Button = new System.Windows.Forms.RadioButton();
-			this.CategoryAllButton = new System.Windows.Forms.RadioButton();
 			this.FilterReportButton = new System.Windows.Forms.Button();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.winStatus.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.slalomScoreSummaryDataGridView)).BeginInit();
@@ -294,6 +295,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navPrint,
+            this.navPublish,
             this.navExport,
             this.navExportHtml,
             this.navLiveWeb});
@@ -328,7 +330,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
 			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(44, 35);
+			this.navExport.Size = new System.Drawing.Size(45, 35);
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -1902,6 +1904,52 @@ namespace WaterskiScoringSystem.Tournament {
 			this.CategoryGroupBox.TabStop = false;
 			this.CategoryGroupBox.Text = "Category";
 			// 
+			// Category3Button
+			// 
+			this.Category3Button.AutoSize = true;
+			this.Category3Button.BackColor = System.Drawing.SystemColors.Control;
+			this.Category3Button.Location = new System.Drawing.Point(220, 17);
+			this.Category3Button.Name = "Category3Button";
+			this.Category3Button.Size = new System.Drawing.Size(92, 17);
+			this.Category3Button.TabIndex = 3;
+			this.Category3Button.Text = "Cat-3 (Juniors)";
+			this.Category3Button.UseVisualStyleBackColor = false;
+			// 
+			// Category2Button
+			// 
+			this.Category2Button.AutoSize = true;
+			this.Category2Button.BackColor = System.Drawing.SystemColors.Control;
+			this.Category2Button.Location = new System.Drawing.Point(123, 17);
+			this.Category2Button.Name = "Category2Button";
+			this.Category2Button.Size = new System.Drawing.Size(96, 17);
+			this.Category2Button.TabIndex = 2;
+			this.Category2Button.Text = "Cat-2 (Women)";
+			this.Category2Button.UseVisualStyleBackColor = false;
+			// 
+			// Category1Button
+			// 
+			this.Category1Button.AutoSize = true;
+			this.Category1Button.BackColor = System.Drawing.SystemColors.Control;
+			this.Category1Button.Location = new System.Drawing.Point(42, 17);
+			this.Category1Button.Name = "Category1Button";
+			this.Category1Button.Size = new System.Drawing.Size(80, 17);
+			this.Category1Button.TabIndex = 1;
+			this.Category1Button.Text = "Cat-1 (Men)";
+			this.Category1Button.UseVisualStyleBackColor = false;
+			// 
+			// CategoryAllButton
+			// 
+			this.CategoryAllButton.AutoSize = true;
+			this.CategoryAllButton.BackColor = System.Drawing.SystemColors.Control;
+			this.CategoryAllButton.Checked = true;
+			this.CategoryAllButton.Location = new System.Drawing.Point(5, 17);
+			this.CategoryAllButton.Name = "CategoryAllButton";
+			this.CategoryAllButton.Size = new System.Drawing.Size(36, 17);
+			this.CategoryAllButton.TabIndex = 0;
+			this.CategoryAllButton.TabStop = true;
+			this.CategoryAllButton.Text = "All";
+			this.CategoryAllButton.UseVisualStyleBackColor = false;
+			// 
 			// EventGroupBox
 			// 
 			this.EventGroupBox.BackColor = System.Drawing.SystemColors.Control;
@@ -1962,52 +2010,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.EventAllButton.Text = "All";
 			this.EventAllButton.UseVisualStyleBackColor = false;
 			// 
-			// Category3Button
-			// 
-			this.Category3Button.AutoSize = true;
-			this.Category3Button.BackColor = System.Drawing.SystemColors.Control;
-			this.Category3Button.Location = new System.Drawing.Point(220, 17);
-			this.Category3Button.Name = "Category3Button";
-			this.Category3Button.Size = new System.Drawing.Size(92, 17);
-			this.Category3Button.TabIndex = 3;
-			this.Category3Button.Text = "Cat-3 (Juniors)";
-			this.Category3Button.UseVisualStyleBackColor = false;
-			// 
-			// Category2Button
-			// 
-			this.Category2Button.AutoSize = true;
-			this.Category2Button.BackColor = System.Drawing.SystemColors.Control;
-			this.Category2Button.Location = new System.Drawing.Point(123, 17);
-			this.Category2Button.Name = "Category2Button";
-			this.Category2Button.Size = new System.Drawing.Size(96, 17);
-			this.Category2Button.TabIndex = 2;
-			this.Category2Button.Text = "Cat-2 (Women)";
-			this.Category2Button.UseVisualStyleBackColor = false;
-			// 
-			// Category1Button
-			// 
-			this.Category1Button.AutoSize = true;
-			this.Category1Button.BackColor = System.Drawing.SystemColors.Control;
-			this.Category1Button.Location = new System.Drawing.Point(42, 17);
-			this.Category1Button.Name = "Category1Button";
-			this.Category1Button.Size = new System.Drawing.Size(80, 17);
-			this.Category1Button.TabIndex = 1;
-			this.Category1Button.Text = "Cat-1 (Men)";
-			this.Category1Button.UseVisualStyleBackColor = false;
-			// 
-			// CategoryAllButton
-			// 
-			this.CategoryAllButton.AutoSize = true;
-			this.CategoryAllButton.BackColor = System.Drawing.SystemColors.Control;
-			this.CategoryAllButton.Checked = true;
-			this.CategoryAllButton.Location = new System.Drawing.Point(5, 17);
-			this.CategoryAllButton.Name = "CategoryAllButton";
-			this.CategoryAllButton.Size = new System.Drawing.Size(36, 17);
-			this.CategoryAllButton.TabIndex = 0;
-			this.CategoryAllButton.TabStop = true;
-			this.CategoryAllButton.Text = "All";
-			this.CategoryAllButton.UseVisualStyleBackColor = false;
-			// 
 			// FilterReportButton
 			// 
 			this.FilterReportButton.Location = new System.Drawing.Point(465, 96);
@@ -2017,6 +2019,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.FilterReportButton.Text = "Filter Team Results";
 			this.FilterReportButton.UseVisualStyleBackColor = true;
 			this.FilterReportButton.Click += new System.EventHandler(this.FilterReportButton_Click);
+			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 35);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
 			// 
 			// MasterSummaryTeam
 			// 
@@ -2217,5 +2229,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.RadioButton EventSlalomButton;
 		private System.Windows.Forms.RadioButton EventAllButton;
 		private System.Windows.Forms.Button FilterReportButton;
+		private System.Windows.Forms.ToolStripButton navPublish;
 	}
 }

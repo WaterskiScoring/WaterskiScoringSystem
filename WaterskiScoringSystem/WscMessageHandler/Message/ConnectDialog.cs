@@ -13,6 +13,7 @@ namespace WscMessageHandler.Message {
 		private bool isDataLoading = true;
 
 		private String myDialogCommand = "";
+		private String myOrigCellValue = "";
 		private bool myWscConnected = false;
 		private Point myWindowLocation = new Point( 0,0);
 
@@ -42,7 +43,7 @@ namespace WscMessageHandler.Message {
 
 		private void ConnectDialog_Load( object sender, EventArgs e ) {
 			this.Location = myWindowLocation;
-			
+			isDataLoading = true;
 			myWscWebLocation = ConnectMgmtData.wscWebLocationDefault;
 			serverUriTextBox.Text = myWscWebLocation;
 			eventSubIdTextBox.Text = ConnectMgmtData.eventSubId;
@@ -60,6 +61,7 @@ namespace WscMessageHandler.Message {
 			} else {
 				MessageBox.Show( "Database file not available, must select a database file" );
 			}
+			isDataLoading = false;
 		}
 
 		private void execWscConnect_Click( object sender, EventArgs e ) {
@@ -93,6 +95,16 @@ namespace WscMessageHandler.Message {
 			if ( DataAccess.getNewDatabaseFile() ) ShowTourList();
 		}
 
+		private void editTextOrigValue( object sender, EventArgs e ) {
+			myOrigCellValue = ( (TextBox)sender ).Text;
+		}
+		private void databaseFilenameTextBox_Validated( object sender, EventArgs e ) {
+			if ( isDataLoading ) return;
+			if ( !( ( (TextBox)sender ).Text.Equals( myOrigCellValue ) ) ) {
+				if ( DataAccess.getNewDatabaseFile( databaseFilenameTextBox.Text ) ) ShowTourList();
+			}
+		}
+
 		private void ShowTourList() {
 			isDataLoading = true;
 			String curSelectedValue = "";
@@ -104,7 +116,7 @@ namespace WscMessageHandler.Message {
 			TourListComboBox.ValueMember = "ItemValue";
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "Select SanctionId, Name, TourDataLoc, EventDates from Tournament Order by EventDates DESC" );
+			curSqlStmt.Append( "Select SanctionId, Name, TourDataLoc, EventDates from Tournament Order by SanctionId, EventDates DESC" );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			foreach ( DataRow curRow in curDataTable.Rows ) {
 				curDropdownList.Add( String.Format("{0} / {1}", (String)curRow["SanctionId"], (String)curRow["Name"] ) );
@@ -141,7 +153,7 @@ namespace WscMessageHandler.Message {
 			}
 
 			sanctionNumTextbox.Text = (String)curTourRow["SanctionId"];
-			Properties.Settings.Default.DataDirectory = (String)curTourRow["TourDataLoc"];
 		}
+
 	}
 }

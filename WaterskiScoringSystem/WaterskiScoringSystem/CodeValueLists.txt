@@ -607,41 +607,42 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	Federation	irl		36	Ireland			
 0	Federation	isr		37	Israel			
 0	Federation	ita		38	Italy			
-0	Federation	jam		39	Jamaica			
-0	Federation	jpn		40	Japan			
-0	Federation	kor		41	Korea			
-0	Federation	lat		42	Latvia			
-0	Federation	lbn		43	Lebanon			
-0	Federation	lux		44	Lithuania			
-0	Federation	mas		45	Malaysia			
-0	Federation	mri		46	Mauritius			
+0	Federation	iwf		39	IWWF			
+0	Federation	jam		40	Jamaica			
+0	Federation	jpn		41	Japan			
+0	Federation	kor		42	Korea			
+0	Federation	lat		43	Latvia			
+0	Federation	lbn		44	Lebanon			
+0	Federation	lux		45	Lithuania			
+0	Federation	mas		46	Malaysia			
+0	Federation	mri		47	Mauritius			
 0	Federation	mex		47	Mexico			
 0	Federation	mon		48	Monaco			
-0	Federation	mar		49	Morrocco			
-0	Federation	nam		50	Namibia			
-0	Federation	ned		51	Netherlands			
-0	Federation	nzl		52	New Zealand			
-0	Federation	nor		53	Norway			
-0	Federation	per		54	Peru			
-0	Federation	phi		55	Philippines			
-0	Federation	pol		56	Poland			
-0	Federation	por		57	Portugal			
-0	Federation	pur		58	Puerto Rico			
-0	Federation	rus		59	Russia			
-0	Federation	ser		60	Serbia			
-0	Federation	sin		61	Singapore			
-0	Federation	svk		62	Slovakia			
-0	Federation	rsa		63	South Africa			
-0	Federation	esp		64	Spain			
-0	Federation	sur		65	Suriname			
-0	Federation	swe		66	Sweden			
-0	Federation	sui		67	Switzerland			
-0	Federation	tha		68	Thailand			
-0	Federation	tur		69	Turkey			
-0	Federation	tkm		70	Turkmenistan			
-0	Federation	ukr		71	Ukraine			
-0	Federation	uae		72	United Arab EMI			
-0	Federation	ven		73	Venezuela			
+0	Federation	mar		50	Morrocco			
+0	Federation	nam		51	Namibia			
+0	Federation	ned		52	Netherlands			
+0	Federation	nzl		53	New Zealand			
+0	Federation	nor		54	Norway			
+0	Federation	per		55	Peru			
+0	Federation	phi		56	Philippines			
+0	Federation	pol		57	Poland			
+0	Federation	por		58	Portugal			
+0	Federation	pur		59	Puerto Rico			
+0	Federation	rus		60	Russia			
+0	Federation	ser		61	Serbia			
+0	Federation	sin		62	Singapore			
+0	Federation	svk		63	Slovakia			
+0	Federation	rsa		64	South Africa			
+0	Federation	esp		65	Spain			
+0	Federation	sur		66	Suriname			
+0	Federation	swe		67	Sweden			
+0	Federation	sui		68	Switzerland			
+0	Federation	tha		69	Thailand			
+0	Federation	tur		70	Turkey			
+0	Federation	tkm		71	Turkmenistan			
+0	Federation	ukr		72	Ukraine			
+0	Federation	uae		73	United Arab EMI			
+0	Federation	ven		74	Venezuela			
 22441	IwwfAgeGroup	YB		61	Intl Boys U10	1	9	
 22442	IwwfAgeGroup	YG		62	Intl Girls U10	1	9	
 22441	IwwfAgeGroup	JB		63	Intl Junior Boys U14	1	13	

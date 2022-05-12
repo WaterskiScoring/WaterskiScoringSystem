@@ -24,6 +24,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private String myEventGroupJump = "";
 
 		private String myMemberStatus = "";
+		private String myReadyToSki = "N";
 		private Boolean myCanSki = false;
 		private Boolean myCanSkiGR = false;
 		private Boolean myWaiverSigned = false;
@@ -78,7 +79,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public string Postalcode { get => myPostalcode; set => myPostalcode = value; }
 		public Int16 SkiYearAge { get => mySkiYearAge; set => mySkiYearAge = value; }
 		public string Gender { get => myGender; set => myGender = value; }
-		public string MemberStatus { get => myMemberStatus; set => myMemberStatus = value; }
+		public string MemberStatus { get => myMemberStatus;
+			set { myMemberStatus = value;
+				if ( myMemberStatus.ToLower().Equals( ImportMember.MembershipStatusTextActive.ToLower() ) ) 
+					myReadyToSki = "Y"; 
+				else 
+					myReadyToSki = "N"; 
+			} 
+		}
+		public string ReadyToSki { get => myReadyToSki; set => myReadyToSki = value; }
 		public Boolean CanSki { get => myCanSki; set => myCanSki = value; }
 		public Boolean CanSkiGR { get => myCanSkiGR; set => myCanSkiGR = value; }
 		public DateTime MemberExpireDate { get => myMemberExpireDate; set => myMemberExpireDate = value; }

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlServerCe;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 
@@ -590,135 +587,129 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void ExportReportTxt() {
             String curMethodName = "SafetyCheckList:ExportReportTxt";
-            //char[] tabDelim = new char[] { '\t' };
-            //char[] singleQuoteDelim = new char[] { '\'' };
-            String tabDelim = "\t";
-            String curValue = "";
-
             Cursor.Current = Cursors.WaitCursor;
             StringBuilder outLine = new StringBuilder( "" );
             StreamWriter outBuffer = null;
 
             String curFilename = sanctionIdTextBox.Text + "SD" + ".txt";
             String curReportTitle = "safety check list Report for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text;
-            outBuffer = getExportFile( curFilename );
-            if ( outBuffer != null ) {
-                try {
-                    Log.WriteFile( "Export safety check list data file begin: " + curFilename );
+			String curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+			outBuffer = HelperFunctions.getExportFile( curFileFilter, curFilename );
+			if ( outBuffer == null ) return;
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "DataType");
-                    outLine.Append( tabDelim + "SanctionNumber");
-                    outLine.Append( tabDelim + "name");
-                    outLine.Append( tabDelim + "eventLocation");
-                    outLine.Append( tabDelim + "class");
-                    outLine.Append( tabDelim + "eventDates");
-                    outLine.Append( tabDelim + "sponsorClubName");
-                    outLine.Append( tabDelim + "rules");
-                    outLine.Append( tabDelim + "Region");
-                    outLine.Append( tabDelim + "ChiefJudgeName");
-                    outLine.Append( tabDelim + "ChiefJudgeAddress");
-                    outLine.Append( tabDelim + "ChiefJudgePhone");
-                    outLine.Append( tabDelim + "ChiefJudgeEmail");
-                    outLine.Append( tabDelim + "ChiefSafetyName");
-                    outLine.Append( tabDelim + "SafetyDirAddress");
-                    outLine.Append( tabDelim + "SafetyDirPhone");
-                    outLine.Append( tabDelim + "SafetyDirEmail");
-                    outBuffer.WriteLine( outLine.ToString() );
+			try {
+				Log.WriteFile( "Export safety check list data file begin: " + curFilename );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "Tournament");
-                    outLine.Append( tabDelim + sanctionIdTextBox.Text + myTourRow["Class"]);
-                    outLine.Append( tabDelim + nameTextBox.Text);
-                    outLine.Append( tabDelim + eventLocationTextBox.Text);
-                    outLine.Append( tabDelim + classTextBox.Text);
-                    outLine.Append( tabDelim + eventDatesTextBox.Text);
-                    outLine.Append( tabDelim + sponsorClubNameTextBox.Text);
-                    outLine.Append( tabDelim + myTourRow["Rules"].ToString());
-                    outLine.Append( tabDelim + regionTextBox.Text);
-                    outLine.Append( tabDelim + ChiefJudgeNameTextBox.Text);
-                    outLine.Append( tabDelim + chiefJudgeAddressTextBox.Text);
-                    outLine.Append( tabDelim + chiefJudgePhoneTextBox.Text);
-                    outLine.Append( tabDelim + chiefJudgeEmailTextBox.Text);
-                    outLine.Append( tabDelim + ChiefSafetyNameTextBox.Text);
-                    outLine.Append( tabDelim + safetyDirAddressTextBox.Text);
-                    outLine.Append( tabDelim + safetyDirPhoneTextBox.Text);
-                    outLine.Append( tabDelim + safetyDirEmailTextBox.Text);
-                    outBuffer.WriteLine( outLine.ToString() );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( "DataType" );
+				outLine.Append( HelperFunctions.TabDelim + "SanctionNumber" );
+				outLine.Append( HelperFunctions.TabDelim + "name" );
+				outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
+				outLine.Append( HelperFunctions.TabDelim + "class" );
+				outLine.Append( HelperFunctions.TabDelim + "eventDates" );
+				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
+				outLine.Append( HelperFunctions.TabDelim + "rules" );
+				outLine.Append( HelperFunctions.TabDelim + "Region" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "DataType" );
-                    outLine.Append( tabDelim + "SlalomNum" );
-                    outLine.Append( tabDelim + "SlalomRides" );
-                    outLine.Append( tabDelim + "TrickNum");
-                    outLine.Append( tabDelim + "TrickRides");
-                    outLine.Append( tabDelim + "JumpNum");
-                    outLine.Append( tabDelim + "JumpRides");
-                    outLine.Append( tabDelim + "TotalNum");
-                    outLine.Append( tabDelim + "TotalRides");
-                    outLine.Append( tabDelim + "TotalSkiers");
-                    outLine.Append( tabDelim + "numInjuries");
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				outLine.Append( "Tournament" );
+				outLine.Append( HelperFunctions.TabDelim + sanctionIdTextBox.Text + myTourRow["Class"] );
+				outLine.Append( HelperFunctions.TabDelim + nameTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + eventLocationTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + eventDatesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + sponsorClubNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
+				outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + chiefJudgeAddressTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + ChiefSafetyNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + safetyDirAddressTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "EventStats");
-                    outLine.Append( tabDelim + SlalomNumTextBox.Text);
-                    outLine.Append( tabDelim + SlalomRidesTextBox.Text);
-                    outLine.Append( tabDelim + TrickNumTextBox.Text);
-                    outLine.Append( tabDelim + TrickRidesTextBox.Text);
-                    outLine.Append( tabDelim + JumpNumTextBox.Text);
-                    outLine.Append( tabDelim + JumpRidesTextBox.Text);
-                    outLine.Append( tabDelim + TotalNumTextBox.Text);
-                    outLine.Append( tabDelim + TotalRidesTextBox.Text);
-                    outLine.Append( tabDelim + TotalSkiersTextBox.Text);
-                    outLine.Append( tabDelim + numInjuriesTextBox.Text);
-                    outBuffer.WriteLine( outLine.ToString() );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( "DataType" );
+				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    if ( mySafetyCheckList != null ) {
-                        TextBox curTextBox;
-                        CheckedListBox curListBox;
-                        Control[] findControlList;
-                        String curControlName, curTextBoxName, curType;
-                        StringBuilder outLineHeader = new StringBuilder( "DataType" );
-                        StringBuilder outLineData = new StringBuilder( "SafetyCheckList" );
+				outLine = new StringBuilder( "" );
+				outLine.Append( "EventStats" );
+				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                        foreach ( Control curControl in ReportPage2.Controls ) {
-                            curType = (String)curControl.GetType().ToString();
-                            if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
-                                curListBox = (CheckedListBox)curControl;
-                                curControlName = curListBox.Name;
-                                curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
-                                findControlList = Controls.Find( curTextBoxName, true );
-                                if ( findControlList.Length > 0 ) {
-                                    curTextBox = (TextBox)findControlList[0];
-                                    outLineHeader.Append( tabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-                                    outLineData.Append( tabDelim + curTextBox.Text );
-                                }
-                            }
-                        }
-                        outBuffer.WriteLine( outLineHeader.ToString() );
-                        outBuffer.WriteLine( outLineData.ToString() );
+				if ( mySafetyCheckList != null ) {
+					TextBox curTextBox;
+					CheckedListBox curListBox;
+					Control[] findControlList;
+					String curControlName, curTextBoxName, curType;
+					StringBuilder outLineHeader = new StringBuilder( "DataType" );
+					StringBuilder outLineData = new StringBuilder( "SafetyCheckList" );
 
-                    }
-                    Log.WriteFile( "Export safety check list data file complete: " + curFilename );
+					foreach ( Control curControl in ReportPage2.Controls ) {
+						curType = (String)curControl.GetType().ToString();
+						if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
+							curListBox = (CheckedListBox)curControl;
+							curControlName = curListBox.Name;
+							curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
+							findControlList = Controls.Find( curTextBoxName, true );
+							if ( findControlList.Length > 0 ) {
+								curTextBox = (TextBox)findControlList[0];
+								outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
+								outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+							}
+						}
+					}
+					outBuffer.WriteLine( outLineHeader.ToString() );
+					outBuffer.WriteLine( outLineData.ToString() );
 
-                } catch ( Exception ex ) {
-                    MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
-                    String curMsg = curMethodName + ":Exception=" + ex.Message;
-                    Log.WriteFile( curMsg );
-                }
-                outBuffer.Close();
-            }
-        }
+				}
+				Log.WriteFile( "Export safety check list data file complete: " + curFilename );
 
-        private void ExportReportTxtV2() {
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+		}
+
+		private void ExportReportTxtV2() {
             String curMethodName = "SafetyCheckList:ExportReportTxtV2";
-            //char[] tabDelim = new char[] { '\t' };
-            //char[] singleQuoteDelim = new char[] { '\'' };
-            String tabDelim = "\t";
-            String curValue = "";
 
             Cursor.Current = Cursors.WaitCursor;
             StringBuilder outLine = new StringBuilder( "" );
@@ -726,241 +717,242 @@ namespace WaterskiScoringSystem.Tournament {
 
             String curFilename = sanctionIdTextBox.Text + "SD" + ".txt";
             String curReportTitle = "safety check list Report for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text;
-            outBuffer = getExportFile( curFilename );
-            if (outBuffer != null) {
-                try {
-                    Log.WriteFile( "Export safety check list data file begin: " + curFilename );
+			String curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+			outBuffer = HelperFunctions.getExportFile( curFileFilter, curFilename );
+			if ( outBuffer == null ) return;
 
-                    //if (mySafetyCheckList != null) {
-                    //}
-                    TextBox curTextBox;
-                    CheckedListBox curListBox;
-                    Control[] findControlList;
-                    String curControlName, curTextBoxName, curType;
-                    StringBuilder outLineHeader = new StringBuilder( "" );
-                    StringBuilder outLineData = new StringBuilder( "" );
+			try {
+				Log.WriteFile( "Export safety check list data file begin: " + curFilename );
 
-                    foreach (Control curControl in ReportPage2.Controls) {
-                        curType = (String)curControl.GetType().ToString();
-                        if (curType.IndexOf( "CheckedListBox" ) > 0) {
-                            curListBox = (CheckedListBox)curControl;
-                            curControlName = curListBox.Name;
-                            curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
-                            findControlList = Controls.Find( curTextBoxName, true );
-                            if (findControlList.Length > 0) {
-                                curTextBox = (TextBox)findControlList[0];
-                                outLineHeader.Append( tabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-                                outLineData.Append( tabDelim + curTextBox.Text );
-                            }
-                        }
-                    }
+				//if (mySafetyCheckList != null) {
+				//}
+				TextBox curTextBox;
+				CheckedListBox curListBox;
+				Control[] findControlList;
+				String curControlName, curTextBoxName, curType;
+				StringBuilder outLineHeader = new StringBuilder( "" );
+				StringBuilder outLineData = new StringBuilder( "" );
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "SanctionNumber" );
-                    outLine.Append( tabDelim + "name" );
-                    //outLine.Append( tabDelim + "eventLocation" );
-                    //outLine.Append( tabDelim + "class" );
-                    //outLine.Append( tabDelim + "eventDates" );
-                    outLine.Append( tabDelim + "sponsorClubName" );
-                    //outLine.Append( tabDelim + "rules" );
-                    //outLine.Append( tabDelim + "Region" );
-                    //outLine.Append( tabDelim + "ChiefJudgeName" );
-                    //outLine.Append( tabDelim + "ChiefJudgeAddress" );
-                    //outLine.Append( tabDelim + "ChiefJudgePhone" );
-                    //outLine.Append( tabDelim + "ChiefJudgeEmail" );
-                    //outLine.Append( tabDelim + "ChiefSafetyName" );
-                    //outLine.Append( tabDelim + "SafetyDirAddress" );
-                    //outLine.Append( tabDelim + "SafetyDirPhone" );
-                    //outLine.Append( tabDelim + "SafetyDirEmail" );
-                    
-                    outLine.Append( outLineHeader.ToString() );
+				foreach ( Control curControl in ReportPage2.Controls ) {
+					curType = (String)curControl.GetType().ToString();
+					if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
+						curListBox = (CheckedListBox)curControl;
+						curControlName = curListBox.Name;
+						curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
+						findControlList = Controls.Find( curTextBoxName, true );
+						if ( findControlList.Length > 0 ) {
+							curTextBox = (TextBox)findControlList[0];
+							outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
+							outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+						}
+					}
+				}
 
-                    //EventStats
-                    outLine.Append( tabDelim + "SlalomNum" );
-                    outLine.Append( tabDelim + "SlalomRides" );
-                    outLine.Append( tabDelim + "TrickNum" );
-                    outLine.Append( tabDelim + "TrickRides" );
-                    outLine.Append( tabDelim + "JumpNum" );
-                    outLine.Append( tabDelim + "JumpRides" );
-                    outLine.Append( tabDelim + "TotalNum" );
-                    outLine.Append( tabDelim + "TotalRides" );
-                    outLine.Append( tabDelim + "TotalSkiers" );
-                    outLine.Append( tabDelim + "numInjuries" );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( "SanctionNumber" );
+				outLine.Append( HelperFunctions.TabDelim + "name" );
+				//outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
+				//outLine.Append( HelperFunctions.TabDelim + "class" );
+				//outLine.Append( HelperFunctions.TabDelim + "eventDates" );
+				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
+				//outLine.Append( HelperFunctions.TabDelim + "rules" );
+				//outLine.Append( HelperFunctions.TabDelim + "Region" );
+				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
+				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
+				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
+				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
+				//outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
+				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
+				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
+				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
 
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine.Append( outLineHeader.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( sanctionIdTextBox.Text.Substring( 0, 6 ) );
-                    outLine.Append( tabDelim + nameTextBox.Text );
-                    //outLine.Append( tabDelim + eventLocationTextBox.Text );
-                    //outLine.Append( tabDelim + classTextBox.Text );
-                    //outLine.Append( tabDelim + eventDatesTextBox.Text );
-                    outLine.Append( tabDelim + sponsorClubNameTextBox.Text );
-                    //outLine.Append( tabDelim + myTourRow["Rules"].ToString() );
-                    //outLine.Append( tabDelim + regionTextBox.Text );
-                    //outLine.Append( tabDelim + ChiefJudgeNameTextBox.Text );
-                    //outLine.Append( tabDelim + chiefJudgeAddressTextBox.Text );
-                    //outLine.Append( tabDelim + chiefJudgePhoneTextBox.Text );
-                    //outLine.Append( tabDelim + chiefJudgeEmailTextBox.Text );
-                    //outLine.Append( tabDelim + ChiefSafetyNameTextBox.Text );
-                    //outLine.Append( tabDelim + safetyDirAddressTextBox.Text );
-                    //outLine.Append( tabDelim + safetyDirPhoneTextBox.Text );
-                    //outLine.Append( tabDelim + safetyDirEmailTextBox.Text );
+				//EventStats
+				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
 
-                    outLine.Append( outLineData.ToString() );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    //EventStats
-                    outLine.Append( tabDelim + SlalomNumTextBox.Text );
-                    outLine.Append( tabDelim + SlalomRidesTextBox.Text );
-                    outLine.Append( tabDelim + TrickNumTextBox.Text );
-                    outLine.Append( tabDelim + TrickRidesTextBox.Text );
-                    outLine.Append( tabDelim + JumpNumTextBox.Text );
-                    outLine.Append( tabDelim + JumpRidesTextBox.Text );
-                    outLine.Append( tabDelim + TotalNumTextBox.Text );
-                    outLine.Append( tabDelim + TotalRidesTextBox.Text );
-                    outLine.Append( tabDelim + TotalSkiersTextBox.Text );
-                    outLine.Append( tabDelim + numInjuriesTextBox.Text );
-                    
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				outLine.Append( sanctionIdTextBox.Text.Substring( 0, 6 ) );
+				outLine.Append( HelperFunctions.TabDelim + nameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + eventLocationTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + eventDatesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + sponsorClubNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
+				//outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + ChiefJudgeNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + chiefJudgeAddressTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + ChiefSafetyNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + safetyDirAddressTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
+				//outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
 
-                    Log.WriteFile( "Export safety check list data file complete: " + curFilename );
+				outLine.Append( outLineData.ToString() );
 
-                } catch (Exception ex) {
-                    MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
-                    String curMsg = curMethodName + ":Exception=" + ex.Message;
-                    Log.WriteFile( curMsg );
-                }
-                outBuffer.Close();
-            }
-        }
+				//EventStats
+				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
 
-        private void ExportReportCsv() {
+				outBuffer.WriteLine( outLine.ToString() );
+
+				Log.WriteFile( "Export safety check list data file complete: " + curFilename );
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+		}
+
+		private void ExportReportCsv() {
             String curMethodName = "SafetyCheckList:ExportReportCsv";
-            //char[] tabDelim = new char[] { '\t' };
-            //char[] singleQuoteDelim = new char[] { '\'' };
-            String tabDelim = ",";
-            String curValue = "";
-
             Cursor.Current = Cursors.WaitCursor;
             StringBuilder outLine = new StringBuilder( "" );
             StreamWriter outBuffer = null;
 
             String curFilename = sanctionIdTextBox.Text + "SD" + ".csv";
             String curReportTitle = "safety check list Report for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text;
-            outBuffer = getExportFile( curFilename );
-            if ( outBuffer != null ) {
-                try {
-                    Log.WriteFile( "Export safety check list data file begin: " + curFilename );
+			String curFileFilter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+			outBuffer = HelperFunctions.getExportFile( curFileFilter, curFilename );
+			if ( outBuffer != null ) return;
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "DataType" );
-                    outLine.Append( tabDelim + "SanctionNumber" );
-                    outLine.Append( tabDelim + "name" );
-                    outLine.Append( tabDelim + "eventLocation" );
-                    outLine.Append( tabDelim + "class" );
-                    outLine.Append( tabDelim + "eventDates" );
-                    outLine.Append( tabDelim + "sponsorClubName" );
-                    outLine.Append( tabDelim + "rules" );
-                    outLine.Append( tabDelim + "Region" );
-                    outLine.Append( tabDelim + "ChiefJudgeName" );
-                    outLine.Append( tabDelim + "ChiefJudgeAddress" );
-                    outLine.Append( tabDelim + "ChiefJudgePhone" );
-                    outLine.Append( tabDelim + "ChiefJudgeEmail" );
-                    outLine.Append( tabDelim + "ChiefSafetyName" );
-                    outLine.Append( tabDelim + "SafetyDirAddress" );
-                    outLine.Append( tabDelim + "SafetyDirPhone" );
-                    outLine.Append( tabDelim + "SafetyDirEmail" );
-                    outBuffer.WriteLine( outLine.ToString() );
+			try {
+				Log.WriteFile( "Export safety check list data file begin: " + curFilename );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "Tournament" );
-                    outLine.Append( tabDelim + sanctionIdTextBox.Text + myTourRow["Class"] );
-                    outLine.Append( tabDelim + encodeSpecialChar( nameTextBox.Text ) );
-                    outLine.Append( tabDelim + encodeSpecialChar( eventLocationTextBox.Text ) );
-                    outLine.Append( tabDelim + classTextBox.Text );
-                    outLine.Append( tabDelim + encodeSpecialChar( eventDatesTextBox.Text ) );
-                    outLine.Append( tabDelim + encodeSpecialChar( sponsorClubNameTextBox.Text ) );
-                    outLine.Append( tabDelim + myTourRow["Rules"].ToString() );
-                    outLine.Append( tabDelim + regionTextBox.Text );
-                    outLine.Append( tabDelim + encodeSpecialChar( ChiefJudgeNameTextBox.Text ) );
-                    outLine.Append( tabDelim + encodeSpecialChar( chiefJudgeAddressTextBox.Text ) );
-                    outLine.Append( tabDelim + chiefJudgePhoneTextBox.Text );
-                    outLine.Append( tabDelim + chiefJudgeEmailTextBox.Text );
-                    outLine.Append( tabDelim + encodeSpecialChar( ChiefSafetyNameTextBox.Text ) );
-                    outLine.Append( tabDelim + encodeSpecialChar( safetyDirAddressTextBox.Text ) );
-                    outLine.Append( tabDelim + safetyDirPhoneTextBox.Text );
-                    outLine.Append( tabDelim + safetyDirEmailTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( "DataType" );
+				outLine.Append( HelperFunctions.TabDelim + "SanctionNumber" );
+				outLine.Append( HelperFunctions.TabDelim + "name" );
+				outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
+				outLine.Append( HelperFunctions.TabDelim + "class" );
+				outLine.Append( HelperFunctions.TabDelim + "eventDates" );
+				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
+				outLine.Append( HelperFunctions.TabDelim + "rules" );
+				outLine.Append( HelperFunctions.TabDelim + "Region" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
+				outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
+				outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "DataType" );
-                    outLine.Append( tabDelim + "SlalomNum" );
-                    outLine.Append( tabDelim + "SlalomRides" );
-                    outLine.Append( tabDelim + "TrickNum" );
-                    outLine.Append( tabDelim + "TrickRides" );
-                    outLine.Append( tabDelim + "JumpNum" );
-                    outLine.Append( tabDelim + "JumpRides" );
-                    outLine.Append( tabDelim + "TotalNum" );
-                    outLine.Append( tabDelim + "TotalRides" );
-                    outLine.Append( tabDelim + "TotalSkiers" );
-                    outLine.Append( tabDelim + "numInjuries" );
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				outLine.Append( "Tournament" );
+				outLine.Append( HelperFunctions.TabDelim + sanctionIdTextBox.Text + myTourRow["Class"] );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( nameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( eventLocationTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( eventDatesTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( sponsorClubNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
+				outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( ChiefJudgeNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( chiefJudgeAddressTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( ChiefSafetyNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( safetyDirAddressTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( "EventStats" );
-                    outLine.Append( tabDelim + SlalomNumTextBox.Text );
-                    outLine.Append( tabDelim + SlalomRidesTextBox.Text );
-                    outLine.Append( tabDelim + TrickNumTextBox.Text );
-                    outLine.Append( tabDelim + TrickRidesTextBox.Text );
-                    outLine.Append( tabDelim + JumpNumTextBox.Text );
-                    outLine.Append( tabDelim + JumpRidesTextBox.Text );
-                    outLine.Append( tabDelim + TotalNumTextBox.Text );
-                    outLine.Append( tabDelim + TotalRidesTextBox.Text );
-                    outLine.Append( tabDelim + TotalSkiersTextBox.Text );
-                    outLine.Append( tabDelim + numInjuriesTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( "DataType" );
+				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
+				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
+				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    if ( mySafetyCheckList != null ) {
-                        TextBox curTextBox;
-                        CheckedListBox curListBox;
-                        Control[] findControlList;
-                        String curControlName, curTextBoxName, curType;
-                        StringBuilder outLineHeader = new StringBuilder( "DataType" );
-                        StringBuilder outLineData = new StringBuilder( "SafetyCheckList" );
+				outLine = new StringBuilder( "" );
+				outLine.Append( "EventStats" );
+				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                        foreach ( Control curControl in ReportPage2.Controls ) {
-                            curType = (String)curControl.GetType().ToString();
-                            if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
-                                curListBox = (CheckedListBox)curControl;
-                                curControlName = curListBox.Name;
-                                curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
-                                findControlList = Controls.Find( curTextBoxName, true );
-                                if ( findControlList.Length > 0 ) {
-                                    curTextBox = (TextBox)findControlList[0];
-                                    outLineHeader.Append( tabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-                                    outLineData.Append( tabDelim + curTextBox.Text );
-                                }
-                            }
-                        }
-                        outBuffer.WriteLine( outLineHeader.ToString() );
-                        outBuffer.WriteLine( outLineData.ToString() );
+				if ( mySafetyCheckList != null ) {
+					TextBox curTextBox;
+					CheckedListBox curListBox;
+					Control[] findControlList;
+					String curControlName, curTextBoxName, curType;
+					StringBuilder outLineHeader = new StringBuilder( "DataType" );
+					StringBuilder outLineData = new StringBuilder( "SafetyCheckList" );
 
-                    }
-                    Log.WriteFile( "Export safety check list data file complete: " + curFilename );
+					foreach ( Control curControl in ReportPage2.Controls ) {
+						curType = (String)curControl.GetType().ToString();
+						if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
+							curListBox = (CheckedListBox)curControl;
+							curControlName = curListBox.Name;
+							curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
+							findControlList = Controls.Find( curTextBoxName, true );
+							if ( findControlList.Length > 0 ) {
+								curTextBox = (TextBox)findControlList[0];
+								outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
+								outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+							}
+						}
+					}
+					outBuffer.WriteLine( outLineHeader.ToString() );
+					outBuffer.WriteLine( outLineData.ToString() );
 
-                } catch ( Exception ex ) {
-                    MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
-                    String curMsg = curMethodName + ":Exception=" + ex.Message;
-                    Log.WriteFile( curMsg );
-                }
-                outBuffer.Close();
-            }
-        }
+				}
+				Log.WriteFile( "Export safety check list data file complete: " + curFilename );
 
-        public void ExportReportPrintFile() {
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Failure detected writing safety check list Extract file (txt)\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+		}
+
+		public void ExportReportPrintFile() {
             String curMethodName = "SafetyCheckList:ExportReportPrintFile";
             String curValue = "";
 
@@ -969,123 +961,126 @@ namespace WaterskiScoringSystem.Tournament {
             StreamWriter outBuffer = null;
 
             String curFilename = sanctionIdTextBox.Text + "SD" + ".prn";
-            outBuffer = getExportFile( curFilename );
-            if (outBuffer != null) {
-                try {
-                    Log.WriteFile( "Export safety check list data file begin: " + curFilename );
+			String curFileFilter = "prn files (*.prn)|*.prn|All files (*.*)|*.*";
+			outBuffer = HelperFunctions.getExportFile( curFileFilter, curFilename );
+			if ( outBuffer != null ) return;
 
-                    //Tournament data
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( Environment.NewLine + "Safety check list for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text);
-                    outLine.Append( Environment.NewLine + InstructionLabel4.Text );
-                    outLine.Append( Environment.NewLine + InstructionLabel6.Text );
-                    outLine.Append( Environment.NewLine + InstructionLabel8.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+			try {
+				Log.WriteFile( "Export safety check list data file begin: " + curFilename );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( Environment.NewLine + nameLabel.Text + " " + nameTextBox.Text );
-                    outLine.Append( "  " + sanctionIdLabel.Text + " " + sanctionIdTextBox.Text.Substring( 0, 6 ) );
-                    outLine.Append( "  " + classLabel + " " + classTextBox.Text );
-                    outLine.Append( "  Federation: " + myTourRow["Federation"] );
-                    outLine.Append( "  Rules: " + myTourRow["Rules"] );
-                    outLine.Append( Environment.NewLine + eventDatesLabel.Text + " " + eventDatesTextBox.Text );
-                    outLine.Append( "  " + eventLocationLabel.Text + " " + eventLocationTextBox.Text );
-                    outLine.Append( Environment.NewLine + sponsorClubNameLabel.Text + " " + sponsorClubNameTextBox.Text );
-                    outLine.Append( "  " + regionLabel.Text + " " + regionTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				//Tournament data
+				outLine = new StringBuilder( "" );
+				outLine.Append( Environment.NewLine + "Safety check list for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text );
+				outLine.Append( Environment.NewLine + InstructionLabel4.Text );
+				outLine.Append( Environment.NewLine + InstructionLabel6.Text );
+				outLine.Append( Environment.NewLine + InstructionLabel8.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    //Chief Judge
-                    outLine.Append( Environment.NewLine + chiefJudgeNameLabel.Text + " " + ChiefJudgeNameTextBox.Text );
-                    curValue = (String)myTourRow["ChiefJudgeMemberId"];
-                    DataRow curMemberRow = getTourMemberRating( curValue );
-                    if (curMemberRow != null) {
-                        if (curMemberRow["SafetyOfficialRating"] == System.DBNull.Value) {
-                            curValue = "";
-                        } else if (( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" )) {
-                        } else {
-                            curValue = (String)curMemberRow["SafetyOfficialRating"];
-                        }
-                    }
-                    outLine.Append( "  Rating: " + curValue );
-                    outLine.Append( Environment.NewLine + chiefJudgeAddressLabel.Text + " " + chiefJudgeAddressTextBox.Text );
-                    outLine.Append( Environment.NewLine + chiefJudgePhoneLabel.Text + " " + chiefJudgePhoneTextBox.Text );
-                    outLine.Append( "  " + chiefJudgeEmailLabel.Text + " " + chiefJudgeEmailTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				outLine.Append( Environment.NewLine + nameLabel.Text + " " + nameTextBox.Text );
+				outLine.Append( "  " + sanctionIdLabel.Text + " " + sanctionIdTextBox.Text.Substring( 0, 6 ) );
+				outLine.Append( "  " + classLabel + " " + classTextBox.Text );
+				outLine.Append( "  Federation: " + myTourRow["Federation"] );
+				outLine.Append( "  Rules: " + myTourRow["Rules"] );
+				outLine.Append( Environment.NewLine + eventDatesLabel.Text + " " + eventDatesTextBox.Text );
+				outLine.Append( "  " + eventLocationLabel.Text + " " + eventLocationTextBox.Text );
+				outLine.Append( Environment.NewLine + sponsorClubNameLabel.Text + " " + sponsorClubNameTextBox.Text );
+				outLine.Append( "  " + regionLabel.Text + " " + regionTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    //Chief Safety Director
-                    outLine.Append( Environment.NewLine + "Chief Safety: " + ChiefSafetyNameTextBox.Text );
-                    curValue = (String)myTourRow["SafetyDirMemberId"];
-                    curMemberRow = getTourMemberRating( curValue );
-                    if (curMemberRow != null) {
-                        if (curMemberRow["SafetyOfficialRating"] == System.DBNull.Value) {
-                            curValue = "";
-                        } else if (( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" )) {
-                        } else {
-                            curValue = (String)curMemberRow["SafetyOfficialRating"];
-                        }
-                    }
-                    outLine.Append( "  Rating: " + curValue );
-                    outLine.Append( Environment.NewLine + safetyDirAddressLabel.Text + " " + safetyDirAddressTextBox.Text );
-                    outLine.Append( Environment.NewLine + safetyDirPhoneLabel.Text + " " + safetyDirPhoneTextBox.Text );
-                    outLine.Append( "  " + safetyDirEmailLabel.Text + " " + safetyDirEmailTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				//Chief Judge
+				outLine.Append( Environment.NewLine + chiefJudgeNameLabel.Text + " " + ChiefJudgeNameTextBox.Text );
+				curValue = (String)myTourRow["ChiefJudgeMemberId"];
+				DataRow curMemberRow = getTourMemberRating( curValue );
+				if ( curMemberRow != null ) {
+					if ( curMemberRow["SafetyOfficialRating"] == System.DBNull.Value ) {
+						curValue = "";
+					} else if ( ( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" ) ) {
+					} else {
+						curValue = (String)curMemberRow["SafetyOfficialRating"];
+					}
+				}
+				outLine.Append( "  Rating: " + curValue );
+				outLine.Append( Environment.NewLine + chiefJudgeAddressLabel.Text + " " + chiefJudgeAddressTextBox.Text );
+				outLine.Append( Environment.NewLine + chiefJudgePhoneLabel.Text + " " + chiefJudgePhoneTextBox.Text );
+				outLine.Append( "  " + chiefJudgeEmailLabel.Text + " " + chiefJudgeEmailTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    outLine = new StringBuilder( "" );
-                    //EventStats
-                    outLine.Append( Environment.NewLine + SlalomStatLabel.Text + " Skiers: " + SlalomNumTextBox.Text );
-                    outLine.Append( "  Passes: " + SlalomRidesTextBox.Text );
-                    outLine.Append( Environment.NewLine + TrickStatLabel.Text + " Skiers: " + TrickNumTextBox.Text );
-                    outLine.Append( "  Passes: " + TrickRidesTextBox.Text );
-                    outLine.Append( Environment.NewLine + JumpStatLabel.Text + " Skiers: " + JumpNumTextBox.Text );
-                    outLine.Append( "  Passes: " + JumpRidesTextBox.Text );
-                    outLine.Append( Environment.NewLine + TotalStatLabel.Text + " Skiers: " + TotalNumTextBox.Text );
-                    outLine.Append( "  Passes: " + TotalRidesTextBox.Text );
-                    outLine.Append( Environment.NewLine + label3.Text + " Skiers: " + TotalSkiersTextBox.Text );
-                    outLine.Append( Environment.NewLine + numInjuriesLabel.Text + " " + numInjuriesTextBox.Text );
-                    outBuffer.WriteLine( outLine.ToString() );
+				outLine = new StringBuilder( "" );
+				//Chief Safety Director
+				outLine.Append( Environment.NewLine + "Chief Safety: " + ChiefSafetyNameTextBox.Text );
+				curValue = (String)myTourRow["SafetyDirMemberId"];
+				curMemberRow = getTourMemberRating( curValue );
+				if ( curMemberRow != null ) {
+					if ( curMemberRow["SafetyOfficialRating"] == System.DBNull.Value ) {
+						curValue = "";
+					} else if ( ( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" ) ) {
+					} else {
+						curValue = (String)curMemberRow["SafetyOfficialRating"];
+					}
+				}
+				outLine.Append( "  Rating: " + curValue );
+				outLine.Append( Environment.NewLine + safetyDirAddressLabel.Text + " " + safetyDirAddressTextBox.Text );
+				outLine.Append( Environment.NewLine + safetyDirPhoneLabel.Text + " " + safetyDirPhoneTextBox.Text );
+				outLine.Append( "  " + safetyDirEmailLabel.Text + " " + safetyDirEmailTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    TextBox curTextBox;
-                    CheckedListBox curListBox;
-                    Control[] findControlList;
-                    String curControlName, curTextBoxName, curType;
-                    outLine = new StringBuilder( "" );
+				outLine = new StringBuilder( "" );
+				//EventStats
+				outLine.Append( Environment.NewLine + SlalomStatLabel.Text + " Skiers: " + SlalomNumTextBox.Text );
+				outLine.Append( "  Passes: " + SlalomRidesTextBox.Text );
+				outLine.Append( Environment.NewLine + TrickStatLabel.Text + " Skiers: " + TrickNumTextBox.Text );
+				outLine.Append( "  Passes: " + TrickRidesTextBox.Text );
+				outLine.Append( Environment.NewLine + JumpStatLabel.Text + " Skiers: " + JumpNumTextBox.Text );
+				outLine.Append( "  Passes: " + JumpRidesTextBox.Text );
+				outLine.Append( Environment.NewLine + TotalStatLabel.Text + " Skiers: " + TotalNumTextBox.Text );
+				outLine.Append( "  Passes: " + TotalRidesTextBox.Text );
+				outLine.Append( Environment.NewLine + label3.Text + " Skiers: " + TotalSkiersTextBox.Text );
+				outLine.Append( Environment.NewLine + numInjuriesLabel.Text + " " + numInjuriesTextBox.Text );
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    foreach (Control curControl in ReportPage2.Controls) {
-                        curType = (String)curControl.GetType().ToString();
-                        if (curType.IndexOf( "CheckedListBox" ) > 0) {
-                            curListBox = (CheckedListBox)curControl;
-                            curControlName = curListBox.Name;
-                            curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
-                            findControlList = Controls.Find( curTextBoxName, true );
-                            if (findControlList.Length > 0) {
-                                curTextBox = (TextBox)findControlList[0];
-                                outLine.Append( Environment.NewLine + curControlName.Substring( 0, curControlName.Length - 3 ) );
-                                outLine.Append( ": " + curTextBox.Text );
-                            }
-                        }
-                    }
-                    outBuffer.WriteLine( outLine.ToString() );
+				TextBox curTextBox;
+				CheckedListBox curListBox;
+				Control[] findControlList;
+				String curControlName, curTextBoxName, curType;
+				outLine = new StringBuilder( "" );
 
-                    outLine = new StringBuilder( "" );
-                    outLine.Append( Environment.NewLine + "Report created by " );
-                    outLine.Append( Properties.Settings.Default.AppTitle + " Version " + Properties.Settings.Default.BuildVersion );
-                    outLine.Append( " on " + DateTime.Now.ToString( "MMMM d, yyyy HH:mm:ss" ) );
-                    outBuffer.WriteLine( outLine.ToString() );
+				foreach ( Control curControl in ReportPage2.Controls ) {
+					curType = (String)curControl.GetType().ToString();
+					if ( curType.IndexOf( "CheckedListBox" ) > 0 ) {
+						curListBox = (CheckedListBox)curControl;
+						curControlName = curListBox.Name;
+						curTextBoxName = curControlName.Substring( 0, curControlName.Length - 3 ) + "TextBox";
+						findControlList = Controls.Find( curTextBoxName, true );
+						if ( findControlList.Length > 0 ) {
+							curTextBox = (TextBox)findControlList[0];
+							outLine.Append( Environment.NewLine + curControlName.Substring( 0, curControlName.Length - 3 ) );
+							outLine.Append( ": " + curTextBox.Text );
+						}
+					}
+				}
+				outBuffer.WriteLine( outLine.ToString() );
 
-                    Log.WriteFile( "Export safety check list print file complete: " + curFilename );
-                    MessageBox.Show( "Export safety check list print file complete:" );
-                } catch (Exception ex) {
-                    MessageBox.Show( "Error: Failure detected writing safety check list data print file (txt)\n\nError: " + ex.Message );
-                    String curMsg = curMethodName + ":Exception=" + ex.Message;
-                    Log.WriteFile( curMsg );
-                }
-                outBuffer.Close();
-            }
-        }
+				outLine = new StringBuilder( "" );
+				outLine.Append( Environment.NewLine + "Report created by " );
+				outLine.Append( Properties.Settings.Default.AppTitle + " Version " + Properties.Settings.Default.BuildVersion );
+				outLine.Append( " on " + DateTime.Now.ToString( "MMMM d, yyyy HH:mm:ss" ) );
+				outBuffer.WriteLine( outLine.ToString() );
 
-        private String replaceLinefeed(String inValue) {
+				Log.WriteFile( "Export safety check list print file complete: " + curFilename );
+				MessageBox.Show( "Export safety check list print file complete:" );
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Failure detected writing safety check list data print file (txt)\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+
+			} finally {
+				if ( outBuffer != null ) outBuffer.Close();
+			}
+		}
+
+		private String replaceLinefeed(String inValue) {
             String curValue = inValue;
             curValue = curValue.Replace( '\n', ' ' );
             curValue = curValue.Replace( '\r', ' ' );
@@ -1179,33 +1174,6 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getData(String inSelectStmt) {
             return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private StreamWriter getExportFile( String inFileName ) {
-            StreamWriter outBuffer = null;
-
-            SaveFileDialog myFileDialog = new SaveFileDialog();
-            String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
-
-            try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    String myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if ( curFileName.IndexOf( '.' ) < 0 ) {
-                            myFileName += ".txt";
-                        }
-                        outBuffer = File.CreateText( myFileName );
-                    }
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
-            }
-
-            return outBuffer;
         }
 
         public void PrintButton_Click( object sender, EventArgs e ) {

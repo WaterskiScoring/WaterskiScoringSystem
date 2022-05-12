@@ -25,15 +25,16 @@ namespace WaterskiScoringSystem.Common {
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BoatPathImportReport));
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.winNavStrip = new System.Windows.Forms.ToolStrip();
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navSave = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView = new System.Windows.Forms.DataGridView();
 			this.RowStatusLabel = new System.Windows.Forms.Label();
-			this.navSave = new System.Windows.Forms.ToolStripButton();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,6 +42,7 @@ namespace WaterskiScoringSystem.Common {
 			this.SkierMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassSpeedKph = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,6 +114,15 @@ namespace WaterskiScoringSystem.Common {
 			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
 			this.navExport.Click += new System.EventHandler(this.navExport_Click);
 			// 
+			// navSave
+			// 
+			this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
+			this.navSave.Name = "navSave";
+			this.navSave.Size = new System.Drawing.Size(35, 39);
+			this.navSave.Text = "Save";
+			this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSave.Click += new System.EventHandler(this.navSave_Click);
+			// 
 			// dataGridView
 			// 
 			this.dataGridView.AllowUserToAddRows = false;
@@ -119,14 +130,14 @@ namespace WaterskiScoringSystem.Common {
 			this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.PK,
@@ -134,6 +145,7 @@ namespace WaterskiScoringSystem.Common {
             this.SkierMemberId,
             this.SkierName,
             this.Event,
+            this.EventClass,
             this.Round,
             this.PassNumber,
             this.PassSpeedKph,
@@ -183,15 +195,6 @@ namespace WaterskiScoringSystem.Common {
 			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
 			this.RowStatusLabel.TabIndex = 107;
 			this.RowStatusLabel.Text = "Row 1 of 9999";
-			// 
-			// navSave
-			// 
-			this.navSave.Image = ((System.Drawing.Image)(resources.GetObject("navSave.Image")));
-			this.navSave.Name = "navSave";
-			this.navSave.Size = new System.Drawing.Size(35, 39);
-			this.navSave.Text = "Save";
-			this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navSave.Click += new System.EventHandler(this.navSave_Click);
 			// 
 			// winStatus
 			// 
@@ -254,12 +257,25 @@ namespace WaterskiScoringSystem.Common {
 			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Event.Width = 45;
 			// 
+			// EventClass
+			// 
+			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle2;
+			this.EventClass.HeaderText = "Class";
+			this.EventClass.MaxInputLength = 16;
+			this.EventClass.Name = "EventClass";
+			this.EventClass.ReadOnly = true;
+			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.Width = 40;
+			// 
 			// Round
 			// 
 			this.Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Round.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Round.DefaultCellStyle = dataGridViewCellStyle3;
 			this.Round.HeaderText = "Rd";
 			this.Round.Name = "Round";
 			this.Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -268,9 +284,9 @@ namespace WaterskiScoringSystem.Common {
 			// PassNumber
 			// 
 			this.PassNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassNumber.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassNumber.DefaultCellStyle = dataGridViewCellStyle4;
 			this.PassNumber.HeaderText = "Pass";
 			this.PassNumber.Name = "PassNumber";
 			this.PassNumber.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -574,6 +590,7 @@ namespace WaterskiScoringSystem.Common {
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierMemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Round;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNumber;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassSpeedKph;

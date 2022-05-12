@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Deployment.Application;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
-using WaterskiScoringSystem.Tournament;
 using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Jump {
@@ -247,7 +243,6 @@ namespace WaterskiScoringSystem.Jump {
 			}
 			mySanctionYear = Convert.ToInt16( mySanctionNum.Substring( 0, 2 ) );
 
-
 			//Retrieve selected tournament attributes
 			DataTable curTourDataTable = getTourData( mySanctionNum );
 			if ( curTourDataTable.Rows.Count <= 0 ) {
@@ -255,8 +250,8 @@ namespace WaterskiScoringSystem.Jump {
 				return;
 			}
 			myTourRow = curTourDataTable.Rows[0];
-			if ( (byte)myTourRow["TrickRounds"] <= 0 ) {
-				MessageBox.Show( "The trick event is not defined for the active tournament" );
+			if ( (byte)myTourRow["JumpRounds"] <= 0 ) {
+				MessageBox.Show( "The jump event is not defined for the active tournament" );
 				return;
 			}
 			myTourRules = (String)myTourRow["Rules"];
@@ -264,11 +259,6 @@ namespace WaterskiScoringSystem.Jump {
 			myTourClass = myTourRow["Class"].ToString().ToUpper();
 			TeamCode.Visible = false;
 			if ( myTourRules.ToLower().Equals( "ncwsa" ) ) TeamCode.Visible = true;
-
-			if ( (byte)myTourRow["JumpRounds"] == 0 ) {
-				MessageBox.Show( "The jump event is not defined for the active tournament" );
-				return;
-			}
 
 			myTitle = this.Text;
 
@@ -929,7 +919,7 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curControl.Checked ) {
 				//Determine required number of judges for event
 				StringBuilder curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "SELECT ListCode, CodeValue, MaxValue, MinValue, CodeDesc FROM CodeValueList WHERE ListName = 'TrickJudgesNum' ORDER BY SortSeq" );
+				curSqlStmt.Append( "SELECT ListCode, CodeValue, MaxValue, MinValue, CodeDesc FROM CodeValueList WHERE ListName = 'JumpJudgesNum' ORDER BY SortSeq" );
 				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curDataTable.Rows.Count > 0 ) {
 					int curNumJudges = Convert.ToInt16( (Decimal)curDataTable.Rows[0]["MaxValue"] );
@@ -3669,6 +3659,7 @@ namespace WaterskiScoringSystem.Jump {
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value
 					, (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Gender"].Value
+					, (String)scoreEventClass.SelectedValue
 					, roundSelect.RoundValue
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassNumRecap"].Value )
 					, Convert.ToInt16( (String)myRecapRow.Cells["BoatSpeedRecap"].Value )
@@ -5297,7 +5288,7 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private void updateBoatSelect() {
-			String curMethodName = "Trick:ScoreEntry:updateBoatSelect: ";
+			String curMethodName = "Jump:ScoreEntry:updateBoatSelect: ";
 			String curMsg = "";
 
 			TourBoatTextbox.Text = buildBoatModelNameDisplay();
@@ -5665,21 +5656,7 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
-			curSqlStmt.Append( "FROM JumpScore " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
-			curSqlStmt.Append( " AND Round = " + inRound + " " );
-			if ( mySanctionNum.EndsWith( "999" ) || mySanctionNum.EndsWith( "998" ) ) {
-				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
-			}
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return true;
-			} else {
-				return false;
-			}
+			return HelperFunctions.checkForSkierRoundScore( mySanctionNum, "Jump", inMemberId, inRound, inAgeGroup );
 		}
 
 		private Decimal getSkier1stRoundRampHeight(String inMemberId, String inAgeGroup) {

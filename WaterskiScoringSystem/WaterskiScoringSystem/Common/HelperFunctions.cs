@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -70,6 +71,53 @@ namespace WaterskiScoringSystem.Common {
 			return curEventGroupList;
 		}
 
+		public static String buildPublishReportTitle( String inSanctionNum ) {
+			DataRow curRow = HelperFunctions.getTourChiefScorer( inSanctionNum );
+			return "\nOfficial Results certified by Chief Scorer " + HelperFunctions.getDataRowColValue( curRow, "ChiefScorerName", "N/A" );
+		}
+
+		public static bool checkForSkierRoundScore( String inSanctionId, String inEvent, String inMemberId, int inRound, String inAgeGroup ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
+			curSqlStmt.Append( "FROM " + inEvent + "Score " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' " );
+			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
+			curSqlStmt.Append( " AND Round = " + inRound + " " );
+			if ( inSanctionId.EndsWith( "999" ) || inSanctionId.EndsWith( "998" ) ) {
+				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
+			}
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+
+		public static DataRow getTourChiefScorer( String inSanctionNum ) {
+			DataRow curRow = null;
+			try {
+				//Retrieve selected tournament attributes
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT T.ChiefScorerMemberId, TourRegCC.SkierName AS ChiefScorerName, T.ChiefScorerAddress, T.ChiefScorerPhone, T.ChiefScorerEmail " );
+				curSqlStmt.Append( "FROM Tournament T " );
+				curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCC ON T.SanctionId = TourRegCC.SanctionId AND T.ChiefScorerMemberId = TourRegCC.MemberId " );
+				curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionNum + "' " );
+				curSqlStmt.Append( "ORDER BY T.SanctionId " );
+
+				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curDataTable.Rows.Count == 0 ) return null;
+
+				curRow = curDataTable.Rows[0];
+				return curRow;
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Exception retrieving tournament data " + "\n\nError: " + ex.Message );
+				return null;
+			}
+		}
+
 		public static Boolean isGroupNcwsa( String inGroupValue ) {
 			return ( inGroupValue.ToLower().Equals( "cm" )
 				|| inGroupValue.ToLower().Equals( "cw" )
@@ -126,6 +174,7 @@ namespace WaterskiScoringSystem.Common {
 
 		public static String getDataRowColValueDecimal( DataRow dataRow, String colName, String defaultValue, int numDecimals ) {
 			try {
+				if ( dataRow == null ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 0 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 1 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.0" );
@@ -141,6 +190,7 @@ namespace WaterskiScoringSystem.Common {
 		}
 		public static decimal getDataRowColValueDecimal( DataRow dataRow, String colName, decimal defaultValue ) {
 			try {
+				if ( dataRow == null ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return (decimal)dataRow[colName];
 				return Convert.ToDecimal( (String)dataRow[colName] );
@@ -151,6 +201,7 @@ namespace WaterskiScoringSystem.Common {
 
 		public static String getDataRowColValue( DataRow dataRow, String colName, String defaultValue ) {
 			try {
+				if ( dataRow == null ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( String ) ) ) return ( (String)dataRow[colName] ).ToString().Trim();
 				if ( dataRow[colName].GetType().Equals( typeof( int ) ) ) return ( (int)dataRow[colName] ).ToString();
@@ -170,6 +221,7 @@ namespace WaterskiScoringSystem.Common {
 		public static String getViewRowColValue( DataGridViewRow viewRow, String colName, String defaultValue ) {
 			String curColValue = "";
 			try {
+				if ( viewRow == null ) return defaultValue;
 				if ( viewRow.Cells[colName].Value == null ) return defaultValue;
 				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( String ) ) ) {
 					curColValue = ( (String)viewRow.Cells[colName].Value ).Trim();
@@ -278,5 +330,96 @@ namespace WaterskiScoringSystem.Common {
 			}
 			return false;
 		}
+
+		public static StreamWriter getExportFile() {
+			return getExportFile( null );
+		}
+		public static StreamWriter getExportFile( String inFileFilter ) {
+			return getExportFile( inFileFilter, null );
+		}
+		public static StreamWriter getExportFile( String inFileFilter, String inFileName ) {
+			String curMethodName = "getExportFile";
+			String returnFileName;
+			StreamWriter outBuffer = null;
+			String curFileFilter = "";
+			if ( inFileFilter == null ) {
+				curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+			} else {
+				curFileFilter = inFileFilter;
+			}
+
+			SaveFileDialog myFileDialog = new SaveFileDialog();
+			String curPath = Properties.Settings.Default.ExportDirectory;
+			myFileDialog.InitialDirectory = curPath;
+			myFileDialog.Filter = curFileFilter;
+			myFileDialog.FilterIndex = 1;
+			if ( inFileName == null ) {
+				myFileDialog.FileName = "";
+			} else {
+				myFileDialog.FileName = inFileName;
+			}
+
+			try {
+				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
+					returnFileName = myFileDialog.FileName;
+					if ( returnFileName != null ) {
+						int delimPos = returnFileName.LastIndexOf( '\\' );
+						String curFileName = returnFileName.Substring( delimPos + 1 );
+
+
+						if ( curFileName.IndexOf( '.' ) < 0 ) {
+							String curDefaultExt = ".txt";
+							String[] curList = curFileFilter.Split( '|' );
+							if ( curList.Length > 0 ) {
+								int curDelim = curList[1].IndexOf( "." );
+								if ( curDelim > 0 ) {
+									curDefaultExt = curList[1].Substring( curDelim - 1 );
+								}
+							}
+							returnFileName += curDefaultExt;
+						}
+						outBuffer = File.CreateText( returnFileName );
+					}
+				}
+			
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+			}
+
+			return outBuffer;
+		}
+
+		public static StreamWriter getExportFileByName( String inFileName ) {
+			String curMethodName = "getExportFileByName";
+			StreamWriter outBuffer = null;
+
+			SaveFileDialog myFileDialog = new SaveFileDialog();
+			String curPath = Properties.Settings.Default.ExportDirectory;
+			myFileDialog.InitialDirectory = curPath;
+			myFileDialog.FileName = inFileName;
+
+			try {
+				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
+					String myFileName = myFileDialog.FileName;
+					if ( myFileName != null ) {
+						int delimPos = myFileName.LastIndexOf( '\\' );
+						String curFileName = myFileName.Substring( delimPos + 1 );
+						if ( curFileName.IndexOf( '.' ) < 0 ) {
+							myFileName += ".wsp";
+						}
+						outBuffer = File.CreateText( myFileName );
+					}
+				}
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
+				String curMsg = curMethodName + ":Exception=" + ex.Message;
+				Log.WriteFile( curMsg );
+			}
+
+			return outBuffer;
+		}
+
 	}
 }

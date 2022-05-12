@@ -43,8 +43,6 @@ namespace WscMessageHandler.Common {
 			String curMethodName = "ConnectMgmtData:initConnectMgmtData: ";
 
 			mySanctionNum = Properties.Settings.Default.SanctionNum;
-			Log.OpenFile( mySanctionNum );
-
 			bool curDbOpen = DataAccess.DataAccessOpen();
 			if ( !( curDbOpen ) ) {
 				String curMsg = String.Format( "{0}Unable to connect to database {1}"
@@ -52,10 +50,7 @@ namespace WscMessageHandler.Common {
 				Log.WriteFile( curMsg );
 				return false;
 			}
-
-			Log.WriteFile( String.Format( "{0}Connected to database {1}"
-				, curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
-
+			
 			tourRow = HelperFunctions.getTourData();
 			if ( tourRow == null ) {
 				String curMsg = String.Format( "{0}Tournament data for {1} was not found"
@@ -64,6 +59,12 @@ namespace WscMessageHandler.Common {
 				MessageBox.Show( curMsg );
 				return false;
 			}
+			Properties.Settings.Default.DataDirectory = (String)tourRow["TourDataLoc"];
+			if ( !( Log.OpenFile( mySanctionNum ) ) ) return false;
+
+			Log.WriteFile( String.Format( "{0}Connected to database {1}"
+				, curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
+
 			return true;
 		}
 

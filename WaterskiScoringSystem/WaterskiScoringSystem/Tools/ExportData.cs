@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.SqlServerCe;
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
@@ -71,7 +66,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public Boolean exportData( String[] inTableName, String[] inSelectStmt ) {
             Boolean returnStatus = false;
-            StreamWriter outBuffer = getExportFile();
+            StreamWriter outBuffer = HelperFunctions.getExportFile();
             StringBuilder inReturnMessage = new StringBuilder( "" );
 
             if ( outBuffer != null ) {
@@ -132,7 +127,7 @@ namespace WaterskiScoringSystem.Tools {
 			StreamWriter outBuffer = null;
 
 			try {
-				outBuffer = getExportFile( null, inFileName );
+				outBuffer = HelperFunctions.getExportFile( null, inFileName );
 				if ( outBuffer == null ) {
 					curMsg = "Export file not available";
 					MessageBox.Show( curMsg );
@@ -156,7 +151,7 @@ namespace WaterskiScoringSystem.Tools {
 
 		public Boolean exportData( String inTableName, String inSelectStmt ) {
             Boolean returnStatus = false;
-            StreamWriter outBuffer = getExportFile();
+            StreamWriter outBuffer = HelperFunctions.getExportFile();
             if ( outBuffer != null ) {
                 returnStatus = exportData( inTableName, inSelectStmt, outBuffer, true );
                 if ( returnStatus ) { outBuffer.Close(); }
@@ -182,7 +177,7 @@ namespace WaterskiScoringSystem.Tools {
                 Log.WriteFile( curMethodName + ":begin: " + "Table=" + inTableName + " " + inSelectStmt );
                 outBuffer.WriteLine( "Table:" + tabDelim + inTableName );
 
-                curDataTable = getData( inSelectStmt, inShowMsg );
+                curDataTable = DataAccess.getDataTable( inSelectStmt, inShowMsg );
                 if ( curDataTable == null ) {
                     curMsg = "No data found";
                 } else {
@@ -255,7 +250,7 @@ namespace WaterskiScoringSystem.Tools {
 
             try {
                 Log.WriteFile( curMethodName + ":begin: " + "DataGrid=" + inDataGrid.Name );
-                outBuffer = getExportFile( null, inFullFileName );
+                outBuffer = HelperFunctions.getExportFile( null, inFullFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Export file not available";
                 } else {
@@ -335,7 +330,7 @@ namespace WaterskiScoringSystem.Tools {
 
             try {
                 Log.WriteFile( curMethodName + ":begin: " + "DataTable=" + inDataTable.TableName );
-                outBuffer = getExportFile( null, inFullFileName );
+                outBuffer = HelperFunctions.getExportFile( null, inFullFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Export file not available";
                 } else {
@@ -409,7 +404,7 @@ namespace WaterskiScoringSystem.Tools {
             try {
                 curMsg = "DataGrid=" + inDataGrid.Name;
                 Log.WriteFile( curMethodName + ":begin: " + curMsg );
-                outBuffer = getExportFile( curFileFilter, inFileName );
+                outBuffer = HelperFunctions.getExportFile( curFileFilter, inFileName );
                 if ( outBuffer == null ) {
                     curMsg = "Output file not available";
                 
@@ -521,100 +516,6 @@ namespace WaterskiScoringSystem.Tools {
 			}
 			
 			return returnStatus;
-        }
-
-        private StreamWriter getExportFile() {
-            return getExportFile( null );
-        }
-        private StreamWriter getExportFile( String inFileFilter ) {
-            return getExportFile( inFileFilter, null );
-        }
-        private StreamWriter getExportFile( String inFileFilter, String inFileName ) {
-            String curMethodName = "getExportFile";
-            String myFileName;
-            StreamWriter outBuffer = null;
-            String curFileFilter = "";
-            if ( inFileFilter == null ) {
-                curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            } else {
-                curFileFilter = inFileFilter;
-            }
-
-            SaveFileDialog myFileDialog = new SaveFileDialog();
-            String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.Filter = curFileFilter;
-            myFileDialog.FilterIndex = 1;
-            if ( inFileName == null ) {
-                myFileDialog.FileName = "";
-            } else {
-                myFileDialog.FileName = inFileName;
-            }
-
-            try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if ( curFileName.IndexOf( '.' ) < 0 ) {
-                            String curDefaultExt = ".txt";
-                            String[] curList = curFileFilter.Split( '|' );
-                            if ( curList.Length > 0 ) {
-                                int curDelim = curList[1].IndexOf( "." );
-                                if ( curDelim > 0 ) {
-                                    curDefaultExt = curList[1].Substring( curDelim - 1 );
-                                }
-                            }
-                            myFileName += curDefaultExt;
-                        }
-                        outBuffer = File.CreateText( myFileName );
-                    }
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
-
-            return outBuffer;
-        }
-
-        private StreamWriter getExportFileByName( String inFileName ) {
-            String curMethodName = "getExportFileByName";
-            StreamWriter outBuffer = null;
-
-            SaveFileDialog myFileDialog = new SaveFileDialog();
-            String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
-
-            try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    String myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if ( curFileName.IndexOf( '.' ) < 0 ) {
-                            myFileName += ".wsp";
-                        }
-                        outBuffer = File.CreateText( myFileName );
-                    }
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Could not get a file to export data to " + "\n\nError: " + ex.Message );
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
-
-            return outBuffer;
-        }
-
-        public DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt, true );
-        }
-        public DataTable getData( String inSelectStmt, bool inShowMsg ) {
-            return DataAccess.getDataTable( inSelectStmt, inShowMsg );
         }
 
         private string findColValue( string inColName, string[] inputColNames, string[] inputCols ) {

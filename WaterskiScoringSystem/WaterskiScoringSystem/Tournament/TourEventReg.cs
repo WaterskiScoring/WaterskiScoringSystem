@@ -480,10 +480,7 @@ namespace WaterskiScoringSystem.Tournament {
 				DataRow curMemberRow = getMemberRow( curMemberEntry.MemberId );
 				if ( curMemberRow == null ) return false;
 
-				String curReadyToSki = "N";
-				//String memberStatus = HelperFunctions.getDataRowColValue( curMemberRow, "MemberStatus", "Inactive" );
-				if ( curMemberEntry.MemberStatus.ToLower().Equals( "active" ) ) curReadyToSki = "Y";
-				String curReadyForPlcmt = curReadyToSki;
+				String curReadyForPlcmt = curMemberEntry.ReadyToSki;
 
 				String curJumpHeight = "0";
 				if ( inJumpHeight.Length > 0 ) curJumpHeight = inJumpHeight;
@@ -518,7 +515,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getSkierNameForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
-				curSqlStmt.Append( ", '" + curReadyToSki + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.ReadyToSki + "'" );
 				curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
 				curSqlStmt.Append( ", '" + inTrickBoat + "'" );
 				curSqlStmt.Append( ", " + curJumpHeight );

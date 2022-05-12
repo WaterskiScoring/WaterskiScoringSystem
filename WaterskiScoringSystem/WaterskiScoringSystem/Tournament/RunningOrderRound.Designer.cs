@@ -104,6 +104,7 @@
 			this.PickAndChoseButton = new System.Windows.Forms.Button();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.SendSkierListButton = new System.Windows.Forms.Button();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.winStatus.SuspendLayout();
 			this.TopNavMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -174,6 +175,7 @@
             this.navRefresh,
             this.navPrint,
             this.navPrintFormButton,
+            this.navPublish,
             this.navExport,
             this.navSave,
             this.navExportRunorder});
@@ -819,6 +821,16 @@
 			this.SendSkierListButton.Visible = false;
 			this.SendSkierListButton.Click += new System.EventHandler(this.SendSkierListButton_Click);
 			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 39);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
+			// 
 			// RunningOrderRound
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -913,5 +925,6 @@
 		private System.Windows.Forms.Button PickAndChoseButton;
 		private System.Windows.Forms.Label WaterskiConnectLabel;
 		private System.Windows.Forms.Button SendSkierListButton;
+		private System.Windows.Forms.ToolStripButton navPublish;
 	}
 }

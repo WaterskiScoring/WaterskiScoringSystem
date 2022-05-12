@@ -202,7 +202,7 @@ namespace WscMessageHandler.Message {
 
 				curSqlStmt.Append( "Insert BoatPath ( " );
 				curSqlStmt.Append( "SanctionId, MemberId, Event, DriverMemberId, DriverName, BoatDescription" );
-				curSqlStmt.Append( ", Round, PassNumber, PassLineLength, PassSpeedKph" );
+				curSqlStmt.Append( ", homologation, Round, PassNumber, PassLineLength, PassSpeedKph" );
 				curSqlStmt.Append( ", PathDevBuoy0, PathDevCum0, PathDevZone0" );
 				curSqlStmt.Append( ", PathDevBuoy1, PathDevCum1, PathDevZone1" );
 				curSqlStmt.Append( ", PathDevBuoy2, PathDevCum2, PathDevZone2" );
@@ -220,6 +220,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "driverName" ) + "'" );
 				curSqlStmt.Append( ", '" + curBoatInfoMsg + "'" );
 
+				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "homologation" ) + "'" );
 				curSqlStmt.Append( ", " + curRound );
 				curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curMsgDataList, "passNumber" ).ToString( "#0" ) );
 				curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curMsgDataList, "rope" ) );

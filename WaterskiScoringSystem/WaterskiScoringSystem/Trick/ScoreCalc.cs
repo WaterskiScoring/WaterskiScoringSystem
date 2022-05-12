@@ -3847,21 +3847,7 @@ namespace WaterskiScoringSystem.Trick {
         }
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
-			curSqlStmt.Append( "FROM TrickScore " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
-			curSqlStmt.Append( " AND Round = " + inRound + " " );
-			if ( mySanctionNum.EndsWith( "999" ) || mySanctionNum.EndsWith( "998" ) ) {
-				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
-			}
-			DataTable curDataTable = getData( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return true;
-			} else {
-				return false;
-			}
+			return HelperFunctions.checkForSkierRoundScore( mySanctionNum, "Trick", inMemberId, inRound, inAgeGroup );
 		}
 
 		private DataTable getSkierPassByRound( String inMemberId, String inAgeGroup, int inRound, byte inPass ) {

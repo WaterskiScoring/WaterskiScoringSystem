@@ -116,6 +116,7 @@ namespace WaterskiScoringSystem.Trick {
 			this.PrintSkierPointsTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.label2 = new System.Windows.Forms.Label();
 			this.EventGroupList = new System.Windows.Forms.ComboBox();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.teamSummaryDataGridView)).BeginInit();
 			this.winStatus.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -264,6 +265,7 @@ namespace WaterskiScoringSystem.Trick {
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navPrint,
+            this.navPublish,
             this.navExport,
             this.navExportHtml});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -936,6 +938,16 @@ namespace WaterskiScoringSystem.Trick {
 			this.EventGroupList.Size = new System.Drawing.Size(100, 21);
 			this.EventGroupList.TabIndex = 132;
 			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 35);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
+			// 
 			// TrickSummaryTeam
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1046,5 +1058,6 @@ namespace WaterskiScoringSystem.Trick {
         private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
         private System.Windows.Forms.DataGridViewTextBoxColumn Round;
-    }
+		private System.Windows.Forms.ToolStripButton navPublish;
+	}
 }

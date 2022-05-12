@@ -28,7 +28,7 @@ namespace WaterskiScoringSystem.Externalnterface {
             return getMessage( inUrl, null, null, inPostMethod );
         }
         public static bool getMessage(String inUrl, String inUserAccount, String inPassword, bool inPostMethod) {
-            String curMethodName = "SendMessageHttp:getMessage";
+            String curMethodName = "SendMessageHttp:getMessage: ";
             WebRequest curRequest = null;
 
             try {
@@ -58,7 +58,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
 
 			} catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":getMessage:Exception:" + ex.Message );
+                MessageBox.Show( String.Format("{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message) );
                 return false;
             }
 
@@ -72,7 +72,7 @@ namespace WaterskiScoringSystem.Externalnterface {
             return getMessageResponse( inUrl, null, null, inPostMethod );
         }
         public static String getMessageResponse(String inUrl, String inUserAccount, String inPassword, bool inPostMethod) {
-            String curMethodName = "SendMessageHttp:getMessageResponse";
+            String curMethodName = "SendMessageHttp:getMessageResponse: ";
             String responseFromServer = "";
             WebRequest curRequest = null;
 
@@ -100,11 +100,12 @@ namespace WaterskiScoringSystem.Externalnterface {
                 //curRequestState.WebReqst.ContentLength = curRequestState.InputMsgBuffer.Length;
 
                 curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
-            } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":getMessage:Exception:" + ex.Message );
-            }
+            
+			} catch (Exception ex) {
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+			}
 
-            return responseFromServer;
+			return responseFromServer;
         }
 
         public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType) {
@@ -114,7 +115,7 @@ namespace WaterskiScoringSystem.Externalnterface {
             return getMessageResponseJson( inUrl, inHeaderParams, inContentType, null, null, inPostMethod );
         }
         public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod) {
-            String curMethodName = "SendMessageHttp:getMessageResponseJson";
+            String curMethodName = "SendMessageHttp:getMessageResponseJson: ";
             HttpWebRequest curRequest = null;
 
             try {
@@ -160,13 +161,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
 			} catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                return null;
+				Log.WriteFile( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				return null;
             }
         }
 		public static DataTable getMessageResponseDataTable(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod) {
-			String curMethodName = "SendMessageHttp:getMessageResponseDataTable";
+			String curMethodName = "SendMessageHttp:getMessageResponseDataTable: ";
 			HttpWebRequest curRequest = null;
 
 			try {
@@ -210,14 +211,14 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return readJsonResponseAsDataTable((HttpWebResponse)curRequest.GetResponse());
 
 			} catch (Exception ex) {
-				MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
-				Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
 				return null;
 			}
 		}
 
 		public static List<object> getMessageResponseJsonArray( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod ) {
-            String curMethodName = "SendMessageHttp:getMessageResponseJsonArray";
+            String curMethodName = "SendMessageHttp:getMessageResponseJsonArray: ";
             HttpWebRequest curRequest = null;
 
             try {
@@ -261,15 +262,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return readJsonResponseAsList((HttpWebResponse)curRequest.GetResponse() );
 
             } catch ( Exception ex ) {
-                MessageBox.Show(curMethodName + ":Exception:" + ex.Message);
-                Log.WriteFile(curMethodName + ":Exception:" + ex.Message);
-                return null;
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+				return null;
             }
         }
 
         //public static List<KeyValuePair<String, String>> sendMessagePostFileUpload(String inUrl, String inFileRef, String inFileFormName, NameValueCollection inHeaderParams, NameValueCollection inFormData, String inUserAccount, String inPassword) {
         public static Dictionary<string, object> sendMessagePostFileUpload(String inUrl, String inFileRef, String inFileFormName, NameValueCollection inHeaderParams, NameValueCollection inFormData, String inUserAccount, String inPassword) {
-            String curMethodName = "SendMessageHttp:sendMessagePostFileUpload";
+            String curMethodName = "SendMessageHttp:sendMessagePostFileUpload: ";
             HttpWebRequest curRequest = null;
             String curFileFormName = "file";
             StringBuilder curMessageBuffer = new StringBuilder( "" );
@@ -357,8 +358,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curRequestStream.Write( Encoding.UTF8.GetBytes( curBoundaryTrailer ), 0, curBoundaryTrailer.Length );
                 curRequestStream.Close();
 
-                //Send request to upload file
-                Log.WriteFile( curMethodName + ":Sending request to upload file: " + inFileRef );
+				//Send request to upload file
+				Log.WriteFile( String.Format( "{0}Sending request to upload file: {1}", curMethodName, inFileRef ) );
 
 				HttpWebResponse curResp = (HttpWebResponse)curRequest.GetResponse();
 				JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
@@ -366,9 +367,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
             } catch (Exception ex) {
-                //MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                //curResponseDataList = null;
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
                 return new Dictionary<string, object>() { { "Error", "Exception encountered loading video: " + ex.Message } } ;
             }
         }
@@ -377,7 +377,7 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         public static List<KeyValuePair<String, String>> sendMessagePostJsonResp(String inUrl, String inAuthHeaderParms, String inContentType, String inMessage, String inUserAccount, String inPassword) {
-            String curMethodName = "SendMessageHttp:sendMessagePostJsonResp";
+            String curMethodName = "SendMessageHttp:sendMessagePostJsonResp: ";
             HttpWebRequest curRequest = null;
             String curRespMessage = "";
             Stream curDataStream = null;
@@ -427,8 +427,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curMsg = ( (HttpWebResponse)curResponse ).StatusDescription;
                 if (curMsg.Equals( "OK" )) {
                 } else {
-                    Log.WriteFile( curMethodName + ":Unexpected response for HTTP request " + inUrl + ":" + curMsg );
-                    MessageBox.Show( curMethodName + ":Unexpected response for HTTP request " + inUrl + ":" + curMsg );
+					Log.WriteFile( String.Format( "{0}Unexpected response: {1}", curMethodName, inUrl, curMsg ) );
+					MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} : {2}", curMethodName, inUrl, curMsg ) );
                 }
 
                 // Get the stream containing content returned by the server.
@@ -445,10 +445,11 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
             
             } catch (Exception ex) {
-                MessageBox.Show( "sendMessagePost:Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
                 curResponseDataList = null;
-            } finally {
+            
+			} finally {
                 // Clean up the streams.
                 if (curReader != null) curReader.Close();
                 if (curDataStream != null) curDataStream.Close();
@@ -462,7 +463,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return getMessageDictionaryPostMessage( inUrl, inHeaderParams, inContentType, inMessage, null, null );
 		}
 		public static Dictionary<string, object> getMessageDictionaryPostMessage( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage, String inUserAccount, String inPassword  ) {
-            String curMethodName = "SendMessageHttp:readMessageDictionaryPostMessage";
+            String curMethodName = "SendMessageHttp:readMessageDictionaryPostMessage: ";
             HttpWebRequest curRequest = null;
 			JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
 			jsonSerializer.MaxJsonLength = Int32.MaxValue;
@@ -518,7 +519,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				using ( WebResponse response = e.Response ) {
 					HttpWebResponse curResp = (HttpWebResponse)response;
 					if ( curResp == null ) {
-						MessageBox.Show( "Exception encountered making request for IWWF license, " + e.Message );
+						Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, e.Message ) );
+						MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );
 						return null;
 					}
 					if ( curResp.StatusCode.Equals( "Unauthorized" ) ) {
@@ -530,14 +532,14 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 			} catch (Exception ex) {
-				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-				MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                return null;
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				return null;
             }
         }
 		
 		public static String getMessagePostMessage( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage, String inUserAccount, String inPassword ) {
-			String curMethodName = "SendMessageHttp:getMessagePostMessage";
+			String curMethodName = "SendMessageHttp:getMessagePostMessage: ";
 			HttpWebRequest curRequest = null;
 			Stream curDataStream = null;
 
@@ -590,14 +592,14 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return respMsg;
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
 				return null;
 			}
 		}
 
 		public static Dictionary<string, object> deleteMessagePostJsonResp(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage) {
-            String curMethodName = "SendMessageHttp:deleteMessagePostJsonResp";
+            String curMethodName = "SendMessageHttp:deleteMessagePostJsonResp: ";
             HttpWebRequest curRequest = null;
             Stream curDataStream = null;
 
@@ -641,14 +643,14 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
             } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
-                return null;
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				return null;
             }
         }
 
         public static bool sendMessagePostWithHeader(String inUrl, String inAuthHeaderParms, String inContentType, String inMessage) {
-            String curMethodName = "SendMessageHttp:sendMessagePostWithHeader";
+            String curMethodName = "SendMessageHttp:sendMessagePostWithHeader: ";
             HttpWebRequest curRequest = null;
             RequestState curRequestState = null;
 
@@ -673,10 +675,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 //curDataStream = curRequest.BeginGetRequestStream.GetRequestStream();
                 curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
 
-
             } catch (Exception ex) {
-                MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-                Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
                 return false;
             }
 
@@ -748,7 +748,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
 
             } catch (Exception ex) {
-				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
 				return false;
             }
 
@@ -846,8 +846,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public static List<KeyValuePair<String, String>> readJsonResponse(String inResponse) {
             List<KeyValuePair<String, String>> curResponseDataList = null;
 
-            //Sample JSON response
-            //{"token_type":"bearer","access_token":"AAAAAAAAAAAAAAAAAAAAAE4cQQAAAAAAjwSrjQ%2FmLGse2P7iur8qp8CYQLI%3DllsMRC2LNRlOeLXpZdARy6qUHyS3Tz68jrbcSUE15s"}
             if (inResponse.Length > 0) {
                 int curDelimBegin = inResponse.IndexOf( "{" );
                 int curDelimEnd = inResponse.LastIndexOf( "}" );
@@ -903,17 +901,19 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			} finally {
 				// Close the wait handle.
-				inAsyncResult.AsyncWaitHandle.Close();
+				if ( inAsyncResult != null && inAsyncResult.AsyncWaitHandle != null ) {
+					inAsyncResult.AsyncWaitHandle.Close();
+				}
 
 				// Start the asynchronous operation to get the response
-				if ( curRequestState != null  ) {
+				if ( curRequestState != null && curRequestState.WebReqst != null ) {
 					curRequestState.WebReqst.BeginGetResponse( new AsyncCallback( GetRespCallBack ), curRequestState );
 				}
 			}
 		}
 
         private static void GetRespCallBack(IAsyncResult inAsyncResult) {
-            String curMethodName = "SendMessageHttp:GetRespCallBack";
+            String curMethodName = "SendMessageHttp:GetRespCallBack: ";
 			RequestState curRequestState = null;
 			try {
 				// Set the State of request to asynchronous.
@@ -925,8 +925,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curRequestState.WebResp = curRequestState.WebReqst.EndGetResponse( inAsyncResult );
 				String curMsg = ( (HttpWebResponse) curRequestState.WebResp ).StatusDescription;
 				if ( !( curMsg.Equals( "OK" ) ) ) {
-					Log.WriteFile( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
-					MessageBox.Show( curMethodName + ":Unexpected response for HTTP request " + curRequestState.WebReqst.RequestUri.ToString() + ":" + curMsg );
+					Log.WriteFile( String.Format( "{0}Unexpected response for HTTP request {1} : {2}", curMethodName, curRequestState.WebReqst.RequestUri.ToString(), curMsg ) );
+					MessageBox.Show( String.Format( "{0}Unexpected response for HTTP request: {1} : {2}", curMethodName, curRequestState.WebReqst.RequestUri.ToString(), curMsg ) );
 					return;
 				}
 
@@ -943,11 +943,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 			} catch ( Exception ex ) {
-				MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-				Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
 
 			} finally {
-				if ( curRequestState != null ) {
+				if ( curRequestState != null && curRequestState.WebRespStream != null ) {
 					curRequestState.WebRespStream.Close();
 					curRequestState.WebResp.Close();
 				}
@@ -957,7 +957,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
         private static bool showServerResp(String inMsg) {
             // Display the content.
-            String curMethodName = "SendMessageHttp:showServerResp";
+            String curMethodName = "SendMessageHttp:showServerResp: ";
             String curMsgShow = "";
             int curIdx = 0;
             String[] curRespMsg = inMsg.Split( '\n' );
@@ -1044,8 +1044,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 						dataRow[curEntryAttr.Key] = curEntryAttr.Value;
 
 					} catch ( Exception ex ) {
-						MessageBox.Show( curMethodName + ":Exception:" + ex.Message );
-						Log.WriteFile( curMethodName + ":Exception:" + ex.Message );
+						Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+						MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
 					}
 				}
 

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Trick;
 using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -1149,8 +1145,14 @@ namespace WaterskiScoringSystem.Tournament {
 			}
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            int curCount = 0;
+		private void navPublish_Click( object sender, EventArgs e ) {
+			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", myEvent, mySanctionNum );
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			printReport( false );
+		}
+		private bool printReport( bool inPublish ) {
+			int curCount = 0;
             String curTourPlcmtOrg = "tour";
             foreach(DataGridViewRow curRow in EventRegDataGridView.Rows) {
                 if (( (String)curRow.Cells["RunOrderGroup"].Value ).Equals( "HH1" )) {
@@ -1162,7 +1164,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curTourPlcmtOrg = "group";
                 }
                 printHeadToHeadAwards( curTourPlcmtOrg );
-                return;
+				return true;
             }
 
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
@@ -1183,23 +1185,28 @@ namespace WaterskiScoringSystem.Tournament {
             curPrintDialog.ShowNetwork = false;
             curPrintDialog.UseEXDialog = true;
 
-            if (curPrintDialog.ShowDialog() == DialogResult.OK) {
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + this.Text;
-                myPrintDoc = new PrintDocument();
-                myPrintDoc.DocumentName = this.Text;
-                myPrintDoc.DefaultPageSettings.Margins = new Margins(50, 50, 50, 50);
-                myPrintDataGrid = new DataGridViewPrinter(PrintDataGridView, myPrintDoc,
-                        CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging);
+			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return false;
 
-                myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                myPrintDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
+			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+			printTitle.Append( "\n Sanction " + mySanctionNum );
+			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+			printTitle.Append( "\n" + this.Text );
+			if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
 
-                curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
-            }
+			myPrintDoc = new PrintDocument();
+			myPrintDoc.DocumentName = this.Text;
+			myPrintDoc.DefaultPageSettings.Margins = new Margins( 50, 50, 50, 50 );
+			myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
+					CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+
+			myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+
+			curPreviewDialog.Document = myPrintDoc;
+			curPreviewDialog.ShowDialog();
+
+			return true;
         }
 
         // The PrintPage action for the PrintDocument control
@@ -1253,74 +1260,28 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            if (myEvent.Equals( "Slalom" )) {
-                PrintDialog curPrintDialog = new PrintDialog();
-                PrintOfficialFormDialog curDialog = new PrintOfficialFormDialog();
-                if (curDialog.ShowDialog() == DialogResult.OK) {
-                    String curPrintReport = curDialog.ReportName;
-                    if (curPrintReport.Equals( "SlalomJudgeForm" )) {
-                        PrintSlalomJudgeForms curPrintForm = new PrintSlalomJudgeForms();
-                        curPrintForm.PrintLandscape = true;
-                        if (curHeadToHead) {
-                            curPrintForm.ReportHeader = "Head to Head Round " + roundActiveSelect.RoundValue;
-                            curPrintForm.TourRules = "htoh-" + curTourPlcmtOrg;
-                        } else {
-                            curPrintForm.ReportHeader = "Round " + roundActiveSelect.RoundValue;
-                            curPrintForm.TourRules = myTourRules;
-                        }
-                        curPrintForm.DivInfoDataTable = getEventDivMaxMinSpeed();
-                        curPrintForm.TourName = (String)myTourRow["Name"];
-                        curPrintForm.ShowDataTable = getEventRoundSkierOrder( curRound, curTourPlcmtOrg, curCommandType );
-                        curPrintForm.Print();
-                    } else if (curPrintReport.Equals( "SlalomRecapForm" )) {
-                        PrintSlalomRecapForm curPrintForm = new PrintSlalomRecapForm();
-                        curPrintForm.PrintLandscape = true;
-                        if (curHeadToHead) {
-                            curPrintForm.ReportHeader = "Head to Head Round " + roundActiveSelect.RoundValue;
-                            curPrintForm.TourRules = "htoh";
-                        } else {
-                            curPrintForm.ReportHeader = "Round " + roundActiveSelect.RoundValue;
-                            curPrintForm.TourRules = myTourRules;
-                        }
-                        curPrintForm.DivInfoDataTable = getEventDivMaxMinSpeed();
-                        curPrintForm.TourName = (String)myTourRow["Name"];
-                        curPrintForm.ShowDataTable = getEventRoundSkierOrder( curRound, curTourPlcmtOrg, curCommandType );
-                        curPrintForm.Print();
-                    }
-                }
-            } else if (myEvent.Equals( "Jump" )) {
-                PrintJumpRecapJudgeForm curPrintForm = new PrintJumpRecapJudgeForm();
-                curPrintForm.PrintLandscape = true;
-                if (curHeadToHead) {
-                    curPrintForm.ReportHeader = "Head to Head Round " + roundActiveSelect.RoundValue;
-                    curPrintForm.TourRules = "htoh";
-                } else {
-                    curPrintForm.ReportHeader = "Round " + roundActiveSelect.RoundValue;
-                    curPrintForm.TourRules = myTourRules;
-                }
-                curPrintForm.DivInfoDataTable = getJumpDivMaxSpeedRamp();
-                curPrintForm.TourName = (String)myTourRow["Name"];
-                curPrintForm.ShowDataTable = getEventRoundSkierOrder( curRound, curTourPlcmtOrg, curCommandType );
-                curPrintForm.Print();
-            } else if (myEvent.Equals( "Trick" )) {
-                PrintTrickJudgeForm curPrintForm = new PrintTrickJudgeForm();
-                curPrintForm.PrintLandscape = true;
-                if (curHeadToHead) {
-                    curPrintForm.ReportHeader = "Head to Head Round " + roundActiveSelect.RoundValue;
-                    curPrintForm.TourRules = "htoh";
-                } else {
-                    curPrintForm.ReportHeader = "Round " + roundActiveSelect.RoundValue;
-                    curPrintForm.TourRules = myTourRules;
-                }
-                curPrintForm.DivInfoDataTable = getEventDivMaxMinSpeed();
-                curPrintForm.TourName = (String)myTourRow["Name"];
-                curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-                curPrintForm.ShowDataTable = getEventRoundSkierOrder( curRound, curTourPlcmtOrg, curCommandType );
-                curPrintForm.Print();
-            }
-        }
+			DataTable curEventRegDataTable = getEventRoundSkierOrder( curRound, curTourPlcmtOrg, curCommandType );
+			PrintEventForms curPrintEventForms = new PrintEventForms( myTourRow );
+			String printHeaderNote = "Round " + roundActiveSelect.RoundValue;
+			String curHeadToHeadDef = null;
+			if ( curHeadToHead ) {
+				printHeaderNote = "Head to Head Round " + roundActiveSelect.RoundValue;
+				curHeadToHeadDef = "htoh-" + curTourPlcmtOrg;
+			}
 
-        private DataTable buildPlcmtDataTable() {
+			if ( myEvent.Equals( "Slalom" ) ) {
+				curPrintEventForms.PrintSlalomForm( curEventRegDataTable, printHeaderNote, curHeadToHeadDef );
+
+			} else if ( myEvent.Equals( "Jump" ) ) {
+				curPrintEventForms.PrintJumpForm( curEventRegDataTable, printHeaderNote, curHeadToHeadDef );
+
+			} else if ( myEvent.Equals( "Trick" ) ) {
+				curPrintEventForms.PrintTrickForm( curEventRegDataTable, printHeaderNote, curHeadToHeadDef );
+			}
+
+		}
+
+		private DataTable buildPlcmtDataTable() {
             //Determine number of skiers per placement group
             DataTable curDataTable = new DataTable();
             //SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder
@@ -1500,5 +1461,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
             return curReturnValue;
         }
+
 	}
 }

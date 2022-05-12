@@ -200,8 +200,10 @@ namespace WaterskiScoringSystem.Common {
                 curViewRow.Cells["Event"].Value = (String) curRow["Event"];
                 curViewRow.Cells["AgeGroup"].Value = (String) curRow["AgeGroup"];
                 curViewRow.Cells["EventGroup"].Value = (String) curRow["EventGroup"];
-                curViewRow.Cells["EventClass"].Value = (String) curRow["EventClass"];
-                curViewRow.Cells["Round"].Value = (Byte) curRow["Round"];
+				String curHomologation = "";
+				if ( curRow["homologation"] != System.DBNull.Value ) curHomologation = ( String)curRow["homologation"];
+				curViewRow.Cells["EventClass"].Value = (String) curRow["EventClass"] + "/" + curHomologation;
+				curViewRow.Cells["Round"].Value = (Byte) curRow["Round"];
 				
 				try {
                     curViewRow.Cells["Boat"].Value = (String) curRow["Boat"];
@@ -355,7 +357,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", S.Round, BP.BoatDescription as Boat, BP.DriverName" );
 			curSqlStmt.Append( ", S.Score, R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
 			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatatime, R.InsertDate as PassDatatime" );
-			curSqlStmt.Append( ", BP.PassLineLength, BP.PassSpeedKph" );
+			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0, PathDevZone0" );
 			curSqlStmt.Append( ", BP.PathDevBuoy1, BP.PathDevCum1, PathDevZone1" );
 			curSqlStmt.Append( ", BP.PathDevBuoy2, BP.PathDevCum2, PathDevZone2" );
@@ -381,7 +383,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", R.PassNum, R.BoatSplitTime, R.BoatSplitTime2, BoatEndTime, R.ScoreFeet as PassScoreFeet, R.ScoreMeters as PassScoreMeters" );
 			curSqlStmt.Append( ", R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
 			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatatime, R.InsertDate as PassDatatime" );
-			curSqlStmt.Append( ", BP.PassLineLength, BP.PassSpeedKph" );
+			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0" );
 			curSqlStmt.Append( ", BP.PathDevBuoy1, BP.PathDevCum1" );
 			curSqlStmt.Append( ", BP.PathDevBuoy2, BP.PathDevCum2" );

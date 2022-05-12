@@ -110,7 +110,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean sendPassData( String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String eventGroup, String div, String gender
-			, String round, Int16 passNumber, Int16 speed, String rope, String split, String driverMemberId ) {
+			, String eventClass, String round, Int16 passNumber, Int16 speed, String rope, String split, String driverMemberId ) {
 			String curMethodName = "sendBoatData: ";
 			int curRound = int.Parse( round );
 			myDefaultRound = curRound;
@@ -125,6 +125,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "athleteGender", gender }
 					, { "athleteCountry", athleteCountry.ToUpper() }
 					, { "athleteRegion", athleteRegion.ToUpper() }
+					, { "homologation", eventClass.ToUpper() }
 					, { "round", curRound }
 					, { "passNumber", passNumber }
 					, { "speed", speed }

@@ -2067,14 +2067,21 @@ namespace WaterskiScoringSystem.Tournament {
             myExportData.exportDataAsHtml( PrintDataGridView, printTitle, printSubtitle, printFooter );
         }
 
-        private void navPrint_Click( object sender, EventArgs e ) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+		private void navPublish_Click( object sender, EventArgs e ) {
+			printReport( true );
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			printReport( false );
+		}
+		private bool printReport( bool inPublish ) {
+			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
             Font saveShowDefaultCellStyle = TeamSummaryDataGridView.DefaultCellStyle.Font;
             //TeamSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
             TeamSummaryDataGridView.RowTemplate.Height = 28;
 
-            bool CenterOnPage = true;
+			bool returnValue = true;
+			bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
             Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
@@ -2092,42 +2099,53 @@ namespace WaterskiScoringSystem.Tournament {
 
             if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
                 String curReportTitle = this.Text;
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + curReportTitle;
-                myPrintDoc = new PrintDocument();
+				StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+				printTitle.Append( "\n Sanction " + mySanctionNum );
+				printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+				printTitle.Append( "\n" + curReportTitle );
+				if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
+
+				myPrintDoc = new PrintDocument();
                 myPrintDoc.DocumentName = curReportTitle + "-Team";
                 myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
                 myPrintDoc.DefaultPageSettings.Landscape = true;
                 myPrintDataGrid = new DataGridViewPrinter( TeamSummaryDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
+                    CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
                 myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
                 myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
                 curPreviewDialog.Document = myPrintDoc;
                 curPreviewDialog.ShowDialog();
+				if ( inPublish ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
 
-                myPrintDoc = new PrintDocument();
+				myPrintDoc = new PrintDocument();
                 myPrintDoc.DocumentName = curReportTitle + "-Detail";
                 myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
                 myPrintDoc.DefaultPageSettings.Landscape = true;
                 myPrintDataGrid = new DataGridViewPrinter( PrintDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
+                    CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
 
                 myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
                 myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
                 myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
                 curPreviewDialog.Document = myPrintDoc;
                 curPreviewDialog.ShowDialog();
-            }
+				if ( inPublish ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
 
-            TeamSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+				returnValue = true;
+			
+			} else {
+				returnValue = false;
+			}
+
+			TeamSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
             TeamSummaryDataGridView.RowTemplate.Height = 28;
-        }
+			return returnValue;
+		}
 
-        // The PrintPage action for the PrintDocument control
-        private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
+		// The PrintPage action for the PrintDocument control
+		private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
             bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
             if ( more == true )
                 e.HasMorePages = true;

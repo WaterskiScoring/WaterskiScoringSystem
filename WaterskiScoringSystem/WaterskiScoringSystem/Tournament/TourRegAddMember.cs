@@ -402,7 +402,6 @@ namespace WaterskiScoringSystem.Tournament {
 							HelperFunctions.getDataRowColValue( curDataRow, "MemTypeDesc", "" )
 							, curMemExpireDate
 							, HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusCode", "" )
-							, HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusText", "" )
 							, curCanSki
 							, curCanSkiGR
 							, curWaiver

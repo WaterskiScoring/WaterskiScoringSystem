@@ -50,6 +50,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navAdd = new System.Windows.Forms.ToolStripButton();
 			this.navEdit = new System.Windows.Forms.ToolStripButton();
 			this.navRemove = new System.Windows.Forms.ToolStripButton();
+			this.navWithdraw = new System.Windows.Forms.ToolStripButton();
 			this.navSaveAs = new System.Windows.Forms.ToolStripButton();
 			this.navImportRankEquiv = new System.Windows.Forms.ToolStripButton();
 			this.navShowMember = new System.Windows.Forms.ToolStripButton();
@@ -60,12 +61,11 @@ namespace WaterskiScoringSystem.Tournament {
 			this.RegCountLabel = new System.Windows.Forms.Label();
 			this.SearchButton = new System.Windows.Forms.Button();
 			this.SearchTextbox = new System.Windows.Forms.TextBox();
-			this.navWithdraw = new System.Windows.Forms.ToolStripButton();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ReadyToSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.EligParticipate = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.ReadyForPlcmt = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.Withdrawn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.SlalomReg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -112,7 +112,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.SkierName,
             this.State,
             this.AgeGroup,
-            this.ReadyToSki,
+            this.EligParticipate,
             this.ReadyForPlcmt,
             this.Withdrawn,
             this.SlalomReg,
@@ -279,6 +279,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navRemove.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navRemove.Click += new System.EventHandler(this.navRemove_Click);
 			// 
+			// navWithdraw
+			// 
+			this.navWithdraw.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
+			this.navWithdraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navWithdraw.Name = "navWithdraw";
+			this.navWithdraw.Size = new System.Drawing.Size(62, 39);
+			this.navWithdraw.Text = "Withdraw";
+			this.navWithdraw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navWithdraw.Click += new System.EventHandler(this.navWithdraw_Click);
+			// 
 			// navSaveAs
 			// 
 			this.navSaveAs.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
@@ -390,16 +400,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SearchTextbox.TabIndex = 2;
 			this.SearchTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchTextbox_KeyUp);
 			// 
-			// navWithdraw
-			// 
-			this.navWithdraw.Image = global::WaterskiScoringSystem.Properties.Resources.minus_sign;
-			this.navWithdraw.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navWithdraw.Name = "navWithdraw";
-			this.navWithdraw.Size = new System.Drawing.Size(62, 39);
-			this.navWithdraw.Text = "Withdraw";
-			this.navWithdraw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navWithdraw.Click += new System.EventHandler(this.navWithdraw_Click);
-			// 
 			// MemberId
 			// 
 			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -440,21 +440,21 @@ namespace WaterskiScoringSystem.Tournament {
 			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.AgeGroup.Width = 50;
 			// 
-			// ReadyToSki
+			// EligParticipate
 			// 
-			this.ReadyToSki.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EligParticipate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			dataGridViewCellStyle4.NullValue = false;
 			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.ReadyToSki.DefaultCellStyle = dataGridViewCellStyle4;
-			this.ReadyToSki.FalseValue = "N";
-			this.ReadyToSki.HeaderText = "Eligible Part";
-			this.ReadyToSki.Name = "ReadyToSki";
-			this.ReadyToSki.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ReadyToSki.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-			this.ReadyToSki.TrueValue = "Y";
-			this.ReadyToSki.Width = 55;
+			this.EligParticipate.DefaultCellStyle = dataGridViewCellStyle4;
+			this.EligParticipate.FalseValue = "N";
+			this.EligParticipate.HeaderText = "Eligible Part";
+			this.EligParticipate.Name = "EligParticipate";
+			this.EligParticipate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EligParticipate.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.EligParticipate.TrueValue = "Y";
+			this.EligParticipate.Width = 55;
 			// 
 			// ReadyForPlcmt
 			// 
@@ -715,7 +715,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyToSki;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn EligParticipate;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn ReadyForPlcmt;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn Withdrawn;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn SlalomReg;

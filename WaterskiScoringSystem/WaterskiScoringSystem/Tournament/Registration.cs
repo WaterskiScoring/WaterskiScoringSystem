@@ -44,7 +44,7 @@ namespace WaterskiScoringSystem.Tournament {
 				Properties.Settings.Default.TourRegList_Sort = mySortCommand;
 			}
 
-			String[] curList = { "SkierName", "AgeGroup", "ReadyToSki", "ReadyForPlcmt", "SlalomReg", "TrickReg", "JumpReg", "SlalomGroup", "TrickGroup", "JumpGroup", "EntryDue", "EntryPaid", "PaymentMethod", "JumpHeight", "TrickBoat", "AwsaMbrshpPaymt" };
+			String[] curList = { "SkierName", "AgeGroup", "EligParticipate", "ReadyForPlcmt", "AwsaMbrshpComment", "SlalomReg", "TrickReg", "JumpReg", "SlalomGroup", "TrickGroup", "JumpGroup", "EntryDue", "EntryPaid", "PaymentMethod", "JumpHeight", "TrickBoat", "AwsaMbrshpPaymt" };
 			sortDialogForm = new SortDialogForm();
 			sortDialogForm.ColumnListArray = curList;
 
@@ -103,8 +103,10 @@ namespace WaterskiScoringSystem.Tournament {
 
 			tourRegDataGridView.Rows.Clear();
 			myTourRegDataTable = getTourRegData();
-			myTourRegDataTable.DefaultView.Sort = mySortCommand;
-			myTourRegDataTable.DefaultView.RowFilter = myFilterCmd;
+			String curTempSortCommand = mySortCommand.Replace( "EligParticipate", "ReadyToSki" );
+			String curTempFilterCommand = myFilterCmd.Replace( "EligParticipate", "ReadyToSki" );
+			myTourRegDataTable.DefaultView.Sort = curTempSortCommand;
+			myTourRegDataTable.DefaultView.RowFilter = curTempFilterCommand;
 			DataTable curDataTable = myTourRegDataTable.DefaultView.ToTable();
 
 			if ( curDataTable.Rows.Count == 0 ) {
@@ -131,7 +133,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
 				curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
-				curViewRow.Cells["ReadyToSki"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyToSki", "N" );
+				curViewRow.Cells["EligParticipate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyToSki", "N" );
 				curViewRow.Cells["ReadyForPlcmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "N" );
 				curViewRow.Cells["Withdrawn"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Withdrawn", "N" );
 				curViewRow.Cells["EntryDue"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "EntryDue", "", -2 );
@@ -242,7 +244,7 @@ namespace WaterskiScoringSystem.Tournament {
 				try {
 					String curJumpHeight = HelperFunctions.getViewRowColValue( curViewRow, "JumpHeight", "0" );
 					String curTrickBoat = HelperFunctions.getViewRowColValue( curViewRow, "TrickBoat", "" );
-					String curReadyToSki = HelperFunctions.getViewRowColValue( curViewRow, "ReadyToSki", "Y" );
+					String curEligParticipate = HelperFunctions.getViewRowColValue( curViewRow, "EligParticipate", "Y" );
 					String curReadyForPlcmt = HelperFunctions.getViewRowColValue( curViewRow, "ReadyForPlcmt", "Y" );
 					String curEntryDue = HelperFunctions.getViewRowColValue( curViewRow, "EntryDue", "Null" );
 					String curEntryPaid = HelperFunctions.getViewRowColValue( curViewRow, "EntryPaid", "Null" );
@@ -254,7 +256,7 @@ namespace WaterskiScoringSystem.Tournament {
 					StringBuilder curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update TourReg Set " );
 					curSqlStmt.Append( " SanctionId = '" + curSanctionId + "'" );
-					curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
+					curSqlStmt.Append( ", ReadyToSki = '" + curEligParticipate + "'" );
 					curSqlStmt.Append( ", ReadyForPlcmt = '" + curReadyForPlcmt + "'" );
 					curSqlStmt.Append( ", EntryDue = " + curEntryDue );
 					curSqlStmt.Append( ", EntryPaid = " + curEntryPaid );
@@ -324,6 +326,8 @@ namespace WaterskiScoringSystem.Tournament {
 		private void navExport_Click( object sender, EventArgs e ) {
 			String[] curSelectCommand = new String[7];
 			String[] curTableName = { "Tournament", "TourReg", "EventReg", "MemberList", "DivOrder", "OfficialWork", "OfficialWorkAsgmt" };
+			String curTempFilterCommand = myFilterCmd.Replace( "EligParticipate", "ReadyToSki" );
+
 			ExportData myExportData = new ExportData();
 
 			curSelectCommand[0] = "Select * from Tournament Where SanctionId = '" + mySanctionNum + "'";
@@ -336,7 +340,7 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( myFilterCmd.Length > 0 ) {
 					curSelectCommand[1] = curSelectCommand[1]
 						+ " Where SanctionId = '" + mySanctionNum + "'"
-						+ " And " + myFilterCmd;
+						+ " And " + curTempFilterCommand;
 				} else {
 					curSelectCommand[1] = curSelectCommand[1]
 						+ " Where SanctionId = '" + mySanctionNum + "'";
@@ -351,7 +355,7 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( myFilterCmd.Length > 0 ) {
 					curSelectCommand[2] = curSelectCommand[2]
 						+ " Where SanctionId = '" + mySanctionNum + "'"
-						+ " And " + myFilterCmd;
+						+ " And " + curTempFilterCommand;
 				} else {
 					curSelectCommand[2] = curSelectCommand[2]
 						+ " Where SanctionId = '" + mySanctionNum + "'";
@@ -367,7 +371,7 @@ namespace WaterskiScoringSystem.Tournament {
 				if ( myFilterCmd.Length > 0 ) {
 					curSelectCommand[3] = curSelectCommand[3]
 						+ "Where TourReg.MemberId = MemberList.MemberId And SanctionId = '" + mySanctionNum + "' "
-						+ "  And " + myFilterCmd + ") ";
+						+ "  And " + curTempFilterCommand + ") ";
 				} else {
 					curSelectCommand[3] = curSelectCommand[3]
 						+ "Where TourReg.MemberId = MemberList.MemberId And SanctionId = '" + mySanctionNum + "') ";
@@ -601,7 +605,7 @@ namespace WaterskiScoringSystem.Tournament {
 						|| curColName.Equals( "TrickBoat" )
 						|| curColName.Equals( "Notes" )
 						|| curColName.Equals( "Withdrawn" )
-						|| curColName.Equals( "ReadyToSki" )
+						|| curColName.Equals( "EligParticipate" )
 						|| curColName.Equals( "ReadyForPlcmt" )
 						|| curColName.Equals( "SlalomReg" )
 						|| curColName.Equals( "SlalomGroup" )
@@ -732,7 +736,7 @@ namespace WaterskiScoringSystem.Tournament {
 						|| curColName.Equals( "AwsaMbrshpComment" )
 						|| curColName.Equals( "TrickBoat" )
 						|| curColName.Equals( "Notes" )
-						|| curColName.Equals( "ReadyToSki" )
+						|| curColName.Equals( "EligParticipate" )
 					) {
 					String curValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "" );
 					if ( curValue == myOrigItemValue ) return;

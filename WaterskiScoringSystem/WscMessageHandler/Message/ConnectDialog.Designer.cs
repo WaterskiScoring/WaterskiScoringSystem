@@ -224,6 +224,8 @@ namespace WscMessageHandler.Message {
 			this.databaseFilenameTextBox.Name = "databaseFilenameTextBox";
 			this.databaseFilenameTextBox.Size = new System.Drawing.Size(534, 20);
 			this.databaseFilenameTextBox.TabIndex = 8;
+			this.databaseFilenameTextBox.Enter += new System.EventHandler(this.editTextOrigValue);
+			this.databaseFilenameTextBox.Validated += new System.EventHandler(this.databaseFilenameTextBox_Validated);
 			// 
 			// ConnectDialog
 			// 

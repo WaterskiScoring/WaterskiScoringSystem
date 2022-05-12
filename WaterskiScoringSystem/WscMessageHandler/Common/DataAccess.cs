@@ -259,6 +259,19 @@ namespace WscMessageHandler.Common {
 			return curReturnValue;
 		}
 
+		public static bool getNewDatabaseFile( String inFilename ) {
+			if ( inFilename == null || inFilename.Length == 0 ) return false;
+
+			DataAccessClose( true );
+			Properties.Settings.Default.DatabaseConnectionString =
+				String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True", inFilename );
+			if ( DataAccessOpen() ) {
+				Properties.Settings.Default.DatabaseFilename = inFilename;
+				return true;
+			}
+			return false;
+		}
+
 		public static bool getNewDatabaseFile() {
 			String curDatabaseDirectory = "";
 

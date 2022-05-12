@@ -2301,6 +2301,7 @@ namespace WaterskiScoringSystem.Slalom {
 					, (String)tourEventRegRow.Cells["EventGroup"].Value
 					, (String)tourEventRegRow.Cells["AgeGroup"].Value
 					, (String)tourEventRegRow.Cells["Gender"].Value
+					, (String)scoreEventClass.SelectedValue
 					, roundSelect.RoundValue
 					, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
 					, curPassSpeedKph
@@ -2810,8 +2811,8 @@ namespace WaterskiScoringSystem.Slalom {
 			} else if ( myRecapColumn.Equals( "BoatTimeRecap" ) ) {
 				if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) )
 					&& !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) )
-					&& Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6
-					&& (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
+					&& Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "0" ) ) == 6
+					&& HelperFunctions.getViewRowColValue(myRecapRow, "TimeInTolRecap", "N" ) == "Y"
 					) {
 					isRecapRowEnterHandled = true;
 					isAddRecapRowInProg = true;
@@ -5133,21 +5134,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round " );
-			curSqlStmt.Append( "FROM SlalomScore " );
-			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
-			curSqlStmt.Append( " AND Round = " + inRound + " " );
-			if ( mySanctionNum.EndsWith( "999" ) || mySanctionNum.EndsWith( "998" ) ) {
-				curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "' " );
-			}
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return true;
-			} else {
-				return false;
-			}
+			return HelperFunctions.checkForSkierRoundScore( mySanctionNum, "Slalom", inMemberId, inRound, inAgeGroup );
 		}
 
 		private void getEventRegData( int inRound ) {

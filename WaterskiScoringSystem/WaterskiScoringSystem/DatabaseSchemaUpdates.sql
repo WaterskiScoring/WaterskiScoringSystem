@@ -1086,3 +1086,6 @@ Update TourReg Set Withdrawn = 'N' Where Withdrawn is null;
 ## v22.59
 ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(256);
 
+## v22.70
+ALTER TABLE [BoatPath] ADD COLUMN homologation nchar(1);
+Update [BoatPath] Set homologation = 'L' Where homologation is null;
