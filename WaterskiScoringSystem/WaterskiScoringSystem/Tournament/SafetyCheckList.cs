@@ -963,7 +963,7 @@ namespace WaterskiScoringSystem.Tournament {
             String curFilename = sanctionIdTextBox.Text + "SD" + ".prn";
 			String curFileFilter = "prn files (*.prn)|*.prn|All files (*.*)|*.*";
 			outBuffer = HelperFunctions.getExportFile( curFileFilter, curFilename );
-			if ( outBuffer != null ) return;
+			if ( outBuffer == null ) return;
 
 			try {
 				Log.WriteFile( "Export safety check list data file begin: " + curFilename );

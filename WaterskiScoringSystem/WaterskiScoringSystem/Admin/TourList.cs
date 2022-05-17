@@ -1557,37 +1557,41 @@ namespace WaterskiScoringSystem.Admin {
 
                     curSqlStmt.Append("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'SanctionId' ORDER BY TABLE_NAME");
                     curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                    if (curDataTable != null) {
-                        foreach (DataRow curRow in curDataTable.Rows) {
-                            curSqlStmt = new StringBuilder( "" );
-                            curTableName = (String)curRow["TABLE_NAME"];
-                            if (!( curTableName.Equals( "tournament" ) )) {
-                                try {
-                                    curSqlStmt.Append("Delete " + curTableName + " where SanctionId = '" + curSanctionId + "'");
-                                    int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                    if (rowsProc < 0) {
-                                        MessageBox.Show( "Error attempting to delete tournament records from " + curTableName );
-                                    }
-                                } catch (Exception ex) {
-                                    String ExcpMsg = ex.Message;
-                                    if (curSqlStmt.ToString().Length > 0) {
-                                        ExcpMsg += "\n" + curSqlStmt.ToString();
-                                    }
-                                    MessageBox.Show( "Error attempting to delete tournament scores " + curTableName + "\n\nError: " + ExcpMsg );
-                                    return;
-                                }
-                            }
-                        }
-                    }
+					if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return;
 
+					foreach ( DataRow curRow in curDataTable.Rows ) {
+						curSqlStmt = new StringBuilder( "" );
+						curTableName = (String)curRow["TABLE_NAME"];
+						if ( !( curTableName.Equals( "tournament" ) ) ) {
+							try {
+								curSqlStmt.Append( "Delete " + curTableName + " where SanctionId = '" + curSanctionId + "'" );
+								int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+								if ( rowsProc < 0 ) {
+									MessageBox.Show( "Error attempting to delete tournament records from " + curTableName );
+								}
+							
+							} catch ( Exception ex ) {
+								String ExcpMsg = ex.Message;
+								if ( curSqlStmt.ToString().Length > 0 ) {
+									ExcpMsg += "\n" + curSqlStmt.ToString();
+								}
+								MessageBox.Show( "Error attempting to delete tournament scores " + curTableName + "\n\nError: " + ExcpMsg );
+								return;
+							}
+						}
+					}
 
+					if ( myTourViewIdx == 0 ) return;
+					myTourViewIdx -= 1;
+					dataGridView.CurrentCell = dataGridView.Rows[myTourViewIdx].Cells["SanctionId"];
+					myTourViewRow = dataGridView.Rows[myTourViewIdx];
+					setEntryForEdit( myTourViewRow );
 
-
-
-                } catch (Exception excp) {
+				} catch (Exception excp) {
                     MessageBox.Show("Error attempting to delete tournament and all scores \n" + excp.Message);
                 }
-            } else if (msgResp == DialogResult.No) {
+            
+			} else if (msgResp == DialogResult.No) {
                 isDataModified = false;
                 isDataModifiedSanctionId = false;
                 isDataModifiedClass = false;
@@ -1685,8 +1689,8 @@ namespace WaterskiScoringSystem.Admin {
 
 			Dictionary<string, object> curSanctionEntry = getSanctionFromUSAWS();
 			if ( curSanctionEntry == null ) {
-				myTourViewRow.Cells["SanctionId"].Value = editSanctionId.Text;
-				myTourViewRow.Cells["SanctionEditCode"].Value = int.Parse( editSanctionEditCode.Text );
+				myTourViewRow.Cells["SanctionId"].Value = "";
+				myTourViewRow.Cells["SanctionEditCode"].Value = "";
 				myTourViewRow.Cells["TourName"].Value = "";
 				myTourViewRow.Cells["TourClass"].Value = "C";
 				myTourViewRow.Cells["TourFederation"].Value = "usa";

@@ -4349,12 +4349,10 @@ namespace WaterskiScoringSystem.Common {
 			#endregion
 
 			DataTable curEligSkiersDataTable = null;
-			if ( inRules.ToLower().Equals( "iwwf" ) ) {
-				if ( inTeamPlcmt ) {
-					curEligSkiersDataTable = getTeamSkierList( inSanctionId, inEvent );
-				} else {
-					curEligSkiersDataTable = getOverallSkierList( inSanctionId );
-				}
+			if ( inTeamPlcmt ) {
+				curEligSkiersDataTable = getTeamSkierList( inSanctionId, inEvent );
+			} else {
+				curEligSkiersDataTable = getOverallSkierList( inSanctionId );
 			}
 
 			#region Determine maximum slalom scores per event per division
@@ -4400,7 +4398,7 @@ namespace WaterskiScoringSystem.Common {
 						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
 					}
 
-					if ( curScore > (Decimal)curMaxRow["ScoreSlalomMax"] ) {
+					if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreSlalomMax"] ) {
 						curMaxRow["ScoreSlalomMax"] = curScore;
 					}
 					if ( inRules.ToLower().Equals( "iwwf" ) ) {
@@ -4465,7 +4463,9 @@ namespace WaterskiScoringSystem.Common {
 						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
 					}
 
-					if ( curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] ) ) {
+					if ( curFindRowsOverallElig.Length > 0 
+						&& curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] ) 
+						) {
 						curMaxRow["ScoreTrickMax"] = curScore;
 					}
 					if ( inRules.ToLower().Equals( "iwwf" ) ) {
@@ -4534,7 +4534,7 @@ namespace WaterskiScoringSystem.Common {
 						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
 					}
 
-					if ( curScore > (Decimal)curMaxRow["ScoreJumpMax"] ) {
+					if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreJumpMax"] ) {
 						curMaxRow["ScoreJumpMax"] = curScore;
 					}
 					if ( inRules.ToLower().Equals( "iwwf" ) ) {

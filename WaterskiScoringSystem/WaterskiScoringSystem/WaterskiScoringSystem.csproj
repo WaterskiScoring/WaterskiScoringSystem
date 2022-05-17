@@ -399,7 +399,6 @@
       <DependentUpon>TourMergeSanctionNum.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\TourProperties.cs" />
-    <Compile Include="Externalnterface\AwsaMembership.cs" />
     <Compile Include="Externalnterface\ImportMemberFile.cs" />
     <Compile Include="Externalnterface\MemberEntry.cs" />
     <Compile Include="Externalnterface\WscHandler.cs" />
