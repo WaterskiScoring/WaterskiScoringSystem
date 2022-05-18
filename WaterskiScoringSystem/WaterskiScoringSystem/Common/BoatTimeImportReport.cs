@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Common {
@@ -53,33 +46,47 @@ namespace WaterskiScoringSystem.Common {
 				this.Location = Properties.Settings.Default.BoatTimeImportReport_Location;
 			}
 
+			// Retrieve data from database
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+
+			setColumnsView();
+
+			if ( mySanctionNum == null ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+			if ( mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+
+			//Retrieve selected tournament attributes
+			DataTable curTourDataTable = getTourData();
+			if ( curTourDataTable.Rows.Count > 0 ) {
+				myTourRow = curTourDataTable.Rows[0];
+				myTourRules = (String)myTourRow["Rules"];
+			}
+		}
+
+		private void setColumnsView() {
 			if ( myEvent.Equals( "Slalom" ) ) {
 				this.Text += " - Slalom";
 
 			} else {
 				this.Text += " - Jump";
-			}
 
-			// Retrieve data from database
-			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-
-			if ( mySanctionNum == null ) {
-				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-			} else {
-				if ( mySanctionNum.Length < 6 ) {
-					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				} else {
-					//Retrieve selected tournament attributes
-					DataTable curTourDataTable = getTourData();
-					if ( curTourDataTable.Rows.Count > 0 ) {
-						myTourRow = curTourDataTable.Rows[0];
-						myTourRules = (String)myTourRow["Rules"];
-					}
-				}
+				BoatTimeBuoy1.HeaderText = "52M Time";
+				BoatTimeBuoy2.HeaderText = "82M Time";
+				BoatTimeBuoy3.HeaderText = "41M Time";
+				BoatTimeBuoy4.Visible = false;
+				BoatTimeBuoy5.Visible = false;
+				BoatTimeBuoy6.Visible = false;
+				BoatTimeBuoy7.Visible = false;
+				PassLineLength.Visible = false;
 			}
 
 		}
-		
+
 		private void DataGridView_DataError( object sender, DataGridViewDataErrorEventArgs e ) {
 			MessageBox.Show( "Error happened " + e.Context.ToString() );
 			if ( e.Context == DataGridViewDataErrorContexts.Commit ) {

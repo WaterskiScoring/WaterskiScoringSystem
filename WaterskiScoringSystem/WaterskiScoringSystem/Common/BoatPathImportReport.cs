@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Common {
@@ -52,12 +45,7 @@ namespace WaterskiScoringSystem.Common {
 				this.Location = Properties.Settings.Default.BoatPathImportReport_Location;
 			}
 
-			if ( myEvent.Equals( "Slalom" ) ) {
-				this.Text += " - Slalom";
-
-			} else {
-				this.Text += " - Jump";
-			}
+			setColumnsView();
 
 			// Retrieve data from database
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -75,6 +63,40 @@ namespace WaterskiScoringSystem.Common {
 						myTourRules = (String)myTourRow["Rules"];
 					}
 				}
+			}
+		}
+
+		private void setColumnsView() {
+			PathDevZone0.Visible = false;
+			PathDevZone1.Visible = false;
+			PathDevZone2.Visible = false;
+			PathDevZone3.Visible = false;
+			PathDevZone4.Visible = false;
+			PathDevZone5.Visible = false;
+			PathDevZone6.Visible = false;
+
+			if ( myEvent.Equals( "Slalom" ) ) {
+				this.Text += " - Slalom";
+
+			} else {
+				this.Text += " - Jump";
+
+				PathDevBuoy0.HeaderText = "Dev 180M";
+				PathDevBuoy1.HeaderText = "Dev ST";
+				PathDevBuoy2.HeaderText = "Dev 52M";
+				PathDevBuoy3.HeaderText = "Dev 82M";
+				PathDevBuoy4.HeaderText = "Dev 41M";
+				PathDevBuoy5.HeaderText = "Dev EC";
+				PathDevBuoy6.Visible = false;
+
+				PathDevCum0.Visible = false;
+				PathDevCum1.Visible = false;
+				PathDevCum2.Visible = false;
+				PathDevCum3.Visible = false;
+				PathDevCum4.Visible = false;
+				PathDevCum5.Visible = false;
+				PathDevCum6.Visible = false;
+				PassLineLength.Visible = false;
 			}
 		}
 
@@ -185,16 +207,23 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		private void loadDataGridJump( DataRow curRow, DataGridViewRow curViewRow ) {
+			if ( curRow["PassSpeedKph"] != System.DBNull.Value ) curViewRow.Cells["PassSpeedKph"].Value = ( (Byte)curRow["PassSpeedKph"] ).ToString();
+			
 			if ( curRow["PathDevBuoy0"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy0"].Value = ( (Decimal)curRow["PathDevBuoy0"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum0"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum0"].Value = ( (Decimal)curRow["PathDevCum0"] ).ToString( "#0.00" );
+			
 			if ( curRow["PathDevBuoy1"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy1"].Value = ( (Decimal)curRow["PathDevBuoy1"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum1"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum1"].Value = ( (Decimal)curRow["PathDevCum1"] ).ToString( "#0.00" );
+			
 			if ( curRow["PathDevBuoy2"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy2"].Value = ( (Decimal)curRow["PathDevBuoy2"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum2"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum2"].Value = ( (Decimal)curRow["PathDevCum2"] ).ToString( "#0.00" );
+			
 			if ( curRow["PathDevBuoy3"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy3"].Value = ( (Decimal)curRow["PathDevBuoy3"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum3"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum3"].Value = ( (Decimal)curRow["PathDevCum3"] ).ToString( "#0.00" );
+			
 			if ( curRow["PathDevBuoy4"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy4"].Value = ( (Decimal)curRow["PathDevBuoy4"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum4"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum4"].Value = ( (Decimal)curRow["PathDevCum4"] ).ToString( "#0.00" );
+			
 			if ( curRow["PathDevBuoy5"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy5"].Value = ( (Decimal)curRow["PathDevBuoy5"] ).ToString( "#0.00" );
 			if ( curRow["PathDevCum5"] != System.DBNull.Value ) curViewRow.Cells["PathDevCum5"].Value = ( (Decimal)curRow["PathDevCum5"] ).ToString( "#0.00" );
 		}
