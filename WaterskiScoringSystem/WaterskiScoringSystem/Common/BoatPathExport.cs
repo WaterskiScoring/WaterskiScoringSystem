@@ -246,29 +246,31 @@ namespace WaterskiScoringSystem.Common {
 
 			if ( curRow["PathDevBuoy0"] != System.DBNull.Value ) {
 				curViewRow.Cells["PathDevBuoy0"].Value = ( (Decimal)curRow["PathDevBuoy0"] ).ToString( "#0.00" );
-				if ( Math.Abs( (Decimal)curRow["PathDevBuoy0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
+				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0
+					&& Math.Abs( (Decimal)curRow["PathDevBuoy0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevBuoy0"].Style.Font = curFontBold;
 					curViewRow.Cells["PathDevBuoy0"].Style.ForeColor = Color.Red;
 				}
 			}
 			if ( curRow["PathDevZone0"] != System.DBNull.Value ) {
 				curViewRow.Cells["PathDevZone0"].Value = ( (Decimal)curRow["PathDevZone0"] ).ToString( "#0.00" );
-				if ( Math.Abs( (Decimal)curRow["PathDevZone0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
+				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0 
+					&& Math.Abs( (Decimal)curRow["PathDevZone0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevZone0"].Style.Font = curFontBold;
 					curViewRow.Cells["PathDevZone0"].Style.ForeColor = Color.Red;
 				}
 			}
 			if ( curRow["PathDevCum0"] != System.DBNull.Value ) {
 				curViewRow.Cells["PathDevCum0"].Value = ( (Decimal)curRow["PathDevCum0"] ).ToString( "#0.00" );
-				if ( Math.Abs( (Decimal)curRow["PathDevCum0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] ) {
+				if ( (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] > 0
+					&& Math.Abs( (Decimal)curRow["PathDevCum0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] ) {
 					curViewRow.Cells["PathDevCum0"].Style.Font = curFontBold;
 					curViewRow.Cells["PathDevCum0"].Style.ForeColor = Color.Red;
 				}
 			}
-
 			for ( int curIdx = 1; curIdx <= 6; curIdx++ ) {
-				if ( curPassScore < (curIdx - 1) ) break;
-				
+				if ( curPassScore <= (curIdx - 1) ) break;
+
 				if ( curRow["PathDevBuoy" + curIdx] != System.DBNull.Value ) {
 					curViewRow.Cells["PathDevBuoy" + curIdx].Value = ( (Decimal)curRow["PathDevBuoy" + curIdx] ).ToString( "#0.00" );
 					if ( Math.Abs( (Decimal)curRow["PathDevBuoy" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MinDev"] ) {

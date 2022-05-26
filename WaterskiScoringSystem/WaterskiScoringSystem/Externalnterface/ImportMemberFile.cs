@@ -23,7 +23,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) isTourNcwsa = true;
 
-			ImportMember myImportMember = new ImportMember( null );
+			myImportMember = new ImportMember( null );
 		}
 		
 		public void importData() {

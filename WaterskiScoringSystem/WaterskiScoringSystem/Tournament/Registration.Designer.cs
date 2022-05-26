@@ -76,6 +76,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JumpGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.IwwfLicense = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.AwsaMbrshpComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EntryDue = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,6 +124,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.JumpGroup,
             this.JumpHeight,
             this.TrickBoat,
+            this.IwwfLicense,
             this.AwsaMbrshpComment,
             this.Notes,
             this.EntryDue,
@@ -572,12 +574,25 @@ namespace WaterskiScoringSystem.Tournament {
 			this.TrickBoat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.TrickBoat.Width = 50;
 			// 
+			// IwwfLicense
+			// 
+			this.IwwfLicense.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.IwwfLicense.FalseValue = "N";
+			this.IwwfLicense.HeaderText = "EMS Lic";
+			this.IwwfLicense.IndeterminateValue = "N";
+			this.IwwfLicense.Name = "IwwfLicense";
+			this.IwwfLicense.ReadOnly = true;
+			this.IwwfLicense.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.IwwfLicense.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			this.IwwfLicense.TrueValue = "Y";
+			this.IwwfLicense.Width = 35;
+			// 
 			// AwsaMbrshpComment
 			// 
 			this.AwsaMbrshpComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.AwsaMbrshpComment.HeaderText = "Membership Status";
 			this.AwsaMbrshpComment.Name = "AwsaMbrshpComment";
-			this.AwsaMbrshpComment.Width = 120;
+			this.AwsaMbrshpComment.Width = 150;
 			// 
 			// Notes
 			// 
@@ -726,6 +741,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickBoat;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn IwwfLicense;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AwsaMbrshpComment;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EntryDue;

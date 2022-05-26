@@ -1089,3 +1089,12 @@ ALTER TABLE [MemberList] ALTER COLUMN MemberStatus nvarchar(256);
 ## v22.70
 ALTER TABLE [BoatPath] ADD COLUMN homologation nchar(1);
 Update [BoatPath] Set homologation = 'L' Where homologation is null;
+
+## v22.71
+ALTER TABLE [TourReg] ADD COLUMN IwwfLicense nchar(1);
+
+Update [TourReg] Set IwwfLicense = 'N';
+
+Update [TourReg] Set IwwfLicense = 'Y'
+Where exists (Select R.EventClass FROM EventReg AS R 
+Where R.SanctionId = TourReg.SanctionId AND R.MemberId = TourReg.MemberId AND R.EventClass in ('L', 'R'));

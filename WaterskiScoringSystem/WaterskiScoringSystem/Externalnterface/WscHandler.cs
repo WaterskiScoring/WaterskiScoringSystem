@@ -175,6 +175,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "rope", rope }
 					, { "score", score + "@" + speed.ToString() + "/" + rope }
 				};
+				// 	, { "score_buoys", (decimal)curDataRow["Score"] }
+				// consider changing how the score attribute is show for jump
+
 				addWscMsgSend( "scoring_score", JsonConvert.SerializeObject( sendMsg ) );
 
 				sendLeaderBoard( athleteId, athleteEvent, athleteGroup, round );

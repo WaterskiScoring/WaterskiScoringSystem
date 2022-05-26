@@ -467,12 +467,14 @@ namespace WaterskiScoringSystem.Tournament {
             isAgeGroupChanged = false;
 
             if ( AgeGroupSelect.CurrentValue.Trim().Length > 1 ) {
-                if ( myAgeGroup.Length > 0 ) {
+                if ( myAgeGroup != null && myAgeGroup.Length > 0 ) {
                     if (!( myAgeGroup.Equals( AgeGroupSelect.CurrentValue.Trim().Substring( 0, 2 ) ) ) ) {
                         isAgeGroupChanged = true;
                     }
-                }
-            } else {
+                } else {
+					isAgeGroupChanged = true;
+				}
+			} else {
                 curReturnStatus = false;
                 MessageBox.Show( "Age group is a required field" );
             }

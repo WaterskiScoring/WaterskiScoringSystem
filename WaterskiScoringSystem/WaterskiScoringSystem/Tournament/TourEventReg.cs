@@ -161,7 +161,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
             String curMethodName = "Tournament:TourEventReg:addEvent";
             String curMsg = "";
-            String curEventGroup, curEventClass, curTeamCode, curRankingRating = "";
+            String curEventGroup, curEventClass, curRankingRating = "";
             Decimal curRankingScore = 0, curHCapBase = 0, curHCapScore = 0;
             DataRow curTourRegRow, curTourEventRegRow;
             DataRow curSkierRankingRow;
@@ -199,11 +199,17 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curEventClass = setSkierEventClass( inEventClass, inEvent, inAgeDiv );
 
-				//if ( curEventClass )
 				DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
-				if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-					if ( !( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], inMemberId, (String)this.myTourRow["EventDates"] ) ) ) {
-						curEventClass = "E";
+				if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] 
+					|| ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+					String curIwwfLicense = (String)curTourRegRow["IwwfLicense"];
+					if ( curIwwfLicense.Equals('N') ) {
+						if ( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], inMemberId, (String)this.myTourRow["EventDates"] ) ) {
+							updateTourMemberIwwfLicense( mySanctionNum, inMemberId, inAgeDiv, "Y" );
+						} else { 
+							curEventClass = "E";
+						}
+
 					}
 				}
 
@@ -485,30 +491,9 @@ namespace WaterskiScoringSystem.Tournament {
 				String curJumpHeight = "0";
 				if ( inJumpHeight.Length > 0 ) curJumpHeight = inJumpHeight;
 
-				//String curFed = HelperFunctions.getDataRowColValue( curMemberRow, "Federation", "" );
-				//String curCity = HelperFunctions.getDataRowColValue( curMemberRow, "City", "" );
-				//String curState = HelperFunctions.getDataRowColValue( curMemberRow, "State", "" );
-
-				//String curGender = HelperFunctions.getDataRowColValue( curMemberRow, "Gender", "" );
-				/*
-				Int16 curSkiYearAge = Convert.ToInt16(HelperFunctions.getDataRowColValue( curMemberRow, "SkiYearAge", "0" ));
-				if ( curSkiYearAge < 1 ) {
-					String curDateOfBirth = HelperFunctions.getDataRowColValue( curMemberRow, "DateOfBirth", "" );
-					if ( curDateOfBirth.Length > 8 ) {
-						try {
-							int curBirthYear = Convert.ToDateTime( curDateOfBirth ).Year;
-							int curTourYear = 2000 + Convert.ToInt32( mySanctionNum.Substring( 0, 2 ) );
-							curSkiYearAge = Convert.ToInt16( curTourYear - curBirthYear );
-						} catch {
-							curSkiYearAge = 0;
-						}
-					}
-				}
-				 */
-
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert TourReg (" );
-				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, TrickBoat, JumpHeight " );
+				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, IwwfLicense, TrickBoat, JumpHeight " );
 				curSqlStmt.Append(" , Federation, Gender, City, State, SkiYearAge, Notes, AwsaMbrshpComment, LastUpdateDate");
 				curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
@@ -517,6 +502,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.ReadyToSki + "'" );
 				curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
+				curSqlStmt.Append( ", 'N'" );
 				curSqlStmt.Append( ", '" + inTrickBoat + "'" );
 				curSqlStmt.Append( ", " + curJumpHeight );
 				curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
@@ -998,15 +984,27 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
-        private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
+		private int updateTourMemberIwwfLicense( String inSanctionId, String inMemberId, String inAgeGroup, String inIwwfLicense ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Update TourReg " );
+			curSqlStmt.Append( "Set IwwfLicense = '" + inIwwfLicense + "' " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
+			if ( inAgeGroup.Length > 0 ) {
+				curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "'" );
+			}
+			return DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+		}
+
+		private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append("SELECT PK, MemberId, SanctionId, SkierName, AgeGroup, COALESCE(ReadyForPlcmt, 'N') as ReadyForPlcmt, ");
-            curSqlStmt.Append(" EntryDue, EntryPaid, PaymentMethod, ReadyToSki, ReadyForPlcmt, AwsaMbrshpPaymt, ");
-            curSqlStmt.Append( " AwsaMbrshpComment, Weight, TrickBoat, JumpHeight, Notes" );
-            curSqlStmt.Append( " FROM TourReg " );
-            curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
+            curSqlStmt.Append("SELECT PK, MemberId, SanctionId, SkierName, AgeGroup");
+			curSqlStmt.Append( ", COALESCE(ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(IwwfLicense, 'N') as IwwfLicense" );
+			curSqlStmt.Append(", EntryDue, EntryPaid, PaymentMethod, ReadyToSki, ReadyForPlcmt, AwsaMbrshpPaymt");
+            curSqlStmt.Append( ", AwsaMbrshpComment, Weight, TrickBoat, JumpHeight, Notes " );
+            curSqlStmt.Append( "FROM TourReg " );
+            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
             if ( inAgeGroup.Length > 0 ) {
-                curSqlStmt.Append( " AND AgeGroup = '" + inAgeGroup + "'" );
+                curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "'" );
             }
             curSqlStmt.Append( " ORDER BY SkierName " );
             DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );

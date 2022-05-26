@@ -33,9 +33,10 @@ namespace WaterskiScoringSystem.Tournament {
 			inputLastName.Text = "";
 			inputMemberId.Text = "";
 			inputState.Text = "";
+			AddButton.Text = "Add";
 		}
 
-        public bool isDataModified {
+		public bool isDataModified {
             get {
                 return myDataModified;
             }
@@ -43,6 +44,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 		public void setInputMemberId( String inputValue ) {
 			myInputMemberId = inputValue;
+			AddButton.Text = "Update";
 		}
 
 		private void TourRegAddMember_Load( object sender, EventArgs e ) {
@@ -340,7 +342,7 @@ namespace WaterskiScoringSystem.Tournament {
 						if ( curMemberId.Length > 10) {
 							curViewRow.Cells["MemberId"].Value = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
 						} else {
-							curViewRow.Cells["MemberId"].Value = "";
+							curViewRow.Cells["MemberId"].Value = curMemberId;
 						}
 						curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Age", "0" );
 						curViewRow.Cells["Div"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
@@ -433,8 +435,8 @@ namespace WaterskiScoringSystem.Tournament {
 
             // Determine if the OK button was clicked on the dialog box.
             if ( myEditMemberDialog.DialogResult == DialogResult.OK ) {
-                searchMemberList(myEditMemberDialog.MemberId, null, null, null);
-                myMemberListDataTable = searchMemberList(myEditMemberDialog.MemberId, null, null, null);
+				localSearchLoc.Checked = true;
+				myMemberListDataTable = searchMemberList(myEditMemberDialog.MemberId, null, null, null);
                 if ( myMemberListDataTable != null ) {
                     loadDataGridView();
                     DataGridView.Rows[0].Selected = true;

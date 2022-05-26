@@ -141,6 +141,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curViewRow.Cells["PaymentMethod"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PaymentMethod", "" );
 				curViewRow.Cells["JumpHeight"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "JumpHeight", "", -1 );
 				curViewRow.Cells["TrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "" );
+				curViewRow.Cells["IwwfLicense"].Value = HelperFunctions.getDataRowColValue( curDataRow, "IwwfLicense", "N" );
 				curViewRow.Cells["AwsaMbrshpPaymt"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "AwsaMbrshpPaymt", "", -2 );
 				curViewRow.Cells["AwsaMbrshpComment"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AwsaMbrshpComment", "" );
 				curViewRow.Cells["Notes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
@@ -1222,8 +1223,8 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable getTourRegData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State" );
-            curSqlStmt.Append( ", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.Withdrawn, R.ReadyForPlcmt, R.AwsaMbrshpPaymt, R.AwsaMbrshpComment" );
-            curSqlStmt.Append( ", R.TrickBoat, COALESCE(R.JumpHeight, 'C') as JumpHeight, R.Notes" );
+            curSqlStmt.Append( ", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.Withdrawn, R.ReadyForPlcmt, R.IwwfLicense, R.AwsaMbrshpPaymt" );
+            curSqlStmt.Append( ", R.TrickBoat, COALESCE(R.JumpHeight, 'C') as JumpHeight, R.AwsaMbrshpComment, R.Notes" );
             curSqlStmt.Append( ", S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup" );
             curSqlStmt.Append( ", T.Event AS TrickEvent, T.EventGroup AS TrickGroup" );
             curSqlStmt.Append( ", J.Event AS JumpEvent, J.EventGroup AS JumpGroup " );

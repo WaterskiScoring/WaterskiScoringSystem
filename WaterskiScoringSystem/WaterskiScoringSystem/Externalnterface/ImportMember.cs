@@ -377,7 +377,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( !( curDataValid ) ) return curDataValid;
 				// Collegiate skier is not registered for any events, treat as an error because it shouldn't get to this point
-				if ( curTeamSlalom.Length == 0 && curTeamSlalom.Length == 0 && curTeamJump.Length == 0 ) return false;
+				if ( curTeamSlalom.Length == 0 && curTeamTrick.Length == 0 && curTeamJump.Length == 0 ) return false;
 
 				#region Check data to determine team assignments (A or B)
 

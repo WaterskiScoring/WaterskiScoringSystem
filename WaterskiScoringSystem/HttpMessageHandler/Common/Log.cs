@@ -3,10 +3,10 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WscMessageHandler.Common {
+namespace HttpMessageHandler.Common {
 
 	class Log {
-		private static String myLogFileExtn = "-MessageHandler.log";
+		private static String myLogFileExtn = "-HttpMessageHandler.log";
 		private static String myLogFileName = "";
 		private static object logWriteLock = new object();
 
