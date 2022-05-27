@@ -65,7 +65,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ConnectMgmtData.cs" />
+    <Compile Include="Common\DataAccess.cs" />
+    <Compile Include="Common\HelperFunctions.cs" />
     <Compile Include="Common\Log.cs" />
+    <Compile Include="Externalnterface\ExportLiveWeb.cs" />
+    <Compile Include="Externalnterface\ExportLiveWebDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Externalnterface\ExportLiveWebDialog.Designer.cs">
+      <DependentUpon>ExportLiveWebDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Externalnterface\SendMessageHttp.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Externalnterface\ExportLiveWebDialog.resx">
+      <DependentUpon>ExportLiveWebDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Message\Controller.resx">
       <DependentUpon>Controller.cs</DependentUpon>
     </EmbeddedResource>

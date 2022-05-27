@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using HttpMessageHandler.Common;
+using HttpMessageHandler.Externalnterface;
 
 namespace HttpMessageHandler.Message {
 	public partial class Controller : Form {
@@ -21,8 +17,9 @@ namespace HttpMessageHandler.Message {
 		private int myCountHeartBeatFailed = 0;
 		private int myHeartBeatViewRowIdx = 0;
 
-		private Timer myConnectTimer = null;
-		private Timer myHeartBeatTimer = null;
+		private static System.Timers.Timer myConnectTimer = null;
+		private static System.Timers.Timer myHeartBeatTimer = null;
+		private static System.Timers.Timer myReadMessagesTimer = null;
 
 		public Controller() {
 			InitializeComponent();
@@ -39,25 +36,21 @@ namespace HttpMessageHandler.Message {
 
 			ConnectButton.Enabled = true;
 			DisconnectButton.Enabled = false;
-			
-			Timer curTimerObj = new Timer() { Interval = 50 };
-			curTimerObj.Tick += new EventHandler( execHandlerConnectTasks );
-			curTimerObj.Start();
+
+			myConnectTimer = new System.Timers.Timer( 100 );
+			myConnectTimer.Elapsed += execConnectDialog;
+			myConnectTimer.AutoReset = false;
+			myConnectTimer.Enabled = true;
 		}
 
 		private void Controller_FormClosing( object sender, FormClosingEventArgs e ) {
 			String curMethodName = "Controller: Controller_FormClosing: ";
-			if ( Listener.isWscConnected ) {
-				Log.WriteFile( String.Format( "{0}Exiting WaterSkiConnect handler", curMethodName ) );
-				try {
-					terminateMonitors( "" );
+			Log.WriteFile( String.Format( "{0}Exiting LiveWebConnect handler", curMethodName ) );
+			try {
+				terminateMonitors( "" );
 
-				} catch ( Exception ex ) {
-					MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
-				}
-
-			} else {
-				Log.WriteFile( String.Format( "{0}Exit byassed connect handler not connected", curMethodName ) );
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
 			}
 		}
 
@@ -72,62 +65,65 @@ namespace HttpMessageHandler.Message {
 			Log.WriteFile( "Controller_FormClosed: connect handler closed" );
 		}
 
-		private void execHandlerConnectTasks( object sender, EventArgs e ) {
+		private void execConnectDialog( object sender, EventArgs e ) {
+			String curMethodName = "Controller: execConnectDialog: ";
+
+			// Display the form as a modal dialog box.
+			LiveWebConnectDialog connectDialog = new LiveWebConnectDialog() {
+				windowLocation = new System.Drawing.Point( this.Location.X + 100, this.Location.Y + 100 )
+			};
+			DialogResult connectDialogResult = connectDialog.ShowDialog();
+			if ( connectDialogResult == DialogResult.OK ) {
+				if ( connectDialog.dialogCommand.Equals( "Connected" ) ) {
+					ExportLiveWeb.LiveWebLocation = connectDialog.WebLocation;
+					execHandlerConnectTasks();
+
+				} else if ( connectDialog.dialogCommand.Equals( "Disconnected" ) ) {
+					try {
+						terminateMonitors( "" );
+
+					} catch ( Exception ex ) {
+						String curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
+						Log.WriteFile( curMsg );
+						MessageBox.Show( curMsg );
+					}
+				}
+			}
+		}
+
+		private void execHandlerConnectTasks() {
 			String curMethodName = "Controller: execHandlerConnectTasks: ";
 			bool boldMsg = false, errorMsg = false;
 			String curMsg = "";
 			myCountConnectCheckFailed = 0;
 
-			if ( sender != null ) {
-				Timer curTimerObj = (Timer)sender;
-				curTimerObj.Stop();
-				curTimerObj.Tick -= new EventHandler( execHandlerConnectTasks );
-			}
-
 			try {
 				ActivateTournament();
 
-				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				curMsg = String.Format( "{0}attempting connection to LiveWebConnect for tournament {1}"
+					, curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
 				HelperFunctions.cleanMsgQueues();
-				curMsg = String.Format( "{0}message queues cleaned for {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				curMsg = String.Format( "{0}message queues cleaned for {1}"
+					, curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
-				Task.Factory.StartNew( () => ListenHandler.startWscMessageHandler() );
-				curMsg = String.Format( "{0}activating ListenHandler for {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				startTransmitter();
+				curMsg = String.Format( "{0}starting Transmitter for {1}"
+					, curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
-				Listener.startWscListener();
-				curMsg = String.Format( "{0}starting Listener for {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-				addViewMessage( curMsg, boldMsg, errorMsg );
-
-				Transmitter.startWscTransmitter();
-				curMsg = String.Format( "{0}starting Transmitter for {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-				addViewMessage( curMsg, boldMsg, errorMsg );
-
-				// Create a timer with 2.5 second interval
-				myConnectTimer = new Timer() { Interval = 2500 };
-				myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
-				myConnectTimer.Start();
-
-				WaterSkiConnectButton.Enabled = false;
+				ConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
-				ShowPinButton.Enabled = true;
 
 			} catch ( Exception ex ) {
 				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
 				MessageBox.Show( curMsg );
 
-				WaterSkiConnectButton.Enabled = true;
+				ConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
-				ShowPinButton.Enabled = false;
 			}
 		}
 
@@ -144,9 +140,8 @@ namespace HttpMessageHandler.Message {
 				curMsg = String.Format( "{0}DataDirectory: {1}", curMethodName, Properties.Settings.Default.DataDirectory );
 				addViewMessage( curMsg, false, false );
 
-				WaterSkiConnectButton.Enabled = false;
+				ConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
-				ShowPinButton.Enabled = true;
 
 			} else {
 				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
@@ -154,9 +149,8 @@ namespace HttpMessageHandler.Message {
 				Log.WriteFile( curMsg );
 				addViewMessage( curMsg, true, true );
 
-				WaterSkiConnectButton.Enabled = true;
+				ConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
-				ShowPinButton.Enabled = false;
 			}
 		}
 
@@ -192,63 +186,30 @@ namespace HttpMessageHandler.Message {
 			if ( errorMsg ) curViewRow.Cells["Message"].Style.ForeColor = Color.Red;
 		}
 
-		private void waitForMonitorConnection( object sender, EventArgs e ) {
-			String curMethodName = "Controller: waitForMonitorConnection: ";
-			String connectStatus = "", curMsg = "";
+		private void startTransmitter() {
+			String curMethodName = "Controller: startTransmitter: ";
+			Log.WriteFile( String.Format( "{0}start in progress, {1}/{2}", curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId ) );
 
-			DataRow curHeatBeatRow = HelperFunctions.getMonitorHeartBeat( "Listener" );
-			if ( curHeatBeatRow != null ) {
-				curMsg = String.Format( "{0}{1} heart beat {2} ", curMethodName, (String)curHeatBeatRow["MonitorName"], ( (DateTime)curHeatBeatRow["HeartBeat"] ).ToString( myDisplayDateFormat ) );
+			try {
+				HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+
+				// Create a timer with 5 minute interval.
+				heartBeatTimer = new System.Timers.Timer( 300000 );
+				heartBeatTimer.Elapsed += checkMonitorHeartBeat;
+				heartBeatTimer.AutoReset = true;
+				heartBeatTimer.Enabled = true;
+
+				// Create a timer with 2 second interval.
+				readMessagesTimer = new System.Timers.Timer( 2000 );
+				readMessagesTimer.Elapsed += readSendMessages;
+				readMessagesTimer.AutoReset = false;
+				readMessagesTimer.Enabled = true;
+
+			} catch ( Exception ex ) {
+				String curMsg = String.Format( "{0}Exception encounter {1}: {2}", curMethodName, ex.Message, ex.StackTrace );
 				Log.WriteFile( curMsg );
-
-				curHeatBeatRow = HelperFunctions.getMonitorHeartBeat( "Transmitter" );
+				MessageBox.Show( curMsg );
 			}
-			if ( curHeatBeatRow == null ) {
-				myCountConnectCheckFailed++;
-				if ( myCountConnectCheckFailed < 120 ) return;
-
-				connectStatus = "failed";
-				curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}"
-					, curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-				addViewMessage( curMsg, true, true );
-
-				curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}"
-					, curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-				addViewMessage( curMsg, true, true );
-
-				myConnectTimer.Stop();
-				myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
-				myConnectTimer = null;
-				return;
-			}
-
-			curMsg = String.Format( "{0}{1} heart beat {2} ", curMethodName, (String)curHeatBeatRow["MonitorName"], ( (DateTime)curHeatBeatRow["HeartBeat"] ).ToString( myDisplayDateFormat ) );
-			Log.WriteFile( curMsg );
-
-			myConnectTimer.Stop();
-			myConnectTimer.Tick += new EventHandler( waitForMonitorConnection );
-			myConnectTimer = null;
-
-			connectStatus = "completed";
-			curMsg = String.Format( "{0}Listener connection {1} for {2} / {3}", curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-			addViewMessage( curMsg, false, false );
-
-			curMsg = String.Format( "{0}Transmitter connection {1} for {2} / {3}", curMethodName, connectStatus, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
-			addViewMessage( curMsg, false, false );
-
-			myCountHeartBeatFailed = 0;
-			myMonitorDataTable = HelperFunctions.getMonitorHeartBeatAll();
-			myHeartBeatViewRowIdx = MessageView.Rows.Count;
-			showHeartBeatMsg();
-
-			WaterSkiConnectButton.Visible = false;
-			DisconnectButton.Visible = true;
-			ShowPinButton.Visible = true;
-
-			// Create a timer with 5 minute interval.
-			myHeartBeatTimer = new Timer() { Interval = 300002 };
-			myHeartBeatTimer.Tick += new EventHandler( checkMonitorHeartBeat );
-			myHeartBeatTimer.Start();
 		}
 
 		private void checkMonitorHeartBeat( object sender, EventArgs e ) {
@@ -306,17 +267,16 @@ namespace HttpMessageHandler.Message {
 			curViewRow.Cells["Message"].Style.Font = myMsgFontBold;
 			curViewRow.Cells["Message"].Style.ForeColor = Color.Red;
 
-			ListenHandler.disconnect();
-			Listener.disconnect();
-			Transmitter.disconnect( 0 );
+			closeTransmitter( 0 );
 
 			myMonitorDataTable = null;
-			WaterSkiConnectButton.Visible = true;
-			WaterSkiConnectButton.Enabled = true;
+			ConnectButton.Visible = true;
+			ConnectButton.Enabled = true;
 			DisconnectButton.Visible = false;
-			ShowPinButton.Visible = false;
 
 			myCountHeartBeatFailed = 0;
+
+			ExportLiveWeb.LiveWebLocation = "";
 
 			if ( msg.Length > 0 ) MessageBox.Show( msg );
 		}

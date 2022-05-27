@@ -25,12 +25,12 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	SlalomBoatPathDevMax	B5-L	5	26	Buoy 5 Class L Deviation Max	25	45	Score 4.25 - 5 Deviation Max
 0	SlalomBoatPathDevMax	B6-L	6	27	Buoy 6 Class L Deviation Max	25	50	Score 5.25 - 6 Deviation Max
 0	SlalomBoatPathDevMax	GATE-R	0	31	Entry Gate Class R Deviation Max	0	0	No  Deviation Max at Gates
-0	SlalomBoatPathDevMax	B1-R	1	32	Buoy 1 Class R Deviation Max	20	20	Score 0.25 - 1 Deviation Max
-0	SlalomBoatPathDevMax	B2-R	2	33	Buoy 2 Class R Deviation Max	20	25	Score 1.25 - 2 Deviation Max
-0	SlalomBoatPathDevMax	B3-R	3	34	Buoy 3 Class R Deviation Max	20	30	Score 2.25 - 3 Deviation Max
-0	SlalomBoatPathDevMax	B4-R	4	35	Buoy 4 Class R Deviation Max	20	35	Score 3.25 - 4 Deviation Max
-0	SlalomBoatPathDevMax	B5-R	5	36	Buoy 5 Class R Deviation Max	20	40	Score 4.25 - 5 Deviation Max
-0	SlalomBoatPathDevMax	B6-R	6	37	Buoy 6 Class R Deviation Max	20	45	Score 5.25 - 6 Deviation Max
+0	SlalomBoatPathDevMax	B1-R	1	32	Buoy 1 Class R Deviation Max	25	25	Score 0.25 - 1 Deviation Max
+0	SlalomBoatPathDevMax	B2-R	2	33	Buoy 2 Class R Deviation Max	25	30	Score 1.25 - 2 Deviation Max
+0	SlalomBoatPathDevMax	B3-R	3	34	Buoy 3 Class R Deviation Max	25	35	Score 2.25 - 3 Deviation Max
+0	SlalomBoatPathDevMax	B4-R	4	35	Buoy 4 Class R Deviation Max	25	40	Score 3.25 - 4 Deviation Max
+0	SlalomBoatPathDevMax	B5-R	5	36	Buoy 5 Class R Deviation Max	25	45	Score 4.25 - 5 Deviation Max
+0	SlalomBoatPathDevMax	B6-R	6	37	Buoy 6 Class R Deviation Max	25	50	Score 5.25 - 6 Deviation Max
 0	JumpBoatPathDevMax	B1	1	1	Buoy 1 Deviation Max	40	40	Buoy 1 Deviation Max
 0	JumpBoatPathDevMax	B2	2	2	Buoy 2 Deviation Max	40	48	Buoy 2 Deviation Max
 0	JumpBoatPathDevMax	B3	3	3	Buoy 3 Deviation Max	40	55	Buoy 3 Deviation Max
