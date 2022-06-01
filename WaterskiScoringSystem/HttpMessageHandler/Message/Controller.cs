@@ -194,16 +194,16 @@ namespace HttpMessageHandler.Message {
 				HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
 
 				// Create a timer with 5 minute interval.
-				heartBeatTimer = new System.Timers.Timer( 300000 );
-				heartBeatTimer.Elapsed += checkMonitorHeartBeat;
-				heartBeatTimer.AutoReset = true;
-				heartBeatTimer.Enabled = true;
+				myHeartBeatTimer = new System.Timers.Timer( 300000 );
+				myHeartBeatTimer.Elapsed += checkMonitorHeartBeat;
+				myHeartBeatTimer.AutoReset = true;
+				myHeartBeatTimer.Enabled = true;
 
 				// Create a timer with 2 second interval.
-				readMessagesTimer = new System.Timers.Timer( 2000 );
-				readMessagesTimer.Elapsed += readSendMessages;
-				readMessagesTimer.AutoReset = false;
-				readMessagesTimer.Enabled = true;
+				myReadMessagesTimer = new System.Timers.Timer( 2000 );
+				myReadMessagesTimer.Elapsed += readSendMessages;
+				myReadMessagesTimer.AutoReset = false;
+				myReadMessagesTimer.Enabled = true;
 
 			} catch ( Exception ex ) {
 				String curMsg = String.Format( "{0}Exception encounter {1}: {2}", curMethodName, ex.Message, ex.StackTrace );

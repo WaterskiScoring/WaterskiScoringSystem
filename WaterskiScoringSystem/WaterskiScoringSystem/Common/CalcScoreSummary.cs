@@ -3332,19 +3332,25 @@ namespace WaterskiScoringSystem.Common {
 							if ( ( curScore + curAdjFactor ) > 0M ) {
 								if ( (Decimal)curMaxRow["ScoreSlalom"] > 0M ) {
 									curScoreMax = (Decimal)curMaxRow["ScoreSlalom"];
-									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = (Decimal)curMaxRow["ScoreSlalomMax"];
+								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
 									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
 								}
 							} else {
 								//If score is less than adjustment factor than than use raw score to calculate points
 								if ( (Decimal)curMaxRow["ScoreSlalom"] > 0M ) {
 									curScoreMax = (Decimal)curMaxRow["ScoreSlalom"];
-									curRow[curPointsName] = Math.Round( ( ( curScore ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = (Decimal)curMaxRow["ScoreSlalomMax"];
+								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
 									curRow[curPointsName] = Math.Round( ( ( curScore ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
 								}
 							}
 						} else {
@@ -3373,18 +3379,25 @@ namespace WaterskiScoringSystem.Common {
 							if ( ( curScore + curAdjFactor ) > 0M ) {
 								if ( (Int16)curMaxRow["ScoreTrick"] > 0M ) {
 									curScoreMax = Convert.ToDecimal( (Int16)curMaxRow["ScoreTrick"] );
-									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] );
-									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
+									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
+								}
+
 							} else {
 								if ( (Int16)curMaxRow["ScoreTrick"] > 0M ) {
 									curScoreMax = Convert.ToDecimal( (Int16)curMaxRow["ScoreTrick"] );
-									curRow[curPointsName] = Math.Round( ( curScore / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] );
+								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
 									curRow[curPointsName] = Math.Round( ( curScore / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
 								}
 							}
 						} else {
@@ -3417,18 +3430,24 @@ namespace WaterskiScoringSystem.Common {
 							if ( ( curScore + curAdjFactor ) > 0M ) {
 								if ( (Decimal)curMaxRow["ScoreJump"] > 0M ) {
 									curScoreMax = (Decimal)curMaxRow["ScoreJump"];
-									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = (Decimal)curMaxRow["ScoreJumpMax"];
+								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
 									curRow[curPointsName] = Math.Round( ( ( curScore + curAdjFactor ) / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
 								}
 							} else {
 								if ( (Decimal)curMaxRow["ScoreJump"] > 0M ) {
 									curScoreMax = (Decimal)curMaxRow["ScoreJump"];
-									curRow[curPointsName] = Math.Round( ( curScore / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
 								} else {
 									curScoreMax = (Decimal)curMaxRow["ScoreJumpMax"];
+								}
+								if ( curScore > 0 && curScoreMax > 0 ) {
 									curRow[curPointsName] = Math.Round( ( curScore / ( curScoreMax + curAdjFactor ) ) * 1000, 1 );
+								} else {
+									curRow[curPointsName] = 0;
 								}
 							}
 						} else {
@@ -3499,33 +3518,6 @@ namespace WaterskiScoringSystem.Common {
 					curScoreName = "ScoreFeet";
 				}
 
-				/* **********
-                if ( isJumpEvent ) {
-                    curScoreName = "ScoreFeet";
-                    if (inPlcmtOrg.ToLower().Equals( "div" )) {
-                        curSortCmd = "AgeGroup ASC, ScoreFeet Desc, ScoreMeters Desc, SkierName ASC ";
-                    } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                        curSortCmd = "AgeGroup ASC, EventGroup ASC, ScoreFeet Desc, ScoreMeters Desc, SkierName ASC ";
-                    } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                        curSortCmd = "EventGroup ASC, ScoreFeet Desc, ScoreMeters Desc, SkierName ASC ";
-                    } else {
-                        curSortCmd = "ScoreFeet Desc, ScoreMeters Desc, SkierName ASC ";
-                    }
-                } else {
-                    if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                        curSortCmd = "AgeGroup ASC, Score Desc, SkierName ASC ";
-                    } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                        curSortCmd = "AgeGroup ASC, EventGroup ASC, Score Desc, SkierName ASC ";
-                    } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                        curSortCmd = "EventGroup ASC, Score Desc, SkierName ASC ";
-                    } else {
-                        curSortCmd = "Score Desc, SkierName ASC ";
-                    }
-                }
-                inDataTable.DefaultView.Sort = curSortCmd;
-                DataTable curScoreDataTable = inDataTable.DefaultView.ToTable();
-                */
-
 				//Determine maximum scores per event and division
 				DataTable curMaxDataTable = buildMaxScoresPerGroup( inSanctionId, inPlcmtOrg, inRules, inEvent );
 
@@ -3576,6 +3568,8 @@ namespace WaterskiScoringSystem.Common {
 						} else {
 							curScore = Math.Round( ( ( curScore / curScoreMax ) * 1000 ), 1 );
 						}
+					} else {
+						curScore = 0;
 					}
 					curRow["NopsScore"] = curScore;
 				}
