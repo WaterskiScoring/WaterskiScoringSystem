@@ -45,6 +45,7 @@ namespace WaterskiScoringSystem.Common {
 			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SkierBoatPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassSpeedKph = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassLineLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierRunNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -148,6 +149,7 @@ namespace WaterskiScoringSystem.Common {
             this.EventClass,
             this.Round,
             this.PassNumber,
+            this.SkierBoatPath,
             this.PassSpeedKph,
             this.PassLineLength,
             this.SkierRunNum,
@@ -291,6 +293,16 @@ namespace WaterskiScoringSystem.Common {
 			this.PassNumber.Name = "PassNumber";
 			this.PassNumber.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PassNumber.Width = 35;
+			// 
+			// SkierBoatPath
+			// 
+			this.SkierBoatPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SkierBoatPath.HeaderText = "Path";
+			this.SkierBoatPath.MaxInputLength = 8;
+			this.SkierBoatPath.Name = "SkierBoatPath";
+			this.SkierBoatPath.ReadOnly = true;
+			this.SkierBoatPath.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierBoatPath.Width = 45;
 			// 
 			// PassSpeedKph
 			// 
@@ -593,6 +605,7 @@ namespace WaterskiScoringSystem.Common {
 		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Round;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNumber;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkierBoatPath;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassSpeedKph;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassLineLength;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierRunNum;

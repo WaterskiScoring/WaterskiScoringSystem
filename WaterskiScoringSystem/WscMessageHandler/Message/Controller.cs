@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Deployment.Application;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -26,6 +27,13 @@ namespace WscMessageHandler.Message {
 		}
 
 		private void Controller_Load( object sender, EventArgs e ) {
+			String curDeployVersion = "";
+			try {
+				curDeployVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+			} catch {
+				curDeployVersion = "Not available";
+			}
+			this.Text += " - " + curDeployVersion;
 			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
 			if ( Properties.Settings.Default.MessageController_Width > 0 ) this.Width = Properties.Settings.Default.MessageController_Width;
 			if ( Properties.Settings.Default.MessageController_Height > 0 ) this.Height = Properties.Settings.Default.MessageController_Height;

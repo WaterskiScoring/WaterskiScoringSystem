@@ -76,8 +76,8 @@ namespace WaterskiScoringSystem.Common {
 				this.Text += " - Jump";
 
 				BoatTimeBuoy1.HeaderText = "52M Time";
-				BoatTimeBuoy2.HeaderText = "82M Time";
-				BoatTimeBuoy3.HeaderText = "41M Time";
+				BoatTimeBuoy2.HeaderText = "MT Time";
+				BoatTimeBuoy3.HeaderText = "ET Time";
 				BoatTimeBuoy4.Visible = false;
 				BoatTimeBuoy5.Visible = false;
 				BoatTimeBuoy6.Visible = false;
@@ -146,7 +146,7 @@ namespace WaterskiScoringSystem.Common {
 				curViewRow.Cells["PK"].Value = (Int64)curRow["PK"];
 				curViewRow.Cells["SanctionId"].Value = (String)curRow["SanctionId"];
 				curViewRow.Cells["SkierMemberId"].Value = (String)curRow["MemberId"];
-				if ( curRow["SkierName"] != System.DBNull.Value ) curViewRow.Cells["SkierName"].Value = (String)curRow["SkierName"];
+				curViewRow.Cells["SkierName"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierName", "" );
 				curViewRow.Cells["Event"].Value = (String)curRow["Event"];
 				curViewRow.Cells["Round"].Value = ( (Byte)curRow["Round"] ).ToString();
 				curViewRow.Cells["PassNumber"].Value = ( (Byte)curRow["PassNumber"] ).ToString();
@@ -172,19 +172,19 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		void loadDataGridSlalom( DataRow curRow, DataGridViewRow curViewRow ) {
-			if ( curRow["PassSpeedKph"] != System.DBNull.Value ) curViewRow.Cells["PassSpeedKph"].Value = ( (Byte)curRow["PassSpeedKph"] ).ToString();
-			if ( curRow["PassLineLength"] != System.DBNull.Value ) curViewRow.Cells["PassLineLength"].Value = ( (Decimal)curRow["PassLineLength"] ).ToString( "#0.00" );
+			curViewRow.Cells["PassSpeedKph"].Value = HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "" );
+			curViewRow.Cells["PassLineLength"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PassLineLength", "", 2 );
 
 			for ( int curIdx = 1; curIdx <= 7; curIdx++ ) {
-				if ( curRow["BoatTimeBuoy" + curIdx] != System.DBNull.Value ) curViewRow.Cells["BoatTimeBuoy" + curIdx].Value = ( (Decimal)curRow["BoatTimeBuoy" + curIdx] ).ToString( "#0.00" );
+				curViewRow.Cells["BoatTimeBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy" + curIdx, "", 2 );
 			}
 		}
 
 		private void loadDataGridJump( DataRow curRow, DataGridViewRow curViewRow ) {
-			if ( curRow["PassSpeedKph"] != System.DBNull.Value ) curViewRow.Cells["PassSpeedKph"].Value = ( (Byte)curRow["PassSpeedKph"] ).ToString();
+			curViewRow.Cells["PassSpeedKph"].Value = HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "" );
 
 			for ( int curIdx = 1; curIdx <= 7; curIdx++ ) {
-				if ( curRow["BoatTimeBuoy" + curIdx] != System.DBNull.Value ) curViewRow.Cells["BoatTimeBuoy" + curIdx].Value = ( (Decimal)curRow["BoatTimeBuoy" + curIdx] ).ToString( "#0.00" );
+				curViewRow.Cells["BoatTimeBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy" + curIdx, "", 2 );
 			}
 		}
 
@@ -237,7 +237,7 @@ namespace WaterskiScoringSystem.Common {
 			if ( !( isDataModified ) ) {
 				//Sent current tournament registration row
 				if ( curView.Rows[e.RowIndex].Cells[e.ColumnIndex] != null ) {
-					if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells["SkierMemberId"].Value ) ) ) {
+					if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells["SkierMemberId"].Value ) ) ) {
 						myRowIdx = e.RowIndex;
 						isDataModified = false;
 					}
@@ -337,18 +337,5 @@ namespace WaterskiScoringSystem.Common {
 			return "MemberId Not Found";
 		}
 
-		private bool isObjectEmpty( object inObject ) {
-			bool curReturnValue = false;
-			if ( inObject == null ) {
-				curReturnValue = true;
-			} else if ( inObject == System.DBNull.Value ) {
-				curReturnValue = true;
-			} else if ( inObject.ToString().Length > 0 ) {
-				curReturnValue = false;
-			} else {
-				curReturnValue = true;
-			}
-			return curReturnValue;
-		}
 	}
 }

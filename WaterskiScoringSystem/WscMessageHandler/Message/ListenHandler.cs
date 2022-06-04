@@ -127,11 +127,64 @@ namespace WscMessageHandler.Message {
 				return;
 			}
 
+			int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
+			if ( curRound == 0 ) curRound = myDefaultRound;
+			String curEvent = HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" );
+			String curMemberId = HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" );
+			Int16 curPassNumber = 0;
 			try {
-				int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
-				if ( curRound == 0 ) curRound = myDefaultRound;
-				String curEvent = HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" );
+				curPassNumber = Convert.ToInt16( HelperFunctions.getAttributeValueNum( curMsgDataList, "passNumber" ).ToString( "#0" ) );
+			} catch ( Exception ex ) {
+				Log.WriteFile( curMethodName + "Invalid passNumber encountered: " + ex.Message );
+				MessageBox.Show( curMethodName + "Invalid passNumber encountered: " + ex.Message );
+				return;
+			}
 
+			if ( checkForSkierBoatTimePassExist( curEvent, curRound, curMemberId, curPassNumber ) ) return;
+
+			insertBoatTime( curMsgDataList, curEvent, curRound, curMemberId, curPassNumber );
+		}
+
+		private static bool checkForSkierBoatTimePassExist( String curEvent, int curRound, String curMemberId, Int16 curPassNumber ) {
+			String curMethodName = "ListenHandler:checkForSkierBoatTimePassExist: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			curSqlStmt.Append( "Select PK From BoatTime " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+
+			if ( curDataTable.Rows.Count == 0 ) return false;
+
+			if ( curPassNumber == 1 ) {
+				// If data is for pass number 1 then assume previous data was for simulation passes
+				curSqlStmt = new StringBuilder( "Delete From BoatTime " );
+				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+					, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+				int rowsDeleted = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+				// If delete fails then error message is shown but return value to skip further processing
+				if ( rowsDeleted < 0 ) return true;
+
+				// Row deleted so new row can be added
+				Log.WriteFile( curMethodName + "New boat time data received for first skier pass therefore deleting existing and replacing with new data"
+					+ String.Format( ": Data for SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+					, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+				return false;
+			}
+
+			// Assuming this is duplicate data and should be ignored
+			Log.WriteFile( curMethodName + "Duplicate boat time data received for skier pass therefore bypassing new data"
+				+ String.Format( ": Data for SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+			return true;
+		}
+
+		private static void insertBoatTime( Dictionary<string, object> curMsgDataList, String curEvent, int curRound, String curMemberId, Int16 curPassNumber ) {
+			String curMethodName = "ListenHandler:insertBoatTime: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			
+			try {
 				curSqlStmt.Append( "Insert BoatTime ( " );
 				curSqlStmt.Append( "SanctionId, MemberId, Event" );
 				curSqlStmt.Append( ", Round, PassNumber, PassLineLength, PassSpeedKph" );
@@ -173,10 +226,9 @@ namespace WscMessageHandler.Message {
 			}
 		}
 
+
 		private static void saveBoatPath( String msg ) {
 			String curMethodName = "ListenHandler:saveBoatPath: ";
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			StringBuilder curBoatInfo = new StringBuilder( "" );
 			Dictionary<string, object> curMsgDataList = null;
 
 			try {
@@ -188,11 +240,65 @@ namespace WscMessageHandler.Message {
 				return;
 			}
 
+			int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
+			if ( curRound == 0 ) curRound = myDefaultRound;
+			String curEvent = HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" );
+			String curMemberId = HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" );
+			Int16 curPassNumber = 0;
 			try {
-				int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
-				if ( curRound == 0 ) curRound = myDefaultRound;
-				String curEvent = HelperFunctions.getAttributeValue( curMsgDataList, "athleteEvent" );
+				curPassNumber = Convert.ToInt16( HelperFunctions.getAttributeValueNum( curMsgDataList, "passNumber" ).ToString( "#0" ) );
+			} catch ( Exception ex ) {
+				Log.WriteFile( curMethodName + "Invalid passNumber encountered: " + ex.Message );
+				MessageBox.Show( curMethodName + "Invalid passNumber encountered: " + ex.Message );
+				return;
+			}
 
+			if ( checkForSkierBoatPathPassExist( curEvent, curRound, curMemberId, curPassNumber ) ) return;
+
+			insertBoatPath( curMsgDataList, curEvent, curRound, curMemberId, curPassNumber );
+		}
+
+		private static bool checkForSkierBoatPathPassExist( String curEvent, int curRound, String curMemberId, Int16 curPassNumber ) {
+			String curMethodName = "ListenHandler:checkForSkierBoatPathPassExist: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			curSqlStmt.Append( "Select PK From BoatPath " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			
+			if ( curDataTable.Rows.Count == 0 ) return false;
+			
+			if ( curPassNumber == 1 ) {
+				// If data is for pass number 1 then assume previous data was for simulation passes
+				curSqlStmt = new StringBuilder( "Delete From BoatPath " );
+				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+					, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+				int rowsDeleted = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				
+				// If delete fails then error message is shown but return value to skip further processing
+				if ( rowsDeleted < 0 ) return true;
+				
+				// Row deleted so new row can be added
+				Log.WriteFile( curMethodName + "New boat path data received for first skier pass therefore deleting existing and replacing with new data"
+					+ String.Format( ": Data for SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+					, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+				return false; 
+			}
+
+			// Assuming this is duplicate data and should be ignored
+			Log.WriteFile( curMethodName + "Duplicate boat path data received for skier pass therefore bypassing new data"
+				+ String.Format( ": Data for SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, ConnectMgmtData.sanctionNum, curEvent, curMemberId, curRound, curPassNumber ) );
+			return true;
+		}
+
+		private static void insertBoatPath( Dictionary<string, object> curMsgDataList, String curEvent, int curRound, String curMemberId, Int16 curPassNumber ) {
+			String curMethodName = "ListenHandler:insertBoatPath: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			StringBuilder curBoatInfo = new StringBuilder( "" );
+
+			try {
 				curBoatInfo.Append( HelperFunctions.getAttributeValue( curMsgDataList, "boatManufacturer" ) );
 				curBoatInfo.Append( ", " + HelperFunctions.getAttributeValue( curMsgDataList, "boatModel" ) );
 				curBoatInfo.Append( ", " + HelperFunctions.getAttributeValue( curMsgDataList, "boatYear" ) );

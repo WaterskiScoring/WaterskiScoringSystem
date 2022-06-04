@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 using HttpMessageHandler.Common;
@@ -211,6 +212,42 @@ namespace HttpMessageHandler.Message {
 				MessageBox.Show( curMsg );
 			}
 		}
+		private static void readSendMessages( object sender, EventArgs e ) {
+			myReadMessagesTimer.Stop();
+			myReadMessagesTimer.Elapsed -= readSendMessages;
+
+			checkForMsgToSend();
+		}
+
+		private static void checkForMsgToSend() {
+			String curMethodName = "Controller: checkForMsgToSend: ";
+
+			try {
+				DataTable curDataTable = getLiveWebMsgSend();
+				foreach ( DataRow curDataRow in curDataTable.Rows ) {
+					if ( ( (String)curDataRow["MsgType"] ).Equals( "Exit" ) ) {
+						disconnect( (int)curDataRow["PK"] );
+						return;
+					}
+
+					ConnectMgmtData.socketClient.EmitAsync( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
+					Log.WriteFile( String.Format( "{0}PK: {1} MsgType: {2} MsgData: {3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
+					removeLiveWebMsgSent( (int)curDataRow["PK"] );
+				}
+
+				myReadMessagesTimer = new System.Timers.Timer( 2000 );
+				myReadMessagesTimer.Elapsed += readSendMessages;
+				myReadMessagesTimer.AutoReset = false;
+				myReadMessagesTimer.Enabled = true;
+
+				return;
+
+			} catch ( Exception ex ) {
+				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
+				Log.WriteFile( curMsg );
+				return;
+			}
+		}
 
 		private void checkMonitorHeartBeat( object sender, EventArgs e ) {
 			String curMethodName = "Controller: checkMonitorHeartBeat: ";
@@ -279,6 +316,19 @@ namespace HttpMessageHandler.Message {
 			ExportLiveWeb.LiveWebLocation = "";
 
 			if ( msg.Length > 0 ) MessageBox.Show( msg );
+		}
+		private static DataTable getLiveWebMsgSend() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT PK, SanctionId, MsgType, MsgData, CreateDate " );
+			curSqlStmt.Append( "FROM LiveWebMsgSend " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
+			curSqlStmt.Append( "Order by CreateDate " );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
+		private static void removeLiveWebMsgSent( int pkid ) {
+			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM LiveWebMsgSend Where PK = " + pkid );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 	}
 }

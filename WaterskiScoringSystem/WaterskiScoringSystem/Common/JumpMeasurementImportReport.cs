@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Common {
@@ -119,7 +112,7 @@ namespace WaterskiScoringSystem.Common {
 				curViewRow.Cells["PK"].Value = (Int64)curRow["PK"];
 				curViewRow.Cells["SanctionId"].Value = (String)curRow["SanctionId"];
 				curViewRow.Cells["SkierMemberId"].Value = (String)curRow["MemberId"];
-				if ( curRow["SkierName"] != System.DBNull.Value ) curViewRow.Cells["SkierName"].Value = (String)curRow["SkierName"];
+				curViewRow.Cells["SkierName"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierName", "" );
 				curViewRow.Cells["Event"].Value = (String)curRow["Event"];
 				curViewRow.Cells["Round"].Value = ( (Byte)curRow["Round"] ).ToString();
 				curViewRow.Cells["PassNumber"].Value = ( (Byte)curRow["PassNumber"] ).ToString();
@@ -187,7 +180,7 @@ namespace WaterskiScoringSystem.Common {
 			if ( !( isDataModified ) ) {
 				//Sent current tournament registration row
 				if ( curView.Rows[e.RowIndex].Cells[e.ColumnIndex] != null ) {
-					if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells["SkierMemberId"].Value ) ) ) {
+					if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells["SkierMemberId"].Value ) ) ) {
 						myRowIdx = e.RowIndex;
 						isDataModified = false;
 					}
@@ -263,18 +256,4 @@ namespace WaterskiScoringSystem.Common {
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
-		private bool isObjectEmpty( object inObject ) {
-			bool curReturnValue = false;
-			if ( inObject == null ) {
-				curReturnValue = true;
-			} else if ( inObject == System.DBNull.Value ) {
-				curReturnValue = true;
-			} else if ( inObject.ToString().Length > 0 ) {
-				curReturnValue = false;
-			} else {
-				curReturnValue = true;
-			}
-			return curReturnValue;
-		}
-	}
 }

@@ -35,6 +35,7 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataGridView = new System.Windows.Forms.DataGridView();
 			this.winNavStrip = new System.Windows.Forms.ToolStrip();
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
@@ -46,6 +47,7 @@
 			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierRunNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SkierBoatPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.BoatTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.BoatSplitTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -119,6 +121,7 @@
             this.AgeGroup,
             this.Round,
             this.SkierRunNum,
+            this.SkierBoatPath,
             this.PassNotes,
             this.BoatTime,
             this.BoatSplitTime,
@@ -219,6 +222,7 @@
 			// 
 			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.SanctionId.HeaderText = "SanctionId";
+			this.SanctionId.MaxInputLength = 8;
 			this.SanctionId.Name = "SanctionId";
 			this.SanctionId.ReadOnly = true;
 			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -229,6 +233,7 @@
 			// 
 			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.SkierName.HeaderText = "Skier";
+			this.SkierName.MaxInputLength = 256;
 			this.SkierName.Name = "SkierName";
 			this.SkierName.ReadOnly = true;
 			this.SkierName.Width = 125;
@@ -237,6 +242,7 @@
 			// 
 			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Event.HeaderText = "Event";
+			this.Event.MaxInputLength = 16;
 			this.Event.Name = "Event";
 			this.Event.ReadOnly = true;
 			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -250,8 +256,10 @@
 			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle2;
 			this.AgeGroup.HeaderText = "Div";
+			this.AgeGroup.MaxInputLength = 12;
 			this.AgeGroup.Name = "AgeGroup";
 			this.AgeGroup.ReadOnly = true;
+			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.AgeGroup.Width = 40;
 			// 
 			// Round
@@ -261,7 +269,9 @@
 			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.Round.DefaultCellStyle = dataGridViewCellStyle3;
 			this.Round.HeaderText = "Rd";
+			this.Round.MaxInputLength = 2;
 			this.Round.Name = "Round";
+			this.Round.ReadOnly = true;
 			this.Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Round.Width = 30;
 			// 
@@ -274,12 +284,27 @@
 			this.SkierRunNum.HeaderText = "Pass";
 			this.SkierRunNum.Name = "SkierRunNum";
 			this.SkierRunNum.ReadOnly = true;
+			this.SkierRunNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.SkierRunNum.Width = 35;
+			// 
+			// SkierBoatPath
+			// 
+			this.SkierBoatPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierBoatPath.DefaultCellStyle = dataGridViewCellStyle5;
+			this.SkierBoatPath.HeaderText = "Path";
+			this.SkierBoatPath.MaxInputLength = 5;
+			this.SkierBoatPath.Name = "SkierBoatPath";
+			this.SkierBoatPath.ReadOnly = true;
+			this.SkierBoatPath.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierBoatPath.Width = 45;
 			// 
 			// PassNotes
 			// 
 			this.PassNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PassNotes.HeaderText = "Pass Description";
+			this.PassNotes.MaxInputLength = 1024;
 			this.PassNotes.Name = "PassNotes";
 			this.PassNotes.ReadOnly = true;
 			this.PassNotes.Width = 90;
@@ -287,96 +312,117 @@
 			// BoatTime
 			// 
 			this.BoatTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.BoatTime.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatTime.DefaultCellStyle = dataGridViewCellStyle6;
 			this.BoatTime.HeaderText = "Time";
+			this.BoatTime.MaxInputLength = 16;
 			this.BoatTime.Name = "BoatTime";
 			this.BoatTime.ReadOnly = true;
+			this.BoatTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.BoatTime.Width = 50;
 			// 
 			// BoatSplitTime
 			// 
 			this.BoatSplitTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.BoatSplitTime.HeaderText = "52M Time";
+			this.BoatSplitTime.MaxInputLength = 8;
 			this.BoatSplitTime.Name = "BoatSplitTime";
 			this.BoatSplitTime.ReadOnly = true;
-			this.BoatSplitTime.Width = 60;
+			this.BoatSplitTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatSplitTime.Width = 50;
 			// 
 			// BoatTimeBuoy1
 			// 
 			this.BoatTimeBuoy1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.BoatTimeBuoy1.HeaderText = "52M SP Time";
+			this.BoatTimeBuoy1.MaxInputLength = 8;
 			this.BoatTimeBuoy1.Name = "BoatTimeBuoy1";
 			this.BoatTimeBuoy1.ReadOnly = true;
+			this.BoatTimeBuoy1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.BoatTimeBuoy1.Width = 60;
 			// 
 			// BoatSplitTime2
 			// 
 			this.BoatSplitTime2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatSplitTime2.HeaderText = "82M Time";
+			this.BoatSplitTime2.HeaderText = "MT Time";
+			this.BoatSplitTime2.MaxInputLength = 8;
 			this.BoatSplitTime2.Name = "BoatSplitTime2";
 			this.BoatSplitTime2.ReadOnly = true;
-			this.BoatSplitTime2.Width = 60;
+			this.BoatSplitTime2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatSplitTime2.Width = 50;
 			// 
 			// BoatTimeBuoy2
 			// 
 			this.BoatTimeBuoy2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatTimeBuoy2.HeaderText = "82M SP Time";
+			this.BoatTimeBuoy2.HeaderText = "MT SP Time";
+			this.BoatTimeBuoy2.MaxInputLength = 8;
 			this.BoatTimeBuoy2.Name = "BoatTimeBuoy2";
 			this.BoatTimeBuoy2.ReadOnly = true;
+			this.BoatTimeBuoy2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.BoatTimeBuoy2.Width = 60;
 			// 
 			// BoatEndTime
 			// 
 			this.BoatEndTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatEndTime.HeaderText = "41M Time";
+			this.BoatEndTime.HeaderText = "ET Time";
+			this.BoatEndTime.MaxInputLength = 8;
 			this.BoatEndTime.Name = "BoatEndTime";
 			this.BoatEndTime.ReadOnly = true;
-			this.BoatEndTime.Width = 60;
+			this.BoatEndTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatEndTime.Width = 50;
 			// 
 			// BoatTimeBuoy3
 			// 
 			this.BoatTimeBuoy3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.BoatTimeBuoy3.HeaderText = "41M SP Time";
+			this.BoatTimeBuoy3.HeaderText = "ET SP Time";
+			this.BoatTimeBuoy3.MaxInputLength = 8;
 			this.BoatTimeBuoy3.Name = "BoatTimeBuoy3";
 			this.BoatTimeBuoy3.ReadOnly = true;
+			this.BoatTimeBuoy3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.BoatTimeBuoy3.Width = 60;
 			// 
 			// PassScore
 			// 
 			this.PassScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassScore.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassScore.DefaultCellStyle = dataGridViewCellStyle7;
 			this.PassScore.HeaderText = "Pass Score";
+			this.PassScore.MaxInputLength = 12;
 			this.PassScore.Name = "PassScore";
 			this.PassScore.ReadOnly = true;
+			this.PassScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PassScore.Width = 45;
 			// 
 			// TimeInTol
 			// 
 			this.TimeInTol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.TimeInTol.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.TimeInTol.DefaultCellStyle = dataGridViewCellStyle8;
 			this.TimeInTol.HeaderText = "InTol";
+			this.TimeInTol.MaxInputLength = 4;
 			this.TimeInTol.Name = "TimeInTol";
 			this.TimeInTol.ReadOnly = true;
+			this.TimeInTol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.TimeInTol.Width = 40;
 			// 
 			// Spacer0
 			// 
 			this.Spacer0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Spacer0.HeaderText = "";
+			this.Spacer0.MaxInputLength = 1;
 			this.Spacer0.Name = "Spacer0";
 			this.Spacer0.ReadOnly = true;
+			this.Spacer0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Spacer0.Width = 15;
 			// 
 			// PathDevBuoy0
 			// 
 			this.PathDevBuoy0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy0.HeaderText = "Dev Gate";
+			this.PathDevBuoy0.MaxInputLength = 8;
 			this.PathDevBuoy0.Name = "PathDevBuoy0";
 			this.PathDevBuoy0.ReadOnly = true;
 			this.PathDevBuoy0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -386,6 +432,7 @@
 			// 
 			this.PathDevBuoy1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy1.HeaderText = "Dev B1";
+			this.PathDevBuoy1.MaxInputLength = 8;
 			this.PathDevBuoy1.Name = "PathDevBuoy1";
 			this.PathDevBuoy1.ReadOnly = true;
 			this.PathDevBuoy1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -395,6 +442,7 @@
 			// 
 			this.PathDevBuoy2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy2.HeaderText = "Dev B2";
+			this.PathDevBuoy2.MaxInputLength = 8;
 			this.PathDevBuoy2.Name = "PathDevBuoy2";
 			this.PathDevBuoy2.ReadOnly = true;
 			this.PathDevBuoy2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -404,6 +452,7 @@
 			// 
 			this.PathDevBuoy3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy3.HeaderText = "Dev B3";
+			this.PathDevBuoy3.MaxInputLength = 8;
 			this.PathDevBuoy3.Name = "PathDevBuoy3";
 			this.PathDevBuoy3.ReadOnly = true;
 			this.PathDevBuoy3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -413,6 +462,7 @@
 			// 
 			this.PathDevBuoy4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy4.HeaderText = "Dev B4";
+			this.PathDevBuoy4.MaxInputLength = 8;
 			this.PathDevBuoy4.Name = "PathDevBuoy4";
 			this.PathDevBuoy4.ReadOnly = true;
 			this.PathDevBuoy4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -422,6 +472,7 @@
 			// 
 			this.PathDevBuoy5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy5.HeaderText = "Dev B5";
+			this.PathDevBuoy5.MaxInputLength = 8;
 			this.PathDevBuoy5.Name = "PathDevBuoy5";
 			this.PathDevBuoy5.ReadOnly = true;
 			this.PathDevBuoy5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -431,6 +482,7 @@
 			// 
 			this.PathDevBuoy6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevBuoy6.HeaderText = "Dev B6";
+			this.PathDevBuoy6.MaxInputLength = 8;
 			this.PathDevBuoy6.Name = "PathDevBuoy6";
 			this.PathDevBuoy6.ReadOnly = true;
 			this.PathDevBuoy6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -440,6 +492,7 @@
 			// 
 			this.Spacer1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Spacer1.HeaderText = "";
+			this.Spacer1.MaxInputLength = 1;
 			this.Spacer1.Name = "Spacer1";
 			this.Spacer1.ReadOnly = true;
 			this.Spacer1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -449,6 +502,7 @@
 			// 
 			this.PathDevCum0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum0.HeaderText = "Cum Gate";
+			this.PathDevCum0.MaxInputLength = 8;
 			this.PathDevCum0.Name = "PathDevCum0";
 			this.PathDevCum0.ReadOnly = true;
 			this.PathDevCum0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -458,6 +512,7 @@
 			// 
 			this.PathDevCum1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum1.HeaderText = "Cum B1";
+			this.PathDevCum1.MaxInputLength = 8;
 			this.PathDevCum1.Name = "PathDevCum1";
 			this.PathDevCum1.ReadOnly = true;
 			this.PathDevCum1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -467,6 +522,7 @@
 			// 
 			this.PathDevCum2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum2.HeaderText = "Cum B2";
+			this.PathDevCum2.MaxInputLength = 8;
 			this.PathDevCum2.Name = "PathDevCum2";
 			this.PathDevCum2.ReadOnly = true;
 			this.PathDevCum2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -476,6 +532,7 @@
 			// 
 			this.PathDevCum3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum3.HeaderText = "Cum B3";
+			this.PathDevCum3.MaxInputLength = 8;
 			this.PathDevCum3.Name = "PathDevCum3";
 			this.PathDevCum3.ReadOnly = true;
 			this.PathDevCum3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -485,6 +542,7 @@
 			// 
 			this.PathDevCum4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum4.HeaderText = "Cum B4";
+			this.PathDevCum4.MaxInputLength = 8;
 			this.PathDevCum4.Name = "PathDevCum4";
 			this.PathDevCum4.ReadOnly = true;
 			this.PathDevCum4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -494,6 +552,7 @@
 			// 
 			this.PathDevCum5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum5.HeaderText = "Cum B5";
+			this.PathDevCum5.MaxInputLength = 8;
 			this.PathDevCum5.Name = "PathDevCum5";
 			this.PathDevCum5.ReadOnly = true;
 			this.PathDevCum5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -503,6 +562,7 @@
 			// 
 			this.PathDevCum6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevCum6.HeaderText = "Cum B6";
+			this.PathDevCum6.MaxInputLength = 8;
 			this.PathDevCum6.Name = "PathDevCum6";
 			this.PathDevCum6.ReadOnly = true;
 			this.PathDevCum6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -512,6 +572,7 @@
 			// 
 			this.Spacer2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Spacer2.HeaderText = "";
+			this.Spacer2.MaxInputLength = 1;
 			this.Spacer2.Name = "Spacer2";
 			this.Spacer2.ReadOnly = true;
 			this.Spacer2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -521,6 +582,7 @@
 			// 
 			this.PathDevZone0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone0.HeaderText = "Zone Gate";
+			this.PathDevZone0.MaxInputLength = 8;
 			this.PathDevZone0.Name = "PathDevZone0";
 			this.PathDevZone0.ReadOnly = true;
 			this.PathDevZone0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -530,6 +592,7 @@
 			// 
 			this.PathDevZone1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone1.HeaderText = "Zone B1";
+			this.PathDevZone1.MaxInputLength = 8;
 			this.PathDevZone1.Name = "PathDevZone1";
 			this.PathDevZone1.ReadOnly = true;
 			this.PathDevZone1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -539,6 +602,7 @@
 			// 
 			this.PathDevZone2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone2.HeaderText = "Zone B2";
+			this.PathDevZone2.MaxInputLength = 8;
 			this.PathDevZone2.Name = "PathDevZone2";
 			this.PathDevZone2.ReadOnly = true;
 			this.PathDevZone2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -548,6 +612,7 @@
 			// 
 			this.PathDevZone3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone3.HeaderText = "Zone B3";
+			this.PathDevZone3.MaxInputLength = 8;
 			this.PathDevZone3.Name = "PathDevZone3";
 			this.PathDevZone3.ReadOnly = true;
 			this.PathDevZone3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -557,6 +622,7 @@
 			// 
 			this.PathDevZone4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone4.HeaderText = "Zone B4";
+			this.PathDevZone4.MaxInputLength = 8;
 			this.PathDevZone4.Name = "PathDevZone4";
 			this.PathDevZone4.ReadOnly = true;
 			this.PathDevZone4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -566,6 +632,7 @@
 			// 
 			this.PathDevZone5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone5.HeaderText = "Zone B5";
+			this.PathDevZone5.MaxInputLength = 8;
 			this.PathDevZone5.Name = "PathDevZone5";
 			this.PathDevZone5.ReadOnly = true;
 			this.PathDevZone5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -575,6 +642,7 @@
 			// 
 			this.PathDevZone6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PathDevZone6.HeaderText = "Zone B6";
+			this.PathDevZone6.MaxInputLength = 8;
 			this.PathDevZone6.Name = "PathDevZone6";
 			this.PathDevZone6.ReadOnly = true;
 			this.PathDevZone6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -584,6 +652,7 @@
 			// 
 			this.Spacer3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Spacer3.HeaderText = "";
+			this.Spacer3.MaxInputLength = 1;
 			this.Spacer3.Name = "Spacer3";
 			this.Spacer3.ReadOnly = true;
 			this.Spacer3.Width = 15;
@@ -592,6 +661,7 @@
 			// 
 			this.DriverName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.DriverName.HeaderText = "Driver";
+			this.DriverName.MaxInputLength = 256;
 			this.DriverName.Name = "DriverName";
 			this.DriverName.ReadOnly = true;
 			this.DriverName.Width = 125;
@@ -599,36 +669,43 @@
 			// Score
 			// 
 			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle9;
 			this.Score.HeaderText = "Score";
+			this.Score.MaxInputLength = 8;
 			this.Score.Name = "Score";
 			this.Score.ReadOnly = true;
+			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Score.Width = 75;
 			// 
 			// ScoreFeet
 			// 
 			this.ScoreFeet.HeaderText = "Feet";
+			this.ScoreFeet.MaxInputLength = 8;
 			this.ScoreFeet.Name = "ScoreFeet";
 			this.ScoreFeet.ReadOnly = true;
+			this.ScoreFeet.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreFeet.Width = 60;
 			// 
 			// ScoreMeters
 			// 
 			this.ScoreMeters.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.ScoreMeters.HeaderText = "Meters";
+			this.ScoreMeters.MaxInputLength = 8;
 			this.ScoreMeters.Name = "ScoreMeters";
 			this.ScoreMeters.ReadOnly = true;
+			this.ScoreMeters.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreMeters.Width = 60;
 			// 
 			// EventGroup
 			// 
 			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle10;
 			this.EventGroup.HeaderText = "Group";
+			this.EventGroup.MaxInputLength = 12;
 			this.EventGroup.Name = "EventGroup";
 			this.EventGroup.ReadOnly = true;
 			this.EventGroup.Width = 50;
@@ -636,21 +713,24 @@
 			// EventClass
 			// 
 			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle11;
 			this.EventClass.HeaderText = "Class";
+			this.EventClass.MaxInputLength = 4;
 			this.EventClass.Name = "EventClass";
 			this.EventClass.ReadOnly = true;
+			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.EventClass.Width = 40;
 			// 
 			// RankingScore
 			// 
 			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle12;
 			this.RankingScore.HeaderText = "Rank Avg";
+			this.RankingScore.MaxInputLength = 8;
 			this.RankingScore.Name = "RankingScore";
 			this.RankingScore.ReadOnly = true;
 			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -661,29 +741,36 @@
 			// 
 			this.ScoreDatatime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.ScoreDatatime.HeaderText = "ScoreDatetime";
+			this.ScoreDatatime.MaxInputLength = 24;
 			this.ScoreDatatime.Name = "ScoreDatatime";
 			this.ScoreDatatime.ReadOnly = true;
+			this.ScoreDatatime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreDatatime.Width = 120;
 			// 
 			// PassDatatime
 			// 
 			this.PassDatatime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PassDatatime.HeaderText = "PassDatetime";
+			this.PassDatatime.MaxInputLength = 24;
 			this.PassDatatime.Name = "PassDatatime";
 			this.PassDatatime.ReadOnly = true;
+			this.PassDatatime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PassDatatime.Width = 120;
 			// 
 			// Boat
 			// 
 			this.Boat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Boat.HeaderText = "Boat";
+			this.Boat.MaxInputLength = 256;
 			this.Boat.Name = "Boat";
+			this.Boat.ReadOnly = true;
 			this.Boat.Width = 125;
 			// 
 			// ScoreNotes
 			// 
 			this.ScoreNotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.ScoreNotes.HeaderText = "Score Notes";
+			this.ScoreNotes.MaxInputLength = 1024;
 			this.ScoreNotes.Name = "ScoreNotes";
 			this.ScoreNotes.ReadOnly = true;
 			this.ScoreNotes.Width = 125;
@@ -720,6 +807,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Round;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierRunNum;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkierBoatPath;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNotes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatTime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatSplitTime;

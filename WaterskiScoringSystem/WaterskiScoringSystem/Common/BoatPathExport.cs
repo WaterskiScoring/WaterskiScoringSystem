@@ -18,7 +18,6 @@ namespace WaterskiScoringSystem.Common {
 		private DataTable myDataTable;
 		private DataTable myBoatPathDevMax;
 		
-		private PrintDocument myPrintDoc;
 		private DataGridViewPrinter myPrintDataGrid;
 
 		public BoatPathExport() {
@@ -45,6 +44,8 @@ namespace WaterskiScoringSystem.Common {
 			
 			myBoatPathDevMax = getBoatPathDevMax();
 			setColumnsView();
+			if ( myEvent.Equals( "Jump" ) ) ScoreFeet.Visible = false;
+
 			navRefresh_Click( null, null );
 			
 			exportHtml( filename );
@@ -92,14 +93,14 @@ namespace WaterskiScoringSystem.Common {
 
 				ScoreFeet.Visible = false;
 				ScoreMeters.Visible = false;
-				
+				SkierBoatPath.Visible = false;
+
 				BoatSplitTime.Visible = false;
 				BoatSplitTime2.Visible = false;
 				BoatEndTime.Visible = false;
 				BoatTimeBuoy1.Visible = false;
 				BoatTimeBuoy2.Visible = false;
 				BoatTimeBuoy3.Visible = false;
-				//dataGridView.Rows.Clear();
 
 			} else {
 				this.Text += " - Jump";
@@ -109,6 +110,10 @@ namespace WaterskiScoringSystem.Common {
 				PassScore.Visible = false;
 				BoatTime.Visible = false;
 				
+				ScoreFeet.Visible = true;
+				ScoreMeters.Visible = true;
+				SkierBoatPath.Visible = true;
+
 				BoatSplitTime.Visible = showBoatTimes;
 				BoatSplitTime2.Visible = showBoatTimes;
 				BoatEndTime.Visible = showBoatTimes;
@@ -120,8 +125,8 @@ namespace WaterskiScoringSystem.Common {
 				PathDevBuoy0.HeaderText = "Dev 180M";
 				PathDevBuoy1.HeaderText = "Dev ST";
 				PathDevBuoy2.HeaderText = "Dev 52M";
-				PathDevBuoy3.HeaderText = "Dev 82M";
-				PathDevBuoy4.HeaderText = "Dev 41M";
+				PathDevBuoy3.HeaderText = "Dev MT";
+				PathDevBuoy4.HeaderText = "Dev ET";
 				PathDevBuoy5.HeaderText = "Dev EC";
 				PathDevBuoy6.Visible = false;
 
@@ -196,23 +201,17 @@ namespace WaterskiScoringSystem.Common {
                 curViewRow.Cells["Event"].Value = (String) curRow["Event"];
                 curViewRow.Cells["AgeGroup"].Value = (String) curRow["AgeGroup"];
                 curViewRow.Cells["EventGroup"].Value = (String) curRow["EventGroup"];
-				String curHomologation = "";
-				if ( curRow["homologation"] != System.DBNull.Value ) curHomologation = ( String)curRow["homologation"];
-				curViewRow.Cells["EventClass"].Value = (String) curRow["EventClass"] + "/" + curHomologation;
+				curViewRow.Cells["EventClass"].Value =
+					HelperFunctions.getDataRowColValue( curRow, "EventClass", "" )
+					+ "/"
+					+ HelperFunctions.getDataRowColValue( curRow, "homologation", "" );
+
 				curViewRow.Cells["Round"].Value = (Byte) curRow["Round"];
 				
-				try {
-                    curViewRow.Cells["Boat"].Value = (String) curRow["Boat"];
-                } catch {
-                    curViewRow.Cells["Boat"].Value = "";
-                }
-                try {
-                    curViewRow.Cells["DriverName"].Value = ((String) curRow["DriverName"]).Trim();
-                } catch {
-                    curViewRow.Cells["DriverName"].Value = "";
-                }
+				curViewRow.Cells["Boat"].Value = HelperFunctions.getDataRowColValue( curRow, "Boat", "" );
+				curViewRow.Cells["DriverName"].Value = HelperFunctions.getDataRowColValue( curRow, "DriverName", "" );
 
-				curViewRow.Cells["RankingScore"].Value = ( (Decimal) curRow["RankingScore"] ).ToString( "###.00" );
+				curViewRow.Cells["RankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "RankingScore", "", 2 );
 
 				if ( curRow["PassNotes"] != System.DBNull.Value ) {
 					String[] nodesPassNotes = ( (String)curRow["PassNotes"] ).Split( ',' );
@@ -223,7 +222,7 @@ namespace WaterskiScoringSystem.Common {
 					}
 				}
 
-				if ( curRow["ScoreNotes"] != System.DBNull.Value ) curViewRow.Cells["ScoreNotes"].Value = (String)curRow["ScoreNotes"];
+				curViewRow.Cells["ScoreNotes"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreNotes", "" );
 				curViewRow.Cells["PassDatatime"].Value = ( (DateTime)curRow["PassDatatime"] ).ToString( "yyyy/MM/dd HH:mm:ss" );
 				curViewRow.Cells["ScoreDatatime"].Value = ( (DateTime)curRow["ScoreDatatime"] ).ToString( "yyyy/MM/dd HH:mm:ss" );
 				
@@ -239,13 +238,15 @@ namespace WaterskiScoringSystem.Common {
 
 			Decimal curPassScore = (Decimal)curRow["PassScore"];
 			if ( curRow["SkierRunNum"] != System.DBNull.Value ) curViewRow.Cells["SkierRunNum"].Value = ( (Int16)curRow["SkierRunNum"] ).ToString();
-			if ( curRow["Score"] != System.DBNull.Value ) curViewRow.Cells["Score"].Value = ( (Decimal)curRow["Score"] ).ToString( "###.00" );
-			if ( curRow["PassScore"] != System.DBNull.Value ) curViewRow.Cells["PassScore"].Value = ( (Decimal)curRow["PassScore"] ).ToString( "#.00" );
-			if ( curRow["BoatTime"] != System.DBNull.Value ) curViewRow.Cells["BoatTime"].Value = ( (Decimal)curRow["BoatTime"] ).ToString( "#0.00" );
-			if ( curRow["TimeInTol"] != System.DBNull.Value ) curViewRow.Cells["TimeInTol"].Value = ( (String)curRow["TimeInTol"] );
+			curViewRow.Cells["SkierRunNum"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierRunNum", "" );
+
+			curViewRow.Cells["Score"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "", 2 );
+			curViewRow.Cells["PassScore"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PassScore", "", 2 );
+			curViewRow.Cells["BoatTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTime", "", 2 );
+			curViewRow.Cells["TimeInTol"].Value = HelperFunctions.getDataRowColValue( curRow, "TimeInTol", "" );
 
 			if ( curRow["PathDevBuoy0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevBuoy0"].Value = ( (Decimal)curRow["PathDevBuoy0"] ).ToString( "#0.00" );
+				curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0
 					&& Math.Abs( (Decimal)curRow["PathDevBuoy0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevBuoy0"].Style.Font = curFontBold;
@@ -253,7 +254,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 			}
 			if ( curRow["PathDevZone0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevZone0"].Value = ( (Decimal)curRow["PathDevZone0"] ).ToString( "#0.00" );
+				curViewRow.Cells["PathDevZone0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone0", "", 2 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0 
 					&& Math.Abs( (Decimal)curRow["PathDevZone0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevZone0"].Style.Font = curFontBold;
@@ -261,7 +262,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 			}
 			if ( curRow["PathDevCum0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevCum0"].Value = ( (Decimal)curRow["PathDevCum0"] ).ToString( "#0.00" );
+				curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 2 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] > 0
 					&& Math.Abs( (Decimal)curRow["PathDevCum0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] ) {
 					curViewRow.Cells["PathDevCum0"].Style.Font = curFontBold;
@@ -272,21 +273,21 @@ namespace WaterskiScoringSystem.Common {
 				if ( curPassScore <= (curIdx - 1) ) break;
 
 				if ( curRow["PathDevBuoy" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevBuoy" + curIdx].Value = ( (Decimal)curRow["PathDevBuoy" + curIdx] ).ToString( "#0.00" );
+					curViewRow.Cells["PathDevBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy" + curIdx, "", 2 );
 					if ( Math.Abs( (Decimal)curRow["PathDevBuoy" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MinDev"] ) {
 						curViewRow.Cells["PathDevBuoy" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevBuoy" + curIdx].Style.ForeColor = Color.Red;
 					}
 				}
 				if ( curRow["PathDevCum" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevCum" + curIdx].Value = ( (Decimal)curRow["PathDevCum" + curIdx] ).ToString( "#0.00" );
+					curViewRow.Cells["PathDevCum" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum" + curIdx, "", 2 );
 					if ( Math.Abs( (Decimal)curRow["PathDevCum" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MaxDev"] ) {
 						curViewRow.Cells["PathDevCum" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevCum" + curIdx].Style.ForeColor = Color.Red;
 					}
 				}
 				if ( curRow["PathDevZone" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevZone" + curIdx].Value = ( (Decimal)curRow["PathDevZone" + curIdx] ).ToString( "#0.00" );
+					curViewRow.Cells["PathDevZone" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone" + curIdx, "", 2 );
 					if ( Math.Abs( (Decimal)curRow["PathDevZone" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MinDev"] ) {
 						curViewRow.Cells["PathDevZone" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevZone" + curIdx].Style.ForeColor = Color.Red;
@@ -297,23 +298,25 @@ namespace WaterskiScoringSystem.Common {
 
 		private void loadDataGridJump( DataRow curRow, DataGridViewRow curViewRow ) {
 			curViewRow.Cells["SkierRunNum"].Value = ( (Byte)curRow["PassNum"] ).ToString();
-			if ( curRow["ScoreFeet"] != System.DBNull.Value ) curViewRow.Cells["ScoreFeet"].Value = ( (Decimal)curRow["ScoreFeet"] ).ToString( "#.00" );
-			if ( curRow["ScoreMeters"] != System.DBNull.Value ) curViewRow.Cells["ScoreMeters"].Value = ( (Decimal)curRow["ScoreMeters"] ).ToString( "#.00" );
 
-			if ( curRow["TimeInTol"] != System.DBNull.Value ) curViewRow.Cells["TimeInTol"].Value = ( (String)curRow["TimeInTol"] );
-			if ( curRow["BoatSplitTime"] != System.DBNull.Value ) curViewRow.Cells["BoatSplitTime"].Value = ( (Decimal)curRow["BoatSplitTime"] ).ToString( "#0.00" );
-			if ( curRow["BoatSplitTime2"] != System.DBNull.Value ) curViewRow.Cells["BoatSplitTime2"].Value = ( (Decimal)curRow["BoatSplitTime2"] ).ToString( "#0.00" );
-			if ( curRow["BoatEndTime"] != System.DBNull.Value ) curViewRow.Cells["BoatEndTime"].Value = ( (Decimal)curRow["BoatEndTime"] ).ToString( "#0.00" );
-			if ( curRow["BoatTimeBuoy1"] != System.DBNull.Value ) curViewRow.Cells["BoatTimeBuoy1"].Value = ( (Decimal)curRow["BoatTimeBuoy1"] ).ToString( "#0.00" );
-			if ( curRow["BoatTimeBuoy2"] != System.DBNull.Value ) curViewRow.Cells["BoatTimeBuoy2"].Value = ( (Decimal)curRow["BoatTimeBuoy2"] ).ToString( "#0.00" );
-			if ( curRow["BoatTimeBuoy3"] != System.DBNull.Value ) curViewRow.Cells["BoatTimeBuoy3"].Value = ( (Decimal)curRow["BoatTimeBuoy3"] ).ToString( "#0.00" );
+			curViewRow.Cells["SkierBoatPath"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierBoatPath", "" );
+			curViewRow.Cells["ScoreFeet"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreFeet", "", 0 );
+			curViewRow.Cells["ScoreMeters"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreMeters", "", 2 );
 
-			if ( curRow["PathDevBuoy0"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy0"].Value = ( (Decimal)curRow["PathDevBuoy0"] ).ToString( "#0.00" );
-			if ( curRow["PathDevBuoy1"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy1"].Value = ( (Decimal)curRow["PathDevBuoy1"] ).ToString( "#0.00" );
-			if ( curRow["PathDevBuoy2"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy2"].Value = ( (Decimal)curRow["PathDevBuoy2"] ).ToString( "#0.00" );
-			if ( curRow["PathDevBuoy3"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy3"].Value = ( (Decimal)curRow["PathDevBuoy3"] ).ToString( "#0.00" );
-			if ( curRow["PathDevBuoy4"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy4"].Value = ( (Decimal)curRow["PathDevBuoy4"] ).ToString( "#0.00" );
-			if ( curRow["PathDevBuoy5"] != System.DBNull.Value ) curViewRow.Cells["PathDevBuoy5"].Value = ( (Decimal)curRow["PathDevBuoy5"] ).ToString( "#0.00" );
+			curViewRow.Cells["TimeInTol"].Value = HelperFunctions.getDataRowColValue( curRow, "TimeInTol", "" );
+			curViewRow.Cells["BoatSplitTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSplitTime", "", 2 );
+			curViewRow.Cells["BoatSplitTime2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSplitTime2", "", 2 );
+			curViewRow.Cells["BoatEndTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatEndTime", "", 2 );
+			curViewRow.Cells["BoatTimeBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy1", "", 2 );
+			curViewRow.Cells["BoatTimeBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy2", "", 2 );
+			curViewRow.Cells["BoatTimeBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy3", "", 2 );
+
+			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
+			curViewRow.Cells["PathDevBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy1", "", 2 );
+			curViewRow.Cells["PathDevBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", "", 2 );
+			curViewRow.Cells["PathDevBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", "", 2 );
+			curViewRow.Cells["PathDevBuoy4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", "", 2 );
+			curViewRow.Cells["PathDevBuoy5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy5", "", 2 );
 		}
 
 		private void navExport_Click( object sender, EventArgs e ) {
@@ -377,7 +380,7 @@ namespace WaterskiScoringSystem.Common {
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append( "SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass, E.RankingScore" );
 			curSqlStmt.Append( ", S.Round,BP.BoatDescription as Boat, BP.DriverName as DriverName" );
-			curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters" );
+			curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters, R.SkierBoatPath" );
 			curSqlStmt.Append( ", R.PassNum, R.BoatSplitTime, R.BoatSplitTime2, BoatEndTime, R.ScoreFeet as PassScoreFeet, R.ScoreMeters as PassScoreMeters" );
 			curSqlStmt.Append( ", R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
 			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatatime, R.InsertDate as PassDatatime" );

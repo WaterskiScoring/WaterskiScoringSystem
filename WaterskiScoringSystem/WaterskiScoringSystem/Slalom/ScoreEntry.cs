@@ -2778,8 +2778,13 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void setRecapNextCell( object sender, EventArgs e ) {
 			Timer curTimerObj = (Timer)sender;
-			curTimerObj.Stop();
-			curTimerObj.Tick -= new EventHandler( setRecapNextCell );
+			try {
+				curTimerObj.Stop();
+				curTimerObj.Tick -= new EventHandler( setRecapNextCell );
+			} catch ( Exception ex ) {
+				MessageBox.Show( "setRecapNextCell: Exception encountered at top of method: " + ex.Message );
+
+			}
 
 			if ( myRecapColumn.Equals( "Judge1ScoreRecap" ) ) {
 				slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells["BoatTimeRecap"];
@@ -2816,10 +2821,14 @@ namespace WaterskiScoringSystem.Slalom {
 					) {
 					isRecapRowEnterHandled = true;
 					isAddRecapRowInProg = true;
-					curTimerObj = new Timer();
-					curTimerObj.Interval = 5;
-					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-					curTimerObj.Start();
+					try {
+						curTimerObj = new Timer();
+						curTimerObj.Interval = 5;
+						curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+						curTimerObj.Start();
+					} catch ( Exception ex ) {
+						MessageBox.Show( "setRecapNextCell: Exception encountered at BoatTimeRecap of method: " + ex.Message );
+					}
 				} else {
 					slalomRecapDataGridView.CurrentCell = slalomRecapDataGridView.Rows[myRecapRow.Index].Cells[myStartCellIndex];
 				}

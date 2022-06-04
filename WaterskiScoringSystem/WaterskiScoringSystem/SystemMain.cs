@@ -247,11 +247,18 @@ namespace WaterskiScoringSystem {
                         if (curTourDataTable.Rows.Count > 0) {
                             TourProperties curTourProperties = TourProperties.Instance;
                             curTourProperties.loadProperties( (String)curTourDataTable.Rows[0]["Rules"], (String)curTourDataTable.Rows[0]["Class"] );
-                        } else {
+							
+							this.Text = Properties.Settings.Default.AppTitle
+								+ " - " + Properties.Settings.Default.BuildVersion
+								+ " - " + Properties.Settings.Default.AppSanctionNum
+								+ " - " + (String)curTourDataTable.Rows[0]["Name"];
+						
+						} else {
                             Properties.Settings.Default.AppSanctionNum = "";
                             this.Text = Properties.Settings.Default.AppTitle;
                         }
-                    } else {
+                    
+					} else {
                         Properties.Settings.Default.AppSanctionNum = "";
                         this.Text = Properties.Settings.Default.AppTitle;
                     }
