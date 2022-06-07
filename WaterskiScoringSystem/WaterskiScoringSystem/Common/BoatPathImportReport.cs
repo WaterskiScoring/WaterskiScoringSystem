@@ -167,6 +167,7 @@ namespace WaterskiScoringSystem.Common {
 				
 				curViewRow.Cells["Event"].Value = (String)curRow["Event"];
 				curViewRow.Cells["Round"].Value = ((Byte)curRow["Round"]).ToString();
+				curViewRow.Cells["PassNumber"].Value = ( (Byte)curRow["PassNumber"] ).ToString();
 				curViewRow.Cells["Boat"].Value = HelperFunctions.getDataRowColValue( curRow, "BoatDescription", "" );
 
 				curViewRow.Cells["DriverMemberId"].Value = HelperFunctions.getDataRowColValue( curRow, "DriverMemberId", "" );

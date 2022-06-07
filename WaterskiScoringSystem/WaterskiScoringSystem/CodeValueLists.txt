@@ -1,8 +1,9 @@
 Table:	CodeValueList							
 PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
-0	SlalomBoatPathRerideRopeMin	R	1	1	14.25M / 28 OFF	14.25	14.25	Class R Reride minimum rope length 14.25M or -28
-0	SlalomBoatPathRerideRopeMin	L	2	2	14.25M / 28 OFF	14.25	14.25	Class R Reride minimum rope length 14.25M or -28
-0	SlalomBoatPathRerideRopeMin	E	3	3	14.25M / 28 OFF	14.25	14.25	Class R Reride minimum rope length 14.25M or -28
+0	SlalomBoatPathRerideRopeMin	R	1	1	11.25M / 38 OFF	11.25	11.25	Class R Reride minimum rope length 11.25M or -38
+0	SlalomBoatPathRerideRopeMin	L	2	2	11.25M / 38 OFF	11.25	11.25	Class L Reride minimum rope length 11.25M or -38
+0	SlalomBoatPathRerideRopeMin	E	3	3	11.25M / 38 OFF	11.25	11.25	Class E Reride minimum rope length 11.25M or -38
+0	SlalomBoatPathRerideRopeMin	C	4	4	11.25M / 38 OFF	11.25	11.25	Class C Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathDevMax	GATE-C	0	11	Entry Gate Class C Deviation Max	0	0	No  Deviation Max at Gates
 0	SlalomBoatPathDevMax	B1-C	1	12	Buoy 1 Class C Deviation Max	25	25	Score 0.25 - 1 Deviation Max
 0	SlalomBoatPathDevMax	B2-C	2	13	Buoy 2 Class C Deviation Max	25	30	Score 1.25 - 2 Deviation Max

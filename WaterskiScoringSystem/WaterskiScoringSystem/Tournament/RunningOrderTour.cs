@@ -1866,7 +1866,7 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			WscHandler.checkWscConnectStatus();
+			WscHandler.checkWscConnectStatus( sender != null );
 			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
 				SendSkierListButton.Visible = true;

@@ -42,7 +42,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-		public static void checkWscConnectStatus() {
+		public static void checkWscConnectStatus( bool showWarning ) {
 			String curMethodName = "checkWscConnectStatus: ";
 			String curDatabaseFilename = "";
 			getSanctionNum();
@@ -60,6 +60,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 				
 				myConnectActive = false;
+				if ( !showWarning ) return;
+
 				String msg = String.Format( "WscMessageHandler is not currently active", curMethodName );
 				Log.WriteFile( msg );
 
@@ -147,7 +149,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 				addWscMsgSend( "pass_data", JsonConvert.SerializeObject( sendMsg ) );
-				checkWscConnectStatus();
+				checkWscConnectStatus( true );
 				return true;
 			
 			} catch ( Exception ex ) {
@@ -385,7 +387,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			if ( startListAthletes.Count > 0 ) {
 				sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
-				checkWscConnectStatus();
+				checkWscConnectStatus( true );
 			}
 
 			return true;

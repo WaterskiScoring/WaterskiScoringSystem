@@ -393,12 +393,9 @@ namespace WaterskiScoringSystem.Jump {
 			} else {
 				LiveWebLabel.Visible = false;
 			}
-			if ( WscHandler.isConnectActive ) {
-				WaterskiConnectLabel.Visible = true;
-				myBoatPathDevMax = getBoatPathDevMax();
-			} else {
-				WaterskiConnectLabel.Visible = false;
-			}
+
+			myBoatPathDevMax = getBoatPathDevMax();
+			navWaterSkiConnect_Click( null, null );
 
 			Cursor.Current = Cursors.Default;
 		}
@@ -1537,10 +1534,9 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
-			WscHandler.checkWscConnectStatus();
+			WscHandler.checkWscConnectStatus( sender != null );
 			if ( WscHandler.isConnectActive ) {
 				WaterskiConnectLabel.Visible = true;
-				myBoatPathDevMax = getBoatPathDevMax();
 				return;
 			}
 
@@ -1939,11 +1935,6 @@ namespace WaterskiScoringSystem.Jump {
 			} else {
 				LiveWebLabel.Visible = false;
 			}
-			if ( WscHandler.isConnectActive ) {
-				WaterskiConnectLabel.Visible = true;
-			} else {
-				WaterskiConnectLabel.Visible = false;
-			}
 
 			int curRowPos = myEventRegViewIdx + 1;
 			RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + TourEventRegDataGridView.Rows.Count.ToString();
@@ -2131,6 +2122,8 @@ namespace WaterskiScoringSystem.Jump {
 			Decimal curMaxRamp = Convert.ToDecimal( "5.0" );
 
 			Cursor.Current = Cursors.WaitCursor;
+			if ( !( WscHandler.isConnectActive ) ) navWaterSkiConnect_Click( null, null );
+
 			DataGridViewRow curEventRegRow = TourEventRegDataGridView.Rows[myEventRegViewIdx];
 			String curMemberId = (String)curEventRegRow.Cells["MemberId"].Value;
 			String curAgeGroup = (String)curEventRegRow.Cells["AgeGroup"].Value;
@@ -2351,12 +2344,6 @@ namespace WaterskiScoringSystem.Jump {
 						}
 					}
 					myRecapRow = curViewRow;
-				}
-
-				if ( WscHandler.isConnectActive ) {
-					WaterskiConnectLabel.Visible = true;
-				} else {
-					WaterskiConnectLabel.Visible = false;
 				}
 
 				/* 

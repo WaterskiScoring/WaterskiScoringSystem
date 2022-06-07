@@ -97,6 +97,7 @@ namespace WaterskiScoringSystem.Common {
 			String filename = "JumpMeasurementImportSlalomExport.txt";
 			myExportData.exportData( dataGridView, filename );
 		}
+
 		private void loadDataGrid() {
 			if ( myDataTable.Rows.Count == 0 ) return;
 
@@ -255,5 +256,5 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
-
+	}
 }
