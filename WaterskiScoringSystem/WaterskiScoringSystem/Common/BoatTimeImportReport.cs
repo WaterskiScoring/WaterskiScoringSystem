@@ -75,7 +75,7 @@ namespace WaterskiScoringSystem.Common {
 			} else {
 				this.Text += " - Jump";
 
-				BoatTimeBuoy1.HeaderText = "52M Time";
+				BoatTimeBuoy1.HeaderText = "NT Time";
 				BoatTimeBuoy2.HeaderText = "MT Time";
 				BoatTimeBuoy3.HeaderText = "ET Time";
 				BoatTimeBuoy4.Visible = false;

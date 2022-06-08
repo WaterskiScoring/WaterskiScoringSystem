@@ -84,7 +84,7 @@ namespace WaterskiScoringSystem.Common {
 
 				PathDevBuoy0.HeaderText = "Dev 180M";
 				PathDevBuoy1.HeaderText = "Dev ST";
-				PathDevBuoy2.HeaderText = "Dev 52M";
+				PathDevBuoy2.HeaderText = "Dev NT";
 				PathDevBuoy3.HeaderText = "Dev MT";
 				PathDevBuoy4.HeaderText = "Dev ET";
 				PathDevBuoy5.HeaderText = "Dev EC";
