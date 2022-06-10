@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -182,7 +183,18 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["JumpGroup"].ReadOnly = true;
 					}
 				}
+
+				String curReadyToSki = HelperFunctions.getDataRowColValue( curDataRow, "ReadyToSki", "N" );
+				String curWithdrawn = HelperFunctions.getDataRowColValue( curDataRow, "Withdrawn", "N" );
+				if ( curReadyToSki.Equals( "N" ) ) {
+					curViewRow.Cells["SkierName"].Style.Font = new Font( "Arial Narrow", 11, System.Drawing.FontStyle.Bold );
+					curViewRow.Cells["SkierName"].Style.ForeColor = Color.Red;
+				} else if ( curWithdrawn.Equals( "Y" ) ) {
+						curViewRow.Cells["SkierName"].Style.Font = new Font( "Arial Narrow", 11, System.Drawing.FontStyle.Bold );
+						curViewRow.Cells["SkierName"].Style.ForeColor = Color.Salmon;
+				}
 			}
+			
 			if ( tourRegDataGridView.Rows.Count <= myTourRegRowIdx ) {
 				myTourRegRowIdx = tourRegDataGridView.Rows.Count - 1;
 			}

@@ -12,6 +12,7 @@ namespace WaterskiScoringSystem.Common {
 	class HelperFunctions {
 		public static char[] TabDelim = new char[] { '\t' };
 		public static char[] SingleQuoteDelim = new char[] { '\'' };
+		public static String TabChar = "\t";
 
 		public static String getDatabaseFilenameFromConnectString() {
 			String curDatabaseFilename = "";

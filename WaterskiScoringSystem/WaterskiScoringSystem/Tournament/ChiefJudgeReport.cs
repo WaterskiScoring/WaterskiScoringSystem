@@ -379,171 +379,171 @@ namespace WaterskiScoringSystem.Tournament {
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "SanctionNumber" );
-				outLine.Append( HelperFunctions.TabDelim + "Name" );
-				outLine.Append( HelperFunctions.TabDelim + "Class" );
-				outLine.Append( HelperFunctions.TabDelim + "Federation" );
-				outLine.Append( HelperFunctions.TabDelim + "Rules" );
-				outLine.Append( HelperFunctions.TabDelim + "EventDates" );
-				outLine.Append( HelperFunctions.TabDelim + "EventLocation" );
+				outLine.Append( HelperFunctions.TabChar + "Name" );
+				outLine.Append( HelperFunctions.TabChar + "Class" );
+				outLine.Append( HelperFunctions.TabChar + "Federation" );
+				outLine.Append( HelperFunctions.TabChar + "Rules" );
+				outLine.Append( HelperFunctions.TabChar + "EventDates" );
+				outLine.Append( HelperFunctions.TabChar + "EventLocation" );
 
-				outLine.Append( HelperFunctions.TabDelim + "SlalomRounds" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickRounds" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpRounds" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomRounds" );
+				outLine.Append( HelperFunctions.TabChar + "TrickRounds" );
+				outLine.Append( HelperFunctions.TabChar + "JumpRounds" );
 
-				outLine.Append( HelperFunctions.TabDelim + "ContactMemberId" );
-				outLine.Append( HelperFunctions.TabDelim + "ContactMember" );
-				outLine.Append( HelperFunctions.TabDelim + "ContactPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ContactEmail" );
-				outLine.Append( HelperFunctions.TabDelim + "ContactAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ContactMemberId" );
+				outLine.Append( HelperFunctions.TabChar + "ContactMember" );
+				outLine.Append( HelperFunctions.TabChar + "ContactPhone" );
+				outLine.Append( HelperFunctions.TabChar + "ContactEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ContactAddress" );
 
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeMemberId" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeMember" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeRating" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeMemberId" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeMember" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeRating" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgePhone" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeEmail" );
 
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverMemberId" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverMember" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverRating" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefDriverEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverMemberId" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverMember" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverRating" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverPhone" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefDriverEmail" );
 
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerMemberId" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerMember" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerRating" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefScorerEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerMemberId" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerMember" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerRating" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerPhone" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefScorerEmail" );
 
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirMemberId" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirMember" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirRating" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirMemberId" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirMember" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirRating" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirAddress" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirPhone" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirEmail" );
 				//Chief Safety Director's Performance Report
-				outLine.Append( HelperFunctions.TabDelim + "safetyDirPerfReport" );
+				outLine.Append( HelperFunctions.TabChar + "safetyDirPerfReport" );
 
 				//Rule Exceptions
-				outLine.Append( HelperFunctions.TabDelim + "RuleExceptQ1" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleExceptQ2" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleExceptQ3" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleExceptQ4" );
-				outLine.Append( HelperFunctions.TabDelim + "ruleExceptions" );
+				outLine.Append( HelperFunctions.TabChar + "RuleExceptQ1" );
+				outLine.Append( HelperFunctions.TabChar + "RuleExceptQ2" );
+				outLine.Append( HelperFunctions.TabChar + "RuleExceptQ3" );
+				outLine.Append( HelperFunctions.TabChar + "RuleExceptQ4" );
+				outLine.Append( HelperFunctions.TabChar + "ruleExceptions" );
 
 				//Interpretations of the Rules
-				outLine.Append( HelperFunctions.TabDelim + "RuleInterQ1" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleInterQ2" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleInterQ3" );
-				outLine.Append( HelperFunctions.TabDelim + "RuleInterQ4" );
-				outLine.Append( HelperFunctions.TabDelim + "ruleInterpretations" );
+				outLine.Append( HelperFunctions.TabChar + "RuleInterQ1" );
+				outLine.Append( HelperFunctions.TabChar + "RuleInterQ2" );
+				outLine.Append( HelperFunctions.TabChar + "RuleInterQ3" );
+				outLine.Append( HelperFunctions.TabChar + "RuleInterQ4" );
+				outLine.Append( HelperFunctions.TabChar + "ruleInterpretations" );
 
 				//Technical Report Slalom
-				outLine.Append( HelperFunctions.TabDelim + "RopeHandle1" );
-				outLine.Append( HelperFunctions.TabDelim + "RopeHandle2" );
-				outLine.Append( HelperFunctions.TabDelim + "RopeHandle3" );
-				outLine.Append( HelperFunctions.TabDelim + "RopeHandle4" );
+				outLine.Append( HelperFunctions.TabChar + "RopeHandle1" );
+				outLine.Append( HelperFunctions.TabChar + "RopeHandle2" );
+				outLine.Append( HelperFunctions.TabChar + "RopeHandle3" );
+				outLine.Append( HelperFunctions.TabChar + "RopeHandle4" );
 
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line2300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1825" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1600" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1425" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1200" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1125" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1075" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope1Line1025" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line2300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1825" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1600" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1425" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1200" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1125" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1075" );
+				outLine.Append( HelperFunctions.TabChar + "Rope1Line1025" );
 
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line2300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1825" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1600" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1425" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1200" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1125" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1075" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope2Line1025" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line2300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1825" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1600" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1425" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1200" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1125" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1075" );
+				outLine.Append( HelperFunctions.TabChar + "Rope2Line1025" );
 
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line2300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1825" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1600" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1425" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1300" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1200" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1125" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1075" );
-				outLine.Append( HelperFunctions.TabDelim + "Rope3Line1025" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line2300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1825" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1600" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1425" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1300" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1200" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1125" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1075" );
+				outLine.Append( HelperFunctions.TabChar + "Rope3Line1025" );
 
 				//Technical Report Jump
-				outLine.Append( HelperFunctions.TabDelim + "JumpHandle1" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpHandle2" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpHandle3" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpHandle4" );
+				outLine.Append( HelperFunctions.TabChar + "JumpHandle1" );
+				outLine.Append( HelperFunctions.TabChar + "JumpHandle2" );
+				outLine.Append( HelperFunctions.TabChar + "JumpHandle3" );
+				outLine.Append( HelperFunctions.TabChar + "JumpHandle4" );
 
-				outLine.Append( HelperFunctions.TabDelim + "JumpLine1" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpLine2" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpLine3" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpLine4" );
+				outLine.Append( HelperFunctions.TabChar + "JumpLine1" );
+				outLine.Append( HelperFunctions.TabChar + "JumpLine2" );
+				outLine.Append( HelperFunctions.TabChar + "JumpLine3" );
+				outLine.Append( HelperFunctions.TabChar + "JumpLine4" );
 
 				//Technical Report Jump Meters
-				outLine.Append( HelperFunctions.TabDelim + "angleAtoB" );
-				outLine.Append( HelperFunctions.TabDelim + "angleAtoC" );
-				outLine.Append( HelperFunctions.TabDelim + "angleBtoA" );
-				outLine.Append( HelperFunctions.TabDelim + "angleBtoC" );
-				outLine.Append( HelperFunctions.TabDelim + "angleCtoA" );
-				outLine.Append( HelperFunctions.TabDelim + "angleCtoB" );
-				outLine.Append( HelperFunctions.TabDelim + "angleAtoZ" );
-				outLine.Append( HelperFunctions.TabDelim + "angleBtoZ" );
-				outLine.Append( HelperFunctions.TabDelim + "angleCtoZ" );
-				outLine.Append( HelperFunctions.TabDelim + "angleAto15ET" );
-				outLine.Append( HelperFunctions.TabDelim + "angleBto15ET" );
-				outLine.Append( HelperFunctions.TabDelim + "angleCto15ET" );
-				outLine.Append( HelperFunctions.TabDelim + "distAtoB" );
-				outLine.Append( HelperFunctions.TabDelim + "distAtoC" );
-				outLine.Append( HelperFunctions.TabDelim + "distBtoC" );
-				outLine.Append( HelperFunctions.TabDelim + "triangle15ET" );
-				outLine.Append( HelperFunctions.TabDelim + "triangleZero" );
+				outLine.Append( HelperFunctions.TabChar + "angleAtoB" );
+				outLine.Append( HelperFunctions.TabChar + "angleAtoC" );
+				outLine.Append( HelperFunctions.TabChar + "angleBtoA" );
+				outLine.Append( HelperFunctions.TabChar + "angleBtoC" );
+				outLine.Append( HelperFunctions.TabChar + "angleCtoA" );
+				outLine.Append( HelperFunctions.TabChar + "angleCtoB" );
+				outLine.Append( HelperFunctions.TabChar + "angleAtoZ" );
+				outLine.Append( HelperFunctions.TabChar + "angleBtoZ" );
+				outLine.Append( HelperFunctions.TabChar + "angleCtoZ" );
+				outLine.Append( HelperFunctions.TabChar + "angleAto15ET" );
+				outLine.Append( HelperFunctions.TabChar + "angleBto15ET" );
+				outLine.Append( HelperFunctions.TabChar + "angleCto15ET" );
+				outLine.Append( HelperFunctions.TabChar + "distAtoB" );
+				outLine.Append( HelperFunctions.TabChar + "distAtoC" );
+				outLine.Append( HelperFunctions.TabChar + "distBtoC" );
+				outLine.Append( HelperFunctions.TabChar + "triangle15ET" );
+				outLine.Append( HelperFunctions.TabChar + "triangleZero" );
 
-				outLine.Append( HelperFunctions.TabDelim + "slalomCourseSpecs" );
-				outLine.Append( HelperFunctions.TabDelim + "trickCourseSpecs" );
-				outLine.Append( HelperFunctions.TabDelim + "jumpCourseSpecs" );
-				outLine.Append( HelperFunctions.TabDelim + "buoySpecs" );
+				outLine.Append( HelperFunctions.TabChar + "slalomCourseSpecs" );
+				outLine.Append( HelperFunctions.TabChar + "trickCourseSpecs" );
+				outLine.Append( HelperFunctions.TabChar + "jumpCourseSpecs" );
+				outLine.Append( HelperFunctions.TabChar + "buoySpecs" );
 
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( sanctionIdTextBox.Text.Substring( 0, 6 ) );
-				outLine.Append( HelperFunctions.TabDelim + nameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + myTourClass );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["Federation"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["Rules"] );
-				outLine.Append( HelperFunctions.TabDelim + eventDatesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + eventLocationTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + nameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + myTourClass );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["Federation"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["Rules"] );
+				outLine.Append( HelperFunctions.TabChar + eventDatesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + eventLocationTextBox.Text );
 
-				outLine.Append( HelperFunctions.TabDelim + mySlalomRounds.ToString() );
-				outLine.Append( HelperFunctions.TabDelim + myTrickRounds.ToString() );
-				outLine.Append( HelperFunctions.TabDelim + myJumpRounds.ToString() );
+				outLine.Append( HelperFunctions.TabChar + mySlalomRounds.ToString() );
+				outLine.Append( HelperFunctions.TabChar + myTrickRounds.ToString() );
+				outLine.Append( HelperFunctions.TabChar + myJumpRounds.ToString() );
 
 				//Tournament Contact
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ContactMemberId"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ContactName"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ContactPhone"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ContactEmail"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ContactAddress"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactMemberId"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactName"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactPhone"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactEmail"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactAddress"] );
 
 				//Chief Judge
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefJudgeMemberId"] );
-				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeNameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeRatingTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeAddressTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeDayPhoneTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefJudgeEmail"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefJudgeMemberId"] );
+				outLine.Append( HelperFunctions.TabChar + ChiefJudgeNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + ChiefJudgeRatingTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + ChiefJudgeAddressTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + ChiefJudgeDayPhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefJudgeEmail"] );
 
 				//Chief Driver
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefDriverMemberId"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefDriverName"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverMemberId"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverName"] );
 				String curValue = (String)myTourRow["ChiefDriverMemberId"];
 				DataRow curMemberRow = getTourMemberRating( curValue );
 				if ( curMemberRow != null ) {
@@ -554,15 +554,15 @@ namespace WaterskiScoringSystem.Tournament {
 						curValue = (String)curMemberRow["DriverSlalomRating"];
 					}
 				}
-				outLine.Append( HelperFunctions.TabDelim + curValue );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefDriverAddress"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefDriverPhone"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefDriverEmail"] );
+				outLine.Append( HelperFunctions.TabChar + curValue );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverAddress"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverPhone"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverEmail"] );
 
 				//Chief Scorer
 				//curSqlStmt.Append( ", T.ChiefScorerMemberId, TourRegCC.SkierName AS ChiefScorerName, T.ChiefScorerAddress, T.ChiefScorerPhone, T.ChiefScorerEmail " );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefScorerMemberId"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefScorerName"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerMemberId"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerName"] );
 				curValue = (String)myTourRow["ChiefScorerMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
 				if ( curMemberRow != null ) {
@@ -573,15 +573,15 @@ namespace WaterskiScoringSystem.Tournament {
 						curValue = (String)curMemberRow["ScorerSlalomRating"];
 					}
 				}
-				outLine.Append( HelperFunctions.TabDelim + curValue );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefScorerAddress"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefScorerPhone"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["ChiefScorerEmail"] );
+				outLine.Append( HelperFunctions.TabChar + curValue );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerAddress"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerPhone"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerEmail"] );
 
 				//Chief Safety Director
 				//curSqlStmt.Append( ", T.SafetyDirMemberId, TourRegCS.SkierName AS ChiefSafetyName, T.SafetyDirAddress, T.SafetyDirPhone, T.SafetyDirEmail" );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["SafetyDirMemberId"] );
-				outLine.Append( HelperFunctions.TabDelim + SafetyDirNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirMemberId"] );
+				outLine.Append( HelperFunctions.TabChar + SafetyDirNameTextBox.Text );
 				curValue = (String)myTourRow["SafetyDirMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
 				if ( curMemberRow != null ) {
@@ -592,115 +592,115 @@ namespace WaterskiScoringSystem.Tournament {
 						curValue = (String)curMemberRow["SafetyOfficialRating"];
 					}
 				}
-				outLine.Append( HelperFunctions.TabDelim + curValue );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["SafetyDirAddress"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["SafetyDirPhone"] );
-				outLine.Append( HelperFunctions.TabDelim + (String)myTourRow["SafetyDirEmail"] );
+				outLine.Append( HelperFunctions.TabChar + curValue );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirAddress"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirPhone"] );
+				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirEmail"] );
 
 				//Chief Safety Director's Performance Report
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( safetyDirPerfReportTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( safetyDirPerfReportTextBox.Text ) );
 
 				//Rule Exceptions
-				outLine.Append( HelperFunctions.TabDelim + RuleExceptQ1TextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + RuleExceptQ2TextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + RuleExceptQ3GroupBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleExceptQ1TextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleExceptQ2TextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleExceptQ3GroupBox.Text );
 				if ( RuleExceptQ4Yes.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleExceptQ4Yes.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleExceptQ4Yes.Text );
 				} else if ( RuleExceptQ4No.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleExceptQ4No.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleExceptQ4No.Text );
 				} else if ( RuleExceptQ4NA.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleExceptQ4NA.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleExceptQ4NA.Text );
 				} else {
-					outLine.Append( HelperFunctions.TabDelim + RuleExceptQ4NA.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleExceptQ4NA.Text );
 				}
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( ruleExceptionsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( ruleExceptionsTextBox.Text ) );
 
 				//Interpretations of the Rules
-				outLine.Append( HelperFunctions.TabDelim + RuleInterQ1TextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + RuleInterQ2TextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + RuleInterQ3GroupBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleInterQ1TextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleInterQ2TextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + RuleInterQ3GroupBox.Text );
 				if ( RuleInterQ4Yes.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleInterQ4Yes.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleInterQ4Yes.Text );
 				} else if ( RuleInterQ4No.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleInterQ4No.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleInterQ4No.Text );
 				} else if ( RuleInterQ4NA.Checked ) {
-					outLine.Append( HelperFunctions.TabDelim + RuleInterQ4NA.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleInterQ4NA.Text );
 				} else {
-					outLine.Append( HelperFunctions.TabDelim + RuleInterQ4NA.Text );
+					outLine.Append( HelperFunctions.TabChar + RuleInterQ4NA.Text );
 				}
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( ruleInterpretationsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( ruleInterpretationsTextBox.Text ) );
 
 				//Technical Slalom Ropes
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( RopeHandle1TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( RopeHandle2TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( RopeHandle3TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( RopeHandle4TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( RopeHandle1TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( RopeHandle2TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( RopeHandle3TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( RopeHandle4TextBox.Text ) );
 
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line2300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1825TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1600TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1425TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1200TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1125TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1075TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope1Line1025TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line2300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1825TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1600TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1425TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1200TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1125TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1075TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope1Line1025TextBox.Text ) );
 
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line2300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1825TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1600TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1425TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1200TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1125TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1075TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope2Line1025TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line2300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1825TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1600TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1425TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1200TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1125TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1075TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope2Line1025TextBox.Text ) );
 
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line2300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1825TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1600TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1425TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1300TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1200TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1125TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1075TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( Rope3Line1025TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line2300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1825TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1600TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1425TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1300TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1200TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1125TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1075TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( Rope3Line1025TextBox.Text ) );
 
 				//Technical Jump Ropes
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpHandle1TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpHandle2TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpHandle3TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpHandle4TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpHandle1TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpHandle2TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpHandle3TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpHandle4TextBox.Text ) );
 
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpLine1TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpLine2TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpLine3TextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( JumpLine4TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpLine1TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpLine2TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpLine3TextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( JumpLine4TextBox.Text ) );
 
 				//Technical Jump Meters
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleAtoBTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleAtoCTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleBtoATextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleBtoCTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleCtoATextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleCtoBTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleAtoZTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleBtoZTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleCtoZTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleAto15ETTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleBto15ETTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( angleCto15ETTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( distAtoBTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( distAtoCTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( distBtoCTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( triangle15ETTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeNumericAsText( triangleZeroTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleAtoBTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleAtoCTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleBtoATextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleBtoCTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleCtoATextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleCtoBTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleAtoZTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleBtoZTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleCtoZTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleAto15ETTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleBto15ETTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( angleCto15ETTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( distAtoBTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( distAtoCTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( distBtoCTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( triangle15ETTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeNumericAsText( triangleZeroTextBox.Text ) );
 
 				//Course specs
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( slalomCourseSpecsTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( trickCourseSpecsTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( jumpCourseSpecsTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + replaceLinefeed( buoySpecsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( slalomCourseSpecsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( trickCourseSpecsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( jumpCourseSpecsTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( buoySpecsTextBox.Text ) );
 
 				outBuffer.WriteLine( outLine.ToString() );
 

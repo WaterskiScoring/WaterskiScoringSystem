@@ -603,71 +603,71 @@ namespace WaterskiScoringSystem.Tournament {
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "DataType" );
-				outLine.Append( HelperFunctions.TabDelim + "SanctionNumber" );
-				outLine.Append( HelperFunctions.TabDelim + "name" );
-				outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
-				outLine.Append( HelperFunctions.TabDelim + "class" );
-				outLine.Append( HelperFunctions.TabDelim + "eventDates" );
-				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
-				outLine.Append( HelperFunctions.TabDelim + "rules" );
-				outLine.Append( HelperFunctions.TabDelim + "Region" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outLine.Append( HelperFunctions.TabChar + "SanctionNumber" );
+				outLine.Append( HelperFunctions.TabChar + "name" );
+				outLine.Append( HelperFunctions.TabChar + "eventLocation" );
+				outLine.Append( HelperFunctions.TabChar + "class" );
+				outLine.Append( HelperFunctions.TabChar + "eventDates" );
+				outLine.Append( HelperFunctions.TabChar + "sponsorClubName" );
+				outLine.Append( HelperFunctions.TabChar + "rules" );
+				outLine.Append( HelperFunctions.TabChar + "Region" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeName" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgePhone" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefSafetyName" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirAddress" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirPhone" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirEmail" );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( "Tournament" );
-				outLine.Append( HelperFunctions.TabDelim + sanctionIdTextBox.Text + myTourRow["Class"] );
-				outLine.Append( HelperFunctions.TabDelim + nameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + eventLocationTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + eventDatesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + sponsorClubNameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
-				outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + ChiefJudgeNameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + chiefJudgeAddressTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + ChiefSafetyNameTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + safetyDirAddressTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + sanctionIdTextBox.Text + myTourRow["Class"] );
+				outLine.Append( HelperFunctions.TabChar + nameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + eventLocationTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + classTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + eventDatesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + sponsorClubNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + myTourRow["Rules"].ToString() );
+				outLine.Append( HelperFunctions.TabChar + regionTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + ChiefJudgeNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + chiefJudgeAddressTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + chiefJudgePhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + chiefJudgeEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + ChiefSafetyNameTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + safetyDirAddressTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + safetyDirPhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + safetyDirEmailTextBox.Text );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "DataType" );
-				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
-				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
-				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabChar + "TrickNum" );
+				outLine.Append( HelperFunctions.TabChar + "TrickRides" );
+				outLine.Append( HelperFunctions.TabChar + "JumpNum" );
+				outLine.Append( HelperFunctions.TabChar + "JumpRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalNum" );
+				outLine.Append( HelperFunctions.TabChar + "TotalRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabChar + "numInjuries" );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( "EventStats" );
-				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + numInjuriesTextBox.Text );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				if ( mySafetyCheckList != null ) {
@@ -687,8 +687,8 @@ namespace WaterskiScoringSystem.Tournament {
 							findControlList = Controls.Find( curTextBoxName, true );
 							if ( findControlList.Length > 0 ) {
 								curTextBox = (TextBox)findControlList[0];
-								outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-								outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+								outLineHeader.Append( HelperFunctions.TabChar + curControlName.Substring( 0, curControlName.Length - 3 ) );
+								outLineData.Append( HelperFunctions.TabChar + curTextBox.Text );
 							}
 						}
 					}
@@ -742,8 +742,8 @@ namespace WaterskiScoringSystem.Tournament {
 						findControlList = Controls.Find( curTextBoxName, true );
 						if ( findControlList.Length > 0 ) {
 							curTextBox = (TextBox)findControlList[0];
-							outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-							outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+							outLineHeader.Append( HelperFunctions.TabChar + curControlName.Substring( 0, curControlName.Length - 3 ) );
+							outLineData.Append( HelperFunctions.TabChar + curTextBox.Text );
 						}
 					}
 				}
@@ -751,69 +751,69 @@ namespace WaterskiScoringSystem.Tournament {
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "SanctionNumber" );
-				outLine.Append( HelperFunctions.TabDelim + "name" );
-				//outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
-				//outLine.Append( HelperFunctions.TabDelim + "class" );
-				//outLine.Append( HelperFunctions.TabDelim + "eventDates" );
-				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
-				//outLine.Append( HelperFunctions.TabDelim + "rules" );
-				//outLine.Append( HelperFunctions.TabDelim + "Region" );
-				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
-				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
-				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
-				//outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
-				//outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
-				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
-				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
-				//outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outLine.Append( HelperFunctions.TabChar + "name" );
+				//outLine.Append( HelperFunctions.TabChar + "eventLocation" );
+				//outLine.Append( HelperFunctions.TabChar + "class" );
+				//outLine.Append( HelperFunctions.TabChar + "eventDates" );
+				outLine.Append( HelperFunctions.TabChar + "sponsorClubName" );
+				//outLine.Append( HelperFunctions.TabChar + "rules" );
+				//outLine.Append( HelperFunctions.TabChar + "Region" );
+				//outLine.Append( HelperFunctions.TabChar + "ChiefJudgeName" );
+				//outLine.Append( HelperFunctions.TabChar + "ChiefJudgeAddress" );
+				//outLine.Append( HelperFunctions.TabChar + "ChiefJudgePhone" );
+				//outLine.Append( HelperFunctions.TabChar + "ChiefJudgeEmail" );
+				//outLine.Append( HelperFunctions.TabChar + "ChiefSafetyName" );
+				//outLine.Append( HelperFunctions.TabChar + "SafetyDirAddress" );
+				//outLine.Append( HelperFunctions.TabChar + "SafetyDirPhone" );
+				//outLine.Append( HelperFunctions.TabChar + "SafetyDirEmail" );
 
 				outLine.Append( outLineHeader.ToString() );
 
 				//EventStats
-				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
-				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
-				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabChar + "TrickNum" );
+				outLine.Append( HelperFunctions.TabChar + "TrickRides" );
+				outLine.Append( HelperFunctions.TabChar + "JumpNum" );
+				outLine.Append( HelperFunctions.TabChar + "JumpRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalNum" );
+				outLine.Append( HelperFunctions.TabChar + "TotalRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabChar + "numInjuries" );
 
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( sanctionIdTextBox.Text.Substring( 0, 6 ) );
-				outLine.Append( HelperFunctions.TabDelim + nameTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + eventLocationTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + eventDatesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + sponsorClubNameTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
-				//outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + ChiefJudgeNameTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + chiefJudgeAddressTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + ChiefSafetyNameTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + safetyDirAddressTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
-				//outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + nameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + eventLocationTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + classTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + eventDatesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + sponsorClubNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + myTourRow["Rules"].ToString() );
+				//outLine.Append( HelperFunctions.TabChar + regionTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + ChiefJudgeNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + chiefJudgeAddressTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + chiefJudgePhoneTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + chiefJudgeEmailTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + ChiefSafetyNameTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + safetyDirAddressTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + safetyDirPhoneTextBox.Text );
+				//outLine.Append( HelperFunctions.TabChar + safetyDirEmailTextBox.Text );
 
 				outLine.Append( outLineData.ToString() );
 
 				//EventStats
-				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + numInjuriesTextBox.Text );
 
 				outBuffer.WriteLine( outLine.ToString() );
 
@@ -847,71 +847,71 @@ namespace WaterskiScoringSystem.Tournament {
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "DataType" );
-				outLine.Append( HelperFunctions.TabDelim + "SanctionNumber" );
-				outLine.Append( HelperFunctions.TabDelim + "name" );
-				outLine.Append( HelperFunctions.TabDelim + "eventLocation" );
-				outLine.Append( HelperFunctions.TabDelim + "class" );
-				outLine.Append( HelperFunctions.TabDelim + "eventDates" );
-				outLine.Append( HelperFunctions.TabDelim + "sponsorClubName" );
-				outLine.Append( HelperFunctions.TabDelim + "rules" );
-				outLine.Append( HelperFunctions.TabDelim + "Region" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeName" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgePhone" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefJudgeEmail" );
-				outLine.Append( HelperFunctions.TabDelim + "ChiefSafetyName" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirAddress" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirPhone" );
-				outLine.Append( HelperFunctions.TabDelim + "SafetyDirEmail" );
+				outLine.Append( HelperFunctions.TabChar + "SanctionNumber" );
+				outLine.Append( HelperFunctions.TabChar + "name" );
+				outLine.Append( HelperFunctions.TabChar + "eventLocation" );
+				outLine.Append( HelperFunctions.TabChar + "class" );
+				outLine.Append( HelperFunctions.TabChar + "eventDates" );
+				outLine.Append( HelperFunctions.TabChar + "sponsorClubName" );
+				outLine.Append( HelperFunctions.TabChar + "rules" );
+				outLine.Append( HelperFunctions.TabChar + "Region" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeName" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeAddress" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgePhone" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefJudgeEmail" );
+				outLine.Append( HelperFunctions.TabChar + "ChiefSafetyName" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirAddress" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirPhone" );
+				outLine.Append( HelperFunctions.TabChar + "SafetyDirEmail" );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( "Tournament" );
-				outLine.Append( HelperFunctions.TabDelim + sanctionIdTextBox.Text + myTourRow["Class"] );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( nameTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( eventLocationTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + classTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( eventDatesTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( sponsorClubNameTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + myTourRow["Rules"].ToString() );
-				outLine.Append( HelperFunctions.TabDelim + regionTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( ChiefJudgeNameTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( chiefJudgeAddressTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + chiefJudgePhoneTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + chiefJudgeEmailTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( ChiefSafetyNameTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + encodeSpecialChar( safetyDirAddressTextBox.Text ) );
-				outLine.Append( HelperFunctions.TabDelim + safetyDirPhoneTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + safetyDirEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + sanctionIdTextBox.Text + myTourRow["Class"] );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( nameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( eventLocationTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + classTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( eventDatesTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( sponsorClubNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + myTourRow["Rules"].ToString() );
+				outLine.Append( HelperFunctions.TabChar + regionTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( ChiefJudgeNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( chiefJudgeAddressTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + chiefJudgePhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + chiefJudgeEmailTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( ChiefSafetyNameTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + encodeSpecialChar( safetyDirAddressTextBox.Text ) );
+				outLine.Append( HelperFunctions.TabChar + safetyDirPhoneTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + safetyDirEmailTextBox.Text );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				//Tournament data
 				outLine = new StringBuilder( "" );
 				outLine.Append( "DataType" );
-				outLine.Append( HelperFunctions.TabDelim + "SlalomNum" );
-				outLine.Append( HelperFunctions.TabDelim + "SlalomRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TrickRides" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpNum" );
-				outLine.Append( HelperFunctions.TabDelim + "JumpRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalNum" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalRides" );
-				outLine.Append( HelperFunctions.TabDelim + "TotalSkiers" );
-				outLine.Append( HelperFunctions.TabDelim + "numInjuries" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomNum" );
+				outLine.Append( HelperFunctions.TabChar + "SlalomRides" );
+				outLine.Append( HelperFunctions.TabChar + "TrickNum" );
+				outLine.Append( HelperFunctions.TabChar + "TrickRides" );
+				outLine.Append( HelperFunctions.TabChar + "JumpNum" );
+				outLine.Append( HelperFunctions.TabChar + "JumpRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalNum" );
+				outLine.Append( HelperFunctions.TabChar + "TotalRides" );
+				outLine.Append( HelperFunctions.TabChar + "TotalSkiers" );
+				outLine.Append( HelperFunctions.TabChar + "numInjuries" );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				outLine.Append( "EventStats" );
-				outLine.Append( HelperFunctions.TabDelim + SlalomNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + SlalomRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TrickRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + JumpRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalNumTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalRidesTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + TotalSkiersTextBox.Text );
-				outLine.Append( HelperFunctions.TabDelim + numInjuriesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + SlalomRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TrickRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + JumpRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalNumTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalRidesTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + TotalSkiersTextBox.Text );
+				outLine.Append( HelperFunctions.TabChar + numInjuriesTextBox.Text );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				if ( mySafetyCheckList != null ) {
@@ -931,8 +931,8 @@ namespace WaterskiScoringSystem.Tournament {
 							findControlList = Controls.Find( curTextBoxName, true );
 							if ( findControlList.Length > 0 ) {
 								curTextBox = (TextBox)findControlList[0];
-								outLineHeader.Append( HelperFunctions.TabDelim + curControlName.Substring( 0, curControlName.Length - 3 ) );
-								outLineData.Append( HelperFunctions.TabDelim + curTextBox.Text );
+								outLineHeader.Append( HelperFunctions.TabChar + curControlName.Substring( 0, curControlName.Length - 3 ) );
+								outLineData.Append( HelperFunctions.TabChar + curTextBox.Text );
 							}
 						}
 					}
