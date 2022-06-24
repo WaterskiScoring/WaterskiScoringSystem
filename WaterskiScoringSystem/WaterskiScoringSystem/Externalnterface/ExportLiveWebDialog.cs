@@ -11,16 +11,25 @@ namespace WaterskiScoringSystem.Externalnterface {
         }
 
         private void ExportLiveWebDialog_Load(object sender, EventArgs e) {
-            WebLocationTextBox.Text = myWebLocation;
-        }
+            if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+                ConnectButton.Enabled = false;
+                ConnectButton.Visible = false;
+            } else {
+                ConnectButton.Enabled = true;
+                ConnectButton.Visible = true;
+            }
 
-        public String WebLocation {
-            get {
-                return myWebLocation;
-            }
-            set {
-                myWebLocation = value;
-            }
+            ResendButton.Enabled = LiveWebHandler.LiveWebMessageHandlerActive;
+            ResendButton.Visible = LiveWebHandler.LiveWebMessageHandlerActive;
+
+            ResendAllButton.Enabled = LiveWebHandler.LiveWebMessageHandlerActive;
+            ResendAllButton.Visible = LiveWebHandler.LiveWebMessageHandlerActive;
+
+            DisableSendButton.Enabled = LiveWebHandler.LiveWebMessageHandlerActive;
+            DisableSendButton.Visible = LiveWebHandler.LiveWebMessageHandlerActive;
+
+            DisableAllSendButton.Enabled = LiveWebHandler.LiveWebMessageHandlerActive;
+            DisableAllSendButton.Visible = LiveWebHandler.LiveWebMessageHandlerActive;
         }
 
         public String ActionCmd {
@@ -36,23 +45,11 @@ namespace WaterskiScoringSystem.Externalnterface {
             myActionCmd = "Cancel";
         }
 
-        private void SetLocationButton_Click(object sender, EventArgs e) {
-            myWebLocation = WebLocationTextBox.Text;
-
-            if (myWebLocation.Length > 5) {
-                if (myWebLocation.IndexOf( "www.waterskiresults.com" ) < 0) {
-                    myWebLocation += "|" + "http://www.waterskiresults.com/WfwWeb/WfwImport.php";
-                }
-            } else {
-                myWebLocation = "http://www.waterskiresults.com/WfwWeb/WfwImport.php";
-            }
-            myActionCmd = "Set";
+        private void ConnectButton_Click( object sender, EventArgs e ) {
+            myActionCmd = "Connect";
         }
 
-        private void DisableButton_Click(object sender, EventArgs e) {
-            myWebLocation = "";
-            WebLocationTextBox.Text = "";
-            ExportLiveTwitter.TwitterRequestTokenURL = "";
+        private void DisableButton_Click( object sender, EventArgs e ) {
             myActionCmd = "Disable";
         }
 
@@ -62,10 +59,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 
         private void ResendAllButton_Click(object sender, EventArgs e) {
             myActionCmd = "ResendAll";
-        }
-
-        private void SetDefaultButton_Click(object sender, EventArgs e) {
-            WebLocationTextBox.Text = "http://www.waterskiresults.com/WfwWeb/WfwImport.php";
         }
 
 		private void DisableSendButton_Click(object sender, EventArgs e) {
@@ -81,5 +74,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 			System.Diagnostics.Process.Start(linkLabel1.Text);
 			linkLabel1.LinkVisited = true;
 		}
+
 	}
 }

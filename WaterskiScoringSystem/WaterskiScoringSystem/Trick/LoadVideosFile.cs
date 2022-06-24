@@ -107,38 +107,7 @@ namespace WaterskiScoringSystem.Trick {
         }
 
         private void LiveWebButton_Click(object sender, EventArgs e) {
-            // Display the form as a modal dialog box.
-            ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
-            ExportLiveWeb.LiveWebDialog.ShowDialog( this );
-
-            // Determine if the OK button was clicked on the dialog box.
-            if (ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK) {
-                if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Set" )) {
-                    ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-                    ExportLiveWeb.exportTourData( mySanctionNum );
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
-                    ExportLiveWeb.LiveWebLocation = "";
-                    ExportLiveTwitter.TwitterLocation = "";
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" )) {
-                    if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                        try {
-                            ExportLiveWeb.exportCurrentSkiers( "TrickVideo", mySanctionNum, 0, null );
-                        } catch {
-                        }
-                    }
-                } else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
-                    if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                        try {
-                            ExportLiveWeb.exportCurrentSkiers( "TrickVideo", mySanctionNum, 0, null );
-                        } catch {
-                        }
-                    }
-                }
-            }
+            ExportLiveWeb.exportSkiersTrickVideo( "TrickVideo", mySanctionNum, 0, null );
         }
 
         private void ExportButton_Click(object sender, EventArgs e) {
@@ -247,59 +216,53 @@ namespace WaterskiScoringSystem.Trick {
 		private void ResendButton_Click( object sender, EventArgs e ) {
 			String curMethodName = "ResendButton_Click";
 
-			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-				myProgressInfo = new ProgressWindow();
-				try {
-					if ( ReviewVideoMatchDataGridView.Rows.Count > 0 ) {
-						myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
-						myProgressInfo.setProgressMax( ReviewVideoMatchDataGridView.Rows.Count );
-						myProgressInfo.Show();
-						int curProcessCount = 0;
-						foreach ( DataGridViewRow curViewRow in ReviewVideoMatchDataGridView.Rows ) {
-							curProcessCount++;
-							myProgressInfo.setProgressValue( curProcessCount );
-							myProgressInfo.setProgessMsg( "Processing match for skier " + (String)curViewRow.Cells["SkierName"].Value );
-							myProgressInfo.Refresh();
-							myProgressInfo.Show();
+            myProgressInfo = new ProgressWindow();
+            try {
+                if ( ReviewVideoMatchDataGridView.Rows.Count > 0 ) {
+                    myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
+                    myProgressInfo.setProgressMax( ReviewVideoMatchDataGridView.Rows.Count );
+                    myProgressInfo.Show();
+                    int curProcessCount = 0;
+                    foreach ( DataGridViewRow curViewRow in ReviewVideoMatchDataGridView.Rows ) {
+                        curProcessCount++;
+                        myProgressInfo.setProgressValue( curProcessCount );
+                        myProgressInfo.setProgessMsg( "Processing match for skier " + (String)curViewRow.Cells["SkierName"].Value );
+                        myProgressInfo.Refresh();
+                        myProgressInfo.Show();
 
-							if ( curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value && curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value ) {
-								curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
+                        if ( curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value && curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value ) {
+                            curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
 
-							} else {
-								if ( ( (String) curViewRow.Cells["Pass1VideoUrl"].Value ).Length > 1 || ( (String) curViewRow.Cells["Pass2VideoUrl"].Value ).Length > 1 ) {
-									bool curResults = ExportLiveWeb.exportCurrentSkierTrickVideo( mySanctionNum, (String) curViewRow.Cells["MemberId"].Value, (String) curViewRow.Cells["AgeGroup"].Value, (Byte) curViewRow.Cells["Round"].Value );
-									if ( curResults ) {
-										curViewRow.Cells["ResendStatus"].Value = "Video URL successfully attached to Live Web skier";
+                        } else {
+                            if ( ( (String)curViewRow.Cells["Pass1VideoUrl"].Value ).Length > 1 || ( (String)curViewRow.Cells["Pass2VideoUrl"].Value ).Length > 1 ) {
+                                bool curResults = ExportLiveWeb.exportCurrentSkierTrickVideo( mySanctionNum, (String)curViewRow.Cells["MemberId"].Value, (String)curViewRow.Cells["AgeGroup"].Value, (Byte)curViewRow.Cells["Round"].Value );
+                                if ( curResults ) {
+                                    curViewRow.Cells["ResendStatus"].Value = "Video URL successfully attached to Live Web skier";
 
-									} else {
-										curViewRow.Cells["ResendStatus"].Value = "Error encountered attaching video URL to skier";
-									}
+                                } else {
+                                    curViewRow.Cells["ResendStatus"].Value = "Error encountered attaching video URL to skier";
+                                }
 
-								} else {
-									curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
-								}
-							}
-						}
-						myProgressInfo.Close();
+                            } else {
+                                curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
+                            }
+                        }
+                    }
+                    myProgressInfo.Close();
 
-					} else {
-						myProgressInfo.Close();
-					}
+                } else {
+                    myProgressInfo.Close();
+                }
 
-				} catch ( Exception ex ) {
-					String curMsg = curMethodName + ":Exception=" + ex.Message;
-					Log.WriteFile( curMsg );
-					MessageBox.Show( curMsg );
-					myProgressInfo.Close();
-				}
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                myProgressInfo.Close();
+            }
+        }
 
-			} else {
-				MessageBox.Show( curMethodName + ":Live Web must be activated to load videos" );
-			}
-
-		}
-
-		private void ViewButton_Click(object sender, EventArgs e) {
+        private void ViewButton_Click(object sender, EventArgs e) {
             String curMethodName = "ViewButton_Click";
             String curQueryString = "?tag_name=";
             String curReqstUrl = myVideoListUrl + curQueryString + mySanctionNum;
@@ -428,96 +391,91 @@ namespace WaterskiScoringSystem.Trick {
             NameValueCollection curFormData = null;
             NameValueCollection curHeaderParams = null;
 
-            if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                myProgressInfo = new ProgressWindow();
-                try {
-                    if (mySkierVideoList != null && mySkierVideoList.Count > 0) {
-                        myProgressInfo.setProgessMsg( "Uploading " + mySkierVideoList.Count + " trick video files" );
-                        myProgressInfo.setProgressMax( mySkierVideoList.Count );
+            myProgressInfo = new ProgressWindow();
+            try {
+                if ( mySkierVideoList != null && mySkierVideoList.Count > 0 ) {
+                    myProgressInfo.setProgessMsg( "Uploading " + mySkierVideoList.Count + " trick video files" );
+                    myProgressInfo.setProgressMax( mySkierVideoList.Count );
+                    myProgressInfo.Show();
+                    int curProcessCount = 0, curViewIdx = 0;
+                    foreach ( SkierVideoEntry curSkierVideoEntry in mySkierVideoList ) {
+                        curProcessCount++;
+                        myProgressInfo.setProgressValue( curProcessCount );
+                        myProgressInfo.setProgessMsg( "Processing file " + Path.GetFileName( curSkierVideoEntry.VideoFileName ) );
+                        myProgressInfo.Refresh();
                         myProgressInfo.Show();
-                        int curProcessCount = 0, curViewIdx = 0;
-                        foreach (SkierVideoEntry curSkierVideoEntry in mySkierVideoList) {
-                            curProcessCount++;
-                            myProgressInfo.setProgressValue( curProcessCount );
-                            myProgressInfo.setProgessMsg( "Processing file " + Path.GetFileName( curSkierVideoEntry.VideoFileName ) );
-                            myProgressInfo.Refresh();
-                            myProgressInfo.Show();
 
-                            curViewRow = selectedFileDataGridView.Rows[curViewIdx];
+                        curViewRow = selectedFileDataGridView.Rows[curViewIdx];
 
-                            curFormData = new NameValueCollection();
-                            curFormData.Add( "title", curSkierVideoEntry.SkierName + " " + curSkierVideoEntry.AgeGroup + " Round " + curSkierVideoEntry.Round + " Pass " + curSkierVideoEntry.Pass );
-                            curFormData.Add( "description", curSkierVideoEntry.SkierName + " " + curSkierVideoEntry.AgeGroup + " Round: " + curSkierVideoEntry.Round + " Pass: " + curSkierVideoEntry.Pass );
-                            curFormData.Add( "privacy", "2" );
+                        curFormData = new NameValueCollection();
+                        curFormData.Add( "title", curSkierVideoEntry.SkierName + " " + curSkierVideoEntry.AgeGroup + " Round " + curSkierVideoEntry.Round + " Pass " + curSkierVideoEntry.Pass );
+                        curFormData.Add( "description", curSkierVideoEntry.SkierName + " " + curSkierVideoEntry.AgeGroup + " Round: " + curSkierVideoEntry.Round + " Pass: " + curSkierVideoEntry.Pass );
+                        curFormData.Add( "privacy", "2" );
 
-                            int curIdx = 0;
-                            foreach (String curEntry in TagsListBox.CheckedItems) {
-                                curFormData.Add( "tag_names[" + curIdx + "]", curEntry );
-                                curIdx++;
-                            }
-                            curFormData.Add( "tag_names[" + curIdx + "]", mySanctionNum );
+                        int curIdx = 0;
+                        foreach ( String curEntry in TagsListBox.CheckedItems ) {
+                            curFormData.Add( "tag_names[" + curIdx + "]", curEntry );
                             curIdx++;
-                            curFormData.Add( "tag_names[" + curIdx + "]", curSkierVideoEntry.AgeGroup );
-                            curIdx++;
-                            curFormData.Add( "tag_names[" + curIdx + "]", "Tricks" );
-                            curIdx++;
-                            curFormData.Add( "tag_names[" + curIdx + "]", "Round " + curSkierVideoEntry.Round );
-                            curIdx++;
-                            curFormData.Add( "tag_names[" + curIdx + "]", "Pass " + curSkierVideoEntry.Pass );
-                            curIdx++;
-
-                            curHeaderParams = new NameValueCollection();
-                            curHeaderParams.Add( myApiKeyName, myApiKey );
-
-                            //List<KeyValuePair<String, String>> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
-                            Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
-
-                            if ( curResponseDataList == null ) {
-                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
-                            } else {
-                                if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
-                                    if ( curResponseDataList.ContainsKey("embed_code") ) {
-                                        bool curResults = false;
-                                        foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
-                                            if ( curEntry.Key.Equals("embed_code") ) {
-                                                curResults = updateSkierScoreVideoUrl(curSkierVideoEntry, (String) curEntry.Value);
-                                                if ( curResults) {
-                                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Video load complete";
-                                                } else {
-                                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Error encountered attaching video URL to skier";
-                                                }
-                                                break;
-                                            }
-                                        }
-
-                                        if ( !curResults ) {
-                                            curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed, API response not recognized";
-                                        }
-
-                                    } else if ( curResponseDataList.ContainsKey("Error") ) {
-                                        curViewRow.Cells["SelectedLoadStatus"].Value = curResponseDataList["Error"].ToString();
-                                    }
-                                } else {
-                                    curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
-                                }
-                            }
-
-                            curViewIdx++;
                         }
-                        myProgressInfo.Close();
-                    } else {
-                        myProgressInfo.Close();
+                        curFormData.Add( "tag_names[" + curIdx + "]", mySanctionNum );
+                        curIdx++;
+                        curFormData.Add( "tag_names[" + curIdx + "]", curSkierVideoEntry.AgeGroup );
+                        curIdx++;
+                        curFormData.Add( "tag_names[" + curIdx + "]", "Tricks" );
+                        curIdx++;
+                        curFormData.Add( "tag_names[" + curIdx + "]", "Round " + curSkierVideoEntry.Round );
+                        curIdx++;
+                        curFormData.Add( "tag_names[" + curIdx + "]", "Pass " + curSkierVideoEntry.Pass );
+                        curIdx++;
+
+                        curHeaderParams = new NameValueCollection();
+                        curHeaderParams.Add( myApiKeyName, myApiKey );
+
+                        //List<KeyValuePair<String, String>> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
+                        Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload( myVideoLoadUrl, curSkierVideoEntry.VideoFileName, curFileFormName, curHeaderParams, curFormData, null, null );
+
+                        if ( curResponseDataList == null ) {
+                            curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
+                        } else {
+                            if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
+                                if ( curResponseDataList.ContainsKey( "embed_code" ) ) {
+                                    bool curResults = false;
+                                    foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
+                                        if ( curEntry.Key.Equals( "embed_code" ) ) {
+                                            curResults = updateSkierScoreVideoUrl( curSkierVideoEntry, (String)curEntry.Value );
+                                            if ( curResults ) {
+                                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load complete";
+                                            } else {
+                                                curViewRow.Cells["SelectedLoadStatus"].Value = "Error encountered attaching video URL to skier";
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    if ( !curResults ) {
+                                        curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed, API response not recognized";
+                                    }
+
+                                } else if ( curResponseDataList.ContainsKey( "Error" ) ) {
+                                    curViewRow.Cells["SelectedLoadStatus"].Value = curResponseDataList["Error"].ToString();
+                                }
+                            } else {
+                                curViewRow.Cells["SelectedLoadStatus"].Value = "Video load failed";
+                            }
+                        }
+
+                        curViewIdx++;
                     }
-                } catch (Exception ex) {
-                    //MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
-                    String curMsg = curMethodName + ":Exception=" + ex.Message;
-                    Log.WriteFile( curMsg );
+                    myProgressInfo.Close();
+                } else {
                     myProgressInfo.Close();
                 }
-            } else {
-                MessageBox.Show( curMethodName + ":Live Web must be activated to load videos" );
+            } catch ( Exception ex ) {
+                //MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                myProgressInfo.Close();
             }
-
         }
 
         private void AddTagButton_Click(object sender, EventArgs e) {

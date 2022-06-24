@@ -21,7 +21,6 @@
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>false</SignManifests>
     <ApplicationIcon>jumper.ico</ApplicationIcon>
-    <NoWin32Manifest>true</NoWin32Manifest>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -45,12 +44,13 @@
     <SupportUrl>http://waterskiresults.com/</SupportUrl>
     <ProductName>WSTIMS For Windows</ProductName>
     <PublisherName>Mass Water Ski Association</PublisherName>
+    <SuiteName>Water Ski Scoring</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>16</ApplicationRevision>
-    <ApplicationVersion>7.1.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>7.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -400,6 +400,7 @@
     </Compile>
     <Compile Include="Common\TourProperties.cs" />
     <Compile Include="Externalnterface\ImportMemberFile.cs" />
+    <Compile Include="Externalnterface\LiveWebHandler.cs" />
     <Compile Include="Externalnterface\MemberEntry.cs" />
     <Compile Include="Externalnterface\WscHandler.cs" />
     <Compile Include="Jump\JumpSummaryAwards.cs">
@@ -1375,6 +1376,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LiveWebMessageHandler\LiveWebMessageHandler.csproj">
+      <Project>{bf67e8c8-14f3-4b5d-ba10-242a3d2dc03b}</Project>
+      <Name>LiveWebMessageHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ValidationLibrary\ValidationLibrary.csproj">
       <Project>{1aa042a1-74e1-4edd-8b07-5a007da5ba67}</Project>
       <Name>ValidationLibrary</Name>

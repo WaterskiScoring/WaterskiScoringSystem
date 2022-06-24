@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HttpMessageHandler.Properties {
+namespace LiveWebMessageHandler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -62,18 +62,6 @@ namespace HttpMessageHandler.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseConnectionString {
-            get {
-                return ((string)(this["DatabaseConnectionString"]));
-            }
-            set {
-                this["DatabaseConnectionString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AppTitle {
             get {
                 return ((string)(this["AppTitle"]));
@@ -116,6 +104,18 @@ namespace HttpMessageHandler.Properties {
             }
             set {
                 this["MessageController_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DatabaseConnectionString {
+            get {
+                return ((string)(this["DatabaseConnectionString"]));
+            }
+            set {
+                this["DatabaseConnectionString"] = value;
             }
         }
     }

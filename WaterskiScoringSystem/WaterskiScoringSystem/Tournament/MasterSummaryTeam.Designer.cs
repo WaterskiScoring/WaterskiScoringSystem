@@ -113,6 +113,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
 			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
 			this.navLiveWeb = new System.Windows.Forms.ToolStripButton();
@@ -239,7 +240,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.EventSlalomButton = new System.Windows.Forms.RadioButton();
 			this.EventAllButton = new System.Windows.Forms.RadioButton();
 			this.FilterReportButton = new System.Windows.Forms.Button();
-			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.winStatus.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.slalomScoreSummaryDataGridView)).BeginInit();
@@ -325,6 +325,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navPrint.Click += new System.EventHandler(this.navPrint_Click);
 			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 35);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
+			// 
 			// navExport
 			// 
 			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
@@ -352,8 +362,8 @@ namespace WaterskiScoringSystem.Tournament {
 			this.navLiveWeb.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
 			this.navLiveWeb.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navLiveWeb.Name = "navLiveWeb";
-			this.navLiveWeb.Size = new System.Drawing.Size(59, 35);
-			this.navLiveWeb.Text = "Live Web";
+			this.navLiveWeb.Size = new System.Drawing.Size(110, 35);
+			this.navLiveWeb.Text = "Export to Live Web";
 			this.navLiveWeb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navLiveWeb.Click += new System.EventHandler(this.navLiveWeb_Click);
 			// 
@@ -2019,16 +2029,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.FilterReportButton.Text = "Filter Team Results";
 			this.FilterReportButton.UseVisualStyleBackColor = true;
 			this.FilterReportButton.Click += new System.EventHandler(this.FilterReportButton_Click);
-			// 
-			// navPublish
-			// 
-			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navPublish.Name = "navPublish";
-			this.navPublish.Size = new System.Drawing.Size(50, 35);
-			this.navPublish.Text = "Publish";
-			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
 			// 
 			// MasterSummaryTeam
 			// 

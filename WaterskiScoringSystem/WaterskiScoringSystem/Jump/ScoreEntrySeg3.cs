@@ -388,7 +388,7 @@ namespace WaterskiScoringSystem.Jump {
 			//Retrieve and load tournament event entries
 			loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
 
-			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+			if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
 				LiveWebLabel.Visible = true;
 			} else {
 				LiveWebLabel.Visible = false;
@@ -860,9 +860,8 @@ namespace WaterskiScoringSystem.Jump {
 
 		private void transmitExternalScoreboard( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound ) {
 			//, String curTeamCode, byte curRound, short curPassNum, String curStatus, String curResults, String curScoreFeet, String curScoreMeters) {
-			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-				String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
-				ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
+			if ( LiveWebLabel.Visible ) {
+				LiveWebHandler.sendCurrentSkier( "Jump", mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
 			}
 			if ( WscHandler.isConnectActive ) {
 				if ( myRecapRow == null ) return;
@@ -1463,72 +1462,57 @@ namespace WaterskiScoringSystem.Jump {
 
 		private void navLiveWeb_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.
-			ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
-			ExportLiveWeb.LiveWebDialog.ShowDialog( this );
+			LiveWebHandler.LiveWebDialog.ShowDialog( this );
 
 			// Determine if the OK button was clicked on the dialog box.
-			if ( ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK ) {
-				if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Set" ) ) {
-					ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-					ExportLiveWeb.exportTourData( mySanctionNum );
+			if ( LiveWebHandler.LiveWebDialog.DialogResult != DialogResult.OK ) return;
+
+			if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "Connect" ) ) {
+				if ( LiveWebHandler.connectLiveWebHandler( mySanctionNum ) ) {
 					LiveWebLabel.Visible = true;
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" ) ) {
-					ExportLiveWeb.LiveWebLocation = "";
+				} else {
+					ExportLiveTwitter.TwitterLocation = "";
 					LiveWebLabel.Visible = false;
+				}
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) ) {
-					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-						try {
-							String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
-							String curMemberId = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
-							String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
-							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup );
-						} catch {
-						}
-					}
+			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "Disable" ) ) {
+				LiveWebHandler.disconnectLiveWebHandler();
+				LiveWebLabel.Visible = false;
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" ) ) {
-					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-						try {
-							String curEventGroup = EventGroupList.SelectedItem.ToString();
-							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							ExportLiveWeb.exportCurrentSkiers( "Jump", mySanctionNum, curRound, curEventGroup );
-						} catch {
-						}
-					}
+			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "Resend" ) ) {
+				if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+					String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+					String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+					String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+					byte curRound = Convert.ToByte( roundSelect.RoundValue );
+					LiveWebHandler.sendCurrentSkier( "Jump", mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
+				}
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "DiableSkier" ) ) {
-					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-						try {
-							String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
-							String curMemberId = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "MemberId", "" );
-							String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
-							String curTeamCode = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "TeamCode", "" );
-							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							if ( ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup ) == false ) {
-								MessageBox.Show( "Error encountered sending score to LiveWeb" );
-							}
+			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "ResendAll" ) ) {
+				if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+					String curEventGroup = EventGroupList.SelectedItem.ToString();
+					byte curRound = Convert.ToByte( roundSelect.RoundValue );
+					LiveWebHandler.sendSkiers( "Jump", mySanctionNum, curRound, curEventGroup );
+					// ExportLiveWeb.exportCurrentSkiers( "Jump", mySanctionNum, curRound, curEventGroup
+				}
 
-						} catch {
-							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
-						}
-					}
+			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "DiableSkier" ) ) {
+				if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+					String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+					String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+					String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+					byte curRound = Convert.ToByte( roundSelect.RoundValue );
+					LiveWebHandler.sendDisableCurrentSkier( "Jump", mySanctionNum, curMemberId, curAgeGroup, curRound );
+					//ExportLiveWeb.exportCurrentSkierJump( mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup
+				}
 
-				} else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "DiableAllSkier" ) ) {
-					if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-						try {
-							String curEventGroup = EventGroupList.SelectedItem.ToString();
-							byte curRound = Convert.ToByte( roundSelect.RoundValue );
-							if ( ExportLiveWeb.exportCurrentSkiers( "Jump", mySanctionNum, curRound, curEventGroup ) == false ) {
-								MessageBox.Show( "Error encountered sending score to LiveWeb" );
-							}
-
-						} catch {
-							MessageBox.Show( "Exception encounter sending score to LiveWeb" );
-						}
-					}
+			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "DiableAllSkier" ) ) {
+				if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+					String curEventGroup = EventGroupList.SelectedItem.ToString();
+					byte curRound = Convert.ToByte( roundSelect.RoundValue );
+					LiveWebHandler.sendDisableSkiers( "Jump", mySanctionNum, curRound, curEventGroup );
+					//ExportLiveWeb.exportCurrentSkiers( "Jump", mySanctionNum, curRound, curEventGroup )
 				}
 			}
 		}
@@ -1930,7 +1914,7 @@ namespace WaterskiScoringSystem.Jump {
 				Cursor.Current = Cursors.Default;
 			}
 
-			if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
+			if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
 				LiveWebLabel.Visible = true;
 			} else {
 				LiveWebLabel.Visible = false;

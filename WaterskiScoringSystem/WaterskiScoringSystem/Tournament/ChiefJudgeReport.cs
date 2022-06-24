@@ -367,6 +367,8 @@ namespace WaterskiScoringSystem.Tournament {
             StringBuilder outLine = new StringBuilder( "" );
             StreamWriter outBuffer = null;
 
+            if ( !(isRequiredDataAvailable()) ) return;
+
             String curFilename = (String)myTourRow["SanctionId"] + "CJ" + ".txt";
             String curReportTitle = "Chief Judge Report for " + sanctionIdTextBox.Text + " - " + nameTextBox.Text;
 			String curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -527,14 +529,14 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine.Append( HelperFunctions.TabChar + myJumpRounds.ToString() );
 
 				//Tournament Contact
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactMemberId"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactName"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactPhone"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactEmail"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ContactAddress"] );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ContactMemberId", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ContactName", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ContactPhone", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ContactEmail", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ContactAddress", "" ) );
 
-				//Chief Judge
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefJudgeMemberId"] );
+                //Chief Judge
+                outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefJudgeMemberId"] );
 				outLine.Append( HelperFunctions.TabChar + ChiefJudgeNameTextBox.Text );
 				outLine.Append( HelperFunctions.TabChar + ChiefJudgeRatingTextBox.Text );
 				outLine.Append( HelperFunctions.TabChar + ChiefJudgeAddressTextBox.Text );
@@ -715,7 +717,37 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 		}
 
-		public void ExportReportPrintFile() {
+        private bool isRequiredDataAvailable() {
+            String curValue = HelperFunctions.getDataRowColValue( myTourRow, "ContactMemberId", "" );
+            if ( curValue.Length == 0 ) {
+                MessageBox.Show( "Primary contact is not available and is required" );
+                return false;
+            }
+            curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeMemberId", "" );
+            if ( curValue.Length == 0 ) {
+                MessageBox.Show( "Chief Judge is not available and is required" );
+                return false;
+            }
+            curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverMemberId", "" );
+            if ( curValue.Length == 0 ) {
+                MessageBox.Show( "Chief Driver is not available and is required" );
+                return false;
+            }
+            curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerMemberId", "" );
+            if ( curValue.Length == 0 ) {
+                MessageBox.Show( "Chief Scorer is not available and is required" );
+                return false;
+            }
+            curValue = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirMemberId", "" );
+            if ( curValue.Length == 0 ) {
+                MessageBox.Show( "Safety Director is not available and is required" );
+                return false;
+            }
+
+            return true;
+        }
+
+        public void ExportReportPrintFile() {
             String curMethodName = "ChiefJudgeReport:ExportReportPrintFile";
             Cursor.Current = Cursors.WaitCursor;
             StringBuilder outLine = new StringBuilder( "" );

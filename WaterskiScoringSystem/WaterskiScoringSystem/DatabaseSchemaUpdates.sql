@@ -1098,3 +1098,15 @@ Update [TourReg] Set IwwfLicense = 'N';
 Update [TourReg] Set IwwfLicense = 'Y'
 Where exists (Select R.EventClass FROM EventReg AS R 
 Where R.SanctionId = TourReg.SanctionId AND R.MemberId = TourReg.MemberId AND R.EventClass in ('L', 'R'));
+
+## v22.77
+CREATE TABLE LiveWebMsgSend (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgDataHash int NOT NULL,
+    MsgData     ntext NOT NULL,
+    CreateDate  datetime
+);
+
+ALTER TABLE LiveWebMsgSend ADD PRIMARY KEY ([PK]);

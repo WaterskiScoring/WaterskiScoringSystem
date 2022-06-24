@@ -219,26 +219,26 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22411	AWSAAgeGroup	G5		25	Girls 5 (U18)	1	17	
 22412	AWSAAgeGroup	M1		31	Mens 1	18	24	
 22413	AWSAAgeGroup	M2		32	Mens 2	25	34	
-22414	AWSAAgeGroup	M3		33	Mens 3	35	44	
-22415	AWSAAgeGroup	M4		34	Mens 4	45	54	
-22416	AWSAAgeGroup	M5		35	Mens 5	55	59	
-22417	AWSAAgeGroup	M6		36	Mens 6	60	64	
-22418	AWSAAgeGroup	M7		37	Mens 7	65	69	
-22419	AWSAAgeGroup	M8		38	Mens 8	70	74	
-22420	AWSAAgeGroup	M9		39	Mens 9	75	79	
-22421	AWSAAgeGroup	MA		40	Mens 10	80	84	
-22422	AWSAAgeGroup	MB		41	Mens 11	85	100	
+22414	AWSAAgeGroup	M3		33	Mens 3 35+	35	44	
+22415	AWSAAgeGroup	M4		34	Mens 4 45+	45	54	
+22416	AWSAAgeGroup	M5		35	Mens 5 55+	55	59	
+22417	AWSAAgeGroup	M6		36	Mens 6 60+	60	64	
+22418	AWSAAgeGroup	M7		37	Mens 7 65+	65	69	
+22419	AWSAAgeGroup	M8		38	Mens 8 70+	70	74	
+22420	AWSAAgeGroup	M9		39	Mens 9 75+	75	79	
+22421	AWSAAgeGroup	MA		40	Mens 10 80+	80	84	
+22422	AWSAAgeGroup	MB		41	Mens 11 85+	85	100	
 22423	AWSAAgeGroup	W1		51	Womens 1	18	24	
 22424	AWSAAgeGroup	W2		52	Womens 2	25	34	
-22425	AWSAAgeGroup	W3		53	Womens 3	35	44	
-22426	AWSAAgeGroup	W4		54	Womens 4	45	54	
-22427	AWSAAgeGroup	W5		55	Womens 5	55	59	
-22428	AWSAAgeGroup	W6		56	Womens 6	60	64	
-22429	AWSAAgeGroup	W7		57	Womens 7	65	69	
-22430	AWSAAgeGroup	W8		58	Womens 8	70	74	
-22431	AWSAAgeGroup	W9		59	Womens 9	75	79	
-22432	AWSAAgeGroup	WA		60	Womens 10	80	84	
-22433	AWSAAgeGroup	WB		61	Womens 11	85	100	
+22425	AWSAAgeGroup	W3		53	Womens 3 35+	35	44	
+22426	AWSAAgeGroup	W4		54	Womens 4 45+	45	54	
+22427	AWSAAgeGroup	W5		55	Womens 5 55+	55	59	
+22428	AWSAAgeGroup	W6		56	Womens 6 60+	60	64	
+22429	AWSAAgeGroup	W7		57	Womens 7 65+	65	69	
+22430	AWSAAgeGroup	W8		58	Womens 8 70+	70	74	
+22431	AWSAAgeGroup	W9		59	Womens 9 75+	75	79	
+22432	AWSAAgeGroup	WA		60	Womens 10 80+	80	84	
+22433	AWSAAgeGroup	WB		61	Womens 11 85+	85	100	
 22434	AWSAAgeGroup	OM		71	Open Men	1	100	
 22435	AWSAAgeGroup	OW		72	Open Women	1	100	
 22436	AWSAAgeGroup	MM		73	Master Men	35	100	
@@ -329,7 +329,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		11100	5/15/2021 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
 0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		112.00	4 bouys at 10.75m @ 58 kph (39 off @ 36 mph) 2/20/2020 2020 BENCHMARK
-0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		11450	9/25/2021 Jake Abelson
+0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		11490	6/18/2022 Jake Abelson
 0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		191	(58.2m) 5.5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
 0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		10430	 7/18/2009 Adam Pickos  
@@ -337,7 +337,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
 0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		85.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 9/25/2021 Alexia Abelson
-0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		5340	2/20/2020 2020 BENCHMARK
+0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		6260	6/4/2022 Alexia Abelson
 0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19
 0	AWSARecords	G3-T		57	Girls 3 (U14) - Trick		7170	6/28/2014 Brooke Baldwin APPVD BY AWSA BOD 8/5/19
@@ -403,7 +403,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W7-T		242	Womens 7 - Trick		3330	 8/14/2001 Thelma Salmas  
 0	AWSARecords	W7-J		243	Womens 7 - Jump		85	(25.8m) 45kph 5ft 8/20/2016 Leza Harrison
 0	AWSARecords	W8-S		251	Womens 8 - Slalom		80.00	2 buoys at 12m @ 49 kph (35 off @ 30.4 mph) 9/25/2021 Leza Harrison
-0	AWSARecords	W8-T		252	Womens 8 - Trick		2580 	10/24/2021 Leza Harrison
+0	AWSARecords	W8-T		252	Womens 8 - Trick		2700 	4/25/2022 Leza Harrison
 0	AWSARecords	W8-J		253	Womens 8 - Jump		57	5 45kph 7/9/2006 Thelma Salmas  
 0	AWSARecords	W9-S		261	Womens 9 - Slalom		68	2 bouys at 13.00m @ 46 kph (32 off @ 28.6 mph) 9/22/2013 Maria Walsh
 0	AWSARecords	W9-T		262	Womens 9 - Trick		1670	 10/20/2007 Artis Price  
@@ -654,22 +654,22 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22446	IwwfAgeGroup	IW		72	Intl Women	1	99	
 22447	IwwfAgeGroup	JM		73	Intl Junior Men	1	20	
 22448	IwwfAgeGroup	JW		74	Intl Junior Women	1	20	
-22449	IwwfAgeGroup	S1		81	Intl Senior Men 1	35	99	
-22450	IwwfAgeGroup	S2		82	Intl Senior Men 2	45	99	
-22451	IwwfAgeGroup	S3		83	Intl Senior Men 3	55	99	
-22451	IwwfAgeGroup	S4		84	Intl Senior Men 4	65	99	
-22451	IwwfAgeGroup	S5		85	Intl Senior Men 5	70	99	
-22451	IwwfAgeGroup	S6		86	Intl Senior Men 6	75	99	
-22451	IwwfAgeGroup	S7		87	Intl Senior Men 7	80	99	
-22451	IwwfAgeGroup	S8		88	Intl Senior Men 8	85	99	
-22452	IwwfAgeGroup	L1		91	Intl Senior Women 1	35	99	
-22453	IwwfAgeGroup	L2		92	Intl Senior Women 2	45	99	
-22454	IwwfAgeGroup	L3		93	Intl Senior Women 3	55	99	
-22454	IwwfAgeGroup	L4		94	Intl Senior Women 4	65	99	
-22454	IwwfAgeGroup	L5		95	Intl Senior Women 5	70	99	
-22454	IwwfAgeGroup	L6		96	Intl Senior Women 6	75	99	
-22454	IwwfAgeGroup	L7		97	Intl Senior Women 7	80	99	
-22454	IwwfAgeGroup	L8		98	Intl Senior Women 8	85	99	
+22449	IwwfAgeGroup	S1		81	Intl Senior Men 35+	35	99	
+22450	IwwfAgeGroup	S2		82	Intl Senior Men 45+	45	99	
+22451	IwwfAgeGroup	S3		83	Intl Senior Men 55+	55	99	
+22451	IwwfAgeGroup	S4		84	Intl Senior Men 65+	65	99	
+22451	IwwfAgeGroup	S5		85	Intl Senior Men 70+	70	99	
+22451	IwwfAgeGroup	S6		86	Intl Senior Men 75+	75	99	
+22451	IwwfAgeGroup	S7		87	Intl Senior Men 80+	80	99	
+22451	IwwfAgeGroup	S8		88	Intl Senior Men 85+	85	99	
+22452	IwwfAgeGroup	L1		91	Intl Senior Women 35+	35	99	
+22453	IwwfAgeGroup	L2		92	Intl Senior Women 45+	45	99	
+22454	IwwfAgeGroup	L3		93	Intl Senior Women 55+	55	99	
+22454	IwwfAgeGroup	L4		94	Intl Senior Women 65+	65	99	
+22454	IwwfAgeGroup	L5		95	Intl Senior Women 70+	70	99	
+22454	IwwfAgeGroup	L6		96	Intl Senior Women 75+	75	99	
+22454	IwwfAgeGroup	L7		97	Intl Senior Women 80+	80	99	
+22454	IwwfAgeGroup	L8		98	Intl Senior Women 85+	85	99	
 22455	IwwfAgeGroup	OF		999	NonSkiing Official	16	100	
 22506	IwwfJump3TimesDiv	OM	1	1	60.0 meters	60	60	Open Men 60 meters or greater
 22507	IwwfJump3TimesDiv	OW	2	2	45.0 meters	45	45	Open Women 45 meters or greater
@@ -807,25 +807,30 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22561	IwwfRampMax	L6		86	5 Foot	0.235	5	
 22561	IwwfRampMax	L7		87	5 Foot	0.235	5	
 22561	IwwfRampMax	L8		88	5 Foot	0.235	5	
-0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		62	2 bouys at 10.25 @ 58kph 10/10/2021 Charlie Ross
-0	IwwfRecords	IB-O		474	Intl Boys U17 - Overall		2557		Martin Labra
+0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		63	3 bouys at 10.25 @ 58kph 4/30/2022 Charlie Ross
+0	IwwfRecords	IB-T		472	Intl Boys U17 - Trick		12050	10/27/2019 Patricio Font
+0	IwwfRecords	IB-J		473	Intl Boys U17 - Jump		59.1	5.5ft (1.65m) at 51 kph max 8/8/2010 Tim Bradstreet
+0	IwwfRecords	IB-O		474	Intl Boys U17 Overall		2556.77		8/23/2021 Martin Labra
 0	IwwfRecords	IG-S		481	Intl Girls U17 - Slalom		56	2 bouys at 10.75 @ 55kph 1/8/2017 Brook Baldwin
+0	IwwfRecords	IG-T		482	Intl Girls U17 - Trick		10440	1/8/2017 Anna Gay
+0	IwwfRecords	IG-J		483	Intl Girls U17 - Jump		46.0	1/5/2017 Dominique Grondin-Allard
+0	IwwfRecords	IG-O		484	Intl Girls U17 Overall		2685.26	1/8/2017 Brooke Baldwin
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
-0	IwwfRecords	IM-O		394	Intl Men Overall		2590.41	1/3/2021 Dorien Llewellyn
+0	IwwfRecords	IM-O		394	Intl Men Overall		2660.12		10/14/2022 Joel Poland
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		70.50	4.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
 0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
-0	IwwfRecords	IW-J		403	Intl Women - Jump		60.3	9/27/2016 Jacinta Carroll
+0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
 0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26		5/19/2012 Natallia Berdnikava
 0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		63	3 at 10.25 @ 58kph 11/30/2003 William Asher
-0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12220.00	11/18/2020 Patricio Font
-0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		59.1	5.5ft (1.65m) at 51 kph max 8/8/2010 Tim Bradstreet
+0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12250	5/28/2022 Patricio Font
+0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		69.0	5.5ft (1.65m) at 51 kph max 11/30/2003 Jimmy Seimers
 0	IwwfRecords	JM-O		414	Intl Junior Men Overall		2796.92	7/7/2019 Joel Poland
-0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		61.00	1 @ 10.25 55 kph 8/16/2020 Jamie Bull
-0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10530	7/7/2019 Anna Gay
-0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		46	5ft (1.5m)at 51 kph max 1/5/2017 Dominique Grondin-Allard
-0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2685.26	1/8/2017 Brooke Baldwin
+0	IwwfRecords	JW-S		421	Intl Junior Women - Slalom		62.00	2 @ 10.25 55 kph 6/5/2021 Jamie Bull
+0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10790	9/26/2021 Neilly Ross
+0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		54.6	5.5ft (1.65m) at 51 kph max 9/4/2011 Jacinta Carroll
+0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2304.03	8/28/2021 Brooke Baldwin
 22600	IwwfSlalomMax	YB		51	49kph, 30mph	30	49	
 22601	IwwfSlalomMax	YG		52	49kph, 30mph	30	49	
 22600	IwwfSlalomMax	JB		53	55kph, 34mph	34	55	
@@ -1052,9 +1057,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22546	NcwsaRampMax	BM		46	5 Foot	0.235	5	
 22545	NcwsaRampMax	CW		47	5 Foot	0.235	5	
 22547	NcwsaRampMax	BW		47	5 Foot	0.235	5	
-0	NCWSARecords	CM-S		491	College Men - Slalom		117.5	3.5 buoys at 10.25m @ 58 kph (41 off @ 36 mph) 10/3/2011 Will Asher  
+0	NCWSARecords	CM-S		491	College Men - Slalom		117.5	3.5 buoys at 10.25m @ 58 kph (41 off @ 36 mph) 10/14/2003 Will Asher
 0	NCWSARecords	CM-T		492	College Men - Trick		7050	5/17/2014 Dylan Schaffer
-0	NCWSARecords	CM-J		493	College Men - Jump		197	(60.1) 9/4/2021 Quinn Haines
+0	NCWSARecords	CM-J		493	College Men - Jump		197	(60.1) 9/5/2021 Quinn Haines
 0	NCWSARecords	CW-S		501	College Women - Slalom		107.5	5.5 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/11/2019 Jaimee Bull
 0	NCWSARecords	CW-T		502	College Women - Trick		6110	10/21/2017 Erika Lang
 0	NCWSARecords	CW-J		503	College Women - Jump		159	(48.5m) 10/20/2017 Hanna Straltsova

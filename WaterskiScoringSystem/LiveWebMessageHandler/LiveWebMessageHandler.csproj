@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91677276-220C-4934-B2ED-80A58E808772}</ProjectGuid>
+    <ProjectGuid>{BF67E8C8-14F3-4B5D-BA10-242A3D2DC03B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HttpMessageHandler</RootNamespace>
-    <AssemblyName>HttpMessageHandler</AssemblyName>
+    <RootNamespace>LiveWebMessageHandler</RootNamespace>
+    <AssemblyName>LiveWebMessageHandler</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,18 +23,22 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>http://waterskiresults.com/</SupportUrl>
+    <ProductName>WSTIMS Live Web Message Handler</ProductName>
+    <PublisherName>Mass Water Ski Association</PublisherName>
+    <SuiteName>Water Ski Scoring</SuiteName>
+    <TrustUrlParameters>true</TrustUrlParameters>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <UseApplicationTrust>true</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\WaterskiScoringSystem\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,17 +48,29 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\WaterskiScoringSystem\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>HttpMessageHandler.Program</StartupObject>
+    <ApplicationIcon>uLauncher.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>LiveWebMessageHandler.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v3.5\Private\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v3.5\Private\System.Data.SqlServerCe.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,19 +87,7 @@
     <Compile Include="Common\HelperFunctions.cs" />
     <Compile Include="Common\Log.cs" />
     <Compile Include="Externalnterface\ExportLiveWeb.cs" />
-    <Compile Include="Externalnterface\LiveWebConnectDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Externalnterface\LiveWebConnectDialog.Designer.cs">
-      <DependentUpon>LiveWebConnectDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Externalnterface\SendMessageHttp.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Message\Controller.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,9 +96,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Externalnterface\LiveWebConnectDialog.resx">
-      <DependentUpon>LiveWebConnectDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Message\Controller.resx">
       <DependentUpon>Controller.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,6 +120,51 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AMD64\sqlceca35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlcecompact35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlceer35EN.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlceme35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlceoledb35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlceqp35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AMD64\sqlcese35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="uLauncher.ico" />
+    <Content Include="X86\sqlceca35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlcecompact35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlceer35EN.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlceme35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlceoledb35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlceqp35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="X86\sqlcese35.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

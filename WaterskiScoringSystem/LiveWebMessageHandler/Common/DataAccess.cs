@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlServerCe;
 using System.Windows.Forms;
 
-namespace HttpMessageHandler.Common {
+namespace LiveWebMessageHandler.Common {
 	class DataAccess {
 		private static int DataAccessOpenCount = 0;
 		private static int DataAccessEmbeddedTransactionCount = 0;
@@ -259,57 +259,5 @@ namespace HttpMessageHandler.Common {
 			return curReturnValue;
 		}
 
-		public static bool getNewDatabaseFile( String inFilename ) {
-			if ( inFilename == null || inFilename.Length == 0 ) return false;
-
-			DataAccessClose( true );
-			Properties.Settings.Default.DatabaseConnectionString =
-				String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True", inFilename );
-			if ( DataAccessOpen() ) {
-				Properties.Settings.Default.DatabaseFilename = inFilename;
-				return true;
-			}
-			return false;
-		}
-
-		public static bool getNewDatabaseFile() {
-			String curDatabaseDirectory = "";
-
-			if ( Properties.Settings.Default.DatabaseFilename.Length > 0 ) {
-				MessageBox.Show( String.Format( "Current Database File={0}"
-					+ "\n\nCurrent Sanction={1}"
-					+ "\nCurrent Data location={2}"
-					, Properties.Settings.Default.DatabaseFilename
-					, Properties.Settings.Default.SanctionNum
-					, Properties.Settings.Default.DataDirectory ) );
-
-				int delimPos = Properties.Settings.Default.DatabaseFilename.LastIndexOf( '\\' );
-				curDatabaseDirectory = Properties.Settings.Default.DatabaseFilename.Substring( 0, delimPos - 1 );
-			}
-			OpenFileDialog myFileDialog = new OpenFileDialog();
-			if ( curDatabaseDirectory.Length > 0 ) myFileDialog.InitialDirectory = curDatabaseDirectory;
-			myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
-			myFileDialog.FilterIndex = 0;
-			myFileDialog.CheckPathExists = false;
-			myFileDialog.CheckFileExists = false;
-			try {
-				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-					String curFileName = myFileDialog.FileName;
-					if ( curFileName != null ) {
-						Properties.Settings.Default.DatabaseFilename = curFileName;
-						Properties.Settings.Default.DatabaseConnectionString =
-							String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True"
-							, Properties.Settings.Default.DatabaseFilename );
-						return true;
-					}
-				}
-
-				return false;
-
-			} catch ( Exception ex ) {
-				MessageBox.Show( "Error: Could not get database file " + "\n\nError: " + ex.Message );
-				return false;
-			}
-		}
 	}
 }

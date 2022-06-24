@@ -791,14 +791,14 @@
 			// gettingStartedToolStripMenuItem
 			// 
 			this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
 			this.gettingStartedToolStripMenuItem.Text = "&Newsletters";
 			this.gettingStartedToolStripMenuItem.Click += new System.EventHandler(this.overviewToolStripMenuItem_Click);
 			// 
 			// navHelpAbout
 			// 
 			this.navHelpAbout.Name = "navHelpAbout";
-			this.navHelpAbout.Size = new System.Drawing.Size(180, 22);
+			this.navHelpAbout.Size = new System.Drawing.Size(135, 22);
 			this.navHelpAbout.Text = "About";
 			this.navHelpAbout.Click += new System.EventHandler(this.navHelpAbout_Click);
 			// 

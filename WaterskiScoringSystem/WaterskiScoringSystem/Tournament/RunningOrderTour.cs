@@ -166,11 +166,6 @@ namespace WaterskiScoringSystem.Tournament {
                             }
                         }
 
-                        if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                            LiveWebLabel.Visible = true;
-                        } else {
-                            LiveWebLabel.Visible = false;
-                        }
                     } else {
                         MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
                     }
@@ -396,11 +391,6 @@ namespace WaterskiScoringSystem.Tournament {
                 RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + EventRegDataGridView.Rows.Count.ToString();
             } catch {
                 RowStatusLabel.Text = "";
-            }
-            if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-                LiveWebLabel.Visible = true;
-            } else {
-                LiveWebLabel.Visible = false;
             }
         }
 
@@ -1769,7 +1759,6 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
 		private void navPublish_Click( object sender, EventArgs e ) {
-			if ( !(LiveWebLabel.Visible) ) navLiveWeb_Click( null, null );
 			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", getCurrentEvent(), mySanctionNum );
 		}
 		private void navPrint_Click( object sender, EventArgs e ) {
@@ -1878,66 +1867,6 @@ namespace WaterskiScoringSystem.Tournament {
 			SendSkierListButton.Visible = false;
 			SendSkierListButton.Enabled = false;
 		}
-
-		private void navLiveWeb_Click(object sender, EventArgs e) {
-            // Display the form as a modal dialog box.
-            ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
-            ExportLiveWeb.LiveWebDialog.ShowDialog( this );
-
-            // Determine if the OK button was clicked on the dialog box.
-            if (ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK) {
-                if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Set" )) {
-                    ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-					if ( ExportLiveWeb.exportTourData( mySanctionNum ) ) {
-						LiveWebLabel.Visible = true;
-
-					} else {
-						ExportLiveWeb.LiveWebLocation = "";
-						ExportLiveTwitter.TwitterLocation = "";
-						LiveWebLabel.Visible = false;
-					}
-
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterActive" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "TwitterAuth" )) {
-                    ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
-
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Disable" )) {
-                    ExportLiveWeb.LiveWebLocation = "";
-                    ExportLiveTwitter.TwitterLocation = "";
-                    LiveWebLabel.Visible = false;
-
-				} else if (ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "Resend" ) || ExportLiveWeb.LiveWebDialog.ActionCmd.Equals( "ResendAll" )) {
-                    if (ExportLiveWeb.LiveWebLocation.Length > 1) {
-						String curEvent = getCurrentEvent();
-						List<String> curDivList = new List<String>();
-                        foreach (CheckBox curCheckBox in EventGroupPanel.Controls) {
-                            if (curCheckBox.Text.Equals( "All" )) {
-                                if (curCheckBox.Checked) {
-                                    curDivList.Add( curCheckBox.Text );
-                                }
-                            }
-                        }
-                        if (curDivList.Count == 0) {
-                            foreach (CheckBox curCheckBox in EventGroupPanel.Controls) {
-                                if (curCheckBox.Checked) {
-									curDivList.Add( curCheckBox.Text );
-								}
-							}
-                        }
-						foreach ( String curEventGroup in curDivList) {
-                            if ( ExportLiveWeb.exportCurrentSkiersRunOrder( myTourRules, curEvent, mySanctionNum, 0, curEventGroup ) ) {
-								continue;
-							} else {
-								MessageBox.Show( "Error encountered sending running order data for Group " + curEventGroup + ".  Terminating request" );
-								break;
-							}
-                        }
-                    }
-                }
-            }
-        }
 
         private bool updateTourRegData(DataGridViewRow inViewRow, String inColName, String inValue) {
             String curMethodName = "updateTourRegData";

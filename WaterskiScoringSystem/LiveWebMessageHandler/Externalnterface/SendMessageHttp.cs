@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Web.Script.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
-//using WaterskiScoringSystem.Tools;
+using LiveWebMessageHandler.Common;
+using System.Threading;
 
-namespace HttpMessageHandler.Externalnterface {
+namespace LiveWebMessageHandler.Externalnterface {
     class SendMessageHttp {
-        //private static ManualResetEvent myManualResetEvent = new ManualResetEvent( false );
+        private static ManualResetEvent myManualResetEvent = new ManualResetEvent( false );
 
         public SendMessageHttp() {
         }
@@ -125,8 +123,78 @@ namespace HttpMessageHandler.Externalnterface {
             }
         }
 
-        public static bool sendMessagePostXml(String inUrl, String inMessage) {
-            return sendMessagePostAsync( inUrl, inMessage, "text/xml;charset=\"utf-8\"", null, null );
+        public static String sendMessagePostXml(String inUrl, String inMessage) {
+            /*
+            Log.WriteFile( String.Format( "SendMessageHttp: sendMessagePostXml: URL={0}, Message={1}", inUrl, inMessage ) );
+            return "Test complete";
+             */
+            return sendMessagePost( inUrl, inMessage, "text/xml;charset=\"utf-8\"", null, null );
+        }
+
+        public static String sendMessagePost( String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword ) {
+            String curMethodName = "SendMessageHttp:sendMessagePostAsync: ";
+            String curMsg = "";
+            WebRequest curRequest = null;
+            Stream curDataStream = null;
+
+            try {
+                // Create a request using a URL that can receive a post. 
+                // Set the Method property of the request to POST.
+                curRequest = WebRequest.Create( inUrl );
+                if ( curRequest == null ) {
+                    curMsg = String.Format( "{0}Unable to connect to {1}", curMethodName, inUrl );
+                    throw new Exception( curMsg );
+                }
+                
+                curRequest.Method = "POST";
+                if ( inUserAccount != null ) {
+                    if ( inUrl.Contains( "usawaterski" ) ) {
+                        curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+                    } else {
+                        curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
+                    }
+                }
+
+                // Set the ContentType property of the WebRequest.
+                if ( inContentType == null ) {
+                    curRequest.ContentType = "application/x-www-form-urlencoded";
+                } else {
+                    curRequest.ContentType = inContentType;
+                }
+
+                // Create POST data and convert it to a byte array.
+                byte[] byteArray = Encoding.UTF8.GetBytes( inMessage );
+
+                // Set the ContentLength property of the WebRequest.
+                curRequest.ContentLength = byteArray.Length;
+
+                // Get the request stream.
+                curDataStream = curRequest.GetRequestStream();
+
+                // Write the data to the request stream.
+                curDataStream.Write( byteArray, 0, byteArray.Length );
+
+                // Close the Stream object.
+                curDataStream.Close();
+
+                HttpWebResponse curResponse = (HttpWebResponse)curRequest.GetResponse();
+                // Display the status.
+                curMsg = ( (HttpWebResponse)curResponse ).StatusDescription;
+                if ( curMsg.Equals( "OK" ) ) {
+                    return getResponseAsString( curResponse );
+                }
+
+                curMsg = String.Format( "{0}Unexpected response: {1}", curMethodName, inUrl, curMsg );
+                throw new Exception( curMsg );
+
+            } catch ( Exception ex ) {
+                curMsg = String.Format( "{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message );
+                throw new Exception( curMsg );
+
+            } finally {
+                // Clean up the streams.
+                if ( curDataStream != null ) curDataStream.Close();
+            }
         }
 
         public static bool sendMessagePostAsync(String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword) {

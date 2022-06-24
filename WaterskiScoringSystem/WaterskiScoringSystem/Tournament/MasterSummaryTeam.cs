@@ -1468,33 +1468,6 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navLiveWeb_Click( object sender, EventArgs e ) {
-            // Display the form as a modal dialog box.
-            ExportLiveWeb.LiveWebDialog.WebLocation = ExportLiveWeb.LiveWebLocation;
-            ExportLiveWeb.LiveWebDialog.ShowDialog(this);
-
-            // Determine if the OK button was clicked on the dialog box.
-            if ( ExportLiveWeb.LiveWebDialog.DialogResult == DialogResult.OK ) {
-                if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Set") ) {
-                    ExportLiveWeb.LiveWebLocation = ExportLiveWeb.LiveWebDialog.WebLocation;
-                    ExportLiveWeb.exportTourData(mySanctionNum);
-                    LiveWebLabel.Visible = true;
-                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("TwitterActive") ) {
-                    //ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterDefaultAccount;
-                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("TwitterAuth") ) {
-                    //ExportLiveTwitter.TwitterLocation = ExportLiveTwitter.TwitterRequestTokenURL;
-                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Disable") ) {
-                    ExportLiveWeb.LiveWebLocation = "";
-                    ExportLiveTwitter.TwitterLocation = "";
-                    LiveWebLabel.Visible = false;
-                } else if ( ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("Resend") || ExportLiveWeb.LiveWebDialog.ActionCmd.Equals("ResendAll") ) {
-                    if ( ExportLiveWeb.LiveWebLocation.Length > 1 ) {
-                        exportTeamData();
-                    }
-                }
-            }
-        }
-
-        public void exportTeamData() {
             String curMethodName = "exportTeamData";
             char[] singleQuoteDelim = new char[] { '\'' };
             char[] numPlaceHolder = new char[] { '#' };
@@ -1777,14 +1750,7 @@ namespace WaterskiScoringSystem.Tournament {
             curXml.Append(HelperFunctions.stringReplace(curXmlTemp.ToString(), numPlaceHolder, curRowCount.ToString()));
 
             curXml.Append("</LiveWebRequest>");
-
-            try {
-                Log.WriteFile(curMethodName + ":" + curXml.ToString());
-                SendMessageHttp.sendMessagePostXml(ExportLiveWeb.LiveWebLocation, curXml.ToString());
-            } catch ( Exception ex ) {
-                MessageBox.Show("Error encountered trying to send data to web location \n\nError: " + ex.Message);
-                Log.WriteFile(curMethodName + ":Exception=" + ex.Message);
-            }
+            ExportLiveWeb.exportMessage( curXml.ToString() );
         }
 
         private void ShowTeamButton_Click( object sender, EventArgs e ) {

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
-using HttpMessageHandler.Common;
-using HttpMessageHandler.Message;
+using LiveWebMessageHandler.Common;
+using LiveWebMessageHandler.Message;
 
-namespace HttpMessageHandler {
-	public static class Program {
+
+namespace LiveWebMessageHandler {
+	static class Program {
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -19,16 +21,28 @@ namespace HttpMessageHandler {
 				Application.SetCompatibleTextRenderingDefault( false );
 				Application.SetUnhandledExceptionMode( UnhandledExceptionMode.ThrowException );
 
-				if ( args.Length != 3 ) {
-					String msg = String.Format( "{0} Expecting 3 input arguments but received {0}", methodName, args.Length );
+				if ( args.Length != 2 ) {
+					String msg = String.Format( "Error: {0} Expecting 3 input arguments but received {0}", methodName, args.Length );
+					Log.WriteFile( msg );
+					MessageBox.Show( msg );
+					return;
+				}
+
+				Properties.Settings.Default.SanctionNum = args[0];
+				Properties.Settings.Default.DatabaseFilename = args[1];
+				
+				if ( Properties.Settings.Default.DatabaseFilename.Length <= 0 
+					&& File.Exists( Properties.Settings.Default.DatabaseFilename ) 
+					) {
+					String msg = String.Format( "Error: {0} Database file not provided or not found: File={1}"
+						, methodName, Properties.Settings.Default.DatabaseFilename );
 					Log.WriteFile( msg );
 					MessageBox.Show( msg );
 				}
 
-				Properties.Settings.Default.SanctionNum = args[0];
-				Properties.Settings.Default.DataDirectory = args[1];
-				Properties.Settings.Default.DatabaseFilename = args[2];
-
+				Properties.Settings.Default.DatabaseConnectionString =
+					String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True"
+					, Properties.Settings.Default.DatabaseFilename );
 				Application.Run( new Controller() );
 
 			} catch ( Exception excp ) {

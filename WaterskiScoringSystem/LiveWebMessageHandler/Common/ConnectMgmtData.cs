@@ -2,9 +2,9 @@
 using System.Data;
 using System.Windows.Forms;
 
-using HttpMessageHandler.Externalnterface;
+using LiveWebMessageHandler.Externalnterface;
 
-namespace HttpMessageHandler.Common {
+namespace LiveWebMessageHandler.Common {
 	class ConnectMgmtData {
 		private static String mySanctionNum = "";
 		public static DataRow tourRow = null;
@@ -26,7 +26,7 @@ namespace HttpMessageHandler.Common {
 			if ( !( curDbOpen ) ) {
 				String curMsg = String.Format( "{0}Unable to connect to database {1}"
 					, curMethodName, Properties.Settings.Default.DatabaseConnectionString );
-				Log.WriteFile( curMsg );
+				MessageBox.Show( curMsg );
 				return false;
 			}
 			
@@ -38,11 +38,10 @@ namespace HttpMessageHandler.Common {
 				MessageBox.Show( curMsg );
 				return false;
 			}
-
-			ExportLiveWeb.exportTourData( mySanctionNum );
-
 			Properties.Settings.Default.DataDirectory = (String)tourRow["TourDataLoc"];
 			if ( !( Log.OpenFile( mySanctionNum ) ) ) return false;
+
+			ExportLiveWeb.exportTourData( mySanctionNum );
 
 			Log.WriteFile( String.Format( "{0}Connected to database {1}"
 				, curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );

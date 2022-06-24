@@ -77,18 +77,16 @@
 			// 
 			this.VideoFolderLocTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.VideoFolderLocTextbox.Location = new System.Drawing.Point(121, 36);
-			this.VideoFolderLocTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.VideoFolderLocTextbox.Location = new System.Drawing.Point(91, 29);
 			this.VideoFolderLocTextbox.Name = "VideoFolderLocTextbox";
-			this.VideoFolderLocTextbox.Size = new System.Drawing.Size(944, 22);
+			this.VideoFolderLocTextbox.Size = new System.Drawing.Size(709, 20);
 			this.VideoFolderLocTextbox.TabIndex = 5;
 			// 
 			// VideoFileSelectButton
 			// 
-			this.VideoFileSelectButton.Location = new System.Drawing.Point(13, 34);
-			this.VideoFileSelectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.VideoFileSelectButton.Location = new System.Drawing.Point(10, 28);
 			this.VideoFileSelectButton.Name = "VideoFileSelectButton";
-			this.VideoFileSelectButton.Size = new System.Drawing.Size(100, 28);
+			this.VideoFileSelectButton.Size = new System.Drawing.Size(75, 23);
 			this.VideoFileSelectButton.TabIndex = 3;
 			this.VideoFileSelectButton.Text = "Select Files";
 			this.VideoFileSelectButton.UseVisualStyleBackColor = true;
@@ -98,10 +96,9 @@
 			// 
 			this.CancelButton.AutoSize = true;
 			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CancelButton.Location = new System.Drawing.Point(240, 311);
-			this.CancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.CancelButton.Location = new System.Drawing.Point(180, 253);
 			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(100, 28);
+			this.CancelButton.Size = new System.Drawing.Size(75, 23);
 			this.CancelButton.TabIndex = 9;
 			this.CancelButton.Text = "Cancel";
 			this.CancelButton.UseVisualStyleBackColor = true;
@@ -111,10 +108,9 @@
 			// 
 			this.OkButton.AutoSize = true;
 			this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OkButton.Location = new System.Drawing.Point(121, 311);
-			this.OkButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.OkButton.Location = new System.Drawing.Point(91, 253);
 			this.OkButton.Name = "OkButton";
-			this.OkButton.Size = new System.Drawing.Size(100, 28);
+			this.OkButton.Size = new System.Drawing.Size(75, 23);
 			this.OkButton.TabIndex = 8;
 			this.OkButton.Text = "Load";
 			this.OkButton.UseVisualStyleBackColor = true;
@@ -126,19 +122,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.TagsListBox.CheckOnClick = true;
 			this.TagsListBox.FormattingEnabled = true;
-			this.TagsListBox.Location = new System.Drawing.Point(121, 100);
-			this.TagsListBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.TagsListBox.Location = new System.Drawing.Point(91, 81);
 			this.TagsListBox.Name = "TagsListBox";
-			this.TagsListBox.Size = new System.Drawing.Size(944, 191);
+			this.TagsListBox.Size = new System.Drawing.Size(709, 154);
 			this.TagsListBox.TabIndex = 7;
 			this.TagsListBox.ThreeDCheckBoxes = true;
 			// 
 			// AddTagButton
 			// 
-			this.AddTagButton.Location = new System.Drawing.Point(13, 70);
-			this.AddTagButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.AddTagButton.Location = new System.Drawing.Point(10, 57);
 			this.AddTagButton.Name = "AddTagButton";
-			this.AddTagButton.Size = new System.Drawing.Size(100, 28);
+			this.AddTagButton.Size = new System.Drawing.Size(75, 23);
 			this.AddTagButton.TabIndex = 4;
 			this.AddTagButton.Text = "Add Tag";
 			this.AddTagButton.UseVisualStyleBackColor = true;
@@ -148,20 +142,18 @@
 			// 
 			this.NewTagTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.NewTagTextbox.Location = new System.Drawing.Point(121, 70);
-			this.NewTagTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.NewTagTextbox.Location = new System.Drawing.Point(91, 57);
 			this.NewTagTextbox.Name = "NewTagTextbox";
-			this.NewTagTextbox.Size = new System.Drawing.Size(944, 22);
+			this.NewTagTextbox.Size = new System.Drawing.Size(709, 20);
 			this.NewTagTextbox.TabIndex = 6;
 			// 
 			// ViewButton
 			// 
 			this.ViewButton.AutoSize = true;
 			this.ViewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ViewButton.Location = new System.Drawing.Point(707, 311);
-			this.ViewButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ViewButton.Location = new System.Drawing.Point(530, 253);
 			this.ViewButton.Name = "ViewButton";
-			this.ViewButton.Size = new System.Drawing.Size(105, 28);
+			this.ViewButton.Size = new System.Drawing.Size(79, 23);
 			this.ViewButton.TabIndex = 11;
 			this.ViewButton.Text = "View Loaded";
 			this.ViewButton.UseVisualStyleBackColor = true;
@@ -200,11 +192,10 @@
 			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.loadedVideoDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
-			this.loadedVideoDataGridView.Location = new System.Drawing.Point(7, 343);
-			this.loadedVideoDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.loadedVideoDataGridView.Location = new System.Drawing.Point(5, 279);
 			this.loadedVideoDataGridView.Name = "loadedVideoDataGridView";
 			this.loadedVideoDataGridView.RowHeadersVisible = false;
-			this.loadedVideoDataGridView.Size = new System.Drawing.Size(1060, 247);
+			this.loadedVideoDataGridView.Size = new System.Drawing.Size(795, 201);
 			this.loadedVideoDataGridView.TabIndex = 0;
 			this.loadedVideoDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
 			// 
@@ -308,11 +299,10 @@
 			dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.selectedFileDataGridView.DefaultCellStyle = dataGridViewCellStyle11;
-			this.selectedFileDataGridView.Location = new System.Drawing.Point(116, 345);
-			this.selectedFileDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.selectedFileDataGridView.Location = new System.Drawing.Point(87, 280);
 			this.selectedFileDataGridView.Name = "selectedFileDataGridView";
 			this.selectedFileDataGridView.RowHeadersVisible = false;
-			this.selectedFileDataGridView.Size = new System.Drawing.Size(931, 246);
+			this.selectedFileDataGridView.Size = new System.Drawing.Size(698, 200);
 			this.selectedFileDataGridView.TabIndex = 13;
 			this.selectedFileDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
 			// 
@@ -386,29 +376,27 @@
 			// RowStatusLabel
 			// 
 			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Location = new System.Drawing.Point(7, 314);
-			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.RowStatusLabel.Location = new System.Drawing.Point(5, 255);
 			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(0, 17);
+			this.RowStatusLabel.Size = new System.Drawing.Size(0, 13);
 			this.RowStatusLabel.TabIndex = 0;
 			// 
 			// LiveWebButton
 			// 
-			this.LiveWebButton.Location = new System.Drawing.Point(181, 4);
-			this.LiveWebButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.LiveWebButton.AutoSize = true;
+			this.LiveWebButton.Location = new System.Drawing.Point(136, 3);
 			this.LiveWebButton.Name = "LiveWebButton";
-			this.LiveWebButton.Size = new System.Drawing.Size(100, 28);
+			this.LiveWebButton.Size = new System.Drawing.Size(108, 23);
 			this.LiveWebButton.TabIndex = 1;
-			this.LiveWebButton.Text = "Live Web";
+			this.LiveWebButton.Text = "Export to Live Web";
 			this.LiveWebButton.UseVisualStyleBackColor = true;
 			this.LiveWebButton.Click += new System.EventHandler(this.LiveWebButton_Click);
 			// 
 			// ExportButton
 			// 
-			this.ExportButton.Location = new System.Drawing.Point(312, 4);
-			this.ExportButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ExportButton.Location = new System.Drawing.Point(250, 3);
 			this.ExportButton.Name = "ExportButton";
-			this.ExportButton.Size = new System.Drawing.Size(185, 28);
+			this.ExportButton.Size = new System.Drawing.Size(139, 23);
 			this.ExportButton.TabIndex = 2;
 			this.ExportButton.Text = "Export Video Assignments";
 			this.ExportButton.UseVisualStyleBackColor = true;
@@ -416,10 +404,9 @@
 			// 
 			// ExportLoadedButton
 			// 
-			this.ExportLoadedButton.Location = new System.Drawing.Point(831, 311);
-			this.ExportLoadedButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ExportLoadedButton.Location = new System.Drawing.Point(623, 253);
 			this.ExportLoadedButton.Name = "ExportLoadedButton";
-			this.ExportLoadedButton.Size = new System.Drawing.Size(119, 28);
+			this.ExportLoadedButton.Size = new System.Drawing.Size(89, 23);
 			this.ExportLoadedButton.TabIndex = 12;
 			this.ExportLoadedButton.Text = "Export Loaded";
 			this.ExportLoadedButton.UseVisualStyleBackColor = true;
@@ -429,10 +416,9 @@
 			// 
 			this.ReviewButton.AutoSize = true;
 			this.ReviewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ReviewButton.Location = new System.Drawing.Point(359, 311);
-			this.ReviewButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ReviewButton.Location = new System.Drawing.Point(269, 253);
 			this.ReviewButton.Name = "ReviewButton";
-			this.ReviewButton.Size = new System.Drawing.Size(155, 28);
+			this.ReviewButton.Size = new System.Drawing.Size(116, 23);
 			this.ReviewButton.TabIndex = 10;
 			this.ReviewButton.Text = "Review Video Match";
 			this.ReviewButton.UseVisualStyleBackColor = true;
@@ -463,21 +449,19 @@
 			dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.ReviewVideoMatchDataGridView.DefaultCellStyle = dataGridViewCellStyle13;
-			this.ReviewVideoMatchDataGridView.Location = new System.Drawing.Point(49, 345);
-			this.ReviewVideoMatchDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ReviewVideoMatchDataGridView.Location = new System.Drawing.Point(37, 280);
 			this.ReviewVideoMatchDataGridView.Name = "ReviewVideoMatchDataGridView";
 			this.ReviewVideoMatchDataGridView.RowHeadersVisible = false;
-			this.ReviewVideoMatchDataGridView.Size = new System.Drawing.Size(997, 246);
+			this.ReviewVideoMatchDataGridView.Size = new System.Drawing.Size(748, 200);
 			this.ReviewVideoMatchDataGridView.TabIndex = 0;
 			// 
 			// ResendButton
 			// 
 			this.ResendButton.AutoSize = true;
 			this.ResendButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ResendButton.Location = new System.Drawing.Point(533, 311);
-			this.ResendButton.Margin = new System.Windows.Forms.Padding(4);
+			this.ResendButton.Location = new System.Drawing.Point(400, 253);
 			this.ResendButton.Name = "ResendButton";
-			this.ResendButton.Size = new System.Drawing.Size(155, 28);
+			this.ResendButton.Size = new System.Drawing.Size(117, 23);
 			this.ResendButton.TabIndex = 14;
 			this.ResendButton.Text = "Resend Video Match";
 			this.ResendButton.UseVisualStyleBackColor = true;
@@ -485,9 +469,9 @@
 			// 
 			// LoadVideosFile
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1076, 596);
+			this.ClientSize = new System.Drawing.Size(807, 484);
 			this.Controls.Add(this.ResendButton);
 			this.Controls.Add(this.ReviewButton);
 			this.Controls.Add(this.ExportLoadedButton);
@@ -506,7 +490,6 @@
 			this.Controls.Add(this.ReviewVideoMatchDataGridView);
 			this.Controls.Add(this.loadedVideoDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "LoadVideosFile";
 			this.Text = "Load Videos Files";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoadVideosFile_FormClosed);
