@@ -2878,6 +2878,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 			} else {
 				boatPathDataGridView.Visible = false;
+				InvalidateBoatPathButton.Visible = false;
+				InvalidateBoatPathButton.Enabled = false;
 				myRecapRow = null;
 				myScoreRow = null;
 
@@ -3228,10 +3230,14 @@ namespace WaterskiScoringSystem.Slalom {
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ), curPassScore );
 				if ( curBoatTime.Length == 0 ) {
 					boatPathDataGridView.Visible = false;
+					InvalidateBoatPathButton.Visible = false;
+					InvalidateBoatPathButton.Enabled = false;
 					return;
 				}
 			} catch (Exception ex) {
 				boatPathDataGridView.Visible = false;
+				InvalidateBoatPathButton.Visible = false;
+				InvalidateBoatPathButton.Enabled = false;
 				return;
 			}
 
@@ -3251,6 +3257,37 @@ namespace WaterskiScoringSystem.Slalom {
 			checkAddNewPass();
 		}
 
+		private void InvalidateBoatPathButton_Click( object sender, EventArgs e ) {
+			if ( slalomRecapDataGridView.Rows.Count == 0 ) {
+				MessageBox.Show( "No recap row specified" );
+				return;
+			}
+			if ( slalomRecapDataGridView.CurrentCell.RowIndex != ( slalomRecapDataGridView.Rows.Count - 1 ) ) {
+				MessageBox.Show( "Only the current pass can be invalidated" );
+				return;
+			}
+
+			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[slalomRecapDataGridView.CurrentCell.RowIndex];
+			try {
+				WscHandler.invalidateBoatPath( "Slalom"
+					, HelperFunctions.getViewRowColValue( curViewRow, "MemberIdRecap", "" )
+					, HelperFunctions.getViewRowColValue( curViewRow, "RoundRecap", "" )
+					, HelperFunctions.getViewRowColValue( curViewRow, "skierPassRecap", "" ) );
+				WscHandler.invalidateBoatTime( "Slalom"
+					, HelperFunctions.getViewRowColValue( curViewRow, "MemberIdRecap", "" )
+					, HelperFunctions.getViewRowColValue( curViewRow, "RoundRecap", "" )
+					, HelperFunctions.getViewRowColValue( curViewRow, "skierPassRecap", "" ) );
+				boatPathDataGridView.Rows.Clear();
+				boatPathDataGridView.Visible = false;
+				InvalidateBoatPathButton.Visible = false;
+				InvalidateBoatPathButton.Enabled = false;
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( "Attempt to invalidate boat path data failed: " + ex.Message );
+				return;
+			}
+		}
+
 		/*
 		 * Retrieve data for current tournament
 		 * Used for initial load and to refresh data after updates
@@ -3258,12 +3295,16 @@ namespace WaterskiScoringSystem.Slalom {
 		private Decimal loadBoatPathDataGridView( String curEvent, String curSkierClass, String curMemberId, String curRound, String curPassNum, Decimal curPassScore ) {
 			winStatusMsg.Text = "Retrieving boat path data";
 			boatPathDataGridView.Visible = false;
+			InvalidateBoatPathButton.Visible = false;
+			InvalidateBoatPathButton.Enabled = false;
 			Cursor.Current = Cursors.WaitCursor;
 
 			try {
 				boatPathDataGridView.Rows.Clear();
 				if ( myRecapRow == null || slalomRecapDataGridView.CurrentRow == null ) {
 					boatPathDataGridView.Visible = false;
+					InvalidateBoatPathButton.Visible = false;
+					InvalidateBoatPathButton.Enabled = false;
 					return curPassScore;
 				}
 				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum
@@ -3271,6 +3312,8 @@ namespace WaterskiScoringSystem.Slalom {
 					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ) );
 				if ( myBoatPathDataRow == null ) {
 					boatPathDataGridView.Visible = false;
+					InvalidateBoatPathButton.Visible = false;
+					InvalidateBoatPathButton.Enabled = false;
 					return curPassScore;
 				}
 
@@ -3287,6 +3330,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 				if ( curViewIdx < 0 ) return curPassScore;
 				boatPathDataGridView.Visible = true;
+				InvalidateBoatPathButton.Visible = true;
+				InvalidateBoatPathButton.Enabled = true;
 
 				if ( isRerideReqd && Convert.ToInt32(curPassNum) == slalomRecapDataGridView.RowCount) {
 					return checkBoatPathReride( curSkierClass, curPassScore );
@@ -5466,5 +5511,6 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( curSelectedValue.Length == 0 ) return;
 			myDriverMemberId = curSelectedValue;
 		}
+
 	}
 }

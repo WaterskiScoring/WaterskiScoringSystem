@@ -36,7 +36,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				ProcessStartInfo curStartInfo = new ProcessStartInfo( myMessageHandler );
 				curStartInfo.WindowStyle = ProcessWindowStyle.Normal;
-				curStartInfo.Arguments = inSanctionId + " \"\"" + curDatabaseFilename + "\"\"";
+				curStartInfo.Arguments = String.Format( "{0} \"{1}\"", inSanctionId, curDatabaseFilename );
 				curStartInfo.UseShellExecute = true;
 				Process.Start( curStartInfo );
 				LiveWebMessageHandlerActive = true;
@@ -45,7 +45,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				String curErrMsg = String.Format( "{0}Exception encountered launching {1}: {2}"
 					, methodName, myMessageHandler, ex.Message );
 				Log.WriteFile( curErrMsg );
-				MessageBox.Show( curErrMsg );
+				MessageBox.Show( curErrMsg + "\n\n StackTrace: " + ex.StackTrace );
 			}
 
 			return LiveWebMessageHandlerActive;

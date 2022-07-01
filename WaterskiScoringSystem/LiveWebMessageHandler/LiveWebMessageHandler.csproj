@@ -59,6 +59,9 @@
   <PropertyGroup>
     <StartupObject>LiveWebMessageHandler.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -158,6 +158,58 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
+		public static Boolean invalidateBoatPath( String athleteEvent, String athleteId, String round, String passNumber ) {
+			int newPassNumber = 99;
+			getSanctionNum();
+
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select Event, MemberId, Round, PassNumber " );
+			curSqlStmt.Append( "From BoatPath " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber > 25 "
+				, mySanctionNum, athleteEvent, athleteId, round ) );
+			curSqlStmt.Append( "Order by PassNumber " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				newPassNumber = Convert.ToInt32(HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "PassNumber", "99" ));
+				newPassNumber--;
+			}
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Update BoatPath " );
+			curSqlStmt.Append( String.Format( "Set PassNumber = {0} ", newPassNumber ) );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, mySanctionNum, athleteEvent, athleteId, round, passNumber ) );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			return true;
+		}
+
+		public static Boolean invalidateBoatTime( String athleteEvent, String athleteId, String round, String passNumber ) {
+			int newPassNumber = 99;
+			getSanctionNum();
+
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select Event, MemberId, Round, PassNumber " );
+			curSqlStmt.Append( "From BoatTime " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber > 25 "
+				, mySanctionNum, athleteEvent, athleteId, round ) );
+			curSqlStmt.Append( "Order by PassNumber " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) {
+				newPassNumber = Convert.ToInt32( HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "PassNumber", "99" ) );
+				newPassNumber--;
+			}
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Update BoatTime " );
+			curSqlStmt.Append( String.Format( "Set PassNumber = {0} ", newPassNumber ) );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' AND MemberId = '{2}' AND Round = {3} AND PassNumber = {4}"
+				, mySanctionNum, athleteEvent, athleteId, round, passNumber ) );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			return true;
+		}
+
 		public static Boolean sendAthleteScore( String athleteId, String athleteName, String athleteEvent, String athleteCountry, String athleteRegion, String athleteGroup
 			, Int16 round, Int16 passNumber, Int16 speed, String rope, String score ) {
 			String curMethodName = "sendAthleteScore: ";

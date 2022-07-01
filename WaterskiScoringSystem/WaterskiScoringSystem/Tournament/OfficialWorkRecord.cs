@@ -1294,8 +1294,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
             curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append("  AND TR.ReadyToSki = 'Y' ");
-			curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
+            curSqlStmt.Append( "  AND TR.ReadyToSki = 'Y' AND (TR.Withdrawn is null OR TR.WithDrawn = 'N') " );
+            curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
@@ -1322,7 +1322,8 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERJ ON ERJ.MemberId = O.MemberId AND ERJ.SanctionId = O.SanctionId AND ERJ.AgeGroup = TR.AgeGroup and ERJ.Event = 'Jump' " );
 			curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
 			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
+            curSqlStmt.Append( "  AND TR.ReadyToSki = 'Y' AND (TR.Withdrawn is null OR TR.WithDrawn = 'N') " );
+            curSqlStmt.Append( "ORDER BY TR.SkierName, TR.MemberId  " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 

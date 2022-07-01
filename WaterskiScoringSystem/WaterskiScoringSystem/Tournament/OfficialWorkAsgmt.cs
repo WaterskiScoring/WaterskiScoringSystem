@@ -1468,7 +1468,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "     INNER JOIN TourReg ON TourReg.MemberId = OfficialWork.MemberId AND TourReg.SanctionId = OfficialWork.SanctionId " );
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ON MemberList.MemberId = OfficialWork.MemberId " );
             curSqlStmt.Append( "WHERE TourReg.SanctionId = '" + mySanctionNum + "' " );
-			curSqlStmt.Append("  AND TourReg.ReadyToSki = 'Y' ");
+			curSqlStmt.Append( "  AND TourReg.ReadyToSki = 'Y' AND (TourReg.Withdrawn is null OR TourReg.WithDrawn = 'N') " );
 			curSqlStmt.Append( "ORDER BY TourReg.SkierName, TourReg.MemberId  " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
