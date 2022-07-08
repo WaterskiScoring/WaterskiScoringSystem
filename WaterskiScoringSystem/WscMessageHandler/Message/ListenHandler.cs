@@ -94,16 +94,17 @@ namespace WscMessageHandler.Message {
 					}
 				}
 
-				readProcessTimer = new System.Timers.Timer( 2000 );
-				readProcessTimer.Elapsed += readProcessMessages;
-				readProcessTimer.AutoReset = false;
-				readProcessTimer.Enabled = true;
-				
 				return 0;
 
 			} catch ( Exception ex ) {
 				Log.WriteFile( curMethodName + "Exception encountered " + ex.Message );
 				return -1;
+
+			} finally {
+				readProcessTimer = new System.Timers.Timer( 2000 );
+				readProcessTimer.Elapsed += readProcessMessages;
+				readProcessTimer.AutoReset = false;
+				readProcessTimer.Enabled = true;
 			}
 		}
 

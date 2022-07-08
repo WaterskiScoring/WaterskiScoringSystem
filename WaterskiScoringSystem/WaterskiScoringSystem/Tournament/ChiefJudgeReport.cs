@@ -314,27 +314,11 @@ namespace WaterskiScoringSystem.Tournament {
                         ChiefJudgeSigTextBox.Text = curValue.Substring( curDelim + 1 ) + " " + curValue.Substring( 0, curDelim );
                         ChiefJudgeNameTextBox.Text = curValue.Substring( curDelim + 1 ) + " " + curValue.Substring( 0, curDelim );
                         ChiefJudgeSigDateTextBox.Text = DateTime.Today.ToString( "MM/dd/yyyy" );
-                        if (myTourRow["ChiefJudgeAddress"] == System.DBNull.Value) {
-                            ChiefJudgeAddressTextBox.Text = "";
-                        } else {
-                            ChiefJudgeAddressTextBox.Text = (String)myTourRow["ChiefJudgeAddress"];
-                        }
-                        if (myTourRow["ChiefJudgePhone"] == System.DBNull.Value) {
-                            ChiefJudgeDayPhoneTextBox.Text = "";
-                        } else {
-                            ChiefJudgeDayPhoneTextBox.Text = (String)myTourRow["ChiefJudgePhone"];
-                        }
+                        ChiefJudgeAddressTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeAddress", "" );
+                        ChiefJudgeDayPhoneTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgePhone", "" );
                         curValue = (String)myTourRow["ChiefJudgeMemberId"];
                         DataRow curMemberRow = getTourMemberRating( curValue );
-                        if (curMemberRow != null) {
-                            if (curMemberRow["JudgeSlalomRating"] == System.DBNull.Value) {
-                                curValue = "";
-                            } else if (((String)curMemberRow["JudgeSlalomRating"]).Equals("Unrated")) {
-                            } else {
-                                curValue = (String)curMemberRow["JudgeSlalomRating"];
-                            }
-                            ChiefJudgeRatingTextBox.Text = curValue;
-                        }
+                        ChiefJudgeRatingTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "JudgeSlalomRating", "Unrated" );
                     }
 
                     if ( myTourRow["ChiefSafetyName"] != System.DBNull.Value ) {
@@ -556,48 +540,46 @@ namespace WaterskiScoringSystem.Tournament {
 						curValue = (String)curMemberRow["DriverSlalomRating"];
 					}
 				}
-				outLine.Append( HelperFunctions.TabChar + curValue );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverAddress"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverPhone"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverEmail"] );
+                outLine.Append( HelperFunctions.TabChar + curValue );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverAddress", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverPhone", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverEmail", "" ) );
 
-				//Chief Scorer
-				//curSqlStmt.Append( ", T.ChiefScorerMemberId, TourRegCC.SkierName AS ChiefScorerName, T.ChiefScorerAddress, T.ChiefScorerPhone, T.ChiefScorerEmail " );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerMemberId"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerName"] );
+                //Chief Scorer
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerMemberId", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerName", "" ) );
 				curValue = (String)myTourRow["ChiefScorerMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
-				if ( curMemberRow != null ) {
+                curValue = "";
+                if ( curMemberRow != null ) {
 					if ( curMemberRow["ScorerSlalomRating"] == System.DBNull.Value ) {
-						curValue = "";
 					} else if ( ( (String)curMemberRow["ScorerSlalomRating"] ).Equals( "Unrated" ) ) {
 					} else {
 						curValue = (String)curMemberRow["ScorerSlalomRating"];
 					}
-				}
-				outLine.Append( HelperFunctions.TabChar + curValue );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerAddress"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerPhone"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefScorerEmail"] );
+                }
+                outLine.Append( HelperFunctions.TabChar + curValue );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerAddress", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerPhone", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerEmail", "" ) );
 
 				//Chief Safety Director
-				//curSqlStmt.Append( ", T.SafetyDirMemberId, TourRegCS.SkierName AS ChiefSafetyName, T.SafetyDirAddress, T.SafetyDirPhone, T.SafetyDirEmail" );
 				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirMemberId"] );
 				outLine.Append( HelperFunctions.TabChar + SafetyDirNameTextBox.Text );
 				curValue = (String)myTourRow["SafetyDirMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
-				if ( curMemberRow != null ) {
+                curValue = "";
+                if ( curMemberRow != null ) {
 					if ( curMemberRow["SafetyOfficialRating"] == System.DBNull.Value ) {
-						curValue = "";
 					} else if ( ( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" ) ) {
 					} else {
 						curValue = (String)curMemberRow["SafetyOfficialRating"];
 					}
 				}
 				outLine.Append( HelperFunctions.TabChar + curValue );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirAddress"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirPhone"] );
-				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirEmail"] );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirAddress", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" ) );
+                outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirEmail", "" ) );
 
 				//Chief Safety Director's Performance Report
 				outLine.Append( HelperFunctions.TabChar + replaceLinefeed( safetyDirPerfReportTextBox.Text ) );
@@ -788,18 +770,19 @@ namespace WaterskiScoringSystem.Tournament {
 
 				outLine = new StringBuilder( "" );
 				//Tournament Contact
-				outLine.Append( Environment.NewLine + "Tournament contact: " + (String)myTourRow["ContactName"] );
-				outLine.Append( Environment.NewLine + "Phone: " + (String)myTourRow["ContactPhone"] );
-				outLine.Append( "  Email: " + (String)myTourRow["ContactEmail"] );
-				outLine.Append( Environment.NewLine + "Address: " + (String)myTourRow["ContactAddress"] );
+				outLine.Append( Environment.NewLine + "Tournament contact: " + HelperFunctions.getDataRowColValue(myTourRow, "ContactName", "" ) );
+				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "ContactPhone", "" ) );
+				outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ContactEmail", "" ) );
+				outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue( myTourRow, "ContactAddress", "" ) );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				//Chief Driver
-				outLine.Append( Environment.NewLine + "Chief Driver: " + (String)myTourRow["ChiefDriverName"] );
+				outLine.Append( Environment.NewLine + "Chief Driver: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverName", "") );
 				String curValue = (String)myTourRow["ChiefDriverMemberId"];
 				DataRow curMemberRow = getTourMemberRating( curValue );
-				if ( curMemberRow != null ) {
+                curValue = "";
+                if ( curMemberRow != null ) {
 					if ( curMemberRow["DriverSlalomRating"] == System.DBNull.Value ) {
 						curValue = "";
 					} else if ( ( (String)curMemberRow["DriverSlalomRating"] ).Equals( "Unrated" ) ) {
@@ -808,10 +791,11 @@ namespace WaterskiScoringSystem.Tournament {
 					}
 				}
 				outLine.Append( "  Rating: " + curValue );
-				outLine.Append( Environment.NewLine + "Phone: " + (String)myTourRow["ChiefDriverPhone"] );
-				outLine.Append( "  Email: " + (String)myTourRow["ChiefDriverEmail"] );
-				outLine.Append( Environment.NewLine + "Address: " + (String)myTourRow["ChiefDriverAddress"] );
-				outBuffer.WriteLine( outLine.ToString() );
+				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverPhone", "") );
+				outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverEmail", "" ) );
+                outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue(myTourRow, "ChiefDriverAddress", ""));
+
+                outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
 				//Chief Scorer
@@ -827,9 +811,9 @@ namespace WaterskiScoringSystem.Tournament {
 					}
 				}
 				outLine.Append( "  Rating: " + curValue );
-				outLine.Append( Environment.NewLine + "Phone: " + (String)myTourRow["ChiefScorerPhone"] );
-				outLine.Append( "  Email: " + (String)myTourRow["ChiefScorerEmail"] );
-				outLine.Append( Environment.NewLine + "Address: " + (String)myTourRow["ChiefScorerAddress"] );
+                outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerPhone", "" ) );
+                outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerEmail", "" ) );
+                outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerAddress", "" ) );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
@@ -846,9 +830,10 @@ namespace WaterskiScoringSystem.Tournament {
 					}
 				}
 				outLine.Append( "  Rating: " + curValue );
-				outLine.Append( Environment.NewLine + "Phone: " + (String)myTourRow["SafetyDirPhone"] );
-				outLine.Append( "  Email: " + (String)myTourRow["SafetyDirEmail"] );
-				outLine.Append( Environment.NewLine + "Address: " + (String)myTourRow["SafetyDirAddress"] );
+				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" ) );
+                outLine.Append( "  Email: " + (String)myTourRow["SafetyDirEmail"] );
+				outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirAddress", "" ));
+
 				outLine.Append( Environment.NewLine + SafetyDirPerfLabel.Text + ": " + replaceLinefeed( safetyDirPerfReportTextBox.Text ) );
 				outBuffer.WriteLine( outLine.ToString() );
 

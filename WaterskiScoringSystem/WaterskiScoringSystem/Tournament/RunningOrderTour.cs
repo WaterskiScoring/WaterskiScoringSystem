@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
-using WaterskiScoringSystem.Trick;
 using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -1401,6 +1400,24 @@ namespace WaterskiScoringSystem.Tournament {
             }
             if (!(isDataModified)) {
                 loadEventRegView();
+
+                checkSaveChanges();
+                if ( !( isDataModified ) ) {
+                    String curEvent = "";
+                    if ( slalomButton.Checked ) curEvent = "Slalom";
+                    else if ( trickButton.Checked ) curEvent = "Trick";
+                    else if ( jumpButton.Checked ) curEvent = "Jump";
+
+                    mySortCmd = myTourProperties.RunningOrderSortSlalom;
+
+                    loadGroupSelectList( curEvent, checkBoxGroup_CheckedChanged );
+
+                    getRunningOrderColumnfilter();
+
+                    loadGroupFilterComboBox();
+
+                    winStatusMsg.Text = "Sorted by " + mySortCmd;
+                }
             }
         }
 

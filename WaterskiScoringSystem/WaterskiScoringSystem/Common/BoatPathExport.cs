@@ -85,6 +85,7 @@ namespace WaterskiScoringSystem.Common {
 			PathDevZone4.Visible = false;
 			PathDevZone5.Visible = false;
 			PathDevZone6.Visible = false;
+			Spacer3.Visible = false;
 
 			if ( myEvent.Equals( "Slalom" ) ) {
 				this.Text += " - Slalom";
@@ -201,10 +202,7 @@ namespace WaterskiScoringSystem.Common {
                 curViewRow.Cells["Event"].Value = (String) curRow["Event"];
                 curViewRow.Cells["AgeGroup"].Value = (String) curRow["AgeGroup"];
                 curViewRow.Cells["EventGroup"].Value = (String) curRow["EventGroup"];
-				curViewRow.Cells["EventClass"].Value =
-					HelperFunctions.getDataRowColValue( curRow, "EventClass", "" )
-					+ "/"
-					+ HelperFunctions.getDataRowColValue( curRow, "homologation", "" );
+				curViewRow.Cells["EventClass"].Value = HelperFunctions.getDataRowColValue( curRow, "EventClass", "" );
 
 				curViewRow.Cells["Round"].Value = (Byte) curRow["Round"];
 				

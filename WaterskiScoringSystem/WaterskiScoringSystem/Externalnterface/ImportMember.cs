@@ -945,7 +945,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			#region Insert or update skier trick ranking data
 			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRank" );
-			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
+			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curTrick );
 			if ( curTrick > 0 ) {
 				curEvent = "Trick";
 				curOverall += curTrick;
@@ -997,7 +997,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Insert or update skier jump ranking data
-			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRank" );
+			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "curJump" );
 			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
 			if ( curJump > 0 ) {
 				curEvent = "Jump";
