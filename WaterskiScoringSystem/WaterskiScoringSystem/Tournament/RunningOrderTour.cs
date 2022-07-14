@@ -1810,7 +1810,6 @@ namespace WaterskiScoringSystem.Tournament {
 			printTitle.Append( "\n Sanction " + mySanctionNum );
 			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
 			printTitle.Append( "\n" + this.Text );
-			if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
 
 			myPrintDoc = new PrintDocument();
 			myPrintDoc.DocumentName = this.Text;

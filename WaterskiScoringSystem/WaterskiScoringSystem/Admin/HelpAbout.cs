@@ -18,6 +18,8 @@ namespace WaterskiScoringSystem.Admin {
 
         private void HelpAbout_Load( object sender, EventArgs e ) {
             String curDeployVer = "", curUpdatedVer = "", curDataDir = "";
+            String curDatabaseFilename = "";
+            String curConnFilename = "\\Not available";
 
             try {
                 curDeployVer = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
@@ -31,6 +33,16 @@ namespace WaterskiScoringSystem.Admin {
             }
             try {
                 curDataDir = ApplicationDeployment.CurrentDeployment.DataDirectory;
+                
+                String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
+                int curDelimPos1 = curConnString.IndexOf( "\\" );
+                int curDelimPos2 = curConnString.IndexOf( ";" );
+                if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
+                try {
+                    curDatabaseFilename = curDataDir + curConnFilename;
+                } catch {
+                    curDatabaseFilename = curConnFilename;
+                }
             } catch {
                 curDataDir = "Not available";
             }

@@ -19,6 +19,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private String myGender = "";
 		private String myAgeGroup = "";
 		private String myTeam = "";
+
+		private String myRegEventClassSlalom = "";
+		private String myRegEventClassTrick = "";
+		private String myRegEventClassJump = "";
+
 		private String myEventGroupSlalom = "";
 		private String myEventGroupTrick = "";
 		private String myEventGroupJump = "";
@@ -92,6 +97,27 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public Boolean CanSkiGR { get => myCanSkiGR; set => myCanSkiGR = value; }
 		public DateTime MemberExpireDate { get => myMemberExpireDate; set => myMemberExpireDate = value; }
 		public string Note { get => myNote; set => myNote = value; }
+		public void setRegEventClass( String curEvent, String curValue ) {
+			if ( curEvent.Equals( "Slalom" ) ) RegEventClassSlalom = curValue;
+			else if ( curEvent.Equals( "Trick" ) ) RegEventClassTrick = curValue;
+			else if ( curEvent.Equals( "Jump" ) ) RegEventClassJump = curValue;
+		}
+		public String getRegEventClass( String curEvent ) {
+			if ( curEvent.Equals( "Slalom" ) ) return RegEventClassSlalom;
+			else if ( curEvent.Equals( "Trick" ) ) return RegEventClassTrick;
+			else if ( curEvent.Equals( "Jump" ) ) return RegEventClassJump;
+			return "";
+		}
+		public string RegEventClassSlalom { get => myRegEventClassSlalom; set => myRegEventClassSlalom = value; }
+		public string RegEventClassTrick { get => myRegEventClassTrick; set => myRegEventClassTrick = value; }
+		public string RegEventClassJump { get => myRegEventClassJump; set => myRegEventClassJump = value; }
+
+		public string getEventGroup(String curEvent ) {
+			if ( curEvent.Equals( "Slalom" ) ) return myEventGroupSlalom;
+			else if ( curEvent.Equals( "Trick" ) ) return myEventGroupTrick;
+			else if ( curEvent.Equals( "Jump" ) ) return myEventGroupJump;
+			return "";
+		}
 		public string EventGroupSlalom { get => myEventGroupSlalom; set => myEventGroupSlalom = value; }
 		public string EventGroupTrick { get => myEventGroupTrick; set => myEventGroupTrick = value; }
 		public string EventGroupJump { get => myEventGroupJump; set => myEventGroupJump = value; }

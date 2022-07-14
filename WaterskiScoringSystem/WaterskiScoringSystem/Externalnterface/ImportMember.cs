@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -545,6 +544,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 					}
 				}
 
+				getRegEventClass( curImportMemberEntry, curMemberEntry, "Slalom" );
+				getRegEventClass( curImportMemberEntry, curMemberEntry, "Trick" );
+				getRegEventClass( curImportMemberEntry, curMemberEntry, "Jump" );
+
 				String curPrereg = HelperFunctions.getAttributeValue( curImportMemberEntry, "Prereg" );
 				String curApptOfficial = HelperFunctions.getAttributeValue( curImportMemberEntry, "ApptdOfficial" );
 				String curNote = HelperFunctions.getAttributeValue( curImportMemberEntry, "Note" );
@@ -688,29 +691,42 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
+		private void getRegEventClass( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry, String curEvent ) {
+			String curEventClass = "";
+
+			if ( curImportMemberEntry.ContainsKey( "EventClass" + curEvent ) ) {
+				curEventClass = (String)curImportMemberEntry["EventClass" + curEvent];
+			
+			} else if ( curImportMemberEntry.ContainsKey( curEvent + "Paid" ) ) {
+				curEventClass = (String)curImportMemberEntry[curEvent + "Paid"];
+			}
+
+			if ( curEventClass.Trim().Length == 0 ) return;
+
+			curMemberEntry.setRegEventClass( curEvent, curEventClass );
+		}
+
 		private bool regSkierForEvent( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry, String curEvent
 			, String curTrickBoat, String curJumpHeight ) {
+			String methodName = "ImportMember: regSkierForEvent: ";
 			int curEventRoundsPaid = 0;
-			String curEventClass = "";
-			
-			String curEventGroup = "";
-			if ( curEvent.Equals( "Slalom" ) ) curEventGroup = curMemberEntry.EventGroupSlalom;
-			else if ( curEvent.Equals( "Trick" ) ) curEventGroup = curMemberEntry.EventGroupTrick;
-			else if ( curEvent.Equals( "Jump" ) ) curEventGroup = curMemberEntry.EventGroupJump;
 
 			try {
-				if ( curImportMemberEntry.ContainsKey( "EventClass" + curEvent ) ) {
-					curEventClass = (String) curImportMemberEntry["EventClass" + curEvent];
-				} else if ( curImportMemberEntry.ContainsKey( curEvent + "Paid" ) ) {
-					curEventClass = (String) curImportMemberEntry[curEvent + "Paid"];
-					if ( curEventClass.Trim().Length > 1 ) {
-						curEventClass = curEventClass.ToString().Substring( 0, 1 );
-						curEventRoundsPaid = int.Parse( ( (String) curImportMemberEntry[curEvent + "Paid"] ).ToString().Substring( 1 ) );
+				String curEventGroup = curMemberEntry.getEventGroup( curEvent );
+				String curRegEventClass = curMemberEntry.getRegEventClass( curEvent );
+				String curEventClass = curRegEventClass;
+				if ( curRegEventClass.Trim().Length > 1 ) {
+					curEventClass = curRegEventClass.ToString().Substring( 0, 1 );
+					try {
+						curEventRoundsPaid = int.Parse( curRegEventClass.Substring( 1 ) );
+					} catch ( Exception ex ) {
+						Log.WriteFile( String.Format( "{0}Exception encounter determining rounds paid for {1} {2} Message: {3} "
+							, methodName, curEvent, curMemberEntry.getSkierName(), curEventGroup, ex.Message ) );
+						curEventRoundsPaid = 0;
 					}
 				}
 				if ( curEventGroup.Trim().Length == 0 ) return false;
-				
-				if ( curEventClass.Trim().Length > 1 ) curEventClass = curEventClass.Substring( 0, 1 );
+
 				bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
 				if ( curReqstStatus ) myCountTourRegAdded++;
 
@@ -997,8 +1013,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Insert or update skier jump ranking data
-			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "curJump" );
-			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curSlalom );
+			curRank = HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRank" );
+			if ( curRank.Length > 0 ) Decimal.TryParse( curRank, out curJump );
 			if ( curJump > 0 ) {
 				curEvent = "Jump";
 				curOverall += curJump;

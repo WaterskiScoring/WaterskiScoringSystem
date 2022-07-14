@@ -283,19 +283,24 @@ namespace WaterskiScoringSystem.Tournament {
 						} catch {
 							prevEventClass = "";
 						}
-						String[] curMessage = new String[6];
-						curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
-						curMessage[1] = "is already registered for " + inEvent + " event";
-						curMessage[2] = "Group: Current=" + prevEventGroup + " : Import=" + curEventGroup;
-						curMessage[3] = "Class: Current=" + prevEventClass + " : Import=" + curEventClass;
-						myMatchDialog.ImportKeyDataMultiLine = curMessage;
 
-						myMatchDialog.MatchCommand = myMatchCommand;
-						if ( myMatchDialog.ShowDialog() == DialogResult.OK ) {
-							myMatchCommand = myMatchDialog.MatchCommand;
-							myMatchCommandPrev = myMatchCommand;
-						}
-					}
+                        if ( !(prevEventGroup.Equals( curEventGroup ))
+                            || !(prevEventClass.Equals( curEventClass )) ) {
+                            String[] curMessage = new String[6];
+                            curMessage[0] = "Skier " + curTourRegRow["SkierName"] + ", " + inMemberId + ", " + inAgeDiv;
+                            curMessage[1] = "is already registered for " + inEvent + " event";
+                            curMessage[2] = "but the event group or class is different for " + inEvent + " event";
+                            curMessage[3] = "Group: Current=" + prevEventGroup + " : Import=" + curEventGroup;
+                            curMessage[4] = "Class: Current=" + prevEventClass + " : Import=" + curEventClass;
+                            myMatchDialog.ImportKeyDataMultiLine = curMessage;
+
+                            myMatchDialog.MatchCommand = myMatchCommand;
+                            if ( myMatchDialog.ShowDialog() == DialogResult.OK ) {
+                                myMatchCommand = myMatchDialog.MatchCommand;
+                                myMatchCommandPrev = myMatchCommand;
+                            }
+                        }
+                    }
 
 					curSqlStmt = new StringBuilder("");
 					if ( myMatchCommand.ToLower().Equals( "update" )
@@ -431,9 +436,11 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert TourReg (" );
-				curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, IwwfLicense, TrickBoat, JumpHeight " );
-				curSqlStmt.Append(" , Federation, Gender, City, State, SkiYearAge, Notes, AwsaMbrshpComment, LastUpdateDate");
-				curSqlStmt.Append( ") Values (" );
+                curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, IwwfLicense" );
+                curSqlStmt.Append( ", TrickBoat, JumpHeight, Federation, Gender, City, State, SkiYearAge" );
+                curSqlStmt.Append( ", SlalomClassReg, TrickClassReg, JumpClassReg, Notes, AwsaMbrshpComment" );
+                curSqlStmt.Append( ", LastUpdateDate" );
+                curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getSkierNameForDB() + "'" );
@@ -448,7 +455,10 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", " + curMemberEntry.SkiYearAge );
-				curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.RegEventClassSlalom + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.RegEventClassTrick + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.RegEventClassJump + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.MemberStatus + "'" );
 				curSqlStmt.Append( ", getdate() )" );
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );

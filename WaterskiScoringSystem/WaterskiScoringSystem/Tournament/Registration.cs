@@ -74,16 +74,19 @@ namespace WaterskiScoringSystem.Tournament {
 				SlalomReg.Visible = false;
 				SlalomGroup.Visible = false;
 				SlalomRegCount.Visible = false;
+				SlalomClassReg.Visible = false;
 			}
 			if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) {
 				TrickReg.Visible = false;
 				TrickGroup.Visible = false;
 				TrickRegCount.Visible = false;
+				TrickClassReg.Visible = false;
 			}
 			if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) {
 				JumpReg.Visible = false;
 				JumpGroup.Visible = false;
 				JumpRegCount.Visible = false;
+				JumpClassReg.Visible = false;
 			}
 			myTourRegAddDialog = new TourRegAddMember();
 			myEditRegMemberDialog = new EditRegMember();
@@ -153,10 +156,12 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["SlalomReg"].Value = "Y";
 						curViewRow.Cells["SlalomGroup"].ReadOnly = false;
 						curViewRow.Cells["SlalomGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomGroup", "" );
+						curViewRow.Cells["SlalomClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomClassReg", "" );
 					} else {
 						curViewRow.Cells["SlalomReg"].Value = "N";
 						curViewRow.Cells["SlalomGroup"].Value = "";
 						curViewRow.Cells["SlalomGroup"].ReadOnly = true;
+						curViewRow.Cells["SlalomClassReg"].Value = "";
 					}
 				}
 				if ( TrickReg.Visible ) {
@@ -165,10 +170,12 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["TrickReg"].Value = "Y";
 						curViewRow.Cells["TrickGroup"].ReadOnly = false;
 						curViewRow.Cells["TrickGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickGroup", "" );
+						curViewRow.Cells["TrickClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomClassReg", "" );
 					} else {
 						curViewRow.Cells["TrickReg"].Value = "N";
 						curViewRow.Cells["TrickGroup"].Value = "";
 						curViewRow.Cells["TrickGroup"].ReadOnly = true;
+						curViewRow.Cells["TrickClassReg"].Value = "";
 					}
 				}
 				if ( JumpReg.Visible ) {
@@ -177,10 +184,12 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["JumpReg"].Value = "Y";
 						curViewRow.Cells["JumpGroup"].ReadOnly = false;
 						curViewRow.Cells["JumpGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpGroup", "" );
+						curViewRow.Cells["JumpClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomClassReg", "" );
 					} else {
 						curViewRow.Cells["JumpReg"].Value = "N";
 						curViewRow.Cells["JumpGroup"].Value = "";
 						curViewRow.Cells["JumpGroup"].ReadOnly = true;
+						curViewRow.Cells["JumpClassReg"].Value = "";
 					}
 				}
 
@@ -408,7 +417,7 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( SlalomRegCount.Visible ) {
 				curSqlStmt.Append( "SELECT count(*) as RegCount From EventReg " );
 				curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Slalom' " );
-				curRegDataTable = getData( curSqlStmt.ToString() );
+				curRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curRegDataTable.Rows.Count > 0 ) {
 					SlalomRegCount.Text = ( (int)curRegDataTable.Rows[0]["RegCount"] ).ToString( "###0" );
 				} else {
@@ -421,7 +430,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "SELECT count(*) as RegCount From EventReg " );
 				curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Trick' " );
-				curRegDataTable = getData( curSqlStmt.ToString() );
+				curRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curRegDataTable.Rows.Count > 0 ) {
 					TrickRegCount.Text = ( (int)curRegDataTable.Rows[0]["RegCount"] ).ToString( "###0" );
 				} else {
@@ -434,7 +443,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "SELECT count(*) as RegCount From EventReg " );
 				curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND Event = 'Jump' " );
-				curRegDataTable = getData( curSqlStmt.ToString() );
+				curRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curRegDataTable.Rows.Count > 0 ) {
 					JumpRegCount.Text = ( (int)curRegDataTable.Rows[0]["RegCount"] ).ToString( "###0" );
 				} else {
@@ -1237,7 +1246,8 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State" );
             curSqlStmt.Append( ", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.Withdrawn, R.ReadyForPlcmt, R.IwwfLicense, R.AwsaMbrshpPaymt" );
             curSqlStmt.Append( ", R.TrickBoat, COALESCE(R.JumpHeight, 'C') as JumpHeight, R.AwsaMbrshpComment, R.Notes" );
-            curSqlStmt.Append( ", S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup" );
+			curSqlStmt.Append( ", SlalomClassReg, TrickClassReg, JumpClassReg" );
+			curSqlStmt.Append( ", S.Event AS SlalomEvent, S.EventGroup AS SlalomGroup" );
             curSqlStmt.Append( ", T.Event AS TrickEvent, T.EventGroup AS TrickGroup" );
             curSqlStmt.Append( ", J.Event AS JumpEvent, J.EventGroup AS JumpGroup " );
             curSqlStmt.Append( "FROM TourReg AS R" );
@@ -1246,7 +1256,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "    LEFT OUTER JOIN EventReg AS J ON J.SanctionId = R.SanctionId AND J.MemberId = R.MemberId AND J.AgeGroup = R.AgeGroup AND J.Event = 'Jump' " );
             curSqlStmt.Append( "WHERE R.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY R.SkierName, R.AgeGroup " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourData() {
@@ -1258,7 +1268,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
 		private void updateEventGroup(String curMemberId, String curAgeGroup, String curEvent, String newEventGroup ) {
@@ -1356,16 +1366,12 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM TourReg AS R " );
             curSqlStmt.Append( "WHERE R.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  And R.MemberId = '" + inMemberId + "'" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 return true;
             } else {
                 return false;
             }
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 	}
 }

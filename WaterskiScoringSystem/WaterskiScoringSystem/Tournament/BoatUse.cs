@@ -154,87 +154,29 @@ namespace WaterskiScoringSystem.Tournament {
                     curViewRow.Cells["Updated"].Value = "Y";
                     curViewRow.Cells["TourBoatSeq"].Value = ( (Int16)curDataRow["TourBoatSeq"] ).ToString();
                     curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
-                    try {
-                        curViewRow.Cells["BoatCode"].Value = (String)curDataRow["HullId"];
-                    } catch {
-                        curViewRow.Cells["BoatCode"].Value = "";
-                    }
-                    try {
-                        curViewRow.Cells["SlalomUsed"].Value = (String)curDataRow["SlalomUsed"];
-                    } catch {
-                        curViewRow.Cells["SlalomUsed"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["TrickUsed"].Value = (String)curDataRow["TrickUsed"];
-                    } catch {
-                        curViewRow.Cells["TrickUsed"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["JumpUsed"].Value = (String)curDataRow["JumpUsed"];
-                    } catch {
-                        curViewRow.Cells["JumpUsed"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["SlalomCredit"].Value = (String)curDataRow["SlalomCredit"];
-                    } catch {
-                        curViewRow.Cells["SlalomCredit"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["TrickCredit"].Value = (String)curDataRow["TrickCredit"];
-                    } catch {
-                        curViewRow.Cells["TrickCredit"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["JumpCredit"].Value = (String)curDataRow["JumpCredit"];
-                    } catch {
-                        curViewRow.Cells["JumpCredit"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["CertOfInsurance"].Value = (String)curDataRow["CertOfInsurance"];
-                    } catch {
-                        curViewRow.Cells["CertOfInsurance"].Value = "N";
-                    }
-                    try {
-                    curViewRow.Cells["ModelYear"].Value = ((Int16)curDataRow["ModelYear"]).ToString();
-                    } catch {
-                        curViewRow.Cells["ModelYear"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["BoatModel"].Value = (String)curDataRow["BoatModel"];
-                    } catch {
-                        curViewRow.Cells["BoatModel"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["SpeedControlVersion"].Value = (String)curDataRow["SpeedControlVersion"];
-                    } catch {
-                        curViewRow.Cells["SpeedControlVersion"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["Owner"].Value = (String)curDataRow["Owner"];
-                    } catch {
-                        curViewRow.Cells["Owner"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["InsuranceCompany"].Value = (String)curDataRow["InsuranceCompany"];
-                    } catch {
-                        curViewRow.Cells["InsuranceCompany"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["PreEventNotes"].Value = (String)curDataRow["PreEventNotes"];
-                    } catch {
-                        curViewRow.Cells["PreEventNotes"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["PostEventNotes"].Value = (String)curDataRow["PostEventNotes"];
-                    } catch {
-                        curViewRow.Cells["PostEventNotes"].Value = "";
-                    }
-                    try {
-                    curViewRow.Cells["Notes"].Value = (String)curDataRow["Notes"];
-                    } catch {
-                        curViewRow.Cells["Notes"].Value = "";
-                    }
+                    curViewRow.Cells["BoatCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "HullId", "" );
+
+                    curViewRow.Cells["SlalomUsed"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomUsed", "N" );
+                    curViewRow.Cells["TrickUsed"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickUsed", "N" );
+                    curViewRow.Cells["JumpUsed"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpUsed", "N" );
+
+                    curViewRow.Cells["SlalomCredit"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomCredit", "N" );
+                    curViewRow.Cells["TrickCredit"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickCredit", "N" );
+                    curViewRow.Cells["JumpCredit"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpCredit", "N" );
+
+                    curViewRow.Cells["CertOfInsurance"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CertOfInsurance", "N" );
+                    curViewRow.Cells["ModelYear"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ModelYear", "" );
+
+                    curViewRow.Cells["BoatModel"].Value = HelperFunctions.getDataRowColValue( curDataRow, "BoatModel", "" );
+                    curViewRow.Cells["SpeedControlVersion"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SpeedControlVersion", "" );
+                    curViewRow.Cells["Owner"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Owner", "" );
+
+                    curViewRow.Cells["InsuranceCompany"].Value = HelperFunctions.getDataRowColValue( curDataRow, "InsuranceCompany", "" );
+                    curViewRow.Cells["PreEventNotes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PreEventNotes", "" );
+                    curViewRow.Cells["PostEventNotes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PostEventNotes", "" );
+                    curViewRow.Cells["Notes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
                 }
+                
                 Cursor.Current = Cursors.Default;
             }
         }
@@ -279,69 +221,43 @@ namespace WaterskiScoringSystem.Tournament {
                 if (curUpdateStatus.ToUpper().Equals( "Y" ) && curSanctionId.Length > 1 ) {
                     if (isDataValid( curViewRow )) {
                         try {
-                            String curModelYear = "";
-                            try {
-                                curModelYear = Convert.ToInt16( curViewRow.Cells["ModelYear"].Value.ToString() ).ToString();
-                            } catch {
-                                curModelYear = "Null";
-                            }
-                            String curBoatCode, curBoatModel, curSpeedControlVersion, curOwner, curInsuranceCompany, curPreEventNotes, curPostEventNotes, curNotes, curTourBoatSeq;
-                            try {
-                                curBoatCode = curViewRow.Cells["BoatCode"].Value.ToString();
-                            } catch {
-                                curBoatCode = "";
-                            }
-                            try {
-                                curBoatModel = curViewRow.Cells["BoatModel"].Value.ToString();
-                                curBoatModel = curBoatModel.Replace( "'", "''" );
-                            } catch {
-                                curBoatModel = "";
-                            }
-                            try {
-                                curSpeedControlVersion = curViewRow.Cells["SpeedControlVersion"].Value.ToString();
-                                curSpeedControlVersion = curSpeedControlVersion.Replace( "'", "''" );
-                            } catch {
-                                curSpeedControlVersion = "";
-                            }
-                            try {
-                                curOwner = curViewRow.Cells["Owner"].Value.ToString();
-                                curOwner = curOwner.Replace( "'", "''" );
-                            } catch {
-                                curOwner = "";
-                            }
-                            try {
-                                curInsuranceCompany = curViewRow.Cells["InsuranceCompany"].Value.ToString();
-                                curInsuranceCompany = curInsuranceCompany.Replace( "'", "''" );
-                            } catch {
-                                curInsuranceCompany = "";
-                            }
-                            try {
-                                curPreEventNotes = curViewRow.Cells["PreEventNotes"].Value.ToString();
-                                curPreEventNotes = curPreEventNotes.Replace( "'", "''" );
-                            } catch {
-                                curPreEventNotes = "";
-                            }
-                            try {
-                                curPostEventNotes = curViewRow.Cells["PostEventNotes"].Value.ToString();
-                                curPostEventNotes = curPostEventNotes.Replace( "'", "''" );
-                            } catch {
-                                curPostEventNotes = "";
-                            }
-                            try {
-                                curNotes = curViewRow.Cells["Notes"].Value.ToString();
-                                curNotes = curNotes.Replace( "'", "''" );
-                            } catch {
-                                curNotes = "";
-                            }
-                            try {
-                                curTourBoatSeq = curViewRow.Cells["TourBoatSeq"].Value.ToString();
-                                if (Convert.ToInt16( curTourBoatSeq ) < 1) {
-                                    curTourBoatSeq = curViewRow.Index.ToString( "#0" );
-                                }
-                            } catch {
-                                curTourBoatSeq = curViewRow.Index.ToString( "#0" );
+                            String curModelYear = HelperFunctions.getViewRowColValue( curViewRow, "ModelYear", "Null" );
+                            if ( !(curModelYear.Equals("NUll" )) ) {
+                                if ( !(int.TryParse(curModelYear, out int tempNumValue )) ) curModelYear = "Null";
                             }
 
+                            String curBoatCode = HelperFunctions.getViewRowColValue( curViewRow, "BoatCode", "" );
+                            String curBoatModel = HelperFunctions.getViewRowColValue( curViewRow, "BoatModel", "" );
+                            if ( curBoatModel.Length > 0 ) curBoatModel = curBoatModel.Replace( "'", "''" );
+
+                            String curSpeedControlVersion = HelperFunctions.getViewRowColValue( curViewRow, "SpeedControlVersion", "" );
+                            if ( curSpeedControlVersion.Length > 0 ) curSpeedControlVersion = curSpeedControlVersion.Replace( "'", "''" );
+
+                            String curOwner = HelperFunctions.getViewRowColValue( curViewRow, "Owner", "" );
+                            if ( curOwner.Length > 0 ) curOwner = curOwner.Replace( "'", "''" );
+
+                            String curInsuranceCompany = HelperFunctions.getViewRowColValue( curViewRow, "InsuranceCompany", "" );
+                            if ( curInsuranceCompany.Length > 0 ) curInsuranceCompany = curInsuranceCompany.Replace( "'", "''" );
+
+                            String curPreEventNotes = HelperFunctions.getViewRowColValue( curViewRow, "PreEventNotes", "" );
+                            if ( curPreEventNotes.Length > 0 ) curPreEventNotes = curPreEventNotes.Replace( "'", "''" );
+
+                            String curPostEventNotes = HelperFunctions.getViewRowColValue( curViewRow, "PostEventNotes", "" );
+                            if ( curPostEventNotes.Length > 0 ) curPostEventNotes = curPostEventNotes.Replace( "'", "''" );
+
+                            String curNotes = HelperFunctions.getViewRowColValue( curViewRow, "Notes", "" );
+                            if ( curNotes.Length > 0 ) curNotes = curNotes.Replace( "'", "''" );
+
+                            String curTourBoatSeq = HelperFunctions.getViewRowColValue( curViewRow, "TourBoatSeq", "0" );
+                            if ( curTourBoatSeq.Length > 0 ) {
+                                if ( !( int.TryParse( curTourBoatSeq, out int numTourBoatSeq ) ) ) {
+                                    curTourBoatSeq = curViewRow.Index.ToString( "#0" );
+                                } else {
+                                    if ( numTourBoatSeq <= 0 ) curTourBoatSeq = curViewRow.Index.ToString( "#0" );
+                                }
+                            } else {
+                                curTourBoatSeq = curViewRow.Index.ToString( "#0" );
+                            }
 
                             if (curPK > 0) {
                                 curSqlStmt.Append( "Update TourBoatUse Set " );
@@ -438,36 +354,31 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navDeleteItem_Click( object sender, EventArgs e ) {
-            if (isDataModified) { 
-                navSaveItem_Click( null, null ); 
-            }
-            if (!( isDataModified )) {
-                StringBuilder curSqlStmt = new StringBuilder( "" );
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            try {
+                int curPK = 0, rowsProc = 0;
+                DataGridViewRow curViewRow = tourBoatUseDataGridView.Rows[myViewRowIdx];
                 try {
-                    int curPK = 0, rowsProc = 0;
-                    DataGridViewRow curViewRow = tourBoatUseDataGridView.Rows[myViewRowIdx];
-                    try {
-                        curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
-                    } catch {
-                        curPK = 0;
-                    }
-                    if (curPK > 0) {
-                        curSqlStmt.Append( "Delete TourBoatUse " );
-                        curSqlStmt.Append( " Where PK = " + curPK.ToString() );
-						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-						winStatusMsg.Text = "Changes successfully saved";
-                    }
-                    isDataModified = false;
-                    tourBoatUseDataGridView.Rows.RemoveAt( myViewRowIdx );
-                    myViewRowIdx--;
-                    if (myViewRowIdx < 0) myViewRowIdx = 0;
-
-				} catch (Exception excp) {
-                    MessageBox.Show( "Error attempting to update boat information \n" + excp.Message );
+                    curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
+                } catch {
+                    curPK = 0;
                 }
+                if ( curPK > 0 ) {
+                    curSqlStmt.Append( "Delete TourBoatUse " );
+                    curSqlStmt.Append( " Where PK = " + curPK.ToString() );
+                    rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                    winStatusMsg.Text = "Changes successfully saved";
+                }
+                isDataModified = false;
+                tourBoatUseDataGridView.Rows.RemoveAt( myViewRowIdx );
+                myViewRowIdx--;
+                if ( myViewRowIdx < 0 ) myViewRowIdx = 0;
+
+            } catch ( Exception excp ) {
+                MessageBox.Show( "Error attempting to update boat information \n" + excp.Message );
             }
         }
-        
+
         private void navExport_Click( object sender, EventArgs e ) {
             if ( isDataModified ) { navSaveItem_Click( null, null ); }
 
@@ -512,6 +423,23 @@ namespace WaterskiScoringSystem.Tournament {
             curViewRow.Cells["SpeedControlVersion"].Value = listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["SpeedControl"].Value.ToString();
             curViewRow.Cells["BoatCode"].Value = listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["BoatCodeApproved"].Value.ToString();
 
+            tourBoatUseDataGridView.CurrentCell = tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["ModelYear"];
+
+            String curHullStatus = listApprovedBoatsDataGridView.Rows[myBoatListIdx].Cells["HullStatus"].Value.ToString();
+            int curModelYear = 0;
+            if ( curHullStatus.Length == 4 ) {
+                if ( int.TryParse( curHullStatus, out curModelYear ) ) {
+                    tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["ModelYear"].Value = curModelYear.ToString();
+                    tourBoatUseDataGridView.CurrentCell = tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["Owner"];
+                }
+
+            } else if ( curHullStatus.Length > 4 ) {
+                if ( int.TryParse( curHullStatus.Substring(0, 4), out curModelYear ) ) {
+                    tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["ModelYear"].Value = curModelYear.ToString();
+                    tourBoatUseDataGridView.CurrentCell = tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["Owner"];
+                }
+            }
+
             curViewRow.Cells["SlalomUsed"].Value = "N";
             curViewRow.Cells["TrickUsed"].Value = "N";
             curViewRow.Cells["JumpUsed"].Value = "N";
@@ -520,7 +448,6 @@ namespace WaterskiScoringSystem.Tournament {
             curViewRow.Cells["JumpCredit"].Value = "N";
             curViewRow.Cells["CertOfInsurance"].Value = "N";
             
-            tourBoatUseDataGridView.CurrentCell = tourBoatUseDataGridView.Rows[myViewRowIdx].Cells["ModelYear"];
             BoatSelectInfoLabel.Visible = false;
             listApprovedBoatsDataGridView.Visible = false;
             tourBoatUseDataGridView.Select();
@@ -621,36 +548,26 @@ namespace WaterskiScoringSystem.Tournament {
         private bool isDataValid(DataGridViewRow curViewRow) {
             bool curReturnValue = true;
 
-            String curValue = "";
-            try {
-                curValue = Convert.ToInt16( curViewRow.Cells["ModelYear"].Value.ToString() ).ToString();
-            } catch {
+            String curValue = HelperFunctions.getViewRowColValue( curViewRow, "ModelYear", "" );
+            if ( !(int.TryParse( curValue, out int curModelYear)) ) {
                 curReturnValue = false;
                 MessageBox.Show( "Model Year is a required field" );
             }
-            try {
-                curValue = curViewRow.Cells["BoatCode"].Value.ToString();
-                if (curValue.Length == 0) {
-                    curReturnValue = false;
-                    MessageBox.Show( "Boat Code is a required field" );
-                }
-            } catch {
+
+            curValue = HelperFunctions.getViewRowColValue( curViewRow, "BoatCode", "" );
+            if ( curValue.Length == 0 ) {
                 curReturnValue = false;
                 MessageBox.Show( "Boat Code is a required field" );
             }
-            try {
-                curValue = curViewRow.Cells["BoatModel"].Value.ToString();
-                if (curValue.Length == 0) {
-                    curReturnValue = false;
-                    MessageBox.Show( "Model is a required field" );
-                }
-            } catch {
+
+            curValue = HelperFunctions.getViewRowColValue( curViewRow, "BoatModel", "" );
+            if ( curValue.Length == 0 ) {
                 curReturnValue = false;
                 MessageBox.Show( "Model is a required field" );
             }
 
             return curReturnValue;
-    }
+        }
 
         private void navPrint_Click( object sender, EventArgs e ) {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
