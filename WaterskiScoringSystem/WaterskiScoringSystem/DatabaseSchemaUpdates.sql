@@ -1115,3 +1115,6 @@ ALTER TABLE LiveWebMsgSend ADD PRIMARY KEY ([PK]);
 ALTER TABLE [TourReg] ADD COLUMN SlalomClassReg nvarchar(16);
 ALTER TABLE [TourReg] ADD COLUMN TrickClassReg nvarchar(16);
 ALTER TABLE [TourReg] ADD COLUMN JumpClassReg nvarchar(16);
+
+## v22.82
+ALTER TABLE [TourReg] ADD COLUMN Team nvarchar(16);

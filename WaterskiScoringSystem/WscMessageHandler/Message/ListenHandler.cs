@@ -69,8 +69,13 @@ namespace WscMessageHandler.Message {
 							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
 							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
 
-						} else if ( msgType.Equals( "?????connectedapplication_check" ) ) {
-							HelperFunctions.updateMonitorHeartBeat( "ListenHandler" );
+						} else if ( msgType.Equals( "connectedapplication_check" ) ) {
+							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
+
+						} else if ( msgType.Equals( "connectedapplication_response" ) ) {
+							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
+
+						} else if ( msgType.Equals( "status_response" ) ) {
 							Log.WriteFile( String.Format( "{0}{1}: Message: {2}", curMethodName, msgType, msgData ) );
 
 						} else if ( msgType.Equals( "boat_times" ) ) {

@@ -70,6 +70,12 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
 			if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
 
+			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+				Team.Visible = true;
+			} else {
+				Team.Visible = false;
+			}
+
 			if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) {
 				SlalomReg.Visible = false;
 				SlalomGroup.Visible = false;
@@ -137,6 +143,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
 				curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+				curViewRow.Cells["Team"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Team", "" );
 				curViewRow.Cells["EligParticipate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyToSki", "N" );
 				curViewRow.Cells["ReadyForPlcmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "N" );
 				curViewRow.Cells["Withdrawn"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Withdrawn", "N" );
@@ -170,7 +177,7 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["TrickReg"].Value = "Y";
 						curViewRow.Cells["TrickGroup"].ReadOnly = false;
 						curViewRow.Cells["TrickGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickGroup", "" );
-						curViewRow.Cells["TrickClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomClassReg", "" );
+						curViewRow.Cells["TrickClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickClassReg", "" );
 					} else {
 						curViewRow.Cells["TrickReg"].Value = "N";
 						curViewRow.Cells["TrickGroup"].Value = "";
@@ -184,7 +191,7 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["JumpReg"].Value = "Y";
 						curViewRow.Cells["JumpGroup"].ReadOnly = false;
 						curViewRow.Cells["JumpGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpGroup", "" );
-						curViewRow.Cells["JumpClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomClassReg", "" );
+						curViewRow.Cells["JumpClassReg"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpClassReg", "" );
 					} else {
 						curViewRow.Cells["JumpReg"].Value = "N";
 						curViewRow.Cells["JumpGroup"].Value = "";
@@ -1243,7 +1250,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataTable getTourRegData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State" );
+            curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State, R.Team" );
             curSqlStmt.Append( ", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.Withdrawn, R.ReadyForPlcmt, R.IwwfLicense, R.AwsaMbrshpPaymt" );
             curSqlStmt.Append( ", R.TrickBoat, COALESCE(R.JumpHeight, 'C') as JumpHeight, R.AwsaMbrshpComment, R.Notes" );
 			curSqlStmt.Append( ", SlalomClassReg, TrickClassReg, JumpClassReg" );

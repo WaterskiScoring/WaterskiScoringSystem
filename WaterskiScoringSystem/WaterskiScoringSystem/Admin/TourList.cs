@@ -1710,6 +1710,7 @@ namespace WaterskiScoringSystem.Admin {
 				myTourViewRow.Cells["HcapJumpPct"].Value = "0";
 
 			} else {
+                String curSanctionId = (String)curSanctionEntry["TournAppID"];
                 myTourViewRow.Cells["SanctionId"].Value = (String) curSanctionEntry["TournAppID"];
 				myTourViewRow.Cells["TourName"].Value = (String) curSanctionEntry["TName"];
 				myTourViewRow.Cells["TourClass"].Value = ( (String) curSanctionEntry["TSanction"] ).Substring( 6, 1 );
@@ -1718,8 +1719,13 @@ namespace WaterskiScoringSystem.Admin {
 				myTourViewRow.Cells["EventDates"].Value = (String) curSanctionEntry["TDateE"] ;
 				myTourViewRow.Cells["TourDataLoc"].Value = "";
 				myTourViewRow.Cells["EventLocation"].Value = (String) curSanctionEntry["TSite"] + ", " + (String) curSanctionEntry["TCity"] + ", " + (String) curSanctionEntry["TState"];
-				myTourViewRow.Cells["Rules"].Value = "awsa";
-				if ( (bool) curSanctionEntry["TEventSlalom"] ) {
+                if ( curSanctionId.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+                    myTourViewRow.Cells["Rules"].Value = "ncwsa";
+                } else {
+                    myTourViewRow.Cells["Rules"].Value = "awsa";
+                }
+
+                if ( (bool) curSanctionEntry["TEventSlalom"] ) {
 					myTourViewRow.Cells["SlalomRounds"].Value = "1";
 				} else { 
 					myTourViewRow.Cells["SlalomRounds"].Value = "0";

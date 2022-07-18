@@ -102,7 +102,6 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                 }
             }
-
         }
 
         private void TeamSetup_FormClosed( object sender, FormClosedEventArgs e ) {
@@ -914,6 +913,7 @@ namespace WaterskiScoringSystem.Tournament {
                 Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
                 isDataModified = false;
+                if ( myRules.ToLower().Equals( "ncwsa" ) ) verifyNcwsaTeamSize();
 
             } catch ( Exception excp ) {
                 curMsg = "Error attempting to update skier slalom team assignment \n" + excp.Message;
@@ -973,6 +973,8 @@ namespace WaterskiScoringSystem.Tournament {
 
                 isDataModified = false;
 
+                if ( myRules.ToLower().Equals( "ncwsa" ) ) verifyNcwsaTeamSize();
+
             } catch ( Exception excp ) {
                 curMsg = "Error attempting to update skier Trick team assignment \n" + excp.Message;
                 MessageBox.Show( curMsg );
@@ -1031,6 +1033,8 @@ namespace WaterskiScoringSystem.Tournament {
                 Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
                 isDataModified = false;
+
+                if ( myRules.ToLower().Equals( "ncwsa" ) ) verifyNcwsaTeamSize();
 
             } catch ( Exception excp ) {
                 curMsg = "Error attempting to update skier Jump team assignment \n" + excp.Message;
@@ -2097,12 +2101,39 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable getTeamSkierList() {
             StringBuilder curSqlStmt = new StringBuilder("");
             curSqlStmt.Append("Select T.TeamCode, T.Name, R.SkierName, R.MemberId, E.Agegroup, E.Event, E.EventGroup, E.RankingScore ");
-            curSqlStmt.Append("From TeamList T ");
-            curSqlStmt.Append("Inner Join EventReg E ON E.SanctionId = T.SanctionId AND E.TeamCode = T.TeamCode ");
-            curSqlStmt.Append("INNER JOIN TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup ");
-            curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' ");
+            curSqlStmt.Append( "From TeamList T ");
+            curSqlStmt.Append( "Inner Join EventReg E ON E.SanctionId = T.SanctionId AND E.TeamCode = T.TeamCode ");
+            curSqlStmt.Append( "Inner Join TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup " );
+            curSqlStmt.Append( "Where T.SanctionId = '" + mySanctionNum + "' ");
             curSqlStmt.Append("Order by T.Name, E.Event, E.AgeGroup, R.SkierName ");
             return getData(curSqlStmt.ToString());
+        }
+
+        private void verifyNcwsaTeamSize() {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT T.TeamCode, O.AgeGroup, O.EventGroup, E.Event, count(*) as SkierCount " );
+            curSqlStmt.Append( "FROM TeamList T " );
+            curSqlStmt.Append( "Inner Join TeamOrder O ON O.SanctionId = T.SanctionId AND O.TeamCode = T.TeamCode " );
+            curSqlStmt.Append( "Inner Join EventReg E ON E.SanctionId = T.SanctionId AND E.TeamCode = T.TeamCode AND E.AgeGroup = O.AgeGroup " );
+            curSqlStmt.Append( "Inner Join TourReg R ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup " );
+            curSqlStmt.Append( "Where T.SanctionId = '" + mySanctionNum + "' " );
+            curSqlStmt.Append( "Group By E.Event, T.TeamCode, O.AgeGroup, O.EventGroup " );
+            curSqlStmt.Append( "Having count(*) > 5" );
+            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            if ( curDataTable.Rows.Count == 0 ) return;
+
+            StringBuilder curWarnMsg = new StringBuilder( "" );
+            foreach(DataRow curDataRow in curDataTable.Rows ) {
+                if ( curWarnMsg.Length > 0 ) curWarnMsg.Append( "\n" );
+                curWarnMsg.Append( String.Format( "Team={0}, Div={1}, Event={2}, Count={3}"
+                    , (String)curDataRow["TeamCode"]
+                    , (String)curDataRow["AgeGroup"]
+                    , (String)curDataRow["Event"] 
+                    , (int)curDataRow["SkierCount"]
+                    ) );
+
+            }
+            MessageBox.Show( "The following teams have more then 5 skiers assigned \n\n" + curWarnMsg.ToString() );
         }
 
         private DataTable getTourData() {

@@ -1241,8 +1241,17 @@ namespace WaterskiScoringSystem.Tournament {
 			try {
 				String curFilterName = ( (ComboBox) sender ).SelectedValue.ToString();
 				if ( curFilterName.Length == 0 ) return;
-				if ( curFilterName.Equals( "** New Entry **" ) ) return;
-				if ( curFilterName.Equals( myOrigGroupFilterValue ) ) return;
+                if ( curFilterName.Equals( myOrigGroupFilterValue ) ) return;
+                if ( curFilterName.Equals( "** New Entry **" ) ) {
+                    this.printHeaderNote.Text = "";
+                    myFilterCmd = "";
+                    myOrigGroupFilterValue = "";
+                    foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {
+                        curCheckBox.Checked = true;
+                    }
+                    loadEventRegView();
+                    return;
+                }
 
 				String curEvent = getCurrentEvent();
 

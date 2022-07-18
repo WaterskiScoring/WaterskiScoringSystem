@@ -5470,10 +5470,22 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private bool isExitGatesGood( DataRow inRow ) {
 			int curGateExitValue = 0;
-			if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit1Recap", "false" ) ) ) curGateExitValue++;
+			if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit1Recap", "false" ) ) ) {
+				if ( int.TryParse( HelperFunctions.getDataRowColValue( inRow, "Judge1ScoreRecap", "-1" ), out int curJudgeScore ) ) {
+					if ( curJudgeScore == 6 ) curGateExitValue++;
+				}
+			}
 			if ( myNumJudges > 1 ) {
-				if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit2Recap", "false" ) ) ) curGateExitValue++;
-				if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit3Recap", "false" ) ) ) curGateExitValue++;
+				if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit2Recap", "false" ) ) ) {
+					if ( int.TryParse( HelperFunctions.getDataRowColValue( inRow, "Judge2ScoreRecap", "-1" ), out int curJudgeScore ) ) {
+						if ( curJudgeScore == 6 ) curGateExitValue++;
+					}
+				}
+				if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inRow, "GateExit3Recap", "false" ) ) ) {
+					if ( int.TryParse( HelperFunctions.getDataRowColValue( inRow, "Judge3ScoreRecap", "-1" ), out int curJudgeScore ) ) {
+						if ( curJudgeScore == 6 ) curGateExitValue++;
+					}
+				}
 			}
 
 			if ( myNumJudges == 1 ) {
@@ -5487,10 +5499,22 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 		private bool isExitGatesGood() {
 			int curGateExitValue = 0;
-			if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit1Recap", "false" ) ) ) curGateExitValue++;
+			if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit1Recap", "false" ) ) ) {
+				if ( int.TryParse(HelperFunctions.getViewRowColValue( myRecapRow, "Judge1ScoreRecap", "-1" ), out int curJudgeScore) ) {
+					if ( curJudgeScore == 6 ) curGateExitValue++;
+				}
+			}
 			if ( myNumJudges > 1 ) {
-				if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit2Recap", "false" ) ) ) curGateExitValue++;
-				if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit3Recap", "false" ) ) ) curGateExitValue++;
+				if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit2Recap", "false" ) ) ) {
+					if ( int.TryParse( HelperFunctions.getViewRowColValue( myRecapRow, "Judge2ScoreRecap", "-1" ), out int curJudgeScore ) ) {
+						if ( curJudgeScore == 6 ) curGateExitValue++;
+					}
+				}
+				if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "GateExit3Recap", "false" ) ) ) {
+					if ( int.TryParse( HelperFunctions.getViewRowColValue( myRecapRow, "Judge3ScoreRecap", "-1" ), out int curJudgeScore ) ) {
+						if ( curJudgeScore == 6 ) curGateExitValue++;
+					}
+				}
 			}
 
 			if ( myNumJudges == 1 ) {

@@ -1295,6 +1295,17 @@ namespace WaterskiScoringSystem.Externalnterface {
 			String curTeam = ( (String)curEntry["Team"] ).ToUpper().Trim();
 			String curTeamName = ( (String)curEntry["TeamName"] ).Trim();
 			String curDiv = ( (String)curEntry["Div"] ).ToUpper();
+
+			String curEventGroupSlalom = HelperFunctions.getAttributeValue( curEntry, "EventSlalom" ).Trim().ToUpper();
+			String curEventGroupTrick = HelperFunctions.getAttributeValue( curEntry, "EventTrick" ).Trim().ToUpper();
+			String curEventGroupJump = HelperFunctions.getAttributeValue( curEntry, "EventJump" ).Trim().ToUpper();
+
+			if ( curEventGroupSlalom.Length > 1 && curEventGroupSlalom.Substring( 0, 1 ).ToUpper().Equals("B" ) 
+				|| curEventGroupTrick.Length > 1 && curEventGroupTrick.Substring( 0, 1 ).ToUpper().Equals( "B" )
+				|| curEventGroupJump.Length > 1 && curEventGroupJump.Substring( 0, 1 ).ToUpper().Equals( "B" )
+				) {
+				curDiv = "B" + curDiv.Substring( 1, 1 );
+			}
 			String curTeamKey = curTeam + "-" + curDiv;
 
 			if ( curTeam.Length > 0 ) {

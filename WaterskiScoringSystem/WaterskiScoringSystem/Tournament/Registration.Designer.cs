@@ -82,13 +82,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JumpGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Team = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.IwwfLicense = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.AwsaMbrshpComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EntryDue = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SlalomClassReg = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickClassReg = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpClassReg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EntryDue = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EntryPaid = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PaymentMethod = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.AwsaMbrshpPaymt = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -133,13 +134,14 @@ namespace WaterskiScoringSystem.Tournament {
             this.JumpGroup,
             this.JumpHeight,
             this.TrickBoat,
+            this.Team,
             this.IwwfLicense,
             this.AwsaMbrshpComment,
             this.Notes,
-            this.EntryDue,
             this.SlalomClassReg,
             this.TrickClassReg,
             this.JumpClassReg,
+            this.EntryDue,
             this.EntryPaid,
             this.PaymentMethod,
             this.AwsaMbrshpPaymt,
@@ -625,6 +627,12 @@ namespace WaterskiScoringSystem.Tournament {
 			this.TrickBoat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.TrickBoat.Width = 50;
 			// 
+			// Team
+			// 
+			this.Team.HeaderText = "Team";
+			this.Team.Name = "Team";
+			this.Team.ReadOnly = true;
+			// 
 			// IwwfLicense
 			// 
 			this.IwwfLicense.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -652,24 +660,12 @@ namespace WaterskiScoringSystem.Tournament {
 			this.Notes.Name = "Notes";
 			this.Notes.Width = 120;
 			// 
-			// EntryDue
-			// 
-			this.EntryDue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle11.Format = "C2";
-			dataGridViewCellStyle11.NullValue = null;
-			this.EntryDue.DefaultCellStyle = dataGridViewCellStyle11;
-			this.EntryDue.HeaderText = "Fee Due";
-			this.EntryDue.Name = "EntryDue";
-			this.EntryDue.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EntryDue.Width = 45;
-			// 
 			// SlalomClassReg
 			// 
 			this.SlalomClassReg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.SlalomClassReg.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.SlalomClassReg.DefaultCellStyle = dataGridViewCellStyle11;
 			this.SlalomClassReg.HeaderText = "Slalom Class Reg";
 			this.SlalomClassReg.Name = "SlalomClassReg";
 			this.SlalomClassReg.ReadOnly = true;
@@ -678,9 +674,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// TrickClassReg
 			// 
 			this.TrickClassReg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.TrickClassReg.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.TrickClassReg.DefaultCellStyle = dataGridViewCellStyle12;
 			this.TrickClassReg.HeaderText = "Trick Class Reg";
 			this.TrickClassReg.Name = "TrickClassReg";
 			this.TrickClassReg.ReadOnly = true;
@@ -689,13 +685,25 @@ namespace WaterskiScoringSystem.Tournament {
 			// JumpClassReg
 			// 
 			this.JumpClassReg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.JumpClassReg.DefaultCellStyle = dataGridViewCellStyle14;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.JumpClassReg.DefaultCellStyle = dataGridViewCellStyle13;
 			this.JumpClassReg.HeaderText = "Jump Class Reg";
 			this.JumpClassReg.Name = "JumpClassReg";
 			this.JumpClassReg.ReadOnly = true;
 			this.JumpClassReg.Width = 50;
+			// 
+			// EntryDue
+			// 
+			this.EntryDue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle14.Format = "C2";
+			dataGridViewCellStyle14.NullValue = null;
+			this.EntryDue.DefaultCellStyle = dataGridViewCellStyle14;
+			this.EntryDue.HeaderText = "Fee Due";
+			this.EntryDue.Name = "EntryDue";
+			this.EntryDue.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EntryDue.Width = 45;
 			// 
 			// EntryPaid
 			// 
@@ -714,8 +722,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.PaymentMethod.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PaymentMethod.HeaderText = "Payment Method";
 			this.PaymentMethod.Name = "PaymentMethod";
-			this.PaymentMethod.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PaymentMethod.Width = 60;
+			this.PaymentMethod.Width = 75;
 			// 
 			// AwsaMbrshpPaymt
 			// 
@@ -831,13 +838,14 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickBoat;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Team;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn IwwfLicense;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AwsaMbrshpComment;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EntryDue;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomClassReg;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickClassReg;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpClassReg;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EntryDue;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EntryPaid;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PaymentMethod;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AwsaMbrshpPaymt;

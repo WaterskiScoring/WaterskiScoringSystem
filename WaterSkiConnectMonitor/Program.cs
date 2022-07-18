@@ -203,13 +203,11 @@ namespace WaterSkiConnectMonitor {
 
 		private static void handleConnectHeartBeat( String txnName, String argData ) {
 			showConsoleMsg( "handleConnectHeartBeat", argData );
-			/*
 			Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
 						{ "application", "WaterskiConnect Monitor" }
 					};
 			String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
 			socketClient.EmitAsync( "connectedapplication_response", jsonData );
-			 */
 		}
 
 		private static void checkConnectStatus( String txnName, String argData ) {

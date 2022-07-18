@@ -4149,10 +4149,7 @@ namespace WaterskiScoringSystem.Jump {
         }
 
         private void TimeValidate() {
-            //Int16 curTolSplit82Time = 0, curTolSplit52Time = 0, curTolEndTime = 0, curTolSplit82TimeMax = 0, curTolSplit52TimeMax = 0, curTolEndTimeMax = 0;
-            //String curTimeKey82, curTimeKey41, curTimeKey52, curTimeKey82Max = "", curTimeKey41Max = "", curTimeKey52Max = ""; 
             DataRow curTimeMaxSpeedRow = null;
-            //Decimal curMinTime, curMaxTime, curActualTime;
 
             myTimeTolMsg = "";
             Int16 curBoatSpeed = Convert.ToInt16( (String)myRecapRow.Cells["BoatSpeedRecap"].Value );

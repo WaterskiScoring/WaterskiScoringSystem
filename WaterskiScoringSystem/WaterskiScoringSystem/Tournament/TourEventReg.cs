@@ -436,7 +436,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert TourReg (" );
-                curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, ReadyToSki, ReadyForPlcmt, IwwfLicense" );
+                curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, Team, ReadyToSki, ReadyForPlcmt, IwwfLicense" );
                 curSqlStmt.Append( ", TrickBoat, JumpHeight, Federation, Gender, City, State, SkiYearAge" );
                 curSqlStmt.Append( ", SlalomClassReg, TrickClassReg, JumpClassReg, Notes, AwsaMbrshpComment" );
                 curSqlStmt.Append( ", LastUpdateDate" );
@@ -445,7 +445,8 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", '" + mySanctionNum + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getSkierNameForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
-				curSqlStmt.Append( ", '" + curMemberEntry.ReadyToSki + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.Team + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.ReadyToSki + "'" );
 				curSqlStmt.Append( ", '" + curReadyForPlcmt + "'" );
 				curSqlStmt.Append( ", 'N'" );
 				curSqlStmt.Append( ", '" + inTrickBoat + "'" );

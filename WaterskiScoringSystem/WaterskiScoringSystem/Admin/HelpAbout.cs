@@ -34,25 +34,24 @@ namespace WaterskiScoringSystem.Admin {
             try {
                 curDataDir = ApplicationDeployment.CurrentDeployment.DataDirectory;
                 
-                String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
-                int curDelimPos1 = curConnString.IndexOf( "\\" );
-                int curDelimPos2 = curConnString.IndexOf( ";" );
-                if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
                 try {
+                    String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
+                    int curDelimPos1 = curConnString.IndexOf( "\\" );
+                    int curDelimPos2 = curConnString.IndexOf( ";" );
+                    if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
                     curDatabaseFilename = curDataDir + curConnFilename;
                 } catch {
-                    curDatabaseFilename = curConnFilename;
+                    curDatabaseFilename = curDataDir;
                 }
             } catch {
                 curDataDir = "Not available";
             }
+            textDatabasePath.Text = curDatabaseFilename;
 
             textConnectionString.Text = Properties.Settings.Default.waterskiConnectionStringApp;
             textExecutablePath.Text = Application.ExecutablePath;
             textProductName.Text = Application.ProductName;
             
-            //Properties.Settings.Default.AppVersion
-
             textProductVersion.Text = curDeployVer
                 + " | " + Application.ProductVersion
                 + " | " + Properties.Settings.Default.AppVersion
@@ -62,7 +61,6 @@ namespace WaterskiScoringSystem.Admin {
             textLocalUserAppDataPath.Text = Application.LocalUserAppDataPath;
             textUserAppDataPath.Text = Application.UserAppDataPath;
             textUserAppDataRegistry.Text = Application.UserAppDataRegistry.Name;
-            textDatabasePath.Text = curDataDir;
 
             try {
                 if ( openDbConn() ) {
