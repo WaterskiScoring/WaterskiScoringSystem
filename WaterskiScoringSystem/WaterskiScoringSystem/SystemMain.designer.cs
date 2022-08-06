@@ -95,6 +95,7 @@
 			this.navNopsCalculator = new System.Windows.Forms.ToolStripMenuItem();
 			this.navListMaintenance = new System.Windows.Forms.ToolStripMenuItem();
 			this.navNopsDataMainenance = new System.Windows.Forms.ToolStripMenuItem();
+			this.publishReportDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +114,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -653,9 +655,11 @@
             this.navNopsCalculator,
             this.navListMaintenance,
             this.navNopsDataMainenance,
+            this.publishReportDeleteToolStripMenuItem,
             this.navViewRankingList,
             this.navTrickListMaint,
             this.navImportData,
+            this.navImportLwData,
             this.regionalJuniorExtractsToolStripMenuItem,
             this.navMetricTool,
             this.shrinkDatabaseToolStripMenuItem,
@@ -672,77 +676,84 @@
 			// navNopsCalculator
 			// 
 			this.navNopsCalculator.Name = "navNopsCalculator";
-			this.navNopsCalculator.Size = new System.Drawing.Size(199, 22);
+			this.navNopsCalculator.Size = new System.Drawing.Size(265, 22);
 			this.navNopsCalculator.Text = "&NOPS Calculator";
 			this.navNopsCalculator.Click += new System.EventHandler(this.navNopsCalculator_Click);
 			// 
 			// navListMaintenance
 			// 
 			this.navListMaintenance.Name = "navListMaintenance";
-			this.navListMaintenance.Size = new System.Drawing.Size(199, 22);
+			this.navListMaintenance.Size = new System.Drawing.Size(265, 22);
 			this.navListMaintenance.Text = "&List View";
 			this.navListMaintenance.Click += new System.EventHandler(this.navListMaintenance_Click);
 			// 
 			// navNopsDataMainenance
 			// 
 			this.navNopsDataMainenance.Name = "navNopsDataMainenance";
-			this.navNopsDataMainenance.Size = new System.Drawing.Size(199, 22);
+			this.navNopsDataMainenance.Size = new System.Drawing.Size(265, 22);
 			this.navNopsDataMainenance.Text = "Nops Data View";
 			this.navNopsDataMainenance.Click += new System.EventHandler(this.navNopsDataMainenance_Click);
+			// 
+			// publishReportDeleteToolStripMenuItem
+			// 
+			this.publishReportDeleteToolStripMenuItem.Name = "publishReportDeleteToolStripMenuItem";
+			this.publishReportDeleteToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
+			this.publishReportDeleteToolStripMenuItem.Text = "Publish Report Delete";
+			this.publishReportDeleteToolStripMenuItem.Click += new System.EventHandler(this.publishReportDeleteToolStripMenuItem_Click);
 			// 
 			// navViewRankingList
 			// 
 			this.navViewRankingList.Name = "navViewRankingList";
-			this.navViewRankingList.Size = new System.Drawing.Size(199, 22);
+			this.navViewRankingList.Size = new System.Drawing.Size(265, 22);
 			this.navViewRankingList.Text = "&View Ranking List";
 			this.navViewRankingList.Click += new System.EventHandler(this.navViewRankingList_Click);
 			// 
 			// navTrickListMaint
 			// 
 			this.navTrickListMaint.Name = "navTrickListMaint";
-			this.navTrickListMaint.Size = new System.Drawing.Size(199, 22);
+			this.navTrickListMaint.Size = new System.Drawing.Size(265, 22);
 			this.navTrickListMaint.Text = "Trick List View";
 			this.navTrickListMaint.Click += new System.EventHandler(this.navTrickListMaint_Click);
 			// 
 			// navImportData
 			// 
 			this.navImportData.Name = "navImportData";
-			this.navImportData.Size = new System.Drawing.Size(199, 22);
+			this.navImportData.Size = new System.Drawing.Size(265, 22);
 			this.navImportData.Text = "Import WSTIMS Data";
 			this.navImportData.Click += new System.EventHandler(this.navImportData_Click);
 			// 
 			// regionalJuniorExtractsToolStripMenuItem
 			// 
 			this.regionalJuniorExtractsToolStripMenuItem.Name = "regionalJuniorExtractsToolStripMenuItem";
-			this.regionalJuniorExtractsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+			this.regionalJuniorExtractsToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.regionalJuniorExtractsToolStripMenuItem.Text = "Regional Junior Extracts";
 			this.regionalJuniorExtractsToolStripMenuItem.Click += new System.EventHandler(this.regionalJuniorExtractsToolStripMenuItem_Click);
 			// 
 			// navMetricTool
 			// 
 			this.navMetricTool.Name = "navMetricTool";
-			this.navMetricTool.Size = new System.Drawing.Size(199, 22);
+			this.navMetricTool.Size = new System.Drawing.Size(265, 22);
 			this.navMetricTool.Text = "Metric Conversion";
 			this.navMetricTool.Click += new System.EventHandler(this.navMetricTool_Click);
 			// 
 			// shrinkDatabaseToolStripMenuItem
 			// 
 			this.shrinkDatabaseToolStripMenuItem.Name = "shrinkDatabaseToolStripMenuItem";
-			this.shrinkDatabaseToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+			this.shrinkDatabaseToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.shrinkDatabaseToolStripMenuItem.Text = "Compress Database";
 			this.shrinkDatabaseToolStripMenuItem.Click += new System.EventHandler(this.shrinkDatabaseToolStripMenuItem_Click);
 			// 
 			// navDatabaseBackup
 			// 
 			this.navDatabaseBackup.Name = "navDatabaseBackup";
-			this.navDatabaseBackup.Size = new System.Drawing.Size(199, 22);
+			this.navDatabaseBackup.Size = new System.Drawing.Size(265, 22);
 			this.navDatabaseBackup.Text = "Backup Database";
 			this.navDatabaseBackup.Click += new System.EventHandler(this.navDatabaseBackup_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(199, 22);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(265, 22);
 			this.toolStripMenuItem1.Text = "Load Data From Log";
 			this.toolStripMenuItem1.Visible = false;
 			this.toolStripMenuItem1.Click += new System.EventHandler(this.loadDataFromLog_Click);
@@ -750,28 +761,28 @@
 			// databaseToolToolStripMenuItem
 			// 
 			this.databaseToolToolStripMenuItem.Name = "databaseToolToolStripMenuItem";
-			this.databaseToolToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+			this.databaseToolToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.databaseToolToolStripMenuItem.Text = "Database Tool";
 			this.databaseToolToolStripMenuItem.Click += new System.EventHandler(this.databaseToolToolStripMenuItem_Click);
 			// 
 			// logRecoveryUtilityToolStripMenuItem
 			// 
 			this.logRecoveryUtilityToolStripMenuItem.Name = "logRecoveryUtilityToolStripMenuItem";
-			this.logRecoveryUtilityToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+			this.logRecoveryUtilityToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.logRecoveryUtilityToolStripMenuItem.Text = "Log Recovery Utility";
 			this.logRecoveryUtilityToolStripMenuItem.Click += new System.EventHandler(this.logRecoveryUtilityToolStripMenuItem_Click);
 			// 
 			// navSetDatabase
 			// 
 			this.navSetDatabase.Name = "navSetDatabase";
-			this.navSetDatabase.Size = new System.Drawing.Size(199, 22);
+			this.navSetDatabase.Size = new System.Drawing.Size(265, 22);
 			this.navSetDatabase.Text = "Set Database";
 			this.navSetDatabase.Click += new System.EventHandler(this.navSetDatabase_Click);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(196, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(262, 6);
 			// 
 			// windowToolStripMenuItem
 			// 
@@ -816,6 +827,13 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
+			// 
+			// navImportLwData
+			// 
+			this.navImportLwData.Name = "navImportLwData";
+			this.navImportLwData.Size = new System.Drawing.Size(265, 22);
+			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
+			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
 			// 
 			// SystemMain
 			// 
@@ -931,6 +949,8 @@
 		private System.Windows.Forms.ToolStripMenuItem navJumpMeasurementImportReport;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem importRegistrationsForWorldWaterSkiersToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem publishReportDeleteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem navImportLwData;
 	}
 }
 

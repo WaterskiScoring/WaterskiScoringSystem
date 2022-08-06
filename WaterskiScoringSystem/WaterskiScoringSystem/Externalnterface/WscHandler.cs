@@ -534,7 +534,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			Int64 bpPK = getBoatPathKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
 			Int64 btPK = getBoatTimeKey( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
-			if ( btPK <= 0 || bpPK <= 0 ) return null;
+			if ( btPK <= 0 && bpPK <= 0 ) return null;
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT P.Event, P.Round, P.PassNumber, P.PassLineLength, P.PassspeedKph" );

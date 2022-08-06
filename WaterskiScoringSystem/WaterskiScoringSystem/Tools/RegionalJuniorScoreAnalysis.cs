@@ -92,32 +92,6 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
-		private void ExecAvgSameDivButton_Click( object sender, EventArgs e ) {
-			myDataTable = getRankingAvgSameDiv();
-			if ( myDataTable == null ) {
-				this.dataGridView.DataSource = new DataTable();
-                this.MessageLabel.Text = "SQL command completed, 0 rows processed";
-			} else {
-				myExportFileNameDefault = "JuniorAverageSameDiv";
-				this.dataGridView.DataSource = myDataTable;
-				this.dataGridView.Visible = true;
-				this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
-			}
-		}
-
-		private void ExecAvgDiffDivButton_Click( object sender, EventArgs e ) {
-			myDataTable = getRankingAvgNewDiv();
-			if ( myDataTable == null ) {
-				this.dataGridView.DataSource = new DataTable();
-				this.MessageLabel.Text = "SQL command completed, 0 rows processed";
-			} else {
-				myExportFileNameDefault = "JuniorAverageNewDiv";
-				this.dataGridView.DataSource = myDataTable;
-				this.dataGridView.Visible = true;
-				this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
-			}
-		}
-
 		private void ExecAvgCurYearOnlyButton_Click( object sender, EventArgs e ) {
 			myDataTable = getRankingAvgOnlyCurYear();
 			if ( myDataTable == null ) {
@@ -132,31 +106,19 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		private void ExecAvgMostImprovedButton_Click( object sender, EventArgs e ) {
-			myDataTable = getMostImprovedSameDiv();
+			myDataTable = getMostImproved();
 			if ( myDataTable == null ) {
 				this.dataGridView.DataSource = new DataTable();
 				this.MessageLabel.Text = "SQL command completed, 0 rows processed";
 			} else {
-				myExportFileNameDefault = "JuniorAverageImprovedSameDiv";
+				//myExportFileNameDefault = "JuniorAverageImprovedSameDiv";
+				myExportFileNameDefault = "JuniorAverageImproved";
 				this.dataGridView.DataSource = myDataTable;
 				this.dataGridView.Visible = true;
 				this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
 			}
 		}
 
-		private void ExecAvgMostImprovedNewDivButton_Click( object sender, EventArgs e ) {
-			myDataTable = getMostImprovedNewDiv();
-			if ( myDataTable == null ) {
-				this.dataGridView.DataSource = new DataTable();
-				this.MessageLabel.Text = "SQL command completed, 0 rows processed";
-			} else {
-				myExportFileNameDefault = "JuniorAverageImprovedNewDiv";
-				this.dataGridView.DataSource = myDataTable;
-				this.dataGridView.Visible = true;
-				this.MessageLabel.Text = String.Format( "SQL command completed, {0} rows processed", myDataTable.Rows.Count );
-			}
-		}
-		
 		private void ExecAllStarCalcButton_Click(object sender, EventArgs e) {
 			CalcNops appNopsCalc;
 
@@ -272,6 +234,95 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "And E2.AgeGroup is null " );
+			curSqlStmt.Append( "Order by E.Event, T.AgeGroup, SkierName " );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
+		}
+
+		private DataTable getMostImproved() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.Score as CurYearScore, S2.Score as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "       AND E2.MemberId = E.MemberId AND E2.AgeGroup = E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join SlalomScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join SlalomScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+			curSqlStmt.Append( "UNION " );
+
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, CONVERT(numeric(6,1), S1.Score) as CurYearScore, CONVERT(numeric(6,1), S2.Score) as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "      AND E2.MemberId = E.MemberId AND E2.AgeGroup = E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join TrickScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join TrickScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+			curSqlStmt.Append( "UNION " );
+
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.ScoreFeet as CurYearScore, S2.ScoreFeet as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(6,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "      AND E2.MemberId = E.MemberId AND E2.AgeGroup = E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join JumpScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join JumpScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+			curSqlStmt.Append( "UNION " );
+
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.Score as CurYearScore, S2.Score as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "       AND E2.MemberId = E.MemberId AND E2.AgeGroup != E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join SlalomScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join SlalomScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+			curSqlStmt.Append( "UNION " );
+
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, CONVERT(numeric(6,1), S1.Score) as CurYearScore, CONVERT(numeric(6,1), S2.Score) as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "      AND E2.MemberId = E.MemberId AND E2.AgeGroup != E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join TrickScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join TrickScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+			curSqlStmt.Append( "UNION " );
+
+			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.ScoreFeet as CurYearScore, S2.ScoreFeet as PrevYearScore " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(6,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( "FROM EventReg E " );
+			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
+			curSqlStmt.Append( "      AND E2.MemberId = E.MemberId AND E2.AgeGroup != E.AgeGroup AND E2.Event = E.Event " );
+			curSqlStmt.Append( "Inner join JumpScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
+			curSqlStmt.Append( "Inner join JumpScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
+			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
+			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 " );
+			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
+
 			curSqlStmt.Append( "Order by E.Event, T.AgeGroup, SkierName " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}

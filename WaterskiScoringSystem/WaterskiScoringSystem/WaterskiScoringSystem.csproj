@@ -49,8 +49,8 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>7</ApplicationRevision>
-    <ApplicationVersion>7.1.1.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>7.1.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -405,6 +405,24 @@
     <Compile Include="Externalnterface\ImportMemberFile.cs" />
     <Compile Include="Externalnterface\LiveWebHandler.cs" />
     <Compile Include="Externalnterface\MemberEntry.cs" />
+    <Compile Include="Externalnterface\PublishExportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Externalnterface\PublishExportDialog.Designer.cs">
+      <DependentUpon>PublishExportDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Externalnterface\PublishReportDelete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Externalnterface\PublishReportDelete.Designer.cs">
+      <DependentUpon>PublishReportDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Externalnterface\PublishReportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Externalnterface\PublishReportDialog.Designer.cs">
+      <DependentUpon>PublishReportDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Externalnterface\WscHandler.cs" />
     <Compile Include="Jump\JumpSummaryAwards.cs">
       <SubType>Form</SubType>
@@ -452,6 +470,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Slalom\NextPassDialog.cs">
       <SubType>Form</SubType>
@@ -485,6 +508,12 @@
     <Compile Include="Externalnterface\ExportLiveWebDialog.Designer.cs">
       <DependentUpon>ExportLiveWebDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ExportFileDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ExportFileDownload.Designer.cs">
+      <DependentUpon>ExportFileDownload.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ExportRecordAppData.cs" />
     <Compile Include="Tools\ExportScoreBookHtmlIwwf.cs" />
     <Compile Include="Tools\FolderBrowserLauncher.cs" />
@@ -503,12 +532,6 @@
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\PrintEventForms.cs" />
-    <Compile Include="Tools\PublishReportDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tools\PublishReportDialog.Designer.cs">
-      <DependentUpon>PublishReportDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Tools\RegionalJuniorScoreAnalysis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -741,6 +764,15 @@
       <DependentUpon>TourMergeSanctionNum.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Externalnterface\PublishExportDialog.resx">
+      <DependentUpon>PublishExportDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Externalnterface\PublishReportDelete.resx">
+      <DependentUpon>PublishReportDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Externalnterface\PublishReportDialog.resx">
+      <DependentUpon>PublishReportDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Jump\JumpSummaryAwards.resx">
       <DependentUpon>JumpSummaryAwards.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -816,6 +848,9 @@
     <EmbeddedResource Include="Externalnterface\ExportLiveWebDialog.resx">
       <DependentUpon>ExportLiveWebDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ExportFileDownload.resx">
+      <DependentUpon>ExportFileDownload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\ExportScorebookTypeDialogForm.resx">
       <DependentUpon>ExportScorebookTypeDialogForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -833,9 +868,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\LogRecoveryUtility.resx">
       <DependentUpon>LogRecoveryUtility.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tools\PublishReportDialog.resx">
-      <DependentUpon>PublishReportDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\RegionalJuniorScoreAnalysis.resx">
       <DependentUpon>RegionalJuniorScoreAnalysis.cs</DependentUpon>
@@ -1005,16 +1037,11 @@
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="RecordApplicationFormTemplate.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Common\RerideReason.cs">
       <SubType>Form</SubType>
     </Compile>

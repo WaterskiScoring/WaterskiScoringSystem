@@ -1285,6 +1285,11 @@ namespace WaterskiScoringSystem.Jump {
 			myExportData.ExportData( mySanctionNum, "Jump", curMemberId, curAgeGroup, curEventGroup, curRound );
 		}
 
+		private void navExportLw_Click( object sender, EventArgs e ) {
+			navExport_Click( null, null );
+			ExportLiveWeb.uploadExportFile( "Export", "Jump", mySanctionNum );
+		}
+
 		private void navExport_Click( object sender, EventArgs e ) {
 			ExportData myExportData = new ExportData();
 			String[] curSelectCommand = new String[11];

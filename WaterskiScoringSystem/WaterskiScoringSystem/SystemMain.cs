@@ -369,7 +369,17 @@ namespace WaterskiScoringSystem {
             myImportData.importData();
         }
 
-		private void navImportTourReg_Click( object sender, EventArgs e ) {
+        private void navImportLwData_Click( object sender, EventArgs e ) {
+            ExportFileDownload curForm = new ExportFileDownload();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
+        private void navImportTourReg_Click( object sender, EventArgs e ) {
 			ImportMember curImportMember = new ImportMember( null );
 			mdiStatusMsg.Text = "Import tournament registrations opening";
 			curImportMember.importPreRegMembers();
@@ -405,6 +415,16 @@ namespace WaterskiScoringSystem {
 
         private void navListMaintenance_Click( object sender, EventArgs e ) {
             ListMaintenance curForm = new ListMaintenance();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
+        private void publishReportDeleteToolStripMenuItem_Click( object sender, EventArgs e ) {
+            PublishReportDelete curForm = new PublishReportDelete();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
             // Set the Parent Form and display requested form
@@ -998,6 +1018,7 @@ namespace WaterskiScoringSystem {
 		private void importMemberFileToolStripMenuItem1_Click( object sender, EventArgs e ) {
 
 		}
+
 	}
 }
 

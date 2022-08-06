@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Deployment.Application;
+using System.Reflection;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -25,10 +26,24 @@ namespace WaterSkiConnectMonitor {
 			Application.SetCompatibleTextRenderingDefault( false );
 			Console.WriteLine(
 				"Name: " + System.Reflection.Assembly.GetCallingAssembly().GetName()
-				+ System.Environment.NewLine + "Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
+				+ System.Environment.NewLine + "Assembly Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
 				+ System.Environment.NewLine + "Location: " + System.Reflection.Assembly.GetExecutingAssembly().Location
 				+ System.Environment.NewLine
-				); ;
+				);
+
+			try {
+
+				if ( System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed ) {
+					Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+					Console.WriteLine( string.Format( "Product Name: {4}, Version: {0}.{1}.{2}.{3}"
+						, ver.Major, ver.Minor, ver.Build, ver.Revision, Assembly.GetEntryAssembly().GetName().Name )
+						+ System.Environment.NewLine + "Deployment Version: " + ApplicationDeployment.CurrentDeployment.CurrentVersion
+						);
+				}
+
+			} catch ( Exception ex ) {
+				Console.WriteLine( "Information not available in development, " + ex.Message );
+			}
 
 			Console.WriteLine( "Enter Sanction and EventSubId (optional) separated by a comma: " );
 			String inputline = Console.ReadLine();
@@ -108,12 +123,24 @@ namespace WaterSkiConnectMonitor {
 					showConsoleMsg( "boatpath_data", response.GetValue<string>() );
 				} );
 
+				socketClient.On( "boatpath_data_detail", ( response ) => {
+					showConsoleMsg( "boatpath_data_detail", response.GetValue<string>() );
+				} );
+
+				socketClient.On( "boatpath_position", ( response ) => {
+					showConsoleMsg( "boatpath_position", response.GetValue<string>() );
+				} );
+
 				socketClient.On( "scoring_result", ( response ) => {
 					showConsoleMsg( "scoring_result", response.GetValue<string>() );
 				} );
 
 				socketClient.On( "trickscoring_detail", ( response ) => {
 					showConsoleMsg( "trickscoring_detail", response.GetValue<string>() );
+				} );
+
+				socketClient.On( "trickscoring_score", ( response ) => {
+					showConsoleMsg( "trickscoring_score", response.GetValue<string>() );
 				} );
 
 				socketClient.On( "jumpmeasurement_score", ( response ) => {

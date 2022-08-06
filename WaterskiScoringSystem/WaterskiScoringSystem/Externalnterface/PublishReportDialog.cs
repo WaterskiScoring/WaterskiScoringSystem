@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WaterskiScoringSystem.Tools {
+namespace WaterskiScoringSystem.Externalnterface {
 	public partial class PublishReportDialog : Form {
 		private String myReportType;
 		private String myEvent;

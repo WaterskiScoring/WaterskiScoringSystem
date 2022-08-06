@@ -7,12 +7,17 @@ using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
+using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveWeb {
         private static String LiveWebLocation = "http://www.waterskiresults.com/WfwWeb/WfwImport.php";
 		private static String myReportFileUploadUrl = "http://www.waterskiresults.com/WfwWeb/WfwFileUpload.php";
-		private static String myReportFileUploadContentType = "application/x-www-form-urlencoded;charset=UTF-8";
+        private static String myExportFileDownloadUrl = "http://www.waterskiresults.com/WfwWeb/wfwGetPublishExportList.php";
+        private static String myReportListUrl = "http://www.waterskiresults.com/WfwWeb/wfwGetPublishReportList.php";
+        private static String myDeletePublishReportUrl = "http://www.waterskiresults.com/WfwWeb/wfwDeletePublishReport.php";
+        
+        private static String myReportFileUploadContentType = "application/x-www-form-urlencoded;charset=UTF-8";
 
 		public ExportLiveWeb() {
         }
@@ -161,7 +166,94 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return true;
 		}
 
-		public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
+        public static void uploadExportFile( String inReportType, String inEvent, String inSanctionId ) {
+            String curFileFormName = "PublishReport";
+            NameValueCollection curHeaderParams = null;
+            NameValueCollection curFormData = new NameValueCollection();
+
+            String curExportFileName = getExportFilename();
+            if ( curExportFileName == null ) return;
+
+            PublishExportDialog curDialog = new PublishExportDialog();
+            curDialog.ReportType = inReportType;
+            curDialog.Event = inEvent;
+            curDialog.ReportFileName = curExportFileName;
+            curDialog.ReportTitle = Path.GetFileName( curExportFileName );
+            DialogResult curDialogResult = curDialog.ShowDialog();
+            if ( curDialogResult != DialogResult.OK ) return;
+
+            String curUploadUrl = String.Format( "{0}?reportType={1}&skiEvent={2}&sanctionNum={3}&reportTitle={4}"
+                , myReportFileUploadUrl, inReportType, inEvent, inSanctionId, curDialog.ReportTitle );
+            curFormData.Add( "reportFilename", curExportFileName );
+            curFormData.Add( "reportFilenameBase", Path.GetFileName( curExportFileName ) );
+
+            Dictionary<string, object> curResponseDataList = SendMessageHttp.sendMessagePostFileUpload(
+                curUploadUrl, curExportFileName, curFileFormName, curHeaderParams, curFormData, null, null );
+            if ( curResponseDataList == null ) return;
+
+            String curMessage = "";
+            foreach ( KeyValuePair<String, object> curEntry in curResponseDataList ) {
+                if ( ( (String)curEntry.Key ).Equals( "Message" ) ) {
+                    curMessage = (String)curEntry.Value;
+                    break;
+                }
+            }
+            if ( curMessage.Length == 0 ) curMessage = "No message returned from report upload service";
+            MessageBox.Show( curMessage );
+        }
+
+        public static DataTable getReportList( String inSanctionId ) {
+            String curReqstUrl = String.Format( "{0}?sanctionNum={1}", myReportListUrl, inSanctionId );
+            String curContentType = "application/json; charset=UTF-8";
+
+            NameValueCollection curHeaderParams = new NameValueCollection();
+            Cursor.Current = Cursors.WaitCursor;
+            DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable( curReqstUrl, curHeaderParams, curContentType, null, null, false );
+            if ( curDataTable != null ) {
+                Cursor.Current = Cursors.Default;
+                return curDataTable;
+
+            } else {
+                return null;
+            }
+        }
+
+        public static DataTable getExportList( String inSanctionId ) {
+            String curReqstUrl = String.Format( "{0}?sanctionNum={1}", myExportFileDownloadUrl, inSanctionId );
+            String curContentType = "application/json; charset=UTF-8";
+
+            NameValueCollection curHeaderParams = new NameValueCollection();
+            Cursor.Current = Cursors.WaitCursor;
+            DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable( curReqstUrl, curHeaderParams, curContentType, null, null, false );
+            if ( curDataTable != null ) {
+                Cursor.Current = Cursors.Default;
+                return curDataTable;
+
+            } else {
+                return null;
+            }
+        }
+
+        public static bool deletePublishedReport( String inReportPk ) {
+            String curReqstUrl = String.Format( "{0}?PK={1}", myDeletePublishReportUrl, inReportPk );
+
+            String curContentType = "application/json; charset=UTF-8";
+
+            NameValueCollection curHeaderParams = new NameValueCollection();
+            Cursor.Current = Cursors.WaitCursor;
+            Dictionary<string, object> curRespMsg = SendMessageHttp.getMessageResponseJson( curReqstUrl, curHeaderParams, curContentType, null, null, false );
+            if ( curRespMsg != null ) {
+                Cursor.Current = Cursors.Default;
+                MessageBox.Show( HelperFunctions.getAttributeValue( curRespMsg, "Message" ));
+                return true;
+
+            } else {
+                return false;
+            }
+
+        }
+
+        public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
             String curMethodName = "ExportLiveWeb: exportData: ";
             char[] singleQuoteDelim = new char[] { '\'' };
             String curMsg = "";
@@ -285,5 +377,26 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-	}
+        private static String getExportFilename() {
+            OpenFileDialog myFileDialog = new OpenFileDialog();
+
+            try {
+                String curPath = Properties.Settings.Default.ExportDirectory;
+                if ( curPath.Length < 2 ) curPath = System.IO.Directory.GetCurrentDirectory();
+                myFileDialog.InitialDirectory = curPath;
+                myFileDialog.Filter = "PDF files (*.txt)|*.txt|All files (*.*)|*.*";
+                myFileDialog.FilterIndex = 2;
+                if ( myFileDialog.ShowDialog() != DialogResult.OK ) return null;
+
+                String curFileName = myFileDialog.FileName;
+                if ( curFileName == null ) return null;
+                return curFileName;
+
+            } catch ( Exception ex ) {
+                MessageBox.Show( "Error: Could not select a report file" + "\n\nError: " + ex.Message );
+                return null;
+            }
+        }
+
+    }
 }

@@ -1140,6 +1140,11 @@ namespace WaterskiScoringSystem.Admin {
             }
         }
 
+        private void navExportLw_Click( object sender, EventArgs e ) {
+            navExport_Click( null, null );
+            ExportLiveWeb.uploadExportFile( "Export", "Tour", editSanctionId.Text );
+        }
+
         private void navExport_Click(object sender, EventArgs e) {
             // Display the form as a modal dialog box.
             exportDialogForm = new TourExportDialogForm();
@@ -1919,6 +1924,5 @@ namespace WaterskiScoringSystem.Admin {
             }
             return curReturnValue;
         }
-
-    }
+	}
 }

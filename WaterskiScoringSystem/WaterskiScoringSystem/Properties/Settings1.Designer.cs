@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.1.2.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.1.1.7")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7.1.2.0 8/6/2022")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7.1.1.7 7/19/2022")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2601,6 +2601,18 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["ExportFileDownload_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string frank {
+            get {
+                return ((string)(this["frank"]));
+            }
+            set {
+                this["frank"] = value;
             }
         }
     }

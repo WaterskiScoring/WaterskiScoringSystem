@@ -1118,3 +1118,8 @@ ALTER TABLE [TourReg] ADD COLUMN JumpClassReg nvarchar(16);
 
 ## v22.82
 ALTER TABLE [TourReg] ADD COLUMN Team nvarchar(16);
+
+## v22.83
+ALTER TABLE [SlalomRecap] ADD COLUMN ProtectedScore numeric(5,2);
+ALTER TABLE [SlalomRecap] ADD COLUMN BoatPathGood nchar(1);
+

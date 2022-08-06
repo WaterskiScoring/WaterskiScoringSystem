@@ -805,16 +805,16 @@ namespace WaterskiScoringSystem.Externalnterface {
 				, Convert.ToDateTime( myTourRow["EventDates"] ) );
 
 			curMemberEntry.JudgeSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeSlalom" );
-			String curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmSlalom" );
-			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeSlalomRating = "PanAm";
+			//String curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmSlalom" );
+			//if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeSlalomRating = "PanAm";
 
 			curMemberEntry.JudgeTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeTrick" );
-			curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmTrick" );
-			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeTrickRating = "PanAm";
+			//curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmTrick" );
+			//if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeTrickRating = "PanAm";
 
 			curMemberEntry.JudgeJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeJump" );
-			curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmJump" );
-			if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeJumpRating = "PanAm";
+			//curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmJump" );
+			//if ( curPanAmValue.Length > 0 ) curMemberEntry.JudgeJumpRating = "PanAm";
 
 			curMemberEntry.DriverSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "DriverSlalom" );
 			curMemberEntry.DriverTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "DriverTrick" );

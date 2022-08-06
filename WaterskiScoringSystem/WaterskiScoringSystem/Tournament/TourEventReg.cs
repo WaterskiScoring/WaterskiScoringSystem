@@ -255,22 +255,22 @@ namespace WaterskiScoringSystem.Tournament {
 
 				} else {
 					curSqlStmt = new StringBuilder("");
-					curSqlStmt.Append("Update EventReg Set ");
-					curSqlStmt.Append("RankingScore = " + curRankingScore + ", ");
-					curSqlStmt.Append("RankingRating = '" + curRankingRating + "', ");
-					curSqlStmt.Append("HCapBase = " + curHCapBase + ", ");
-					curSqlStmt.Append("HCapScore = " + curHCapScore + ", ");
-					curSqlStmt.Append("LastUpdateDate = GETDATE() ");
-					curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'");
-					curSqlStmt.Append("  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'");
-					int rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-					Log.WriteFile(curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString());
+                    curSqlStmt.Append( "Update EventReg Set " );
+                    curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
+                    curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
+                    curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
+                    curSqlStmt.Append( "HCapScore = " + curHCapScore + ", " );
+                    curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
+                    curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
+                    curSqlStmt.Append( "  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'" );
+                    int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                    Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 
-					#region Show information if input data found on database
-					//Show information if input data found on database
-					//Skip display if previoius display specfied to process all records the same
-					if ( myMatchCommand.Length < 2 ) {
+                    #region Show information if input data found on database
+                    //Show information if input data found on database
+                    //Skip display if previoius display specfied to process all records the same
+                    if ( myMatchCommand.Length < 2 ) {
 						String prevEventGroup = "", prevEventClass = "";
 						curTourEventRegRow = curTourEventRegDataTable.Rows[0];
 						try {

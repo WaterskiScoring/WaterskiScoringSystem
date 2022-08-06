@@ -1,5 +1,5 @@
 ﻿
-namespace WaterskiScoringSystem.Tools {
+namespace WaterskiScoringSystem.Externalnterface {
 	partial class PublishReportDialog {
 		/// <summary>
 		/// Required designer variable.

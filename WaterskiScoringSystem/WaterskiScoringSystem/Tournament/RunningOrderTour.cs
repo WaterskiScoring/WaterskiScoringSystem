@@ -397,7 +397,7 @@ namespace WaterskiScoringSystem.Tournament {
             //Load data for print data grid
             String curPrintGroup = "", prevPrintGroup = "", curPageBreakGroup = "", prevPageBreakGroup = "";
             int curPrintIdx = 0, curGroupCount = 0, curPrintCount = 0;
-            Decimal curRankingScore, curHCapBase, curHCapScore, curJumpHeight;
+            Decimal curJumpHeight;
             DataGridViewRow curPrintRow;
 
             //Retrieve data for current tournament
@@ -444,23 +444,20 @@ namespace WaterskiScoringSystem.Tournament {
 					PrintJumpHeight.Visible = true;
 				}
 
-				foreach ( DataRow curTeamRow in myEventRegDataTable.Rows ) {
+				foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
 					curPrintIdx = PrintDataGridView.Rows.Add();
 					curPrintRow = PrintDataGridView.Rows[curPrintIdx];
 
-					try {
-						if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-							curPrintGroup = (String)curTeamRow["AgeGroup"] + "-" + (String)curTeamRow["EventGroup"];
-							curPageBreakGroup = (String)curTeamRow["AgeGroup"];
-						} else {
-							curPrintGroup = (String)curTeamRow["EventGroup"];
-							curPageBreakGroup = (String)curTeamRow["EventGroup"];
-						}
-					} catch {
-						curPrintGroup = "";
-					}
+                    if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+                        curPrintGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" ) + "-" + HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                        curPageBreakGroup = (String)curDataRow["AgeGroup"];
+                        curPageBreakGroup = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                    } else {
+                        curPrintGroup = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                        curPageBreakGroup = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                    }
 
-					curPrintCount++;
+                    curPrintCount++;
 					if ( !( curPrintGroup.Equals( prevPrintGroup ) ) ) {
 						curGroupCount = 1;
 						if ( curPrintIdx > 0 ) {
@@ -475,59 +472,36 @@ namespace WaterskiScoringSystem.Tournament {
 						curGroupCount++;
 					}
 
-					curPrintRow.Cells["PrintGroupCount"].Value = curGroupCount;
-					curPrintRow.Cells["PrintCount"].Value = curPrintCount;
-					curPrintRow.Cells["PrintSkierName"].Value = (String)curTeamRow["SkierName"];
-					curPrintRow.Cells["PrintEvent"].Value = (String)curTeamRow["Event"];
-					curPrintRow.Cells["PrintAgeGroup"].Value = (String)curTeamRow["AgeGroup"];
-					curPrintRow.Cells["PrintEventGroup"].Value = (String)curTeamRow["EventGroup"];
+                    curPrintRow.Cells["PrintCount"].Value = curPrintCount;
+                    if ( HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "N" ).Equals( "N" ) ) {
+                        curPrintRow.Cells["PrintGroupCount"].Value = "**";
+                    } else {
+                        curPrintRow.Cells["PrintGroupCount"].Value = curGroupCount;
+                    }
+                    curPrintRow.Cells["PrintSkierName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkierName", "" );
+                    curPrintRow.Cells["PrintEvent"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Event", "" );
+                    curPrintRow.Cells["PrintAgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+                    curPrintRow.Cells["PrintEventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
 					if ( PrintEventRotation.Visible ) {
-						try {
-							curPrintRow.Cells["PrintEventRotation"].Value = (String)curTeamRow["EventGroup"];
-						} catch {
-							curPrintRow.Cells["PrintEventRotation"].Value = "";
-						}
+                        curPrintRow.Cells["PrintEventRotation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
 					} else {
 						curPrintRow.Cells["PrintEventRotation"].Value = "";
 					}
-					try {
-						curPrintRow.Cells["PrintEventClass"].Value = (String)curTeamRow["EventClass"];
-					} catch {
-						curPrintRow.Cells["PrintEventClass"].Value = "";
-					}
-					try {
-						curPrintRow.Cells["PrintReadyForPlcmt"].Value = (String)curTeamRow["ReadyForPlcmt"];
-					} catch {
-						curPrintRow.Cells["PrintReadyForPlcmt"].Value = "";
-					}
-					try {
-						if ( ( (String)curTeamRow["ReadyForPlcmt"] ).Equals( "N" ) ) {
-							curPrintRow.Cells["PrintRunOrder"].Value = "**";
-						} else {
-							curPrintRow.Cells["PrintRunOrder"].Value = ( (Int16)curTeamRow["RunOrder"] ).ToString( "##0" );
-						}
-					} catch {
-						curPrintRow.Cells["PrintRunOrder"].Value = "0";
-					}
-					try {
-						curPrintRow.Cells["PrintTeam"].Value = (String)curTeamRow["TeamCode"];
-					} catch {
-						curPrintRow.Cells["PrintTeam"].Value = "";
-					}
+                    curPrintRow.Cells["PrintReadyForPlcmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "N" );
+                    curPrintRow.Cells["PrintRunOrder"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RunOrder", "0", 0 );
+                    curPrintRow.Cells["PrintTeam"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
 
 					if ( slalomButton.Checked ) {
 						curPrintRow.Cells["PrintTrickBoat"].Value = "";
 						curPrintRow.Cells["PrintJumpHeight"].Value = "";
-					} else if ( trickButton.Checked ) {
+					
+                    } else if ( trickButton.Checked ) {
 						curPrintRow.Cells["PrintJumpHeight"].Value = "";
-						try {
-							curPrintRow.Cells["PrintTrickBoat"].Value = (String)curTeamRow["TrickBoat"];
-						} catch {
-							curPrintRow.Cells["PrintTrickBoat"].Value = "";
-						}
-					} else if ( jumpButton.Checked ) {
-						try {
-							curJumpHeight = (Decimal)curTeamRow["JumpHeight"];
+                        curPrintRow.Cells["PrintTrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "UNKN" );
+					
+                    } else if ( jumpButton.Checked ) {
+                        try {
+							curJumpHeight = (Decimal)curDataRow["JumpHeight"];
 							if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
 								curPrintRow.Cells["PrintJumpHeight"].Value = "5";
 							} else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
@@ -555,49 +529,16 @@ namespace WaterskiScoringSystem.Tournament {
 
 					}
 					if ( trickButton.Checked ) {
-						try {
-							curRankingScore = (Decimal)curTeamRow["RankingScore"];
-							curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "####0" );
-						} catch {
-							curPrintRow.Cells["PrintRankingScore"].Value = "";
-						}
-						try {
-							curHCapBase = (Decimal)curTeamRow["HCapBase"];
-							curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "####0" );
-						} catch {
-							curPrintRow.Cells["PrintHCapBase"].Value = "";
-						}
-						try {
-							curHCapScore = (Decimal)curTeamRow["HCapScore"];
-							curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "####0" );
-						} catch {
-							curPrintRow.Cells["PrintHCapScore"].Value = "";
-						}
-					} else {
-						try {
-							curRankingScore = (Decimal)curTeamRow["RankingScore"];
-							curPrintRow.Cells["PrintRankingScore"].Value = curRankingScore.ToString( "##0.0" );
-						} catch {
-							curPrintRow.Cells["PrintRankingScore"].Value = "";
-						}
-						try {
-							curHCapBase = (Decimal)curTeamRow["HCapBase"];
-							curPrintRow.Cells["PrintHCapBase"].Value = curHCapBase.ToString( "##0.0" );
-						} catch {
-							curPrintRow.Cells["PrintHCapBase"].Value = "";
-						}
-						try {
-							curHCapScore = (Decimal)curTeamRow["HCapScore"];
-							curPrintRow.Cells["PrintHCapScore"].Value = curHCapScore.ToString( "##0.0" );
-						} catch {
-							curPrintRow.Cells["PrintHCapScore"].Value = "";
-						}
+                        curPrintRow.Cells["PrintRankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "0", 0 );
+                        curPrintRow.Cells["PrintHCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "0", 0 );
+                        curPrintRow.Cells["PrintHCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "0", 0 );
+					
+                    } else {
+                        curPrintRow.Cells["PrintRankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "0", 1 );
+                        curPrintRow.Cells["PrintHCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "0", 1 );
+                        curPrintRow.Cells["PrintHCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "0", 1 );
 					}
-					try {
-						curPrintRow.Cells["PrintRankingRating"].Value = (String)curTeamRow["RankingRating"];
-					} catch {
-						curPrintRow.Cells["PrintRankingRating"].Value = "";
-					}
+                    curPrintRow.Cells["PrintRankingRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RankingRating", "" );
 
 					prevPrintGroup = curPrintGroup;
 					prevPageBreakGroup = curPageBreakGroup;
@@ -1409,24 +1350,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
             if (!(isDataModified)) {
                 loadEventRegView();
-
-                checkSaveChanges();
-                if ( !( isDataModified ) ) {
-                    String curEvent = "";
-                    if ( slalomButton.Checked ) curEvent = "Slalom";
-                    else if ( trickButton.Checked ) curEvent = "Trick";
-                    else if ( jumpButton.Checked ) curEvent = "Jump";
-
-                    mySortCmd = myTourProperties.RunningOrderSortSlalom;
-
-                    loadGroupSelectList( curEvent, checkBoxGroup_CheckedChanged );
-
-                    getRunningOrderColumnfilter();
-
-                    loadGroupFilterComboBox();
-
-                    winStatusMsg.Text = "Sorted by " + mySortCmd;
-                }
+                winStatusMsg.Text = "Sorted by " + mySortCmd;
             }
         }
 

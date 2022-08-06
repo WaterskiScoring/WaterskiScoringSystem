@@ -21,98 +21,8 @@ namespace WaterskiScoringSystem.Externalnterface {
         public SendMessageHttp() {
         }
 
-        public static bool getMessage(String inUrl) {
-            return getMessage( inUrl, null, null, false );
-        }
-        public static bool getMessage(String inUrl, bool inPostMethod) {
-            return getMessage( inUrl, null, null, inPostMethod );
-        }
-        public static bool getMessage(String inUrl, String inUserAccount, String inPassword, bool inPostMethod) {
-            String curMethodName = "SendMessageHttp:getMessage: ";
-            WebRequest curRequest = null;
-
-            try {
-                // Create a request for the URL. 		
-                curRequest = WebRequest.Create( new Uri(inUrl) );
-
-				if ( inPostMethod) {
-                    curRequest.Method = "POST";
-                } else {
-                    curRequest.Method = "GET";
-                }
-
-				// If required by the server, set the credentials.
-				if ( inUserAccount != null ) {
-					if ( inUrl.Contains( "usawaterski" ) ) {
-						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
-					} else {
-						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-					}
-				}
-
-                RequestState curRequestState = null;
-                curRequestState = new RequestState();
-                curRequestState.WebReqst = curRequest;
-                curRequestState.WebReqst.ContentLength = curRequestState.InputMsgBuffer.Length;
-
-                curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
-
-			} catch (Exception ex) {
-                MessageBox.Show( String.Format("{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message) );
-                return false;
-            }
-
-            return true;
-        }
-
-        public static String getMessageResponse(String inUrl) {
-            return getMessageResponse( inUrl, null, null, false );
-        }
-        public static String getMessageResponse(String inUrl, bool inPostMethod) {
-            return getMessageResponse( inUrl, null, null, inPostMethod );
-        }
-        public static String getMessageResponse(String inUrl, String inUserAccount, String inPassword, bool inPostMethod) {
-            String curMethodName = "SendMessageHttp:getMessageResponse: ";
-            String responseFromServer = "";
-            WebRequest curRequest = null;
-
-            try {
-                // Create a request for the URL. 		
-                curRequest = WebRequest.Create( new Uri( inUrl ) );
-				if ( inPostMethod) {
-                    curRequest.Method = "POST";
-                } else {
-                    curRequest.Method = "GET";
-                }
-
-				// If required by the server, set the credentials.
-				if ( inUserAccount != null ) {
-					if ( inUrl.Contains( "usawaterski" ) ) {
-						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
-					} else {
-						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-					}
-				}
-
-                RequestState curRequestState = null;
-                curRequestState = new RequestState();
-                curRequestState.WebReqst = curRequest;
-                //curRequestState.WebReqst.ContentLength = curRequestState.InputMsgBuffer.Length;
-
-                curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
-            
-			} catch (Exception ex) {
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
-			}
-
-			return responseFromServer;
-        }
-
         public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType) {
             return getMessageResponseJson( inUrl, inHeaderParams, inContentType, null, null, false );
-        }
-        public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType, bool inPostMethod) {
-            return getMessageResponseJson( inUrl, inHeaderParams, inContentType, null, null, inPostMethod );
         }
         public static Dictionary<string, object> getMessageResponseJson(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inUserAccount, String inPassword, bool inPostMethod) {
             String curMethodName = "SendMessageHttp:getMessageResponseJson: ";
@@ -268,7 +178,24 @@ namespace WaterskiScoringSystem.Externalnterface {
             }
         }
 
-        //public static List<KeyValuePair<String, String>> sendMessagePostFileUpload(String inUrl, String inFileRef, String inFileFormName, NameValueCollection inHeaderParams, NameValueCollection inFormData, String inUserAccount, String inPassword) {
+        public static bool getDownloadFile( String inUrl, String inSaveFileLocation ) {
+            String curMethodName = "SendMessageHttp:getDownloadFile: ";
+            WebClient curWebClientRequest = null;
+
+            try {
+                curWebClientRequest = new WebClient();
+                curWebClientRequest.DownloadFile( inUrl, inSaveFileLocation );
+                return true;
+            
+            } catch ( Exception ex ) {
+                String curMsg = String.Format( "{0}Exception encountered {1},  Download File: {2}, Save Location: {3}"
+                    , curMethodName, ex.Message, inUrl, inSaveFileLocation );
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
+            }
+        }
+
         public static Dictionary<string, object> sendMessagePostFileUpload(String inUrl, String inFileRef, String inFileFormName, NameValueCollection inHeaderParams, NameValueCollection inFormData, String inUserAccount, String inPassword) {
             String curMethodName = "SendMessageHttp:sendMessagePostFileUpload: ";
             HttpWebRequest curRequest = null;
@@ -459,9 +386,6 @@ namespace WaterskiScoringSystem.Externalnterface {
             return curResponseDataList;
         }
 
-		public static Dictionary<string, object> sendMessagePostJsonRespJson( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage ) {
-			return getMessageDictionaryPostMessage( inUrl, inHeaderParams, inContentType, inMessage, null, null );
-		}
 		public static Dictionary<string, object> getMessageDictionaryPostMessage( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage, String inUserAccount, String inPassword  ) {
             String curMethodName = "SendMessageHttp:readMessageDictionaryPostMessage: ";
             HttpWebRequest curRequest = null;
@@ -538,66 +462,6 @@ namespace WaterskiScoringSystem.Externalnterface {
             }
         }
 		
-		public static String getMessagePostMessage( String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage, String inUserAccount, String inPassword ) {
-			String curMethodName = "SendMessageHttp:getMessagePostMessage: ";
-			HttpWebRequest curRequest = null;
-			Stream curDataStream = null;
-
-			try {
-				// Create a request using a URL that can receive a post. 
-				// Set the Method property of the request to POST.
-				curRequest = (HttpWebRequest)WebRequest.Create( inUrl );
-				curRequest.AllowAutoRedirect = false;
-				curRequest.Method = "POST";
-				curRequest.KeepAlive = false;
-				curRequest.ContentType = inContentType;
-				curRequest.Accept = inContentType;
-
-				if ( inUserAccount != null ) {
-					if ( inUrl.Contains( "usawaterski" ) ) {
-						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
-					} else {
-						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
-					}
-				}
-
-				//Set header parameters to the WebRequest
-				( (HttpWebRequest)curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
-				if ( inHeaderParams != null ) {
-					foreach ( string curKey in inHeaderParams.Keys ) {
-						curRequest.Headers[curKey] = inHeaderParams[curKey];
-					}
-				}
-
-				// Create POST data and convert it to a byte array.
-				byte[] byteArray = Encoding.UTF8.GetBytes( inMessage );
-
-				// Set the ContentLength property of the WebRequest.
-				curRequest.ContentLength = byteArray.Length;
-
-				// Get the request stream.
-				curDataStream = curRequest.GetRequestStream();
-
-				// Write the data to the request stream.
-				curDataStream.Write( byteArray, 0, byteArray.Length );
-
-				// Close the Stream object.
-				curDataStream.Close();
-
-				// Get the response.
-				HttpWebResponse curResp = (HttpWebResponse)curRequest.GetResponse();
-				String respMsg = getResponseAsString( curResp );
-				MessageBox.Show( String.Format( "Request Response={0}", respMsg ) );
-
-				return respMsg;
-
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
-				return null;
-			}
-		}
-
 		public static Dictionary<string, object> deleteMessagePostJsonResp(String inUrl, NameValueCollection inHeaderParams, String inContentType, String inMessage) {
             String curMethodName = "SendMessageHttp:deleteMessagePostJsonResp: ";
             HttpWebRequest curRequest = null;
@@ -682,26 +546,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 
             return true;
         }
-        public static bool sendMessagePostAtom(String inUrl, String inMessage, String inUserAccount, String inPassword) {
-            return sendMessagePostAsync( inUrl, inMessage, "application/atom+xml", inUserAccount, inPassword );
-        }
-        public static bool sendMessagePostAtom(String inUrl, String inMessage) {
-            return sendMessagePostAsync( inUrl, inMessage, "application/atom+xml", null, null );
-        }
         public static bool sendMessagePostXml(String inUrl, String inMessage) {
             return sendMessagePostAsync( inUrl, inMessage, "text/xml;charset=\"utf-8\"", null, null );
-        }
-        public static bool sendMessagePostForm(String inUrl, String inMessage) {
-            return sendMessagePostAsync( inUrl, inMessage, "application/x-www-form-urlencoded", null, null );
-        }
-        public static bool sendMessagePost(String inUrl, String inMessage) {
-            return sendMessagePostAsync( inUrl, inMessage, null, null, null );
-        }
-        public static bool sendMessagePost(String inUrl, String inMessage, String inContentType) {
-            return sendMessagePostAsync( inUrl, inMessage, inContentType, null, null );
-        }
-        private static bool sendMessagePost(String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword) {
-            return sendMessagePostAsync( inUrl, inMessage, inContentType, inUserAccount, inPassword );
         }
 
         public static bool sendMessagePostAsync(String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword) {

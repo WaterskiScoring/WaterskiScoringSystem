@@ -336,7 +336,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
-0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		85.00	1 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 9/25/2021 Alexia Abelson
+0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		86.00	4 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 6/26/2022 Alexia Abelson
 0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		6260	6/4/2022 Alexia Abelson
 0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19
@@ -369,7 +369,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		136	(41.5m) 51kph 5ft 9/8/2018 Frankie Dees
-0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.50	2.5 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 6/19/2021 Steve Raphael
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.50	2.5 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 6/19/2021 Steve Raphael 7/23/2022 Daniel Warmhoff
 0	AWSARecords	M8-T		142	Mens 8 - Trick		3110	9/5/2021 Bruce Kistler
 0	AWSARecords	M8-J		143	Mens 8 - Jump		123	(37.6m) 5 51kph 9/25/2021 Frankie Dees
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		88	4 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 8/25/2018 Jim Kinney 9/29/2019 John Autore
@@ -378,9 +378,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	MA-S		161	Mens 10 - Slalom		77	5 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 8/25/2018 Don Fournier
 0	AWSARecords	MA-T		162	Mens 10 - Trick		1600	 10/20/2007 Harry Price  
 0	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
-0	AWSARecords	MB-S		171	Mens 11 - Slalom		59.00	5 bouys at 16m @ 46 kph (22 off @ 28.6 mph) 7/23/2020 Ed Fisher
+0	AWSARecords	MB-S		171	Mens 11 - Slalom		63.50	3.5 bouys at 14.25m @ 46 kph (28 off @ 28.6 mph) 10/2/2021 Ed Fisher
 0	AWSARecords	MB-T		172	Mens 11 - Trick		1050	10/29/2012 Harry Price
-0	AWSARecords	MB-J		173	Mens 11 - Jump		22	(6.7m) 5 39kph 10/29/2012 Harry Price
+0	AWSARecords	MB-J		173	Mens 11 - Jump		41	(12.6m) 5 46 kph (28.5 mph) 7/23/2022 Bruce Kunde
 0	AWSARecords	W1-S		181	Womens 1 - Slalom		110.00	2 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2020 Samantha Dumala
 0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
 0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan

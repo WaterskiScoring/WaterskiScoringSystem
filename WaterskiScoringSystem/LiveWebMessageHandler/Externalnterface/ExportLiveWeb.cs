@@ -742,7 +742,7 @@ namespace LiveWebMessageHandler.Externalnterface {
                 curXml.Append( "<Table name=\"" + inTableName + "\" command=\"" + inCmd + "\" >" );
                 curXml.Append( "<Columns count=\"" + curDataTable.Columns.Count + "\">" );
                 foreach ( DataColumn curColumn in curDataTable.Columns ) {
-                    if ( !( curColumn.ColumnName.ToUpper().Equals( "PK" ) ) ) {
+                    if ( !( curColumn.ColumnName.ToUpper().Equals( "PK" ) ) && !( curColumn.ColumnName.ToLower().Equals( "reridereason " ) ) ) {
                         curXml.Append( "<Column>" + curColumn.ColumnName + "</Column>" );
                     }
                 }
@@ -783,7 +783,7 @@ namespace LiveWebMessageHandler.Externalnterface {
                     foreach ( DataRow curRow in curDataTable.Rows ) {
                         curXml.Append( "<Row colCount=\"" + curDataTable.Columns.Count + "\">" );
                         foreach ( DataColumn curColumn in curDataTable.Columns ) {
-                            if ( !( curColumn.ColumnName.ToUpper().Equals( "PK" ) ) ) {
+                            if ( !( curColumn.ColumnName.ToUpper().Equals( "PK" ) ) && !( curColumn.ColumnName.ToLower().Equals( "reridereason " ) ) ) {
                                 if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
                                     curValue = ( (DateTime)curRow[curColumn.ColumnName] ).ToString( "yyyy-MM-dd HH:mm:ss" );
                                     curValue = encodeXmlValue( curValue );

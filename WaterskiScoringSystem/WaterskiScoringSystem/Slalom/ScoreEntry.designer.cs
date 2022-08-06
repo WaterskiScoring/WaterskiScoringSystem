@@ -23,7 +23,6 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-			System.Windows.Forms.Label roundLabel;
 			System.Windows.Forms.Label activeLabel;
 			System.Windows.Forms.Label UnscoredMsgLabel;
 			System.Windows.Forms.Label ScoredMsgLabel;
@@ -143,8 +142,10 @@
 			this.CellBorder6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TimeInTolRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.TimeInTolImg = new System.Windows.Forms.DataGridViewImageColumn();
+			this.BoatPathGoodRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.BoatTimeRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ProtectedScoreRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreProtRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.RerideRecap = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.NoteRecap = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -174,6 +175,7 @@
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navExportLw = new System.Windows.Forms.ToolStripButton();
 			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.navSaveItem = new System.Windows.Forms.ToolStripButton();
@@ -237,10 +239,8 @@
 			this.ResendPassButton = new System.Windows.Forms.Button();
 			this.InvalidateBoatPathButton = new System.Windows.Forms.Button();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.SlalomLineSelect = new WaterskiScoringSystem.Common.SlalomLineSelect();
 			this.SlalomSpeedSelection = new WaterskiScoringSystem.Common.SlalomSpeedSelect();
-			roundLabel = new System.Windows.Forms.Label();
 			activeLabel = new System.Windows.Forms.Label();
 			UnscoredMsgLabel = new System.Windows.Forms.Label();
 			ScoredMsgLabel = new System.Windows.Forms.Label();
@@ -262,17 +262,6 @@
 			this.EventRunInfoBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.boatPathDataGridView)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// roundLabel
-			// 
-			roundLabel.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			roundLabel.Location = new System.Drawing.Point(274, 146);
-			roundLabel.Margin = new System.Windows.Forms.Padding(0);
-			roundLabel.Name = "roundLabel";
-			roundLabel.Size = new System.Drawing.Size(56, 38);
-			roundLabel.TabIndex = 0;
-			roundLabel.Text = "Skier Round";
-			roundLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
 			// activeLabel
 			// 
@@ -341,7 +330,7 @@
 			// 
 			startSpeedLabel.AutoSize = true;
 			startSpeedLabel.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			startSpeedLabel.Location = new System.Drawing.Point(365, 168);
+			startSpeedLabel.Location = new System.Drawing.Point(307, 168);
 			startSpeedLabel.Margin = new System.Windows.Forms.Padding(1);
 			startSpeedLabel.Name = "startSpeedLabel";
 			startSpeedLabel.Size = new System.Drawing.Size(53, 16);
@@ -353,7 +342,7 @@
 			// 
 			startLenLabel.AutoSize = true;
 			startLenLabel.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			startLenLabel.Location = new System.Drawing.Point(496, 168);
+			startLenLabel.Location = new System.Drawing.Point(438, 168);
 			startLenLabel.Name = "startLenLabel";
 			startLenLabel.Size = new System.Drawing.Size(98, 16);
 			startLenLabel.TabIndex = 0;
@@ -705,7 +694,7 @@
 			this.winStatus.Location = new System.Drawing.Point(0, 666);
 			this.winStatus.Name = "winStatus";
 			this.winStatus.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
-			this.winStatus.Size = new System.Drawing.Size(1241, 22);
+			this.winStatus.Size = new System.Drawing.Size(1325, 22);
 			this.winStatus.TabIndex = 5;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -755,8 +744,10 @@
             this.CellBorder6,
             this.TimeInTolRecap,
             this.TimeInTolImg,
+            this.BoatPathGoodRecap,
             this.BoatTimeRecap,
             this.ScoreRecap,
+            this.ProtectedScoreRecap,
             this.ScoreProtRecap,
             this.RerideRecap,
             this.NoteRecap,
@@ -773,7 +764,7 @@
 			this.slalomRecapDataGridView.MultiSelect = false;
 			this.slalomRecapDataGridView.Name = "slalomRecapDataGridView";
 			this.slalomRecapDataGridView.RowHeadersWidth = 31;
-			this.slalomRecapDataGridView.Size = new System.Drawing.Size(954, 172);
+			this.slalomRecapDataGridView.Size = new System.Drawing.Size(1038, 172);
 			this.slalomRecapDataGridView.TabIndex = 50;
 			this.slalomRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.slalomRecapDataGridView_CellContentClick);
 			this.slalomRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.slalomRecapDataGridView_CellEnter);
@@ -1023,6 +1014,7 @@
 			this.TimeInTolRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.TimeInTolRecap.FalseValue = "N";
 			this.TimeInTolRecap.HeaderText = "Time Good";
+			this.TimeInTolRecap.IndeterminateValue = "N";
 			this.TimeInTolRecap.Name = "TimeInTolRecap";
 			this.TimeInTolRecap.ReadOnly = true;
 			this.TimeInTolRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -1040,6 +1032,18 @@
 			this.TimeInTolImg.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.TimeInTolImg.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
 			this.TimeInTolImg.Width = 35;
+			// 
+			// BoatPathGoodRecap
+			// 
+			this.BoatPathGoodRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatPathGoodRecap.FalseValue = "N";
+			this.BoatPathGoodRecap.HeaderText = "Path Good";
+			this.BoatPathGoodRecap.IndeterminateValue = "Y";
+			this.BoatPathGoodRecap.Name = "BoatPathGoodRecap";
+			this.BoatPathGoodRecap.ReadOnly = true;
+			this.BoatPathGoodRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatPathGoodRecap.TrueValue = "Y";
+			this.BoatPathGoodRecap.Width = 40;
 			// 
 			// BoatTimeRecap
 			// 
@@ -1067,6 +1071,17 @@
 			this.ScoreRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ScoreRecap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
 			this.ScoreRecap.Width = 40;
+			// 
+			// ProtectedScoreRecap
+			// 
+			this.ProtectedScoreRecap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ProtectedScoreRecap.HeaderText = "Prot Score";
+			this.ProtectedScoreRecap.MaxInputLength = 6;
+			this.ProtectedScoreRecap.Name = "ProtectedScoreRecap";
+			this.ProtectedScoreRecap.ReadOnly = true;
+			this.ProtectedScoreRecap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ProtectedScoreRecap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ProtectedScoreRecap.Width = 40;
 			// 
 			// ScoreProtRecap
 			// 
@@ -1209,7 +1224,7 @@
 			this.ActivePassDesc.BackColor = System.Drawing.SystemColors.Info;
 			this.ActivePassDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ActivePassDesc.ForeColor = System.Drawing.SystemColors.Highlight;
-			this.ActivePassDesc.Location = new System.Drawing.Point(638, 403);
+			this.ActivePassDesc.Location = new System.Drawing.Point(580, 403);
 			this.ActivePassDesc.Name = "ActivePassDesc";
 			this.ActivePassDesc.Size = new System.Drawing.Size(336, 24);
 			this.ActivePassDesc.TabIndex = 27;
@@ -1217,10 +1232,11 @@
 			// 
 			// skierPassMsg
 			// 
+			this.skierPassMsg.AutoEllipsis = true;
 			this.skierPassMsg.BackColor = System.Drawing.SystemColors.Info;
 			this.skierPassMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.skierPassMsg.ForeColor = System.Drawing.Color.Red;
-			this.skierPassMsg.Location = new System.Drawing.Point(638, 377);
+			this.skierPassMsg.Location = new System.Drawing.Point(580, 377);
 			this.skierPassMsg.Name = "skierPassMsg";
 			this.skierPassMsg.Size = new System.Drawing.Size(336, 24);
 			this.skierPassMsg.TabIndex = 26;
@@ -1301,7 +1317,7 @@
 			dataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.listBoatTimesDataGridView.DefaultCellStyle = dataGridViewCellStyle42;
 			this.listBoatTimesDataGridView.GridColor = System.Drawing.SystemColors.Control;
-			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(638, 186);
+			this.listBoatTimesDataGridView.Location = new System.Drawing.Point(580, 186);
 			this.listBoatTimesDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.listBoatTimesDataGridView.MultiSelect = false;
 			this.listBoatTimesDataGridView.Name = "listBoatTimesDataGridView";
@@ -1402,15 +1418,16 @@
             this.navRefresh,
             this.navPrint,
             this.navExport,
+            this.navExportLw,
             this.navFilter,
             this.navSort,
             this.navSaveItem,
-            this.navLiveWeb,
             this.navWaterSkiConnect,
+            this.navLiveWeb,
             this.navExportRecord});
 			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
 			this.topMenuNav.Name = "topMenuNav";
-			this.topMenuNav.Size = new System.Drawing.Size(1241, 42);
+			this.topMenuNav.Size = new System.Drawing.Size(1325, 42);
 			this.topMenuNav.TabIndex = 52;
 			this.topMenuNav.Text = "toolStrip1";
 			// 
@@ -1443,6 +1460,16 @@
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.Click += new System.EventHandler(this.navExport_Click);
+			// 
+			// navExportLw
+			// 
+			this.navExportLw.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
+			this.navExportLw.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportLw.Name = "navExportLw";
+			this.navExportLw.Size = new System.Drawing.Size(64, 39);
+			this.navExportLw.Text = "Export LW";
+			this.navExportLw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportLw.Click += new System.EventHandler(this.navExportLw_Click);
 			// 
 			// navFilter
 			// 
@@ -2072,7 +2099,7 @@
             this.boatTimeBuoy,
             this.boatPathRerideFlag});
 			this.boatPathDataGridView.GridColor = System.Drawing.SystemColors.Control;
-			this.boatPathDataGridView.Location = new System.Drawing.Point(892, 164);
+			this.boatPathDataGridView.Location = new System.Drawing.Point(834, 164);
 			this.boatPathDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.boatPathDataGridView.MultiSelect = false;
 			this.boatPathDataGridView.Name = "boatPathDataGridView";
@@ -2272,7 +2299,7 @@
 			this.InvalidateBoatPathButton.AutoSize = true;
 			this.InvalidateBoatPathButton.Enabled = false;
 			this.InvalidateBoatPathButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.InvalidateBoatPathButton.Location = new System.Drawing.Point(985, 373);
+			this.InvalidateBoatPathButton.Location = new System.Drawing.Point(927, 373);
 			this.InvalidateBoatPathButton.Margin = new System.Windows.Forms.Padding(0);
 			this.InvalidateBoatPathButton.Name = "InvalidateBoatPathButton";
 			this.InvalidateBoatPathButton.Padding = new System.Windows.Forms.Padding(1);
@@ -2297,21 +2324,6 @@
 			this.roundActiveSelect.TabIndex = 11;
 			this.roundActiveSelect.Tag = "";
 			// 
-			// roundSelect
-			// 
-			this.roundSelect.AutoScroll = true;
-			this.roundSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundSelect.Location = new System.Drawing.Point(272, 186);
-			this.roundSelect.Margin = new System.Windows.Forms.Padding(0);
-			this.roundSelect.Name = "roundSelect";
-			this.roundSelect.RoundValue = "";
-			this.roundSelect.Size = new System.Drawing.Size(60, 93);
-			this.roundSelect.TabIndex = 20;
-			this.roundSelect.Tag = "";
-			this.roundSelect.Load += new System.EventHandler(this.roundSelect_Load);
-			// 
 			// SlalomLineSelect
 			// 
 			this.SlalomLineSelect.BackColor = System.Drawing.Color.Silver;
@@ -2324,7 +2336,7 @@
 			this.SlalomLineSelect.CurrentValue = "";
 			this.SlalomLineSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SlalomLineSelect.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.SlalomLineSelect.Location = new System.Drawing.Point(456, 186);
+			this.SlalomLineSelect.Location = new System.Drawing.Point(398, 186);
 			this.SlalomLineSelect.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
 			this.SlalomLineSelect.Name = "SlalomLineSelect";
 			this.SlalomLineSelect.Size = new System.Drawing.Size(180, 220);
@@ -2339,7 +2351,7 @@
 			this.SlalomSpeedSelection.CurrentShowSpeedKph = ((short)(0));
 			this.SlalomSpeedSelection.CurrentValueDesc = "";
 			this.SlalomSpeedSelection.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SlalomSpeedSelection.Location = new System.Drawing.Point(334, 186);
+			this.SlalomSpeedSelection.Location = new System.Drawing.Point(276, 186);
 			this.SlalomSpeedSelection.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
 			this.SlalomSpeedSelection.MaxSpeedKph = ((short)(0));
 			this.SlalomSpeedSelection.MinSpeedKph = ((short)(0));
@@ -2354,7 +2366,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1241, 688);
+			this.ClientSize = new System.Drawing.Size(1325, 688);
 			this.Controls.Add(this.InvalidateBoatPathButton);
 			this.Controls.Add(this.ResendPassButton);
 			this.Controls.Add(this.driverLabel);
@@ -2397,10 +2409,8 @@
 			this.Controls.Add(this.ActivePassDesc);
 			this.Controls.Add(activeLabel);
 			this.Controls.Add(this.roundActiveSelect);
-			this.Controls.Add(this.roundSelect);
 			this.Controls.Add(this.SlalomLineSelect);
 			this.Controls.Add(this.SlalomSpeedSelection);
-			this.Controls.Add(roundLabel);
 			this.Controls.Add(this.scoreLabel);
 			this.Controls.Add(this.scoreTextBox);
 			this.Controls.Add(this.noteLabel);
@@ -2451,7 +2461,6 @@
         private WaterskiScoringSystem.Common.SlalomSpeedSelect SlalomSpeedSelection;
         private WaterskiScoringSystem.Common.SlalomLineSelect SlalomLineSelect;
         private System.Windows.Forms.TextBox scoreTextBox;
-        private WaterskiScoringSystem.Common.RoundSelect roundSelect;
         private WaterskiScoringSystem.Common.RoundSelect roundActiveSelect;
         private System.Windows.Forms.Label ActivePassDesc;
         private System.Windows.Forms.Label skierPassMsg;
@@ -2502,39 +2511,6 @@
 		private System.Windows.Forms.GroupBox EventRunInfoBox;
 		private System.Windows.Forms.Label noteLabel;
 		private System.Windows.Forms.Label ActiveSkierNameLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RoundRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn skierPassRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder1;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry2Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Judge2ScoreRecap;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit2Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder2;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry3Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Judge3ScoreRecap;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit3Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Judge4ScoreRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder4;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Judge5ScoreRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder5;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry1Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Judge1ScoreRecap;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit1Recap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder6;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn TimeInTolRecap;
-		private System.Windows.Forms.DataGridViewImageColumn TimeInTolImg;
-		private System.Windows.Forms.DataGridViewTextBoxColumn BoatTimeRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreRecap;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn ScoreProtRecap;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn RerideRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn NoteRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RerideReasonRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassSpeedKphRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassLineLengthRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionIdRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn MemberIdRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroupRecap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatModelApproved;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EngineSpec;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SpeedControl;
@@ -2587,5 +2563,41 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatTimeBuoy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathRerideFlag;
 		private System.Windows.Forms.Button InvalidateBoatPathButton;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RoundRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skierPassRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder1;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry2Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Judge2ScoreRecap;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit2Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder2;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry3Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Judge3ScoreRecap;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit3Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder3;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Judge4ScoreRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder4;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Judge5ScoreRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder5;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateEntry1Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Judge1ScoreRecap;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn GateExit1Recap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CellBorder6;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn TimeInTolRecap;
+		private System.Windows.Forms.DataGridViewImageColumn TimeInTolImg;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn BoatPathGoodRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatTimeRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ProtectedScoreRecap;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn ScoreProtRecap;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn RerideRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn NoteRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RerideReasonRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassSpeedKphRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassLineLengthRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionIdRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MemberIdRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroupRecap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
+		private System.Windows.Forms.ToolStripButton navExportLw;
 	}
 }

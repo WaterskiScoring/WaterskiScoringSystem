@@ -1405,6 +1405,11 @@ namespace WaterskiScoringSystem.Trick {
             myExportData.ExportData( mySanctionNum, "Trick", curMemberId, curAgeGroup, curEventGroup, curRound );
         }
 
+        private void navExportLw_Click( object sender, EventArgs e ) {
+            navExport_Click( null, null );
+            ExportLiveWeb.uploadExportFile( "Export", "Trick", mySanctionNum );
+        }
+
         private void navExport_Click(object sender, EventArgs e) {
             if ( isDataModified ) {
                 try {
@@ -3920,6 +3925,5 @@ namespace WaterskiScoringSystem.Trick {
         private DataTable getData( String inSelectStmt ) {
             return DataAccess.getDataTable( inSelectStmt );
         }
-
-    }
+	}
 }
