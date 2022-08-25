@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing.Printing;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
     public partial class TrickListMaint : Form {
         private Boolean isDataModified = false;
-        private String myOrigCellValue = "";
         private String mySortCommand = "";
         private String myFilterCmd = "";
         private int myViewIdx = 0;
@@ -25,9 +19,6 @@ namespace WaterskiScoringSystem.Tools {
         private DataGridViewPrinter myPrintDataGrid;
 
         private DataTable myTrickListDataTable;
-
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
 
         public TrickListMaint() {
             InitializeComponent();
@@ -53,9 +44,6 @@ namespace WaterskiScoringSystem.Tools {
 
             filterDialogForm = new Common.FilterDialogForm();
             filterDialogForm.ColumnList = DataGridView.Columns;
-
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
 
             //Get Trick list data
             getTrickList();
@@ -187,6 +175,10 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
+        private void textBox1_KeyUp( object sender, KeyEventArgs e ) {
+            if ( e.KeyCode == Keys.Enter ) textBox1_Validated( sender, e );
+        }
+
         private void textBox1_Validated(object sender, EventArgs e) {
             if (( (TextBox)sender ).Text.Length > 0) {
                 myFilterCmd = "TrickCode like '%" + ( (TextBox)sender ).Text + "%' OR Description like '%" + ( (TextBox)sender ).Text + "%'";
@@ -265,6 +257,5 @@ namespace WaterskiScoringSystem.Tools {
             }
 
         }
-
-    }
+	}
 }

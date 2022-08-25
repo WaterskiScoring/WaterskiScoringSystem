@@ -2,6 +2,7 @@
 using System.Data;
 using System.Deployment.Application;
 using System.Drawing;
+using System.Text;
 using System.Threading.Tasks;
 
 using System.Windows.Forms;
@@ -12,15 +13,16 @@ namespace WscMessageHandler.Message {
 	public partial class Controller : Form {
 		private static readonly String myDisplayDateFormat = "ddd MMM dd H:mm:ss";
 		private static readonly Font myMsgFontBold = new Font( "Arial Narrow", 12, FontStyle.Bold );
-		private static readonly int myCountHeartBeatFailedMax = 4;
+		private static readonly int myCountHeartBeatFailedMax = 5;
 
 		private DataTable myMonitorDataTable = null;
 		private int myCountConnectCheckFailed = 0;
 		private int myCountHeartBeatFailed = 0;
-		private int myHeartBeatViewRowIdx = 0;
+		private DateTime myLastMsgGetTime;
 
 		private Timer myConnectTimer = null;
 		private Timer myHeartBeatTimer = null;
+		private Timer myMsgTimer = null;
 
 		public Controller() {
 			InitializeComponent();
@@ -207,6 +209,13 @@ namespace WscMessageHandler.Message {
 				DisconnectButton.Enabled = true;
 				ShowPinButton.Enabled = true;
 
+				myLastMsgGetTime = System.DateTime.Now;
+				// Create a timer with 30 second interval
+				myMsgTimer = new Timer() { Interval = 10000 };
+				myMsgTimer.Tick += new EventHandler( displayAvailableMessages );
+				myMsgTimer.Start();
+
+
 			} else {
 				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
 					, curMethodName, ConnectMgmtData.sanctionNum );
@@ -219,34 +228,12 @@ namespace WscMessageHandler.Message {
 			}
 		}
 
-		private void showHeartBeatMsg() {
-			String curMethodName = "Controller: showHeartBeatMsg: ";
-			bool addViewRows = false;
-			int curViewIdx = myHeartBeatViewRowIdx - 1;
-			if ( myHeartBeatViewRowIdx >= MessageView.Rows.Count ) addViewRows = true;
-
-			foreach ( DataRow curMonitorHeartBeat in myMonitorDataTable.Rows ) {
-				String curMonitorName = (String)curMonitorHeartBeat["MonitorName"];
-				DateTime curHeartBeat = (DateTime)curMonitorHeartBeat["HeartBeat"];
-				String curMsg = String.Format( "{0}{1} heart beat {2} ", curMethodName, curMonitorName, curHeartBeat.ToString( myDisplayDateFormat ) );
-				if ( addViewRows ) {
-					addViewMessage( curMsg, true, false );
-				
-				} else {
-					DataGridViewRow curViewRow = MessageView.Rows[curViewIdx];
-					curViewRow.Cells["Message"].Value = curMsg;
-					curViewRow.Cells["CreationDatetime"].Value = DateTime.Now.ToString( myDisplayDateFormat );
-					curViewIdx++;
-				}
-			}
-		}
-
 		private void addViewMessage(String msg, bool boldMessage, bool errorMsg ) {
 			Log.WriteFile(msg);
 			int curViewIdx = MessageView.Rows.Add();
 			DataGridViewRow curViewRow = MessageView.Rows[curViewIdx];
 			curViewRow.Cells["Message"].Value = msg;
-			curViewRow.Cells["CreationDatetime"].Value = DateTime.Now.ToString( myDisplayDateFormat );
+			curViewRow.Cells["LastUpdateDate"].Value = DateTime.Now.ToString( myDisplayDateFormat );
 			if ( boldMessage ) curViewRow.Cells["Message"].Style.Font = myMsgFontBold;
 			if ( errorMsg ) curViewRow.Cells["Message"].Style.ForeColor = Color.Red;
 		}
@@ -297,15 +284,13 @@ namespace WscMessageHandler.Message {
 
 			myCountHeartBeatFailed = 0;
 			myMonitorDataTable = HelperFunctions.getMonitorHeartBeatAll();
-			myHeartBeatViewRowIdx = MessageView.Rows.Count;
-			showHeartBeatMsg();
 
 			WaterSkiConnectButton.Visible = false;
 			DisconnectButton.Visible = true;
 			ShowPinButton.Visible = true;
 
 			// Create a timer with 5 minute interval.
-			myHeartBeatTimer = new Timer() { Interval = 300002 } ;
+			myHeartBeatTimer = new Timer() { Interval = 300000 } ;
 			myHeartBeatTimer.Tick += new EventHandler( checkMonitorHeartBeat );
 			myHeartBeatTimer.Start();
 		}
@@ -324,7 +309,9 @@ namespace WscMessageHandler.Message {
 				if ( prevMonitorHeartBeat.Length > 0 ) {
 					if ( (DateTime)curMonitorHeartBeat["HeartBeat"] <= (DateTime)prevMonitorHeartBeat[0]["HeartBeat"] ) {
 						myCountHeartBeatFailed++;
-						Log.WriteFile( String.Format( "{0}Heartbeat for monitor {1} is out of date, failed count = {2}", curMethodName, curMonitorName, myCountHeartBeatFailed ) );
+						String curMsg = String.Format( "{0}Heartbeat for monitor {1} is out of date, failed count = {2}", curMethodName, curMonitorName, myCountHeartBeatFailed );
+						Log.WriteFile( curMsg );
+						addViewMessage( curMsg, true, true );
 						if ( myCountHeartBeatFailed > myCountHeartBeatFailedMax ) {
 							terminateMonitors( curMonitorName );
 							return;
@@ -334,14 +321,57 @@ namespace WscMessageHandler.Message {
 			}
 
 			myMonitorDataTable = curMonitorDataTable;
-			showHeartBeatMsg();
 			myCountHeartBeatFailed = 0;
 			return;
 		}
 
+		private void displayAvailableMessages( object sender, EventArgs e ) {
+			String curMsg = "";
+			myMsgTimer.Stop();
+			int curViewIdx = MessageView.Rows.Count - 1;
+			if ( MessageView.Rows.Count > 0 ) MessageView.CurrentCell = MessageView.Rows[curViewIdx].Cells["Message"];
+
+			Cursor.Current = Cursors.WaitCursor;
+			DataTable curDataTable = getMessages( myLastMsgGetTime);
+			foreach ( DataRow curDataRow in curDataTable.Rows ) {
+				//PK, SanctionId, MsgAction, MsgType, MsgData, InsertDate 
+				curMsg = String.Format( "PK={0}, InsertDate={1}, MsgAction={2}, MsgType={3}, MsgData={4}"
+					, HelperFunctions.getDataRowColValue( curDataRow, "PK", "" )
+					, ( (DateTime)curDataRow["InsertDate"] ).ToString( myDisplayDateFormat )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgAction", "" )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgType", "" )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgData", "" )
+					) ;
+				if ( curMsg.Contains( "connect_confirm_listener" ) ) addViewMessage( curMsg, true, false );
+				else addViewMessage( curMsg, false, false );
+			}
+
+			curViewIdx = MessageView.Rows.Count - 1;
+			if ( MessageView.Rows.Count > 0 ) {
+				MessageView.FirstDisplayedScrollingRowIndex = curViewIdx;
+				MessageView.Rows[curViewIdx].Selected = true;
+				MessageView.Rows[curViewIdx].Cells[0].Selected = true;
+				MessageView.CurrentCell = MessageView.Rows[curViewIdx].Cells["Message"];
+
+				int curRowPos = curViewIdx + 1;
+				RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + MessageView.Rows.Count.ToString();
+
+			} else {
+				RowStatusLabel.Text = "";
+			}
+			Cursor.Current = Cursors.Default;
+
+			// Create a timer with 5 second interval
+			myLastMsgGetTime = System.DateTime.Now;
+			myMsgTimer = new Timer() { Interval = 10000 };
+			myMsgTimer.Tick += new EventHandler( displayAvailableMessages );
+			myMsgTimer.Start();
+		}
+
 		private void terminateMonitors( String curMonitorName ) {
 			String curMethodName = "Controller: terminateMonitors: ";
-			Log.WriteFile( String.Format( "{0}No heartbeat for monitor {1}", curMethodName, curMonitorName ) );
+			String curMsg = String.Format( "{0}No heartbeat for monitor {1}", curMethodName, curMonitorName );
+			Log.WriteFile( curMsg );
 
 			if ( myConnectTimer != null ) {
 				myConnectTimer.Stop();
@@ -351,17 +381,21 @@ namespace WscMessageHandler.Message {
 				myHeartBeatTimer.Stop();
 				myHeartBeatTimer.Tick -= new EventHandler( checkMonitorHeartBeat );
 			}
-			String msg = "";
+			curMsg = "";
 			if ( curMonitorName.Equals( "All" ) ) {
-				msg = "HeartBeat for monitors unavailable.  Assuming connection has failed.  Terminating monitoring.";
+				curMsg = "HeartBeat for monitors unavailable.  Assuming connection has failed.  Terminating monitoring.";
 			
 			} else if ( curMonitorName.Length > 0 ) {
-				msg = String.Format( "{0}HeartBeat for monitor {1} not available.  Assuming connection has failed.  Terminating monitoring.", curMethodName, curMonitorName );
+				curMsg = String.Format( "{0}HeartBeat for monitor {1} not available.  Assuming connection has failed.  Terminating monitoring.", curMethodName, curMonitorName );
+			
+			} else {
+				curMsg = "Disconnect requested and completed";
 			}
+
 			int curViewIdx = MessageView.Rows.Add();
 			DataGridViewRow curViewRow = MessageView.Rows[curViewIdx];
-			curViewRow.Cells["Message"].Value = msg;
-			curViewRow.Cells["CreationDatetime"].Value = DateTime.Now.ToString( myDisplayDateFormat );
+			curViewRow.Cells["Message"].Value = curMsg;
+			curViewRow.Cells["LastUpdateDate"].Value = DateTime.Now.ToString( myDisplayDateFormat );
 			curViewRow.Cells["Message"].Style.Font = myMsgFontBold;
 			curViewRow.Cells["Message"].Style.ForeColor = Color.Red;
 
@@ -376,10 +410,18 @@ namespace WscMessageHandler.Message {
 			ShowPinButton.Visible = false;
 
 			myCountHeartBeatFailed = 0;
-
-			if ( msg.Length > 0 ) MessageBox.Show( msg );
 		}
 
+		private DataTable getMessages ( DateTime inLastMsgTime ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select PK, SanctionId, MsgAction, MsgType, MsgData, InsertDate " );
+			curSqlStmt.Append( "From WscMonitorMsg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND InsertDate >= '{1}'"
+				, ConnectMgmtData.sanctionNum, inLastMsgTime.ToString( "yyyy-MM-dd HH:mm:ss" ) ) );
+			curSqlStmt.Append( " Order By InsertDate " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			return curDataTable;
+		}
 	}
 }
 

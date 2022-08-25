@@ -63,12 +63,8 @@ namespace WscMessageHandler.Message {
 					ConnectMgmtData.socketClient.EmitAsync( (String)curDataRow["MsgType"], curDataRow["MsgData"] );
 					Log.WriteFile( String.Format( "{0}PK: {1} MsgType: {2} MsgData: {3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] ) );
 					removeWscMsgSent( (int)curDataRow["PK"] );
+					HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Sent", (String)curDataRow["MsgType"], (String)curDataRow["MsgData"] );
 				}
-
-				readMessagesTimer = new System.Timers.Timer( 2000 );
-				readMessagesTimer.Elapsed += readSendMessages;
-				readMessagesTimer.AutoReset = false;
-				readMessagesTimer.Enabled = true;
 
 				return;
 
@@ -76,6 +72,12 @@ namespace WscMessageHandler.Message {
 				String curMsg = String.Format( "{0}Exception encounter {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
 				return;
+			
+			} finally {
+				readMessagesTimer = new System.Timers.Timer( 2000 );
+				readMessagesTimer.Elapsed += readSendMessages;
+				readMessagesTimer.AutoReset = false;
+				readMessagesTimer.Enabled = true;
 			}
 		}
 
@@ -116,5 +118,6 @@ namespace WscMessageHandler.Message {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM WscMsgSend Where PK = " + pkid );
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
+
 	}
 }

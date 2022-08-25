@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -1158,11 +1155,13 @@ namespace WaterskiScoringSystem.Admin {
 
                     ExportData myExportData = new ExportData();
                     myExportData.exportData("Tournament", "Select * from Tournament");
+                
                 } else if (exportCommand.ToLower().Equals("data")) {
                     winStatusMsg.Text = "Export all data for tournament " + editName.Text;
 
                     ExportData myExportData = new ExportData();
                     myExportData.exportTourData(editSanctionId.Text);
+                
                 } else if (exportCommand.ToLower().Equals("perf")) {
                     winStatusMsg.Text = "Export performance data for tournament " + TourName;
                     ExportPerfData myExportData = new ExportPerfData();
@@ -1184,7 +1183,7 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private void navClean_Click( object sender, EventArgs e ) {
-            String curMethodName = "TourList:cleanTourData";
+            String curMethodName = "TourList:cleanTourData: ";
             int rowsProc = 0;
 
             String dialogMsg = "You have asked to delete all data for the selected tournament"
@@ -1197,48 +1196,32 @@ namespace WaterskiScoringSystem.Admin {
                     MessageBoxIcon.Warning,
                     MessageBoxDefaultButton.Button1);
             if (msgResp == DialogResult.OK) {
-                String[] exportTableName = {
-                    "TourReg"
-                    , "EventReg"
-                    , "EventRunOrder"
-                    , "TeamList"
-                    , "TeamOrder"
-                    , "SlalomScore"
-                    , "SlalomRecap"
-                    , "TrickScore"
-                    , "TrickPass"
-                    , "TrickVideo"
-                    , "JumpScore"
-                    , "JumpRecap"
-                    , "JumpMeterSetup"
-                    , "JumpVideoSetup"
-                    , "TourBoatUse"
-                    , "OfficialWork"
-                    , "OfficialWorkAsgmt"
-                    , "SafetyCheckList"
-                    , "DivOrder"
-                };
-
                 try {
+                    StringBuilder curMsg = new StringBuilder( "" );
                     Log.OpenFile();
-                    Log.WriteFile( curMethodName + ":begin: " );
+                    Log.WriteFile( curMethodName + "begin: " );
 
                     try {
-                        for (int idx = 0; idx < exportTableName.Length; idx++) {
-                            String curSqlStmt = "Delete from " + exportTableName[idx] + " where SanctionId = '" + editSanctionId.Text + "'";
+                        for (int idx = 0; idx < DataAccess.TourTableList.Length; idx++) {
+                            if ( DataAccess.TourTableList[idx].Equals( "Tournament" ) ) continue;
+                            String curSqlStmt = "Delete from " + DataAccess.TourTableList[idx] + " where SanctionId = '" + editSanctionId.Text + "'";
                             rowsProc = DataAccess.ExecuteCommand( curSqlStmt );
                             if (rowsProc > 0) {
-                                MessageBox.Show( rowsProc + " Records deleted from " + exportTableName[idx] );
+                                curMsg.Append( String.Format( "{0} Records deleted from {1}{2}"
+                                    , rowsProc, DataAccess.TourTableList[idx], Environment.NewLine ) );
                             }
                         }
                     } catch (Exception excp) {
-                        MessageBox.Show( "Error attempting to update tournament information \n" + excp.Message );
+                        Log.WriteFile( curMethodName + "Error attempting to clean tournament information: " + excp.Message );
+                        MessageBox.Show( "Error attempting to clean tournament information \n" + excp.Message );
                     }
 
-                    Log.WriteFile( curMethodName + ":conplete: " );
+                    MessageBox.Show( curMsg.ToString() );
+                    Log.WriteFile( curMethodName + curMsg.ToString() );
 
                 } catch (Exception excp) {
-                    MessageBox.Show( "Error attempting to update tournament information \n" + excp.Message );
+                    Log.WriteFile( curMethodName + "Error attempting to clean tournament information: " + excp.Message );
+                    MessageBox.Show( "Error attempting to clean tournament information \n" + excp.Message );
                 }
             }
         }

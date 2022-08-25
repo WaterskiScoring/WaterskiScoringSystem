@@ -574,7 +574,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curDataTable.Rows.Count > 0 ) {
-					return new decimal[] { (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreFeet"], (decimal)curDataTable.Rows[curDataTable.Rows.Count - 1]["ScoreMeters"] };
+					return new decimal[] { (decimal)curDataTable.Rows[0]["ScoreFeet"], (decimal)curDataTable.Rows[0]["ScoreMeters"] };
 
 				} else {
 					if ( myConnectActive ) Thread.Sleep( 200 );

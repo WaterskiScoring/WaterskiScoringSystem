@@ -32,6 +32,7 @@ namespace WaterskiScoringSystem.Common {
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
 			this.navSave = new System.Windows.Forms.ToolStripButton();
+			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.RowStatusLabel = new System.Windows.Forms.Label();
@@ -66,7 +67,8 @@ namespace WaterskiScoringSystem.Common {
 			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navExport,
-            this.navSave});
+            this.navSave,
+            this.navFilter});
 			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
 			this.winNavStrip.Name = "winNavStrip";
 			this.winNavStrip.Size = new System.Drawing.Size(1039, 42);
@@ -102,6 +104,17 @@ namespace WaterskiScoringSystem.Common {
 			this.navSave.Text = "Save";
 			this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navSave.Click += new System.EventHandler(this.navSave_Click);
+			// 
+			// navFilter
+			// 
+			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
+			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navFilter.Name = "navFilter";
+			this.navFilter.Size = new System.Drawing.Size(37, 39);
+			this.navFilter.Text = "Filter";
+			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
+			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
 			// 
 			// winStatus
 			// 
@@ -180,7 +193,6 @@ namespace WaterskiScoringSystem.Common {
 			this.PK.Name = "PK";
 			this.PK.ReadOnly = true;
 			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PK.Visible = false;
 			this.PK.Width = 45;
 			// 
 			// SanctionId
@@ -379,6 +391,7 @@ namespace WaterskiScoringSystem.Common {
 		private System.Windows.Forms.ToolStripStatusLabel winStatusMsg;
 		private System.Windows.Forms.Label RowStatusLabel;
 		private System.Windows.Forms.DataGridView dataGridView;
+		private System.Windows.Forms.ToolStripButton navFilter;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierMemberId;

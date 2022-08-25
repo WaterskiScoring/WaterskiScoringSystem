@@ -95,7 +95,6 @@ namespace WaterskiScoringSystem.Common {
 			}
 		}
 
-
 		public static DataRow getTourChiefScorer( String inSanctionNum ) {
 			DataRow curRow = null;
 			try {
@@ -130,7 +129,13 @@ namespace WaterskiScoringSystem.Common {
 			if ( inObject == null ) return true;
 			else if ( inObject == System.DBNull.Value ) return true;
 			else if ( inObject.ToString().Length > 0 ) return false;
-			else return true;
+			return true;
+		}
+		public static bool isObjectPopulated( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) return true;
+			return false;
 		}
 
 		public static bool isValueTrue( String inValue ) {

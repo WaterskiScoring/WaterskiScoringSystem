@@ -241,8 +241,8 @@ namespace WaterskiScoringSystem.Tools {
 		private DataTable getMostImproved() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.Score as CurYearScore, S2.Score as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(7,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -250,13 +250,13 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join SlalomScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join SlalomScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "UNION " );
 
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, CONVERT(numeric(6,1), S1.Score) as CurYearScore, CONVERT(numeric(6,1), S2.Score) as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(7,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -264,13 +264,13 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join TrickScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join TrickScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "UNION " );
 
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.ScoreFeet as CurYearScore, S2.ScoreFeet as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(6,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(7,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -278,13 +278,13 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join JumpScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join JumpScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "UNION " );
 
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.Score as CurYearScore, S2.Score as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(7,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -292,13 +292,13 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join SlalomScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join SlalomScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Slalom' AND E2.Event = 'Slalom' AND S2.Score > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "UNION " );
 
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, CONVERT(numeric(6,1), S1.Score) as CurYearScore, CONVERT(numeric(6,1), S2.Score) as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(6,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.Score - S2.Score) as ScoreChange, CONVERT(numeric(7,2), (((S1.Score - S2.Score) / S2.Score) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -306,13 +306,13 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join TrickScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join TrickScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Trick' AND E2.Event = 'Trick' AND S2.Score > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 			curSqlStmt.Append( "UNION " );
 
 			curSqlStmt.Append( "SELECT E.Event, SkierName, T.AgeGroup, E.RankingScore as CurRankingScore, E2.RankingScore as PrevRankingScore, E2.AgeGroup as PrevAgeGroup, S1.ScoreFeet as CurYearScore, S2.ScoreFeet as PrevYearScore " );
-			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(6,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
-			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(6,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
+			curSqlStmt.Append( ", (E.RankingScore - E2.RankingScore) as RankingScoreChange, CONVERT(numeric(7,2), (((E.RankingScore - E2.RankingScore) / E2.RankingScore) * 100)) as RankingScorePctChange " );
+			curSqlStmt.Append( ", (S1.ScoreFeet - S2.ScoreFeet) as ScoreChange, CONVERT(numeric(7,2), (((S1.ScoreFeet - S2.ScoreFeet) / S2.ScoreFeet) * 100)) as ScorePctChange " );
 			curSqlStmt.Append( "FROM EventReg E " );
 			curSqlStmt.Append( "Inner join TourReg T on T.SanctionId = E.SanctionId and T.MemberId = E.MemberId AND T.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join EventReg E2 on E2.SanctionId = '" + this.mySanctionNumPrev + "' " );
@@ -320,7 +320,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "Inner join JumpScore S1 on S1.SanctionId = '" + this.mySanctionNum + "' AND S1.MemberId = E.MemberId AND S1.AgeGroup = E.AgeGroup " );
 			curSqlStmt.Append( "Inner join JumpScore S2 on S2.SanctionId = '" + this.mySanctionNumPrev + "' AND S2.MemberId = E2.MemberId AND S2.AgeGroup = E2.AgeGroup " );
 			curSqlStmt.Append( "Where T.SanctionId = '" + this.mySanctionNum + "' " );
-			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 " );
+			curSqlStmt.Append( "AND E.Event = 'Jump' AND E2.Event = 'Jump' AND S2.ScoreFeet > 0 AND E2.RankingScore > 0 " );
 			curSqlStmt.Append( "And SUBSTRING(T.AgeGroup, 1, 1) in ('B', 'G') " );
 
 			curSqlStmt.Append( "Order by E.Event, T.AgeGroup, SkierName " );

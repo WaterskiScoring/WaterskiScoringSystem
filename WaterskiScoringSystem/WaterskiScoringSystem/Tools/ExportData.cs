@@ -18,48 +18,20 @@ namespace WaterskiScoringSystem.Tools {
 
         }
         public Boolean exportTourData( String inSanctionId, String inFullFileName ) {
-            String curMethodName = "exportTourData";
+            String curMethodName = "exportTourData: ";
             Boolean returnStatus = false;
             Log.WriteFile( curMethodName + ":begin: " );
 
-            String[] exportTableName = {
-                "Tournament"
-                , "TourReg"
-                , "TourProperties"
-                , "EventReg"
-                , "EventRunOrder"
-				, "EventRunOrderFilters"
-				, "TeamList"
-                , "TeamOrder"
-                , "SlalomScore"
-                , "SlalomRecap"
-                , "TrickScore"
-                , "TrickVideo"
-                , "TrickPass"
-                , "JumpScore"
-                , "JumpRecap"
-				, "JumpMeterSetup"
-                , "JumpVideoSetup"
-				, "BoatTime"
-				, "BoatPath"
-				, "JumpMeasurement"
-				, "TourBoatUse"
-                , "OfficialWork"
-                , "OfficialWorkAsgmt"
-                , "SafetyCheckList"
-                , "DivOrder"
-            };
-            String[] exportSelectStmt = new String[exportTableName.Length];
-
-            for ( int idx = 0; idx < exportTableName.Length; idx++ ) {
-                exportSelectStmt[idx] = "Select * from " + exportTableName[idx] + " where SanctionId = '" + inSanctionId + "'";
+            String[] exportSelectStmt = new String[DataAccess.TourTableList.Length];
+            for ( int idx = 0; idx < DataAccess.TourTableList.Length; idx++ ) {
+                exportSelectStmt[idx] = "Select * from " + DataAccess.TourTableList[idx] + " where SanctionId = '" + inSanctionId + "'";
             }
             if ( inFullFileName == null ) {
-                returnStatus = exportData( exportTableName, exportSelectStmt );
+                returnStatus = exportData( DataAccess.TourTableList, exportSelectStmt );
             } else {
-                returnStatus = exportData( exportTableName, exportSelectStmt, inFullFileName );
+                returnStatus = exportData( DataAccess.TourTableList, exportSelectStmt, inFullFileName );
             }
-            Log.WriteFile( curMethodName + ":conplete: " );
+            Log.WriteFile( curMethodName + "conplete: " );
 
             return returnStatus;
         }

@@ -243,7 +243,8 @@ namespace WaterskiScoringSystem.Tools {
 			string curSanctionId = "", curMatchCommand = "", curColValue = "";
 			string[] curImportDataMatchMsg = { "", "", "", "" };
 			bool isLastUpdateDateAvail = false;
-			DateTime curLastUpdateDate = new DateTime(), curLastUpdateDateIn = new DateTime();
+			DateTime curLastUpdateDate = Convert.ToDateTime("2000-01-01 00:00:00")
+				, curLastUpdateDateIn = Convert.ToDateTime( "2000-01-01 00:00:00" );
 			
 			StringBuilder stmtSelect = new StringBuilder( "" );
 			StringBuilder stmtWhere = new StringBuilder( "" );
@@ -260,9 +261,12 @@ namespace WaterskiScoringSystem.Tools {
 			 */
 			curColValue = findColValue( "LastUpdateDate", inputColNames, inputCols );
 			if ( curColValue != null && curColValue.Length > 0 ) {
-				isLastUpdateDateAvail = true;
 				curLastUpdateDateIn = Convert.ToDateTime( curColValue );
-				curLastUpdateDate = (DateTime)curRow["LastUpdateDate"];
+				String curDateValue = HelperFunctions.getDataRowColValue( curRow, "LastUpdateDate", "" );
+				if ( curDateValue.Length > 4 ) {
+					isLastUpdateDateAvail = true;
+					curLastUpdateDate = (DateTime)curRow["LastUpdateDate"];
+				}
 			}
 
 			// Skip update if input data is not more current than database entry

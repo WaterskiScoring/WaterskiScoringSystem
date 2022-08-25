@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace ValidationLibrary.Trick {
 	public class Validation {
@@ -207,10 +205,6 @@ namespace ValidationLibrary.Trick {
 
 			prevTrickIdx = 0;
 			prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
-			prevStartPos = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["StartPos"] );
-			prevNumTurns = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["NumTurns"] );
-			prevTypeCodeValue = Convert.ToInt16( (Byte)prevTrickRows[prevTrickIdx]["TypeCode"] );
-
 			if ( prevCode.ToUpper().Equals( "FALL" ) ) {
 				if ( curStartPos == 0 ) {
 					myUpdatedTrickCode = inCode;
@@ -220,6 +214,10 @@ namespace ValidationLibrary.Trick {
 				myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", inCode, prevCode );
 				return false;
 			}
+
+			prevStartPos = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["StartPos"] );
+			prevNumTurns = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["NumTurns"] );
+			prevTypeCodeValue = Convert.ToInt16( (Byte)prevTrickRows[prevTrickIdx]["TypeCode"] );
 
 			if ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 0 ) {
 				if ( curStartPos == 0 ) {

@@ -27,11 +27,12 @@ namespace WscMessageHandler.Message {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Controller));
 			this.MessageView = new System.Windows.Forms.DataGridView();
-			this.CreationDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.LastUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.WaterSkiConnectButton = new System.Windows.Forms.Button();
 			this.ShowPinButton = new System.Windows.Forms.Button();
 			this.DisconnectButton = new System.Windows.Forms.Button();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -44,29 +45,29 @@ namespace WscMessageHandler.Message {
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.MessageView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.MessageView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.CreationDatetime,
+            this.LastUpdateDate,
             this.Message});
-			this.MessageView.Location = new System.Drawing.Point(5, 33);
+			this.MessageView.Location = new System.Drawing.Point(10, 33);
 			this.MessageView.Name = "MessageView";
 			this.MessageView.ReadOnly = true;
-			this.MessageView.Size = new System.Drawing.Size(890, 530);
-			this.MessageView.TabIndex = 1;
+			this.MessageView.Size = new System.Drawing.Size(958, 508);
+			this.MessageView.TabIndex = 4;
 			// 
-			// CreationDatetime
+			// LastUpdateDate
 			// 
-			this.CreationDatetime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.LastUpdateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
 			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
 			dataGridViewCellStyle1.NullValue = null;
 			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.CreationDatetime.DefaultCellStyle = dataGridViewCellStyle1;
-			this.CreationDatetime.HeaderText = "DateTime";
-			this.CreationDatetime.MinimumWidth = 100;
-			this.CreationDatetime.Name = "CreationDatetime";
-			this.CreationDatetime.ReadOnly = true;
+			this.LastUpdateDate.DefaultCellStyle = dataGridViewCellStyle1;
+			this.LastUpdateDate.HeaderText = "DateTime";
+			this.LastUpdateDate.MinimumWidth = 100;
+			this.LastUpdateDate.Name = "LastUpdateDate";
+			this.LastUpdateDate.ReadOnly = true;
 			// 
 			// Message
 			// 
-			this.Message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.Message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
 			this.Message.HeaderText = "Message";
 			this.Message.MinimumWidth = 200;
 			this.Message.Name = "Message";
@@ -77,10 +78,10 @@ namespace WscMessageHandler.Message {
 			// WaterSkiConnectButton
 			// 
 			this.WaterSkiConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.WaterSkiConnectButton.Location = new System.Drawing.Point(5, 4);
+			this.WaterSkiConnectButton.Location = new System.Drawing.Point(131, 5);
 			this.WaterSkiConnectButton.Name = "WaterSkiConnectButton";
 			this.WaterSkiConnectButton.Size = new System.Drawing.Size(145, 23);
-			this.WaterSkiConnectButton.TabIndex = 2;
+			this.WaterSkiConnectButton.TabIndex = 1;
 			this.WaterSkiConnectButton.Text = "WaterSkiConnect";
 			this.WaterSkiConnectButton.UseVisualStyleBackColor = true;
 			this.WaterSkiConnectButton.Click += new System.EventHandler(this.WaterSkiConnectButton_Click);
@@ -88,10 +89,10 @@ namespace WscMessageHandler.Message {
 			// ShowPinButton
 			// 
 			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ShowPinButton.Location = new System.Drawing.Point(158, 4);
+			this.ShowPinButton.Location = new System.Drawing.Point(284, 5);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(104, 23);
-			this.ShowPinButton.TabIndex = 3;
+			this.ShowPinButton.TabIndex = 2;
 			this.ShowPinButton.Text = "Show Pin";
 			this.ShowPinButton.UseVisualStyleBackColor = true;
 			this.ShowPinButton.Click += new System.EventHandler(this.ShowPinButton_Click);
@@ -99,19 +100,34 @@ namespace WscMessageHandler.Message {
 			// DisconnectButton
 			// 
 			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisconnectButton.Location = new System.Drawing.Point(270, 4);
+			this.DisconnectButton.Location = new System.Drawing.Point(396, 5);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(145, 23);
-			this.DisconnectButton.TabIndex = 4;
+			this.DisconnectButton.TabIndex = 3;
 			this.DisconnectButton.Text = "Disconnect";
 			this.DisconnectButton.UseVisualStyleBackColor = true;
 			this.DisconnectButton.Click += new System.EventHandler(this.DisconnectButton_Click);
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.Info;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(10, 5);
+			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Padding = new System.Windows.Forms.Padding(5);
+			this.RowStatusLabel.Size = new System.Drawing.Size(108, 23);
+			this.RowStatusLabel.TabIndex = 0;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// Controller
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(899, 563);
+			this.ClientSize = new System.Drawing.Size(976, 553);
+			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ShowPinButton);
 			this.Controls.Add(this.WaterSkiConnectButton);
@@ -124,6 +140,7 @@ namespace WscMessageHandler.Message {
 			this.Load += new System.EventHandler(this.Controller_Load);
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -132,8 +149,9 @@ namespace WscMessageHandler.Message {
 		private System.Windows.Forms.DataGridView MessageView;
 		private System.Windows.Forms.Button WaterSkiConnectButton;
 		private System.Windows.Forms.Button ShowPinButton;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CreationDatetime;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Message;
 		private System.Windows.Forms.Button DisconnectButton;
+		private System.Windows.Forms.Label RowStatusLabel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Message;
 	}
 }

@@ -1123,3 +1123,18 @@ ALTER TABLE [TourReg] ADD COLUMN Team nvarchar(16);
 ALTER TABLE [SlalomRecap] ADD COLUMN ProtectedScore numeric(5,2);
 ALTER TABLE [SlalomRecap] ADD COLUMN BoatPathGood nchar(1);
 
+## v22.86
+ALTER TABLE [BoatTime] ALTER COLUMN InsertDate datetime NULL;
+ALTER TABLE [BoatPath] ALTER COLUMN InsertDate datetime NULL;
+ALTER TABLE [JumpMeasurement] ALTER COLUMN InsertDate datetime NULL;
+
+CREATE TABLE WscMonitorMsg (
+    PK          int NOT NULL IDENTITY,
+    SanctionId  nchar(6) NOT NULL,
+    MsgAction   nvarchar(16) NOT NULL,
+    MsgType     nvarchar(128) NOT NULL,
+    MsgData     nvarchar(128) NOT NULL,
+    InsertDate  datetime
+);
+
+ALTER TABLE WscMonitorMsg ADD PRIMARY KEY ([PK]);

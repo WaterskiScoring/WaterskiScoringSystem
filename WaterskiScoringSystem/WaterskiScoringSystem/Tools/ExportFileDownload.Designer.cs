@@ -28,9 +28,11 @@ namespace WaterskiScoringSystem.Tools {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.DownloadButton = new System.Windows.Forms.Button();
 			this.DataGridView = new System.Windows.Forms.DataGridView();
+			this.RefreshButton = new System.Windows.Forms.Button();
 			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ReportTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ExportFileUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.LastUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -65,7 +67,8 @@ namespace WaterskiScoringSystem.Tools {
 			this.DataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.PK,
             this.ReportTitle,
-            this.ExportFileUri});
+            this.ExportFileUri,
+            this.LastUpdateDate});
 			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
 			dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -76,8 +79,20 @@ namespace WaterskiScoringSystem.Tools {
 			this.DataGridView.DefaultCellStyle = dataGridViewCellStyle2;
 			this.DataGridView.Location = new System.Drawing.Point(6, 39);
 			this.DataGridView.Name = "DataGridView";
-			this.DataGridView.Size = new System.Drawing.Size(936, 416);
+			this.DataGridView.Size = new System.Drawing.Size(1130, 416);
 			this.DataGridView.TabIndex = 2;
+			// 
+			// RefreshButton
+			// 
+			this.RefreshButton.AutoSize = true;
+			this.RefreshButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RefreshButton.Location = new System.Drawing.Point(207, 5);
+			this.RefreshButton.Name = "RefreshButton";
+			this.RefreshButton.Size = new System.Drawing.Size(195, 28);
+			this.RefreshButton.TabIndex = 4;
+			this.RefreshButton.Text = "Refresh";
+			this.RefreshButton.UseVisualStyleBackColor = true;
+			this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
 			// 
 			// PK
 			// 
@@ -104,14 +119,23 @@ namespace WaterskiScoringSystem.Tools {
 			this.ExportFileUri.HeaderText = "Export File URI";
 			this.ExportFileUri.Name = "ExportFileUri";
 			this.ExportFileUri.ReadOnly = true;
-			this.ExportFileUri.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.ExportFileUri.Width = 600;
+			// 
+			// LastUpdateDate
+			// 
+			this.LastUpdateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.LastUpdateDate.HeaderText = "LastUpdateDate";
+			this.LastUpdateDate.Name = "LastUpdateDate";
+			this.LastUpdateDate.ReadOnly = true;
+			this.LastUpdateDate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.LastUpdateDate.Width = 145;
 			// 
 			// ExportFileDownload
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(946, 458);
+			this.ClientSize = new System.Drawing.Size(1140, 458);
+			this.Controls.Add(this.RefreshButton);
 			this.Controls.Add(this.DownloadButton);
 			this.Controls.Add(this.DataGridView);
 			this.Name = "ExportFileDownload";
@@ -128,8 +152,10 @@ namespace WaterskiScoringSystem.Tools {
 
 		private System.Windows.Forms.Button DownloadButton;
 		private System.Windows.Forms.DataGridView DataGridView;
+		private System.Windows.Forms.Button RefreshButton;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ReportTitle;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ExportFileUri;
+		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
 	}
 }

@@ -336,7 +336,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
-0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		86.00	4 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 6/26/2022 Alexia Abelson
+0	AWSARecords	G2-S		51	Girls 2 (U12) - Slalom		88.00	4 bouy at 12m @ 52 kph (35 off @ 32.3 mph) 6/26/2022 Alexia Abelson
 0	AWSARecords	G2-T		52	Girls 2 (U12) - Trick		6260	6/4/2022 Alexia Abelson
 0	AWSARecords	G2-J		53	Girls 2 (U12) - Jump		75	(22.8m) 45kph 5ft 2/20/2020 2020 BENCHMARK
 0	AWSARecords	G3-S		56	Girls 3 (U14) - Slalom		98	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 7/12/2014 Brooke Baldwin 7/30/2016 Kristen Baldwin APPVD BY AWSA BOD 8/5/19

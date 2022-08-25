@@ -487,6 +487,8 @@ namespace WaterskiScoringSystem.Tournament {
 					} else {
 						curPrintRow.Cells["PrintEventRotation"].Value = "";
 					}
+
+                    curPrintRow.Cells["PrintEventClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventClass", "C" );
                     curPrintRow.Cells["PrintReadyForPlcmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "N" );
                     curPrintRow.Cells["PrintRunOrder"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RunOrder", "0", 0 );
                     curPrintRow.Cells["PrintTeam"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );

@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -196,7 +194,7 @@ namespace WaterskiScoringSystem.Trick {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select ListCode, CodeValue, MaxValue, MinValue FROM CodeValueList " );
 			curSqlStmt.Append( "Where ListName = 'TrickJudgesNum' And ListCode = '" + myTourRow["Class"].ToString() + "' ORDER BY SortSeq" );
-			DataTable curNumJudgesDataTable = getData( curSqlStmt.ToString() );
+			DataTable curNumJudgesDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curNumJudgesDataTable.Rows.Count > 0 ) {
 				myNumJudges = Convert.ToInt16( (Decimal)curNumJudgesDataTable.Rows[0]["MaxValue"] );
 			} else {
@@ -2996,7 +2994,7 @@ namespace WaterskiScoringSystem.Trick {
                 curSqlStmt.Append( "GROUP BY R.SkierName, R.AgeGroup, R.MemberId, N.EventsReqd " );
                 curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
                 curSqlStmt.Append( "ORDER BY R.SkierName, R.AgeGroup, R.MemberId, N.EventsReqd " );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT PK FROM TrickScore " );
@@ -3004,7 +3002,7 @@ namespace WaterskiScoringSystem.Trick {
                     curSqlStmt.Append( "  And MemberId = '" + TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value.ToString() + "' " );
                     curSqlStmt.Append( "  And AgeGroup = '" + TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString() + "' " );
                     curSqlStmt.Append( "  And Round < " + roundSelect.RoundValue );
-                    DataTable curDataTable2 = getData( curSqlStmt.ToString() );
+                    DataTable curDataTable2 = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if ( curDataTable2.Rows.Count == 0 ) {
                         MessageBox.Show( "This skier participates in overall"
                             + "\nYou are entering a score in round " + roundSelect.RoundValue
@@ -3717,7 +3715,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append("FROM Tournament T ");
             curSqlStmt.Append("LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class ");
             curSqlStmt.Append("WHERE T.SanctionId = '" + inSanctionId + "' ");
-            DataTable curDataTable = getData(curSqlStmt.ToString());
+            DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
             return curDataTable;
         }
 
@@ -3805,7 +3803,7 @@ namespace WaterskiScoringSystem.Trick {
                     }
                 }
 
-                myEventRegDataTable = getData( curSqlStmt.ToString() );
+                myEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 curRowCount = myEventRegDataTable.Rows.Count;
                 curIdx++;
             }
@@ -3835,7 +3833,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND S.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append("  AND S.AgeGroup = '" + inAgeGroup + "' AND S.Round = " + inRound.ToString() + " ");
             curSqlStmt.Append("ORDER BY S.SanctionId, S.MemberId");
-            myScoreDataTable = getData( curSqlStmt.ToString() );
+            myScoreDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
@@ -3850,7 +3848,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
             curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString() + " AND PassNum = " + inPass.ToString() );
             curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, PassNum, Seq" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierPassByRound( String inMemberId, String inAgeGroup, int inRound, byte inPass, byte inSeq ) {
@@ -3862,7 +3860,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound.ToString()  );
             curSqlStmt.Append( "   AND PassNum = " + inPass.ToString() + " AND Seq = " + inSeq.ToString() );
             curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, PassNum, Seq" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataRow getClassRowCurrentSkier() {
@@ -3898,7 +3896,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( " FROM TrickList " );
             curSqlStmt.Append( " WHERE RuleCode = '" + inRuleCode + "'");
             curSqlStmt.Append( " ORDER BY RuleNum, TrickCode" );
-            myTrickListDataTable = getData( curSqlStmt.ToString() );
+            myTrickListDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private bool checkPassError() {
@@ -3920,10 +3918,6 @@ namespace WaterskiScoringSystem.Trick {
             }
 
             return false;
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 	}
 }

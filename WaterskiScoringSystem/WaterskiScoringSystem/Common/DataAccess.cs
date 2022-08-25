@@ -316,18 +316,6 @@ namespace WaterskiScoringSystem.Common {
             return curReturnValue;
         }
 
-        /*
-        public static String getDatabaseFilename( RegistryKey inAppRegKey ) {
-            if ( curAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                try {
-                    curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                } catch ( Exception ex ) {
-                    curDataDirectory = Application.UserAppDataPath;
-                }
-            } else {
-                curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-            }
-         */
         public static String getDatabaseFilename() {
             String curDataDirectory = "";
             //String cuFileName = null;
@@ -351,5 +339,33 @@ namespace WaterskiScoringSystem.Common {
 
             return Path.Combine( curDataDirectory, cuFilename );
         }
+
+        public static String[] TourTableList = {
+                "Tournament"
+                , "TourProperties"
+                , "TourReg"
+                , "EventReg"
+                , "EventRunOrder"
+                , "EventRunOrderFilters"
+                , "TeamList"
+                , "TeamOrder"
+                , "SlalomScore"
+                , "SlalomRecap"
+                , "TrickScore"
+                , "TrickPass"
+                , "TrickVideo"
+                , "JumpScore"
+                , "JumpRecap"
+                , "JumpMeterSetup"
+                , "JumpVideoSetup"
+                , "JumpMeasurement"
+                , "BoatTime"
+                , "BoatPath"
+                , "TourBoatUse"
+                , "OfficialWork"
+                , "OfficialWorkAsgmt"
+                , "SafetyCheckList"
+                , "DivOrder"
+            };
     }
 }

@@ -1363,7 +1363,7 @@ namespace WaterskiScoringSystem.Tournament {
 			} else {
                 if (inCommandType.Equals( "H2H" )) {
 					if (inPlcmtOrg.ToLower().Equals("div")) {
-						curSqlStmt.Append("Order by O.AgeGroup ASC, COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
+						curSqlStmt.Append("Order by O.AgeGroup ASC, COALESCE(D.RunOrder, 999) ASC, O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
 					
 					} else if (inPlcmtOrg.ToLower().Equals("group")) {
 						curSqlStmt.Append("Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");

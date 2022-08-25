@@ -41,6 +41,10 @@
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
 			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
+			this.winStatus = new System.Windows.Forms.StatusStrip();
+			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -90,12 +94,13 @@
 			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreDatatime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassDatatime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PassDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Boat = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.winNavStrip.SuspendLayout();
+			this.winStatus.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// dataGridView
@@ -164,13 +169,13 @@
             this.EventGroup,
             this.EventClass,
             this.RankingScore,
-            this.ScoreDatatime,
-            this.PassDatatime,
+            this.ScoreDatetime,
+            this.PassDatetime,
             this.Boat,
             this.ScoreNotes});
-			this.dataGridView.Location = new System.Drawing.Point(15, 41);
+			this.dataGridView.Location = new System.Drawing.Point(5, 64);
 			this.dataGridView.Name = "dataGridView";
-			this.dataGridView.Size = new System.Drawing.Size(1189, 503);
+			this.dataGridView.Size = new System.Drawing.Size(1189, 467);
 			this.dataGridView.TabIndex = 6;
 			// 
 			// winNavStrip
@@ -179,7 +184,8 @@
 			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navExport,
-            this.navExportHtml});
+            this.navExportHtml,
+            this.navFilter});
 			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
 			this.winNavStrip.Name = "winNavStrip";
 			this.winNavStrip.Size = new System.Drawing.Size(1213, 42);
@@ -217,6 +223,43 @@
 			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
 			this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(5, 47);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 108;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			// 
+			// winStatus
+			// 
+			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.winStatusMsg});
+			this.winStatus.Location = new System.Drawing.Point(0, 534);
+			this.winStatus.Name = "winStatus";
+			this.winStatus.Size = new System.Drawing.Size(1213, 22);
+			this.winStatus.TabIndex = 109;
+			this.winStatus.Text = "statusStrip1";
+			// 
+			// winStatusMsg
+			// 
+			this.winStatusMsg.Name = "winStatusMsg";
+			this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
+			// 
+			// navFilter
+			// 
+			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
+			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navFilter.Name = "navFilter";
+			this.navFilter.Size = new System.Drawing.Size(37, 39);
+			this.navFilter.Text = "Filter";
+			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
+			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
 			// 
 			// SanctionId
 			// 
@@ -737,25 +780,25 @@
 			this.RankingScore.Visible = false;
 			this.RankingScore.Width = 75;
 			// 
-			// ScoreDatatime
+			// ScoreDatetime
 			// 
-			this.ScoreDatatime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.ScoreDatatime.HeaderText = "ScoreDatetime";
-			this.ScoreDatatime.MaxInputLength = 24;
-			this.ScoreDatatime.Name = "ScoreDatatime";
-			this.ScoreDatatime.ReadOnly = true;
-			this.ScoreDatatime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreDatatime.Width = 120;
+			this.ScoreDatetime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ScoreDatetime.HeaderText = "ScoreDatetime";
+			this.ScoreDatetime.MaxInputLength = 24;
+			this.ScoreDatetime.Name = "ScoreDatetime";
+			this.ScoreDatetime.ReadOnly = true;
+			this.ScoreDatetime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreDatetime.Width = 120;
 			// 
-			// PassDatatime
+			// PassDatetime
 			// 
-			this.PassDatatime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PassDatatime.HeaderText = "PassDatetime";
-			this.PassDatatime.MaxInputLength = 24;
-			this.PassDatatime.Name = "PassDatatime";
-			this.PassDatatime.ReadOnly = true;
-			this.PassDatatime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassDatatime.Width = 120;
+			this.PassDatetime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PassDatetime.HeaderText = "PassDatetime";
+			this.PassDatetime.MaxInputLength = 24;
+			this.PassDatetime.Name = "PassDatetime";
+			this.PassDatetime.ReadOnly = true;
+			this.PassDatetime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassDatetime.Width = 120;
 			// 
 			// Boat
 			// 
@@ -780,6 +823,8 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1213, 556);
+			this.Controls.Add(this.winStatus);
+			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.winNavStrip);
 			this.Controls.Add(this.dataGridView);
 			this.Name = "BoatPathExport";
@@ -789,6 +834,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
 			this.winNavStrip.ResumeLayout(false);
 			this.winNavStrip.PerformLayout();
+			this.winStatus.ResumeLayout(false);
+			this.winStatus.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -801,6 +848,10 @@
         private System.Windows.Forms.ToolStripButton navRefresh;
         private System.Windows.Forms.ToolStripButton navExport;
         private System.Windows.Forms.ToolStripButton navExportHtml;
+		private System.Windows.Forms.Label RowStatusLabel;
+		private System.Windows.Forms.StatusStrip winStatus;
+		private System.Windows.Forms.ToolStripStatusLabel winStatusMsg;
+		private System.Windows.Forms.ToolStripButton navFilter;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
@@ -850,8 +901,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreDatatime;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassDatatime;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreDatetime;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassDatetime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Boat;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreNotes;
 	}

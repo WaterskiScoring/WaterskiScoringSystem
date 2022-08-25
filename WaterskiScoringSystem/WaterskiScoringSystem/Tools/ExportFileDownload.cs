@@ -1,5 +1,4 @@
-﻿using LiveWebMessageHandler.Common;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Externalnterface;
@@ -39,6 +38,10 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
+        private void RefreshButton_Click( object sender, EventArgs e ) {
+            loadDataView();
+        }
+
         private void loadDataView() {
             Cursor.Current = Cursors.WaitCursor;
             int curViewIdx = 0;
@@ -54,7 +57,7 @@ namespace WaterskiScoringSystem.Tools {
                     curViewRow = DataGridView.Rows[curViewIdx];
                     curViewRow.Cells["PK"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PK", "0" );
                     curViewRow.Cells["ReportTitle"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReportTitle", "" );
-                    // "/public_html/scoring/Tournament/22E030"
+                    curViewRow.Cells["LastUpdateDate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "LastUpdateDate", "" );
                     String curExportFileRef = HelperFunctions.getDataRowColValue( curDataRow, "ReportFilePath", "" );
                     if ( curExportFileRef.Length > 21 ) {
                         String curExportFileUri = String.Format( "http://www.waterskiresults.com/{0}", curExportFileRef.Substring( 35 ) );
@@ -102,6 +105,5 @@ namespace WaterskiScoringSystem.Tools {
 
 
         }
-
-    }
+	}
 }

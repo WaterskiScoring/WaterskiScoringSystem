@@ -10,6 +10,7 @@ namespace WaterskiScoringSystem.Common {
 		private String mySanctionNum = null;
 		private String myTourRules = "";
 		private String myOrigItemValue = "";
+		private String myFilterCmd = "";
 
 		private Boolean isDataModified = false;
 		private Boolean isDataLoading = false;
@@ -17,6 +18,7 @@ namespace WaterskiScoringSystem.Common {
 		private int myRowIdx = 0;
 
 		private DataRow myTourRow;
+		private FilterDialogForm filterDialogForm;
 
 		private DataTable myDataTable;
 		public JumpMeasurementImportReport() {
@@ -37,21 +39,25 @@ namespace WaterskiScoringSystem.Common {
 
 			// Retrieve data from database
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-
 			if ( mySanctionNum == null ) {
 				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-			} else {
-				if ( mySanctionNum.Length < 6 ) {
-					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				} else {
-					//Retrieve selected tournament attributes
-					DataTable curTourDataTable = getTourData();
-					if ( curTourDataTable.Rows.Count > 0 ) {
-						myTourRow = curTourDataTable.Rows[0];
-						myTourRules = (String)myTourRow["Rules"];
-					}
-				}
+				return;
 			}
+			if ( mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+			DataTable curTourDataTable = getTourData();
+			if ( curTourDataTable == null || curTourDataTable.Rows.Count == 0 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return;
+			}
+			myTourRow = curTourDataTable.Rows[0];
+			myTourRules = (String)myTourRow["Rules"];
+
+			String[] curList = { "Round", "InsertDate" };
+			filterDialogForm = new Common.FilterDialogForm();
+			filterDialogForm.ColumnListArray = curList;
 		}
 
 		private void DataGridView_DataError( object sender, DataGridViewDataErrorEventArgs e ) {
@@ -92,6 +98,18 @@ namespace WaterskiScoringSystem.Common {
 			this.Cursor = Cursors.Default;
 		}
 
+		private void navFilter_Click( object sender, EventArgs e ) {
+			// Display the form as a modal dialog box.
+			filterDialogForm.ShowDialog( this );
+
+			// Determine if the OK button was clicked on the dialog box.
+			if ( filterDialogForm.DialogResult == DialogResult.OK ) {
+				myFilterCmd = filterDialogForm.FilterCommand;
+				winStatusMsg.Text = "Filtered by " + myFilterCmd;
+				navRefresh_Click( null, null );
+			}
+		}
+
 		private void navExport_Click( object sender, EventArgs e ) {
 			ExportData myExportData = new ExportData();
 			String filename = "JumpMeasurementImportSlalomExport.txt";
@@ -99,13 +117,12 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		private void loadDataGrid() {
-			if ( myDataTable.Rows.Count == 0 ) return;
-
 			DataGridViewRow curViewRow;
 			this.Cursor = Cursors.WaitCursor;
 			isDataLoading = true;
 
 			dataGridView.Rows.Clear();
+			if ( myDataTable == null || myDataTable.Rows.Count == 0 ) return;
 			int curIdx = 0;
 			foreach ( DataRow curRow in myDataTable.Rows ) {
 				curIdx = dataGridView.Rows.Add();
@@ -128,10 +145,21 @@ namespace WaterskiScoringSystem.Common {
 
 			isDataLoading = false;
 			isDataModified = false;
-			myRowIdx = 0;
-			dataGridView.CurrentCell = dataGridView.Rows[myRowIdx].Cells["SkierMemberId"];
-			myOrigItemValue = (String)dataGridView.Rows[myRowIdx].Cells["SkierMemberId"].Value;
-			if ( myOrigItemValue == null ) myOrigItemValue = "";
+
+			myRowIdx = dataGridView.Rows.Count - 1;
+			if ( dataGridView.Rows.Count > 0 ) {
+				dataGridView.FirstDisplayedScrollingRowIndex = myRowIdx;
+				dataGridView.Rows[myRowIdx].Selected = true;
+				dataGridView.Rows[myRowIdx].Cells[0].Selected = true;
+				dataGridView.CurrentCell = dataGridView.Rows[myRowIdx].Cells["SkierMemberId"];
+				myOrigItemValue = (String)dataGridView.Rows[myRowIdx].Cells["SkierMemberId"].Value;
+
+				int curRowPos = myRowIdx + 1;
+				RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + dataGridView.Rows.Count.ToString();
+
+			} else {
+				RowStatusLabel.Text = "";
+			}
 		}
 
 		private void navSave_Click( object sender, EventArgs e ) {
@@ -238,9 +266,15 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", B.InsertDate, B.LastUpdateDate " );
 			curSqlStmt.Append( ", PassNum as SkierRunNum " );
 			curSqlStmt.Append( "FROM JumpMeasurement B " );
-			curSqlStmt.Append( "LEFT OUTER JOIN TourReg T ON B.MemberId = T.MemberId AND B.SanctionId = T.SanctionId " );
 			curSqlStmt.Append( "LEFT OUTER JOIN JumpRecap R ON B.SanctionId = R.SanctionId AND B.MemberId = R.MemberId AND B.Round = R.Round AND B.PassNumber = R.PassNum " );
-			curSqlStmt.Append( "WHERE B.SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "LEFT OUTER JOIN ( Select Distinct SanctionId, MemberId, SkierName From TourReg Where SanctionId = '" + mySanctionNum + "'" );
+			curSqlStmt.Append( " ) AS T ON B.MemberId = T.MemberId AND B.SanctionId = T.SanctionId " );
+	   		curSqlStmt.Append( "WHERE B.SanctionId = '" + mySanctionNum + "' " );
+			if ( myFilterCmd.Length > 0 ) {
+				String curFilterCmd = myFilterCmd.Replace( "InsertDate", "B.InsertDate" );
+				curFilterCmd = curFilterCmd.Replace( "Round", "B.Round" );
+				curSqlStmt.Append( "AND " + curFilterCmd + " " );
+			}
 			curSqlStmt.Append( "ORDER BY B.InsertDate " );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}

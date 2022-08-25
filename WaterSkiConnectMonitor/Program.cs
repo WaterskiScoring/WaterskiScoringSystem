@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Deployment.Application;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 
 using SocketIOClient;
@@ -16,6 +17,7 @@ namespace WaterSkiConnectMonitor {
 
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
+		private static String myPinNum = "";
 		private static int myCountPing = 0;
 
 		private static SocketIO socketClient = null;
@@ -32,7 +34,6 @@ namespace WaterSkiConnectMonitor {
 				);
 
 			try {
-
 				if ( System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed ) {
 					Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
 					Console.WriteLine( string.Format( "Product Name: {4}, Version: {0}.{1}.{2}.{3}"
@@ -45,13 +46,19 @@ namespace WaterSkiConnectMonitor {
 				Console.WriteLine( "Information not available in development, " + ex.Message );
 			}
 
-			Console.WriteLine( "Enter Sanction and EventSubId (optional) separated by a comma: " );
+			Console.WriteLine( "Enter Sanction, EventSubId (optional), and the PIN (required) available from the WscMessageHandler"
+				+ System.Environment.NewLine + "Each must be separated by a comma (e.g. 22E888,,1205 or 22E888,Jump,1205" );
 			String inputline = Console.ReadLine();
 			String[] inputArgs = inputline.Split( ',' );
-			if ( inputArgs.Length > 0 ) {
-				if ( inputArgs.Length >= 1 ) mySanctionNum = inputArgs[0].Trim();
-				if ( inputArgs.Length >= 2 ) myEventSubId = inputArgs[1].Trim();
+			if ( inputArgs.Length < 3 ) {
+				Console.WriteLine( "Insufficient input data, Sanction (required), EventSubId (optional), and PIN (required)"
+					+ System.Environment.NewLine + "Each must be separated by a comma (e.g. 22E888,,1205 or 22E888,Jump,1205" );
+				return;
 			}
+
+			mySanctionNum = inputArgs[0].Trim().ToUpper();
+			myEventSubId = inputArgs[1].Trim();
+			myPinNum = inputArgs[2].Trim();
 
 			execConnect();
 
@@ -225,7 +232,31 @@ namespace WaterSkiConnectMonitor {
 		}
 
 		private static void handleWscConnectConfirm( String txnName, String argData ) {
-			showConsoleMsg( txnName, String.Format( "argData: {0}", argData ) );
+			Dictionary<string, object> curMsgDataList = null;
+
+			try {
+				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( argData );
+
+			} catch ( Exception ex ) {
+				Console.WriteLine( "Exception confirming connection: " + ex.Message );
+				System.Threading.Thread.Sleep( 5000 ); 
+				disconnect();
+			}
+
+			String curEventId = getAttributeValue( curMsgDataList, "eventid" );
+			String curEventSubId = getAttributeValue( curMsgDataList, "eventsubid" );
+			String curPinNum = getAttributeValue( curMsgDataList, "pin" );
+			if ( curPinNum.Equals( myPinNum ) 
+				&& curEventId.Equals(mySanctionNum)
+				&& curEventSubId.Equals(myEventSubId)
+				) {
+				showConsoleMsg( txnName, String.Format( "argData: {0}", argData ) );
+			
+			} else {
+				Console.WriteLine( "Invalid PIN, connection terminated" );
+				System.Threading.Thread.Sleep( 5000 );
+				disconnect();
+			}
 		}
 
 		private static void handleConnectHeartBeat( String txnName, String argData ) {
@@ -258,5 +289,20 @@ namespace WaterSkiConnectMonitor {
 
 		}
 
+		private static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return "";
+
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
+				return ( (int)msgAttributeList[keyName] ).ToString();
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
+				return ( (decimal)msgAttributeList[keyName] ).ToString();
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
+				return ( (String)msgAttributeList[keyName] ).Trim();
+			}
+
+			return "";
+		}
 	}
 }

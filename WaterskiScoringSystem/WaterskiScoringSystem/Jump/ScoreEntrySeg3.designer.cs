@@ -163,6 +163,7 @@
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navExportLw = new System.Windows.Forms.ToolStripButton();
 			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.NavSaveItem = new System.Windows.Forms.ToolStripButton();
@@ -236,7 +237,6 @@
 			this.roundSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.driverDropdown = new System.Windows.Forms.ComboBox();
 			this.ResendPassButton = new System.Windows.Forms.Button();
-			this.navExportLw = new System.Windows.Forms.ToolStripButton();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -1360,6 +1360,16 @@
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.Click += new System.EventHandler(this.navExport_Click);
 			// 
+			// navExportLw
+			// 
+			this.navExportLw.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
+			this.navExportLw.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportLw.Name = "navExportLw";
+			this.navExportLw.Size = new System.Drawing.Size(64, 39);
+			this.navExportLw.Text = "Export LW";
+			this.navExportLw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportLw.Click += new System.EventHandler(this.navExportLw_Click);
+			// 
 			// navFilter
 			// 
 			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
@@ -2353,16 +2363,6 @@
 			this.ResendPassButton.UseVisualStyleBackColor = true;
 			this.ResendPassButton.Visible = false;
 			this.ResendPassButton.Click += new System.EventHandler(this.ResendPassButton_Click);
-			// 
-			// navExportLw
-			// 
-			this.navExportLw.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
-			this.navExportLw.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExportLw.Name = "navExportLw";
-			this.navExportLw.Size = new System.Drawing.Size(64, 39);
-			this.navExportLw.Text = "Export LW";
-			this.navExportLw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExportLw.Click += new System.EventHandler(this.navExportLw_Click);
 			// 
 			// ScoreEntrySeg3
 			// 
