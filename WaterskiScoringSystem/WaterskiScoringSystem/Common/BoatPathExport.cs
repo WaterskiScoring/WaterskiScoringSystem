@@ -39,10 +39,13 @@ namespace WaterskiScoringSystem.Common {
 			}
 		}
 
-		public Boolean exportReport(String inSanctionNum, String inEvent) {
+		public bool exportReport(String inSanctionNum, String inEvent) {
 			ActiveEvent = inEvent;
 			this.mySanctionNum = inSanctionNum;
-			if ( myTourRow == null ) getTourData();
+			if ( myTourRow == null ) {
+				bool curReturn = getTourData();
+				if ( !curReturn ) return false;
+			}
 
 			ExportData myExportData = new ExportData();
 			String filename = this.mySanctionNum.Substring(0, 6) + "ST.htm";
@@ -71,23 +74,8 @@ namespace WaterskiScoringSystem.Common {
                 this.Location = Properties.Settings.Default.BoatPathExport_Location;
             }
 
-			// Retrieve data from database
-			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-			if ( mySanctionNum == null ) {
-				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				return;
-			}
-			if ( mySanctionNum.Length < 6 ) {
-				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				return;
-			}
-			DataTable curTourDataTable = getTourData();
-			if ( curTourDataTable == null || curTourDataTable.Rows.Count == 0 ) {
-				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				return;
-			}
-			myTourRow = curTourDataTable.Rows[0];
-			myTourRules = (String)myTourRow["Rules"];
+			bool curReturn = getTourData();
+			if ( !curReturn ) return;
 
 			myBoatPathDevMax = getBoatPathDevMax();
 			setColumnsView();
@@ -479,7 +467,17 @@ namespace WaterskiScoringSystem.Common {
 			return DataAccess.getDataTable(curSqlStmt.ToString());
 		}
 
-		private DataTable getTourData() {
+		private bool getTourData() {
+			// Retrieve data from database
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			if ( mySanctionNum == null ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return false;
+			}
+			if ( mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return false;
+			}
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
 			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
@@ -488,7 +486,16 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
 			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-			return DataAccess.getDataTable( curSqlStmt.ToString() );
+
+			DataTable curTourDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curTourDataTable == null || curTourDataTable.Rows.Count == 0 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return false;
+			}
+			myTourRow = curTourDataTable.Rows[0];
+			myTourRules = (String)myTourRow["Rules"];
+
+			return true;
 		}
 
 		private DataTable getBoatPathDevMax() {
