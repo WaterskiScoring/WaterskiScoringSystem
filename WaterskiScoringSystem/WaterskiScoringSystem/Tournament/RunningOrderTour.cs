@@ -1928,7 +1928,7 @@ namespace WaterskiScoringSystem.Tournament {
 				newRow = curPrintColumnSelectList.DefaultView.AddNew();
 				newRow["Name"] = curCol.Name;
 				if ( myRunningOrderColumnFilter.ContainsKey( curCol.Name ) ) {
-					newRow["Visible"] = myRunningOrderColumnFilter[curCol.Name];
+					newRow["Visible"] = (bool)myRunningOrderColumnFilter[curCol.Name];
 
 				} else {
 					if ( myRunningOrderColumnFilter.ContainsKey( curCol.Name ) ) {
@@ -1942,9 +1942,24 @@ namespace WaterskiScoringSystem.Tournament {
 			columnSelectDialogcs = new ColumnSelectDialogcs();
 			columnSelectDialogcs.ColumnList = curPrintColumnSelectList;
 
-		}
+            curPrintColumnSelectList = columnSelectDialogcs.ColumnList;
+            foreach ( DataGridViewColumn curViewCol in this.PrintDataGridView.Columns ) {
+                foreach ( DataRow curColSelect in curPrintColumnSelectList.Rows ) {
+                    if ( ( (String)curColSelect["Name"] ).Equals( (String)curViewCol.Name ) ) {
+                        curViewCol.Visible = (Boolean)curColSelect["Visible"];
 
-		private String getCurrentEvent() {
+                        if ( myRunningOrderColumnFilter.ContainsKey( (String)curViewCol.Name ) ) {
+                            myRunningOrderColumnFilter[(String)curViewCol.Name] = curViewCol.Visible;
+                        } else {
+                            myRunningOrderColumnFilter.Add( (String)curViewCol.Name, curViewCol.Visible );
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        private String getCurrentEvent() {
 			if ( slalomButton.Checked ) return "Slalom";
 			if ( trickButton.Checked ) return "Trick";
 			if ( jumpButton.Checked ) return "Jump";

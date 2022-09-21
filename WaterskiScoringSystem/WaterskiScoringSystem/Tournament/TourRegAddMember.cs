@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Text;
@@ -32,6 +33,7 @@ namespace WaterskiScoringSystem.Tournament {
 			inputFirstName.Text = "";
 			inputLastName.Text = "";
 			inputMemberId.Text = "";
+			myInputMemberId = "";
 			inputState.Text = "";
 			AddButton.Text = "Add";
 		}
@@ -102,73 +104,79 @@ namespace WaterskiScoringSystem.Tournament {
 			int rowIdx = 0;
 			Int16 rowsAdded = 0, rowsSkipped = 0;
 
-            if ( DataGridView.CurrentRow != null ) {
+			if ( DataGridView.CurrentRow == null ) return;
 
-                DataGridView.CurrentRow.Selected = true;
-                DataGridViewSelectedRowCollection selectedRows = DataGridView.SelectedRows;
-                foreach ( DataGridViewRow curViewRow in selectedRows ) {
-					String curMemberIdSelected = (String)curViewRow.Cells["MemberId"].Value;
-					String curMemberAgeGroupSelected = (String)curViewRow.Cells["Div"].Value;
-					if ( usawsSearchLoc.Checked ) {
-						ImportMember importMember = new ImportMember( myTourRow );
+			Dictionary<string, object> curMemberDataFromAwsa = null;
 
-						/*
-						 * Search imported records to find the matching record to the selected skier currently being processed
-						 */
-						foreach ( DataRow curDataRow in myMemberListDataTable.Rows) {
-							String curMemberId = "", curAgeGroup = ""; ;
-							if (myMemberListDataTable.Columns.Contains( "MemberID" ) ) {
-								curMemberId = (String)curDataRow["MemberID"];
-							} else {
-								curMemberId = (String)curDataRow["MemberId"];
-							}
-							if ( curMemberId.Length == 11 ) {
-								curMemberId = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
-							}
+			DataGridView.CurrentRow.Selected = true;
+			DataGridViewSelectedRowCollection selectedRows = DataGridView.SelectedRows;
+			foreach ( DataGridViewRow curViewRow in selectedRows ) {
+				curMemberDataFromAwsa = null;
+				String curMemberIdSelected = (String)curViewRow.Cells["MemberId"].Value;
+				String curMemberAgeGroupSelected = (String)curViewRow.Cells["Div"].Value;
+				if ( usawsSearchLoc.Checked ) curMemberDataFromAwsa = findAwsaMemberData( curMemberIdSelected, curMemberAgeGroupSelected );
 
-							curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
-							if ( curAgeGroup.Length == 0 ) curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+				/*
+				 * Processed selected skier to add to the tournament registration
+				 */
+				myEditRegMemberDialog.editMember( curMemberIdSelected, curMemberAgeGroupSelected, curMemberDataFromAwsa );
+				myEditRegMemberDialog.ShowDialog();
+				curReqstStatus = myEditRegMemberDialog.ReqstStatus;
+				if ( curReqstStatus.Equals( "Added" ) ) {
+					rowsAdded++;
+					myDataModified = true;
+				} else if ( curReqstStatus.Equals( "Updated" ) ) {
+					rowsAdded++;
+					myDataModified = true;
+				} else {
+					rowsSkipped++;
+				}
+				rowIdx++;
+			}
+			String addMsg = "";
+			if ( rowsAdded > 1 ) {
+				addMsg += ": " + rowsAdded.ToString() + " skiers added";
+			} else if ( rowsAdded == 1 ) {
+				addMsg += ": " + rowsAdded.ToString() + " skier added";
+			}
+			if ( rowsSkipped > 1 ) {
+				addMsg += ": " + rowsSkipped.ToString() + " skiers already registered";
+			} else if ( rowsSkipped == 1 ) {
+				addMsg += ": " + rowsSkipped.ToString() + " skier already registered";
+			}
+			AddSkierMsg.Text = addMsg;
+		}
 
-							/*
-							 * Add or update member information for selected skier using imported data
-							 */
-							if ( curMemberId.Equals( curMemberIdSelected ) && curAgeGroup.Equals( curMemberAgeGroupSelected ) ) {
-								importMember.importMemberFromAwsa( SendMessageHttp.convertDataRowToDictionary( curDataRow ), true, false );
-								break;
-							}
-						}
-					}
+		/*
+		 * Search imported records to find the matching record to the selected skier currently being processed
+		 */
+		private Dictionary<string, object> findAwsaMemberData( String curMemberIdSelected, String curMemberAgeGroupSelected ) {
+			foreach ( DataRow curDataRow in myMemberListDataTable.Rows ) {
+				String curMemberId = "", curAgeGroup = ""; ;
+				if ( myMemberListDataTable.Columns.Contains( "MemberID" ) ) {
+					curMemberId = (String)curDataRow["MemberID"];
+				} else {
+					curMemberId = (String)curDataRow["MemberId"];
+				}
+				if ( curMemberId.Length == 11 ) {
+					curMemberId = curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 );
+				}
 
-					/*
-					 * Processed selected skier to add to the tournament registration
-					 */
-					myEditRegMemberDialog.editMember( curMemberIdSelected, curMemberAgeGroupSelected );
-                    myEditRegMemberDialog.ShowDialog();
-                    curReqstStatus = myEditRegMemberDialog.ReqstStatus;
-                    if ( curReqstStatus.Equals( "Added" ) ) {
-                        rowsAdded++;
-                        myDataModified = true;
-                    } else {
-                        rowsSkipped++;
-                    }
-					rowIdx++;
-                }
-                String addMsg = "";
-                if ( rowsAdded > 1 ) {
-                    addMsg += ": " + rowsAdded.ToString() + " skiers added";
-                } else if ( rowsAdded == 1 ) {
-                    addMsg += ": " + rowsAdded.ToString() + " skier added";
-                }
-                if ( rowsSkipped > 1 ) {
-                    addMsg += ": " + rowsSkipped.ToString() + " skiers already registered";
-                } else if ( rowsSkipped == 1 ) {
-                    addMsg += ": " + rowsSkipped.ToString() + " skier already registered";
-                }
-                AddSkierMsg.Text = addMsg;
-            }
-        }
+				curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
+				if ( curAgeGroup.Length == 0 ) curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
 
-        private void SearchButton_Click(object sender, EventArgs e) {
+				/*
+				 * Add or update member information for selected skier using imported data
+				 */
+				if ( curMemberId.Equals( curMemberIdSelected ) && curAgeGroup.Equals( curMemberAgeGroupSelected ) ) {
+					return SendMessageHttp.convertDataRowToDictionary( curDataRow );
+				}
+			}
+
+			return null;
+		}
+
+		private void SearchButton_Click(object sender, EventArgs e) {
 			myMemberListDataTable = null;
 			DataGridView.Rows.Clear();
 

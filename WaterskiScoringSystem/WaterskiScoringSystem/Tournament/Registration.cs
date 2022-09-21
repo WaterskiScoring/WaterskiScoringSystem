@@ -1205,7 +1205,7 @@ namespace WaterskiScoringSystem.Tournament {
                         // Display the form as a modal dialog box.
                         String curMemberId = curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value.ToString();
                         String curAgeGroup = curView.Rows[myTourRegRowIdx].Cells["AgeGroup"].Value.ToString();
-                        myEditRegMemberDialog.editMember( curMemberId, curAgeGroup );
+                        myEditRegMemberDialog.editMember( curMemberId, curAgeGroup, null );
                         myEditRegMemberDialog.ShowDialog( this );
 
                         // Determine if the OK button was clicked on the dialog box.
@@ -1237,7 +1237,7 @@ namespace WaterskiScoringSystem.Tournament {
                     // Display the form as a modal dialog box.
                     String curMemberId = (String)curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value;
                     String curAgeGroup = (String)curView.Rows[myTourRegRowIdx].Cells["AgeGroup"].Value;
-                    myEditRegMemberDialog.editMember( curMemberId, curAgeGroup );
+                    myEditRegMemberDialog.editMember( curMemberId, curAgeGroup, null );
                     myEditRegMemberDialog.ShowDialog( this );
 
                     // Determine if the OK button was clicked on the dialog box.

@@ -65,6 +65,7 @@
 			this.editCity = new System.Windows.Forms.TextBox();
 			this.AgeGroupSelect = new WaterskiScoringSystem.Common.AgeGroupSelect();
 			this.editGenderSelect = new WaterskiScoringSystem.Common.GenderSelect();
+			this.AddButton = new System.Windows.Forms.Button();
 			reqdFlagInfo = new System.Windows.Forms.Label();
 			labelGender = new System.Windows.Forms.Label();
 			ageGroupLabel = new System.Windows.Forms.Label();
@@ -241,7 +242,7 @@
 			// cancelButton
 			// 
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(262, 287);
+			this.cancelButton.Location = new System.Drawing.Point(330, 287);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 100;
@@ -534,11 +535,24 @@
 			this.editGenderSelect.TabIndex = 40;
 			this.editGenderSelect.Tag = "";
 			// 
+			// AddButton
+			// 
+			this.AddButton.Enabled = false;
+			this.AddButton.Location = new System.Drawing.Point(246, 287);
+			this.AddButton.Name = "AddButton";
+			this.AddButton.Size = new System.Drawing.Size(75, 23);
+			this.AddButton.TabIndex = 140;
+			this.AddButton.Text = "Add";
+			this.AddButton.UseVisualStyleBackColor = true;
+			this.AddButton.Visible = false;
+			this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+			// 
 			// EditRegMember
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(586, 462);
+			this.Controls.Add(this.AddButton);
 			this.Controls.Add(this.showMemberStatus);
 			this.Controls.Add(cityLabel);
 			this.Controls.Add(this.editCity);
@@ -613,5 +627,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ReadyToSki;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberStatus;
 		private System.Windows.Forms.Label showMemberStatus;
+		private System.Windows.Forms.Button AddButton;
 	}
 }

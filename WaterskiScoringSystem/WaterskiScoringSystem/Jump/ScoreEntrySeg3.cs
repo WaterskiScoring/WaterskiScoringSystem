@@ -2473,7 +2473,7 @@ namespace WaterskiScoringSystem.Jump {
 		}
 
 		private void jumpRecapDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
-			if ( e.RowIndex < myRecapRow.Index ) return;
+			if ( myRecapRow ==null || e.RowIndex < 0 || e.RowIndex < myRecapRow.Index ) return;
 			if ( jumpRecapDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly ) return;
 
 			DataGridView curView = (DataGridView)sender;

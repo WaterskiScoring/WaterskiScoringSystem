@@ -3104,8 +3104,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void slalomRecapDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs e ) {
-			if ( myRecapRow == null ) return;
-			if ( e.RowIndex < myRecapRow.Index ) return;
+			if ( myRecapRow == null || e.RowIndex < 0 || e.RowIndex < myRecapRow.Index ) return;
 			if ( slalomRecapDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly ) return;
 
 			DataGridViewRow curViewRow = slalomRecapDataGridView.Rows[e.RowIndex];

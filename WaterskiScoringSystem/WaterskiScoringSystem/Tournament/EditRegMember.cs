@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
@@ -9,20 +10,22 @@ using WaterskiScoringSystem.Externalnterface;
 namespace WaterskiScoringSystem.Tournament {
     public partial class EditRegMember : Form {
         private bool isDataModified = false;
-        private String myReqstStatus = "";
         private bool isMemberIdChanged = false;
         private bool isAgeGroupChanged = false;
+        private bool isAgeGroupNew = false;
+
+        private String myReqstStatus = "";
         private String mySkiYearAge = "";
         private String mySanctionNum;
         private String myMemberId;
         private String myAgeGroup;
 
         private DataRow myTourRow;
-		//private DataRow myMemberRow;
 
 		private TourEventReg myTourEventReg;
         private FedDropdownList myFedDropdownList;
         private MemberIdValidate myMemberIdValidate;
+        private Dictionary<string, object> myImportMemberEntry = null;
 
         public EditRegMember() {
             InitializeComponent();
@@ -32,6 +35,13 @@ namespace WaterskiScoringSystem.Tournament {
             get {
                 return myReqstStatus;
             }
+        }
+
+        public bool editMember( String inMemberId, String inAgeGroup, Dictionary<string, object> inMemberDataFromAwsa ) {
+            myMemberId = inMemberId;
+            myAgeGroup = inAgeGroup;
+            myImportMemberEntry = inMemberDataFromAwsa;
+            return true;
         }
 
         private void EditRegMember_Load( object sender, EventArgs e ) {
@@ -45,37 +55,36 @@ namespace WaterskiScoringSystem.Tournament {
                 && Properties.Settings.Default.EditRegMember_Location.Y > 0 ) {
                 this.Location = Properties.Settings.Default.EditRegMember_Location;
             }
+
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             if ( mySanctionNum == null ) {
                 MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-            } else {
-                if ( mySanctionNum.Length < 6 ) {
-                    MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                } else {
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData();
-                    if (curTourDataTable.Rows.Count > 0) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        AgeAsOfLabel.Text = AgeAsOfLabel.Text.Substring( 0, AgeAsOfLabel.Text.Length - 2 )
-                            + mySanctionNum.Substring( 0, 2 );
-
-                        myFedDropdownList = new FedDropdownList();
-                        myTourEventReg = new TourEventReg();
-                        myMemberIdValidate = new MemberIdValidate();
-    
-                        editFederation.DataSource = myFedDropdownList.DropdownList;
-                        editFederation.DisplayMember = "ItemName";
-                        editFederation.ValueMember = "ItemValue";
-
-                        editGenderSelect.addClickEvent( editGenderSelect_Click );
-
-						editMemberDataLoad( myMemberId, myAgeGroup );
-
-					} else {
-                        MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                    }
-                }
+                return;
             }
+            if ( mySanctionNum.Length < 6 ) {
+                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+                return;
+            }
+            DataTable curTourDataTable = getTourData();
+            if ( curTourDataTable == null || curTourDataTable.Rows.Count == 0 ) {
+                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+                return;
+            }
+
+            myTourRow = curTourDataTable.Rows[0];
+            AgeAsOfLabel.Text = AgeAsOfLabel.Text.Substring( 0, AgeAsOfLabel.Text.Length - 2 ) + mySanctionNum.Substring( 0, 2 );
+
+            myFedDropdownList = new FedDropdownList();
+            myTourEventReg = new TourEventReg();
+            myMemberIdValidate = new MemberIdValidate();
+
+            editFederation.DataSource = myFedDropdownList.DropdownList;
+            editFederation.DisplayMember = "ItemName";
+            editFederation.ValueMember = "ItemValue";
+
+            editGenderSelect.addClickEvent( editGenderSelect_Click );
+
+            editMemberDataLoad( myMemberId, myAgeGroup );
         }
 
         private void EditMember_FormClosed( object sender, FormClosedEventArgs e ) {
@@ -92,6 +101,39 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+        private void AddButton_Click( object sender, EventArgs e ) {
+            if ( !( editMemberId_Validation() ) ) return;
+            if ( !( editAgeGroup_Validation() ) ) return;
+
+            if ( !( isAgeGroupChanged ) ) return;
+            if ( !(checkSkierEventReg()) ) return;
+
+            isAgeGroupNew = true;
+            if ( myImportMemberEntry != null ) {
+                ImportMember importMember = new ImportMember( myTourRow );
+                if ( myImportMemberEntry.ContainsKey("Div") ) myImportMemberEntry["Div"] = AgeGroupSelect.CurrentValue ;
+                if ( myImportMemberEntry.ContainsKey( "AgeGroup" ) ) myImportMemberEntry["AgeGroup"] = AgeGroupSelect.CurrentValue;
+                importMember.importMemberFromAwsa( myImportMemberEntry, false, false );
+                myReqstStatus = "Added";
+                DialogResult = DialogResult.OK;
+
+            } else {
+                MemberEntry curMemberEntry = new MemberEntry();
+                curMemberEntry.MemberId = editMemberId.Text;
+                curMemberEntry.AgeGroup = AgeGroupSelect.CurrentValue;
+                curMemberEntry.Note = "Registration added";
+                if ( updateMemberData( curMemberEntry ) ) {
+                    bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
+                    if ( curReqstStatus ) {
+                        myReqstStatus = "Update";
+                    } else {
+                        myReqstStatus = "Skipped";
+                    }
+                    DialogResult = DialogResult.OK;
+                }
+            }
+        }
+
         private void saveButton_Click( object sender, EventArgs e ) {
 			if ( !( editMemberId_Validation() ) ) return;
 			if ( !(editAgeGroup_Validation()) ) return;
@@ -103,20 +145,30 @@ namespace WaterskiScoringSystem.Tournament {
 			
 			if ( isMemberIdChanged || isAgeGroupChanged ) {
 				if ( isAgeGroupChanged ) {
-					if ( checkSkierEventReg() ) {
-						updateMemberKey( curMemberEntry );
-					} else {
-						return;
-					}
-				} else {
+                    if ( !( checkSkierEventReg() ) ) return;
+                    updateMemberKey( curMemberEntry );
+                    if ( myImportMemberEntry != null ) {
+                        ImportMember importMember = new ImportMember( myTourRow );
+                        myImportMemberEntry.Add( "AgeGroup", AgeGroupSelect.CurrentValue );
+                        importMember.importMemberFromAwsa( myImportMemberEntry, true, false );
+                    }
+                
+                } else {
 					updateMemberKey( curMemberEntry );
 				}
-			}
 
-			if ( updateMemberData( curMemberEntry ) ) {
+			} else {
+                if ( myImportMemberEntry != null ) {
+                    ImportMember importMember = new ImportMember( myTourRow );
+                    importMember.importMemberFromAwsa( myImportMemberEntry, true, false );
+                    myReqstStatus = "Updated";
+                }
+            }
+
+            if ( updateMemberData( curMemberEntry ) ) {
 				bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
 				if ( curReqstStatus ) {
-					myReqstStatus = "Added";
+					myReqstStatus = "Updated";
 				} else {
 					myReqstStatus = "Skipped";
 				}
@@ -275,87 +327,220 @@ namespace WaterskiScoringSystem.Tournament {
             myReqstStatus = "Cancelled";
         }
 
-        public bool editMember( String inMemberId, String inAgeGroup ) {
-            myMemberId = inMemberId;
-            myAgeGroup = inAgeGroup;
-            return true;
-        }
-
 		private void editMemberDataLoad(String inMemberId, String inAgeGroup) {
 			this.Text = "Edit Member Registration";
-			DataRow curDataRow = getMemberTourReg( inMemberId, inAgeGroup );
-			if ( curDataRow == null ) {
-				this.Text = "Add Registration for Member";
-				curDataRow = getMemberData( myMemberId );
-				if ( curDataRow == null ) {
-					MessageBox.Show( "Member entry not found in tournament registration or local member list " + inMemberId + " in division " + inAgeGroup );
-					return;
-				}
-			}
+            if ( myImportMemberEntry != null ) {
+                loadMemberImportData();
+                showMemberRegList();
+                return;
+            }
 
-			editMemberId.Text = (String) curDataRow["MemberId"];
-			string curSkierName = HelperFunctions.getDataRowColValue( curDataRow, "SkierName", "" );
-			string curFirstName = HelperFunctions.getDataRowColValue( curDataRow, "FirstName", "" );
-			string curLastName = HelperFunctions.getDataRowColValue( curDataRow, "LastName", "" );
-			if ( curSkierName.Length == 0 ) curSkierName = curLastName + ", " + curFirstName;
-			if ( curFirstName.Length > 0 && curLastName.Length > 0 ) {
-				editFirstName.Text = curFirstName;
-				editLastName.Text = curLastName;
+            DataRow curDataRow = getMemberTourReg( inMemberId, inAgeGroup );
+			if ( curDataRow != null ) {
+                loadMemberTourReg( curDataRow, inAgeGroup );
+                showMemberRegList();
+                return;
+            }
 
-			} else {
-				String[] curNameList = curSkierName.Split( ',' );
-				if ( curNameList.Length > 1 ) {
-					editFirstName.Text = curNameList[1].Trim();
-					editLastName.Text = curNameList[0].Trim();
+            this.Text = "Add Registration for Member";
+            curDataRow = getMemberData( myMemberId );
+            if ( curDataRow != null ) {
+                loadMemberTourReg( curDataRow, inAgeGroup );
+                showMemberRegList();
+                return;
+            }
 
-				} else {
-					editFirstName.Text = "";
-					editLastName.Text = curNameList[0].Trim();
-				}
-			}
+            MessageBox.Show( "Member entry not found in tournament registration or local member list " + inMemberId + " in division " + inAgeGroup );
+            return;
+        }
 
-			try {
-				editGenderSelect.RatingValue = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
-				Byte curValue = Convert.ToByte( HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "0" ) );
-				editSkiYearAge.Text = curValue.ToString();
-				if ( curValue > 1 && curValue < 100 ) {
-					if ( editGenderSelect.RatingValue.Length > 0 ) {
-						AgeGroupSelect.SelectList_Load( curValue, editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
-					} else {
-						AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
-					}
+        private void loadMemberTourReg( DataRow curDataRow, String inAgeGroup ) {
+            editMemberId.Text = (String)curDataRow["MemberId"];
+            string curSkierName = HelperFunctions.getDataRowColValue( curDataRow, "SkierName", "" );
+            string curFirstName = HelperFunctions.getDataRowColValue( curDataRow, "FirstName", "" );
+            string curLastName = HelperFunctions.getDataRowColValue( curDataRow, "LastName", "" );
+            if ( curSkierName.Length == 0 ) curSkierName = curLastName + ", " + curFirstName;
+            if ( curFirstName.Length > 0 && curLastName.Length > 0 ) {
+                editFirstName.Text = curFirstName;
+                editLastName.Text = curLastName;
 
-				} else {
-					if ( editGenderSelect.RatingValue.Length > 0 ) {
-						AgeGroupSelect.SelectList_Load( editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
-					} else {
-						AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
-					}
-					editSkiYearAge.Text = "";
-				}
-				String curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
-				if ( curAgeGroup.Length == 0 ) curAgeGroup = inAgeGroup;
-				AgeGroupSelect.CurrentValue = curAgeGroup;
+            } else {
+                String[] curNameList = curSkierName.Split( ',' );
+                if ( curNameList.Length > 1 ) {
+                    editFirstName.Text = curNameList[1].Trim();
+                    editLastName.Text = curNameList[0].Trim();
 
-			} catch {
-				if ( editGenderSelect.RatingValue.Length > 0 ) {
-					AgeGroupSelect.SelectList_Load( editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
-				} else {
-					AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
-				}
-				AgeGroupSelect.CurrentValue = (String) curDataRow["AgeGroup"];
-				editSkiYearAge.Text = "";
-			}
+                } else {
+                    editFirstName.Text = "";
+                    editLastName.Text = curNameList[0].Trim();
+                }
+            }
 
-			editCity.Text = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
-			editState.Text = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
-			editFederation.SelectedValue = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToLower();
-			showMemberStatus.Text = HelperFunctions.getDataRowColValue( curDataRow, "MemberStatus", "Inactive" );
+            String curAgeGroup = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+            if ( curAgeGroup.Length == 0 ) curAgeGroup = inAgeGroup;
 
-			showMemberRegList();
-		}
+            editGenderSelect.RatingValue = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
+            if ( editGenderSelect.RatingValue.Length == 0 && curAgeGroup.Length > 1 ) {
+                editGenderSelect.RatingValue = myTourEventReg.getGenderOfAgeDiv( curAgeGroup );
+            }
 
-		private void showMemberRegList() {
+            editSkiYearAge.Text = "";
+            Byte curValue = Convert.ToByte( HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "0" ) );
+            editSkiYearAge.Text = curValue.ToString();
+            if ( curValue > 1 && curValue < 100 ) {
+                if ( editGenderSelect.RatingValue.Length > 0 ) {
+                    AgeGroupSelect.SelectList_Load( curValue, editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
+                } else {
+                    AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
+                }
+
+            } else {
+                if ( editGenderSelect.RatingValue.Length > 0 ) {
+                    AgeGroupSelect.SelectList_Load( editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
+                } else {
+                    AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
+                }
+                editSkiYearAge.Text = "";
+            }
+            AgeGroupSelect.CurrentValue = curAgeGroup;
+
+            editCity.Text = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
+            editState.Text = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+            String curFedValue = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToLower();
+            editFederation.Text = curFedValue;
+            editFederation.SelectedValue = curFedValue;
+            showMemberStatus.Text = HelperFunctions.getDataRowColValue( curDataRow, "MemberStatus", "Inactive" );
+
+            AddButton.Visible = false;
+            AddButton.Enabled = false;
+        }
+
+        private void loadMemberImportData() {
+            String curMemberId = "";
+            if ( myImportMemberEntry.ContainsKey( "MemberID" ) ) {
+                curMemberId = HelperFunctions.getAttributeValue( myImportMemberEntry, "MemberID" );
+            } else {
+                curMemberId = HelperFunctions.getAttributeValue( myImportMemberEntry, "MemberId" );
+            }
+            editMemberId.Text = curMemberId.Length == 11 ? curMemberId.Substring( 0, 3 ) + curMemberId.Substring( 4, 2 ) + curMemberId.Substring( 7, 4 ) : curMemberId;
+            if ( !( myMemberIdValidate.checkMemberId( editMemberId.Text ) ) ) {
+                MessageBox.Show( String.Format( "Invalid member id {0}, checksum validation failed", editMemberId.Text ) );
+                return;
+            }
+            editFirstName.Text = (String)myImportMemberEntry["FirstName"];
+            editLastName.Text = (String)myImportMemberEntry["LastName"];
+
+            String curFedValue = HelperFunctions.getAttributeValue( myImportMemberEntry, "Federation" ).ToLower();
+            editFederation.Text = curFedValue;
+            editFederation.SelectedValue = curFedValue;
+            editCity.Text = HelperFunctions.getAttributeValue( myImportMemberEntry, "City" );
+            editState.Text = HelperFunctions.getAttributeValue( myImportMemberEntry, "State" );
+
+            String curAgeGroup = "";
+            if ( myImportMemberEntry.ContainsKey( "AgeGroup" ) ) {
+                curAgeGroup = HelperFunctions.getAttributeValue( myImportMemberEntry, "AgeGroup" ).ToUpper();
+            } else if ( myImportMemberEntry.ContainsKey( "Div" ) ) {
+                curAgeGroup = HelperFunctions.getAttributeValue( myImportMemberEntry, "Div" ).ToUpper();
+            }
+
+            if ( myImportMemberEntry.ContainsKey( "Gender" ) ) {
+                editGenderSelect.RatingValue = (String)myImportMemberEntry["Gender"];
+            } else if ( curAgeGroup.Length > 1 ) {
+                editGenderSelect.RatingValue = myTourEventReg.getGenderOfAgeDiv( curAgeGroup );
+            }
+
+            Byte curSkiYearValue = 0;
+            editSkiYearAge.Text = "";
+            if ( myImportMemberEntry.ContainsKey( "SkiYearAge" ) ) {
+                curSkiYearValue = Convert.ToByte( HelperFunctions.getAttributeValueNum( myImportMemberEntry, "SkiYearAge" ) );
+
+            } else if ( myImportMemberEntry.ContainsKey( "Age" ) ) {
+                if ( myImportMemberEntry["Age"].GetType() == System.Type.GetType( "System.String" ) ) {
+                   String tempSkiYearAge = (String)myImportMemberEntry["Age"];
+                   if ( tempSkiYearAge.Length > 0 ) {
+                        int numCk;
+                        if ( int.TryParse( tempSkiYearAge, out numCk ) ) {
+                            if ( numCk < 0 ) curSkiYearValue = 0;
+                            else curSkiYearValue = Convert.ToByte( numCk );
+                        } else {
+                            curSkiYearValue = 0;
+                        }
+                    } else {
+                        curSkiYearValue = 0;
+                    }
+
+                } else if ( myImportMemberEntry["Age"].GetType() == System.Type.GetType( "System.Int32" ) ) {
+                    curSkiYearValue = Convert.ToByte( (int)myImportMemberEntry["Age"] );
+                }
+            }
+            editSkiYearAge.Text = curSkiYearValue.ToString();
+            if ( curSkiYearValue > 1 && curSkiYearValue < 100 ) {
+                if ( editGenderSelect.RatingValue.Length > 0 ) {
+                    AgeGroupSelect.SelectList_Load( curSkiYearValue, editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
+                } else {
+                    AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
+                }
+
+            } else {
+                if ( editGenderSelect.RatingValue.Length > 0 ) {
+                    AgeGroupSelect.SelectList_Load( editGenderSelect.RatingValue, myTourRow, AgeGroupSelect_Change );
+                } else {
+                    AgeGroupSelect.SelectList_Load( AgeGroupSelect_Change );
+                }
+                editSkiYearAge.Text = "";
+            }
+
+            AgeGroupSelect.CurrentValue = curAgeGroup;
+
+            bool curMemberCanSki = true;
+            bool curMemberCanSkiGR = true;
+            bool curMemberWaiver = true;
+            if ( myImportMemberEntry.ContainsKey( "CanSki" ) ) {
+                if ( myImportMemberEntry["CanSki"] != null ) {
+                    if ( myImportMemberEntry["CanSki"].GetType() == System.Type.GetType( "System.String" ) ) {
+                        if ( ( (String)myImportMemberEntry["CanSki"] ).ToLower().Equals( "true" ) ) curMemberCanSki = true;
+                    } else {
+                        curMemberCanSki = (Boolean)myImportMemberEntry["CanSki"];
+                    }
+                }
+            }
+            if ( myImportMemberEntry.ContainsKey( "CanSkiGR" ) ) {
+                if ( myImportMemberEntry["CanSkiGR"] != null ) {
+                    if ( myImportMemberEntry["CanSkiGR"].GetType() == System.Type.GetType( "System.String" ) ) {
+                        if ( ( (String)myImportMemberEntry["CanSkiGR"] ).ToLower().Equals( "true" ) ) curMemberCanSkiGR = true;
+                    } else {
+                        curMemberCanSkiGR = (Boolean)myImportMemberEntry["CanSkiGR"];
+                    }
+                }
+            }
+            if ( myImportMemberEntry.ContainsKey( "Waiver" ) ) {
+                if ( myImportMemberEntry["Waiver"].GetType() == System.Type.GetType( "System.String" ) ) {
+                    curMemberWaiver = HelperFunctions.isValueTrue( (String)myImportMemberEntry["Waiver"] );
+                } else {
+                    curMemberWaiver = HelperFunctions.isValueTrue( ( (int)myImportMemberEntry["Waiver"] ).ToString() );
+                }
+            }
+
+            DateTime curMemberExpireDate = new DateTime();
+            try {
+                curMemberExpireDate = Convert.ToDateTime( HelperFunctions.getAttributeValue( myImportMemberEntry, "EffTo" ) );
+            } catch {
+            }
+
+            showMemberStatus.Text = ImportMember.calcMemberStatus(
+                HelperFunctions.getAttributeValue( myImportMemberEntry, "MemTypeDesc" )
+                , curMemberExpireDate
+                , HelperFunctions.getAttributeValue( myImportMemberEntry, "membershipStatusCode" )
+                , curMemberCanSki
+                , curMemberCanSkiGR
+                , curMemberWaiver
+                , Convert.ToDateTime( myTourRow["EventDates"] ) );
+
+            AddButton.Visible = false;
+            AddButton.Enabled = false;
+        }
+
+        private void showMemberRegList() {
             DataTable curDataTable = getAvailableMemberTourReg(myMemberId);
 			if ( curDataTable != null ) {
                 if ( curDataTable.Rows.Count > 0 ) {
@@ -431,6 +616,7 @@ namespace WaterskiScoringSystem.Tournament {
         private void AgeGroupSelect_Change( object sender, EventArgs e ) {
             if ( sender != null ) {
                 AgeGroupSelect.CurrentValue = ( (RadioButtonWithValue)sender ).Value.ToString();
+                editAgeGroup_Validation();
             }
         }
 
@@ -470,11 +656,17 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( myAgeGroup != null && myAgeGroup.Length > 0 ) {
                     if (!( myAgeGroup.Equals( AgeGroupSelect.CurrentValue.Trim().Substring( 0, 2 ) ) ) ) {
                         isAgeGroupChanged = true;
+                        AddButton.Visible = true;
+                        AddButton.Enabled = true;
                     }
+            
                 } else {
 					isAgeGroupChanged = true;
-				}
-			} else {
+                    AddButton.Visible = true;
+                    AddButton.Enabled = true;
+                }
+            
+            } else {
                 curReturnStatus = false;
                 MessageBox.Show( "Age group is a required field" );
             }
@@ -745,5 +937,5 @@ namespace WaterskiScoringSystem.Tournament {
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-    }
+	}
 }
