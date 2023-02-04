@@ -558,15 +558,33 @@ namespace WaterskiScoringSystem.Tournament {
             myExportData.exportDataAsHtml( scoreSummaryDataGridView, printTitle, printSubtitle, printFooter );
         }
 
-		private void navPublish_Click( object sender, EventArgs e ) {
-			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
-		}
-		private void navPrint_Click( object sender, EventArgs e ) {
-			printReport( false );
-		}
-		private bool printReport( bool inPublish ) {
+        private void navPublish_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( publishReportTimer );
+            curTimerObj.Start();
+        }
+        private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void publishReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( publishReportTimer );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
+        }
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+        private bool printReport( bool inPublish ) {
 			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
             Font saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
             scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 10, FontStyle.Regular );
 
@@ -576,88 +594,76 @@ namespace WaterskiScoringSystem.Tournament {
             Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
             Font fontPrintFooter = new Font("Times New Roman", 10);
 
-			bool returnValue = true;
-			curPrintDialog.AllowCurrentPage = true;
-            curPrintDialog.AllowPrintToFile = false;
-            curPrintDialog.AllowSelection = true;
-            curPrintDialog.AllowSomePages = true;
-            curPrintDialog.PrintToFile = false;
-            curPrintDialog.ShowHelp = false;
-            curPrintDialog.ShowNetwork = false;
-            curPrintDialog.UseEXDialog = true;
-            curPrintDialog.PrinterSettings.DefaultPageSettings.Landscape = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-            if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-				StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
-				printTitle.Append( "\n Sanction " + mySanctionNum );
-				printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
-				printTitle.Append( "\n" + this.Text );
-				if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
-				
-				myPrintDoc = new PrintDocument();
-                myPrintDoc.DocumentName = this.Text;
-                myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
-                myPrintDoc.DefaultPageSettings.Landscape = true;
-                myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+            StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+            printTitle.Append( "\n Sanction " + mySanctionNum );
+            printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+            printTitle.Append( "\n" + this.Text );
+            if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
 
-                myPrintDataGrid.SubtitleList();
-                StringRowPrinter mySubtitle;
-                StringFormat SubtitleStringFormat = new StringFormat();
-                SubtitleStringFormat.Trimming = StringTrimming.Word;
-                SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
-                SubtitleStringFormat.Alignment = StringAlignment.Center;
+            myPrintDoc = new PrintDocument();
+            myPrintDoc.DocumentName = this.Text;
+            myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+            myPrintDoc.DefaultPageSettings.Landscape = true;
+            myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
+                CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
 
-                int curLabelLocSlalom = 0, curLabelLocTrick = 0, curLabelLocJump = 0, curLabelLocOverall = 0;
-                if (myTourRules.ToLower().Equals( "ncwsa" )) {
-                    curLabelLocSlalom = 295;
-                    curLabelLocTrick = 572;
-                    curLabelLocJump = 737;
-                    curLabelLocOverall = 887;
+            myPrintDataGrid.SubtitleList();
+            StringRowPrinter mySubtitle;
+            StringFormat SubtitleStringFormat = new StringFormat();
+            SubtitleStringFormat.Trimming = StringTrimming.Word;
+            SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            SubtitleStringFormat.Alignment = StringAlignment.Center;
+
+            int curLabelLocSlalom = 0, curLabelLocTrick = 0, curLabelLocJump = 0, curLabelLocOverall = 0;
+            if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+                curLabelLocSlalom = 295;
+                curLabelLocTrick = 572;
+                curLabelLocJump = 737;
+                curLabelLocOverall = 887;
+            
+            } else {
+                if ( EventGroup.Visible ) {
+                    curLabelLocSlalom = 244;
+                    curLabelLocTrick = 550;
+                    curLabelLocJump = 729;
+                    curLabelLocOverall = 897;
                 } else {
-                    if (EventGroup.Visible) {
-                        curLabelLocSlalom = 244;
-                        curLabelLocTrick = 550;
-                        curLabelLocJump = 729;
-                        curLabelLocOverall = 897;
-                    } else {
-                        curLabelLocSlalom = 204;
-                        curLabelLocTrick = 517;
-                        curLabelLocJump = 697;
-                        curLabelLocOverall = 862;
-                    }
+                    curLabelLocSlalom = 204;
+                    curLabelLocTrick = 517;
+                    curLabelLocJump = 697;
+                    curLabelLocOverall = 862;
                 }
+            }
 
-                mySubtitle = new StringRowPrinter( SlalomLabel.Text,
-                    curLabelLocSlalom, 0, Convert.ToInt32( SlalomLabel.Width * .8 ), SlalomLabel.Size.Height,
-                    SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( TrickLabel.Text,
-                    curLabelLocTrick, 0, Convert.ToInt32( TrickLabel.Width * .65 ), TrickLabel.Size.Height,
-                    TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( JumpLabel.Text,
-                    curLabelLocJump, 0, Convert.ToInt32( JumpLabel.Width * .65 ), JumpLabel.Size.Height,
-                    JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( OverallLabel.Text,
-                    curLabelLocOverall, 0, OverallLabel.Size.Width, OverallLabel.Size.Height,
-                    OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( SlalomLabel.Text,
+                curLabelLocSlalom, 0, Convert.ToInt32( SlalomLabel.Width * .8 ), SlalomLabel.Size.Height,
+                SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( TrickLabel.Text,
+                curLabelLocTrick, 0, Convert.ToInt32( TrickLabel.Width * .65 ), TrickLabel.Size.Height,
+                TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( JumpLabel.Text,
+                curLabelLocJump, 0, Convert.ToInt32( JumpLabel.Width * .65 ), JumpLabel.Size.Height,
+                JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( OverallLabel.Text,
+                curLabelLocOverall, 0, OverallLabel.Size.Width, OverallLabel.Size.Height,
+                OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
 
-                myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-                curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
-				returnValue = true;
-			
-			} else {
-				returnValue = false;
-			}
+            myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+            myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
 
-			scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
-			return returnValue;
+            scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+			return true;
 		}
 
 		// The PrintPage action for the PrintDocument control
@@ -665,44 +671,6 @@ namespace WaterskiScoringSystem.Tournament {
             bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
             if ( more == true )
                 e.HasMorePages = true;
-        }
-
-        private DataTable getSlalomScoreDetailData() {
-            return getSlalomScoreDetailData( "All" );
-        }
-        private DataTable getSlalomScoreDetailData( String inDiv ) {
-            String curEventGroup = "";
-            if ( inDiv == null ) {
-                curEventGroup = "";
-            } else if ( inDiv.Length > 0 ) {
-                if ( inDiv.ToLower().Equals( "all" ) ) {
-                    curEventGroup = "";
-                } else {
-                    curEventGroup = inDiv;
-                }
-            } else {
-                curEventGroup = "";
-            }
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT T.MemberId, T.SanctionId, T.SkierName, T.AgeGroup, S.Round AS SlalomRound, S.Score AS SlalomScore, S.NopsScore AS SlalomNopsScore, " );
-            curSqlStmt.Append( "S.Rating AS SlalomRating, S.MaxSpeed, S.StartSpeed, S.StartLen, R.PassNum, R.Score AS PassScore, C.MinValue AS LineLength, " );
-            curSqlStmt.Append( "C.MaxValue AS LastSpeed, C.CodeValue AS LastPassInfo, RS.TeamCode AS SlalomTeam, RS.EventGroup AS SlalomGroup, RS.EventClass AS SlalomClass " );
-            curSqlStmt.Append( "FROM TourReg AS T " );
-            curSqlStmt.Append( "	INNER JOIN EventReg AS RS ON T.SanctionId = RS.SanctionId AND T.MemberId = RS.MemberId AND T.AgeGroup = RS.AgeGroup AND RS.Event = 'Slalom' " );
-            curSqlStmt.Append( "	INNER JOIN SlalomScore AS S ON T.SanctionId = S.SanctionId AND T.MemberId = S.MemberId AND T.AgeGroup = S.AgeGroup " );
-            curSqlStmt.Append( "	INNER JOIN SlalomRecap AS R ON T.SanctionId = R.SanctionId AND T.MemberId = R.MemberId AND T.AgeGroup = R.AgeGroup AND S.Round = R.Round " );
-            curSqlStmt.Append( " 	INNER JOIN CodeValueList AS C ON C.ListCodeNum = R.PassNum AND 'SlalomPass' + CONVERT(nchar(2), S.MaxSpeed) = C.ListName " );
-            curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            if ( curEventGroup.Length > 0 ) {
-                curSqlStmt.Append( "  And T.AgeGroup = '" + curEventGroup + "' " );
-            }
-            curSqlStmt.Append( "ORDER BY T.SanctionId, T.AgeGroup, T.SkierName, T.MemberId, S.Round, R.PassNum DESC" );
-            return getData( curSqlStmt.ToString() );
-
-            //curSqlStmt.Append( "AND R.PassNum IN " );
-            //curSqlStmt.Append( "	(SELECT MAX(PassNum) AS LastPass FROM SlalomRecap AS R2 " );
-            //curSqlStmt.Append( "	WHERE SanctionId = R.SanctionId AND MemberId = R.MemberId AND R.AgeGroup = AgeGroup AND R.Round = Round) " );
-            //curSqlStmt.Append( "ORDER BY SlalomGroup, T.SkierName, T.MemberId, SlalomRound " );
         }
 
         private DataTable getTourData() {

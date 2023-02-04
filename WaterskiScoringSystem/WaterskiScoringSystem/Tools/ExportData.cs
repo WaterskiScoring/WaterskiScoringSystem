@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using WaterskiScoringSystem.Common;
+using System.Drawing;
 
 namespace WaterskiScoringSystem.Tools {
     class ExportData {
@@ -400,6 +401,7 @@ namespace WaterskiScoringSystem.Tools {
                     outLine.Append( Environment.NewLine + " .DataGridView {Width: 100%; Text-Align:Center; Border: #AAAAAA .15em solid; }" );
                     outLine.Append( Environment.NewLine + " th {Text-Align:Center; Border:#DDDDDD .1em solid; Margin:0pt; Padding:0px 0px 0px 0px; Font-Size:.8em; Font-Weight:Bold;}" );
                     outLine.Append( Environment.NewLine + " td {Text-Align:Center; Border:#DDDDDD .1em solid; Margin:0pt; Padding:0px 0px 0px 0px; Font-Family:Verdana,Helvetica,sans-serif; Font-Size:.8em; Font-Weight:normal;}" );
+                    outLine.Append( Environment.NewLine + " .DataHightlight {Font-Weight:bold; Color: Red; Background: #D3D3D3; }" );
                     outLine.Append( Environment.NewLine + "</style>" );
                     outBuffer.WriteLine( outLine.ToString() );
 
@@ -437,16 +439,15 @@ namespace WaterskiScoringSystem.Tools {
                         outLine.Append( "<tr>" );
                         foreach ( DataGridViewColumn curCol in inDataGrid.Columns ) {
                             if ( curCol.Visible ) {
-                                if ( curRow.Cells[curCol.Name].Value == null ) {
-                                    curValue = "&nbsp;";
+                                if ( curRow.Cells[curCol.Name].Style.ForeColor == Color.Red ) {
+                                    outLine.Append( "<td Class=\"DataHightlight\">" );
+                                    outLine.Append( HelperFunctions.getViewRowColValue( curRow, curCol.Name, "&nbsp;" ) );
+
                                 } else {
-                                    //String curX = inDataGrid.Columns[curCol.Name].
-                                    //if ( curRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                                    curValue = curRow.Cells[curCol.Name].Value.ToString();
-                                    if (curValue.Length == 0) curValue = "&nbsp;";
+                                    outLine.Append( "<td>" );
+                                    outLine.Append( HelperFunctions.getViewRowColValue( curRow, curCol.Name, "&nbsp;" ) );
                                 }
-                                if ( curValue == null ) curValue = "&nbsp;";
-                                outLine.Append( "<td>" + curValue + "</td>" );
+                                outLine.Append( "</td>" );
                             }
                         }
                         outLine.Append( "</tr>" );

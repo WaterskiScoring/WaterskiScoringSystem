@@ -24,6 +24,7 @@ namespace WaterskiScoringSystem.Common {
 		private DataTable myBoatPathDevMax;
 		private FilterDialogForm filterDialogForm;
 
+		private PrintDocument myPrintDoc;
 		private DataGridViewPrinter myPrintDataGrid;
 
 		public BoatPathExport() {
@@ -80,7 +81,7 @@ namespace WaterskiScoringSystem.Common {
 			myBoatPathDevMax = getBoatPathDevMax();
 			setColumnsView();
 
-			String[] curList = { "DriverName", "Round", "ScoreDatetime", "PassDatetime" };
+			String[] curList = { "DriverName", "Round", "PassScoreTime", "BoatPathTime" };
 			filterDialogForm = new Common.FilterDialogForm();
 			filterDialogForm.ColumnListArray = curList;
 		}
@@ -101,6 +102,7 @@ namespace WaterskiScoringSystem.Common {
 				this.Text += " - Slalom";
 
 				BoatTime.Visible = showBoatTimes;
+				BoatTimeSlalomSP.Visible = showBoatTimes;
 
 				ScoreFeet.Visible = false;
 				ScoreMeters.Visible = false;
@@ -120,7 +122,8 @@ namespace WaterskiScoringSystem.Common {
 				Score.Visible = false;
 				PassScore.Visible = false;
 				BoatTime.Visible = false;
-				
+				BoatTimeSlalomSP.Visible = false;
+
 				ScoreFeet.Visible = true;
 				ScoreMeters.Visible = true;
 				SkierBoatPath.Visible = true;
@@ -246,9 +249,10 @@ namespace WaterskiScoringSystem.Common {
 				}
 
 				curViewRow.Cells["ScoreNotes"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreNotes", "" );
-				curViewRow.Cells["PassDatetime"].Value = ( (DateTime)curRow["PassDatetime"] ).ToString( "yyyy/MM/dd HH:mm:ss" );
-				curViewRow.Cells["ScoreDatetime"].Value = ( (DateTime)curRow["ScoreDatetime"] ).ToString( "yyyy/MM/dd HH:mm:ss" );
-				
+				curViewRow.Cells["ScoreDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreDatetime", "" );
+				curViewRow.Cells["PassDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "PassDatetime", "" );
+				curViewRow.Cells["BoatPathDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "BoatPathDatetime", "" );
+
 				if ( myEvent.Equals("Slalom")) {
 					loadDataGridSlalom( curRow, curViewRow, curFontBold );
 				} else {
@@ -332,6 +336,9 @@ namespace WaterskiScoringSystem.Common {
 						curViewRow.Cells["PathDevZone" + curIdx].Style.ForeColor = Color.Red;
 					}
 				}
+				int tempPassScore = Convert.ToInt32( Math.Floor( curPassScore ) ) + 1;
+				String timeKey = "BoatTimeBuoy" + tempPassScore;
+				curViewRow.Cells["BoatTimeSlalomSP"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, timeKey, "", 2 );
 			}
 		}
 
@@ -395,19 +402,83 @@ namespace WaterskiScoringSystem.Common {
 			myExportData.exportDataAsHtml( dataGridView, printTitle, printSubtitle, printFooter, filename );
 		}
 
+		private void navPrintResults_Click( object sender, EventArgs e ) {
+			Timer curTimerObj = new Timer();
+			curTimerObj.Interval = 5;
+			curTimerObj.Tick += new EventHandler( printReportTimer );
+			curTimerObj.Start();
+		}
+		private void printReportTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( printReportTimer );
+			printReport();
+		}
+		private void printReport() {
+			if ( dataGridView.Rows.Count == 0 ) {
+				MessageBox.Show( "No data available to print" );
+				return;
+			}
+
+			ScoreDatetime.Visible = false;
+			PassDatetime.Visible = false;
+			BoatPathDatetime.Visible = false;
+			BoatTimeSlalomSP.Visible = false;
+			Spacer0.Visible = false;
+			Spacer1.Visible = false;
+			Spacer2.Visible = false;
+
+			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+			bool CenterOnPage = true;
+			bool WithTitle = true;
+			bool WithPaging = true;
+			Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
+			Font fontPrintFooter = new Font( "Times New Roman", 10 );
+
+			PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+			if ( curPrintDialog == null ) return;
+
+			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+			printTitle.Append( "\n Sanction " + mySanctionNum );
+			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+			printTitle.Append( "\n" + this.Text );
+
+			myPrintDoc = new PrintDocument();
+			myPrintDoc.DocumentName = this.Text;
+			myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+			myPrintDoc.DefaultPageSettings.Landscape = true;
+			myPrintDataGrid = new DataGridViewPrinter( dataGridView, myPrintDoc,
+				CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+
+			myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+			curPreviewDialog.Document = myPrintDoc;
+			curPreviewDialog.Focus();
+			curPreviewDialog.ShowDialog();
+
+			ScoreDatetime.Visible = false;
+			PassDatetime.Visible = true;
+			BoatPathDatetime.Visible = true;
+			BoatTimeSlalomSP.Visible = true;
+			Spacer0.Visible = true;
+			Spacer1.Visible = true;
+			Spacer2.Visible = true;
+		}
+
 		// The PrintPage action for the PrintDocument control
 		private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
-            bool more = myPrintDataGrid.DrawDataGridView(e.Graphics);
-            if ( more == true )
-                e.HasMorePages = true;
-        }
+			bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
+			if ( more == true )
+				e.HasMorePages = true;
+		}
 
         private DataTable getSlalomPassBoatPath() {
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append( "SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass, E.RankingScore" );
 			curSqlStmt.Append( ", S.Round, BP.BoatDescription as Boat, BP.DriverName" );
 			curSqlStmt.Append( ", S.Score, R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
-			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime" );
+			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime, BP.InsertDate as BoatPathDatetime" );
 			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0, PathDevZone0" );
 			curSqlStmt.Append( ", BP.PathDevBuoy1, BP.PathDevCum1, PathDevZone1" );
@@ -416,15 +487,18 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", BP.PathDevBuoy4, BP.PathDevCum4, PathDevZone4" );
 			curSqlStmt.Append( ", BP.PathDevBuoy5, BP.PathDevCum5, PathDevZone5" );
 			curSqlStmt.Append( ", BP.PathDevBuoy6, BP.PathDevCum6, PathDevZone6 " );
+			curSqlStmt.Append( ", BT.BoatTimeBuoy1, BT.BoatTimeBuoy2, BT.BoatTimeBuoy3, BT.BoatTimeBuoy4, BT.BoatTimeBuoy5, BT.BoatTimeBuoy6, BT.BoatTimeBuoy7 " );
 			curSqlStmt.Append( "FROM SlalomScore S " );
 			curSqlStmt.Append( "INNER JOIN SlalomRecap R ON S.MemberId = R.MemberId AND S.SanctionId = R.SanctionId AND S.AgeGroup = R.AgeGroup AND S.Round = R.Round " );
 			curSqlStmt.Append( "INNER JOIN TourReg T ON S.MemberId = T.MemberId AND S.SanctionId = T.SanctionId AND S.AgeGroup = T.AgeGroup " );
 			curSqlStmt.Append( "INNER JOIN EventReg E ON S.MemberId = E.MemberId AND S.SanctionId = E.SanctionId AND S.AgeGroup = T.AgeGroup " );
-			curSqlStmt.Append( "LEFT OUTER JOIN BoatPath BP ON S.SanctionId = BP.SanctionId AND S.MemberId = BP.MemberId AND BP.Round = R.Round  AND BP.PassNumber = R.SkierRunNum AND BP.Event = E.Event " );
+			curSqlStmt.Append( "LEFT OUTER JOIN BoatPath BP ON S.SanctionId = BP.SanctionId AND S.MemberId = BP.MemberId AND BP.Round = R.Round AND BP.PassNumber = R.SkierRunNum AND BP.Event = E.Event " );
+			curSqlStmt.Append( "LEFT OUTER JOIN BoatTime BT ON S.SanctionId = BT.SanctionId AND S.MemberId = BT.MemberId AND BT.Round = R.Round AND BT.PassNumber = R.SkierRunNum AND BT.Event = E.Event " );
+
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Slalom' " );
 			if ( myFilterCmd.Length > 0 ) {
-				String curFilterCmd = myFilterCmd.Replace( "ScoreDatetime", "S.LastUpdateDate" );
-				curFilterCmd = curFilterCmd.Replace( "PassDatetime", "R.InsertDate" );
+				String curFilterCmd = myFilterCmd.Replace( "BoatPathTime", "BP.InsertDate" );
+				curFilterCmd = curFilterCmd.Replace( "PassScoreTime", "R.InsertDate" );
 				curFilterCmd = curFilterCmd.Replace( "Round", "S.Round" );
 				curSqlStmt.Append( "AND " + curFilterCmd + " " );
 			}
@@ -439,7 +513,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters, R.SkierBoatPath" );
 			curSqlStmt.Append( ", R.PassNum, R.BoatSplitTime, R.BoatSplitTime2, BoatEndTime, R.ScoreFeet as PassScoreFeet, R.ScoreMeters as PassScoreMeters" );
 			curSqlStmt.Append( ", R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
-			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime" );
+			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime, BP.InsertDate as BoatPathDatetime" );
 			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0" );
 			curSqlStmt.Append( ", BP.PathDevBuoy1, BP.PathDevCum1" );
@@ -457,8 +531,8 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "LEFT OUTER JOIN BoatTime BT ON S.SanctionId = BT.SanctionId AND S.MemberId = BT.MemberId AND BT.Round = R.Round AND BT.PassNumber = R.PassNum AND BT.Event = E.Event " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' AND E.Event = 'Jump' " );
 			if ( myFilterCmd.Length > 0 ) {
-				String curFilterCmd = myFilterCmd.Replace( "ScoreDatetime", "S.LastUpdateDate" );
-				curFilterCmd = curFilterCmd.Replace( "PassDatetime", "R.InsertDate" );
+				String curFilterCmd = myFilterCmd.Replace( "BoatPathTime", "BP.InsertDate" );
+				curFilterCmd = curFilterCmd.Replace( "PassScoreTime", "R.InsertDate" );
 				curFilterCmd = curFilterCmd.Replace( "Round", "S.Round" );
 				curSqlStmt.Append( "AND " + curFilterCmd + " " );
 			}
@@ -507,6 +581,5 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "ORDER BY SortSeq" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
-	
 	}
 }

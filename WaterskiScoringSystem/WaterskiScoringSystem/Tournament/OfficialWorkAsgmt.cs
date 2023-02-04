@@ -39,9 +39,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private ListSkierClass mySkierClassList;
 
 		private DataRow myTourRow;
-		//private DataRow myClassRow;
-		//private DataRow myClassCRow;
-		//private DataRow myClassERow;
 
 		private ArrayList myEventGroupDropdownList = new ArrayList();
         private DataTable myWorkAsgmtListDataTable;
@@ -76,51 +73,28 @@ namespace WaterskiScoringSystem.Tournament {
             labelMemberQuickFind.Visible = false;
             listTourMemberDataGridView.Visible = false;
 
-			sortDialogForm = new SortDialogForm();
-            sortDialogForm.ColumnList = officialWorkAsgmtDataGridView.Columns;
-
-            filterDialogForm = new Common.FilterDialogForm();
-            filterDialogForm.ColumnList = officialWorkAsgmtDataGridView.Columns;
-
-            // Retrieve data from database
+            // Retrieve and setup tournament event data
             mySanctionNum = Properties.Settings.Default.AppSanctionNum.Trim();
-            Cursor.Current = Cursors.WaitCursor;
+            if ( getTourEventData() ) {
+                isLoadActive = true;
+                setEventList();
+                setAsgmtList();
 
-            if ( mySanctionNum == null ) {
-                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+                roundActiveSelect.SelectList_LoadHorztl( myTourRounds.ToString(), roundActiveSelect_Click );
+                roundActiveSelect.RoundValue = "1";
+                myViewRowIdx = 0;
+                EventButtonAll.Checked = true;
 
-			} else {
-                if ( mySanctionNum.Length < 6 ) {
-                    MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+                sortDialogForm = new SortDialogForm();
+                sortDialogForm.ColumnList = officialWorkAsgmtDataGridView.Columns;
 
-				} else {
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData();
-                    if ( curTourDataTable.Rows.Count > 0 ) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        myTourRules = (String)myTourRow["Rules"];
-						myTourClass = myTourRow["Class"].ToString().ToUpper();
+                filterDialogForm = new Common.FilterDialogForm();
+                filterDialogForm.ColumnList = officialWorkAsgmtDataGridView.Columns;
 
-						removeUnratedValues();
-						
-						mySkierClassList = new ListSkierClass();
-						mySkierClassList.ListSkierClassLoad();
-
-						setEventList();
-                        setAsgmtList();
-
-                        roundActiveSelect.SelectList_LoadHorztl( myTourRounds.ToString(), roundActiveSelect_Click );
-                        roundActiveSelect.RoundValue = "1";
-                        myViewRowIdx = 0;
-                        isLoadActive = true;
-                        EventButtonAll.Checked = true;
-                        isLoadActive = false;
-
-					} else {
-                        MessageBox.Show( "The active tournament is not properly defined.  You must select from the Administration menu Tournament List option" );
-                    }
-                }
+                isLoadActive = false;
             }
+
+            Cursor.Current = Cursors.WaitCursor;
         }
 
         private void OfficialWorkAsgmt_FormClosed( object sender, FormClosedEventArgs e ) {
@@ -239,28 +213,23 @@ namespace WaterskiScoringSystem.Tournament {
 
                 if ( myEvent.Equals( "All" ) ) {
                     myOfficialWorkAsgmtDataTable = getOfficialWorkAsgmt();
+                
                 } else {
                     String curGroup = "";
-                    if ( isObjectEmpty( EventGroupList.SelectedItem ) ) {
-                        curGroup = "";
-                    } else {
-                        curGroup = EventGroupList.SelectedItem.ToString();
-                    }
+                    if ( HelperFunctions.isObjectPopulated( EventGroupList.SelectedItem ) ) curGroup = EventGroupList.SelectedItem.ToString();
                     String curRound = roundActiveSelect.RoundValue;
                     activeLabel.Visible = true;
 
-                    if ( myListTourMemberDataTable == null ) {
+                    if ( myListTourMemberDataTable == null || myListTourMemberDataTable.Rows.Count == 0 ) {
 						myListTourMemberDataTable = getTourMemberList();
 						loadTourMemberView();
-                    } else {
-                        if ( myListTourMemberDataTable.Rows.Count == 0 ) {
-							myListTourMemberDataTable = getTourMemberList();
-							loadTourMemberView();
-                        }
                     }
+
                     myOfficialWorkAsgmtDataTable = getOfficialWorkAsgmt( myEvent, curGroup, curRound );
                 }
+                
                 loadOfficialWorkAsgmtView();
+            
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error attempting to retrieve tournament official assignments\n" + ex.Message );
             }
@@ -290,46 +259,18 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
                         curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
                         curViewRow.Cells["MemberName"].Value = (String)curDataRow["MemberName"];
-                        try {
-                            curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
-                        } catch {
-                            curViewRow.Cells["Event"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-                        } catch {
-                            curViewRow.Cells["EventGroup"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["Round"].Value = ( (Byte)curDataRow["Round"] ).ToString();
-                        } catch {
-                            curViewRow.Cells["Round"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["WorkAsgmt"].Value = (String)curDataRow["WorkAsgmt"];
-                        } catch {
-                            curViewRow.Cells["WorkAsgmt"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["StartTime"].Value = ( (DateTime)curDataRow["StartTime"] ).ToString( "MM/dd/yy hh:mm tt" );
-                        } catch {
-                            curViewRow.Cells["StartTime"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EndTime"].Value = ( (DateTime)curDataRow["EndTime"] ).ToString( "MM/dd/yy hh:mm tt" );
-                        } catch {
-                            curViewRow.Cells["EndTime"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["Notes"].Value = (String)curDataRow["Notes"];
-                        } catch {
-                            curViewRow.Cells["Notes"].Value = "";
-                        }
+                        curViewRow.Cells["Event"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Event", "" );
+                        curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                        curViewRow.Cells["Round"].Value = Convert.ToByte( HelperFunctions.getDataRowColValue( curDataRow, "Round", "1" ));
+                        curViewRow.Cells["WorkAsgmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "WorkAsgmt", "" );
+                        curViewRow.Cells["StartTime"].Value = HelperFunctions.getDataRowColValue( curDataRow, "StartTime", "" );
+                        curViewRow.Cells["EndTime"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EndTime", "" );
+                        curViewRow.Cells["Notes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
                     }
                     if ( myEvent.Equals( "All" ) ) {
                         officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[curViewIdx].Cells["WorkAsgmt"];
                     } else {
-                        if ( isObjectEmpty( EventGroupList.SelectedItem ) ) {
+                        if ( HelperFunctions.isObjectEmpty( EventGroupList.SelectedItem ) ) {
                             officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[curViewIdx].Cells["WorkAsgmt"];
                         } else {
                             navAddNewItem_Click( null, null );
@@ -338,7 +279,7 @@ namespace WaterskiScoringSystem.Tournament {
                 } else {
                     if ( myEvent.Equals( "All" ) ) {
                     } else {
-                        if ( isObjectEmpty( EventGroupList.SelectedItem ) ) {
+                        if ( HelperFunctions.isObjectEmpty( EventGroupList.SelectedItem ) ) {
                         } else {
                             navAddNewItem_Click( null, null );
                         }
@@ -812,31 +753,25 @@ namespace WaterskiScoringSystem.Tournament {
 					|| curColName.Equals( "WorkAsgmt" )
 					|| curColName.Equals( "Notes" )
 					) {
-				if ( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
-					myOrigTextValue = "";
-				} else {
+                myOrigTextValue = "";
+                if ( HelperFunctions.isObjectPopulated( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
 					myOrigTextValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 				}
 
-			} else if ( curColName.Equals( "StartTime" )
-				|| curColName.Equals( "EndTime" )
-				) {
-				if ( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
-					myOrigTextValue = "";
-				} else {
-					myOrigTextValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-				}
+			} else if ( curColName.Equals( "StartTime" ) || curColName.Equals( "EndTime" ) ) {
+                myOrigTextValue = "";
+                if ( HelperFunctions.isObjectPopulated( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) {
+                    myOrigTextValue = (String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                }
 			}
 
 			if ( curColName.Equals( "MemberName" ) ) {
 				isSetMemberActive = true;
 				setMemberSelectFilter( (String) curView.Rows[e.RowIndex].Cells["WorkAsgmt"].Value );
-				if ( myOrigTextValue.Length > 0 ) {
-					if (((String)curView.Rows[e.RowIndex].Cells["MemberId"].Value).Length == 0) {
+				if ( HelperFunctions.isObjectPopulated(myOrigTextValue) ) {
+                    if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "MemberId", "" ) ) ) {
 						int curIdx = findMemberRow(myOrigTextValue);
-						if (curIdx >= 0) {
-							listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
-						}
+						if (curIdx >= 0) listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[curIdx].Cells["MemberNameOfficial"];
 						labelMemberSelect.Visible = true;
 						listTourMemberDataGridView.Visible = true;
 						listTourMemberDataGridView.Focus();
@@ -867,7 +802,7 @@ namespace WaterskiScoringSystem.Tournament {
 			DataGridView curView = (DataGridView) sender;
 
 			if ( curView.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0 ) {
-				curView.Rows[e.RowIndex].Cells["EndTime"].Value = DateTime.Now.ToString( "MM/dd/yy hh:mm tt" );
+				curView.Rows[e.RowIndex].Cells["EndTime"].Value = DateTime.Now.ToString( "yyyy/MM/dd HH:mm:ss" );
 				curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
 
 				isDataModified = true;
@@ -881,8 +816,7 @@ namespace WaterskiScoringSystem.Tournament {
 
 			String curColName = curView.Columns[e.ColumnIndex].Name;
 			if ( curColName.Equals( "MemberName" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
-					String curValue = "";
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					mySearchViewRowIdx = e.RowIndex;
 					int curIdx = findMemberRow((String)curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
 					if (curIdx >= 0) {
@@ -899,15 +833,25 @@ namespace WaterskiScoringSystem.Tournament {
 
 			String curColName = curView.Columns[e.ColumnIndex].Name;
 			if ( curColName.Equals( "WorkAsgmt" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigTextValue ) {
-						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
-					}
+                        String tempMemberId = HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "MemberId", "" );
+                        String curEvent = HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "Event", "" );
+                        if ( HelperFunctions.isObjectPopulated( tempMemberId ) ) {
+                            if ( !(validateMemberForRole( tempMemberId, curValue, curEvent ) ) ) {
+                                MessageBox.Show( String.Format( "{0} does not have a rating for the selected '{1}' role "
+                                    , HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "MemberName", "" ), curValue ) );
+                                curView.Rows[e.RowIndex].Cells["WorkAsgmt"].Value = myOrigTextValue;
+                                return;
+							}
+                            curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
+                        }
+                    }
 				}
 
 			} else if ( curColName.Equals( "MemberName" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigTextValue ) {
 						if ( curView.Rows[e.RowIndex].Cells["MemberId"].Value != System.DBNull.Value
@@ -920,7 +864,7 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} else if ( curColName.Equals( "Notes" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigTextValue ) {
 						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
@@ -928,7 +872,7 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} else if ( curColName.Equals( "StartTime" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigTextValue ) {
 						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
@@ -937,7 +881,7 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} else if ( curColName.Equals( "EndTime" ) ) {
-				if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
+				if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value ) ) ) {
 					String curValue = (String) curView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 					if ( curValue != myOrigTextValue ) {
 						curView.Rows[e.RowIndex].Cells["Updated"].Value = "Y";
@@ -1019,23 +963,23 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
 		private void assignMemberOfficial( DataGridView inView, int inRowIdx ) {
-            if ( !(isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value) ) ) {
-				isDataModified = true;
-				isSetMemberActive = false;
-				
-				String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
-                String curMemberName = (String)inView.Rows[inRowIdx].Cells["MemberNameOfficial"].Value;
+            if ( HelperFunctions.isObjectEmpty( inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value ) ) return;
 
-				officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
-                officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curMemberName;
-                officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["Updated"].Value = "Y";
+            isDataModified = true;
+            isSetMemberActive = false;
 
-                listTourMemberDataGridView.Visible = false;
-                labelMemberSelect.Visible = false;
-                officialWorkAsgmtDataGridView.Focus();
-                SendKeys.Send( "{TAB}" );
-                //officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["StartTime"];
-            }
+            String curMemberId = (String)inView.Rows[inRowIdx].Cells["MemberIdOfficial"].Value;
+            String curMemberName = (String)inView.Rows[inRowIdx].Cells["MemberNameOfficial"].Value;
+
+            officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberId"].Value = curMemberId;
+            officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["MemberName"].Value = curMemberName;
+            officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["Updated"].Value = "Y";
+
+            listTourMemberDataGridView.Visible = false;
+            labelMemberSelect.Visible = false;
+            officialWorkAsgmtDataGridView.Focus();
+            SendKeys.Send( "{TAB}" );
+            //officialWorkAsgmtDataGridView.CurrentCell = officialWorkAsgmtDataGridView.Rows[myViewRowIdx].Cells["StartTime"];
         }
 
         private int findMemberRow(String inValue) {
@@ -1169,7 +1113,7 @@ namespace WaterskiScoringSystem.Tournament {
             if (myEvent.Equals( "All" )) {
                 MessageBox.Show( "You must select an event to be copied" );
             } else {
-                if (isObjectEmpty( EventGroupList.SelectedItem )) {
+                if (HelperFunctions.isObjectEmpty( EventGroupList.SelectedItem )) {
                     MessageBox.Show( "You must select an event group to be copied" );
                 } else {
 					curFromGroup = EventGroupList.SelectedItem.ToString();
@@ -1274,7 +1218,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
                 + "INNER JOIN OfficialWork ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId "
                 + "Where XT.SanctionId = '" + mySanctionNum + "' ";
-            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
+            if ( !( HelperFunctions.isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
                 curSelectCommand[0] = curSelectCommand[0] + " And " + myFilterCmd;
             }
 
@@ -1298,7 +1242,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSelectCommand[3] = "SELECT XT.* FROM MemberList XT "
                 + "INNER JOIN TourReg ER on XT.MemberId = ER.MemberId "
                 + "Where ER.SanctionId = '" + mySanctionNum + "' ";
-            if ( !( isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
+            if ( !( HelperFunctions.isObjectEmpty(myFilterCmd) ) && myFilterCmd.Length > 0 ) {
                 curSelectCommand[3] = curSelectCommand[3] + " And " + myFilterCmd;
             }
 
@@ -1306,6 +1250,19 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport();
+        }
+        private void printReport() {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             PrintDialog curPrintDialog = new PrintDialog();
 
@@ -1413,8 +1370,27 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 		}
 
-		// The PrintPage action for the PrintDocument control
-		private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
+        private bool getTourEventData() {
+            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+            DataTable curTourDataTable = getTourData();
+            if ( curTourDataTable.Rows.Count <= 0 ) {
+                MessageBox.Show( "An active tournament is not properly defined" );
+                return false;
+            }
+            
+            myTourRow = curTourDataTable.Rows[0];
+            myTourRules = (String)myTourRow["Rules"];
+            myTourClass = myTourRow["Class"].ToString().ToUpper();
+
+            mySkierClassList = new ListSkierClass();
+            mySkierClassList.ListSkierClassLoad();
+
+            return true;
+        }
+
+
+        // The PrintPage action for the PrintDocument control
+        private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {
             bool more = myPrintDataGrid.DrawDataGridView( e.Graphics );
             if ( more == true )
                 e.HasMorePages = true;
@@ -1473,7 +1449,77 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-		private void removeUnratedValues() {
+        private bool validateMemberForRole( String inMemberId, String inRole, String inEvent ) {
+            String curRoleName = "";
+            String curEvent = myEvent;
+            if ( HelperFunctions.isObjectPopulated( inEvent ) ) curEvent = inEvent;
+
+            if ( inRole.Equals( "Boat Judge" ) || inRole.Equals( "Event Judge" ) || inRole.Equals( "Event Judge ACJ" ) ) {
+                if ( curEvent.Equals( "Slalom" ) ) {
+                    curRoleName = "JudgeSlalomRating";
+
+                } else if ( curEvent.Equals( "Trick" ) ) {
+                    curRoleName = "JudgeTrickRating";
+
+                } else if ( curEvent.Equals( "Jump" ) ) {
+                    curRoleName = "JudgeJumpRating";
+                }
+
+            } else if ( inRole.Equals( "End Course Official" ) ) {
+                if ( curEvent.Equals( "Slalom" ) ) {
+                    curRoleName = "JudgeSlalomRating !='' OR DriverSlalomRating !='' OR TechOfficialRating";
+
+                } else if ( curEvent.Equals( "Trick" ) ) {
+                    curRoleName = "JudgeTrickRating !='' OR DriverTrickRating";
+
+                } else if ( curEvent.Equals( "Jump" ) ) {
+                    curRoleName = "JudgeJumpRating !='' OR DriverJumpRating";
+                }
+
+            } else if ( inRole.Equals( "Driver" ) ) {
+                if ( curEvent.Equals( "Slalom" ) ) {
+                    curRoleName = "DriverSlalomRating";
+
+                } else if ( curEvent.Equals( "Trick" ) ) {
+                    curRoleName = "DriverTrickRating";
+
+                } else if ( curEvent.Equals( "Jump" ) ) {
+                    curRoleName = "DriverJumpRating";
+                }
+
+            } else if ( inRole.Equals( "Scorer" ) ) {
+                if ( curEvent.Equals( "Slalom" ) ) {
+                    curRoleName = "ScorerSlalomRating";
+
+                } else if ( curEvent.Equals( "Trick" ) ) {
+                    curRoleName = "ScorerTrickRating";
+
+                } else if ( curEvent.Equals( "Jump" ) ) {
+                    curRoleName = "ScorerJumpRating";
+                }
+
+            } else if ( inRole.Equals( "Safety" ) ) {
+                curRoleName = "SafetyOfficialRating";
+
+            } else if ( inRole.Equals( "Announcer" ) ) {
+                curRoleName = "AnncrOfficialRating";
+
+            } else if ( inRole.Equals( "Technical Controller" ) ) {
+                curRoleName = "TechOfficialRating";
+
+            } else {
+                curRoleName = "";
+            }
+
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT MemberId FROM OfficialWork " );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND ({2} != '') ", mySanctionNum, inMemberId, curRoleName ) );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return true;
+            return false;
+        }
+
+        private void removeUnratedValues() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			try {
 				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeSlalomRating = 'Unrated'" );
@@ -1561,20 +1607,6 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
-        }
-
-        private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
         }
 
 	}

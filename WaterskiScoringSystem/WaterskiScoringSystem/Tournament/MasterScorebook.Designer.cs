@@ -126,6 +126,7 @@
 			this.finalScoreButton = new System.Windows.Forms.RadioButton();
 			this.bestScoreButton = new System.Windows.Forms.RadioButton();
 			this.scoresPlcmtGroupBox = new System.Windows.Forms.GroupBox();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.winStatus.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.PointsMethodGroupBox.SuspendLayout();
@@ -154,6 +155,7 @@
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.navRefresh,
             this.navPrint,
+            this.navPublish,
             this.navExport});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -186,7 +188,7 @@
 			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
 			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(44, 35);
+			this.navExport.Size = new System.Drawing.Size(45, 35);
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
@@ -973,6 +975,16 @@
 			this.scoresPlcmtGroupBox.TabStop = false;
 			this.scoresPlcmtGroupBox.Text = "Scores to Use";
 			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 35);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
+			// 
 			// MasterScorebook
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1080,5 +1092,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn RoundSlalom;
         private System.Windows.Forms.DataGridViewTextBoxColumn RoundTrick;
         private System.Windows.Forms.DataGridViewTextBoxColumn RoundJump;
-    }
+		private System.Windows.Forms.ToolStripButton navPublish;
+	}
 }

@@ -142,11 +142,22 @@ namespace WaterskiScoringSystem.Common {
 			String checkValue = inValue.Trim().ToLower();
 			if ( checkValue.Equals( "true" ) ) return true;
 			else if ( checkValue.Equals( "false" ) ) return false;
+			else if ( checkValue.Equals( "y" ) ) return true;
+			else if ( checkValue.Equals( "n" ) ) return false;
 			else if ( checkValue.Equals( "yes" ) ) return true;
 			else if ( checkValue.Equals( "no" ) ) return false;
 			else if ( checkValue.Equals( "1" ) ) return true;
 			else if ( checkValue.Equals( "0" ) ) return false;
 			else return false;
+		}
+
+		public static bool isCollegiateEvent( String inTourRules ) {
+			if ( inTourRules.ToLower().Equals( "ncwsa" ) ) return true;
+			return false;
+		}
+		public static bool isIwwfEvent( String inTourRules ) {
+			if ( inTourRules.ToLower().Equals( "iwwf" ) ) return true;
+			return false;
 		}
 
 		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
@@ -181,6 +192,7 @@ namespace WaterskiScoringSystem.Common {
 		public static String getDataRowColValueDecimal( DataRow dataRow, String colName, String defaultValue, int numDecimals ) {
 			try {
 				if ( dataRow == null ) return defaultValue;
+				if ( !( dataRow.Table.Columns.Contains( colName ) ) ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 0 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == 1 ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.0" );
@@ -188,8 +200,8 @@ namespace WaterskiScoringSystem.Common {
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == -1 ) return ( (decimal)dataRow[colName] ).ToString( "##,####.#" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) && numDecimals == -2 ) return ( (decimal)dataRow[colName] ).ToString( "##,####.##" );
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
-
-				return ( (String)dataRow[colName] ).ToString();
+				return getDataRowColValue( dataRow, colName, defaultValue );
+			
 			} catch {
 				return "";
 			}
@@ -197,9 +209,11 @@ namespace WaterskiScoringSystem.Common {
 		public static decimal getDataRowColValueDecimal( DataRow dataRow, String colName, decimal defaultValue ) {
 			try {
 				if ( dataRow == null ) return defaultValue;
+				if ( !( dataRow.Table.Columns.Contains( colName ) ) ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return (decimal)dataRow[colName];
-				return Convert.ToDecimal( (String)dataRow[colName] );
+				return Convert.ToDecimal( getDataRowColValue(dataRow, colName, defaultValue.ToString( "##,###0.00" ) ) );
+			
 			} catch {
 				return defaultValue;
 			}
@@ -208,10 +222,12 @@ namespace WaterskiScoringSystem.Common {
 		public static String getDataRowColValue( DataRow dataRow, String colName, String defaultValue ) {
 			try {
 				if ( dataRow == null ) return defaultValue;
+				if ( !( dataRow.Table.Columns.Contains( colName ) ) ) return defaultValue;
 				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
 				if ( dataRow[colName].GetType().Equals( typeof( String ) ) ) return ( (String)dataRow[colName] ).ToString().Trim();
 				if ( dataRow[colName].GetType().Equals( typeof( int ) ) ) return ( (int)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( Int16 ) ) ) return ( (Int16)dataRow[colName] ).ToString();
+				if ( dataRow[colName].GetType().Equals( typeof( Int64 ) ) ) return ( (Int64)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( byte ) ) ) return ( (byte)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( bool ) ) ) return ( (bool)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
@@ -228,25 +244,31 @@ namespace WaterskiScoringSystem.Common {
 			String curColValue = "";
 			try {
 				if ( viewRow == null ) return defaultValue;
+				if ( !(viewRow.DataGridView.Columns.Contains(colName)) ) return defaultValue;
 				if ( viewRow.Cells[colName].Value == null ) return defaultValue;
+				
 				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( String ) ) ) {
 					curColValue = ( (String)viewRow.Cells[colName].Value ).Trim();
-				}
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( int ) ) ) {
+				
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( int ) ) ) {
 					curColValue = ( (int)viewRow.Cells[colName].Value ).ToString();
-				}
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int16 ) ) ) {
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int16 ) ) ) {
 					curColValue = ( (Int16)viewRow.Cells[colName].Value ).ToString();
-				}
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( byte ) ) ) {
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int64 ) ) ) {
+					curColValue = ( (Int64)viewRow.Cells[colName].Value ).ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( byte ) ) ) {
 					curColValue = ( (byte)viewRow.Cells[colName].Value ).ToString();
-				}
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) {
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) {
 					curColValue = ( (decimal)viewRow.Cells[colName].Value ).ToString( "##,###0.00" );
-				}
-				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) {
+				
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) {
 					curColValue = ( (bool)viewRow.Cells[colName].Value ).ToString();
 				}
+				
 				if ( curColValue.Length <= 0 ) return defaultValue;
 				return curColValue;
 			
@@ -254,7 +276,16 @@ namespace WaterskiScoringSystem.Common {
 				return defaultValue;
 			}
 		}
-		
+
+		public static decimal getViewRowColValueDecimal( DataGridViewRow viewRow, String colName, String defaultValue ) {
+			try {
+				return Convert.ToDecimal( getViewRowColValue( viewRow, colName, defaultValue ) );
+			
+			} catch {
+				return Convert.ToDecimal( defaultValue );
+			}
+		}
+
 		public static String getRegion( String inSanctionId ) {
 			String curValue = inSanctionId.Substring( 2, 1 );
 			String returnValue = curValue;

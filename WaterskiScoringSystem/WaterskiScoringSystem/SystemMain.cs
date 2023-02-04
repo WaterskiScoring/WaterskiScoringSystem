@@ -758,36 +758,6 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
-        private void navSlalomScorebook_Click(object sender, EventArgs e) {
-            SlalomScorebook curForm = new SlalomScorebook();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
-        }
-
-        private void navTrickScorebook_Click( object sender, EventArgs e ) {
-            TrickScorebook curForm = new TrickScorebook();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
-        }
-
-        private void navJumpScorebook_Click( object sender, EventArgs e ) {
-            JumpScorebook curForm = new JumpScorebook();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
-        }
-
         private void navOfficialWorkAssignment_Click( object sender, EventArgs e ) {
             Tournament.OfficialWorkAsgmt curForm = new Tournament.OfficialWorkAsgmt();
             mdiStatusMsg.Text = curForm.Name + " opening";

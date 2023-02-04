@@ -1,26 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tools {
     class ExportRecordAppData {
         private String tabDelim = "\t";
-        private String myRecordAppFormFileName = "RecordApplicationFormTemplate.xlsx";
+        private String myRecordAppFormFileName = "IWWFRecordApplicationFormTemplate.xlsx";
         private String myExcelSheetName_IDSheet = "ID & CERTIFICATION PAGE";
-        private String myExcelSheetName_EventSheet = "EventRecordData";
         private String myDeploymentDirectory = "";
 
         private const String myExcelAppUID = "Excel.Application";
@@ -28,846 +20,723 @@ namespace WaterskiScoringSystem.Tools {
         private object myExcelWorkBooks, myExcelWorkBook, myExcelSheets, myExcelActiveSheet, myExcelRange;
 
         private StreamWriter myOutBuffer = null;
-        private TourProperties myTourProperties;
 
         public ExportRecordAppData() {
             try {
                 //Create Excel application object
                 Type curAppType = Type.GetTypeFromProgID( myExcelAppUID );
-                if (curAppType == null) {
+                if ( curAppType == null ) {
                     MessageBox.Show( "Excel not available" );
+
                 } else {
                     myExcelApp = Activator.CreateInstance( curAppType );
                     MessageBox.Show( "ExcelApp instance created of type: " + myExcelApp.GetType() );
                     // make it visible
                     myExcelApp.GetType().InvokeMember( "Visible", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
+                    myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
 
                     try {
                         myDeploymentDirectory = Application.StartupPath;
-                        if (myDeploymentDirectory == null) { myDeploymentDirectory = ""; }
-                        if (myDeploymentDirectory.Length < 1) {
+                        if ( myDeploymentDirectory == null ) { myDeploymentDirectory = ""; }
+                        if ( myDeploymentDirectory.Length < 1 ) {
                             myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
                         }
-                    } catch (Exception ex) {
-                        if (myDeploymentDirectory == null) { myDeploymentDirectory = ""; }
-                        if (myDeploymentDirectory.Length < 1) {
+
+                    } catch ( Exception ex ) {
+                        if ( myDeploymentDirectory == null ) { myDeploymentDirectory = ""; }
+                        if ( myDeploymentDirectory.Length < 1 ) {
                             myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
                         }
                     }
                 }
-            } catch (Exception ex) {
+
+            } catch ( Exception ex ) {
                 myExcelApp = null;
                 MessageBox.Show( "Error initializing record application export processing" + "\n\nError: " + ex.Message );
             }
         }
 
-        public bool ExportData(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inEventGroup, Int16 inRound) {
+        public bool ExportData( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inEventGroup, Int16 inRound ) {
             String curMethodName = "ExportRecordAppData:ExportData";
             String curMsg = "";
 
             try {
-                StringBuilder outLine = new StringBuilder( "" );
-                String curFilename = "RecordData_" + inEvent + "_" + inMemberId + "_" + inDiv + "_" + inRound + ".txt";
-                myOutBuffer = getExportFile( curFilename );
-				if ( myOutBuffer == null ) return false;
+                DataRow curTourRow = getTourData( inSanctionId );
+                if ( curTourRow == null ) {
+                    curMsg = "Tournament data not found, export bypassed";
+                    MessageBox.Show( curMsg );
+                    Log.WriteFile( curMethodName + ":conplete: " + curMsg );
+                    return false;
+                }
 
-				Log.WriteFile( "Export Record Data: " + curFilename );
+                writeRecordDataTextFile( curTourRow, inEvent, inMemberId, inDiv, inEventGroup, inRound );
 
-				DataRow curTourRow = getTourData( inSanctionId );
-				if ( curTourRow == null ) {
-					curMsg = "Tournament data not found, export bypassed";
-					MessageBox.Show( curMsg );
-					Log.WriteFile( curMethodName + ":conplete: " + curMsg );
-					return true;
-				}
+                if ( myExcelApp != null ) {
+                    writeRecordDataExcelFile( curTourRow, inEvent, inMemberId, inDiv, inEventGroup, inRound );
+                }
 
-				writeTourData( outLine, curTourRow );
-				writeEventOfficials( outLine, curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
-				writeSkierInfo( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-				writePerfData( outLine, curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-				myOutBuffer.Close();
-				curMsg = curMethodName + " data successfully completed ";
-
-				if ( myExcelApp != null ) {
-					String curExcelTemplateFileName = myDeploymentDirectory + "\\" + myRecordAppFormFileName;
-					String curExcelFileName = Properties.Settings.Default.ExportDirectory + "\\RecordData_" + inEvent + "_" + inMemberId + "_" + inDiv + "_" + inRound;
-					MessageBox.Show( "ExcelFileName: " + curExcelFileName );
-
-					//Get a new workbook.
-					myExcelWorkBooks = myExcelApp.GetType().InvokeMember( "Workbooks", BindingFlags.GetProperty, null, myExcelApp, null );
-					myExcelWorkBook = myExcelWorkBooks.GetType().InvokeMember( "Open", BindingFlags.InvokeMethod, null, myExcelWorkBooks, new object[] { curExcelTemplateFileName, true } );
-					myExcelSheets = myExcelWorkBook.GetType().InvokeMember( "Worksheets", BindingFlags.GetProperty, null, myExcelWorkBook, null );
-					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { 1 } );
-					// Range = WorkSheet.GetType().InvokeMember("Range",BindingFlags.GetProperty,null,WorkSheet,new object[1] { "A1" });
-
-					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
-					myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
-					myExcelWorkBook.GetType().InvokeMember( "SaveAs", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { curExcelFileName } );
-
-					writeTourDataExcel( curTourRow );
-					writeEventOfficialsExcel( curTourRow["SanctionId"].ToString(), inEvent, inEventGroup, inRound.ToString() );
-					setCellValue( 14, "D", inEvent );
-					setCellValue( 14, "B", inDiv );
-					setCellValue( 16, "G", inRound );
-
-					writeSkierInfoExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-					writePerfDataExcel( curTourRow["SanctionId"].ToString(), inEvent, inMemberId, inDiv, inRound.ToString() );
-
-					myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
-					myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
-
-					myExcelWorkBook.GetType().InvokeMember( "Save", BindingFlags.InvokeMethod, null, myExcelWorkBook, null );
-					myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
-					myExcelWorkBook.GetType().InvokeMember( "Close", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { true } );
-					myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
-					myExcelApp.GetType().InvokeMember( "Quit", System.Reflection.BindingFlags.InvokeMethod, null, myExcelApp, null );
-					MessageBox.Show( curMsg );
-					Log.WriteFile( curMethodName + ":conplete: " + curMsg );
-					return true;
-				}
-				
-			} catch (Exception ex) {
+            } catch ( Exception ex ) {
                 MessageBox.Show( "Error:" + curMethodName + " Exception encountered in ExportRecordAppData processing:\n\n" + ex.Message );
                 curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
-            
-			}
-			return false;
-		}
 
-		//Write tournament information to Excel spreadsheet
-		private bool writeTourDataExcel( DataRow inTourRow) {
+            }
+            return false;
+        }
+
+        private void writeRecordDataTextFile( DataRow inTourRow, String inEvent, String inMemberId, String inDiv, String inEventGroup, Int16 inRound ) {
+            String curMethodName = "ExportRecordAppData:writeRecordDataTextFile: ";
+            String curMsg = "";
+
+            try {
+                String curSanctionId = HelperFunctions.getDataRowColValue( inTourRow, "SanctionId", "" );
+                String curSkierName = getSkierName( curSanctionId, inMemberId, inDiv );
+                curSkierName = curSkierName.Replace( " ", "_" );
+                String curFileName = String.Format( "RecordData_{0}_{1}_{2}_{3}_R{4}.txt"
+                    , inEvent, curSkierName, inMemberId, inDiv, inRound );
+
+                StringBuilder outLine = new StringBuilder( "" );
+                myOutBuffer = getExportFile( curFileName );
+                if ( myOutBuffer == null ) return;
+
+                Log.WriteFile( "Export Record Data: " + curFileName );
+
+                writeTourData( outLine, inTourRow );
+                writeEventOfficials( outLine, curSanctionId, inEvent, inEventGroup, inRound.ToString() );
+                writeSkierInfo( outLine, curSanctionId, inEvent, inMemberId, inDiv, inRound.ToString() );
+                writePerfData( outLine, curSanctionId, inEvent, inMemberId, inDiv, inRound.ToString() );
+                myOutBuffer.Close();
+
+                curMsg = curMethodName + "data successfully exported";
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+
+            } catch ( Exception ex ) {
+                curMsg = curMethodName + "Exception=" + ex.Message;
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMsg );
+            }
+        }
+
+        private void writeRecordDataExcelFile( DataRow inTourRow, String inEvent, String inMemberId, String inDiv, String inEventGroup, Int16 inRound ) {
+            String curMethodName = "ExportRecordAppData:writeRecordDataExcelFile";
+            String curMsg = "";
+            String curSanctionId = HelperFunctions.getDataRowColValue( inTourRow, "SanctionId", "" );
+
+            openExcelWorkbook( curSanctionId, inEvent, inMemberId, inDiv, inRound );
+            removeUnusedSheets( inEvent );
+
+            myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
+            myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+            writeTourDataExcel( inTourRow, inEvent );
+            writeSkierInfoExcel( curSanctionId, inEvent, inMemberId, inDiv, inRound.ToString() );
+
+            myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { inEvent } );
+            myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+            writeEventOfficialsExcel( curSanctionId, inEvent, inEventGroup, inRound.ToString() );
+            writeSkierBoatInfoExcel( curSanctionId, inEvent, inMemberId, inDiv, inRound.ToString() );
+            writePerfDataExcel( curSanctionId, inEvent, inMemberId, inDiv, inRound.ToString() );
+
+            saveExcelWorkbook( curSanctionId, inEvent, inMemberId, inDiv, inRound );
+
+            curMsg = curMethodName + ":conplete";
+            MessageBox.Show( curMsg );
+            Log.WriteFile( curMsg );
+        }
+
+        private bool openExcelWorkbook( String inSanctionId, String inEvent, String inMemberId, String inDiv, Int16 inRound ) {
+            String curMethodName = "ExportRecordAppData:openExcelWorkbook";
+            
+            try {
+                String curSkierName = getSkierName( inSanctionId, inMemberId, inDiv );
+                curSkierName = curSkierName.Replace( " ", "_" );
+                String curFileName = String.Format( "\\RecordData_{0}_{1}_{2}_{3}_R{4}"
+                    , inEvent, curSkierName, inMemberId, inDiv, inRound );
+
+                String curExcelTemplateFileName = myDeploymentDirectory + "\\" + myRecordAppFormFileName;
+                String curExcelFileName = Properties.Settings.Default.ExportDirectory + curFileName;
+                MessageBox.Show( "ExcelFileName: " + curExcelFileName );
+                
+                myExcelWorkBooks = myExcelApp.GetType().InvokeMember( "Workbooks", BindingFlags.GetProperty, null, myExcelApp, null );
+                myExcelWorkBook = myExcelWorkBooks.GetType().InvokeMember( "Open", BindingFlags.InvokeMethod, null, myExcelWorkBooks, new object[] { curExcelTemplateFileName, true } );
+                myExcelSheets = myExcelWorkBook.GetType().InvokeMember( "Worksheets", BindingFlags.GetProperty, null, myExcelWorkBook, null );
+
+                myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
+                myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+                myExcelWorkBook.GetType().InvokeMember( "SaveAs", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { curExcelFileName } );
+                return true;
+            
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMsg );
+                return false;
+            }
+        }
+
+        private bool saveExcelWorkbook( String inSanctionId, String inEvent, String inMemberId, String inDiv, Int16 inRound ) {
+            String curMethodName = "ExportRecordAppData:saveExcelWorkbook";
+
+            try {
+                myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
+                myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                myExcelWorkBook.GetType().InvokeMember( "Save", BindingFlags.InvokeMethod, null, myExcelWorkBook, null );
+                myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
+                myExcelWorkBook.GetType().InvokeMember( "Close", BindingFlags.InvokeMethod, null, myExcelWorkBook, new object[] { true } );
+                myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
+                myExcelApp.GetType().InvokeMember( "Quit", System.Reflection.BindingFlags.InvokeMethod, null, myExcelApp, null );
+
+                return true;
+
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMsg );
+                return false;
+            }
+        }
+
+        private bool removeUnusedSheets( String inEvent ) {
+            String curMethodName = "ExportRecordAppData:removeUnusedSheets";
+
+            try {
+                if ( inEvent.Equals( "Slalom" ) ) {
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Trick" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Jump" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                } else if ( inEvent.Equals( "Trick" ) ) {
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Slalom" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Jump" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                } else if ( inEvent.Equals( "Jump" ) ) {
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Slalom" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+
+                    myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { "Trick" } );
+                    myExcelActiveSheet.GetType().InvokeMember( "Delete", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
+                }
+            
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMsg );
+                return false;
+            }
+
+            return true;
+        }
+
+        //Write tournament information to Excel spreadsheet
+        private bool writeTourDataExcel( DataRow inTourRow, String inEvent ) {
+            String curMethodName = "ExportRecordAppData:writeTourDataExcel";
+            
             try {
                 DataRow curOfficialRow = null;
                 DataRow curTechRow = getTechController( inTourRow["SanctionId"].ToString() );
 
-                setCellValue(18, "C", inTourRow["Name"].ToString());
-                setCellValue(18, "G", inTourRow["SanctionId"].ToString());
-                setCellValue(20, "B", inTourRow["EventLocation"].ToString());
+                setCellValue(26, "B", HelperFunctions.getDataRowColValue( inTourRow, "Name", "" ) );
+                setCellValue(26, "G", HelperFunctions.getDataRowColValue( inTourRow, "SanctionId", "" ) );
+                String curEventLocation = HelperFunctions.getDataRowColValue( inTourRow, "EventLocation", "" );
+                setCellValue( 28, "B", curEventLocation );
+                if ( curEventLocation.Contains(" (")) {
+                    int curDelim = curEventLocation.IndexOf( " (" );
+                    int curDelimEnd = curEventLocation.IndexOf( ")" );
+                    setCellValue( 28, "G", curEventLocation.Substring( curDelim + 2, curDelimEnd - curDelim - 2 ) );
+                }
 
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefJudgeMemberId"].ToString() );
 				if ( curOfficialRow  != null ) {
-					setCellValue( 44, "B", transformName( inTourRow["ChiefJudgeName"].ToString() ) );
-					setCellValue( 44, "H", curOfficialRow["JudgeSlalomRating"].ToString() );
-					setCellValue( 44, "G", inTourRow["ChiefJudgePhone"].ToString() );
-					setCellValue( 44, "E", inTourRow["ChiefJudgeEmail"].ToString() );
-				}
-
-				curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
-				if ( curOfficialRow != null ) {
-					setCellValue( 50, "B", transformName( inTourRow["ChiefDriverName"].ToString() ) );
-					setCellValue( 50, "H", curOfficialRow["DriverSlalomRating"].ToString() );
-					setCellValue( 50, "G", inTourRow["ChiefDriverPhone"].ToString() );
-					setCellValue( 50, "E", inTourRow["ChiefDriverEmail"].ToString() );
-				}
-
-				curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
-				if ( curOfficialRow != null ) {
-					setCellValue( 48, "B", transformName( inTourRow["ChiefScorerName"].ToString() ) );
-					setCellValue( 48, "H", curOfficialRow["ScorerSlalomRating"].ToString() );
-					setCellValue( 48, "G", inTourRow["ChiefScorerPhone"].ToString() );
-					setCellValue( 48, "E", inTourRow["ChiefScorerEmail"].ToString() );
-				}
-
-				if (curTechRow == null) {
-                } else {
-                    setCellValue(46, "B", transformName( curTechRow["ChiefTechName"].ToString() ));
-                    setCellValue(46, "H", curTechRow["TechOfficialRating"].ToString());
+                    setCellValue( 41, "B", transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeName", "" ) ) );
+                    setCellValue( 41, "E", HelperFunctions.getDataRowColValue( curOfficialRow, "Judge" + inEvent + "Rating", "" ));
                 }
+
+                if ( curTechRow != null ) {
+                    setCellValue( 43, "B", transformName( HelperFunctions.getDataRowColValue( curTechRow, "ChiefTechName", "" ) ) );
+                    setCellValue( 43, "E", HelperFunctions.getDataRowColValue( curTechRow, "TechOfficialRating", "" ) );
+                }
+
+                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
+                if ( curOfficialRow != null ) {
+                    setCellValue( 45, "B", transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerName", "" ) ) );
+                    setCellValue( 45, "E", HelperFunctions.getDataRowColValue( curOfficialRow, "Scorer" + inEvent + "Rating", "" ) );
+                }
+
+                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
+				if ( curOfficialRow != null ) {
+                    setCellValue( 47, "B", transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefDriverName", "" ) ) );
+                    setCellValue( 47, "E", HelperFunctions.getDataRowColValue( curOfficialRow, "Driver" + inEvent + "Rating", "" ) );
+				}
 
                 return true;
 
 			} catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeTourData method"
-                    + "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
-        private bool writeEventOfficialsExcel(String inSanctionId, String inEvent, String inEventGroup, String inRound) {
-            DataRow curRow = null, curOfficialRow = null;
-            int curExcelRow = 54;
-            try {
-                setCellValue(curExcelRow, "A", "Boat Judge");
-                DataTable curDataTable = getEventOfficials( inSanctionId, inEvent, inEventGroup, inRound );
-                DataRow[] curRowsFound = curDataTable.Select( "WorkAsgmt = 'Boat Judge'" );
-                if (curRowsFound.Length > 0) {
-                    for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
-                        curRow = curRowsFound[curIdx];
-                        curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                        if (curOfficialRow != null) {
-                            setCellValue(curExcelRow, "B", transformName( curOfficialRow["SkierName"].ToString() ));
-                            if (inEvent.Equals( "Slalom" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeSlalomRating"].ToString());
-                            } else if (inEvent.Equals( "Trick" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeTrickRating"].ToString());
-                            } else if (inEvent.Equals( "Jump" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeJumpRating"].ToString());
-                            }
-                            curExcelRow++;
-                        }
-                    }
-                } else {
-                    curExcelRow++;
-                }
-                curExcelRow++;
-
-                setCellValue(curExcelRow, "A", "Driver");
-                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Driver'" );
-                if (curRowsFound.Length > 0) {
-                    for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
-                        curRow = curRowsFound[curIdx];
-                        curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                        if (curOfficialRow != null) {
-                            setCellValue(curExcelRow, "B", transformName( curOfficialRow["SkierName"].ToString() ));
-                            if (inEvent.Equals( "Slalom" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["DriverSlalomRating"].ToString());
-                            } else if (inEvent.Equals( "Trick" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["DriverTrickRating"].ToString());
-                            } else if (inEvent.Equals( "Jump" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["DriverJumpRating"].ToString());
-                            }
-                            curExcelRow++;
-                        }
-                    }
-                } else {
-                    curExcelRow++;
-                }
-                curExcelRow++;
-
-                setCellValue(curExcelRow, "A", "Event Judge");
-                curRowsFound = curDataTable.Select("WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'End Course Official'");
-                if (curRowsFound.Length > 0) {
-                    for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
-                        curRow = curRowsFound[curIdx];
-                        curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                        if (curOfficialRow != null) {
-                            setCellValue(curExcelRow, "B", transformName( curOfficialRow["SkierName"].ToString() ));
-                            if (inEvent.Equals( "Slalom" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeSlalomRating"].ToString());
-                            } else if (inEvent.Equals( "Trick" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeTrickRating"].ToString());
-                            } else if (inEvent.Equals( "Jump" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["JudgeJumpRating"].ToString());
-                            }
-                        }
-                        curExcelRow++;
-                    }
-                } else {
-                    curExcelRow++;
-                }
-                curExcelRow++;
-
-                setCellValue(curExcelRow, "A", "Scorer");
-                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Scorer'" );
-                if (curRowsFound.Length > 0) {
-                    for (int curIdx = 0; curIdx < curRowsFound.Length; curIdx++) {
-                        curRow = curRowsFound[curIdx];
-                        curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                        if (curOfficialRow != null) {
-                            setCellValue(curExcelRow, "B", transformName( curOfficialRow["SkierName"].ToString() ));
-                            if (inEvent.Equals( "Slalom" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["ScorerSlalomRating"].ToString());
-                            } else if (inEvent.Equals( "Trick" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["ScorerTrickRating"].ToString());
-                            } else if (inEvent.Equals( "Jump" )) {
-                                setCellValue(curExcelRow, "D", curOfficialRow["ScorerJumpRating"].ToString());
-                            }
-                            curExcelRow++;
-                        }
-                    }
-                } else {
-                    curExcelRow++;
-                }
-                curExcelRow++;
-
-                return true;
-            } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
-                );
-                return false;
-            }
-        }
-
-        private bool writeSkierInfoExcel(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
+        private bool writeSkierInfoExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
+            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel";
             DataRow curRow = null;
-            
+
             try {
                 DataTable curDataTable = getSkierInfo( inSanctionId, inEvent, inMemberId, inDiv, inRound );
-                if (curDataTable.Rows.Count > 0) {
-                    curRow = curDataTable.Rows[0];
-                    setCellValue(23, "B", transformName( curRow["SkierName"].ToString() ));
-                    setCellValue(23, "F", curRow["MemberId"].ToString() );
-					setCellValue( 27, "F", curRow["SkiYearAge"].ToString() );
-					setCellValue( 29, "B", curRow["City"].ToString() + ", " + curRow["State"].ToString() );
-                    if (inEvent.Equals( "Slalom" )) {
-                        String curValue = ( (decimal) curRow["Score"]).ToString("#0.00")
-                            + " : " + ( (decimal) curRow["FinalPassScore"]).ToString("0.00")
-                            + " @ "+ (String)curRow["FinalLenOff"]
-                            + " " + curRow["FinalSpeedMPH"].ToString() + "mph " 
-                            + " (" 
-                            + curRow["FinalSpeedKph"].ToString() + "kph " 
-                            + (String) curRow["FinalLen"] + "M"
-                            + ")" ;
-                        setCellValue( 14, "G", curValue );
+                if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return false;
 
-					} else if (inEvent.Equals( "Jump" )) {
-                        String curValue = ( (decimal) curRow["Score"]).ToString("#00")
-                            + " feet (" + ( (decimal) curRow["ScoreMeters"]).ToString( "00.0" ) + "M)"
-                            + " @ " + curRow["BoatSpeedKph"].ToString() + "kph"
-							+ " ( " + ( (decimal) curRow["BoatSpeedMph"]).ToString( "00.0" ) + "mph)"
-							+ " " + curRow["RampHeight"].ToString() + " ramp";
-                        setCellValue( 14, "G", curValue );
+                curRow = curDataTable.Rows[0];
+                setCellValue( 31, "B", transformName( HelperFunctions.getDataRowColValue( curRow, "SkierName", "" ) ) );
+                setCellValue( 31, "F", HelperFunctions.getDataRowColValue( curRow, "Federation", "" ) );
+                setCellValue( 33, "F", HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                setCellValue( 35, "F", HelperFunctions.getDataRowColValue( curRow, "SkiYearAge", "" ) );
+                setCellValue( 37, "B", HelperFunctions.getDataRowColValue( curRow, "City", "" ) + ", " + HelperFunctions.getDataRowColValue( curRow, "State", "" ) );
 
-					} else {
-                        setCellValue( 14, "G", curRow["Score"].ToString() );
-                    }
-                    setCellValue(16, "C", curRow["LastUpdateDate"].ToString() );
+                setCellValue( 20, "B", HelperFunctions.getDataRowColValue( curRow, "EventClass", "" ) );
+                setCellValue( 22, "B", HelperFunctions.getDataRowColValue( curRow, "Div", "" ) );
+                setCellValue( 22, "D", inEvent );
+                setCellValue( 24, "G", inRound );
+                setCellValue( 24, "B", curRow["InsertDate"].ToString() );
 
-                    try {
-                        setCellValue(34, "B", curRow["BoatModel"].ToString() );
-                    } catch {
-                    }
-                    try {
-                        setCellValue(35, "B", curRow["ModelYear"].ToString() );
-                    } catch {
-                    }
-                    try {
-                        String curValue = curRow["SpeedControlVersion"].ToString();
-                        if ( curValue.Contains("-") ) {
-                            String[] curAttrList = curValue.Split('-');
-                            setCellValue(34, "F", curAttrList[0]);
-                            setCellValue(35, "F", curAttrList[1]);
-                        } else {
-                            setCellValue(34, "F", curRow["SpeedControlVersion"].ToString());
-                            setCellValue(35, "F", curRow["SpeedControlVersion"].ToString());
-                        }
+                if ( inEvent.Equals( "Slalom" ) ) {
+                    String curValue = String.Format( "{0} : {1} @ {2} {3} ({4}kph {5}M)"
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 2 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "FinalPassScore", "0", 2 )
+                        , HelperFunctions.getDataRowColValue( curRow, "FinalLenOff", "" )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "FinalSpeedMPH", "0", 0 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "FinalSpeedKph", "0", 0 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "FinalLen", "18.25", 2 )
+                        );
 
+                    setCellValue( 22, "G", curValue );
 
-                    } catch {
-                    }
+                } else if ( inEvent.Equals( "Jump" ) ) {
+                    String curValue = String.Format( "{0}M ({1} Feet) @ {2}kph ({3}mph) {4} Height)"
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreMeters", "0", 1 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSpeedKph", "0", 0 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSpeedMph", "0", 1 )
+                        , HelperFunctions.getDataRowColValueDecimal( curRow, "RampHeight", "5", 0 )
+                        );
 
+                    setCellValue( 22, "G", curValue );
+
+                } else {
+                    setCellValue( 22, "G", HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 ) );
                 }
 
                 return true;
+            
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
-        private bool writePerfDataExcel(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
+        private bool writeEventOfficialsExcel( String inSanctionId, String inEvent, String inEventGroup, String inRound ) {
+            String curMethodName = "ExportRecordAppData:writeEventOfficialsExcel";
+            DataRow curRow = null, curOfficialRow = null;
+
+            String curRatingCol;
+            int curIdx = 0;
+            int curExcelRow = 4;
+            int curMaxJudges = 0; //Slalom=5, trick=7, jump=4
+            if ( inEvent.Equals( "Slalom" ) ) curMaxJudges = 5;
+            else if ( inEvent.Equals( "Trick" ) ) curMaxJudges = 7;
+            else if ( inEvent.Equals( "Jump" ) ) curMaxJudges = 4;
+
             try {
-                //Excel._Worksheet curExcelSheet = (Excel._Worksheet)myExcelWorkbook.Sheets[myExcelSheetName_EventSheet];
-                myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_EventSheet } );
-                myExcelActiveSheet.GetType().InvokeMember( "Activate", BindingFlags.InvokeMethod, null, myExcelActiveSheet, null );
-
-                int curExcelRow = 1;
-
-                if (inEvent.Equals( "Slalom" )) {
-                    writeSlalomDataDetail( curExcelRow, inSanctionId, inMemberId, inDiv, inRound );
-                } else if (inEvent.Equals( "Trick" )) {
-                    writeTrickDataDetail( inSanctionId, inMemberId, inDiv, inRound );
-                } else if (inEvent.Equals( "Jump" )) {
-                    writeJumpDataDetail( curExcelRow, inSanctionId, inMemberId, inDiv, inRound );
+                DataTable curDataTable = getEventOfficials( inSanctionId, inEvent, inEventGroup, inRound );
+                DataRow[] curRowsFound = curDataTable.Select( "WorkAsgmt = 'Scorer'" );
+                if ( curRowsFound.Length > 0 ) {
+                    curIdx = 0;
+                    curRow = curRowsFound[curIdx];
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                    if ( curOfficialRow != null ) {
+                        setCellValue( curExcelRow, "C", transformName( HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) ) );
+                        curRatingCol = "G";
+                        if ( inEvent.Equals("Slalom")) curRatingCol = "I";
+                        setCellValue( curExcelRow, curRatingCol, HelperFunctions.getDataRowColValue( curOfficialRow, "Scorer" + inEvent + "Rating", "" ) );
+                    }
                 }
+                curExcelRow++;
+
+                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Driver'" );
+                if ( curRowsFound.Length > 0 ) {
+                    curIdx = 0;
+                    curRow = curRowsFound[curIdx];
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                    if ( curOfficialRow != null ) {
+                        setCellValue( curExcelRow, "C", transformName( HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) ) );
+                        curRatingCol = "G";
+                        if ( inEvent.Equals( "Slalom" ) ) curRatingCol = "I";
+                        setCellValue( curExcelRow, curRatingCol, HelperFunctions.getDataRowColValue( curOfficialRow, "Driver" + inEvent + "Rating", "" ) );
+                    }
+                }
+                curExcelRow++;
+
+                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Boat Judge'" );
+                if ( curRowsFound.Length > 0 ) {
+                    curIdx = 0;
+                    curRow = curRowsFound[curIdx];
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                    if ( curOfficialRow != null ) {
+                        setCellValue( curExcelRow, "C", transformName( HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) ) );
+                        curRatingCol = "G";
+                        if ( inEvent.Equals( "Slalom" ) ) curRatingCol = "I";
+                        setCellValue( curExcelRow, curRatingCol, HelperFunctions.getDataRowColValue( curOfficialRow, "Judge" + inEvent + "Rating", "" ) );
+                    }
+                }
+                curExcelRow++;
+
+                curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'End Course Official'" );
+                if ( curRowsFound.Length > 0 ) {
+                    for ( curIdx = 0; curIdx < (curRowsFound.Length) && (curIdx < curMaxJudges ) ; curIdx++ ) {
+                        curRow = curRowsFound[curIdx];
+                        curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                        if ( curOfficialRow != null ) {
+                            setCellValue( curExcelRow, "C", transformName( HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) ) );
+                            curRatingCol = "G";
+                            if ( inEvent.Equals( "Slalom" ) ) curRatingCol = "I";
+                            setCellValue( curExcelRow, curRatingCol, HelperFunctions.getDataRowColValue( curOfficialRow, "Judge" + inEvent + "Rating", "" ) );
+                            curExcelRow++;
+                        }
+                    }
+                }
+
                 return true;
-            } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
-                );
+            
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
-        private int writeSlalomDataDetail(int inExcelRow, String inSanctionId, String inMemberId, String inDiv, String inRound) {
-            int curExcelRow = inExcelRow;
+        private bool writeSkierBoatInfoExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound ) {
+            String curMethodName = "ExportRecordAppData:writeSkierBoatInfoExcel";
+            int curExcelRow = 0;
+            DataRow curRow = null;
+            String curBoatModel = "", curExcelCol1 = "C", curExcelCol2 = "";
+            String[] curBoatInfo = null;
+
+            try {
+                DataTable curDataTable = getSkierBoatInfo( inSanctionId, inMemberId, inDiv, inRound, inEvent );
+                if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return false;
+
+                curRow = curDataTable.Rows[0];
+                curBoatModel = HelperFunctions.getDataRowColValue( curRow, "BoatModel", "" );
+
+                if ( inEvent.Equals( "Slalom" ) ) {
+                    curExcelRow = 14;
+                    curExcelCol2 = "I";
+                    
+                    setCellValue( curExcelRow, curExcelCol1, curBoatModel );
+                    setCellValue( curExcelRow + 1, curExcelCol1, HelperFunctions.getDataRowColValue( curRow, "ModelYear", "" ) );
+                    setCellValue( curExcelRow + 1, curExcelCol2, HelperFunctions.getDataRowColValue( curRow, "SpeedControlVersion", "" ) );
+
+                } else if ( inEvent.Equals( "Trick" ) ) {
+                    curExcelRow = 16;
+                    curExcelCol2 = "C";
+
+                    setCellValue( curExcelRow, curExcelCol1, curBoatModel );
+                    setCellValue( curExcelRow + 1, curExcelCol1, HelperFunctions.getDataRowColValue( curRow, "ModelYear", "" ) );
+                    curExcelRow = 19;
+                    setCellValue( curExcelRow + 1, curExcelCol2, HelperFunctions.getDataRowColValue( curRow, "SpeedControlVersion", "" ) );
+
+                } else if ( inEvent.Equals( "Jump" ) ) {
+                    curExcelRow = 13;
+                    curExcelCol2 = "G";
+
+                    setCellValue( curExcelRow, curExcelCol1, curBoatModel );
+                    setCellValue( curExcelRow + 1, curExcelCol1, HelperFunctions.getDataRowColValue( curRow, "ModelYear", "" ) );
+                    setCellValue( curExcelRow + 1, curExcelCol2, HelperFunctions.getDataRowColValue( curRow, "SpeedControlVersion", "" ) );
+                }
+
+                if ( HelperFunctions.isObjectPopulated( curBoatModel) ) {
+                    curBoatInfo = curBoatModel.Split( ' ' );
+                    if ( curBoatInfo.Length > 0 ) {
+                        if ( curBoatInfo.Equals( "Ski" ) ) {
+                            setCellValue( curExcelRow, curExcelCol2, curBoatInfo[0] + "" + curBoatInfo[1] );
+                        } else {
+                            setCellValue( curExcelRow, curExcelCol2, curBoatInfo[0] );
+                        }
+                    }
+                }
+
+                return true;
+
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
+            }
+        }
+
+        private bool writePerfDataExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound ) {
+            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel";
+
+            try {
+                if ( inEvent.Equals( "Slalom" ) ) {
+                    writeSlalomDataDetailExcel( 19, inSanctionId, inMemberId, inDiv, inRound );
+                
+                } else if ( inEvent.Equals( "Trick" ) ) {
+                    writeTrickDataDetailExcel( inSanctionId, inMemberId, inDiv, inRound );
+                
+                } else if ( inEvent.Equals( "Jump" ) ) {
+                    writeJumpDataDetailExcel( 18, inSanctionId, inMemberId, inDiv, inRound );
+                }
+                
+                return true;
+
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
+            }
+        }
+
+        private bool writeSlalomDataDetailExcel(int inStartRow, String inSanctionId, String inMemberId, String inDiv, String inRound ) {
+            int curExcelRow = inStartRow;
+            int curExcelCol = 0;
+            StringBuilder curRerideNotes = new StringBuilder( "" );
+
 
             DataTable curDataTable = getSkierSlalomRecap( inSanctionId, inMemberId, inDiv, inRound );
-            curExcelRow = exportDataTableExcel( curExcelRow, curDataTable );
-			curExcelRow = exportBoatPathSlalomDataExcel( curExcelRow, inMemberId, inRound, curDataTable );
+            if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return false;
 
-			curExcelRow = curExcelRow + 2;
-            setCellValue( curExcelRow, "A", "Equipment Check:" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "A" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "1. Rope:" );
-            setCellValue( curExcelRow, "B", "Note: wait at least 30 minutes after last use to measure the rope." );
-            curExcelRow++;
-            setColumnBorders( new object[2] { "B" + curExcelRow.ToString(), "K" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "B", "'23:00" );
-            setCellValue( curExcelRow, "C", "'18.25" );
-            setCellValue( curExcelRow, "D", "'16:00" );
-            setCellValue( curExcelRow, "E", "'14:25" );
-            setCellValue( curExcelRow, "F", "'13:00" );
-            setCellValue( curExcelRow, "G", "'12:00" );
-            setCellValue( curExcelRow, "H", "'11:25" );
-            setCellValue( curExcelRow, "I", "'10:75" );
-            setCellValue( curExcelRow, "J", "'10:25" );
-            setCellValue( curExcelRow, "K", "'9:75" );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Length:" );
-            setColumnBorders( new object[2] { "B" + curExcelRow.ToString(), "K" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "2. Ski: " );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Does the ski qualify under W. Rule 10.03 ?" );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "3. Slalom  Course: " );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Date of the course survey: " );
-            setColumnMerge( new object[2] { "J" + curExcelRow.ToString(), "K" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "K" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Do the skier and gate buoys meet the requirements of W. Rule 14.06? " );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() },new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "4.  All Data/Video on Check List Available to be submitted: " );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "AWSA slalom " );
+            foreach ( DataRow curRow in curDataTable.Rows ) {
+                decimal curPassLineLength = HelperFunctions.getDataRowColValueDecimal( curRow, "PassLineLength", 18.25M );
+                curExcelCol = 2 + getSlalomLineData( curPassLineLength );
 
-            return curExcelRow;
+                String curSkierRunNum = HelperFunctions.getDataRowColValue( curRow, "SkierRunNum", "0" );
+                String curRerideReason = HelperFunctions.getDataRowColValue( curRow, "RerideReason", "" );
+                if ( HelperFunctions.isObjectPopulated(curRerideReason)) {
+                    if ( curRerideNotes.Length > 1 ) curRerideNotes.Append( "\n" );
+                    curRerideNotes.Append( String.Format("Pass: {0} Reride Note: {1}", curSkierRunNum, curRerideReason ));
+                }
+
+                setCellValue( curExcelRow, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Judge1Score", "0", 2 ) );
+                setCellValue( curExcelRow + 1, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Judge2Score", "0", 2 ) );
+                setCellValue( curExcelRow + 2, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Judge3Score", "0", 2 ) );
+
+                if ( HelperFunctions.isObjectPopulated( HelperFunctions.getDataRowColValue( curRow, "Judge4Score", "" ) ) ) {
+                    setCellValue( curExcelRow + 3, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Judge4Score", "0", 2 ) );
+                } else {
+                    setCellValue( curExcelRow + 3, curExcelCol, "" );
+                }
+                if ( HelperFunctions.isObjectPopulated( HelperFunctions.getDataRowColValue( curRow, "Judge5Score", "" ) ) ) {
+                    setCellValue( curExcelRow + 4, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Judge5Score", "0", 2 ) );
+                } else {
+                    setCellValue( curExcelRow + 4, curExcelCol, "" );
+                }
+
+                setCellValue( curExcelRow + 7, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 2 ) );
+                
+                for ( int curIdx = 0; curIdx < 7; curIdx++ ) setCellValue( curExcelRow + 11 + curIdx, curExcelCol, "" );
+                String curPassScore = HelperFunctions.getDataRowColValue( curRow, "Score", "" );
+                int curTimeBuoy = 1 + Convert.ToInt32( curPassScore.Substring( 0, 1 ) );
+                setCellValue( curExcelRow + 10 + curTimeBuoy, curExcelCol, HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTime", "0", 2 ) );
+            }
+
+            if ( curRerideNotes.Length > 1 ) {
+                setCellValue( inStartRow, "L", curRerideNotes.ToString() );
+            }
+
+            return exportBoatPathSlalomDataExcel( inMemberId, inRound, curDataTable );
         }
 
-        private int writeTrickDataDetail(String inSanctionId, String inMemberId, String inDiv, String inRound) {
-            int curExcelRow = 1;
+        private bool writeTrickDataDetailExcel( String inSanctionId, String inMemberId, String inDiv, String inRound ) {
+            int curExcelRowStart = 25, curExcelRowSubtotals = 50;
+            int curTotalPass1 = 0, curTotalPass2 = 0;
+            String curResult;
 
-            setCellValue( curExcelRow, "A", "TRICK RECORD DATA" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            setColumnAlignment( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new object[] { 3 } );
+            DataTable curPass1DataTable = getSkierTrickPass( inSanctionId, inMemberId, inDiv, inRound, "1" );
+            DataTable curPass2DataTable = getSkierTrickPass( inSanctionId, inMemberId, inDiv, inRound, "2" );
 
-            curExcelRow++;
-            curExcelRow++;
+            int curExcelRow = curExcelRowStart;
+            foreach ( DataRow curRow in curPass1DataTable.Rows ) {
+                curResult = HelperFunctions.getDataRowColValue( curRow, "Results", "Credit" );
+                setCellValue( curExcelRow, "C", HelperFunctions.getDataRowColValue( curRow, "Code", "N/A" ) );
+                if ( curResult.Equals("Credit") ) {
+                    setCellValue( curExcelRow, "D", HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 ) );
+                    curTotalPass1 = curTotalPass1 + Convert.ToInt32( HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 ) );
+                } else {
+                    setCellValue( curExcelRow, "D", curResult );
+                }
+                curExcelRow++;
+            }
+
+            curExcelRow = curExcelRowStart;
+            foreach ( DataRow curRow in curPass2DataTable.Rows ) {
+                curResult = HelperFunctions.getDataRowColValue( curRow, "Results", "Credit" );
+                setCellValue( curExcelRow, "F", HelperFunctions.getDataRowColValue( curRow, "Code", "N/A" ) );
+                if ( curResult.Equals( "Credit" ) ) {
+                    setCellValue( curExcelRow, "G", HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 ) );
+                    curTotalPass2 = curTotalPass2 + Convert.ToInt32( HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "0", 0 ) );
+                } else {
+                    setCellValue( curExcelRow, "G", curResult );
+                }
+                curExcelRow++;
+            }
+
+            curExcelRow = curExcelRowSubtotals;
+            setCellValue( curExcelRow, "D", curTotalPass1.ToString() );
+            setCellValue( curExcelRow, "G", curTotalPass2.ToString() );
+
+            setCellValue( curExcelRow + 3, "G", curTotalPass1.ToString() );
+            setCellValue( curExcelRow + 4, "G", curTotalPass2.ToString() );
+            setCellValue( curExcelRow + 5, "G", (curTotalPass1 + curTotalPass2).ToString() );
+
+            /*
             setCellValue( curExcelRow, "A", "Note:" );
             setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "A" + curExcelRow.ToString() } );
             setCellValue( curExcelRow, "B", "Attach to this form, copies of the trick run called by the the judges' sheets." );
             setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Judges must sign and date the reviewed Judges Sheets (Pink Sheets)" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
+             */
 
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Score:" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "A" + curExcelRow.ToString() } );
-
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "FIRST PASS" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setCellValue( curExcelRow, "F", "SECOND PASS" );
-            setColumnMerge( new object[2] { "F" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "#" );
-            setCellValue( curExcelRow, "B", "Skis" );
-            setCellValue( curExcelRow, "C", "Trick" );
-            setCellValue( curExcelRow, "D", "Status" );
-            setCellValue( curExcelRow, "E", "Points" );
-            setCellValue( curExcelRow, "G", "Skis" );
-            setCellValue( curExcelRow, "H", "Trick" );
-            setCellValue( curExcelRow, "I", "Status" );
-            setCellValue( curExcelRow, "J", "Points" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            setColumnAlignment( new object[2] { "A" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new object[] { 3 } );
-
-            DataTable curDataTable1 = getSkierTrickPass( inSanctionId, inMemberId, inDiv, inRound, "1" );
-            DataTable curDataTable2 = getSkierTrickPass( inSanctionId, inMemberId, inDiv, inRound, "2" );
-
-            curExcelRow++;
-            try {
-                int tmpExcelRow = curExcelRow;
-                int tmpMaxRows = curDataTable1.Rows.Count;
-                int curTotalPass1 = 0, curTotalPass2 = 0;
-                if (curDataTable2.Rows.Count > tmpMaxRows) {
-                    tmpMaxRows = curDataTable2.Rows.Count;
-                }
-                for (int tmpCount = 1; tmpCount <= tmpMaxRows; tmpCount++) {
-                    setCellValue( tmpExcelRow, "A", "T" + tmpCount.ToString() );
-                    tmpExcelRow++;
-                }
-
-                tmpExcelRow = curExcelRow;
-                foreach (DataRow curRow in curDataTable1.Rows) {
-                    setCellValue( tmpExcelRow, "B", curRow["Skis"].ToString() );
-                    setCellValue( tmpExcelRow, "C", curRow["Code"].ToString() );
-                    setCellValue( tmpExcelRow, "D", curRow["Results"].ToString() );
-                    setCellValue( tmpExcelRow, "E", curRow["Score"].ToString() );
-                    curTotalPass1 = curTotalPass1 + (Int16)curRow["Score"];
-                    tmpExcelRow++;
-                }
-
-                tmpExcelRow = curExcelRow;
-                foreach (DataRow curRow in curDataTable2.Rows) {
-                    setCellValue( tmpExcelRow, "G", curRow["Skis"].ToString() );
-                    setCellValue( tmpExcelRow, "H", curRow["Code"].ToString() );
-                    setCellValue( tmpExcelRow, "I", curRow["Results"].ToString() );
-                    setCellValue( tmpExcelRow, "J", curRow["Score"].ToString() );
-                    curTotalPass2 = curTotalPass2 + (Int16)curRow["Score"];
-                    tmpExcelRow++;
-                }
-
-                curExcelRow = curExcelRow + tmpMaxRows;
-                setCellValue( curExcelRow, "B", "TOTAL PASS 1" );
-                setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-                setColumnAlignment( new object[2] { "B" + curExcelRow.ToString(), "B" + curExcelRow.ToString() }, new object[] { 4 } );
-                setCellValue( curExcelRow, "E", curTotalPass1.ToString() );
-                setColumnBorder( new object[2] { "B" + curExcelRow.ToString(), "E" + curExcelRow.ToString() }, new Object[] { 8 }, new Object[] { 1 } );
-                setColumnBorder( new object[2] { "E" + curExcelRow.ToString(), "E" + curExcelRow.ToString() }, new Object[] { 9 }, new Object[] { 1 } );
-                setCellValue( curExcelRow, "G", "TOTAL PASS 2" );
-                setColumnMerge( new object[2] { "G" + curExcelRow.ToString(), "I" + curExcelRow.ToString() } );
-                setColumnAlignment( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 4 } );
-                setCellValue( curExcelRow, "J", curTotalPass2.ToString() );
-                setColumnBorder( new object[2] { "G" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 8 }, new Object[] { 1 } );
-                setColumnBorder( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 9 }, new Object[] { 1 } );
-
-                curExcelRow++;
-                curExcelRow++;
-                setCellValue( curExcelRow, "H", "TOTALS" );
-                setColumnMerge( new object[2] { "H" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-                setColumnFontBold( new object[2] { "H" + curExcelRow.ToString(), "H" + curExcelRow.ToString() } );
-                curExcelRow++;
-                setCellValue( curExcelRow, "H", "First pass:" );
-                setColumnMerge( new object[2] { "H" + curExcelRow.ToString(), "I" + curExcelRow.ToString() } );
-                setCellValue( curExcelRow, "J", curTotalPass1.ToString() );
-                curExcelRow++;
-                setCellValue( curExcelRow, "H", "Second pass:" );
-                setColumnMerge( new object[2] { "H" + curExcelRow.ToString(), "I" + curExcelRow.ToString() } );
-                setCellValue( curExcelRow, "J", curTotalPass2.ToString() );
-                curExcelRow++;
-                setCellValue( curExcelRow, "H", "SCORE :" );
-                setColumnMerge( new object[2] { "H" + curExcelRow.ToString(), "I" + curExcelRow.ToString() } );
-                setCellValue( curExcelRow, "J", ( curTotalPass1 + curTotalPass2 ).ToString() );
-                setColumnFontBold( new object[2] { "G" + curExcelRow.ToString(), "H" + curExcelRow.ToString() } );
-                setColumnBorder( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 9 }, new Object[] { -4119 } );
-            } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in writeTrickDataDetail:TrickPass " + "\n\nException: " + ex.Message );
-            }
-
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "1. Ski: " );
-            curExcelRow++;
-            setCellValue(curExcelRow, "B", "Do the skis meet the requirements of AWSA Rule 8.3 ?");
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "2. Trick  Course: " );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Do the course meet the requirements of AWSA Rule 11.16(a) ?" );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "3.  All Data/Video on Check List Available to be submitted: " );
-            setColumnBorders( new object[2] { "J" + curExcelRow.ToString(), "J" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Video Review:" );
-            setColumnFontBold( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Each judge must review the video tape or video clip in regular speed only to ascertain that" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "his submitted judge's score (pink) sheet is correct. " );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "J" + curExcelRow.ToString() } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "AWSA trick " );
-
-            return curExcelRow;
+            return true;
         }
 
-        private int writeJumpDataDetail(int inExcelRow, String inSanctionId, String inMemberId, String inDiv, String inRound) {
-            int curExcelRow = inExcelRow;
+        private bool writeJumpDataDetailExcel( int inStartRow, String inSanctionId, String inMemberId, String inDiv, String inRound ) {
+            int curExcelRow = inStartRow;
 
+            /*
+            SELECT R.PassNum, R.LastUpdateDate, R.RampHeight, R.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph
+            , R.ScoreFeet, R.ScoreMeters, Results
+            , BoatSplitTime2 as Split82Time, BoatEndTime as Split41Time, BoatSplitTime as Split52Time
+            , ReturnToBase, ScoreProt, Reride, RerideReason, R.Note as RideNote, S.Note as ScoreNote
+             */
             DataTable curDataTable = getSkierJumpRecap( inSanctionId, inMemberId, inDiv, inRound );
             DataRow curRow = curDataTable.Rows[0];
+            setCellValue( curExcelRow, "C", HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreMeters", "0", 1 ) );
+            setCellValue( curExcelRow, "E", HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreFeet", "0", 0 ) );
+            setCellValue( curExcelRow + 1, "C", HelperFunctions.getDataRowColValue( curRow, "RampHeight", "" ) );
+            setCellValue( curExcelRow + 2, "C", HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSpeedKph", "0", 0 ) );
+            setCellValue( curExcelRow + 2, "E", HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSpeedMph", "0", 0 ) );
 
-            setCellValue( curExcelRow, "A", "JUMP RECORD DATA" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            setColumnAlignment( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
+            setCellValue( curExcelRow + 5, "C", HelperFunctions.getDataRowColValueDecimal( curRow, "Split52Time", "0", 2 ) );
+            setCellValue( curExcelRow + 5, "E", HelperFunctions.getDataRowColValueDecimal( curRow, "Split82Time", "0", 2 ) );
+            setCellValue( curExcelRow + 5, "G", HelperFunctions.getDataRowColValueDecimal( curRow, "Split41Time", "0", 2 ) );
 
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Calculation of the jump" );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Distance:" );
-            setCellValue( curExcelRow, "D", curRow["ScoreFeet"].ToString() );
-            setColumnBorders( new object[2] { "D" + curExcelRow.ToString(), "D" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "E", "Feet" );
-            setCellValue( curExcelRow, "F", curRow["ScoreMeters"].ToString() );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "F" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "G", "Meters" );
+            curExcelRow = inStartRow + 9;
+            setCellValue( curExcelRow, "C", HelperFunctions.getDataRowColValue( curRow, "SkierBoatPath", "" ) );
 
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Timing ( in .01 seconds )" );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "1st Segment:" );
-            setCellValue( curExcelRow, "D", ((Decimal)curRow["Split82Time"]).ToString("##.00") );
-            setColumnBorders( new object[2] { "D" + curExcelRow.ToString(), "D" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "E", "seconds" );
-            setCellValue( curExcelRow, "F", ( (Decimal)curRow["Split41Time"] ).ToString( "##.00" ) );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "F" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setCellValue( curExcelRow, "G", "seconds" );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Optional timing 2nd segment method used:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "F" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-
-			curExcelRow++;
-			curExcelRow++;
-			curExcelRow = exportBoatPathJumpDataExcel( curExcelRow, inMemberId, inRound, curDataTable );
-
-			curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Video Jump" );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Manufacturer:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "C" + curExcelRow.ToString() } );
-            setColumnMerge( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Test Buoy:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "coordinates:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setCellValue( curExcelRow, "F", "X:" );
-            setCellValue( curExcelRow, "G", "Y:" );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "survey:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "video system:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Grid System:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "coordinates:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setCellValue( curExcelRow, "F", "X:" );
-            setCellValue( curExcelRow, "G", "Y:" );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Jump:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            setCellValue( curExcelRow, "F", "0" );
-            setCellValue( curExcelRow, "G", "0" );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Upper Left:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Upper Right:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Lower Left:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Lower Left:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Ramp check:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Measure again the height and length of the ramp before changing its position" );
-            curExcelRow++;
-            setCellValue( curExcelRow, "E", "Height" );
-            setCellValue( curExcelRow, "F", "Length" );
-            setCellValue( curExcelRow, "G", "Ratio" );
-            setColumnAlignment( new object[2] { "E" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Left side:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setCellValue( curExcelRow, "G", "=E" + curExcelRow.ToString() + " / F" + curExcelRow.ToString() );
-            setColumnBorders( new object[2] { "E" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "E" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Right side:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setCellValue( curExcelRow, "G", "=E" + curExcelRow.ToString() + " / F" + curExcelRow.ToString() );
-            setColumnBorders( new object[2] { "E" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "E" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "F", "Top" );
-            setCellValue( curExcelRow, "G", "Bottom" );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Width of ramp:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "D" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "F" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Maximum deviation from plane:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "G" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Diagonal string measurement:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "E" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "C", "Center string measurement:" );
-            setColumnMerge( new object[2] { "C" + curExcelRow.ToString(), "E" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            setColumnAlignment( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new object[] { 3 } );
-
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "Equipment Check:" );
-            setColumnFontBold( new object[2] { "A" + curExcelRow.ToString(), "A" + curExcelRow.ToString() } );
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "1. Rope:" );
-            setCellValue( curExcelRow, "B", "Note: wait at least 30 minutes after last use to measure the rope." );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Length:" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "F" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "2. Ski: " );
-            curExcelRow++;
-            setCellValue( curExcelRow, "B", "Does the ski qualify under W. Rule 10.03 ?" );
-            setColumnMerge( new object[2] { "B" + curExcelRow.ToString(), "F" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "3.  All Data/Video on Check List Avaliable to be submitted:" );
-            setColumnMerge( new object[2] { "A" + curExcelRow.ToString(), "F" + curExcelRow.ToString() } );
-            setColumnBorders( new object[2] { "G" + curExcelRow.ToString(), "G" + curExcelRow.ToString() }, new Object[] { 1 }, new Object[] { 3 } );
-            curExcelRow++;
-            curExcelRow++;
-            setCellValue( curExcelRow, "A", "AWSA jump " );
-
-            return curExcelRow;
+            return exportBoatPathJumpDataExcel( inMemberId, inRound, curRow );
         }
 
         //Write tournament information
         private bool writeTourData(StringBuilder outLine, DataRow inTourRow) {
+            String curMethodName = "ExportRecordAppData:writeTourData: ";
+            String curSanctionId = HelperFunctions.getDataRowColValue( inTourRow, "SanctionId", "" );
+            
             try {
                 DataRow curOfficialRow = null;
-                DataRow curTechRow = getTechController( inTourRow["SanctionId"].ToString() );
 
                 outLine = new StringBuilder( "" );
                 outLine.Append( "Tournament summary as of " + DateTime.Now.ToString( "HH:MM:ss  MM-dd-yyyy" ) );
                 myOutBuffer.WriteLine( outLine.ToString() );
-                
+
                 outLine = new StringBuilder( "" );
                 outLine.Append( "SanctionId" + tabDelim + "Name" + tabDelim + "Class" + tabDelim + "Rules" + tabDelim + "EventDates" + tabDelim + "EventLocation" + tabDelim + "Tour Director" );
                 outLine.Append( tabDelim + "Slalom Rds" + tabDelim + "Trick Rds" + tabDelim + "Jump Rds" );
                 myOutBuffer.WriteLine( outLine.ToString() );
 
                 outLine = new StringBuilder( "" );
-                outLine.Append( inTourRow["SanctionId"].ToString() + tabDelim + inTourRow["Name"].ToString() + tabDelim + inTourRow["Class"].ToString() );
-                outLine.Append( tabDelim + inTourRow["Rules"].ToString() + tabDelim + inTourRow["EventDates"].ToString() + tabDelim + inTourRow["EventLocation"].ToString() );
-                outLine.Append( tabDelim + transformName( inTourRow["ContactName"].ToString() ) );
-                outLine.Append( tabDelim + ( (byte)inTourRow["SlalomRounds"] ).ToString( "#0" ) );
-                outLine.Append( tabDelim + ( (byte)inTourRow["TrickRounds"] ).ToString( "#0" ) );
-                outLine.Append( tabDelim + ( (byte)inTourRow["JumpRounds"] ).ToString( "#0" ) );
+                outLine.Append( curSanctionId );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "Name", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "Class", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "Rules", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "EventDates", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "EventLocation", "" ) );
+                outLine.Append( tabDelim + transformName( HelperFunctions.getDataRowColValue( inTourRow, "ContactName", "" ) ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "SlalomRounds", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "TrickRounds", "" ) );
+                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "JumpRounds", "" ) );
                 myOutBuffer.WriteLine( outLine.ToString() );
 
                 outLine = new StringBuilder( "" );
-                outLine.Append( "Chief Judge" + tabDelim + transformName( inTourRow["ChiefJudgeName"].ToString() ) );
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefJudgeMemberId"].ToString() );
+                outLine.Append( "Chief Judge" + tabDelim + transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeName", "" ) ) );
+                HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeMemberId", "" );
+                curOfficialRow = getOfficialInfo( curSanctionId, inTourRow["ChiefJudgeMemberId"].ToString() );
 				if ( curOfficialRow  != null ) {
-					outLine.Append( tabDelim + curOfficialRow["JudgeSlalomRating"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefJudgeAddress"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefJudgePhone"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefJudgeEmail"].ToString() );
+					outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeSlalomRating", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeAddress", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgePhone", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeEmail", "" ) );
 					myOutBuffer.WriteLine( outLine.ToString() );
 				}
 
 				outLine = new StringBuilder( "" );
-                outLine.Append( "Chief Driver" + tabDelim + transformName( inTourRow["ChiefDriverName"].ToString() ) );
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefDriverMemberId"].ToString() );
+                outLine.Append( "Chief Driver" + tabDelim + transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefDriverName", "" ) ) );
+                curOfficialRow = getOfficialInfo( curSanctionId, HelperFunctions.getDataRowColValue( inTourRow, "ChiefJudgeMemberId", "" ) );
 				if ( curOfficialRow != null ) {
-					outLine.Append( tabDelim + curOfficialRow["DriverSlalomRating"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefDriverAddress"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefDriverPhone"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefDriverEmail"].ToString() );
+					outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "DriverSlalomRating", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefDriverAddress", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefDriverPhone", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefDriverEmail", "" ) );
 					myOutBuffer.WriteLine( outLine.ToString() );
 				}
 
 				outLine = new StringBuilder( "" );
-                outLine.Append( "Chief Scorer" + tabDelim + transformName( inTourRow["ChiefScorerName"].ToString() ) );
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
+                outLine.Append( "Chief Scorer" + tabDelim + transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerName", "" ) ) );
+                curOfficialRow = getOfficialInfo( curSanctionId, HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerMemberId", "" ) );
 				if ( curOfficialRow != null ) {
-					outLine.Append( tabDelim + curOfficialRow["ScorerSlalomRating"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefScorerAddress"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefScorerPhone"].ToString() );
-					outLine.Append( tabDelim + inTourRow["ChiefScorerEmail"].ToString() );
+					outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "ScorerSlalomRating", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerAddress", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerPhone", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "ChiefScorerEmail", "" ) );
 					myOutBuffer.WriteLine( outLine.ToString() );
 				}
 
 				outLine = new StringBuilder( "" );
-                outLine.Append( "Safety Director" + tabDelim + transformName( inTourRow["ChiefSafetyName"].ToString() ) );
-                curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["SafetyDirMemberId"].ToString() );
+                outLine.Append( "Safety Director" + tabDelim + transformName( HelperFunctions.getDataRowColValue( inTourRow, "ChiefSafetyName", "" ) ) );
+                curOfficialRow = getOfficialInfo( curSanctionId, HelperFunctions.getDataRowColValue( inTourRow, "SafetyDirMemberId", "" ) );
 				if ( curOfficialRow != null ) {
-					outLine.Append( tabDelim + curOfficialRow["SafetyOfficialRating"].ToString() );
-					outLine.Append( tabDelim + inTourRow["SafetyDirAddress"].ToString() );
-					outLine.Append( tabDelim + inTourRow["SafetyDirPhone"].ToString() );
-					outLine.Append( tabDelim + inTourRow["SafetyDirEmail"].ToString() );
+					outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "SafetyOfficialRating", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "SafetyDirAddress", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "SafetyDirPhone", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( inTourRow, "SafetyDirEmail", "" ) );
 					myOutBuffer.WriteLine( outLine.ToString() );
 				}
 
 				outLine = new StringBuilder( "" );
                 outLine.Append( "Tech Controller" );
-                if (curTechRow == null) {
+                DataRow curTechRow = getTechController( curSanctionId );
+                if ( curTechRow == null) {
                     outLine.Append( tabDelim + "" + tabDelim + "" );
                 } else {
-                    outLine.Append( tabDelim + transformName( curTechRow["ChiefTechName"].ToString() ) );
-                    outLine.Append( tabDelim + curTechRow["TechOfficialRating"].ToString() );
+                    outLine.Append( tabDelim + transformName( HelperFunctions.getDataRowColValue( curTechRow, "ChiefTechName", "" ) ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curTechRow, "TechOfficialRating", "" ) );
                 }
                 myOutBuffer.WriteLine( outLine.ToString() );
 
                 return true;
+            
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeTourData method"
-                    + "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + "Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
         private bool writeEventOfficials(StringBuilder outLine, String inSanctionId, String inEvent, String inEventGroup, String inRound) {
+            String curMethodName = "ExportRecordAppData:writeEventOfficials: ";
             DataRow curRow = null, curOfficialRow = null;
+
             try {
                 outLine = new StringBuilder( "" );
                 myOutBuffer.WriteLine( outLine.ToString() );
@@ -878,67 +747,78 @@ namespace WaterskiScoringSystem.Tools {
                 DataRow[] curRowsFound = curDataTable.Select( "WorkAsgmt = 'Boat Judge'" );
                 if (curRowsFound.Length > 0) {
                     curRow = curRowsFound[0];
-                    curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
                     if (curOfficialRow != null) {
                         outLine = new StringBuilder( "" );
-                        outLine.Append( curRow["WorkAsgmt"].ToString() + tabDelim + transformName( curOfficialRow["SkierName"].ToString() ) + tabDelim );
-                        if (inEvent.Equals( "Slalom" )) {
-                            outLine.Append( curOfficialRow["JudgeSlalomRating"].ToString() );
+                        outLine.Append( HelperFunctions.getDataRowColValue( curRow, "WorkAsgmt", "WorkAsgmt" ) );
+                        outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) );
+                        if ( inEvent.Equals( "Slalom" )) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeSlalomRating", "" ) );
                         } else if (inEvent.Equals( "Trick" )) {
-                            outLine.Append( curOfficialRow["JudgeTrickRating"].ToString() );
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeTrickRating", "" ) );
                         } else if (inEvent.Equals( "Jump" )) {
-                            outLine.Append( curOfficialRow["JudgeJumpRating"].ToString() );
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeJumpRating", "" ) );
                         }
                         myOutBuffer.WriteLine( outLine.ToString() );
                     }
+                
                 } else {
                     outLine = new StringBuilder( "" );
                     outLine.Append( "Boat Judge" + tabDelim + " " + tabDelim + " " );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
+                
                 curRowsFound = curDataTable.Select( "WorkAsgmt = 'Driver'" );
                 if (curRowsFound.Length > 0) {
                     curRow = curRowsFound[0];
-                    curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                    if (curOfficialRow != null) {
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                    if ( curOfficialRow != null ) {
                         outLine = new StringBuilder( "" );
-                        outLine.Append( curRow["WorkAsgmt"].ToString() + tabDelim + transformName(curOfficialRow["SkierName"].ToString()) + tabDelim );
-                        if (inEvent.Equals( "Slalom" )) {
-                            outLine.Append( curOfficialRow["DriverSlalomRating"].ToString() );
-                        } else if (inEvent.Equals( "Trick" )) {
-                            outLine.Append( curOfficialRow["DriverTrickRating"].ToString() );
-                        } else if (inEvent.Equals( "Jump" )) {
-                            outLine.Append( curOfficialRow["DriverJumpRating"].ToString() );
+                        outLine.Append( HelperFunctions.getDataRowColValue( curRow, "WorkAsgmt", "WorkAsgmt" ) );
+                        outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) );
+                        if ( inEvent.Equals( "Slalom" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "DriverSlalomRating", "" ) );
+                        } else if ( inEvent.Equals( "Trick" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "DriverTrickRating", "" ) );
+                        } else if ( inEvent.Equals( "Jump" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "DriverJumpRating", "" ) );
                         }
                         myOutBuffer.WriteLine( outLine.ToString() );
                     }
+
                 } else {
                     outLine = new StringBuilder( "" );
                     outLine.Append( "Driver" + tabDelim + " " + tabDelim + " " );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
+
                 curRowsFound = curDataTable.Select( "WorkAsgmt = 'Event Judge' OR WorkAsgmt = 'End Course Official'" );
                 if (curRowsFound.Length > 0) {
                     for (int curIdx = 0; curIdx < 5; curIdx++) {
                         outLine = new StringBuilder( "" );
                         if (curIdx < curRowsFound.Length) {
                             curRow = curRowsFound[curIdx];
-                            curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
+                            curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
                             if (curOfficialRow != null) {
-                                outLine.Append( curRow["WorkAsgmt"].ToString() + tabDelim + transformName(curOfficialRow["SkierName"].ToString()) + tabDelim );
-                                if (inEvent.Equals( "Slalom" )) {
-                                    outLine.Append( curOfficialRow["JudgeSlalomRating"].ToString() );
-                                } else if (inEvent.Equals( "Trick" )) {
-                                    outLine.Append( curOfficialRow["JudgeTrickRating"].ToString() );
-                                } else if (inEvent.Equals( "Jump" )) {
-                                    outLine.Append( curOfficialRow["JudgeJumpRating"].ToString() );
+                                outLine = new StringBuilder( "" );
+                                outLine.Append( HelperFunctions.getDataRowColValue( curRow, "WorkAsgmt", "WorkAsgmt" ) );
+                                outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) );
+                                if ( inEvent.Equals( "Slalom" ) ) {
+                                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeSlalomRating", "" ) );
+                                } else if ( inEvent.Equals( "Trick" ) ) {
+                                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeTrickRating", "" ) );
+                                } else if ( inEvent.Equals( "Jump" ) ) {
+                                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "JudgeJumpRating", "" ) );
                                 }
+                                myOutBuffer.WriteLine( outLine.ToString() );
                             }
+                        
                         } else {
                             outLine.Append( "Event Judge" + tabDelim + " " + tabDelim + " " );
+                            myOutBuffer.WriteLine( outLine.ToString() );
                         }
-                        myOutBuffer.WriteLine( outLine.ToString() );
                     }
+                
                 } else {
                     outLine = new StringBuilder( "" );
                     outLine.Append( "Event Judge" + tabDelim + " " + tabDelim + " " );
@@ -948,44 +828,52 @@ namespace WaterskiScoringSystem.Tools {
                     myOutBuffer.WriteLine( outLine.ToString() );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
+                
                 curRowsFound = curDataTable.Select( "WorkAsgmt = 'Scorer'" );
                 if (curRowsFound.Length > 0) {
                     curRow = curRowsFound[0];
-                    curOfficialRow = getOfficialInfo( (String)curRow["SanctionId"], (String)curRow["MemberId"] );
-                    if (curOfficialRow != null) {
+                    curOfficialRow = getOfficialInfo( inSanctionId, HelperFunctions.getDataRowColValue( curRow, "MemberId", "" ) );
+                    if ( curOfficialRow != null ) {
                         outLine = new StringBuilder( "" );
-                        outLine.Append( curRow["WorkAsgmt"].ToString() + tabDelim + transformName(curOfficialRow["SkierName"].ToString()) + tabDelim );
-                        if (inEvent.Equals( "Slalom" )) {
-                            outLine.Append( curOfficialRow["JudgeSlalomRating"].ToString() );
-                        } else if (inEvent.Equals( "Trick" )) {
-                            outLine.Append( curOfficialRow["JudgeTrickRating"].ToString() );
-                        } else if (inEvent.Equals( "Jump" )) {
-                            outLine.Append( curOfficialRow["JudgeJumpRating"].ToString() );
+                        outLine.Append( HelperFunctions.getDataRowColValue( curRow, "WorkAsgmt", "WorkAsgmt" ) );
+                        outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "SkierName", "" ) );
+                        if ( inEvent.Equals( "Slalom" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "ScorerSlalomRating", "" ) );
+                        } else if ( inEvent.Equals( "Trick" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "ScorerTrickRating", "" ) );
+                        } else if ( inEvent.Equals( "Jump" ) ) {
+                            outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curOfficialRow, "ScorerJumpRating", "" ) );
                         }
                         myOutBuffer.WriteLine( outLine.ToString() );
                     }
+
                 } else {
                     outLine = new StringBuilder( "" );
                     outLine.Append( "Scorer" + tabDelim + " " + tabDelim + " " );
                     myOutBuffer.WriteLine( outLine.ToString() );
                 }
+
                 return true;
+
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + "Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
         private bool writeSkierInfo(StringBuilder outLine, String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
+            String curMethodName = "ExportRecordAppData:writeSkierInfo: ";
+
             try {
                 exportDataTable( outLine, getSkierInfo( inSanctionId, inEvent, inMemberId, inDiv, inRound ) );
                 return true;
+            
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData writeEventOfficials method"
-                    + "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + "Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
@@ -1027,7 +915,8 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        private int exportDataTableExcel(int inStartRow, DataTable inDataTable) {
+        private bool exportDataTableExcel(int inStartRow, DataTable inDataTable) {
+            String curMethodName = "ExportRecordAppData:exportDataTableExcel: ";
             int colCount = 0, curExcelRow = inStartRow;
             String curValue;
 
@@ -1060,16 +949,18 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
 
-                return curExcelRow;
+                return true;
+            
             } catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData exportDataTableExcel method"
-					+ "\n\nException: " + ex.Message
-                );
-                return 0;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
             }
         }
 
         private bool exportDataTable(StringBuilder outLine, DataTable inDataTable) {
+            String curMethodName = "ExportRecordAppData:exportDataTable: ";
             int colCount = 0;
             String curValue;
             myOutBuffer.WriteLine( outLine.ToString() );
@@ -1116,84 +1007,62 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
 
 			} catch (Exception ex) {
-                MessageBox.Show( "Exception encountered in ExportRecordAppData exportDataTable method"
-					+ "\n\nException: " + ex.Message
-                );
+                String curMsg = curMethodName + "Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
                 return false;
             }
         }
 
-		private int exportBoatPathSlalomDataExcel( int inStartRow, String memberId, String round, DataTable curDataTable ) {
-			int curExcelRow = inStartRow;
+		private bool exportBoatPathSlalomDataExcel( String memberId, String round, DataTable curDataTable ) {
+            String curMethodName = "ExportRecordAppData:exportBoatPathSlalomDataExcel";
+            int curExcelRow = 40;
 			DataRow boatPathRow;
 			Decimal passScore;
 			Int16 passNum;
 
 			try {
-				Boolean writeHeader = true;
-				foreach ( DataRow curRow in curDataTable.Rows ) {
-					passNum = (Int16)curRow["SkierRunNum"];
+                for ( int curIdx = curDataTable.Rows.Count - 2; curIdx < curDataTable.Rows.Count; curIdx++ ) {
+                    DataRow curRow = curDataTable.Rows[curIdx];
+                    passNum = (Int16)curRow["SkierRunNum"];
 					passScore = (Decimal)curRow["Score"];
-					boatPathRow = WscHandler.getBoatPath( "Slalom", memberId, round, passNum.ToString(), (decimal)curRow["PassLineLength"], (byte)curRow["PassSpeedKph"] );
+                    
+                    decimal curPassLineLength = HelperFunctions.getDataRowColValueDecimal( curRow, "PassLineLength", 18.25M );
+                    byte curPassSpeedKph = Convert.ToByte( HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "0" ));
+                    boatPathRow = WscHandler.getBoatPath( "Slalom", memberId, round, passNum.ToString(), curPassLineLength, curPassSpeedKph );
 					if ( boatPathRow == null ) continue;
 
-					if ( writeHeader ) {
-						writeHeader = false;
-						curExcelRow += 2;
-						setCellValue( curExcelRow, 1, "Boat Path Monitoring Data" );
-
-						curExcelRow++;
-						setCellValue( curExcelRow, 1, "Pass" );
-						setCellValue( curExcelRow, 2, "Desc" );
-						setCellValue( curExcelRow, 3, "Gate" );
-						setCellValue( curExcelRow, 4, "Buoy 1" );
-						setCellValue( curExcelRow, 5, "Buoy 2" );
-						setCellValue( curExcelRow, 6, "Buoy 3" );
-						setCellValue( curExcelRow, 7, "Buoy 4" );
-						setCellValue( curExcelRow, 8, "Buoy 5" );
-						setCellValue( curExcelRow, 9, "Buoy 6" );
-						setCellValue( curExcelRow, 10, "Exit" );
+					int curColNum = 4;
+					for ( int colIdx = 1; colIdx <= 7; colIdx++, curColNum++ ) {
+						if ( passScore < ( colIdx - 1 ) ) break;
+                        setCellValue( curExcelRow, curColNum, HelperFunctions.getDataRowColValueDecimal( boatPathRow, "boatTimeBuoy" + colIdx, "0", 2 ) );
 					}
 
 					curExcelRow++;
-					int curColNum = 1;
-					setCellValue( curExcelRow, curColNum, ( (byte)boatPathRow["PassNumber"] ).ToString() );
-					curColNum++;
-					setCellValue( curExcelRow, curColNum, "Time" );
-					curColNum = 4;
-					for ( int rowIdx = 1; rowIdx <= 7; rowIdx++ ) {
-						if ( passScore < ( rowIdx - 1 ) ) break;
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
-						curColNum++;
-					}
-					curExcelRow++;
-					curColNum = 2;
-					setCellValue( curExcelRow, 2, "Dev" );
-					curColNum = 3;
-					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
-						if ( passScore < ( rowIdx - 1 ) ) break;
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
-						curColNum++;
-					}
+                    curColNum = 3;
+                    for ( int colIdx = 0; colIdx <= 6; colIdx++, curColNum++ ) {
+                        if ( passScore < colIdx ) break;
+                        setCellValue( curExcelRow, curColNum, HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevBuoy" + colIdx, "0", 2 ) );
+                    }
 
-					curExcelRow++;
-					curColNum = 2;
-					setCellValue( curExcelRow, 2, "Cum" );
-					curColNum = 3;
-					for ( int rowIdx = 0; rowIdx <= 6; rowIdx++ ) {
-						if ( passScore < ( rowIdx - 1 ) ) break;
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
-						curColNum++;
-					}
-				}
+                    curExcelRow++;
+                    curColNum = 3;
+                    for ( int colIdx = 0; colIdx <= 6; colIdx++, curColNum++ ) {
+                        if ( passScore < colIdx ) break;
+                        setCellValue( curExcelRow, curColNum, HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevCum" + colIdx, "0", 2 ) );
+                    }
+                    curExcelRow++;
+                    curExcelRow++;
+                }
 
-			} catch ( Exception ex ) {
-				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathDataExcel method"
-					+ "\n\nException: " + ex.Message
-				);
-			}
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
+            }
 
-			return curExcelRow;
+            return true;
 		}
 
 		private void exportBoatPathSlalomDataText( StringBuilder outLine, String memberId, String round, DataTable curDataTable ) {
@@ -1259,71 +1128,41 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
-		private int exportBoatPathJumpDataExcel( int inStartRow, String memberId, String round, DataTable curDataTable ) {
-			int curExcelRow = inStartRow;
-			DataRow boatPathRow;
-			Int16 passNum;
+        /*
+         * 180,ST,NT,MT,ET and EC is good for me as points
+        Idx == 0 "180M"
+        Idx == 1 "ST"
+        Idx == 2 "52M"
+        Idx == 3 "82M"
+        Idx == 4 "41M"
+        Idx == 5 "EC"
+         */
+        private bool exportBoatPathJumpDataExcel( String memberId, String round, DataRow inPassRow ) {
+            String curMethodName = "ExportRecordAppData:exportBoatPathJumpDataExcel";
+            int curExcelRow = 29;
 
-			try {
-				Boolean writeHeader = true;
-				foreach ( DataRow curRow in curDataTable.Rows ) {
-					passNum = (byte)curRow["PassNum"];
-					boatPathRow = WscHandler.getBoatPath( "Jump", memberId, round, passNum.ToString(), (decimal)0, (byte)curRow["BoatSpeedKph"] );
-					if ( boatPathRow == null ) continue;
+            try {
+                String curPassNum = HelperFunctions.getDataRowColValue( inPassRow, "PassNum", "0" );
+                byte curBoatSpeedKph = Convert.ToByte( HelperFunctions.getDataRowColValueDecimal( inPassRow, "BoatSpeedKph", "0", 0 ) );
+                DataRow boatPathRow = WscHandler.getBoatPath( "Jump", memberId, round, curPassNum, (decimal)0, curBoatSpeedKph );
+                if ( boatPathRow == null ) return true;
 
-					if ( writeHeader ) {
-						writeHeader = false;
-						curExcelRow++;
-						setCellValue( curExcelRow, 1, "Boat Path Monitoring Data" );
+                setCellValue( curExcelRow, "B", HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevBuoy1", "0", 2 ) );
+                setCellValue( curExcelRow, "D", HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevBuoy2", "0", 2 ) );
+                setCellValue( curExcelRow, "F", HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevBuoy3", "0", 2 ) );
+                setCellValue( curExcelRow, "H", HelperFunctions.getDataRowColValueDecimal( boatPathRow, "PathDevBuoy4", "0", 2 ) );
 
-						curExcelRow++;
-						setCellValue( curExcelRow, 1, "Pass" );
-						setCellValue( curExcelRow, 2, "Desc" );
-						setCellValue( curExcelRow, 3, "Gate" );
-						setCellValue( curExcelRow, 4, "52M" );
-						setCellValue( curExcelRow, 5, "82M" );
-						setCellValue( curExcelRow, 6, "Exit" );
-					}
+            } catch ( Exception ex ) {
+                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return false;
+            }
 
-					curExcelRow++;
-					int curColNum = 1;
-					setCellValue( curExcelRow, curColNum, ( (byte)boatPathRow["PassNumber"] ).ToString() );
-					curColNum++;
-					setCellValue( curExcelRow, curColNum, "Time" );
-					curColNum = 4;
-					for ( int rowIdx = 1; rowIdx <= 4; rowIdx++ ) {
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["boatTimeBuoy" + rowIdx] ).ToString() );
-						curColNum++;
-					}
-					curExcelRow++;
-					curColNum = 2;
-					setCellValue( curExcelRow, 2, "Dev" );
-					curColNum = 3;
-					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevBuoy" + rowIdx] ).ToString() );
-						curColNum++;
-					}
+            return true;
+        }
 
-					curExcelRow++;
-					curColNum = 2;
-					setCellValue( curExcelRow, 2, "Cum" );
-					curColNum = 3;
-					for ( int rowIdx = 0; rowIdx <= 3; rowIdx++ ) {
-						setCellValue( curExcelRow, curColNum, ( (Decimal)boatPathRow["PathDevCum" + rowIdx] ).ToString() );
-						curColNum++;
-					}
-				}
-
-			} catch ( Exception ex ) {
-				MessageBox.Show( "Exception encountered in ExportRecordAppData exportBoatPathDataExcel method"
-					+ "\n\nException: " + ex.Message
-				);
-			}
-
-			return curExcelRow;
-		}
-
-		private void exportBoatPathJumpDataText( StringBuilder outLine, String memberId, String round, DataTable curDataTable ) {
+        private void exportBoatPathJumpDataText( StringBuilder outLine, String memberId, String round, DataTable curDataTable ) {
 			DataRow boatPathRow;
 			Int16 passNum;
 
@@ -1414,16 +1253,15 @@ namespace WaterskiScoringSystem.Tools {
         }
         
         private String transformName(String inSkierName) {
-            String curReturnValue = "";
             try {
                 int curDelim = inSkierName.IndexOf( ',' );
                 String curFirstName = inSkierName.Substring( curDelim + 1 );
                 String curLastName = inSkierName.Substring( 0, curDelim );
-                curReturnValue = curFirstName + " " + curLastName;
+                return curFirstName.Trim() + " " + curLastName.Trim();
+            
             } catch {
-                curReturnValue = inSkierName;
+                return inSkierName;
             }
-            return curReturnValue;
         }
         
         private DataRow getTourData(String inSanctionId) {
@@ -1448,7 +1286,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCO ON T.SanctionId = TourRegCO.SanctionId AND T.ContactMemberId = TourRegCO.MemberId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
             curSqlStmt.Append( "ORDER BY T.SanctionId " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 curDataRow = curDataTable.Rows[0];
             }
@@ -1464,7 +1302,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "     INNER JOIN TourReg T ON T.MemberId = O.MemberId AND T.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
             curSqlStmt.Append( "  AND O.TechChief = 'Y' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count > 0) {
                 curDataRow = curDataTable.Rows[0];
             }
@@ -1483,7 +1321,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
             curSqlStmt.Append( "  AND O.Round = " + inRound + " " );
             curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.WorkAsgmt" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataRow getOfficialInfo(String inSanctionId, String inMemberId) {
@@ -1498,7 +1336,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "WHERE O.SanctionId = '" + inSanctionId + "' " );
             curSqlStmt.Append( "  AND O.MemberId = '" + inMemberId + "' " );
             curSqlStmt.Append( "ORDER BY T.SkierName, O.MemberId " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count > 0) {
                 return curDataTable.Rows[0];
             } else {
@@ -1509,40 +1347,59 @@ namespace WaterskiScoringSystem.Tools {
         private DataTable getSkierInfo(String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT Distinct E.Event, E.MemberId, T.SkierName, E.AgeGroup as Div, T.SkiYearAge, E.TeamCode" );
-            curSqlStmt.Append( ", T.State, T.City, COALESCE(S.EventClass, E.EventClass) as EventClass " );
-            curSqlStmt.Append( ", B.BoatModel as BoatModel, B.ModelYear, B.SpeedControlVersion " );
+            curSqlStmt.Append( ", T.Federation, T.State, T.City, COALESCE(S.EventClass, E.EventClass) as EventClass " );
             if (inEvent.Equals( "Slalom" )) {
-                curSqlStmt.Append( ", Round, S.Score, S.FinalSpeedMPH, S.FinalSpeedKph, S.FinalLen, S.FinalLenOff, S.FinalPassScore, S.LastUpdateDate " );
+                curSqlStmt.Append( ", Round, S.Score, S.FinalSpeedMPH, S.FinalSpeedKph, S.FinalLen, S.FinalLenOff, S.FinalPassScore, S.InsertDate " );
                 curSqlStmt.Append( "FROM EventReg E " );
                 curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                 curSqlStmt.Append( "     INNER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
             } else if (inEvent.Equals( "Trick" )) {
-                curSqlStmt.Append( ", Round, S.Score, S.ScorePass1, S.ScorePass2, S.LastUpdateDate " );
+                curSqlStmt.Append( ", Round, S.Score, S.ScorePass1, S.ScorePass2, S.InsertDate " );
                 curSqlStmt.Append( "FROM EventReg E " );
                 curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                 curSqlStmt.Append( "     INNER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
             } else if (inEvent.Equals( "Jump" )) {
-                curSqlStmt.Append( ", Round, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph, S.LastUpdateDate " );
+                curSqlStmt.Append( ", Round, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.RampHeight, S.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph, S.InsertDate " );
                 curSqlStmt.Append( "FROM EventReg E " );
                 curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
                 curSqlStmt.Append( "     INNER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-				curSqlStmt.Append( "     INNER JOIN CodeValueList ON ListName = 'JumpSpeeds' AND MaxValue = S.BoatSpeed" );
+				curSqlStmt.Append( "     INNER JOIN CodeValueList ON ListName = 'JumpSpeeds' AND MaxValue = S.BoatSpeed " );
             }
-            curSqlStmt.Append( "     LEFT OUTER JOIN TourBoatUse B ON B.SanctionId = T.SanctionId AND B.HullId = S.Boat " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + inSanctionId + "' AND E.MemberId = '" + inMemberId + "' AND E.AgeGroup = '" + inDiv + "' AND E.Event = '" + inEvent + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
+        }
+
+        private String getSkierName( String inSanctionId, String inMemberId, String inDiv ) {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT SkierName " );
+            curSqlStmt.Append( "FROM TourReg " );
+            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "' AND AgeGroup = '" + inDiv + "' " );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return "Skier Not Found";
+            return transformName(HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "SkierName", "" ));
+        }
+
+        private int getSlalomLineData( decimal inLinelength ) {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue, SortSeq" );
+            curSqlStmt.Append( ", MinValue as LineLengthOff, MaxValue as LineLengthMeters, CodeValue as LineLengthOffDesc " );
+            curSqlStmt.Append( "FROM CodeValueList " );
+            curSqlStmt.Append( "WHERE ListName = 'SlalomLines' AND ListCodeNum = " + inLinelength );
+            curSqlStmt.Append( "ORDER BY SortSeq" );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return -1;
+            return Convert.ToInt32( HelperFunctions.getDataRowColValueDecimal( curDataTable.Rows[0], "SortSeq", 0 ) ) - 1;
         }
 
         private DataTable getSkierSlalomScore(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, AgeGroup as Div, Round, EventClass" );
-            curSqlStmt.Append( ", Score, NopsScore, StartLen, StartSpeed, Boat" );
+            curSqlStmt.Append( ", Score, NopsScore, StartLen, StartSpeed" );
             curSqlStmt.Append( ", FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore, Note " );
-            curSqlStmt.Append( " FROM SlalomScore " );
-            curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "   AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound );
-            curSqlStmt.Append( " ORDER BY SanctionId, MemberId" );
-            return getData( curSqlStmt.ToString() );
+            curSqlStmt.Append( "FROM SlalomScore S " );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
+            curSqlStmt.Append( "ORDER BY SanctionId, MemberId" );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierSlalomRecap(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
@@ -1552,10 +1409,9 @@ namespace WaterskiScoringSystem.Tools {
             //curSqlStmt.Append( ", EntryGate1, EntryGate2, EntryGate3, ExitGate1, ExitGate2, ExitGate3" );
             curSqlStmt.Append( ", Reride, RerideReason, ScoreProt, Note " );
             curSqlStmt.Append( "FROM SlalomRecap " );
-            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "' " );
-            curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound );
-            curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, SkierRunNum" );
-            return getData( curSqlStmt.ToString() );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
+            curSqlStmt.Append( "ORDER BY SanctionId, MemberId, AgeGroup, Round, SkierRunNum" );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierTrickScore(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
@@ -1563,31 +1419,29 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "SELECT MemberId, AgeGroup as Div, Round, EventClass" );
             curSqlStmt.Append( ", Score, ScorePass1, ScorePass2, NopsScore, Boat, Note " );
             curSqlStmt.Append( "FROM TrickScore " );
-            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
             curSqlStmt.Append( "ORDER BY SanctionId, MemberId" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierTrickPass(String inSanctionId, String inMemberId, String inAgeGroup, String inRound, String inPass) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT PassNum, Skis, Seq, Code, Results, Score, Note " );
             curSqlStmt.Append( "FROM TrickPass " );
-            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound + " AND PassNum = " + inPass + " " );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND Round = {3} AND PassNum = {4} "
+                , inSanctionId, inMemberId, inAgeGroup, inRound, inPass ) );
             curSqlStmt.Append( "ORDER BY SanctionId, MemberId, AgeGroup, Round, PassNum, Seq" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierJumpScore(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, AgeGroup as Div, Round, EventClass" );
             curSqlStmt.Append( ", ScoreFeet as Score, ScoreFeet, ScoreMeters, NopsScore, BoatSpeed, RampHeight, Boat, Note " );
-            curSqlStmt.Append( "FROM JumpScore " );
-            curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "' " );
-            curSqlStmt.Append( "  AND AgeGroup = '" + inAgeGroup + "' AND Round = " + inRound + " " );
+            curSqlStmt.Append( "FROM JumpScore S" );
+            curSqlStmt.Append( String.Format( "WHERE S.SanctionId = '{0}' AND S.MemberId = '{1}' AND S.AgeGroup = '{2}' AND S.Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
             curSqlStmt.Append( "ORDER BY SanctionId, MemberId" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSkierJumpRecap(String inSanctionId, String inMemberId, String inAgeGroup, String inRound) {
@@ -1595,21 +1449,32 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "SELECT R.PassNum, R.LastUpdateDate, R.RampHeight, R.BoatSpeed as BoatSpeedKph, MinValue as BoatSpeedMph" );
             curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters, Results" );
             curSqlStmt.Append( ", BoatSplitTime2 as Split82Time, BoatEndTime as Split41Time, BoatSplitTime as Split52Time" );
-            curSqlStmt.Append( ", ReturnToBase, ScoreProt, Reride, RerideReason, R.Note as RideNote, S.Note as ScoreNote " );
+            curSqlStmt.Append( ", SkierBoatPath, ReturnToBase, ScoreProt, Reride, RerideReason, R.Note as RideNote, S.Note as ScoreNote " );
             curSqlStmt.Append( "FROM JumpScore S " );
             curSqlStmt.Append( "  INNER JOIN JumpRecap R on R.SanctionId = S.SanctionId AND R.MemberId = S.MemberId AND R.AgeGroup = S.AgeGroup AND R.Round = S.Round " );
             curSqlStmt.Append( "             AND R.ScoreFeet = S.ScoreFeet AND R.ScoreMeters = S.ScoreMeters " );
 			curSqlStmt.Append( "  INNER JOIN CodeValueList ON ListName = 'JumpSpeeds' AND MaxValue = R.BoatSpeed " );
-			curSqlStmt.Append( "WHERE S.SanctionId = '" + inSanctionId + "' AND S.MemberId = '" + inMemberId + "'" );
-            curSqlStmt.Append( "  AND S.AgeGroup = '" + inAgeGroup + "' AND S.Round = " + inRound + " " );
+            curSqlStmt.Append( String.Format( "WHERE S.SanctionId = '{0}' AND S.MemberId = '{1}' AND S.AgeGroup = '{2}' AND S.Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
             curSqlStmt.Append( "ORDER BY S.SanctionId, S.MemberId, S.AgeGroup, S.Round, PassNum" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getJumpMeterSetup(String inSanctionId) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT * FROM JumpMeterSetup WHERE SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
+        }
+
+        private DataTable getSkierBoatInfo( String inSanctionId, String inMemberId, String inAgeGroup, String inRound, String inEvent ) {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT S.MemberId, S.AgeGroup as Div, S.Round" );
+            curSqlStmt.Append( ", B.BoatModel as BoatModel, B.ModelYear, B.SpeedControlVersion " );
+            curSqlStmt.Append( "FROM " + inEvent + "Score S " );
+            curSqlStmt.Append( "LEFT OUTER JOIN TourBoatUse B ON B.SanctionId = S.SanctionId AND B.HullId = S.Boat " );
+            curSqlStmt.Append( String.Format( "WHERE S.SanctionId = '{0}' AND S.MemberId = '{1}' AND S.AgeGroup = '{2}' AND S.Round = {3} "
+                , inSanctionId, inMemberId, inAgeGroup, inRound ) );
+            curSqlStmt.Append( "ORDER BY S.SanctionId, S.MemberId" );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void setCellValue(int inRowIdx, String inColumnIdx, object inValue) {
@@ -1711,10 +1576,6 @@ namespace WaterskiScoringSystem.Tools {
             } catch (Exception ex) {
                 MessageBox.Show( "Exception encountered in ExportRecordAppData:setColumnMerge" + "\n\nException: " + ex.Message );
             }
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 
     }

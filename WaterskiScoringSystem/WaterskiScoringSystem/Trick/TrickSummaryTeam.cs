@@ -766,15 +766,33 @@ namespace WaterskiScoringSystem.Trick {
             myExportData.exportDataAsHtml( PrintDataGridView, printTitle, printSubtitle, printFooter );
         }
 
-		private void navPublish_Click( object sender, EventArgs e ) {
-			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Trick", mySanctionNum );
-		}
-		private void navPrint_Click( object sender, EventArgs e ) {
-			printReport( false );
-		}
-		private bool printReport( bool inPublish ) {
+        private void navPublish_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( publishReportTimer );
+            curTimerObj.Start();
+        }
+        private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void publishReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( publishReportTimer );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Trick", mySanctionNum );
+        }
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+        private bool printReport( bool inPublish ) {
 			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
             TeamPrintDialogForm curTeamPrintDialog = new TeamPrintDialogForm();
 			if ( curTeamPrintDialog.ShowDialog() != DialogResult.OK ) return false;
 
@@ -786,18 +804,10 @@ namespace WaterskiScoringSystem.Trick {
 			Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
 			Font fontPrintFooter = new Font( "Times New Roman", 10 );
 
-			curPrintDialog.AllowCurrentPage = true;
-			curPrintDialog.AllowPrintToFile = true;
-			curPrintDialog.AllowSelection = false;
-			curPrintDialog.AllowSomePages = true;
-			curPrintDialog.PrintToFile = false;
-			curPrintDialog.ShowHelp = false;
-			curPrintDialog.ShowNetwork = false;
-			curPrintDialog.UseEXDialog = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return false;
-
-			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+            StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
 			printTitle.Append( "\n Sanction " + mySanctionNum );
 			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
 			printTitle.Append( "\n" + this.Text );
@@ -820,8 +830,10 @@ namespace WaterskiScoringSystem.Trick {
 			myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
 			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
 			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-			curPreviewDialog.Document = myPrintDoc;
-			curPreviewDialog.ShowDialog();
+			
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
 
 			return true;
 		}

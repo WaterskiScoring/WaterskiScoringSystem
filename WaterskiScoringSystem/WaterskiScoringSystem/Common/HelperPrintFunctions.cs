@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -62,6 +63,46 @@ namespace WaterskiScoringSystem.Common {
 					break;
 			}
 			return drawFormat;
+		}
+
+		public static PrintDialog getPrintSettings() {
+			PrintDialog curPrintDialog = new PrintDialog();
+			curPrintDialog.AllowCurrentPage = true;
+			curPrintDialog.AllowPrintToFile = false;
+			curPrintDialog.AllowSelection = true;
+			curPrintDialog.AllowSomePages = true;
+			curPrintDialog.PrintToFile = false;
+			curPrintDialog.ShowHelp = false;
+			curPrintDialog.ShowNetwork = false;
+			curPrintDialog.UseEXDialog = true;
+			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return null;
+			return curPrintDialog;
+		}
+
+		public static DataTable buildPrintColumnList() {
+			/* **********************************************************
+             * Build data tabale definition containing the list of columns 
+			 * on the data grid used to print data 
+             * ******************************************************* */
+			DataTable curDataTable = new DataTable();
+
+			DataColumn curCol = new DataColumn();
+			curCol.ColumnName = "Name";
+			curCol.DataType = System.Type.GetType( "System.String" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = true;
+			curCol.DefaultValue = "";
+			curDataTable.Columns.Add( curCol );
+
+			curCol = new DataColumn();
+			curCol.ColumnName = "Visible";
+			curCol.DataType = System.Type.GetType( "System.Boolean" );
+			curCol.AllowDBNull = false;
+			curCol.ReadOnly = false;
+			curCol.DefaultValue = 1;
+			curDataTable.Columns.Add( curCol );
+
+			return curDataTable;
 		}
 
 	}

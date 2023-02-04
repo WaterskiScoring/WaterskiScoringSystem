@@ -49,8 +49,8 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>6</ApplicationRevision>
-    <ApplicationVersion>7.1.2.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>8.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -424,6 +424,9 @@
       <DependentUpon>PublishReportDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Externalnterface\WscHandler.cs" />
+    <Compile Include="Jump\JumpEventData.cs" />
+    <Compile Include="Jump\JumpPassResultStatus.cs" />
+    <Compile Include="Jump\JumpSetAnalysis.cs" />
     <Compile Include="Jump\JumpSummaryAwards.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -436,12 +439,6 @@
     </Compile>
     <Compile Include="Jump\JumpMeterSetup.Designer.cs">
       <DependentUpon>JumpMeterSetup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Jump\JumpScorebook.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Jump\JumpScorebook.Designer.cs">
-      <DependentUpon>JumpScorebook.cs</DependentUpon>
     </Compile>
     <Compile Include="Jump\PrintJumpFormDialog.cs">
       <SubType>Form</SubType>
@@ -488,12 +485,14 @@
     <Compile Include="Slalom\PrintSlalomFormDialog.Designer.cs">
       <DependentUpon>PrintSlalomFormDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Slalom\SlalomEventData.cs" />
     <Compile Include="Slalom\SlalomPassDetailExport.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Slalom\SlalomPassDetailExport.Designer.cs">
       <DependentUpon>SlalomPassDetailExport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Slalom\SlalomSetAnalysis.cs" />
     <Compile Include="Slalom\SlalomSummaryAwards.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -647,12 +646,14 @@
     <Compile Include="Trick\SkierVideoMatchDialogForm.Designer.cs">
       <DependentUpon>SkierVideoMatchDialogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Trick\TrickEventData.cs" />
     <Compile Include="Trick\TrickSummaryAwards.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Trick\TrickSummaryAwards.Designer.cs">
       <DependentUpon>TrickSummaryAwards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Trick\TrickValidation.cs" />
     <EmbeddedResource Include="Admin\EditMember.resx">
       <DependentUpon>EditMember.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -781,10 +782,6 @@
       <DependentUpon>JumpMeterSetup.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Jump\JumpScorebook.resx">
-      <DependentUpon>JumpScorebook.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Jump\PrintJumpFormDialog.resx">
       <DependentUpon>PrintJumpFormDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -820,10 +817,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Slalom\SlalomSummaryAwards.resx">
       <DependentUpon>SlalomSummaryAwards.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Slalom\SlalomScorebook.resx">
-      <DependentUpon>SlalomScorebook.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Slalom\SlalomOptUp.resx">
@@ -1008,10 +1001,6 @@
       <DependentUpon>TrickSummaryAwards.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Trick\TrickScorebook.resx">
-      <DependentUpon>TrickScorebook.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Trick\ScoreCalc.resx">
       <DependentUpon>ScoreCalc.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1033,26 +1022,20 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="app.config" />
+    <Content Include="IWWFRecordApplicationFormTemplate.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="RecordApplicationFormTemplate.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Compile Include="Common\RerideReason.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Common\RerideReason.Designer.cs">
       <DependentUpon>RerideReason.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Slalom\SlalomScorebook.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Slalom\SlalomScorebook.Designer.cs">
-      <DependentUpon>SlalomScorebook.cs</DependentUpon>
     </Compile>
     <Compile Include="Slalom\SlalomOptUp.cs">
       <SubType>Form</SubType>
@@ -1252,12 +1235,6 @@
     <Compile Include="Tournament\TourRegAddMember.Designer.cs">
       <DependentUpon>TourRegAddMember.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trick\TrickScorebook.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Trick\TrickScorebook.Designer.cs">
-      <DependentUpon>TrickScorebook.cs</DependentUpon>
-    </Compile>
     <Compile Include="Trick\ScoreCalc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1409,10 +1386,6 @@
     <ProjectReference Include="..\LiveWebMessageHandler\LiveWebMessageHandler.csproj">
       <Project>{bf67e8c8-14f3-4b5d-ba10-242a3d2dc03b}</Project>
       <Name>LiveWebMessageHandler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ValidationLibrary\ValidationLibrary.csproj">
-      <Project>{1aa042a1-74e1-4edd-8b07-5a007da5ba67}</Project>
-      <Name>ValidationLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

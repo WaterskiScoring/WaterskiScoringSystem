@@ -32,6 +32,8 @@ namespace BoatPathMonitorSim.Message {
 			this.WaterSkiConnectButton = new System.Windows.Forms.Button();
 			this.ShowPinButton = new System.Windows.Forms.Button();
 			this.DisconnectButton = new System.Windows.Forms.Button();
+			this.ViewAppsButton = new System.Windows.Forms.Button();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -77,7 +79,7 @@ namespace BoatPathMonitorSim.Message {
 			// WaterSkiConnectButton
 			// 
 			this.WaterSkiConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.WaterSkiConnectButton.Location = new System.Drawing.Point(66, 4);
+			this.WaterSkiConnectButton.Location = new System.Drawing.Point(129, 4);
 			this.WaterSkiConnectButton.Name = "WaterSkiConnectButton";
 			this.WaterSkiConnectButton.Size = new System.Drawing.Size(145, 23);
 			this.WaterSkiConnectButton.TabIndex = 2;
@@ -88,7 +90,7 @@ namespace BoatPathMonitorSim.Message {
 			// ShowPinButton
 			// 
 			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ShowPinButton.Location = new System.Drawing.Point(229, 4);
+			this.ShowPinButton.Location = new System.Drawing.Point(290, 4);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(104, 23);
 			this.ShowPinButton.TabIndex = 3;
@@ -99,7 +101,7 @@ namespace BoatPathMonitorSim.Message {
 			// DisconnectButton
 			// 
 			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisconnectButton.Location = new System.Drawing.Point(348, 4);
+			this.DisconnectButton.Location = new System.Drawing.Point(513, 4);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(145, 23);
 			this.DisconnectButton.TabIndex = 4;
@@ -107,11 +109,40 @@ namespace BoatPathMonitorSim.Message {
 			this.DisconnectButton.UseVisualStyleBackColor = true;
 			this.DisconnectButton.Click += new System.EventHandler(this.DisconnectButton_Click);
 			// 
+			// ViewAppsButton
+			// 
+			this.ViewAppsButton.AutoSize = true;
+			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.ViewAppsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ViewAppsButton.Location = new System.Drawing.Point(410, 2);
+			this.ViewAppsButton.Name = "ViewAppsButton";
+			this.ViewAppsButton.Size = new System.Drawing.Size(87, 25);
+			this.ViewAppsButton.TabIndex = 6;
+			this.ViewAppsButton.Text = "View Apps";
+			this.ViewAppsButton.UseVisualStyleBackColor = true;
+			this.ViewAppsButton.Click += new System.EventHandler(this.ViewAppsButton_Click);
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.Info;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(5, 2);
+			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Padding = new System.Windows.Forms.Padding(5);
+			this.RowStatusLabel.Size = new System.Drawing.Size(108, 23);
+			this.RowStatusLabel.TabIndex = 7;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// Controller
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(899, 563);
+			this.Controls.Add(this.RowStatusLabel);
+			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ShowPinButton);
 			this.Controls.Add(this.WaterSkiConnectButton);
@@ -125,6 +156,7 @@ namespace BoatPathMonitorSim.Message {
 			this.Load += new System.EventHandler(this.Controller_Load);
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -136,5 +168,7 @@ namespace BoatPathMonitorSim.Message {
 		private System.Windows.Forms.DataGridViewTextBoxColumn CreationDatetime;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Message;
 		private System.Windows.Forms.Button DisconnectButton;
+		private System.Windows.Forms.Button ViewAppsButton;
+		private System.Windows.Forms.Label RowStatusLabel;
 	}
 }

@@ -75,15 +75,6 @@ namespace BoatPathMonitorSim.Message {
 			myDialogCommand = "Disconnected";
 		}
 
-		private void showAppsConnected_Click( object sender, EventArgs e ) {
-			myDialogCommand = "ShowAppsConnected";
-		}
-
-
-		private void showWscPin_Click( object sender, EventArgs e ) {
-			myDialogCommand = "ShowPin";
-		}
-
 		private void UseJumpTimesCheckBox_CheckedChanged( object sender, EventArgs e ) {
 			this.Location = myWindowLocation;
 			ConnectMgmtData.useJumpTimes = UseJumpTimesCheckBox.Checked;

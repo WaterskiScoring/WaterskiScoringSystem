@@ -1145,13 +1145,33 @@ namespace WaterskiScoringSystem.Tournament {
 			}
         }
 
-		private void navPublish_Click( object sender, EventArgs e ) {
-			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", myEvent, mySanctionNum );
-		}
-		private void navPrint_Click( object sender, EventArgs e ) {
-			printReport( false );
-		}
-		private bool printReport( bool inPublish ) {
+        private void navPublish_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( publishReportTimer );
+            curTimerObj.Start();
+        }
+        private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void publishReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( publishReportTimer );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", myEvent, mySanctionNum );
+        }
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+        
+        private bool printReport( bool inPublish ) {
 			int curCount = 0;
             String curTourPlcmtOrg = "tour";
             foreach(DataGridViewRow curRow in EventRegDataGridView.Rows) {
@@ -1168,7 +1188,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
 
             bool CenterOnPage = true;
             bool WithTitle = true;
@@ -1176,18 +1195,10 @@ namespace WaterskiScoringSystem.Tournament {
             Font fontPrintTitle = new Font("Arial Narrow", 12, FontStyle.Bold);
             Font fontPrintFooter = new Font("Times New Roman", 10);
 
-            curPrintDialog.AllowCurrentPage = true;
-            curPrintDialog.AllowPrintToFile = false;
-            curPrintDialog.AllowSelection = true;
-            curPrintDialog.AllowSomePages = true;
-            curPrintDialog.PrintToFile = false;
-            curPrintDialog.ShowHelp = false;
-            curPrintDialog.ShowNetwork = false;
-            curPrintDialog.UseEXDialog = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return false;
-
-			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+            StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
 			printTitle.Append( "\n Sanction " + mySanctionNum );
 			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
 			printTitle.Append( "\n" + this.Text );
@@ -1203,7 +1214,8 @@ namespace WaterskiScoringSystem.Tournament {
 			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
 
 			curPreviewDialog.Document = myPrintDoc;
-			curPreviewDialog.ShowDialog();
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
 
 			return true;
         }
@@ -1241,7 +1253,19 @@ namespace WaterskiScoringSystem.Tournament {
             curPrintForm.Print();
         }
 
-        private void navPrintFormButton_Click(object sender, EventArgs e) {
+        private void navPrintFormButton_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printFormTimer );
+            curTimerObj.Start();
+        }
+        private void printFormTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printFormTimer );
+            navPrintForm();
+        }
+        private void navPrintForm() {
             Boolean curHeadToHead = false;
             Int16 curRound = Convert.ToInt16( roundActiveSelect.RoundValue );
             String curTourPlcmtOrg = this.myPlcmtOrg, curCommandType = "";
@@ -1277,7 +1301,6 @@ namespace WaterskiScoringSystem.Tournament {
 			} else if ( myEvent.Equals( "Trick" ) ) {
 				curPrintEventForms.PrintTrickForm( curEventRegDataTable, printHeaderNote, curHeadToHeadDef );
 			}
-
 		}
 
 		private DataTable buildPlcmtDataTable() {

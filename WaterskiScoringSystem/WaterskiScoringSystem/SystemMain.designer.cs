@@ -60,7 +60,6 @@
 			this.navSlalomRunningOrder = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSlalomSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-			this.navSlalomScorebook = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSlalomTeamSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.navBoatPathReportSlalom = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +71,6 @@
 			this.navTrickRunningOrder = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-			this.navTrickScorebook = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickTeamSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.navLoadVideoFiles = new System.Windows.Forms.ToolStripMenuItem();
 			this.navJump = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +78,6 @@
 			this.navJumpRunningOrder = new System.Windows.Forms.ToolStripMenuItem();
 			this.navJumpSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.navJumpSummaryAwards = new System.Windows.Forms.ToolStripMenuItem();
-			this.navJumpScorebook = new System.Windows.Forms.ToolStripMenuItem();
 			this.navJumpTeamSummary = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.boatPathReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +96,7 @@
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionalJuniorExtractsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navMetricTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.shrinkDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -114,7 +112,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -377,7 +374,6 @@
             this.navSlalomRunningOrder,
             this.navSlalomSummary,
             this.toolStripMenuItem4,
-            this.navSlalomScorebook,
             this.navSlalomTeamSummary,
             this.toolStripSeparator8,
             this.navBoatPathReportSlalom,
@@ -415,14 +411,6 @@
 			this.toolStripMenuItem4.Size = new System.Drawing.Size(204, 22);
 			this.toolStripMenuItem4.Text = "&Awards Summary";
 			this.toolStripMenuItem4.Click += new System.EventHandler(this.navSlalomSummaryAwards_Click);
-			// 
-			// navSlalomScorebook
-			// 
-			this.navSlalomScorebook.Name = "navSlalomScorebook";
-			this.navSlalomScorebook.Size = new System.Drawing.Size(204, 22);
-			this.navSlalomScorebook.Text = "Scorebook";
-			this.navSlalomScorebook.Visible = false;
-			this.navSlalomScorebook.Click += new System.EventHandler(this.navSlalomScorebook_Click);
 			// 
 			// navSlalomTeamSummary
 			// 
@@ -469,7 +457,6 @@
             this.navTrickRunningOrder,
             this.navTrickSummary,
             this.toolStripMenuItem3,
-            this.navTrickScorebook,
             this.navTrickTeamSummary,
             this.navLoadVideoFiles});
 			this.navTrick.Name = "navTrick";
@@ -479,50 +466,42 @@
 			// navTrickCalc
 			// 
 			this.navTrickCalc.Name = "navTrickCalc";
-			this.navTrickCalc.Size = new System.Drawing.Size(167, 22);
+			this.navTrickCalc.Size = new System.Drawing.Size(180, 22);
 			this.navTrickCalc.Text = "Trick Calculator";
 			this.navTrickCalc.Click += new System.EventHandler(this.navTrickCalc_Click);
 			// 
 			// navTrickRunningOrder
 			// 
 			this.navTrickRunningOrder.Name = "navTrickRunningOrder";
-			this.navTrickRunningOrder.Size = new System.Drawing.Size(167, 22);
+			this.navTrickRunningOrder.Size = new System.Drawing.Size(180, 22);
 			this.navTrickRunningOrder.Text = "&Running Order";
 			this.navTrickRunningOrder.Click += new System.EventHandler(this.navTrickRunningOrder_Click);
 			// 
 			// navTrickSummary
 			// 
 			this.navTrickSummary.Name = "navTrickSummary";
-			this.navTrickSummary.Size = new System.Drawing.Size(167, 22);
+			this.navTrickSummary.Size = new System.Drawing.Size(180, 22);
 			this.navTrickSummary.Text = "&Summary";
 			this.navTrickSummary.Click += new System.EventHandler(this.navTrickSummary_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 22);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
 			this.toolStripMenuItem3.Text = "&Awards Summary";
 			this.toolStripMenuItem3.Click += new System.EventHandler(this.navTrickSummaryAwards_Click);
-			// 
-			// navTrickScorebook
-			// 
-			this.navTrickScorebook.Name = "navTrickScorebook";
-			this.navTrickScorebook.Size = new System.Drawing.Size(167, 22);
-			this.navTrickScorebook.Text = "Scorebook";
-			this.navTrickScorebook.Visible = false;
-			this.navTrickScorebook.Click += new System.EventHandler(this.navTrickScorebook_Click);
 			// 
 			// navTrickTeamSummary
 			// 
 			this.navTrickTeamSummary.Name = "navTrickTeamSummary";
-			this.navTrickTeamSummary.Size = new System.Drawing.Size(167, 22);
+			this.navTrickTeamSummary.Size = new System.Drawing.Size(180, 22);
 			this.navTrickTeamSummary.Text = "&Team Summary";
 			this.navTrickTeamSummary.Click += new System.EventHandler(this.navTrickTeamSummary_Click);
 			// 
 			// navLoadVideoFiles
 			// 
 			this.navLoadVideoFiles.Name = "navLoadVideoFiles";
-			this.navLoadVideoFiles.Size = new System.Drawing.Size(167, 22);
+			this.navLoadVideoFiles.Size = new System.Drawing.Size(180, 22);
 			this.navLoadVideoFiles.Text = "Load Video Files";
 			this.navLoadVideoFiles.Click += new System.EventHandler(this.navLoadVideoFiles_Click);
 			// 
@@ -533,7 +512,6 @@
             this.navJumpRunningOrder,
             this.navJumpSummary,
             this.navJumpSummaryAwards,
-            this.navJumpScorebook,
             this.navJumpTeamSummary,
             this.toolStripSeparator9,
             this.boatPathReportToolStripMenuItem,
@@ -575,14 +553,6 @@
 			this.navJumpSummaryAwards.Size = new System.Drawing.Size(256, 22);
 			this.navJumpSummaryAwards.Text = "&Award Summary";
 			this.navJumpSummaryAwards.Click += new System.EventHandler(this.navJumpSummaryAward_Click);
-			// 
-			// navJumpScorebook
-			// 
-			this.navJumpScorebook.Name = "navJumpScorebook";
-			this.navJumpScorebook.Size = new System.Drawing.Size(256, 22);
-			this.navJumpScorebook.Text = "Scorebook";
-			this.navJumpScorebook.Visible = false;
-			this.navJumpScorebook.Click += new System.EventHandler(this.navJumpScorebook_Click);
 			// 
 			// navJumpTeamSummary
 			// 
@@ -722,6 +692,13 @@
 			this.navImportData.Text = "Import WSTIMS Data";
 			this.navImportData.Click += new System.EventHandler(this.navImportData_Click);
 			// 
+			// navImportLwData
+			// 
+			this.navImportLwData.Name = "navImportLwData";
+			this.navImportLwData.Size = new System.Drawing.Size(265, 22);
+			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
+			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
+			// 
 			// regionalJuniorExtractsToolStripMenuItem
 			// 
 			this.regionalJuniorExtractsToolStripMenuItem.Name = "regionalJuniorExtractsToolStripMenuItem";
@@ -828,13 +805,6 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
-			// navImportLwData
-			// 
-			this.navImportLwData.Name = "navImportLwData";
-			this.navImportLwData.Size = new System.Drawing.Size(265, 22);
-			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
-			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
-			// 
 			// SystemMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -920,9 +890,6 @@
         private System.Windows.Forms.ToolStripMenuItem navTeamMngt;
         private System.Windows.Forms.ToolStripMenuItem navLoadIwwfHomologation;
         private System.Windows.Forms.ToolStripMenuItem navDivOrder;
-        private System.Windows.Forms.ToolStripMenuItem navSlalomScorebook;
-        private System.Windows.Forms.ToolStripMenuItem navTrickScorebook;
-        private System.Windows.Forms.ToolStripMenuItem navJumpScorebook;
         private System.Windows.Forms.ToolStripMenuItem databaseToolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navEventRunStats;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;

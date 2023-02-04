@@ -54,6 +54,7 @@ namespace WscMessageHandler.Message {
 			WaterSkiConnectButton.Enabled = true;
 			DisconnectButton.Enabled = false;
 			ShowPinButton.Enabled = false;
+			ViewAppsButton.Enabled = false;
 
 			Timer curTimerObj = new Timer() { Interval = 50 };
 			curTimerObj.Tick += new EventHandler( execConnectDialog );
@@ -92,9 +93,19 @@ namespace WscMessageHandler.Message {
 		}
 
 		private void ShowPinButton_Click( object sender, EventArgs e ) {
-			String curMethodName = "Controller: DisconnectButton_Click: ";
+			String curMethodName = "Controller: ShowPinButton_Click: ";
 			try {
 				Listener.showPin();
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+			}
+		}
+
+		private void ViewAppsButton_Click( object sender, EventArgs e ) {
+			String curMethodName = "Controller: ViewAppsButton_Click: ";
+			try {
+				Transmitter.whoseInTheRoom();
+
 			} catch ( Exception ex ) {
 				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
 			}
@@ -133,8 +144,6 @@ namespace WscMessageHandler.Message {
 
 				} else if ( connectDialog.dialogCommand.Equals( "ShowPin" ) ) {
 					Listener.showPin();
-
-				} else if ( connectDialog.dialogCommand.Equals( "ShowAppsConnected" ) ) {
 				}
 			}
 		}
@@ -180,7 +189,8 @@ namespace WscMessageHandler.Message {
 				WaterSkiConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
 				ShowPinButton.Enabled = true;
-			
+				ViewAppsButton.Enabled = true;
+
 			} catch ( Exception ex ) {
 				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
@@ -189,6 +199,7 @@ namespace WscMessageHandler.Message {
 				WaterSkiConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
 				ShowPinButton.Enabled = false;
+				ViewAppsButton.Enabled = false;
 			}
 		}
 
@@ -208,6 +219,7 @@ namespace WscMessageHandler.Message {
 				WaterSkiConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
 				ShowPinButton.Enabled = true;
+				ViewAppsButton.Enabled = true;
 
 				myLastMsgGetTime = System.DateTime.Now;
 				// Create a timer with 30 second interval
@@ -225,6 +237,7 @@ namespace WscMessageHandler.Message {
 				WaterSkiConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
 				ShowPinButton.Enabled = false;
+				ViewAppsButton.Enabled = false;
 			}
 		}
 
@@ -288,6 +301,7 @@ namespace WscMessageHandler.Message {
 			WaterSkiConnectButton.Visible = false;
 			DisconnectButton.Visible = true;
 			ShowPinButton.Visible = true;
+			ViewAppsButton.Visible = true;
 
 			// Create a timer with 5 minute interval.
 			myHeartBeatTimer = new Timer() { Interval = 300000 } ;
@@ -403,11 +417,13 @@ namespace WscMessageHandler.Message {
 			Listener.disconnect();
 			Transmitter.disconnect(0);
 
+			deleteMonitorMessages();
 			myMonitorDataTable = null;
 			WaterSkiConnectButton.Visible = true;
 			WaterSkiConnectButton.Enabled = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+			ViewAppsButton.Visible = false;
 
 			myCountHeartBeatFailed = 0;
 		}
@@ -421,6 +437,38 @@ namespace WscMessageHandler.Message {
 			curSqlStmt.Append( " Order By InsertDate " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			return curDataTable;
+		}
+
+		private void deleteMonitorMessages() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Delete From WscMonitorMsg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}'", ConnectMgmtData.sanctionNum ) );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+		}
+
+		private void MessageView_CellContentDoubleClick( object sender, DataGridViewCellEventArgs e ) {
+			DataGridViewRow curViewRow = MessageView.Rows[e.RowIndex];
+			String curMsgData = "";
+			String curMsg = (String)curViewRow.Cells["Message"].Value;
+			int curDelim = curMsg.IndexOf( "MsgData" );
+			if ( curDelim > 0 ) {
+				curMsgData = curMsg.Substring( curDelim + 9, curMsg.Length - curDelim - 10 );
+				curMsg = curMsg.Substring( 0, curDelim );
+			}
+
+			String[] curMsgEntries = curMsg.Split( ',' );
+			StringBuilder curShowMsg = new StringBuilder( "" );
+			foreach(String curEntry in curMsgEntries ) {
+				curShowMsg.Append( curEntry + "\n" );
+			}
+			if ( curMsgData.Length > 0 ) {
+				curShowMsg.Append( "\nMsgData:\n" );
+				curMsgEntries = curMsgData.Split( ',' );
+				foreach ( String curEntry in curMsgEntries ) {
+					curShowMsg.Append( curEntry + "\n" );
+				}
+			}
+			MessageBox.Show( curShowMsg.ToString() );
 		}
 	}
 }

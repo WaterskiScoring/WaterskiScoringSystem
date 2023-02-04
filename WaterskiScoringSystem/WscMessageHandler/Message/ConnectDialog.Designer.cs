@@ -24,14 +24,12 @@ namespace WscMessageHandler.Message {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.ShowPinButton = new System.Windows.Forms.Button();
 			this.DisconnectButton = new System.Windows.Forms.Button();
 			this.ConnectButton = new System.Windows.Forms.Button();
 			this.MessageLabel = new System.Windows.Forms.Label();
 			this.eventSubIdTextBox = new System.Windows.Forms.TextBox();
 			this.eventSubIdLabel = new System.Windows.Forms.Label();
 			this.UseJumpTimesCheckBox = new System.Windows.Forms.CheckBox();
-			this.ViewAppsButton = new System.Windows.Forms.Button();
 			this.CancelButton = new System.Windows.Forms.Button();
 			this.serverUriTextBox = new System.Windows.Forms.TextBox();
 			this.serverUriLabel = new System.Windows.Forms.Label();
@@ -43,25 +41,12 @@ namespace WscMessageHandler.Message {
 			this.databaseFilenameTextBox = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
-			// ShowPinButton
-			// 
-			this.ShowPinButton.AutoSize = true;
-			this.ShowPinButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ShowPinButton.Location = new System.Drawing.Point(327, 43);
-			this.ShowPinButton.Name = "ShowPinButton";
-			this.ShowPinButton.Size = new System.Drawing.Size(87, 25);
-			this.ShowPinButton.TabIndex = 3;
-			this.ShowPinButton.Text = "Show Pin";
-			this.ShowPinButton.UseVisualStyleBackColor = true;
-			this.ShowPinButton.Click += new System.EventHandler(this.showWscPin_Click);
-			// 
 			// DisconnectButton
 			// 
 			this.DisconnectButton.AutoSize = true;
 			this.DisconnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisconnectButton.Location = new System.Drawing.Point(239, 43);
+			this.DisconnectButton.Location = new System.Drawing.Point(297, 43);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(88, 25);
 			this.DisconnectButton.TabIndex = 2;
@@ -124,19 +109,6 @@ namespace WscMessageHandler.Message {
 			this.UseJumpTimesCheckBox.Visible = false;
 			this.UseJumpTimesCheckBox.CheckedChanged += new System.EventHandler(this.UseJumpTimesCheckBox_CheckedChanged);
 			// 
-			// ViewAppsButton
-			// 
-			this.ViewAppsButton.AutoSize = true;
-			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.ViewAppsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ViewAppsButton.Location = new System.Drawing.Point(414, 43);
-			this.ViewAppsButton.Name = "ViewAppsButton";
-			this.ViewAppsButton.Size = new System.Drawing.Size(87, 25);
-			this.ViewAppsButton.TabIndex = 4;
-			this.ViewAppsButton.Text = "View Apps";
-			this.ViewAppsButton.UseVisualStyleBackColor = true;
-			this.ViewAppsButton.Click += new System.EventHandler(this.showAppsConnected_Click);
-			// 
 			// CancelButton
 			// 
 			this.CancelButton.AutoSize = true;
@@ -190,7 +162,7 @@ namespace WscMessageHandler.Message {
 			// 
 			this.SelectDatabaseButton.AutoSize = true;
 			this.SelectDatabaseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SelectDatabaseButton.Location = new System.Drawing.Point(501, 43);
+			this.SelectDatabaseButton.Location = new System.Drawing.Point(443, 43);
 			this.SelectDatabaseButton.Name = "SelectDatabaseButton";
 			this.SelectDatabaseButton.Size = new System.Drawing.Size(122, 25);
 			this.SelectDatabaseButton.TabIndex = 5;
@@ -242,11 +214,9 @@ namespace WscMessageHandler.Message {
 			this.Controls.Add(this.serverUriLabel);
 			this.Controls.Add(this.serverUriTextBox);
 			this.Controls.Add(this.CancelButton);
-			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.UseJumpTimesCheckBox);
 			this.Controls.Add(this.eventSubIdLabel);
 			this.Controls.Add(this.eventSubIdTextBox);
-			this.Controls.Add(this.ShowPinButton);
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ConnectButton);
 			this.Controls.Add(this.MessageLabel);
@@ -259,14 +229,12 @@ namespace WscMessageHandler.Message {
 		}
 
 		#endregion
-		private System.Windows.Forms.Button ShowPinButton;
 		private System.Windows.Forms.Button DisconnectButton;
 		private System.Windows.Forms.Button ConnectButton;
 		private System.Windows.Forms.Label MessageLabel;
 		private System.Windows.Forms.TextBox eventSubIdTextBox;
 		private System.Windows.Forms.Label eventSubIdLabel;
 		private System.Windows.Forms.CheckBox UseJumpTimesCheckBox;
-		private System.Windows.Forms.Button ViewAppsButton;
 		private System.Windows.Forms.Button CancelButton;
 		private System.Windows.Forms.TextBox serverUriTextBox;
 		private System.Windows.Forms.Label serverUriLabel;

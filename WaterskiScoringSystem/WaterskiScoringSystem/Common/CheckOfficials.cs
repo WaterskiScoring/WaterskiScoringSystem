@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 
 namespace WaterskiScoringSystem.Common {
@@ -69,7 +67,7 @@ namespace WaterskiScoringSystem.Common {
 			if ( inEventGroup != null && inEventGroup.Length > 0 ) curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
 			if ( inRound != null ) curSqlStmt.Append( "  AND O.Round = " + inRound + " " );
 			curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
-			return myOfficialAsgmtDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 		
 		private static DataTable getDriverAsgmt( String inSanctionNum, String inEvent, String inEventGroup, String inRound ) {

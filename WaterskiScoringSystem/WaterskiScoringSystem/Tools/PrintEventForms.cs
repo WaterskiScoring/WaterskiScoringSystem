@@ -20,112 +20,112 @@ namespace WaterskiScoringSystem.Tools {
 
 		public void PrintSlalomForm( DataTable inEventRegDataTable, String inPrintHeaderNote, String inHeadToHeadDef ) {
 			PrintSlalomFormDialog curDialog = new PrintSlalomFormDialog();
-			if ( curDialog.ShowDialog() == DialogResult.OK ) {
-				String curPrintReport = curDialog.ReportName;
-				if ( curPrintReport.Equals( "SlalomJudgeForm" ) ) {
-					PrintSlalomJudgeForms curPrintForm = new PrintSlalomJudgeForms();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getSlalomDivMaxMinSpeed();
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourName = (String)myTourRow["Name"];
+			if ( curDialog.ShowDialog() != DialogResult.OK ) return;
 
-					curPrintForm.ShowDataTable = inEventRegDataTable;
+			String curPrintReport = curDialog.ReportName;
+			if ( curPrintReport.Equals( "SlalomJudgeForm" ) ) {
+				PrintSlalomJudgeForms curPrintForm = new PrintSlalomJudgeForms();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getSlalomDivMaxMinSpeed();
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourName = (String)myTourRow["Name"];
 
-					curPrintForm.Print();
+				curPrintForm.ShowDataTable = inEventRegDataTable;
 
-				} else if ( curPrintReport.Equals( "SlalomRecapForm" ) ) {
-					PrintSlalomRecapForm curPrintForm = new PrintSlalomRecapForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getSlalomDivMaxMinSpeed();
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourName = (String)myTourRow["Name"];
+				curPrintForm.Print();
 
-					curPrintForm.ShowDataTable = inEventRegDataTable;
+			} else if ( curPrintReport.Equals( "SlalomRecapForm" ) ) {
+				PrintSlalomRecapForm curPrintForm = new PrintSlalomRecapForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getSlalomDivMaxMinSpeed();
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourName = (String)myTourRow["Name"];
 
-					curPrintForm.Print();
-				}
+				curPrintForm.ShowDataTable = inEventRegDataTable;
+
+				curPrintForm.Print();
 			}
 		}
 
 		public void PrintJumpForm( DataTable inEventRegDataTable, String inPrintHeaderNote, String inHeadToHeadDef ) {
 			PrintJumpFormDialog curDialog = new PrintJumpFormDialog();
-			if ( curDialog.ShowDialog() == DialogResult.OK ) {
-				String curPrintReport = curDialog.ReportName;
-				if ( curPrintReport.Equals( "JumpSkierSpecForm" ) ) {
-					PrintJumpSkierSpecForm curPrintForm = new PrintJumpSkierSpecForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getTrickDivList();
-					curPrintForm.TourName = (String)myTourRow["Name"];
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-					curPrintForm.ShowDataTable = inEventRegDataTable;
-					curPrintForm.Print();
+			if ( curDialog.ShowDialog() != DialogResult.OK ) return;
 
-				} else {
-					PrintJumpRecapJudgeForm curPrintForm = new PrintJumpRecapJudgeForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getJumpDivMaxSpeedRamp();
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourName = (String)myTourRow["Name"];
+			String curPrintReport = curDialog.ReportName;
+			if ( curPrintReport.Equals( "JumpSkierSpecForm" ) ) {
+				PrintJumpSkierSpecForm curPrintForm = new PrintJumpSkierSpecForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getTrickDivList();
+				curPrintForm.TourName = (String)myTourRow["Name"];
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
+				curPrintForm.ShowDataTable = inEventRegDataTable;
+				curPrintForm.Print();
 
-					curPrintForm.ShowDataTable = inEventRegDataTable;
+			} else {
+				PrintJumpRecapJudgeForm curPrintForm = new PrintJumpRecapJudgeForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getJumpDivMaxSpeedRamp();
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourName = (String)myTourRow["Name"];
 
-					curPrintForm.Print();
+				curPrintForm.ShowDataTable = inEventRegDataTable;
 
-				}
+				curPrintForm.Print();
+
 			}
 		}
 
 		public void PrintTrickForm( DataTable inEventRegDataTable, String inPrintHeaderNote, String inHeadToHeadDef ) {
 			PrintTrickFormDialog curDialog = new PrintTrickFormDialog();
-			if ( curDialog.ShowDialog() == DialogResult.OK ) {
-				String curPrintReport = curDialog.ReportName;
+			if ( curDialog.ShowDialog() != DialogResult.OK ) return;
 
-				if ( curPrintReport.Equals( "TrickOfficialForm" ) ) {
-					PrintTrickJudgeForm curPrintForm = new PrintTrickJudgeForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getTrickDivList();
-					curPrintForm.TourName = (String)myTourRow["Name"];
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-					curPrintForm.NumJudges = 3;
-					curPrintForm.ShowDataTable = inEventRegDataTable;
-					curPrintForm.Print();
+			String curPrintReport = curDialog.ReportName;
 
-				} else if ( curPrintReport.Equals( "TrickTimingForm" ) ) {
-					PrintTrickTimingForm curPrintForm = new PrintTrickTimingForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getTrickDivList();
-					curPrintForm.TourName = (String)myTourRow["Name"];
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-					curPrintForm.ShowDataTable = inEventRegDataTable;
-					curPrintForm.Print();
+			if ( curPrintReport.Equals( "TrickOfficialForm" ) ) {
+				PrintTrickJudgeForm curPrintForm = new PrintTrickJudgeForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getTrickDivList();
+				curPrintForm.TourName = (String)myTourRow["Name"];
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
+				curPrintForm.NumJudges = 3;
+				curPrintForm.ShowDataTable = inEventRegDataTable;
+				curPrintForm.Print();
 
-				} else if ( curPrintReport.Equals( "TrickSkierSpecForm" ) ) {
-					PrintTrickSkierSpecForm curPrintForm = new PrintTrickSkierSpecForm();
-					curPrintForm.PrintLandscape = true;
-					curPrintForm.ReportHeader = inPrintHeaderNote;
-					curPrintForm.DivInfoDataTable = getTrickDivList();
-					curPrintForm.TourName = (String)myTourRow["Name"];
-					curPrintForm.TourRules = myTourRules;
-					if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
-					curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
-					curPrintForm.ShowDataTable = inEventRegDataTable;
-					curPrintForm.Print();
-				}
+			} else if ( curPrintReport.Equals( "TrickTimingForm" ) ) {
+				PrintTrickTimingForm curPrintForm = new PrintTrickTimingForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getTrickDivList();
+				curPrintForm.TourName = (String)myTourRow["Name"];
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
+				curPrintForm.ShowDataTable = inEventRegDataTable;
+				curPrintForm.Print();
+
+			} else if ( curPrintReport.Equals( "TrickSkierSpecForm" ) ) {
+				PrintTrickSkierSpecForm curPrintForm = new PrintTrickSkierSpecForm();
+				curPrintForm.PrintLandscape = true;
+				curPrintForm.ReportHeader = inPrintHeaderNote;
+				curPrintForm.DivInfoDataTable = getTrickDivList();
+				curPrintForm.TourName = (String)myTourRow["Name"];
+				curPrintForm.TourRules = myTourRules;
+				if ( inHeadToHeadDef != null && inHeadToHeadDef.Length > 0 ) curPrintForm.TourRules = inHeadToHeadDef;
+				curPrintForm.TourRounds = Convert.ToInt32( myTourRow["TrickRounds"] );
+				curPrintForm.ShowDataTable = inEventRegDataTable;
+				curPrintForm.Print();
 			}
 		}
 

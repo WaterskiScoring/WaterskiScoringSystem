@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BoatPathMonitorSim.Common {
 	public class HelperFunctions {
@@ -25,6 +23,25 @@ namespace BoatPathMonitorSim.Common {
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 			return null;
+		}
+
+		public static String getDataRowColValue( DataRow dataRow, String colName, String defaultValue ) {
+			try {
+				if ( dataRow == null ) return defaultValue;
+				if ( dataRow[colName] == System.DBNull.Value ) return defaultValue;
+				if ( dataRow[colName].GetType().Equals( typeof( String ) ) ) return ( (String)dataRow[colName] ).ToString().Trim();
+				if ( dataRow[colName].GetType().Equals( typeof( int ) ) ) return ( (int)dataRow[colName] ).ToString();
+				if ( dataRow[colName].GetType().Equals( typeof( Int16 ) ) ) return ( (Int16)dataRow[colName] ).ToString();
+				if ( dataRow[colName].GetType().Equals( typeof( byte ) ) ) return ( (byte)dataRow[colName] ).ToString();
+				if ( dataRow[colName].GetType().Equals( typeof( bool ) ) ) return ( (bool)dataRow[colName] ).ToString();
+				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
+				if ( dataRow[colName].GetType().Equals( typeof( DateTime ) ) ) return ( (DateTime)dataRow[colName] ).ToString( "yyyy/MM/dd HH:mm:ss" );
+
+				return ( (String)dataRow[colName] ).ToString();
+
+			} catch {
+				return defaultValue;
+			}
 		}
 
 		public static void cleanMsgQueues() {
@@ -66,6 +83,8 @@ namespace BoatPathMonitorSim.Common {
 			curSqlStmt.Append( ", getdate()" );
 			curSqlStmt.Append( ")" );
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Received", msgType, msgData );
 		}
 
 		public static void updateMonitorHeartBeat( String monitorName ) {
@@ -86,6 +105,23 @@ namespace BoatPathMonitorSim.Common {
 				curSqlStmt.Append( ")" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			}
+		}
+
+		public static void insertWscMonitorMsg( String inSanctionId, String inAction, String inMsgType, String inMsgData ) {
+			String curMsgData;
+			if ( inMsgData.Length > 128 ) {
+				curMsgData = inMsgData.Substring( 0, 128 );
+			} else {
+				curMsgData = inMsgData;
+			}
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Insert WscMonitorMsg ( " );
+			curSqlStmt.Append( "SanctionId, MsgAction, MsgType, MsgData, InsertDate " );
+			curSqlStmt.Append( ") Values ( " );
+			curSqlStmt.Append( String.Format( "'{0}', '{1}', '{2}', '{3}', getdate()"
+				, inSanctionId, inAction, inMsgType, curMsgData ) );
+			curSqlStmt.Append( " )" );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
 		public static void deleteMonitorHeartBeat( String monitorName ) {

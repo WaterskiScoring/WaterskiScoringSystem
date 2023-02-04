@@ -41,7 +41,21 @@ namespace BoatPathMonitorSim.Message {
 			Log.WriteFile( "Transmitter: checkMonitorHeartBeat: Emit heartbeat" );
 			if ( ConnectMgmtData.socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
 		}
-		
+
+		public static void whoseInTheRoom() {
+			ConnectMgmtData.socketClient.EmitAsync( "connectedapplication_check", "" );
+			Log.WriteFile( "Transmitter: whoseInTheRoom: Emit request" );
+			HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Sent", "whoseInTheRoom", "" );
+			if ( ConnectMgmtData.socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+		}
+
+		public static void whoseInTheRoomResponse() {
+			ConnectMgmtData.socketClient.EmitAsync( "connectedapplication_response", "{\"application\": \"Boat Path Rover Simulator\"}" );
+			Log.WriteFile( "Transmitter: whoseInTheRoomResponse: Emit request" );
+			HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Sent", "whoseInTheRoomResponse", "{\"application\": \"WSTIMS For Windows\"}" );
+			if ( ConnectMgmtData.socketClient.Connected ) HelperFunctions.updateMonitorHeartBeat( "Transmitter" );
+		}
+
 		private static void readSendMessages( object sender, EventArgs e ) {
 			readMessagesTimer.Stop();
 			readMessagesTimer.Elapsed -= readSendMessages;

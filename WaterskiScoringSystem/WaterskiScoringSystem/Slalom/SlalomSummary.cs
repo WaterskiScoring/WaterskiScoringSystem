@@ -740,11 +740,31 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void navPublish_Click( object sender, EventArgs e ) {
+			Timer curTimerObj = new Timer();
+			curTimerObj.Interval = 5;
+			curTimerObj.Tick += new EventHandler( publishReportTimer );
+			curTimerObj.Start();
+		}
+		private void navPrint_Click( object sender, EventArgs e ) {
+			Timer curTimerObj = new Timer();
+			curTimerObj.Interval = 5;
+			curTimerObj.Tick += new EventHandler( printReportTimer );
+			curTimerObj.Start();
+		}
+
+		private void publishReportTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( publishReportTimer );
 			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Slalom", mySanctionNum );
 		}
-		private void navPrint_Click(object sender, EventArgs e) {
+		private void printReportTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( printReportTimer );
 			printReport( false );
 		}
+
 		private bool printReport( bool inPublish ) {
 			if ( h2hScoreButton.Checked ) {
 				if ( mySummaryDataTable.Rows.Count > 0 ) {
@@ -756,7 +776,6 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-			PrintDialog curPrintDialog = new PrintDialog();
 			Font saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
 			if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
 				scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
@@ -771,38 +790,28 @@ namespace WaterskiScoringSystem.Slalom {
 			Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
 			Font fontPrintFooter = new Font( "Times New Roman", 10 );
 
-			curPrintDialog.AllowCurrentPage = true;
-			curPrintDialog.AllowPrintToFile = true;
-			curPrintDialog.AllowSelection = false;
-			curPrintDialog.AllowSomePages = true;
-			curPrintDialog.PrintToFile = false;
-			curPrintDialog.ShowHelp = false;
-			curPrintDialog.ShowNetwork = false;
-			curPrintDialog.UseEXDialog = true;
+			PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+			if ( curPrintDialog == null ) return false;
 
-			if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-				StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
-				printTitle.Append( "\n Sanction " + mySanctionNum );
-				printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
-				printTitle.Append( "\n" + this.Text );
-				if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
+			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+			printTitle.Append( "\n Sanction " + mySanctionNum );
+			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+			printTitle.Append( "\n" + this.Text );
+			if ( inPublish ) printTitle.Append( HelperFunctions.buildPublishReportTitle( mySanctionNum ) );
 
-				myPrintDoc = new PrintDocument();
-				myPrintDoc.DocumentName = this.Text;
-				myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
-				myPrintDoc.DefaultPageSettings.Landscape = false;
-				myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-					CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+			myPrintDoc = new PrintDocument();
+			myPrintDoc.DocumentName = this.Text;
+			myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+			myPrintDoc.DefaultPageSettings.Landscape = false;
+			myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
+				CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
 
-				myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-				myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-				myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-				curPreviewDialog.Document = myPrintDoc;
-				curPreviewDialog.ShowDialog();
-				returnValue = true;
-			} else {
-				returnValue = false;
-			}
+			myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+			curPreviewDialog.Document = myPrintDoc;
+			curPreviewDialog.Focus();
+			curPreviewDialog.ShowDialog();
 
 			scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
 			return returnValue;

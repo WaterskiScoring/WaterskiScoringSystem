@@ -1138,3 +1138,7 @@ CREATE TABLE WscMonitorMsg (
 );
 
 ALTER TABLE WscMonitorMsg ADD PRIMARY KEY ([PK]);
+
+## v22.90
+ALTER TABLE [JumpRecap] ADD COLUMN  RerideIfBest nchar(1);
+ALTER TABLE [JumpRecap] ADD COLUMN  RerideCanImprove nchar(1);

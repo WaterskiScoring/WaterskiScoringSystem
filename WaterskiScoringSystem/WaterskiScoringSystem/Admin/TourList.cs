@@ -30,9 +30,7 @@ namespace WaterskiScoringSystem.Admin {
         private String myOrigEventClass = "";
         private String myOrigCellValue = "";
         private String mySortCommand = "";
-        private String myTourClass;
         private String myFilterCmd = "";
-        private String myModCellValue = "";
 
         private DataGridViewRow myTourViewRow;
         private DataTable myTourDataTable;
@@ -138,6 +136,7 @@ namespace WaterskiScoringSystem.Admin {
                 } else {
                     e.Cancel = false;
                 }
+            
             } catch ( Exception excp ) {
                 String dialogMsg = "Error attempting to save changes "
                     + "\n" + excp.Message
@@ -180,7 +179,7 @@ namespace WaterskiScoringSystem.Admin {
                 isDataModifiedTrickRounds = false;
                 isDataModifiedJumpRounds = false;
 
-                String curSanctionId = "", curValue = "";
+                String curSanctionId = "";
                 String curActiveSanctionId = Properties.Settings.Default.AppSanctionNum;
                 if ( curActiveSanctionId == null ) {
                     curActiveSanctionId = "";
@@ -201,97 +200,28 @@ namespace WaterskiScoringSystem.Admin {
                         myTourViewIdx = dataGridView.Rows.Add();
                         curViewRow = dataGridView.Rows[myTourViewIdx];
 
-                        try {
-                            curViewRow.Cells["SanctionId"].Value = (String)curDataRow["SanctionId"];
-                        } catch {
-                            curViewRow.Cells["SanctionId"].Value = "";
-                        }
-                        curSanctionId = (String)curViewRow.Cells["SanctionId"].Value;
-                        try {
-                            curViewRow.Cells["SanctionEditCode"].Value = (String) curDataRow["SanctionEditCode"];
-                        } catch {
-                            curViewRow.Cells["SanctionEditCode"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TourName"].Value = (String)curDataRow["Name"];
-                        } catch {
-                            curViewRow.Cells["TourName"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TourClass"].Value = (String)curDataRow["Class"];
-                        } catch {
-                            curViewRow.Cells["TourClass"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TourFederation"].Value = (String)curDataRow["Federation"];
-                        } catch {
-                            curViewRow.Cells["TourFederation"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EventDates"].Value = (String)curDataRow["EventDates"];
-                        } catch {
-                            curViewRow.Cells["EventDates"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TourDataLoc"].Value = (String)curDataRow["TourDataLoc"];
-                        } catch {
-                            curViewRow.Cells["TourDataLoc"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["EventLocation"].Value = (String)curDataRow["EventLocation"];
-                        } catch {
-                            curViewRow.Cells["EventLocation"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["Rules"].Value = (String)curDataRow["Rules"];
-                        } catch {
-                            curViewRow.Cells["Rules"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["SlalomRounds"].Value = ((byte)curDataRow["SlalomRounds"]).ToString();
-                        } catch {
-                            curViewRow.Cells["SlalomRounds"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TrickRounds"].Value = ((byte)curDataRow["TrickRounds"]).ToString();
-                        } catch {
-                            curViewRow.Cells["TrickRounds"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["JumpRounds"].Value = ((byte)curDataRow["JumpRounds"]).ToString();
-                        } catch {
-                            curViewRow.Cells["JumpRounds"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["HcapSlalomBase"].Value = ( (Decimal)curDataRow["HcapSlalomBase"] ).ToString("##0");
-                        } catch {
-                            curViewRow.Cells["HcapSlalomBase"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["HcapTrickBase"].Value = ( (Decimal)curDataRow["HcapTrickBase"] ).ToString("#0000");
-                        } catch {
-                            curViewRow.Cells["HcapTrickBase"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["HcapJumpBase"].Value = ( (Decimal)curDataRow["HcapJumpBase"] ).ToString("##0");
-                        } catch {
-                            curViewRow.Cells["HcapJumpBase"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["HcapSlalomPct"].Value = ( (Decimal)curDataRow["HcapSlalomPct"] ).ToString("#.000");
-                        } catch {
-                            curViewRow.Cells["HcapSlalomPct"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["HcapTrickPct"].Value = ( (Decimal)curDataRow["HcapTrickPct"] ).ToString("#.000");
-                        } catch {
-                            curViewRow.Cells["HcapTrickPct"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["HcapJumpPct"].Value = ( (Decimal)curDataRow["HcapJumpPct"] ).ToString("#.000");
-                        } catch {
-                            curViewRow.Cells["HcapJumpPct"].Value = "0";
-                        }
+                        curSanctionId = HelperFunctions.getDataRowColValue( curDataRow, "SanctionId", "" );
+                        curViewRow.Cells["SanctionId"].Value = curSanctionId;
+
+                        curViewRow.Cells["SanctionEditCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SanctionEditCode", "" );
+
+                        curViewRow.Cells["TourName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Name", "" );
+                        curViewRow.Cells["TourClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Class", "" );
+                        curViewRow.Cells["TourFederation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" );
+                        curViewRow.Cells["EventDates"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventDates", "" );
+                        curViewRow.Cells["TourDataLoc"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TourDataLoc", "" );
+                        curViewRow.Cells["EventLocation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventLocation", "" );
+                        curViewRow.Cells["Rules"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Rules", "" );
+                        curViewRow.Cells["SlalomRounds"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRounds", "" );
+                        curViewRow.Cells["TrickRounds"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRounds", "" );
+                        curViewRow.Cells["JumpRounds"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRounds", "" );
+                        
+                        curViewRow.Cells["HcapSlalomBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapSlalomBase", "", 0 );
+                        curViewRow.Cells["HcapTrickBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapTrickBase", "", 0 );
+                        curViewRow.Cells["HcapJumpBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapJumpBase", "", 0 );
+                        curViewRow.Cells["HcapSlalomPct"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapSlalomPct", "", 3 );
+                        curViewRow.Cells["HcapTrickPct"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapTrickPct", "", 3 );
+                        curViewRow.Cells["HcapJumpPct"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HcapJumpPct", "", 3 );
 
                         if ( curSanctionId == curActiveSanctionId ) curTourActiveIdx = myTourViewIdx;
                     }
@@ -330,67 +260,20 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private void setEntryForEdit( DataGridViewRow curViewRow ) {
-            try {
-                editSanctionId.Text = (String)curViewRow.Cells["SanctionId"].Value;
-            } catch {
-                editSanctionId.Text = "";
-            }
+            editSanctionId.Text = HelperFunctions.getViewRowColValue( curViewRow, "SanctionId", "" );
 			myOrigSanctionId = editSanctionId.Text;
-            try {
-                editName.Text = (String)curViewRow.Cells["TourName"].Value;
-            } catch {
-                editName.Text = "";
-            }
-            try {
-                editSanctionEditCode.Text = curViewRow.Cells["SanctionEditCode"].Value.ToString();
-            } catch {
-                editSanctionEditCode.Text = "";
-            }
-            try {
-                editClass.SelectedValue = (String)curViewRow.Cells["TourClass"].Value;
-            } catch {
-                editClass.SelectedValue = "";
-            }
-            try {
-                editFederation.SelectedValue = (String)curViewRow.Cells["TourFederation"].Value;
-            } catch {
-                editFederation.SelectedValue = "";
-            }
-            try {
-                editEventDates.Text = (String)curViewRow.Cells["EventDates"].Value;
-            } catch {
-                editEventDates.Text = "";
-            }
-            try {
-                editTourDataLoc.Text = (String)curViewRow.Cells["TourDataLoc"].Value;
-            } catch {
-                editTourDataLoc.Text = "";
-            }
-            try {
-                editEventLocation.Text = (String)curViewRow.Cells["EventLocation"].Value;
-            } catch {
-                editEventLocation.Text = "";
-            }
-            try {
-                editRules.SelectedValue = (String)curViewRow.Cells["Rules"].Value;
-            } catch {
-                editRules.SelectedValue = "";
-            }
-            try {
-                editSlalomRounds.Text = (String)curViewRow.Cells["SlalomRounds"].Value;
-            } catch {
-                editSlalomRounds.Text = "";
-            }
-            try {
-                editTrickRounds.Text = (String)curViewRow.Cells["TrickRounds"].Value;
-            } catch {
-                editTrickRounds.Text = "";
-            }
-            try {
-                editJumpRounds.Text = (String)curViewRow.Cells["JumpRounds"].Value;
-            } catch {
-                editJumpRounds.Text = "";
-            }
+
+            editName.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourName", "" );
+            editSanctionEditCode.Text = HelperFunctions.getViewRowColValue( curViewRow, "SanctionEditCode", "" );
+            editClass.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourClass", "" );
+            editFederation.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourFederation", "" );
+            editEventDates.Text = HelperFunctions.getViewRowColValue( curViewRow, "EventDates", "" );
+            editTourDataLoc.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourDataLoc", "" );
+            editEventLocation.Text = HelperFunctions.getViewRowColValue( curViewRow, "EventLocation", "" );
+            editRules.Text = HelperFunctions.getViewRowColValue( curViewRow, "Rules", "" );
+            editSlalomRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "SlalomRounds", "" );
+            editTrickRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "TrickRounds", "" );
+            editJumpRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "JumpRounds", "" );
 
             Decimal curValue = 0;
             Int16 curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
@@ -400,31 +283,14 @@ namespace WaterskiScoringSystem.Admin {
                 curSlalomRounds = 0;
             }
             if ( curSlalomRounds > 0 ) {
-                try {
-                    editHcapSlalomBase.Text = (String)curViewRow.Cells["HcapSlalomBase"].Value;
-                    try {
-                        curValue = Convert.ToDecimal( editHcapSlalomBase.Text );
-                        if ( curValue == 0 ) {
-                            curValue = getEventRecordValue( editSanctionId.Text, "Slalom" );
-                            editHcapSlalomBase.Text = curValue.ToString( "##0" );
-                        }
-                    } catch {
-                        editHcapSlalomBase.Text = "";
-                    }
-                    try {
-                        editHcapSlalomPct.Text = (String)curViewRow.Cells["HcapSlalomPct"].Value;
-                        curValue = Convert.ToDecimal( editHcapSlalomPct.Text );
-                        if ( curValue == 0 ) {
-                            editHcapSlalomPct.Text = ".95";
-                        }
-                    } catch {
-                        editHcapSlalomPct.Text = ".95";
-                    }
-                } catch {
-                    curValue = getEventRecordValue( editSanctionId.Text, "Slalom" );
-                    editHcapSlalomBase.Text = curValue.ToString( "##0" );
-                    editHcapSlalomPct.Text = ".95";
-                }
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapSlalomBase", "0" );
+                if ( curValue == 0 ) curValue = getEventRecordValue( editSanctionId.Text, "Slalom" );
+                editHcapSlalomBase.Text = curValue.ToString( "##0" );
+
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapSlalomPct", "0" );
+                if ( curValue == 0 ) curValue = 0.95M;
+                editHcapSlalomPct.Text = curValue.ToString( "0.##" );
+
             } else {
                 editHcapSlalomBase.Text = "";
                 editHcapSlalomPct.Text = "";
@@ -436,31 +302,14 @@ namespace WaterskiScoringSystem.Admin {
                 curTrickRounds = 0;
             }
             if ( curTrickRounds > 0 ) {
-                try {
-                    editHcapTrickBase.Text = (String)curViewRow.Cells["HcapTrickBase"].Value;
-                    try {
-                        curValue = Convert.ToDecimal( editHcapTrickBase.Text );
-                        if ( curValue == 0 ) {
-                            curValue = getEventRecordValue( editSanctionId.Text, "Trick" );
-                            editHcapTrickBase.Text = curValue.ToString( "#0000" );
-                        }
-                    } catch {
-                        editHcapTrickBase.Text = "";
-                    }
-                    try {
-                        editHcapTrickPct.Text = (String)curViewRow.Cells["HcapTrickPct"].Value;
-                        curValue = Convert.ToDecimal( editHcapTrickPct.Text );
-                        if ( curValue == 0 ) {
-                            editHcapTrickPct.Text = ".95";
-                        }
-                    } catch {
-                        editHcapTrickPct.Text = ".95";
-                    }
-                } catch {
-                    curValue = getEventRecordValue( editSanctionId.Text, "Trick" );
-                    editHcapTrickBase.Text = curValue.ToString( "#0000" );
-                    editHcapTrickPct.Text = ".95";
-                }
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapTrickBase", "0" );
+                if ( curValue == 0 ) curValue = getEventRecordValue( editSanctionId.Text, "Trick" );
+                editHcapTrickBase.Text = curValue.ToString( "#0000" );
+
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapTrickPct", "0" );
+                if ( curValue == 0 ) curValue = 0.95M;
+                editHcapTrickPct.Text = curValue.ToString( "0.##" );
+
             } else {
                 editHcapTrickBase.Text = "";
                 editHcapTrickPct.Text = "";
@@ -472,31 +321,14 @@ namespace WaterskiScoringSystem.Admin {
                 curJumpRounds = 0;
             }
             if ( curJumpRounds > 0 ) {
-                try {
-                    editHcapJumpBase.Text = (String)curViewRow.Cells["HcapJumpBase"].Value;
-                    try {
-                        curValue = Convert.ToDecimal( editHcapJumpBase.Text );
-                        if ( curValue == 0 ) {
-                            curValue = getEventRecordValue( editSanctionId.Text, "Jump" );
-                            editHcapJumpBase.Text = curValue.ToString( "##0" );
-                        }
-                    } catch {
-                        editHcapJumpBase.Text = "";
-                    }
-                    try {
-                        editHcapJumpPct.Text = (String)curViewRow.Cells["HcapJumpPct"].Value;
-                        curValue = Convert.ToDecimal( editHcapJumpPct.Text );
-                        if ( curValue == 0 ) {
-                            editHcapJumpPct.Text = ".95";
-                        }
-                    } catch {
-                        editHcapJumpPct.Text = ".95";
-                    }
-                } catch {
-                    curValue = getEventRecordValue( editSanctionId.Text, "Jump" );
-                    editHcapJumpBase.Text = curValue.ToString( "#00" );
-                    editHcapJumpPct.Text = ".95";
-                }
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapJumpBase", "0" );
+                if ( curValue == 0 ) curValue = getEventRecordValue( editSanctionId.Text, "Jump" );
+                editHcapJumpBase.Text = curValue.ToString( "##0" );
+
+                curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapJumpPct", "0" );
+                if ( curValue == 0 ) curValue = 0.95M;
+                editHcapJumpBase.Text = curValue.ToString( "0.##" );
+            
             } else {
                 editHcapJumpBase.Text = "";
                 editHcapJumpPct.Text = "";
@@ -1017,96 +849,24 @@ namespace WaterskiScoringSystem.Admin {
         private void setViewRowFromEdit() {
             DataGridViewRow curViewRow = myTourViewRow;
 
-            try {
-                curViewRow.Cells["SanctionId"].Value = editSanctionId.Text;
-            } catch {
-                curViewRow.Cells["SanctionId"].Value = "";
-            }
-            try {
-                curViewRow.Cells["TourName"].Value = editName.Text;
-            } catch {
-                curViewRow.Cells["TourName"].Value = "";
-            }
-            try {
-                curViewRow.Cells["TourClass"].Value = editClass.SelectedValue;
-            } catch {
-                curViewRow.Cells["TourClass"].Value = "";
-            }
-			try {
-				curViewRow.Cells["SanctionEditCode"].Value = editSanctionEditCode.Text;
-			} catch {
-				curViewRow.Cells["SanctionEditCode"].Value = "";
-			}
-			try {
-                curViewRow.Cells["TourFederation"].Value = (String)editFederation.SelectedValue;
-            } catch {
-                curViewRow.Cells["TourFederation"].Value = "";
-            }
-            try {
-                curViewRow.Cells["EventDates"].Value = editEventDates.Text;
-            } catch {
-                curViewRow.Cells["EventDates"].Value = "";
-            }
-            try {
-                curViewRow.Cells["TourDataLoc"].Value = editTourDataLoc.Text;
-            } catch {
-                curViewRow.Cells["TourDataLoc"].Value = "";
-            }
-            try {
-                curViewRow.Cells["EventLocation"].Value = editEventLocation.Text;
-            } catch {
-                curViewRow.Cells["EventLocation"].Value = "";
-            }
-            try {
-                curViewRow.Cells["Rules"].Value = editRules.SelectedValue;
-            } catch {
-                curViewRow.Cells["Rules"].Value = "";
-            }
-            try {
-                curViewRow.Cells["SlalomRounds"].Value = editSlalomRounds.Text;
-            } catch {
-                curViewRow.Cells["SlalomRounds"].Value = "";
-            }
-            try {
-                curViewRow.Cells["TrickRounds"].Value = editTrickRounds.Text;
-            } catch {
-                curViewRow.Cells["TrickRounds"].Value = "";
-            }
-            try {
-                curViewRow.Cells["JumpRounds"].Value = editJumpRounds.Text;
-            } catch {
-                curViewRow.Cells["JumpRounds"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapSlalomBase"].Value = editHcapSlalomBase.Text;
-            } catch {
-                curViewRow.Cells["HcapSlalomBase"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapTrickBase"].Value = editHcapTrickBase.Text;
-            } catch {
-                curViewRow.Cells["HcapTrickBase"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapJumpBase"].Value = editHcapJumpBase.Text;
-            } catch {
-                curViewRow.Cells["HcapJumpBase"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapSlalomPct"].Value = editHcapSlalomPct.Text;
-            } catch {
-                curViewRow.Cells["HcapSlalomPct"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapTrickPct"].Value = editHcapTrickPct.Text;
-            } catch {
-                curViewRow.Cells["HcapTrickPct"].Value = "";
-            }
-            try {
-                curViewRow.Cells["HcapJumpPct"].Value = editHcapJumpPct.Text;
-            } catch {
-                curViewRow.Cells["HcapJumpPct"].Value = "";
-            }
+            curViewRow.Cells["SanctionId"].Value = editSanctionId.Text;
+            curViewRow.Cells["TourName"].Value = editName.Text;
+            curViewRow.Cells["TourClass"].Value = editClass.SelectedValue;
+            curViewRow.Cells["SanctionEditCode"].Value = editSanctionEditCode.Text;
+            curViewRow.Cells["TourFederation"].Value = (String)editFederation.SelectedValue;
+            curViewRow.Cells["EventDates"].Value = editEventDates.Text;
+            curViewRow.Cells["TourDataLoc"].Value = editTourDataLoc.Text;
+            curViewRow.Cells["EventLocation"].Value = editEventLocation.Text;
+            curViewRow.Cells["Rules"].Value = editRules.SelectedValue;
+            curViewRow.Cells["SlalomRounds"].Value = editSlalomRounds.Text;
+            curViewRow.Cells["TrickRounds"].Value = editTrickRounds.Text;
+            curViewRow.Cells["JumpRounds"].Value = editJumpRounds.Text;
+            curViewRow.Cells["HcapSlalomBase"].Value = editHcapSlalomBase.Text;
+            curViewRow.Cells["HcapTrickBase"].Value = editHcapTrickBase.Text;
+            curViewRow.Cells["HcapJumpBase"].Value = editHcapJumpBase.Text;
+            curViewRow.Cells["HcapSlalomPct"].Value = editHcapSlalomPct.Text;
+            curViewRow.Cells["HcapTrickPct"].Value = editHcapTrickPct.Text;
+            curViewRow.Cells["HcapJumpPct"].Value = editHcapJumpPct.Text;
 
             myTourViewRow = curViewRow;
             setEntryForEdit( myTourViewRow );
@@ -1706,13 +1466,16 @@ namespace WaterskiScoringSystem.Admin {
 				myTourViewRow.Cells["TourFederation"].Value = "usa";
 				myTourViewRow.Cells["EventDates"].Value = (String) curSanctionEntry["TDateE"] ;
 				myTourViewRow.Cells["TourDataLoc"].Value = "";
-				myTourViewRow.Cells["EventLocation"].Value = (String) curSanctionEntry["TSite"] + ", " + (String) curSanctionEntry["TCity"] + ", " + (String) curSanctionEntry["TState"];
+				myTourViewRow.Cells["EventLocation"].Value = String.Format( "{0} ({1}), {2}, {3}"
+                    , (String)curSanctionEntry["TSite"]
+                    , (String)curSanctionEntry["TSiteID"]
+                    , (String)curSanctionEntry["TCity"]
+                    , (String)curSanctionEntry["TState"] );
                 if ( curSanctionId.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
                     myTourViewRow.Cells["Rules"].Value = "ncwsa";
                 } else {
                     myTourViewRow.Cells["Rules"].Value = "awsa";
                 }
-
                 if ( (bool) curSanctionEntry["TEventSlalom"] ) {
 					myTourViewRow.Cells["SlalomRounds"].Value = "1";
 				} else { 

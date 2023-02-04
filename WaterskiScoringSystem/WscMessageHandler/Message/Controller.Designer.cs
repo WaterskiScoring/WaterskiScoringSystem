@@ -33,6 +33,7 @@ namespace WscMessageHandler.Message {
 			this.ShowPinButton = new System.Windows.Forms.Button();
 			this.DisconnectButton = new System.Windows.Forms.Button();
 			this.RowStatusLabel = new System.Windows.Forms.Label();
+			this.ViewAppsButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -52,6 +53,7 @@ namespace WscMessageHandler.Message {
 			this.MessageView.ReadOnly = true;
 			this.MessageView.Size = new System.Drawing.Size(958, 508);
 			this.MessageView.TabIndex = 4;
+			this.MessageView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MessageView_CellContentDoubleClick);
 			// 
 			// LastUpdateDate
 			// 
@@ -89,7 +91,7 @@ namespace WscMessageHandler.Message {
 			// ShowPinButton
 			// 
 			this.ShowPinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ShowPinButton.Location = new System.Drawing.Point(284, 5);
+			this.ShowPinButton.Location = new System.Drawing.Point(287, 5);
 			this.ShowPinButton.Name = "ShowPinButton";
 			this.ShowPinButton.Size = new System.Drawing.Size(104, 23);
 			this.ShowPinButton.TabIndex = 2;
@@ -100,7 +102,7 @@ namespace WscMessageHandler.Message {
 			// DisconnectButton
 			// 
 			this.DisconnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisconnectButton.Location = new System.Drawing.Point(396, 5);
+			this.DisconnectButton.Location = new System.Drawing.Point(500, 5);
 			this.DisconnectButton.Name = "DisconnectButton";
 			this.DisconnectButton.Size = new System.Drawing.Size(145, 23);
 			this.DisconnectButton.TabIndex = 3;
@@ -122,11 +124,25 @@ namespace WscMessageHandler.Message {
 			this.RowStatusLabel.Text = "Row 1 of 9999";
 			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// ViewAppsButton
+			// 
+			this.ViewAppsButton.AutoSize = true;
+			this.ViewAppsButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.ViewAppsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ViewAppsButton.Location = new System.Drawing.Point(402, 4);
+			this.ViewAppsButton.Name = "ViewAppsButton";
+			this.ViewAppsButton.Size = new System.Drawing.Size(87, 25);
+			this.ViewAppsButton.TabIndex = 5;
+			this.ViewAppsButton.Text = "View Apps";
+			this.ViewAppsButton.UseVisualStyleBackColor = true;
+			this.ViewAppsButton.Click += new System.EventHandler(this.ViewAppsButton_Click);
+			// 
 			// Controller
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(976, 553);
+			this.Controls.Add(this.ViewAppsButton);
 			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.DisconnectButton);
 			this.Controls.Add(this.ShowPinButton);
@@ -153,5 +169,6 @@ namespace WscMessageHandler.Message {
 		private System.Windows.Forms.Label RowStatusLabel;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Message;
+		private System.Windows.Forms.Button ViewAppsButton;
 	}
 }

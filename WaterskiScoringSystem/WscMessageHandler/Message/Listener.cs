@@ -118,23 +118,16 @@ namespace WscMessageHandler.Message {
 					checkConnectStatus( response.GetValue<string>() );
 				} );
 
-				/*
-				ConnectMgmtData.socketClient.On( "connectedapplication_response", ( data ) => {
+				ConnectMgmtData.socketClient.On( "connectedapplication_check", ( response ) => {
+					Transmitter.whoseInTheRoomResponse();
+				} );
+
+				ConnectMgmtData.socketClient.On( "connectedapplication_response", ( response ) => {
+					HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Received", "connectedapplication_response", response.GetValue<string>() );
 					Log.WriteFile( String.Format( "{0}connectedapplication_response {1}", curMethodName, response.GetValue<string>() ) );
 				} );
 
-				ConnectMgmtData.socketClient.On( "connectedapplication_check", ( data ) => {
-					HelperFunctions.addMsgListenQueue( "connectedapplication_check", response.GetValue<string>() );
-					Log.WriteFile( String.Format( "{0}connectedapplication_check {1}", curMethodName, response.GetValue<string>() ) );
-					/ *
-					Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
-						{ "application", "WSTIMS" }
-					};
-					String jsonData = JsonConvert.SerializeObject( sendConnectionMsg );
-					ConnectMgmtData.socketClient.Emit( "connectedapplication_response", jsonData );
-					 * /
-				} );
-				
+				/*
 				ConnectMgmtData.socketClient.OnPong += handleSocketOnPong;
 
 				ConnectMgmtData.socketClient.OnAny( ( name, response ) => {

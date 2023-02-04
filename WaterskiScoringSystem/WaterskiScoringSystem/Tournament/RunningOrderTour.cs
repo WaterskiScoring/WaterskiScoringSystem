@@ -1357,57 +1357,45 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void slalomButton_CheckedChanged(object sender, EventArgs e) {
-            if (( (RadioButton)sender ).Checked) {
-                this.Text = myWindowTitle + " - Slalom";
-                checkSaveChanges();
-                if (!( isDataModified )) {
-                    mySortCmd = myTourProperties.RunningOrderSortSlalom;
+            if ( !( ( (RadioButton)sender ).Checked ) ) return;
 
-                    loadGroupSelectList( "Slalom", checkBoxGroup_CheckedChanged );
+            this.Text = myWindowTitle + " - Slalom";
+            checkSaveChanges();
+            if ( isDataModified ) return;
 
-					getRunningOrderColumnfilter();
-
-					loadGroupFilterComboBox();
-
-					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                }
-            }
+            mySortCmd = myTourProperties.RunningOrderSortSlalom;
+            loadGroupSelectList( "Slalom", checkBoxGroup_CheckedChanged );
+            getRunningOrderColumnfilter();
+            loadGroupFilterComboBox();
+            navRefresh_Click( null, null );
         }
 
         private void trickButton_CheckedChanged(object sender, EventArgs e) {
-            if (( (RadioButton)sender ).Checked) {
-                this.Text = myWindowTitle + " - Trick";
-                checkSaveChanges();
-                if (!( isDataModified )) {
-                    mySortCmd = myTourProperties.RunningOrderSortTrick;
+            if ( !( ( (RadioButton)sender ).Checked ) ) return;
 
-                    loadGroupSelectList( "Trick", checkBoxGroup_CheckedChanged );
+            this.Text = myWindowTitle + " - Trick";
+            checkSaveChanges();
+            if ( isDataModified ) return;
 
-					getRunningOrderColumnfilter();
-
-					loadGroupFilterComboBox();
-
-					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                }
-            }
+            mySortCmd = myTourProperties.RunningOrderSortTrick;
+            loadGroupSelectList( "Trick", checkBoxGroup_CheckedChanged );
+            getRunningOrderColumnfilter();
+            loadGroupFilterComboBox();
+            navRefresh_Click( null, null );
         }
 
         private void jumpButton_CheckedChanged(object sender, EventArgs e) {
-            if (( (RadioButton)sender ).Checked) {
-                this.Text = myWindowTitle + " - Jump";
-                checkSaveChanges();
-                if (!( isDataModified )) {
-                    mySortCmd = myTourProperties.RunningOrderSortJump;
+            if ( !(( (RadioButton)sender ).Checked) ) return;
 
-                    loadGroupSelectList( "Jump", checkBoxGroup_CheckedChanged );
-
-					getRunningOrderColumnfilter();
-
-					loadGroupFilterComboBox();
-
-					winStatusMsg.Text = "Sorted by " + mySortCmd;
-                }
-            }
+            this.Text = myWindowTitle + " - Jump";
+            checkSaveChanges();
+            if ( isDataModified ) return;
+            
+            mySortCmd = myTourProperties.RunningOrderSortJump;
+            loadGroupSelectList( "Jump", checkBoxGroup_CheckedChanged );
+            getRunningOrderColumnfilter();
+            loadGroupFilterComboBox();
+            navRefresh_Click( null, null );
         }
 
         private void checkBoxGroup_CheckedChanged(object sender, EventArgs e) {
@@ -1711,36 +1699,45 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
 		private void navPublish_Click( object sender, EventArgs e ) {
-			if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", getCurrentEvent(), mySanctionNum );
-		}
-		private void navPrint_Click( object sender, EventArgs e ) {
-			printReport( false );
-		}
-		private bool printReport( bool inPublish ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( publishReportTimer );
+            curTimerObj.Start();
+        }
+        private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void publishReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( publishReportTimer );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", getCurrentEvent(), mySanctionNum );
+        }
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+
+        private bool printReport( bool inPublish ) {
 			myEventRegDataTable = getEventRegData();
 			loadPrintDataGrid();
 
-			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
-
-			bool CenterOnPage = true;
+            bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
             Font fontPrintTitle = new Font("Arial Narrow", 12, FontStyle.Bold);
             Font fontPrintFooter = new Font( "Times New Roman", 10 );
 
-            curPrintDialog.AllowCurrentPage = true;
-            curPrintDialog.AllowPrintToFile = false;
-            curPrintDialog.AllowSelection = true;
-            curPrintDialog.AllowSomePages = true;
-            curPrintDialog.PrintToFile = false;
-            curPrintDialog.ShowHelp = false;
-            curPrintDialog.ShowNetwork = false;
-            curPrintDialog.UseEXDialog = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-			if ( curPrintDialog.ShowDialog() != DialogResult.OK ) return false;
-
-			RankingScore.HeaderText = "NRS";
+            RankingScore.HeaderText = "NRS";
 			StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
 			printTitle.Append( "\n Sanction " + mySanctionNum );
 			printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
@@ -1768,9 +1765,11 @@ namespace WaterskiScoringSystem.Tournament {
 			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
 			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
 
-			curPreviewDialog.Document = myPrintDoc;
-			curPreviewDialog.ShowDialog();
-			RankingScore.HeaderText = "Ranking Score";
+            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
+            RankingScore.HeaderText = "Ranking Score";
 
 			return true;
 		}
@@ -1782,7 +1781,19 @@ namespace WaterskiScoringSystem.Tournament {
                 e.HasMorePages = true;
 		}
 
-		private void navPrintFormButton_Click(object sender, EventArgs e) {
+        private void navPrintFormButton_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printFormTimer );
+            curTimerObj.Start();
+        }
+        private void printFormTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printFormTimer );
+            navPrintForm();
+        }
+        private void navPrintForm() {
 			myEventRegDataTable = getEventRegData(); 
 			PrintEventForms curPrintEventForms = new PrintEventForms( myTourRow );
 
@@ -1881,32 +1892,6 @@ namespace WaterskiScoringSystem.Tournament {
 			return curFilterCmd;
         }
 
-		private DataTable buildPrintColumnList() {
-			/* **********************************************************
-             * Build data tabale definition containing the list of columns 
-			 * on the data grid used to print data 
-             * ******************************************************* */
-			DataTable curDataTable = new DataTable();
-
-			DataColumn curCol = new DataColumn();
-			curCol.ColumnName = "Name";
-			curCol.DataType = System.Type.GetType( "System.String" );
-			curCol.AllowDBNull = false;
-			curCol.ReadOnly = true;
-			curCol.DefaultValue = "";
-			curDataTable.Columns.Add( curCol );
-
-			curCol = new DataColumn();
-			curCol.ColumnName = "Visible";
-			curCol.DataType = System.Type.GetType( "System.Boolean" );
-			curCol.AllowDBNull = false;
-			curCol.ReadOnly = false;
-			curCol.DefaultValue = 1;
-			curDataTable.Columns.Add( curCol );
-
-			return curDataTable;
-		}
-
 		private void getRunningOrderColumnfilter() {
 			if ( slalomButton.Checked ) {
 				myRunningOrderColumnFilter = myTourProperties.RunningOrderColumnFilterSlalom;
@@ -1923,8 +1908,9 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			DataRowView newRow;
-			DataTable curPrintColumnSelectList = buildPrintColumnList();
-			foreach ( DataGridViewColumn curCol in this.PrintDataGridView.Columns ) {
+			DataTable curPrintColumnSelectList = HelperPrintFunctions.buildPrintColumnList();
+
+            foreach ( DataGridViewColumn curCol in this.PrintDataGridView.Columns ) {
 				newRow = curPrintColumnSelectList.DefaultView.AddNew();
 				newRow["Name"] = curCol.Name;
 				if ( myRunningOrderColumnFilter.ContainsKey( curCol.Name ) ) {

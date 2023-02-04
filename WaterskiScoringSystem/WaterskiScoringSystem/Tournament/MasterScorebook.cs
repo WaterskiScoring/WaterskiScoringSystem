@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -526,10 +527,34 @@ namespace WaterskiScoringSystem.Tournament {
             RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + scoreSummaryDataGridView.Rows.Count.ToString();
         }
 
+        private void navPublish_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( publishReportTimer );
+            curTimerObj.Start();
+        }
         private void navPrint_Click( object sender, EventArgs e ) {
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
+
+        private void publishReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( publishReportTimer );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", "Overall", mySanctionNum );
+        }
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+
+        private bool printReport( bool inPublish ) {
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
-            //PageSetupDialog
 
             bool CenterOnPage = true;
             bool WithTitle = true;
@@ -537,81 +562,71 @@ namespace WaterskiScoringSystem.Tournament {
             Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
             Font fontPrintFooter = new Font("Times New Roman", 10);
 
-            try {
-                curPrintDialog.AllowCurrentPage = true;
-                curPrintDialog.AllowPrintToFile = false;
-                curPrintDialog.AllowSelection = true;
-                curPrintDialog.AllowSomePages = true;
-                curPrintDialog.PrintToFile = false;
-                curPrintDialog.ShowHelp = false;
-                curPrintDialog.ShowNetwork = true;
-                curPrintDialog.UseEXDialog = true;
-                curPrintDialog.PrinterSettings.DefaultPageSettings.Landscape = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-                if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-                    String printTitle = Properties.Settings.Default.Mdi_Title
-                        + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                        + "\n" + this.Text;
-                    myPrintDoc = new PrintDocument();
-                    myPrintDoc.DocumentName = this.Text;
-                    myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
-                    myPrintDoc.DefaultPageSettings.Landscape = true;
-                    myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-                        CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
+            String printTitle = Properties.Settings.Default.Mdi_Title
+                + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
+                + "\n" + this.Text;
+            myPrintDoc = new PrintDocument();
+            myPrintDoc.DocumentName = this.Text;
+            myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+            myPrintDoc.DefaultPageSettings.Landscape = true;
+            myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
+                CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
 
-                    myPrintDataGrid.SubtitleList();
-                    StringRowPrinter mySubtitle;
-                    StringFormat SubtitleStringFormat = new StringFormat();
-                    SubtitleStringFormat.Trimming = StringTrimming.Word;
-                    SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
-                    SubtitleStringFormat.Alignment = StringAlignment.Center;
+            myPrintDataGrid.SubtitleList();
+            StringRowPrinter mySubtitle;
+            StringFormat SubtitleStringFormat = new StringFormat();
+            SubtitleStringFormat.Trimming = StringTrimming.Word;
+            SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            SubtitleStringFormat.Alignment = StringAlignment.Center;
 
-                    if ( plcmtDivButton.Checked ) {
-                        mySubtitle = new StringRowPrinter( SlalomLabel.Text,
-                            140, 0, 302, SlalomLabel.Size.Height,
-                            SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( TrickLabel.Text,
-                            451, 0, 215, TrickLabel.Size.Height,
-                            TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( JumpLabel.Text,
-                            676, 0, 195, JumpLabel.Size.Height,
-                            JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( OverallLabel.Text,
-                            885, 0, 83, OverallLabel.Size.Height,
-                            OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                    } else {
-                        mySubtitle = new StringRowPrinter( SlalomLabel.Text,
-                            175, 0, 302, SlalomLabel.Size.Height,
-                            SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( TrickLabel.Text,
-                            486, 0, 215, TrickLabel.Size.Height,
-                            TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( JumpLabel.Text,
-                            711, 0, 195, JumpLabel.Size.Height,
-                            JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                        mySubtitle = new StringRowPrinter( OverallLabel.Text,
-                            920, 0, 83, OverallLabel.Size.Height,
-                            OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
-                        myPrintDataGrid.SubtitleRow = mySubtitle;
-                    }
+            if ( plcmtDivButton.Checked ) {
+                mySubtitle = new StringRowPrinter( SlalomLabel.Text,
+                    140, 0, 302, SlalomLabel.Size.Height,
+                    SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( TrickLabel.Text,
+                    451, 0, 215, TrickLabel.Size.Height,
+                    TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( JumpLabel.Text,
+                    676, 0, 195, JumpLabel.Size.Height,
+                    JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( OverallLabel.Text,
+                    885, 0, 83, OverallLabel.Size.Height,
+                    OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
 
-                    myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                    myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                    myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-                    curPreviewDialog.Document = myPrintDoc;
-                    curPreviewDialog.ShowDialog();
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Exception encountered during print request"
-                    + "\n\nException: " + ex.Message );
+            } else {
+                mySubtitle = new StringRowPrinter( SlalomLabel.Text,
+                    175, 0, 302, SlalomLabel.Size.Height,
+                    SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( TrickLabel.Text,
+                    486, 0, 215, TrickLabel.Size.Height,
+                    TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( JumpLabel.Text,
+                    711, 0, 195, JumpLabel.Size.Height,
+                    JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
+                mySubtitle = new StringRowPrinter( OverallLabel.Text,
+                    920, 0, 83, OverallLabel.Size.Height,
+                    OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
+                myPrintDataGrid.SubtitleRow = mySubtitle;
             }
+
+            myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+            myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
+            return true;
 
         }
 

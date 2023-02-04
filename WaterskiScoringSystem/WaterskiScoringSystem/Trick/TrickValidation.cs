@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
-
-namespace ValidationLibrary.Trick {
-	public class Validation {
+using System.Data;
+namespace WaterskiScoringSystem.Trick {
+	class TrickValidation {
 		private String myTourRules = "";
 		private String myValidationMessage = "";
 		private String myUpdatedTrickCode = "";
@@ -13,14 +12,11 @@ namespace ValidationLibrary.Trick {
 		private DataRow myClassERow = null;
 
 		private String[] myAllowedRepeatReverseList = { "RS", "RTS", "RB", "RF", "RTB", "RTF" };
-		//private ArrayList mySpecialFlipList = new ArrayList();
 
-		//NumSkis, NumTurns, PK, Points, RuleCode, RuleNum, StartPos, TrickCode, TypeCode
 		private DataTable myTrickListDataTable = null;
-		//SELECT ListCodeNum, ListCode, SortSeq, CodeValue FROM CodeValueList WHERE ListName = 'Class'
 		private DataTable mySkierClassDataTable = null;
 
-		public Validation() {
+		public TrickValidation() {
 			myValidationMessage = "";
 		}
 
@@ -30,17 +26,6 @@ namespace ValidationLibrary.Trick {
 			}
 			set {
 				myTrickListDataTable = value;
-
-				/*
-                mySpecialFlipList.Add("BFLB");
-                mySpecialFlipList.Add("RBFLB");
-                mySpecialFlipList.Add("BFLF");
-                mySpecialFlipList.Add("RBFLF");
-                mySpecialFlipList.Add("BFLLB");
-                mySpecialFlipList.Add("RBFLLB");
-                mySpecialFlipList.Add("FFLF");
-                mySpecialFlipList.Add("FFLB");
-				 */
 			}
 		}
 
@@ -121,6 +106,12 @@ namespace ValidationLibrary.Trick {
 			return curNumSkis;
 		}
 
+		public String setNumSkisDisplay( Int16 inNunSkis ) {
+			if ( inNunSkis == 0 ) return "W";
+			else if ( inNunSkis == 9 ) return "K";
+			else return inNunSkis.ToString();
+		}
+
 		/*
         Validate the results status field
         */
@@ -148,12 +139,11 @@ namespace ValidationLibrary.Trick {
         Validate the trick code
         */
 		public bool validateTrickCode( String inCode, Int16 inNumSkis, String inSkierClass, DataRow[] prevTrickRows ) {
-			Int16 curNumTurns, curStartPos, curTypeCodeValue;
-			Int16 prevStartPos, prevNumTurns, prevTypeCodeValue;
+			Int16 curStartPos;
+			Int16 prevStartPos, prevNumTurns;
 			String prevCode;
 			int prevTrickIdx = 0;
 			DataRow curTrickRow;
-
 			myUpdatedTrickCode = "";
 
 			if ( inCode == null || inCode.Length == 0 ) {
@@ -180,9 +170,6 @@ namespace ValidationLibrary.Trick {
 			}
 
 			curStartPos = (Byte)curTrickRow["StartPos"];
-			curNumTurns = (Byte)curTrickRow["NumTurns"];
-			curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-
 			if ( prevTrickRows.Length == 0 ) {
 				// Determine if first trick starts in the front position if no set up tricks performed
 				if ( curStartPos == 0 ) {
@@ -217,8 +204,6 @@ namespace ValidationLibrary.Trick {
 
 			prevStartPos = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["StartPos"] );
 			prevNumTurns = (Int16)( (Byte)prevTrickRows[prevTrickIdx]["NumTurns"] );
-			prevTypeCodeValue = Convert.ToInt16( (Byte)prevTrickRows[prevTrickIdx]["TypeCode"] );
-
 			if ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 0 ) {
 				if ( curStartPos == 0 ) {
 					myUpdatedTrickCode = inCode;
@@ -273,17 +258,14 @@ namespace ValidationLibrary.Trick {
 		 * When previous trick has an even number of turns, will need to check previous trick
 		 */
 		public bool validateTrickCodeReverseEven( String inCode, Int16 inNumSkis, String inSkierClass, DataRow[] prevTrickRows ) {
-			Int16 curNumTurns, curStartPos, curTypeCodeValue;
-			Int16 prevStartPos, prevNumTurns, prevTypeCodeValue, prevRuleNum;
+			Int16 curStartPos;
+			Int16 prevStartPos;
 			String curCode, prevCode;
 			myUpdatedTrickCode = "";
-			int prevTrickIdx = 0;
 
+			int prevTrickIdx = 0;
 			prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
 			prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
-			prevNumTurns = (byte)prevTrickRows[prevTrickIdx]["NumTurns"];
-			prevTypeCodeValue = (byte)prevTrickRows[prevTrickIdx]["TypeCode"];
-			prevRuleNum = (Int16)prevTrickRows[prevTrickIdx]["RuleNum"];
 
 			if ( inCode.Length > 1 ) {
 				curCode = inCode;
@@ -303,15 +285,13 @@ namespace ValidationLibrary.Trick {
 			DataRow curTrickRow = getTrickRow( curCode, inNumSkis, inSkierClass );
 			if ( curTrickRow == null ) {
 				myValidationMessage = String.Format( "Invalid trick code for number of skis"
-					+ "\n Trick Code {0} on {1} ski(s) is not valid"
-					, inCode, inNumSkis.ToString() );
+					+ "\n Trick Code {0} ({1}) on {2} ski(s) is not valid"
+					, inCode, curCode, inNumSkis.ToString() );
 				return false;
 			}
 
 			//Check to ensure 360 multiples tricks has an appropriate starting position on the previous 2 tricks
 			curStartPos = (Byte)curTrickRow["StartPos"];
-			curNumTurns = (Byte)curTrickRow["NumTurns"];
-			curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
 			if ( curStartPos == prevStartPos ) {
 				myUpdatedTrickCode = curCode;
 				return true;
@@ -326,157 +306,105 @@ namespace ValidationLibrary.Trick {
 		 * When previous trick has an odd number of turns, will need to check 2nd previous tricks
 		 */
 		public bool validateTrickCodeReverseOdd( String inCode, Int16 inNumSkis, String inSkierClass, DataRow[] prevTrickRows ) {
-			Int16 curNumTurns, curStartPos, curTypeCodeValue, curRuleNum;
-			Int16 prevStartPos, prevNumTurns, prevTypeCodeValue, prevRuleNum;
+			Int16 curNumTurns, curStartPos, curRuleNum;
+			Int16 prevStartPos, prevNumTurns, prevRuleNum;
 			String curCode, prevCode;
-			DataRow curTrickRow = null;
 			myUpdatedTrickCode = "";
+
+			if ( prevTrickRows.Length != 2 ) {
+				myValidationMessage = String.Format( "Found {0} entries in previous trick list but expecting 2 for tricks with an odd number of 180 degree turns"
+					, prevTrickRows.Length );
+				return false;
+			}
 
 			int prevTrickIdx = 0;
 			prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
 			prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
 			prevNumTurns = (byte)prevTrickRows[prevTrickIdx]["NumTurns"];
-			prevTypeCodeValue = (byte)prevTrickRows[prevTrickIdx]["TypeCode"];
 			prevRuleNum = (Int16)prevTrickRows[prevTrickIdx]["RuleNum"];
+			prevTrickIdx++;
 
-			if ( prevTrickRows.Length > 1 ) {
-				#region When 2 previous tricks are available start by reviewing the 2nd previous trick
-				prevTrickIdx++;
-				if ( inCode.Length > 1 ) {
-					curCode = inCode;
+			if ( inCode.Length > 1 ) {
+				curCode = inCode;
 
-				} else {
-					prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
-					if ( prevCode.Substring( 0, 1 ).Equals( "R" ) ) {
-						if ( myAllowedRepeatReverseList.Contains( prevCode ) ) {
-							curCode = prevCode;
-						} else {
-							curCode = inCode + prevCode;
-						}
+			} else {
+				prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
+				if ( prevCode.Substring( 0, 1 ).Equals( "R" ) ) {
+					if ( myAllowedRepeatReverseList.Contains( prevCode ) ) {
+						curCode = prevCode;
 					} else {
 						curCode = inCode + prevCode;
 					}
+				} else {
+					curCode = inCode + prevCode;
 				}
-				curTrickRow = getTrickRow( curCode, inNumSkis, inSkierClass );
-				if ( curTrickRow == null ) {
-					myValidationMessage = String.Format( "Invalid trick code for number of skis"
-						+ "\n Trick Code {0} on {1} ski(s) is not valid"
-						, inCode, inNumSkis.ToString() );
-					return false;
-				}
+			}
+			DataRow curTrickRow = getTrickRow( curCode, inNumSkis, inSkierClass );
+			if ( curTrickRow == null ) {
+				myValidationMessage = String.Format( "Invalid trick code for number of skis"
+					+ "\n Trick Code {0} ({1}) on {2} ski(s) is not valid"
+					, inCode, curCode, inNumSkis.ToString() );
+				return false;
+			}
 
-				if ( prevNumTurns > 1 ) {
-					myUpdatedTrickCode = prevCode;
-					return true;
-				}
+			if ( prevNumTurns > 1 ) {
+				// Trick is not a reverse because more than 180 degrees between a trick and the reverse, therefore just a repeat
+				myUpdatedTrickCode = prevCode;
+				return true;
+			}
 
-				//Check to see if starting position of previous trick is appropriate
-				curStartPos = (Byte)curTrickRow["StartPos"];
-				curNumTurns = (Byte)curTrickRow["NumTurns"];
-				curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-				curRuleNum = (Int16)( (Int16)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
+			//Check to see if starting position of previous trick is appropriate
+			curStartPos = (Byte)curTrickRow["StartPos"];
+			curNumTurns = (Byte)curTrickRow["NumTurns"];
+			curRuleNum = (Int16)( (Int16)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
 
-				if ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 0 ) {
-					if ( curStartPos == 0 ) {
-						//Check to see if starting position of 2nd previous trick is also appropriate
-						prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
-						prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
-						prevNumTurns = (byte)prevTrickRows[prevTrickIdx]["NumTurns"];
-						if ( curStartPos == prevStartPos ) {
-							myUpdatedTrickCode = curCode;
-							return true;
-						}
-
-						myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
-						return false;
-					}
-
-					myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
-					return false;
-				}
-
+			if ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 0 ) {
 				if ( curStartPos == 0 ) {
-					myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
-					return false;
-				}
-				if ( curRuleNum == prevRuleNum ) {
-					if ( curNumTurns > 2 ) {
-						myValidationMessage = "This type of reverse trick can not have more than 360 degrees";
-						return false;
+					//Check to see if starting position of 2nd previous trick is also appropriate
+					prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
+					prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
+					if ( curStartPos == prevStartPos ) {
+						myUpdatedTrickCode = curCode;
+						return true;
 					}
-
-					myUpdatedTrickCode = curCode;
-					return true;
-				}
-
-				//Check to see if starting position of 2nd previous trick is also appropriate
-				prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
-				prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
-				prevNumTurns = (byte)prevTrickRows[prevTrickIdx]["NumTurns"];
-				if ( curStartPos == prevStartPos ) {
-					myUpdatedTrickCode = curCode;
-					return true;
 				}
 
 				myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
 				return false;
-				#endregion
 			}
 
-			#region Only 1 previous trick is available so we start by reviewing the 1st previous trick
-			if ( inCode.Length > 1 ) {
-				curCode = inCode;
-				curTrickRow = getTrickRow( curCode, inNumSkis, inSkierClass );
-				if ( curTrickRow == null ) {
-					myValidationMessage = String.Format( "Trick sequence is not possible"
-						+ "\n Use of reverse code {0} but second trick can't be a reverse of trick {1}"
-						, curCode, prevCode );
-					return false;
-				}
-
-				curStartPos = (Byte)curTrickRow["StartPos"];
-				curNumTurns = (Byte)curTrickRow["NumTurns"];
-				curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
-				curRuleNum = (Int16)( (Int16)curTrickRow["RuleNum"] + ( inNumSkis * 100 ) );
-
-				//Check to see if starting position of previous trick is appropriate
-				if ( ( ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 0 ) && ( curStartPos == 0 ) )
-					|| ( ( ( ( prevStartPos + prevNumTurns ) % 2 ) == 1 ) && ( curStartPos == 1 ) )
-					) {
-					if ( curRuleNum == prevRuleNum ) {
-						if ( curNumTurns > 2 ) {
-							myValidationMessage = "This type of reverse trick can not have more than 360 degrees";
-							return false;
-						}
-
-						myUpdatedTrickCode = curCode;
-						return true;
-					}
-
-					myValidationMessage = String.Format( "Trick sequence is not possible"
-						+ "\n Use of reverse code {0} but second trick can't be a reverse of trick {1}"
-						, curCode, prevCode );
-					return false;
-				}
-
-				myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", inCode, prevCode );
+			if ( curStartPos == 0 ) {
+				myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
 				return false;
-				#endregion
+			}
+			if ( curRuleNum == prevRuleNum ) {
+				if ( curNumTurns > 2 ) {
+					myValidationMessage = "This type of reverse trick can not have more than 360 degrees";
+					return false;
+				}
+
+				myUpdatedTrickCode = curCode;
+				return true;
 			}
 
-			myValidationMessage = String.Format( "Trick sequence is not possible"
-				+ "\n Use of reverse code {0} but second trick can't be a reverse of trick {1}"
-				, inCode, prevCode );
+			//Check to see if starting position of 2nd previous trick is also appropriate
+			prevCode = (String)prevTrickRows[prevTrickIdx]["TrickCode"];
+			prevStartPos = (byte)prevTrickRows[prevTrickIdx]["StartPos"];
+			if ( curStartPos == prevStartPos ) {
+				myUpdatedTrickCode = curCode;
+				return true;
+			}
+
+			myValidationMessage = String.Format( "Trick sequence is not possible, {0} following {1} is not possible", curCode, prevCode );
 			return false;
 		}
 
-		public bool calcScore() {
-			bool returnValue = true;
-			return returnValue;
-		}
-
 		public Int16 calcPoints( DataTable inPass1DataTable, DataTable inPass2DataTable, DataRow inViewRow, int inRowIdx, String inColPrefix, String inSkierClass ) {
-			Int16 retPoints = -1;
+			Int16 retPoints;
+			if ( inRowIdx < 0 ) {
+				myValidationMessage = "There is no active row";
+				return -1;
+			}
 
 			DataTable activePassDataTable, idlePassDataTable;
 			if ( inColPrefix.Equals( "Pass1" ) ) {
@@ -488,15 +416,13 @@ namespace ValidationLibrary.Trick {
 			}
 
 			myValidationMessage = "";
-			int curIdx = inRowIdx;
 			String curCode = (String)inViewRow["Code"];
-			if ( curCode.Length <= 0 || inRowIdx < 0 ) {
+			if ( curCode.Length <= 0 ) {
 				myValidationMessage = "Trick code has not been provided or there is no active row";
 				return -1;
 			}
 
-			#region Determine points for current trick code
-
+			// Determine points for current trick code
 			if ( curCode.ToUpper().Equals( "R" ) || curCode.Substring( 0, 1 ).ToUpper().Equals( "R" ) ) {
 				// Determine points associated with reverse trick referenced 
 				retPoints = calcPointsReverseTrick( activePassDataTable, idlePassDataTable, inViewRow, inRowIdx, inColPrefix, inSkierClass );
@@ -504,131 +430,82 @@ namespace ValidationLibrary.Trick {
 			} else {
 				retPoints = calcPointsPrimaryTrick( activePassDataTable, idlePassDataTable, inViewRow, inRowIdx, inColPrefix, inSkierClass );
 			}
-			#endregion
 
-			#region Determine if trick has previously been successfully performed
-			if ( retPoints > 0 ) {
-				retPoints = checkPrevForRepeat( activePassDataTable, idlePassDataTable, inViewRow, inRowIdx, curCode, inColPrefix, retPoints );
-			}
-			#endregion
-
-			#region Determine if subsequent tricks are a repeat of current trick
-			/*
-            if ( retPoints > 0 ) {
-                //Check for repeats on active pass
-                curIdx = inRowIdx + 1;
-                while ( curIdx < activePassDataTable.Rows.Count ) {
-                    try {
-                        prevRuleNum = (Int16) activePassDataTable.Rows[curIdx]["RuleNum"];
-                        retPoints = checkForRepeat(activePassDataTable, idlePassDataTable, inViewRow, activePassDataTable.Rows[curIdx]
-                            , inRowIdx, curIdx, inColPrefix, true, curRuleNum, prevRuleNum, retPoints);
-                        if ( retPoints == 0 ) break;
-                    } catch ( Exception ex ) {
-                        myValidationMessage = "Exception encountered calculating points: \n" + ex.Message;
-                        retPoints = -1;
-                        break;
-                    }
-                    curIdx++;
-                }
-                //if first pass is active check for repeats on second pass already done on first pass
-                if ( inColPrefix.Equals("Pass1") ) {
-                    curIdx = 0;
-                    while ( curIdx < inPass2DataTable.Rows.Count ) {
-                        try {
-                            prevRuleNum = (Int16) inPass2DataTable.Rows[curIdx]["RuleNum"];
-                            retPoints = checkForRepeat(activePassDataTable, idlePassDataTable, inViewRow, inPass2DataTable.Rows[curIdx]
-                                , inRowIdx, curIdx, inColPrefix, false, curRuleNum, prevRuleNum, retPoints);
-                            if ( retPoints == 0 ) break;
-                        } catch ( Exception ex ) {
-                            myValidationMessage = "Exception encountered calculating points: \n" + ex.Message;
-                            retPoints = -1;
-                            break;
-                        }
-                        curIdx++;
-                    }
-                }
-            }
-            */
-			#endregion
-
-			#region Determine if maxinum number of flips have previously been accomplished
-			if ( retPoints > 0 ) {
-				// This validation is only performed for class L and R skiers
-				DataRow curSkierClassRow = mySkierClassDataTable.Select( "ListCode = '" + inSkierClass + "'" )[0];
-				if ( (Decimal)curSkierClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) {
-					// DataRow inViewRow, int inRowIdx, String inColPrefix
-					if ( inColPrefix.Equals( "Pass1" ) ) inPass1DataTable.Rows[inRowIdx]["Score"] = retPoints;
-					if ( inColPrefix.Equals( "Pass2" ) ) inPass2DataTable.Rows[inRowIdx]["Score"] = retPoints;
-					if ( checkForMaxNumFlips( inPass1DataTable, inPass2DataTable ) ) {
-						if ( inColPrefix.Equals( "Pass1" ) ) {
-							if ( (Int16)inPass1DataTable.Rows[inRowIdx]["Score"] == 0 && (String)inPass1DataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
-								retPoints = 0;
-							}
-						} else {
-							if ( (Int16)inPass2DataTable.Rows[inRowIdx]["Score"] == 0 && (String)inPass2DataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
-								retPoints = 0;
-							}
-						}
-
-						if ( inColPrefix.Equals( "Pass1" ) ) inPass1DataTable.Rows[inRowIdx]["Score"] = 0;
-						if ( inColPrefix.Equals( "Pass2" ) ) inPass2DataTable.Rows[inRowIdx]["Score"] = 0;
-					}
-				}
-			}
-			#endregion
-
+			// Determine if trick has previously been successfully performed
+			if ( retPoints > 0 ) retPoints = checkPrevForRepeat( activePassDataTable, idlePassDataTable, inViewRow, inRowIdx, curCode, inColPrefix, retPoints );
+			if ( retPoints > 0 ) retPoints = checkMaxNumFlips( activePassDataTable, idlePassDataTable, inViewRow, inRowIdx, inColPrefix, retPoints, inSkierClass );
 			return retPoints;
 		}
 
 		private Int16 checkPrevForRepeat( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, int inRowIdx, String curCode, String inColPrefix, Int16 inPoints ) {
 			Int16 prevRuleNum;
-			int prevRowIdx = inRowIdx - 1;
 			Int16 retPoints = inPoints;
-			String prevCode = "";
-			Byte curTypeCodeValue = (Byte)inViewRow["TypeCode"];
+			int prevRowIdx = inRowIdx - 1;
 			Int16 curRuleNum = (Int16)inViewRow["RuleNum"];
 
 			//Search previous tricks on active pass to determine if trick successfully performed previously
-			if ( curCode.ToLower().Equals( "t5b" ) ) {
-				if ( inRowIdx > 0 ) {
-					prevCode = (String)activePassDataTable.Rows[prevRowIdx]["Code"];
-					if ( prevCode.ToLower().Equals( "t7f" ) || prevCode.ToLower().Equals( "t7" ) ) prevRowIdx = -1;
-				}
+			if ( curCode.ToLower().Equals( "t5b" ) && inRowIdx > 0 ) {
+				String prevCode = (String)activePassDataTable.Rows[prevRowIdx]["Code"];
+				if ( prevCode.ToLower().Equals( "t7f" ) || prevCode.ToLower().Equals( "t7" ) ) prevRowIdx = -1;
 			}
 
 			while ( prevRowIdx >= 0 ) {
-				try {
-					prevRuleNum = (Int16)activePassDataTable.Rows[prevRowIdx]["RuleNum"];
-					retPoints = checkForRepeat( activePassDataTable, idlePassDataTable, inViewRow, activePassDataTable.Rows[prevRowIdx]
-						, inRowIdx, prevRowIdx, inColPrefix, true, curRuleNum, prevRuleNum, retPoints );
-					if ( retPoints == 0 ) return retPoints;
-				} catch {
-				}
+				prevRuleNum = (Int16)activePassDataTable.Rows[prevRowIdx]["RuleNum"];
+				retPoints = checkForRepeat( activePassDataTable, idlePassDataTable, inViewRow, activePassDataTable.Rows[prevRowIdx]
+					, inRowIdx, prevRowIdx, curRuleNum, prevRuleNum, inColPrefix, true, retPoints );
+				if ( retPoints == 0 ) return retPoints;
 				prevRowIdx--;
 			}
 
 			//If second pass is active then check first pass to determine if trick successfully performed previously
 			if ( inColPrefix.Equals( "Pass2" ) ) {
-				prevRowIdx = 0;
-				while ( prevRowIdx < idlePassDataTable.Rows.Count ) {
-					try {
-						prevRuleNum = (Int16)idlePassDataTable.Rows[prevRowIdx]["RuleNum"];
-						retPoints = checkForRepeat( activePassDataTable, idlePassDataTable, inViewRow, idlePassDataTable.Rows[prevRowIdx]
-							, inRowIdx, prevRowIdx, inColPrefix, false, curRuleNum, prevRuleNum, retPoints );
-						if ( retPoints == 0 ) break;
-					} catch ( Exception ex ) {
-						myValidationMessage = "Exception encountered calculating points: \n" + ex.Message;
-						retPoints = -1;
-						break;
-					}
-					prevRowIdx++;
+				prevRowIdx = idlePassDataTable.Rows.Count - 1;
+				while ( prevRowIdx >= 0 ) {
+					prevRuleNum = (Int16)idlePassDataTable.Rows[prevRowIdx]["RuleNum"];
+					retPoints = checkForRepeat( activePassDataTable, idlePassDataTable, inViewRow, idlePassDataTable.Rows[prevRowIdx]
+						, inRowIdx, prevRowIdx, curRuleNum, prevRuleNum, inColPrefix, false, retPoints );
+					if ( retPoints == 0 ) break;
+					prevRowIdx--;
 				}
 			}
 
 			return retPoints;
 		}
 
-		// Determine points for trick code entered
+		/*
+		 * Determine if maxinum number of flips have previously been accomplished
+		 */
+		private Int16 checkMaxNumFlips( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, int inRowIdx, String inColPrefix, Int16 inPoints, String inSkierClass ) {
+			Int16 retPoints = inPoints;
+			if ( retPoints > 0 ) {
+				// This validation is only performed for class L and R skiers
+				DataRow curSkierClassRow = mySkierClassDataTable.Select( "ListCode = '" + inSkierClass + "'" )[0];
+				if ( (Decimal)curSkierClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) {
+					// DataRow inViewRow, int inRowIdx, String inColPrefix
+					if ( inColPrefix.Equals( "Pass1" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = retPoints;
+					if ( inColPrefix.Equals( "Pass2" ) ) idlePassDataTable.Rows[inRowIdx]["Score"] = retPoints;
+					if ( checkForMaxNumFlips( activePassDataTable, idlePassDataTable ) ) {
+						if ( inColPrefix.Equals( "Pass1" ) ) {
+							if ( (Int16)activePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)activePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
+								retPoints = 0;
+							}
+						} else {
+							if ( (Int16)idlePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)idlePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
+								retPoints = 0;
+							}
+						}
+
+						if ( inColPrefix.Equals( "Pass1" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = 0;
+						if ( inColPrefix.Equals( "Pass2" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = 0;
+					}
+				}
+			}
+			return retPoints;
+		}
+
+		/*
+		 * Determine points for trick code entered
+		 */
 		private Int16 calcPointsPrimaryTrick( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, int inRowIdx, String inColPrefix, String inSkierClass ) {
 			Int16 curRuleNum = 0, curNumTurns = 0, curStartPos = 0, curTypeCodeValue = 0;
 			Int16 prevStartPos, prevNumTurns, prevTypeCodeValue, prevRuleNum;
@@ -665,7 +542,7 @@ namespace ValidationLibrary.Trick {
 					if ( curStartPos == 1 ) return (Int16)curTrickRow["Points"];
 				}
 			}
-			
+
 			return (Int16)curTrickRow["Points"];
 		}
 
@@ -678,7 +555,7 @@ namespace ValidationLibrary.Trick {
 
 			DataRow curTrickRow = getTrickRow( curCode, (Byte)inViewRow["Skis"], inSkierClass );
 			if ( curTrickRow == null ) return -1;
-			
+
 			curStartPos = (Byte)curTrickRow["StartPos"];
 			curNumTurns = (Byte)curTrickRow["NumTurns"];
 			curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
@@ -706,7 +583,7 @@ namespace ValidationLibrary.Trick {
 					}
 					curTrickRow = getTrickRow( curCode, (Byte)inViewRow["Skis"], inSkierClass );
 					if ( curTrickRow == null ) return -1;
-					
+
 					curStartPos = (Byte)curTrickRow["StartPos"];
 					curNumTurns = (Byte)curTrickRow["NumTurns"];
 					curTypeCodeValue = (Byte)curTrickRow["TypeCode"];
@@ -756,8 +633,6 @@ namespace ValidationLibrary.Trick {
 			prevCode = (String)activePassDataTable.Rows[curIdx]["Code"];
 			prevRuleNum = (Int16)activePassDataTable.Rows[curIdx]["RuleNum"];
 			prevStartPos = (Byte)activePassDataTable.Rows[curIdx]["StartPos"];
-			prevNumTurns = (Byte)activePassDataTable.Rows[curIdx]["NumTurns"];
-			prevTypeCodeValue = (Byte)activePassDataTable.Rows[curIdx]["TypeCode"];
 
 			if ( prevCode.Substring( 0, 1 ).Equals( "R" ) ) {
 				curCode = prevCode;
@@ -810,24 +685,24 @@ namespace ValidationLibrary.Trick {
 			}
 
 			if ( curTricksPerformed.Rows.Count > 6 ) {
-                // Trick with lowest point value is marked as a repeat
+				// Trick with lowest point value is marked as a repeat
 				curTricksPerformed.DefaultView.Sort = "Points DESC, PassNum ASC, RowIdx ASC";
 				DataTable curTricksPerformedSorted = curTricksPerformed.DefaultView.ToTable();
-				for (byte curIdx = 6; curIdx < curTricksPerformedSorted.Rows.Count; curIdx++ ) {
-					byte curRowIdx = (byte) curTricksPerformedSorted.Rows[curIdx]["RowIdx"];
+				for ( byte curIdx = 6; curIdx < curTricksPerformedSorted.Rows.Count; curIdx++ ) {
+					byte curRowIdx = (byte)curTricksPerformedSorted.Rows[curIdx]["RowIdx"];
 					if ( (byte)curTricksPerformedSorted.Rows[curIdx]["PassNum"] == 1 ) {
 						inPass1DataTable.Rows[curRowIdx]["Score"] = 0;
 						inPass1DataTable.Rows[curRowIdx]["Results"] = "Repeat";
 					} else {
-                        inPass2DataTable.Rows[curRowIdx]["Score"] = 0;
+						inPass2DataTable.Rows[curRowIdx]["Score"] = 0;
 						inPass2DataTable.Rows[curRowIdx]["Results"] = "Repeat";
 					}
 				}
 
-                myValidationMessage = "The maximum of 6 flips for IWWF has been exceeded"
-                    + "\nThe flip(s) with the lowest point value have been marked as repeat";
+				myValidationMessage = "The maximum of 6 flips for IWWF has been exceeded"
+					+ "\nThe flip(s) with the lowest point value have been marked as repeat";
 
-                return true;
+				return true;
 			}
 
 			return false;
@@ -838,14 +713,14 @@ namespace ValidationLibrary.Trick {
 			Int16 tempTypeCode = 0;
 
 			try {
-				tempTypeCode = (Int16) ( (byte) curViewRow["TypeCode"] );
+				tempTypeCode = (Int16)( (byte)curViewRow["TypeCode"] );
 				if ( tempTypeCode == 1 ) {
-					curResults = (String) curViewRow["Results"];
+					curResults = (String)curViewRow["Results"];
 					if ( curResults.Equals( "Credit" ) ) {
 						DataRowView newFlipRow = curTricksPerformed.DefaultView.AddNew();
-						newFlipRow["TrickCode"] = (String) curViewRow["Code"];
-						newFlipRow["Skis"] = (byte) curViewRow["Skis"];
-						newFlipRow["Points"] = (Int16) curViewRow["Score"];
+						newFlipRow["TrickCode"] = (String)curViewRow["Code"];
+						newFlipRow["Skis"] = (byte)curViewRow["Skis"];
+						newFlipRow["Points"] = (Int16)curViewRow["Score"];
 						newFlipRow["PassNum"] = curPassNum;
 						newFlipRow["RowIdx"] = curRowIdx;
 						newFlipRow.EndEdit();
@@ -907,221 +782,195 @@ namespace ValidationLibrary.Trick {
 		}
 
 		private Int16 checkForRepeat( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
-            , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 curRuleNum, Int16 prevRuleNum, Int16 inActivePoints ) {
+			, int inViewRowIdx, int inCheckedRowIdx
+			, Int16 inViewRowRuleNum, Int16 inRowCheckedRuleNum
+			, String inColPrefix, bool inActiveView, Int16 inActivePoints ) {
 
-            Int16 retPoints = inActivePoints;
-            if ( curRuleNum == prevRuleNum ) {
-                return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
-            } 
-			
-			if ( curRuleNum > 100 && curRuleNum < 200 ) {
-                if ( ( curRuleNum + 200 ) == prevRuleNum ) {
-                    if ( inActiveView ) {
-                        if ( inRowViewIdx > inRowCheckedIdx ) {
-                            return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum);
-                        }
-                    } else {
-                        if ( inColPrefix.Equals("Pass2") ) {
-                            return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
-                        }
-                    }
-                }
-            
-			} else if ( curRuleNum > 200 && curRuleNum < 300 ) {
-                if ( ( curRuleNum + 200 ) == prevRuleNum ) {
-                    return checkCreditAndPoints(activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inRowViewIdx, inRowCheckedIdx, inColPrefix, inActiveView, retPoints, curRuleNum, prevRuleNum );
-                }
-            }
-            
-			return retPoints;
-        }
+			if ( inViewRowRuleNum == inRowCheckedRuleNum ) {
+				return checkForRepeatCreditAndPoints( activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inViewRowIdx, inCheckedRowIdx, inViewRowRuleNum, inRowCheckedRuleNum, inActiveView, inActivePoints );
+			}
 
-        private Int16 checkCreditAndPoints( DataTable activePassDataTable, DataTable idlePassDataTable, DataRow inViewRow, DataRow inCheckedRow
-            , int inRowViewIdx, int inRowCheckedIdx, String inColPrefix, bool inActiveView, Int16 inActivePoints, Int16 curRuleNum, Int16 checkRuleNum ) {
-            //If trick repeated determine if previous trick was same number but worth more or less points
+			if ( inViewRowRuleNum > 100 && inViewRowRuleNum < 200 ) { // Check for 1 ski tricks
 
-            Int16 retPoints = inActivePoints;
-            try {
+				if ( ( inViewRowRuleNum + 200 ) == inRowCheckedRuleNum ) { // Check if current trick matches a previous reverse tricks
+					if ( inActiveView ) {
+						return checkForRepeatCreditAndPoints( activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inViewRowIdx, inCheckedRowIdx, inViewRowRuleNum, inRowCheckedRuleNum, inActiveView, inActivePoints );
+
+					} else if ( inColPrefix.Equals( "Pass2" ) ) {
+						return checkForRepeatCreditAndPoints( activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inViewRowIdx, inCheckedRowIdx, inViewRowRuleNum, inRowCheckedRuleNum, inActiveView, inActivePoints );
+					}
+				}
+
+			} else if ( inViewRowRuleNum > 200 && inViewRowRuleNum < 300 ) { // Check for 2 ski tricks
+				if ( ( inViewRowRuleNum + 200 ) == inRowCheckedRuleNum ) { // Check if current trick matches a previous reverse tricks
+					return checkForRepeatCreditAndPoints( activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inViewRowIdx, inCheckedRowIdx, inViewRowRuleNum, inRowCheckedRuleNum, inActiveView, inActivePoints );
+				}
+
+			} else if ( ( inRowCheckedRuleNum + 200 ) == inViewRowRuleNum ) {
+				DataRow curViewRowReverseOrig = getPrevTrickRow( activePassDataTable, inViewRow, inViewRowIdx );
+				if ( ( (byte)curViewRowReverseOrig["Seq"] ).Equals( (byte)inCheckedRow["Seq"] ) ) return inActivePoints;
+				return checkForRepeatCreditAndPoints( activePassDataTable, idlePassDataTable, inViewRow, inCheckedRow, inViewRowIdx, inCheckedRowIdx, inViewRowRuleNum, inRowCheckedRuleNum, inActiveView, inActivePoints );
+			}
+
+			return inActivePoints;
+		}
+
+		/* 
+		 * If trick repeated determine if previous trick was same number but worth more or less points
+		 */
+		private Int16 checkForRepeatCreditAndPoints( DataTable activePassDataTable, DataTable idlePassDataTable
+			, DataRow inViewRow, DataRow inCheckedRow
+			, int inViewRowIdx, int inCheckedRowIdx
+			, Int16 inViewRowRuleNum, Int16 inCheckedRowRuleNum
+			, bool inActiveView, Int16 inActivePoints ) {
+
+			try {
 				// If the current trick and the trick to be checked are not both for credit then the number of points is the tricks original value
-				if ( !( ( (String)inViewRow["Results"] ).Equals( "Credit" ) ) || !( ( (String)inCheckedRow["Results"] ).Equals( "Credit" )) ) return retPoints;
+				String curViewTrickResults = (String)(String)inViewRow["Results"];
+				String curCheckTrickResults = (String)inCheckedRow["Results"];
+				if ( !( curViewTrickResults.Equals( "Credit" ) && curCheckTrickResults.Equals( "Credit" ) ) ) return inActivePoints;
 
 				// Current trick and the trick to be checked are both for credit then analyze tricks to determine if the original trick points should be changed
-				if ( (Int16)inCheckedRow["Score"] == retPoints ) {
-					#region Current trick value and trick to be checked have the same value
+				if ( (Int16)inCheckedRow["Score"] == inActivePoints ) {
+					return checkForRepeatCreditSamePoints( activePassDataTable, idlePassDataTable
+						, inViewRow, inCheckedRow
+						, inViewRowIdx, inCheckedRowIdx
+						, inViewRowRuleNum, inCheckedRowRuleNum
+						, inActiveView, inActivePoints );
+				}
+
+				if ( (Int16)inCheckedRow["Score"] < inActivePoints ) {
+					// Current trick value is greater than trick to be checked have the same value
 					if ( inActiveView ) {
-
-						#region Current trick and trick to be checked are in the same pass
-						if ( inRowViewIdx < inRowCheckedIdx ) {
-							inCheckedRow["Score"] = 0;
-							inCheckedRow["Results"] = "Repeat";
-							return retPoints;
-						}
-
-						if ( ( curRuleNum + 200 ) == checkRuleNum ) {
-							byte curNumTurns = (byte)inViewRow["NumTurns"];
-							int prevRowIdx = inRowViewIdx - 1;
-							if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx = inRowViewIdx - 2;
-							if ( prevRowIdx > inRowCheckedIdx ) {
-								inViewRow["Score"] = 0;
-								inViewRow["Results"] = "Repeat";
-								return 0;
-							}
-							
-							prevRowIdx = inRowCheckedIdx - 1;
-							if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx = inRowCheckedIdx - 2;
-							Int16 prevRuleNum = (Int16)activePassDataTable.Rows[prevRowIdx]["RuleNum"];
-							if ( curRuleNum != prevRuleNum || (Int16)activePassDataTable.Rows[prevRowIdx]["Score"] > 0 ) {
-								inViewRow["Score"] = 0;
-								inViewRow["Results"] = "Repeat";
-								return 0;
-							}
-							return retPoints;
-						}
-
-						inViewRow["Score"] = 0;
-						inViewRow["Results"] = "Repeat";
-						return 0;
-						#endregion
-					}
-
-					#region Current trick and trick to be checked are in different passes
-					if ( ( curRuleNum + 200 ) == checkRuleNum ) {
-						byte curNumTurns = (byte)inViewRow["NumTurns"];
-						int prevRowIdx = inRowCheckedIdx - 1;
-						if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx = inRowCheckedIdx - 2;
-						Int16 prevRuleNum = (Int16)activePassDataTable.Rows[prevRowIdx]["RuleNum"];
-						if ( curRuleNum == prevRuleNum && (Int16)activePassDataTable.Rows[prevRowIdx]["Score"] == 0 ) return retPoints;
-						
-						if ( inColPrefix.Equals( "Pass1" ) ) {
-							inCheckedRow["Score"] = 0;
-							inCheckedRow["Results"] = "Repeat";
-
-						} else {
-							inViewRow["Score"] = 0;
-							inViewRow["Results"] = "Repeat";
-						}
-						return 0;
-					}
-
-					inViewRow["Score"] = 0;
-					inViewRow["Results"] = "Repeat";
-					return 0;
-					#endregion
-					#endregion
-				} 
-				
-				if ( (Int16)inCheckedRow["Score"] < retPoints ) {
-					#region Current trick value is greater than trick to be checked have the same value
-					if ( inActiveView ) {
-						if ( inRowViewIdx > 0 ) {
-							if ( inRowViewIdx > inRowCheckedIdx ) {
-								inCheckedRow["Score"] = 0;
-								inCheckedRow["Results"] = "Repeat";
-								return retPoints;
-							}
-
-							inViewRow["Score"] = 0;
-							inViewRow["Results"] = "Repeat";
-							return 0;
-						}
-						
 						if ( ( (String)inCheckedRow["Code"] ).ToLower().Equals( "t5b" )
 							&& ( ( (String)inViewRow["Code"] ).ToLower().Equals( "t7f" ) || ( (String)inViewRow["Code"] ).ToLower().Equals( "t7" ) )
+							&& ( ( inViewRowIdx - 1 ) == inCheckedRowIdx )
 							) {
-							retPoints = inActivePoints;
-							return retPoints;
-						}
-						
-						inCheckedRow["Score"] = 0;
-						inCheckedRow["Results"] = "Repeat";
-						return 0;
-					} 
-					
-					if ( inColPrefix.Equals( "Pass1" ) ) {
-						inCheckedRow["Score"] = 0;
-						inCheckedRow["Results"] = "Repeat";
-						return retPoints;
-					}
-
-					inViewRow["Score"] = 0;
-					inViewRow["Results"] = "Repeat";
-					return 0;
-					#endregion
-				}
-
-				#region Current trick value is less than trick to be checked
-				if ( inActiveView ) {
-					if ( inRowViewIdx > 0 ) {
-						if ( inRowViewIdx > inRowCheckedIdx ) {
-							//If the CheckRow is 1 row behind (2 for a 180 trick) and is a reverse trick
-							//Check the previous trick to see if same trick number but is not for credit
-							//If that is the case then this trick should get credit
-							// prevRuleNum = (Int16)activePassDataTable.Rows[curIdx]["RuleNum"];
-							// prevStartPos = (Byte) activePassDataTable.Rows[curIdx]["StartPos"];
-							// prevNumTurns = (Byte) activePassDataTable.Rows[curIdx]["NumTurns"];
-							Int16 curNumTurns = (Byte)inViewRow["NumTurns"];
-							if ( ( ( curNumTurns % 2 ) == 0 ) && ( ( inRowViewIdx - 1 ) == inRowCheckedIdx ) && ( inRowCheckedIdx > 0 ) ) {
-								Int16 prevRuleNum = (Int16)activePassDataTable.Rows[inRowCheckedIdx - 1]["RuleNum"];
-								if ( curRuleNum == prevRuleNum && (Int16)activePassDataTable.Rows[inRowCheckedIdx - 1]["Score"] == 0 ) return retPoints;
-
-								inViewRow["Score"] = 0;
-								inViewRow["Results"] = "Repeat";
-								return 0;
-							}
-
-							if ( ( ( curNumTurns % 2 ) > 0 ) && ( ( inRowViewIdx - 2 ) == inRowCheckedIdx ) && ( inRowCheckedIdx > 1 ) ) {
-								Int16 prevRuleNum = (Int16)activePassDataTable.Rows[inRowCheckedIdx - 2]["RuleNum"];
-								if ( curRuleNum == prevRuleNum && (Int16)activePassDataTable.Rows[inRowCheckedIdx - 2]["Score"] == 0 ) return retPoints;
-
-								inViewRow["Score"] = 0;
-								inViewRow["Results"] = "Repeat";
-								return 0;
-							}
-
-							inViewRow["Score"] = 0;
-							inViewRow["Results"] = "Repeat";
-							return 0;
-
+							return inActivePoints;
 						}
 
 						inCheckedRow["Score"] = 0;
 						inCheckedRow["Results"] = "Repeat";
-						return retPoints;
+						return inActivePoints;
 					}
 
 					inCheckedRow["Score"] = 0;
 					inCheckedRow["Results"] = "Repeat";
-					return retPoints;
+					return inActivePoints;
 				}
 
-				if ( inColPrefix.Equals( "Pass1" ) ) {
-					inCheckedRow["Score"] = 0;
-					inCheckedRow["Results"] = "Repeat";
-					return retPoints;
-				}
-
+				// Current trick value is less than value of checked trick
 				inViewRow["Score"] = 0;
 				inViewRow["Results"] = "Repeat";
 				return 0;
 
-				#endregion
-
 			} catch ( Exception ex ) {
-                String curMsg = ex.Message;
-				return retPoints;
+				String curMsg = ex.Message;
+				return inActivePoints;
 			}
 		}
 
+		/* 
+		 * Current trick and check trick are both worth the same point value
+		 */
+		private Int16 checkForRepeatCreditSamePoints( DataTable activePassDataTable, DataTable idlePassDataTable
+				, DataRow inViewRow, DataRow inCheckedRow
+				, int inViewRowIdx, int inCheckedRowIdx
+				, Int16 inViewRuleNum, Int16 inCheckRuleNum
+				, bool inActiveView, Int16 inActivePoints
+			) {
+			String curViewTrickResults = (String)(String)inViewRow["Results"];
+			String curCheckTrickResults = (String)inCheckedRow["Results"];
 
-        public DataRow getTrickRow( DataRow inDataRow, String inSkierClass ) {
-            return getTrickRow((String) inDataRow["Code"], (Int16)((Byte) inDataRow["Skis"]), inSkierClass);
-        }
-        public DataRow getTrickRow( String inTrickCode, Int16 inNumSkies, String inSkierClass ) {
-			DataRow[] curFoundList = myTrickListDataTable.Select("TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies);
-            if ( curFoundList.Length > 0 ) return curFoundList[0];
+			if ( ( inViewRuleNum + 200 ) == inCheckRuleNum ) {
+				// Current trick is not a reverse but check trick is a reverse therefore considered a repeat
+				if ( (Int16)inCheckedRow["Score"] > 0 ) {
+					inViewRow["Score"] = 0;
+					inViewRow["Results"] = "Repeat";
+					return 0;
+				}
+				return inActivePoints;
+			}
+
+			/* 
+			 * If current trick is a reverse
+			 */
+			if ( ( inViewRuleNum == ( inCheckRuleNum + 200 ) ) && ( inViewRowIdx == inCheckedRowIdx ) ) return inActivePoints;
+
+			DataRow curViewRowReverseOrig = getPrevTrickRow( activePassDataTable, inViewRow, inViewRowIdx );
+			DataRow curCheckRowReverseOrig = getPrevTrickRow( inActiveView ? activePassDataTable : idlePassDataTable, inCheckedRow, inCheckedRowIdx );
+
+			if ( inViewRuleNum > 300 && inViewRuleNum < 500 ) {
+				// Current trick is a reverse and check trick is the original
+				String prevViewTrickResults = curViewRowReverseOrig == null ? "" : (String)curViewRowReverseOrig["Results"];
+				String prevCheckTrickResults = curCheckRowReverseOrig == null ? "" : (String)curCheckRowReverseOrig["Results"];
+
+				if ( curCheckTrickResults.Equals( "Credit" ) && prevCheckTrickResults.Equals( "Credit" ) ) {
+					inViewRow["Score"] = 0;
+					inViewRow["Results"] = "Repeat";
+					return 0;
+				}
+
+				if ( curViewTrickResults.Equals( "Credit" ) && ( prevViewTrickResults.Equals( "Credit" ) || prevViewTrickResults.Equals( "Repeat" ) ) ) {
+					curViewRowReverseOrig["Results"] = "Credit";
+					curViewRowReverseOrig["Score"] = inActivePoints;
+
+					if ( ((byte)curViewRowReverseOrig["Seq"]).Equals( (byte)inCheckedRow["Seq"] ) ) return inActivePoints;
+
+					if ( curCheckTrickResults.Equals( "Credit" ) ) {
+						inCheckedRow["Score"] = 0;
+						inCheckedRow["Results"] = "Repeat";
+
+					} else if ( prevCheckTrickResults.Equals( "Credit" ) ) {
+						curViewRowReverseOrig["Score"] = 0;
+						curViewRowReverseOrig["Results"] = "Repeat";
+					}
+
+					return inActivePoints;
+				}
+			}
+
+			inViewRow["Score"] = 0;
+			inViewRow["Results"] = "Repeat";
+			return 0;
+		}
+
+		private DataRow getPrevTrickRow( DataTable inPassDataTable, DataRow inPassRow, int inRowIdx ) {
+			byte curNumTurns = (byte)inPassRow["NumTurns"];
+			String curTrickCode = (String)inPassRow["Code"];
+			if ( !( curTrickCode.Substring( 0, 1 ).ToUpper().Equals( "R" ) ) ) return null;
+			int prevRowIdx = inRowIdx - 1;
+			if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx--;
+			if ( prevRowIdx < 0 ) return null;
+
+			// myAllowedRepeatReverseList = { "RS", "RTS", "RB", "RF", "RTB", "RTF" };
+			if ( myAllowedRepeatReverseList.Contains( curTrickCode ) ) {
+				DataRow curDataRow = inPassDataTable.Rows[prevRowIdx];
+				String prevTrickCode = (String)curDataRow["Code"];
+				String prevTrickResults = (String)curDataRow["Results"];
+				while ( curTrickCode == prevTrickCode && prevTrickResults.Equals("No Credit") ) {
+					prevRowIdx--;
+					if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx--;
+					if ( prevRowIdx < 0 ) return null;
+					
+					curDataRow = inPassDataTable.Rows[prevRowIdx];
+					prevTrickCode = (String)curDataRow["Code"];
+					prevTrickResults = (String)curDataRow["Results"];
+				}
+				return curDataRow;
+			}
+
+			return inPassDataTable.Rows[prevRowIdx];
+		}
+
+		public DataRow getTrickRow( DataRow inDataRow, String inSkierClass ) {
+			return getTrickRow( (String)inDataRow["Code"], (Int16)( (Byte)inDataRow["Skis"] ), inSkierClass );
+		}
+		public DataRow getTrickRow( String inTrickCode, Int16 inNumSkies, String inSkierClass ) {
+			DataRow[] curFoundList = myTrickListDataTable.Select( "TrickCode = '" + inTrickCode + "'" + " AND NumSkis = " + inNumSkies );
+			if ( curFoundList.Length > 0 ) return curFoundList[0];
 
 			return null;
-        }
-
-    }
+		}
+	}
 }

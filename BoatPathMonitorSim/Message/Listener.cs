@@ -76,7 +76,12 @@ namespace BoatPathMonitorSim.Message {
 				} );
 
 				ConnectMgmtData.socketClient.On( "connectedapplication_check", ( response ) => {
-					handleConnectHeartBeat( "connectedapplication_check", response.GetValue<string>() );
+					Transmitter.whoseInTheRoomResponse();
+				} );
+
+				ConnectMgmtData.socketClient.On( "connectedapplication_response", ( response ) => {
+					HelperFunctions.insertWscMonitorMsg( ConnectMgmtData.sanctionNum, "Received", "connectedapplication_response", response.GetValue<string>() );
+					Log.WriteFile( String.Format( "{0}connectedapplication_response {1}", curMethodName, response.GetValue<string>() ) );
 				} );
 
 				ConnectMgmtData.socketClient.On( "status_response", ( response ) => {

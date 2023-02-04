@@ -208,7 +208,6 @@ namespace WaterskiScoringSystem.Tools {
                 if ( curValue.Length > 22 ) {
                     outLine.Append( curValue.Substring( 0, 23 ) );
                 } else {
-                    //curValue = curValue.PadRight( 24 - curValue.Length, ' ' );
                     outLine.Append( curValue.PadRight( 23, ' ' ) );
                 }
                 curValue = curRow["MemberId"].ToString();

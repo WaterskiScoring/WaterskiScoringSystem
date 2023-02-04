@@ -2,6 +2,7 @@
 using System.Data;
 using System.Deployment.Application;
 using System.Drawing;
+using System.Text;
 using System.Threading.Tasks;
 
 using System.Windows.Forms;
@@ -18,32 +19,36 @@ namespace BoatPathMonitorSim.Message {
 		private int myCountConnectCheckFailed = 0;
 		private int myCountHeartBeatFailed = 0;
 		private int myHeartBeatViewRowIdx = 0;
+		private DateTime myLastMsgGetTime;
 
 		private Timer myConnectTimer = null;
 		private Timer myHeartBeatTimer = null;
+		private Timer myMsgTimer = null;
 
 		public Controller() {
 			InitializeComponent();
 		}
 
 		private void Controller_Load( object sender, EventArgs e ) {
+			String curDeployVersion = "";
+			try {
+				curDeployVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+			} catch {
+				curDeployVersion = "Not available";
+			}
+			this.Text += " - " + curDeployVersion;
+			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
 			if ( Properties.Settings.Default.MessageController_Width > 0 ) this.Width = Properties.Settings.Default.MessageController_Width;
 			if ( Properties.Settings.Default.MessageController_Height > 0 ) this.Height = Properties.Settings.Default.MessageController_Height;
 			if ( Properties.Settings.Default.MessageController_Location.X > 0
 				&& Properties.Settings.Default.MessageController_Location.Y > 0 ) {
 				this.Location = Properties.Settings.Default.MessageController_Location;
 			}
-			try {
-				this.Text += " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-				Properties.Settings.Default.AppTitle = this.Text;
-			} catch {
-				if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
-			}
-
 
 			WaterSkiConnectButton.Visible = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+			ViewAppsButton.Enabled = false;
 
 			Timer curTimerObj = new Timer() { Interval = 50 };
 			curTimerObj.Tick += new EventHandler( execConnectDialog );
@@ -90,6 +95,16 @@ namespace BoatPathMonitorSim.Message {
 			}
 		}
 
+		private void ViewAppsButton_Click( object sender, EventArgs e ) {
+			String curMethodName = "Controller: ViewAppsButton_Click: ";
+			try {
+				Transmitter.whoseInTheRoom();
+
+			} catch ( Exception ex ) {
+				MessageBox.Show( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
+			}
+		}
+
 		private void DisconnectButton_Click( object sender, EventArgs e ) {
 			terminateMonitors( "" );
 		}
@@ -120,11 +135,6 @@ namespace BoatPathMonitorSim.Message {
 						Log.WriteFile( curMsg );
 						MessageBox.Show( curMsg );
 					}
-
-				} else if ( connectDialog.dialogCommand.Equals( "ShowPin" ) ) {
-					Listener.showPin();
-
-				} else if ( connectDialog.dialogCommand.Equals( "ShowAppsConnected" ) ) {
 				}
 			}
 		}
@@ -172,7 +182,8 @@ namespace BoatPathMonitorSim.Message {
 				WaterSkiConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
 				ShowPinButton.Enabled = true;
-			
+				ViewAppsButton.Enabled = true;
+
 			} catch ( Exception ex ) {
 				curMsg = String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message );
 				Log.WriteFile( curMsg );
@@ -181,6 +192,7 @@ namespace BoatPathMonitorSim.Message {
 				WaterSkiConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
 				ShowPinButton.Enabled = false;
+				ViewAppsButton.Enabled = false;
 			}
 		}
 
@@ -200,6 +212,13 @@ namespace BoatPathMonitorSim.Message {
 				WaterSkiConnectButton.Enabled = false;
 				DisconnectButton.Enabled = true;
 				ShowPinButton.Enabled = true;
+				ViewAppsButton.Enabled = true;
+
+				myLastMsgGetTime = System.DateTime.Now;
+				// Create a timer with 30 second interval
+				myMsgTimer = new Timer() { Interval = 10000 };
+				myMsgTimer.Tick += new EventHandler( displayAvailableMessages );
+				myMsgTimer.Start();
 
 			} else {
 				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
@@ -210,6 +229,7 @@ namespace BoatPathMonitorSim.Message {
 				WaterSkiConnectButton.Enabled = true;
 				DisconnectButton.Enabled = false;
 				ShowPinButton.Enabled = false;
+				ViewAppsButton.Enabled = false;
 			}
 		}
 
@@ -297,9 +317,10 @@ namespace BoatPathMonitorSim.Message {
 			WaterSkiConnectButton.Visible = false;
 			DisconnectButton.Visible = true;
 			ShowPinButton.Visible = true;
+			ViewAppsButton.Enabled = true;
 
 			// Create a timer with 5 minute interval.
-			myHeartBeatTimer = new Timer() { Interval = 300002 };
+			myHeartBeatTimer = new Timer() { Interval = 300000 };
 			myHeartBeatTimer.Tick += new EventHandler( checkMonitorHeartBeat );
 			myHeartBeatTimer.Start();
 		}
@@ -333,6 +354,49 @@ namespace BoatPathMonitorSim.Message {
 			return;
 		}
 
+		private void displayAvailableMessages( object sender, EventArgs e ) {
+			String curMsg = "";
+			myMsgTimer.Stop();
+			int curViewIdx = MessageView.Rows.Count - 1;
+			if ( MessageView.Rows.Count > 0 ) MessageView.CurrentCell = MessageView.Rows[curViewIdx].Cells["Message"];
+
+			Cursor.Current = Cursors.WaitCursor;
+			DataTable curDataTable = getMessages( myLastMsgGetTime );
+			foreach ( DataRow curDataRow in curDataTable.Rows ) {
+				//PK, SanctionId, MsgAction, MsgType, MsgData, InsertDate 
+				curMsg = String.Format( "PK={0}, InsertDate={1}, MsgAction={2}, MsgType={3}, MsgData={4}"
+					, HelperFunctions.getDataRowColValue( curDataRow, "PK", "" )
+					, ( (DateTime)curDataRow["InsertDate"] ).ToString( myDisplayDateFormat )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgAction", "" )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgType", "" )
+					, HelperFunctions.getDataRowColValue( curDataRow, "MsgData", "" )
+					);
+				if ( curMsg.Contains( "connect_confirm_listener" ) ) addViewMessage( curMsg, true, false );
+				else addViewMessage( curMsg, false, false );
+			}
+
+			curViewIdx = MessageView.Rows.Count - 1;
+			if ( MessageView.Rows.Count > 0 ) {
+				MessageView.FirstDisplayedScrollingRowIndex = curViewIdx;
+				MessageView.Rows[curViewIdx].Selected = true;
+				MessageView.Rows[curViewIdx].Cells[0].Selected = true;
+				MessageView.CurrentCell = MessageView.Rows[curViewIdx].Cells["Message"];
+
+				int curRowPos = curViewIdx + 1;
+				RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + MessageView.Rows.Count.ToString();
+
+			} else {
+				RowStatusLabel.Text = "";
+			}
+			Cursor.Current = Cursors.Default;
+
+			// Create a timer with 5 second interval
+			myLastMsgGetTime = System.DateTime.Now;
+			myMsgTimer = new Timer() { Interval = 10000 };
+			myMsgTimer.Tick += new EventHandler( displayAvailableMessages );
+			myMsgTimer.Start();
+		}
+
 		private void terminateMonitors( String curMonitorName ) {
 			String curMethodName = "Controller: terminateMonitors: ";
 			Log.WriteFile( String.Format( "{0}No heartbeat for monitor {1}", curMethodName, curMonitorName ) );
@@ -363,15 +427,35 @@ namespace BoatPathMonitorSim.Message {
 			Listener.disconnect();
 			Transmitter.disconnect(0);
 
+			deleteMonitorMessages();
 			myMonitorDataTable = null;
 			WaterSkiConnectButton.Visible = true;
 			WaterSkiConnectButton.Enabled = true;
 			DisconnectButton.Visible = false;
 			ShowPinButton.Visible = false;
+			ViewAppsButton.Enabled = false;
 
 			myCountHeartBeatFailed = 0;
 
 			if ( msg.Length > 0 ) MessageBox.Show( msg );
+		}
+
+		private DataTable getMessages( DateTime inLastMsgTime ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select PK, SanctionId, MsgAction, MsgType, MsgData, InsertDate " );
+			curSqlStmt.Append( "From WscMonitorMsg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND InsertDate >= '{1}'"
+				, ConnectMgmtData.sanctionNum, inLastMsgTime.ToString( "yyyy-MM-dd HH:mm:ss" ) ) );
+			curSqlStmt.Append( " Order By InsertDate " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			return curDataTable;
+		}
+
+		private void deleteMonitorMessages() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Delete From WscMonitorMsg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}'", ConnectMgmtData.sanctionNum ) );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 	}
 }
