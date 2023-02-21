@@ -1027,7 +1027,6 @@ namespace WaterskiScoringSystem.Slalom {
 			String curSkierEventClass = (String)inTourEventRegRow.Cells["EventClass"].Value;
 			DataRow curClassRowSkier = SlalomEventData.getSkierClass( curSkierEventClass );
 
-
 			activeSkierName.Text = (String)inTourEventRegRow.Cells["SkierName"].Value;
 			this.Text = myTitle + " - " + activeSkierName.Text;
 
@@ -1117,6 +1116,7 @@ namespace WaterskiScoringSystem.Slalom {
 				scoreEventClass.SelectedValue = (String)inTourEventRegRow.Cells["EventClass"].Value;
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = "";
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = "";
+				mySlalomSetAnalysis = new SlalomSetAnalysis( inTourEventRegRow, null, null, myNumJudges );
 
 				/*
 				 * Disabling long line hide

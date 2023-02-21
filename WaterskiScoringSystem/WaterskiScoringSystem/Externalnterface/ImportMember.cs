@@ -761,31 +761,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 			int rowsProc = 0;
 
 			#region Retrieve all member attributes and prepare for processing
-			if (curImportMemberEntry.ContainsKey("CanSki")) {
-				if (curImportMemberEntry["CanSki"] != null) {
-					if (curImportMemberEntry["CanSki"].GetType() == System.Type.GetType("System.String")) {
-						if (((String)curImportMemberEntry["CanSki"]).ToLower().Equals("true")) curMemberEntry.CanSki = true;
-					} else {
-						curMemberEntry.CanSki = (Boolean)curImportMemberEntry["CanSki"];
-					}
-				}
-			}
-			if (curImportMemberEntry.ContainsKey("CanSkiGR")) {
-				if (curImportMemberEntry["CanSkiGR"] != null) {
-					if (curImportMemberEntry["CanSkiGR"].GetType() == System.Type.GetType("System.String")) {
-						if (((String)curImportMemberEntry["CanSkiGR"]).ToLower().Equals("true")) curMemberEntry.CanSkiGR = true;
-					} else {
-						curMemberEntry.CanSkiGR = (Boolean)curImportMemberEntry["CanSkiGR"];
-					}
-				}
-			}
-			if (curImportMemberEntry.ContainsKey("Waiver")) {
-				if (curImportMemberEntry["Waiver"].GetType() == System.Type.GetType("System.String")) {
-					curMemberEntry.WaiverSigned = HelperFunctions.isValueTrue( (String)curImportMemberEntry["Waiver"]);
-				} else {
-					curMemberEntry.WaiverSigned = HelperFunctions.isValueTrue( ((int)curImportMemberEntry["Waiver"]).ToString() );
-				}
-			}
+			curMemberEntry.CanSki = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "CanSki" ) );
+			curMemberEntry.CanSkiGR = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "CanSkiGR" ) );
+			curMemberEntry.WaiverSigned = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "Waiver" ) );
 			
 			DateTime curMemExpireDate = new DateTime(); 
 			try {
@@ -923,7 +901,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curSlalom.ToString() );
-					curSqlStmt.Append( ", Rating = '" + (String) curImportMemberEntry["SlalomRating"] + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
 					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
 					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
@@ -937,10 +915,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
 					curSqlStmt.Append( ", '" + curEvent + "', '', 1" );
 					curSqlStmt.Append( ", " + curSlalom.ToString() );
-					curSqlStmt.Append( ", '" + (String) curImportMemberEntry["SlalomRating"] + "'" );
+					curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
 					curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( ")" );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
 				}
 
 				/*
@@ -950,7 +929,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Update EventReg " );
 				curSqlStmt.Append( " Set RankingScore = " + curSlalom.ToString() );
-				curSqlStmt.Append( ", RankingRating = '" + (String) curImportMemberEntry["SlalomRating"] + "'" );
+				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
 				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "'" );
 				curSqlStmt.Append( "   And MemberId = '" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( "   And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
@@ -976,7 +955,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curTrick.ToString() );
-					curSqlStmt.Append( ", Rating = '" + (String) curImportMemberEntry["TrickRating"] + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "'" );
 					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
 					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
@@ -990,7 +969,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
 					curSqlStmt.Append( ", '" + curEvent + "', '', 1" );
 					curSqlStmt.Append( ", " + curTrick.ToString() );
-					curSqlStmt.Append( ", '" + (String) curImportMemberEntry["TrickRating"] + "'" );
+					curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "'" );
 					curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( ")" );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1003,7 +982,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Update EventReg " );
 				curSqlStmt.Append( " Set RankingScore = " + curTrick.ToString() );
-				curSqlStmt.Append( ", RankingRating = '" + (String) curImportMemberEntry["TrickRating"] + "'" );
+				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "'" );
 				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "'" );
 				curSqlStmt.Append( "   And MemberId = '" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( "   And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
@@ -1029,7 +1008,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curJump.ToString() );
-					curSqlStmt.Append( ", Rating = '" + (String) curImportMemberEntry["JumpRating"] + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRating" ) + "'" );
 					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
 					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
@@ -1043,7 +1022,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
 					curSqlStmt.Append( ", '" + curEvent + "', '', 1" );
 					curSqlStmt.Append( ", " + curJump.ToString() );
-					curSqlStmt.Append( ", '" + (String) curImportMemberEntry["JumpRating"] + "'" );
+					curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRating" ) + "'" );
 					curSqlStmt.Append( ", '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( ")" );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1056,7 +1035,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Update EventReg " );
 				curSqlStmt.Append( " Set RankingScore = " + curJump.ToString() );
-				curSqlStmt.Append( ", RankingRating = '" + (String) curImportMemberEntry["JumpRating"] + "'" );
+				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRating" ) + "'" );
 				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "'" );
 				curSqlStmt.Append( "   And MemberId = '" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( "   And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
@@ -1117,18 +1096,33 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public bool procTeamHeaderInput( Dictionary<string, object> curImportMemberEntry, bool inNcwsa ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 
-			String curTeamName = (String) curImportMemberEntry["TeamName"];
-			String curTeamCode = (String) curImportMemberEntry["TeamCode"];
-			String curAgeGroup = (String) curImportMemberEntry["AgeGroup"];
-			String curEventGroup = (String) curImportMemberEntry["EventGroup"];
+			String curTeamName = HelperFunctions.getAttributeValue( curImportMemberEntry, "TeamName" );
+			String curTeamCode = HelperFunctions.getAttributeValue( curImportMemberEntry, "TeamCode" );
+			String curAgeGroup = HelperFunctions.getAttributeValue( curImportMemberEntry, "AgeGroup" );
+			String curEventGroup = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventGroup" );
 
 			int curTeamSlalomRunOrder = 1, curTeamTrickRunOrder = 1, curTeamJumpRunOrder = 1;
 
 			if ( curTeamCode.ToLower().Equals( "off" ) ) return false;
 
-			curTeamSlalomRunOrder = (int)curImportMemberEntry["SlalomRunOrder"];
-			curTeamTrickRunOrder = (int) curImportMemberEntry["TrickRunOrder"];
-			curTeamJumpRunOrder = (int) curImportMemberEntry["JumpRunOrder"];
+			String curValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRunOrder" );
+			if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+				curTeamSlalomRunOrder = int.Parse( curValue );
+			} else {
+				curTeamSlalomRunOrder = 0;
+			}
+			curValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRunOrder" );
+			if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+				curTeamTrickRunOrder = int.Parse( curValue );
+			} else {
+				curTeamTrickRunOrder = 0;
+			}
+			curValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRunOrder" );
+			if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+				curTeamJumpRunOrder = int.Parse( curValue );
+			} else {
+				curTeamJumpRunOrder = 0;
+			}
 
 			#region Insert or update team information 
 			curSqlStmt = new StringBuilder( "" );
