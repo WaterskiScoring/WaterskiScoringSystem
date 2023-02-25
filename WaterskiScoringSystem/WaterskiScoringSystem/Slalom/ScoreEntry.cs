@@ -1487,13 +1487,13 @@ namespace WaterskiScoringSystem.Slalom {
 							|| ( curRerideReqd && curTimeGood && curSkierPass == 1 && mySlalomSetAnalysis.isExitGatesGood() && !( mySlalomSetAnalysis.isEntryGatesGood() ) )
 							) {
 						if ( curPassSpeedKph < curMaxSpeedKph ) {
+							/*
+							Determine if skier division and class qualify the skier to use the alternate scoring method.
+							This alternate scoring method no longer requires that the skier be scored at long line when at less than max speed
+							Rule 10.06 for ski year 2017
+							 */
 							DataRow curClassRowSkier = SlalomEventData.getSkierClass( HelperFunctions.getViewRowColValue( curEventRegRow, "EventClass", SlalomEventData.myTourClass ) );
 							if ( SlalomEventData.isQualifiedAltScoreMethod( curAgeGroup, (String)curClassRowSkier["ListCode"] ) ) {
-								/*
-								Determine if skier division and class qualify the skier to use the alternate scoring method.
-								This alternate scoring method no longer requires that the skier be scored at long line when at less than max speed
-								Rule 10.06 for ski year 2017
-								 */
 								if ( !(curRerideReqd)
 									|| ( curRerideReqd && curTimeGood && curSkierPass == 1 && mySlalomSetAnalysis.isExitGatesGood() && !( mySlalomSetAnalysis.isEntryGatesGood() ) ) ) {
 									nextPassWithOption();

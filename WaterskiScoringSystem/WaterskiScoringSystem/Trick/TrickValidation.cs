@@ -940,13 +940,20 @@ namespace WaterskiScoringSystem.Trick {
 			String curTrickCode = (String)inPassRow["Code"];
 			if ( !( curTrickCode.Substring( 0, 1 ).ToUpper().Equals( "R" ) ) ) return null;
 			int prevRowIdx = inRowIdx - 1;
+			String prevTrickCode = (String)inPassDataTable.Rows[prevRowIdx]["Code"];
+
+			if ( curTrickCode.ToUpper().Equals( "RT5B" ) && inRowIdx == 1
+				&& ( prevTrickCode.ToUpper().Equals( "T7" ) || prevTrickCode.ToUpper().Equals( "T7F" ) ) ) {
+				return inPassDataTable.Rows[prevRowIdx];
+			}
+
 			if ( ( curNumTurns % 2 ) > 0 ) prevRowIdx--;
 			if ( prevRowIdx < 0 ) return null;
 
 			// myAllowedRepeatReverseList = { "RS", "RTS", "RB", "RF", "RTB", "RTF" };
 			if ( myAllowedRepeatReverseList.Contains( curTrickCode ) ) {
 				DataRow curDataRow = inPassDataTable.Rows[prevRowIdx];
-				String prevTrickCode = (String)curDataRow["Code"];
+				prevTrickCode = (String)curDataRow["Code"];
 				String prevTrickResults = (String)curDataRow["Results"];
 				while ( curTrickCode == prevTrickCode && prevTrickResults.Equals("No Credit") ) {
 					prevRowIdx--;

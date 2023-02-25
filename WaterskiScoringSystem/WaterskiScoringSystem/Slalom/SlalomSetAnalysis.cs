@@ -830,6 +830,13 @@ namespace WaterskiScoringSystem.Slalom {
 				decimal curPassScore = inScore;
 				if ( curPassProtScore > 0 ) curPassScore = curPassProtScore;
 
+				int countReride = countPathDevRerides();
+				if ( countReride >= 2 ) {
+					myRecapViewRow.Cells["RerideRecap"].Value = "N";
+					setEventRegRowStatus( "4-Done" );
+					return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+				}
+
 				DataGridViewRow prevRecapRow = myRecapViewRows[prevRowIdx];
 				if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"] ) {
 					//For Class C and below tournaments check to see if this is the first score-able pass 
@@ -913,10 +920,13 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 				int curPassSpeedNum = (int)curPassRow["SlalomSpeedNum"];
 				int curPassLineNum = (int)curPassRow["SlalomLineNum"];
+				/*
 				if ( prevPassScore == 6 ) {
 					setEventRegRowStatus( "2-InProg" );
 					return ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 				}
+				 */
+				if ( prevPassScore == 6 ) return ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 			}
 
 			return prevPassProtScore;
@@ -969,6 +979,43 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			return prevPassScore;
+		}
+
+		private int countPathDevRerides() {
+			int returnRerideCount = 0;
+			Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassSpeedKphRecap", "0" ) );
+			decimal curPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassLineLengthRecap", "0" );
+			bool curRerideInd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "RerideRecap", "Y" ) );
+			bool curTimeGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "TimeInTolRecap", "Y" ) );
+			bool curBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "BoatPathGoodRecap", "Y" ) );
+
+			DataGridViewRow tempRecapRow;
+			bool tempRerideInd, tempBoatPathGood, tempTimeGood;
+			Int16 tempPassSpeedKph;
+			decimal tempPassLineLengthMeters;
+			for ( int prevRowIdx = myRecapViewRow.Index - 1; prevRowIdx >= 0; prevRowIdx-- ) {
+				tempRecapRow = myRecapViewRows[prevRowIdx];
+				
+				tempPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( tempRecapRow, "PassSpeedKphRecap", "0" ) );
+				tempPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( tempRecapRow, "PassLineLengthRecap", "0" );
+				if ( curPassSpeedKph != tempPassSpeedKph || curPassLineLengthMeters != tempPassLineLengthMeters ) return returnRerideCount;
+
+				tempRerideInd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( tempRecapRow, "RerideRecap", "Y" ) );
+				tempTimeGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( tempRecapRow, "TimeInTolRecap", "Y" ) );
+				tempBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( tempRecapRow, "BoatPathGoodRecap", "Y" ) );
+
+				if ( curRerideInd && tempRerideInd
+					&& curTimeGood && tempTimeGood
+					&& !curBoatPathGood && !tempBoatPathGood
+					) {
+					returnRerideCount++;
+				
+				} else {
+					break;
+				}
+			}
+
+			return returnRerideCount;
 		}
 
 		public bool isEntryGatesGood() {
