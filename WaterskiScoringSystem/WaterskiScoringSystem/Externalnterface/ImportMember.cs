@@ -893,18 +893,16 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Select PK from SkierRanking " );
-				curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
-				curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
-				curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
+				curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
+					, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curDataTable.Rows.Count > 0 ) {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curSlalom.ToString() );
 					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
-					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
-					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
-					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
+					curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
+						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ));
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				} else {
@@ -930,10 +928,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( "Update EventReg " );
 				curSqlStmt.Append( " Set RankingScore = " + curSlalom.ToString() );
 				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
-				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "'" );
-				curSqlStmt.Append( "   And MemberId = '" + curMemberEntry.MemberId + "'" );
-				curSqlStmt.Append( "   And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
-				curSqlStmt.Append( "   And Event = '" + curEvent + "'" );
+				curSqlStmt.Append( String.Format( "SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Event = '{3}'"
+					, mySanctionNum, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			}
 			#endregion
@@ -947,18 +943,16 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Select PK from SkierRanking " );
-				curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
-				curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
-				curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
+				curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
+					, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 				if ( curDataTable.Rows.Count > 0 ) {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curTrick.ToString() );
 					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "'" );
-					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
-					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
-					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );
+					curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
+						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				} else {

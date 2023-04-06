@@ -785,7 +785,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.1.3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.1.4")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1601,7 +1601,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.1.3 2/25/2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.1.4 4/5/2023")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2613,6 +2613,42 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["OfficialWorkRecordColumnFilter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathDriverUpdate_Width {
+            get {
+                return ((int)(this["BoatPathDriverUpdate_Width"]));
+            }
+            set {
+                this["BoatPathDriverUpdate_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoatPathDriverUpdate_Height {
+            get {
+                return ((int)(this["BoatPathDriverUpdate_Height"]));
+            }
+            set {
+                this["BoatPathDriverUpdate_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point BoatPathDriverUpdate_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["BoatPathDriverUpdate_Location"]));
+            }
+            set {
+                this["BoatPathDriverUpdate_Location"] = value;
             }
         }
     }

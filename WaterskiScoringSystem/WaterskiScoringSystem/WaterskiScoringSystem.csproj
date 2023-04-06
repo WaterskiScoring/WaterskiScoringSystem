@@ -49,7 +49,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>8.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -499,6 +499,12 @@
     <Compile Include="Slalom\SlalomSummaryAwards.Designer.cs">
       <DependentUpon>SlalomSummaryAwards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\BoatPathDriverUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\BoatPathDriverUpdate.Designer.cs">
+      <DependentUpon>BoatPathDriverUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ExportBoatUse.cs" />
     <Compile Include="Externalnterface\ExportLiveWeb.cs" />
     <Compile Include="Externalnterface\ExportLiveWebDialog.cs">
@@ -840,6 +846,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Externalnterface\ExportLiveWebDialog.resx">
       <DependentUpon>ExportLiveWebDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\BoatPathDriverUpdate.resx">
+      <DependentUpon>BoatPathDriverUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\ExportFileDownload.resx">
       <DependentUpon>ExportFileDownload.cs</DependentUpon>
