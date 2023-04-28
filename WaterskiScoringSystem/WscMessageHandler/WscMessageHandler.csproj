@@ -32,7 +32,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -68,10 +68,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5B567F70C7820558E01BD9244517D0E760B8FA14</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CB3A00954EADDD9AA190C0C6A3495368F651A9E5</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WscMessageHandler_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>WscMessageHandler_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -199,6 +199,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="WscMessageHandler_1_TemporaryKey.pfx" />
     <None Include="WscMessageHandler_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

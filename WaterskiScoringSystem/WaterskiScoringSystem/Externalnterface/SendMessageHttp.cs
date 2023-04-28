@@ -448,15 +448,22 @@ namespace WaterskiScoringSystem.Externalnterface {
 						MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );
 						return null;
 					}
-					if ( curResp.StatusCode.Equals( "Unauthorized" ) ) {
-						MessageBox.Show( "Requested not Unauthorized" );
-						return null;
-					}
-					String respMsg = getResponseAsString( curResp );
-					return jsonSerializer.Deserialize<Dictionary<string, object>>( respMsg );
-				}
+                    if ( curResp.StatusCode == HttpStatusCode.Accepted ) {
+                        String respMsg = getResponseAsString( curResp );
+                        return jsonSerializer.Deserialize<Dictionary<string, object>>( respMsg );
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.NotFound ) {
+                        Log.WriteFile( String.Format( "{0}Target location not found, {1}", curMethodName, e.Message ) );
+                        MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );
+                        return null;
+                    }
 
-			} catch (Exception ex) {
+                    Log.WriteFile( String.Format( "{0}Request failed, {1}", curMethodName, e.Message ) );
+                    MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );
+                    return null;
+                }
+
+            } catch (Exception ex) {
 				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
 				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
 				return null;

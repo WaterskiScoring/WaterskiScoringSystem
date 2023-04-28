@@ -18,8 +18,6 @@ namespace WaterskiScoringSystem.Trick {
 		public static DataRow myTourRow;
 		public static DataRow myClassCRow;
 		public static DataRow myClassERow;
-		public static DataRow myClassRowSkier;
-		public static DataRow myClassRowTour;
 
 		public static ListSkierClass mySkierClassList;
 		public static CheckEventRecord myCheckEventRecord;
@@ -44,7 +42,6 @@ namespace WaterskiScoringSystem.Trick {
 			mySkierClassList = new ListSkierClass();
 			mySkierClassList.ListSkierClassLoad();
 
-			myClassRowTour = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + myTourRow["EventScoreClass"].ToString().ToUpper() + "'" )[0];
 			myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
 			myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
 

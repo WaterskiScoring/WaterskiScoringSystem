@@ -18,6 +18,10 @@ PK	RuleCode	TrickCode	NumSkis	StartPos	NumTurns	RuleNum	TypeCode	Points	Descript
 0	awsa	S	9	0	0	1	0	10	Side Slide (Kneeboard)
 0	awsa	RTS	1	0	0	2	0	130	Reverse Toe Slide
 0	awsa	TS	1	0	0	2	0	130	Toe Side Slide
+0	awsa	POS	0	0	1	99	0	0	Front to Back (Wakeboard)
+0	awsa	POS	1	0	1	99	0	0	Front to Back
+0	awsa	POS	2	0	1	99	0	0	Front to Back
+0	awsa	POS	9	0	1	99	0	0	Front to Back (Kneeboard)
 0	awsa	B	0	0	1	3	0	30	Front to Back (Wakeboard)
 0	awsa	RB	0	0	1	3	0	30	Reverse Front to Back (Wakeboard)
 0	awsa	B	1	0	1	3	0	60	Front to Back

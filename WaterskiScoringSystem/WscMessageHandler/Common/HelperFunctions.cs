@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Data;
 using System.Text;
 
@@ -24,7 +25,7 @@ namespace WscMessageHandler.Common {
 			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
 			return null;
 		}
-		
+
 		public static String getDataRowColValue( DataRow dataRow, String colName, String defaultValue ) {
 			try {
 				if ( dataRow == null ) return defaultValue;
@@ -47,7 +48,7 @@ namespace WscMessageHandler.Common {
 		public static void cleanMsgQueues() {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete From WscMsgSend Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
 			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			
+
 			curSqlStmt = new StringBuilder( "Delete From WscMsgListen Where SanctionId = '" + Properties.Settings.Default.SanctionNum + "' " );
 			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
@@ -106,7 +107,7 @@ namespace WscMessageHandler.Common {
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			}
 		}
-		
+
 		public static void insertWscMonitorMsg( String inSanctionId, String inAction, String inMsgType, String inMsgData ) {
 			String curMsgData;
 			if ( inMsgData.Length > 128 ) {
@@ -156,6 +157,11 @@ namespace WscMessageHandler.Common {
 			return (Dictionary<string, object>)msgAttributeList[keyName];
 		}
 
+		public static ArrayList getAttributeLists( Dictionary<string, object> msgAttributeList, String keyName ) {
+			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return null;
+			return (ArrayList)msgAttributeList[keyName];
+		}
+
 		public static decimal getAttributeValueNum( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return 0;
 
@@ -192,6 +198,32 @@ namespace WscMessageHandler.Common {
 			}
 
 			return "";
+		}
+
+		public static bool isObjectEmpty( object inObject ) {
+			if ( inObject == null ) return true;
+			else if ( inObject == System.DBNull.Value ) return true;
+			else if ( inObject.ToString().Length > 0 ) return false;
+			return true;
+		}
+		public static bool isObjectPopulated( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) return true;
+			return false;
+		}
+
+		public static bool isValueTrue( String inValue ) {
+			String checkValue = inValue.Trim().ToLower();
+			if ( checkValue.Equals( "true" ) ) return true;
+			else if ( checkValue.Equals( "false" ) ) return false;
+			else if ( checkValue.Equals( "y" ) ) return true;
+			else if ( checkValue.Equals( "n" ) ) return false;
+			else if ( checkValue.Equals( "yes" ) ) return true;
+			else if ( checkValue.Equals( "no" ) ) return false;
+			else if ( checkValue.Equals( "1" ) ) return true;
+			else if ( checkValue.Equals( "0" ) ) return false;
+			else return false;
 		}
 
 		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {

@@ -50,7 +50,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			inputBuffer = curReader.ReadLine();
 			if ( inputBuffer == null ) return;
-			inputColNames = inputBuffer.Split( HelperFunctions.TabDelim );
+			inputColNames = HelperFunctions.cleanInputColName( inputBuffer.Split( HelperFunctions.TabDelim ) );
 
 			curInputLineCount = 0;
 			while ( ( inputBuffer = curReader.ReadLine() ) != null ) {
@@ -68,6 +68,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 				myImportMember.importMemberFromAwsa( curImportMemberEntry, true, isTourNcwsa );
+
 			}
 		}
 

@@ -577,27 +577,38 @@ namespace WaterskiScoringSystem.Externalnterface {
 						if ( curReqstStatus ) myCountTourRegAdded++;
 					}
 
-					if ( curMemberEntry.EventGroupSlalom.Length > 1 ) {
+					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupSlalom ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountSlalomAdded++;
 					}
 
-					if ( curMemberEntry.EventGroupTrick.Length > 1 ) {
+					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupTrick ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountTrickAdded++;
 					}
 
-					if ( curMemberEntry.EventGroupJump.Length > 1 ) {
+					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountJumpAdded++;
 					}
 
-					if ( curMemberEntry.Team.Length > 0 ) {
+					if ( HelperFunctions.isObjectPopulated( curMemberEntry.Team ) ) {
 						if ( !( inNcwsa ) ) {
 							String[] curTeamHeaderCols = { "TeamHeader", curMemberEntry.Team, "", curMemberEntry.Team };
 							//procTeamHeaderInput( curTeamHeaderCols, inNcwsa );
 						}
+					}
 
+					if ( HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom ) ) { }
+					if ( inTourReg
+						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom )
+						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
+						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
+						&& HelperFunctions.isObjectEmpty( curMemberEntry.Team )
+						&& !(curMemberEntry.AgeGroup.Equals( "OF" ))
+						) {
+						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
+						if ( curReqstStatus ) myCountTourRegAdded++;
 					}
 				}
 				#endregion
@@ -767,7 +778,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 			
 			DateTime curMemExpireDate = new DateTime(); 
 			try {
-				curMemExpireDate = Convert.ToDateTime( HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" ) );
+				String curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" );
+				if ( HelperFunctions.isObjectEmpty( curimportEffDateValue ) ) curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "EffDate" );
+				curMemExpireDate = Convert.ToDateTime( curimportEffDateValue );
 			} catch (Exception ex ) {
 				Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
 					, HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" ), ex.Message ) );
@@ -900,7 +913,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curSlalom.ToString() );
-					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "' " );
 					curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
 						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ));
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -927,8 +940,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Update EventReg " );
 				curSqlStmt.Append( " Set RankingScore = " + curSlalom.ToString() );
-				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "'" );
-				curSqlStmt.Append( String.Format( "SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Event = '{3}'"
+				curSqlStmt.Append( ", RankingRating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "' " );
+				curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Event = '{3}'"
 					, mySanctionNum, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			}
@@ -950,7 +963,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curTrick.ToString() );
-					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "TrickRating" ) + "' " );
 					curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
 						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1002,7 +1015,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update SkierRanking " );
 					curSqlStmt.Append( " Set Score = " + curJump.ToString() );
-					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRating" ) + "'" );
+					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "JumpRating" ) + "' " );
 					curSqlStmt.Append( "Where MemberId = '" + curMemberEntry.MemberId + "' " );
 					curSqlStmt.Append( "  And AgeGroup = '" + curMemberEntry.AgeGroup + "'" );
 					curSqlStmt.Append( "  And Event = '" + curEvent + "'" );

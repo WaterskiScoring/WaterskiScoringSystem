@@ -2354,7 +2354,9 @@ namespace WaterskiScoringSystem.Trick {
                      * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
                      */
                     myCheckOfficials.readOfficialAssignments( TrickEventData.mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
-                    if ( (Decimal)TrickEventData.myClassRowTour["ListCodeNum"] >= (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) {
+                    
+                    DataRow curClassRowSkier = TrickEventData.getSkierClass( (String)scoreEventClass.SelectedValue );
+                    if ( (Decimal)curClassRowSkier["ListCodeNum"] >= (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) {
                         String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
                         if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
                             if ( myCheckOfficials.officialAsgmtCount == 0 ) {
@@ -2426,7 +2428,6 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
             } else if ( curColName.Equals( "Skis" ) ) {
-                //noteTextBox.Text += "handleCellValidatedSkis, ";
                 if ( handleCellValidatedSkis( curPassView, curPassRow, curColPrefix ) ) {
                     Timer curTimerObj = new Timer();
                     curTimerObj.Interval = 15;
@@ -2435,7 +2436,6 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
             } else if ( curColName.Equals( "Code" ) ) {
-                //noteTextBox.Text += "handleCellValidatedCode, ";
                 if ( handleCellValidatedCode( curPassView, curPassRow, curColPrefix ) ) {
                     isPassEnded = true;
                     isDataModified = true;
@@ -2481,7 +2481,7 @@ namespace WaterskiScoringSystem.Trick {
                     if ( curPassRow.Index == 0 ) {
                         curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
                         DataRow curClassRowSkier = TrickEventData.getSkierClass( (String)scoreEventClass.SelectedValue );
-                        if ( (Decimal)TrickEventData.myClassRowSkier["ListCodeNum"] > (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) return true;
+                        if ( (Decimal)curClassRowSkier["ListCodeNum"] > (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) return true;
                         if ( curColPrefix.Equals( "Pass2" )
                             && Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value.ToString().ToLower().Equals( "fall" ) ) return true;
 
@@ -2539,7 +2539,7 @@ namespace WaterskiScoringSystem.Trick {
                 if ( curPassRow.Index == 0 ) {
                     curPassRow.Cells[curColPrefix + "Results"].Value = "Before";
                     DataRow curClassRowSkier = TrickEventData.getSkierClass( (String)scoreEventClass.SelectedValue );
-                    if ( (Decimal)TrickEventData.myClassRowSkier["ListCodeNum"] > (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) return true;
+                    if ( (Decimal)curClassRowSkier["ListCodeNum"] > (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) return true;
                     if ( curColPrefix.Equals( "Pass2" )
                         && Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value.ToString().ToLower().Equals( "fall" ) ) return true;
 

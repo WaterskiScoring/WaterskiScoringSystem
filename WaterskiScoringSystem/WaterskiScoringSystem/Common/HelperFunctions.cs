@@ -182,6 +182,24 @@ namespace WaterskiScoringSystem.Common {
 			return curNewValue.ToString();
 		}
 
+		public static string[] cleanInputColName( string[] inputColNames ) {
+			string[] returnColNames = new string[inputColNames.Length];
+			int curListIdx = 0;
+			StringBuilder newColName = new StringBuilder( "" );
+			
+			foreach ( string curColName in inputColNames ) {
+				newColName = new StringBuilder( "" );
+				for (int curIdx = 0; curIdx < curColName.Length; curIdx++ ) {
+					string curChar = curColName.Substring( curIdx, 1 );
+					if ( curChar != " " ) newColName.Append( curChar );
+				}
+				returnColNames[curListIdx] = newColName.ToString();
+				curListIdx++;
+			}
+			
+			return returnColNames;
+		}
+
 		public static String escapeString( String inValue ) {
 			String curReturnValue = "";
 			char[] singleQuoteDelim = new char[] { '\'' };

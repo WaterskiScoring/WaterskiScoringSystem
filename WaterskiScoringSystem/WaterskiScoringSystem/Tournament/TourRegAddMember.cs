@@ -407,6 +407,8 @@ namespace WaterskiScoringSystem.Tournament {
 
 						curViewRow.Cells["MembershipRate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MembershipRate", "" );
 						curViewRow.Cells["CostToUpgrade"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CostToUpgrade", "" );
+						curViewRow.Cells["membershipStatusCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusCode", "" );
+						curViewRow.Cells["membershipStatusText"].Value = HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusText", "" );
 
 						curViewRow.Cells["MemberStatus"].Value = ImportMember.calcMemberStatus(
 							HelperFunctions.getDataRowColValue( curDataRow, "MemTypeDesc", "" )

@@ -104,6 +104,11 @@ namespace WscMessageHandler.Message {
 					Log.WriteFile( String.Format( "{0}scoring_result {1}", curMethodName, response.GetValue<string>() ) );
 				} );
 
+				ConnectMgmtData.socketClient.On( "trickscoring_score", ( response ) => {
+					HelperFunctions.addMsgListenQueue( "trickscoring_score", response.GetValue<string>() );
+					Log.WriteFile( String.Format( "{0}trickscoring_score {1}", curMethodName, response.GetValue<string>() ) );
+				} );
+
 				ConnectMgmtData.socketClient.On( "trickscoring_detail", ( response ) => {
 					HelperFunctions.addMsgListenQueue( "trickscoring_detail", response.GetValue<string>() );
 					Log.WriteFile( String.Format( "{0}trickscoring_detail {1}", curMethodName, response.GetValue<string>() ) );

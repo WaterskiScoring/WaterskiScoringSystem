@@ -469,7 +469,7 @@ namespace WaterskiScoringSystem.Tournament {
             if ( !( isDataModified ) ) {
                 //Sent current tournament registration row
                 if ( curView.Rows[e.RowIndex].Cells[e.ColumnIndex] != null ) {
-                    if ( !( isObjectEmpty( curView.Rows[e.RowIndex].Cells["SanctionId"].Value ) ) ) {
+                    if ( HelperFunctions.isObjectPopulated( curView.Rows[e.RowIndex].Cells["SanctionId"].Value ) ) {
                         myViewRowIdx = e.RowIndex;
                         isDataModified = false;
                     }
@@ -506,7 +506,7 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridViewRow curRow = (DataGridViewRow)curView.Rows[e.RowIndex];
 
                 if ( curColName.StartsWith( "ModelYear" ) ) {
-                    if ( isObjectEmpty( curRow.Cells[e.ColumnIndex].Value ) ) {
+                    if ( HelperFunctions.isObjectEmpty( curRow.Cells[e.ColumnIndex].Value ) ) {
                         isDataModified = true;
                         MessageBox.Show( "Model year is a required field" );
                     } else {
@@ -516,11 +516,12 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                     }
                 } else {
-                    if ( isObjectEmpty( curRow.Cells[e.ColumnIndex].Value ) ) {
-                        if ( !(isObjectEmpty(myOrigStgCellValue )) ) {
+                    if ( HelperFunctions.isObjectEmpty( curRow.Cells[e.ColumnIndex].Value ) ) {
+                        if ( HelperFunctions.isObjectPopulated(myOrigStgCellValue ) ) {
                             isDataModified = true;
                         }
                     } else {
+                        if ( myOrigStgCellValue == null ) return;
                         String curValue = (String)curRow.Cells[curColName].Value;
                         if ( !( curValue.Equals( myOrigStgCellValue ) ) ) {
                             isDataModified = true;
@@ -669,19 +670,6 @@ namespace WaterskiScoringSystem.Tournament {
             return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
-		private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
 
     }
 }

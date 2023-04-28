@@ -195,21 +195,20 @@ namespace WaterskiScoringSystem.Tournament {
 
 				curTourEventRegDataTable = getDataBySkierEvent( mySanctionNum, inMemberId, inAgeDiv, inEvent );
 				String curSkierName = (String)curTourRegRow["SkierName"];
-				String curReadyForPlcmt = (String) curTourRegRow["ReadyForPlcmt"];
+				String curReadyForPlcmt = HelperFunctions.getDataRowColValue( curTourRegRow, "ReadyForPlcmt", "N" );
 
-				curEventClass = setSkierEventClass( inEventClass, inEvent, inAgeDiv );
+                curEventClass = setSkierEventClass( inEventClass, inEvent, inAgeDiv );
 
 				DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
 				if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] 
 					|| ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-					String curIwwfLicense = (String)curTourRegRow["IwwfLicense"];
-					if ( curIwwfLicense.Equals("N") ) {
+					String curIwwfLicense = HelperFunctions.getDataRowColValue( curTourRegRow, "IwwfLicense", "N" );
+                    if ( !(curIwwfLicense.Equals( "Y" )) ) {
 						if ( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], inMemberId, (String)this.myTourRow["EventDates"] ) ) {
 							updateTourMemberIwwfLicense( mySanctionNum, inMemberId, inAgeDiv, "Y" );
 						} else { 
 							curEventClass = "E";
 						}
-
 					}
 				}
 
@@ -223,9 +222,9 @@ namespace WaterskiScoringSystem.Tournament {
 				curSkierRankingDataTable = getSkierByEvent( inMemberId, inEvent, inAgeDiv );
 				if ( curSkierRankingDataTable.Rows.Count > 0 ) {
 					curSkierRankingRow = curSkierRankingDataTable.Rows[0];
-					curRankingRating = (String) curSkierRankingRow["Rating"];
-					curRankingScore = (Decimal) curSkierRankingRow["Score"];
-					curHCapBase = curRankingScore;
+					curRankingRating = HelperFunctions.getDataRowColValue( curSkierRankingRow, "Rating", "" );
+                    curRankingScore = HelperFunctions.getDataRowColValueDecimal( curSkierRankingRow, "Score", 0 );
+                    curHCapBase = curRankingScore;
 					curHCapScore = calcCapScore( inEvent, curRankingScore );
 				}
 
@@ -256,11 +255,12 @@ namespace WaterskiScoringSystem.Tournament {
 				} else {
 					curSqlStmt = new StringBuilder("");
                     curSqlStmt.Append( "Update EventReg Set " );
-                    curSqlStmt.Append( "RankingScore = " + curRankingScore + ", " );
-                    curSqlStmt.Append( "RankingRating = '" + curRankingRating + "', " );
-                    curSqlStmt.Append( "HCapBase = " + curHCapBase + ", " );
-                    curSqlStmt.Append( "HCapScore = " + curHCapScore + ", " );
-                    curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
+                    curSqlStmt.Append( "EventClass = '" + curEventClass + "'" );
+                    curSqlStmt.Append( ", RankingScore = " + curRankingScore );
+                    curSqlStmt.Append( ", RankingRating = '" + curRankingRating + "'" );
+                    curSqlStmt.Append( ", HCapBase = " + curHCapBase );
+                    curSqlStmt.Append( ", HCapScore = " + curHCapScore );
+                    curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
                     curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' AND MemberId = '" + inMemberId + "'" );
                     curSqlStmt.Append( "  AND AgeGroup = '" + inAgeDiv + "' AND Event = '" + inEvent + "'" );
                     int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -365,7 +365,6 @@ namespace WaterskiScoringSystem.Tournament {
 			 * Input record indicates that the class has not been assigned to the skier at this point
 			 * Determine skier event class for Nationals, Regionals, and any class R tournament
 			 */
-			//curSkierEventClass = curTourSkierEventClass;
 			if ( ( (String)myTourRow["Class"] ).Equals( "A" )
 				|| ( (String)myTourRow["Class"] ).Equals( "B" )
 				|| ( (String)myTourRow["Class"] ).Equals( "R" ) ) {

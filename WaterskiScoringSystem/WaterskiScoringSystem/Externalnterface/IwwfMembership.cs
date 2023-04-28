@@ -75,21 +75,30 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 
 			try {
-				Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, "USA" + inMemberId, curTourDate );
+				String inIWWFAthleteId = "USA" + inMemberId;
+				Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, inIWWFAthleteId, curTourDate );
 				if ( respMsg == null ) {
 					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
 					return false;
 				}
 
-				if ( readRespMsg( respMsg ) ) return true;
+				if ( readRespMsg( inIWWFAthleteId, respMsg ) ) return true;
 
 				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberId );
-				if ( curDataRow == null || (curDataRow["Federation"] == System.DBNull.Value) || ( (String)curDataRow["Federation"] ).ToLower().Equals( "usa" ) ) {
+				if ( curDataRow == null || ( curDataRow["Federation"] == System.DBNull.Value ) || ( (String)curDataRow["Federation"] ).ToLower().Equals( "usa" ) ) {
 					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
 					return false;
 				}
 
 				return validateForeignMembership( inSanctionId, inEditCode, inMemberId, curTourDate );
+
+			} catch ( Exception ex ) {
+				String curMsg = String.Format( "Exception encountered attempting to validate IWWF license for AWSA MemberId {0}{1}{2}"
+					, inMemberId, System.Environment.NewLine, ex.Message );
+				Log.WriteFile( curMsg );
+				Cursor.Current = Cursors.Default;
+				messageHandler( curMsg );
+				return false;
 
 			} finally {
 				Cursor.Current = Cursors.Default;
@@ -113,21 +122,21 @@ namespace WaterskiScoringSystem.Externalnterface {
 				showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 				return false;
 			}
-			String foreignFederationID = (String)curRow["ForeignFederationID"];
-			if ( foreignFederationID.Length == 0 ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, null );
+			String inIWWFAthleteId = (String)curRow["ForeignFederationID"];
+			if ( inIWWFAthleteId.Length == 0 ) {
+				showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, null );
 				return false;
 			}
-			if ( !(foreignFederationID.Substring(0, federationCode.Length ).Equals( federationCode )) ) foreignFederationID = federationCode + foreignFederationID;
+			if ( !( inIWWFAthleteId.Substring(0, federationCode.Length ).Equals( federationCode )) ) inIWWFAthleteId = federationCode + inIWWFAthleteId;
 
-			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, foreignFederationID, curTourDate );
+			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, inIWWFAthleteId, curTourDate );
 			if ( respMsg == null ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, respMsg );
+				showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, respMsg );
 				return false;
 			}
 
-			if ( readRespMsg( respMsg ) ) return true;
-			showNoLicenseMsg( inSanctionId, inMemberId, foreignFederationID, respMsg );
+			if ( readRespMsg( inIWWFAthleteId, respMsg ) ) return true;
+			showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, respMsg );
 			return false;
 
 		}
@@ -211,7 +220,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-		private static Boolean readRespMsg( Dictionary<string, object> respMsg ) {
+		private static Boolean readRespMsg( String inIWWFAthleteId, Dictionary<string, object> respMsg ) {
 			Dictionary<string, object> athleteAttrList =  HelperFunctions.getAttributeDictionary( respMsg, "Athlete" );
 			if ( athleteAttrList == null ) {
 				String respFailedMsg =  HelperFunctions.getAttributeValue( respMsg, "Message" );
@@ -220,11 +229,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				String respFailedMsg2 = "";
 				if ( respFailedList == null ) {
-					Log.WriteFile( "validateIwwfMembership:Request Failed" );
+					Log.WriteFile( String.Format("validateIwwfMembership:{0}:Request Failed", inIWWFAthleteId) );
 				
 				} else {
 					if ( respFailedList.Count > 0 ) respFailedMsg2 = (String)respFailedList[0];
-					Log.WriteFile( String.Format( "validateIwwfMembership:Request Failed: {0} {1}", respFailedMsg, respFailedMsg2 ) );
+					Log.WriteFile( String.Format( "validateIwwfMembership:{0}:Request Failed: {1} {2}", inIWWFAthleteId, respFailedMsg, respFailedMsg2 ) );
 				}
 
 				Cursor.Current = Cursors.Default;

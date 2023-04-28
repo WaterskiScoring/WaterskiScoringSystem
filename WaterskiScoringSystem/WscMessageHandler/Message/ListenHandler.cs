@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -87,8 +88,11 @@ namespace WscMessageHandler.Message {
 						} else if ( msgType.Equals( "jumpmeasurement_score" ) ) {
 							saveJumpMeasurement( msgData );
 
+						} else if ( msgType.Equals( "trickscoring_score" ) ) {
+							saveTrickDetail( msgData );
+
 						} else if ( msgType.Equals( "trickscoring_detail" ) ) {
-							showMsg( "scoring_result", msgData );
+							saveTrickDetail( msgData );
 
 						} else if ( msgType.Equals( "scoring_result" ) ) {
 							showMsg( "scoring_result", msgData );
@@ -539,12 +543,12 @@ namespace WscMessageHandler.Message {
 				return;
 			}
 
-			if ( checkForSkierJumpMeasurementPassExist( curEvent, curRound, curMemberId, curPassNumber ) ) return;
+			if ( checkForSkierJumpMeasurementPassExist( curMemberId, curEvent, curRound, curPassNumber ) ) return;
 
 			insertJumpMeasurement( curMsgDataList, curEvent, curRound, curMemberId, curPassNumber );
 		}
-		
-		private static bool checkForSkierJumpMeasurementPassExist( String curEvent, int curRound, String curMemberId, Int16 curPassNumber ) {
+
+		private static bool checkForSkierJumpMeasurementPassExist( String curMemberId, String curEvent, int curRound, Int16 curPassNumber ) {
 			String curMethodName = "ListenHandler:checkForSkierJumpMeasurementPassExist: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 
@@ -612,6 +616,203 @@ namespace WscMessageHandler.Message {
 				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
 				MessageBox.Show( curMethodName + "Invalid data encountered: " + ex.Message );
 			}
+		}
+
+		private static void saveTrickDetail( String msg ) {
+			String curMethodName = "ListenHandler:saveTrickDetail: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			StringBuilder curBoatInfo = new StringBuilder( "" );
+			Dictionary<string, object> curMsgDataList = null;
+
+			try {
+				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( msg );
+
+			} catch ( Exception ex ) {
+				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message );
+				MessageBox.Show( curMethodName + "Invalid data encountered: " + ex.Message );
+				return;
+			}
+
+			String curMemberId = HelperFunctions.getAttributeValue( curMsgDataList, "athleteId" );
+			String curSkierName = HelperFunctions.getAttributeValue( curMsgDataList, "athleteName" );
+			String curDiv = HelperFunctions.getAttributeValue( curMsgDataList, "athleteDivision" );
+
+			if ( checkTrickSkierExist( curMemberId, curSkierName, curDiv ) ) {
+				int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
+				if ( curRound > 0 ) {
+					String[] curTrickSkierAttr = getTrickSkierAttributes( curMemberId, curRound, curDiv );
+					insertTrickDetail( curMsgDataList, curMemberId, curTrickSkierAttr[0], curTrickSkierAttr[1], curRound );
+
+				} else {
+					String curMsg = String.Format( "Round attribute not available on input message for trick skier {0} ({1}), bypassing trick detail message"
+						, ConnectMgmtData.sanctionNum, curSkierName, curMemberId );
+					Log.WriteFile( curMethodName + curMsg );
+					MessageBox.Show( curMethodName + curMsg );
+				}
+			}
+		}
+
+		private static bool checkTrickSkierExist( String curMemberId, String curSkierName, String curDiv ) {
+			String curMethodName = "ListenHandler:checkTrickSkierExist: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select PK From EventReg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = 'Trick' AND MemberId = '{1}'"
+				, ConnectMgmtData.sanctionNum, curMemberId ) );
+			if ( HelperFunctions.isObjectPopulated( curDiv ) ) curSqlStmt.Append( String.Format( " AND AgeGroup = '{0}'", curDiv ) );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable.Rows.Count > 0 ) return true;
+			
+			Log.WriteFile( curMethodName + String.Format( "Registration for trick skier {0} ({1}) not found, bypassing trick detail message"
+				, ConnectMgmtData.sanctionNum, curSkierName, curMemberId ) );
+			return false;
+		}
+
+		private static String[] getTrickSkierAttributes( String curMemberId, int curRound, String curDiv ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			curSqlStmt.Append( "Select AgeGroup, EventClass " );
+			curSqlStmt.Append( "From EventReg " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = 'Trick' AND MemberId = '{1}'"
+				, ConnectMgmtData.sanctionNum, curMemberId ) );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			String[] curReturnAttributes = { (String)curDataTable.Rows[0]["AgeGroup"], (String)curDataTable.Rows[0]["EventClass"] };
+
+			curSqlStmt = new StringBuilder( "" ); 
+			curSqlStmt.Append( "Delete From TrickScore " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND Round = {2} AND AgeGroup = '{3}'"
+				, ConnectMgmtData.sanctionNum, curMemberId, curRound, curReturnAttributes[0] ) );
+			int curRowsRemoved = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Delete From TrickPass " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND Round = {2} AND AgeGroup = '{3}'"
+				, ConnectMgmtData.sanctionNum, curMemberId, curRound, curReturnAttributes[0] ) );
+			DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+			return curReturnAttributes;
+		}
+
+		private static void insertTrickDetail( Dictionary<string, object> curMsgDataList, String curMemberId, String curAgeGroup, String curEventClass, int curRound ) {
+			String curMethodName = "ListenHandler:insertTrickDetail: ";
+			int rowsProc = 0;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			try {
+				curSqlStmt.Append( "Insert TrickScore (" );
+				curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, Round, EventClass" );
+				curSqlStmt.Append( ", Score, ScorePass1, ScorePass2" );
+				curSqlStmt.Append( ", NopsScore, Boat, Status, LastUpdateDate, InsertDate, Note" );
+				curSqlStmt.Append( ") Values (" );
+				curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
+				curSqlStmt.Append( ", '" + curMemberId + "'" );
+				
+				curSqlStmt.Append( ", '" + curAgeGroup + "'" );
+				curSqlStmt.Append( ", " + curRound.ToString() );
+				curSqlStmt.Append( ", '" + curEventClass + "'" );
+				
+				curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curMsgDataList, "Score_Total" ).ToString("#0") );
+				curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curMsgDataList, "Score_Pass_1" ).ToString( "#0" ) );
+				curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curMsgDataList, "Score_Pass_2" ).ToString( "#0" ) );
+
+				curSqlStmt.Append( ", 0, '', 'Complete'" );
+				curSqlStmt.Append( ", GETDATE(), GETDATE()" );
+				curSqlStmt.Append( ", 'eyeTrick'" );
+				curSqlStmt.Append( " )" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				if ( rowsProc <= 0 ) Log.WriteFile( curMethodName + String.Format("Failed to add trick score for {0} round {1} ", curMemberId, curRound ) );
+
+				IEnumerator curPassList = HelperFunctions.getAttributeLists( curMsgDataList, "Pass_Detail" ).GetEnumerator();
+				while ( curPassList.MoveNext() ) {
+					if ( curPassList.Current == null ) continue;
+
+					Dictionary<string, object> curPassEntry = (Dictionary<string, object>)curPassList.Current;
+					IEnumerator curTrickList = HelperFunctions.getAttributeLists( curPassEntry, "Tricks" ).GetEnumerator();
+					while ( curTrickList.MoveNext() ) {
+						if ( curTrickList.Current == null ) continue;
+
+						Dictionary<string, object> curTrickEntry = (Dictionary<string, object>)curTrickList.Current;
+						String curTrickStatus = getTrickStatus( curTrickEntry );
+
+
+						curSqlStmt = new StringBuilder( "" );
+						curSqlStmt.Append( "Insert TrickPass (" );
+						curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, Round, PassNum" );
+						curSqlStmt.Append( ", Skis, Seq, Score, Code, Results, LastUpdateDate, Note" );
+						curSqlStmt.Append( ") Values (" );
+						curSqlStmt.Append( "'" + ConnectMgmtData.sanctionNum + "'" );
+						curSqlStmt.Append( ", '" + curMemberId + "'" );
+
+						curSqlStmt.Append( ", '" + curAgeGroup + "'" );
+						curSqlStmt.Append( ", " + curRound );
+						curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curTrickEntry, "passnum" ).ToString( "#0" ) );
+						curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curTrickEntry, "skis" ).ToString( "#0" ) );
+						curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curTrickEntry, "trickidx" ).ToString( "#0" ) );
+						if ( curTrickStatus.Equals( "Credit" ) ) {
+							curSqlStmt.Append( ", " + HelperFunctions.getAttributeValueNum( curTrickEntry, "points_trick" ).ToString( "#0" ) );
+						} else {
+							curSqlStmt.Append( ", 0" );
+						}
+						curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curTrickEntry, "trickcode" ).ToUpper() + "'" );
+						curSqlStmt.Append( ", '" + curTrickStatus + "'" );
+
+						curSqlStmt.Append( ", GETDATE()" );
+						curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curTrickEntry, "tricksetid" ) + "'" );
+						curSqlStmt.Append( " )" );
+						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						if ( rowsProc <= 0 ) Log.WriteFile( curMethodName 
+							+ String.Format( "Failed to add trick entry for {0} round={1}, Pass={2}, Seq={3}, Trick={4}"
+							, curMemberId, curRound
+							, HelperFunctions.getAttributeValueNum( curTrickEntry, "passnum" ).ToString( "#0" )
+							, HelperFunctions.getAttributeValueNum( curTrickEntry, "trickidx" ).ToString( "#0" )
+							, HelperFunctions.getAttributeValue( curTrickEntry, "trickcode" )
+							) );
+					}
+				}
+
+
+			} catch ( Exception ex ) {
+				Log.WriteFile( curMethodName + "Invalid data encountered: " + ex.Message + ", curSqlStmt=" + curSqlStmt.ToString() );
+				MessageBox.Show( curMethodName + "Invalid data encountered: " + ex.Message );
+			}
+		}
+
+		private static String getTrickStatus( Dictionary<string, object> curTrickEntry ) {
+			String curReturnStatus = "Credit";
+			String curStatus = HelperFunctions.getAttributeValue( curTrickEntry, "credit" );
+			switch (curStatus) {
+				case "Credit":
+					curReturnStatus = "Credit";
+					break;
+
+				case "Repeat":
+					curReturnStatus = "Repeat";
+					break;
+
+				case "Flip":
+					curReturnStatus = "Repeat";
+					break;
+
+				case "POS":
+					curReturnStatus = "Before";
+					break;
+
+				case "Review":
+					curReturnStatus = "Unresolved";
+					break;
+
+				case "Time":
+					curReturnStatus = "OOC";
+					break;
+
+				case "Fall":
+					curReturnStatus = "Fall";
+					break;
+
+				default:
+					curReturnStatus = "No Credit";
+					break;
+			}
+			return curReturnStatus;
 		}
 
 		private static void showMsg( String msgType, String msg ) {

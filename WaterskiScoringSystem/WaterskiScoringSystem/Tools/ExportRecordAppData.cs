@@ -15,17 +15,21 @@ namespace WaterskiScoringSystem.Tools {
         private String myExcelSheetName_IDSheet = "ID & CERTIFICATION PAGE";
         private String myDeploymentDirectory = "";
 
-        private const String myExcelAppUID = "Excel.Application";
+        //private const String myExcelAppUID = "Excel.Application";
+        private const String myExcelAppUID = "Excel.ApplicationX";
         private object myExcelApp = null;
         private object myExcelWorkBooks, myExcelWorkBook, myExcelSheets, myExcelActiveSheet, myExcelRange;
 
         private StreamWriter myOutBuffer = null;
 
         public ExportRecordAppData() {
+            String curMethodName = "ExportRecordAppData: ";
             try {
                 //Create Excel application object
                 Type curAppType = Type.GetTypeFromProgID( myExcelAppUID );
                 if ( curAppType == null ) {
+                    myExcelApp = null;
+                    Log.WriteFile( curMethodName + "Excel not available" );
                     MessageBox.Show( "Excel not available" );
 
                 } else {
@@ -43,29 +47,35 @@ namespace WaterskiScoringSystem.Tools {
                         }
 
                     } catch ( Exception ex ) {
-                        if ( myDeploymentDirectory == null ) { myDeploymentDirectory = ""; }
-                        if ( myDeploymentDirectory.Length < 1 ) {
-                            myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
-                        }
+                        myExcelApp = null;
+                        String curMsg = "Error initializing record application export processing" + "\n\nError: " + ex.Message;
+                        Log.WriteFile( curMethodName + curMsg );
+                        MessageBox.Show( curMsg );
+                        //if ( myDeploymentDirectory == null ) { myDeploymentDirectory = ""; }
+                        //if ( myDeploymentDirectory.Length < 1 ) {
+                        //myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
+                        //}
                     }
                 }
 
             } catch ( Exception ex ) {
                 myExcelApp = null;
-                MessageBox.Show( "Error initializing record application export processing" + "\n\nError: " + ex.Message );
+                String curMsg = "Error initializing record application export processing" + "\n\nError: " + ex.Message;
+                Log.WriteFile( curMethodName + curMsg );
+                MessageBox.Show( curMsg );
             }
         }
 
         public bool ExportData( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inEventGroup, Int16 inRound ) {
-            String curMethodName = "ExportRecordAppData:ExportData";
+            String curMethodName = "ExportRecordAppData:ExportData: ";
             String curMsg = "";
 
             try {
                 DataRow curTourRow = getTourData( inSanctionId );
                 if ( curTourRow == null ) {
                     curMsg = "Tournament data not found, export bypassed";
-                    MessageBox.Show( curMsg );
                     Log.WriteFile( curMethodName + ":conplete: " + curMsg );
+                    MessageBox.Show( curMsg );
                     return false;
                 }
 
@@ -145,7 +155,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool openExcelWorkbook( String inSanctionId, String inEvent, String inMemberId, String inDiv, Int16 inRound ) {
-            String curMethodName = "ExportRecordAppData:openExcelWorkbook";
+            String curMethodName = "ExportRecordAppData:openExcelWorkbook: ";
             
             try {
                 String curSkierName = getSkierName( inSanctionId, inMemberId, inDiv );
@@ -167,7 +177,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
             
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 MessageBox.Show( curMsg );
                 Log.WriteFile( curMsg );
                 return false;
@@ -175,7 +185,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool saveExcelWorkbook( String inSanctionId, String inEvent, String inMemberId, String inDiv, Int16 inRound ) {
-            String curMethodName = "ExportRecordAppData:saveExcelWorkbook";
+            String curMethodName = "ExportRecordAppData:saveExcelWorkbook: ";
 
             try {
                 myExcelActiveSheet = myExcelSheets.GetType().InvokeMember( "Item", BindingFlags.GetProperty, null, myExcelSheets, new object[] { myExcelSheetName_IDSheet } );
@@ -190,7 +200,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
 
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 MessageBox.Show( curMsg );
                 Log.WriteFile( curMsg );
                 return false;
@@ -198,7 +208,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool removeUnusedSheets( String inEvent ) {
-            String curMethodName = "ExportRecordAppData:removeUnusedSheets";
+            String curMethodName = "ExportRecordAppData:removeUnusedSheets: ";
 
             try {
                 if ( inEvent.Equals( "Slalom" ) ) {
@@ -224,7 +234,7 @@ namespace WaterskiScoringSystem.Tools {
                 }
             
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 MessageBox.Show( curMsg );
                 Log.WriteFile( curMsg );
                 return false;
@@ -235,7 +245,7 @@ namespace WaterskiScoringSystem.Tools {
 
         //Write tournament information to Excel spreadsheet
         private bool writeTourDataExcel( DataRow inTourRow, String inEvent ) {
-            String curMethodName = "ExportRecordAppData:writeTourDataExcel";
+            String curMethodName = "ExportRecordAppData:writeTourDataExcel: ";
             
             try {
                 DataRow curOfficialRow = null;
@@ -277,7 +287,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
 
 			} catch (Exception ex) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 return false;
@@ -285,7 +295,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool writeSkierInfoExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound) {
-            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel";
+            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel: ";
             DataRow curRow = null;
 
             try {
@@ -335,7 +345,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
             
             } catch (Exception ex) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 return false;
@@ -343,7 +353,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool writeEventOfficialsExcel( String inSanctionId, String inEvent, String inEventGroup, String inRound ) {
-            String curMethodName = "ExportRecordAppData:writeEventOfficialsExcel";
+            String curMethodName = "ExportRecordAppData:writeEventOfficialsExcel: ";
             DataRow curRow = null, curOfficialRow = null;
 
             String curRatingCol;
@@ -416,7 +426,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
             
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 return false;
@@ -424,7 +434,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool writeSkierBoatInfoExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound ) {
-            String curMethodName = "ExportRecordAppData:writeSkierBoatInfoExcel";
+            String curMethodName = "ExportRecordAppData:writeSkierBoatInfoExcel: ";
             int curExcelRow = 0;
             DataRow curRow = null;
             String curBoatModel = "", curExcelCol1 = "C", curExcelCol2 = "";
@@ -477,7 +487,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
 
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 return false;
@@ -485,7 +495,7 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private bool writePerfDataExcel( String inSanctionId, String inEvent, String inMemberId, String inDiv, String inRound ) {
-            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel";
+            String curMethodName = "ExportRecordAppData:writeSkierInfoExcel: ";
 
             try {
                 if ( inEvent.Equals( "Slalom" ) ) {
@@ -501,7 +511,7 @@ namespace WaterskiScoringSystem.Tools {
                 return true;
 
             } catch ( Exception ex ) {
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
+                String curMsg = curMethodName + "Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 return false;
