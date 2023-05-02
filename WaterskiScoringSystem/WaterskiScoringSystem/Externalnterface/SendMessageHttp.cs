@@ -457,6 +457,10 @@ namespace WaterskiScoringSystem.Externalnterface {
                         MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );
                         return null;
                     }
+                    if ( curResp.StatusCode == HttpStatusCode.BadRequest ) {
+                        String respMsg = getResponseAsString( curResp );
+                        return jsonSerializer.Deserialize<Dictionary<string, object>>( respMsg );
+                    }
 
                     Log.WriteFile( String.Format( "{0}Request failed, {1}", curMethodName, e.Message ) );
                     MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request for IWWF license: {1}", curMethodName, e.Message ) );

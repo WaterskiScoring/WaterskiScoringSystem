@@ -24,7 +24,6 @@
         /// </summary>
         private void InitializeComponent() {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BoatPathExport));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -37,16 +36,8 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BoatPathExport));
 			this.dataGridView = new System.Windows.Forms.DataGridView();
-			this.winNavStrip = new System.Windows.Forms.ToolStrip();
-			this.navRefresh = new System.Windows.Forms.ToolStripButton();
-			this.navExport = new System.Windows.Forms.ToolStripButton();
-			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
-			this.navFilter = new System.Windows.Forms.ToolStripButton();
-			this.navPrint = new System.Windows.Forms.ToolStripButton();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
-			this.winStatus = new System.Windows.Forms.StatusStrip();
-			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -102,6 +93,15 @@
 			this.BoatPathDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Boat = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ScoreNotes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.winNavStrip = new System.Windows.Forms.ToolStrip();
+			this.navRefresh = new System.Windows.Forms.ToolStripButton();
+			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navExportHtml = new System.Windows.Forms.ToolStripButton();
+			this.navFilter = new System.Windows.Forms.ToolStripButton();
+			this.navPrint = new System.Windows.Forms.ToolStripButton();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
+			this.winStatus = new System.Windows.Forms.StatusStrip();
+			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.winNavStrip.SuspendLayout();
 			this.winStatus.SuspendLayout();
@@ -183,100 +183,6 @@
 			this.dataGridView.Name = "dataGridView";
 			this.dataGridView.Size = new System.Drawing.Size(1189, 467);
 			this.dataGridView.TabIndex = 6;
-			// 
-			// winNavStrip
-			// 
-			this.winNavStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.navRefresh,
-            this.navExport,
-            this.navExportHtml,
-            this.navFilter,
-            this.navPrint});
-			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
-			this.winNavStrip.Name = "winNavStrip";
-			this.winNavStrip.Size = new System.Drawing.Size(1213, 42);
-			this.winNavStrip.TabIndex = 104;
-			this.winNavStrip.Text = "toolStrip1";
-			// 
-			// navRefresh
-			// 
-			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navRefresh.Name = "navRefresh";
-			this.navRefresh.Size = new System.Drawing.Size(50, 39);
-			this.navRefresh.Text = "Refresh";
-			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
-			// 
-			// navExport
-			// 
-			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
-			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExport.Name = "navExport";
-			this.navExport.Size = new System.Drawing.Size(45, 39);
-			this.navExport.Text = "Export";
-			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
-			this.navExport.Click += new System.EventHandler(this.navExport_Click);
-			// 
-			// navExportHtml
-			// 
-			this.navExportHtml.Image = ((System.Drawing.Image)(resources.GetObject("navExportHtml.Image")));
-			this.navExportHtml.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExportHtml.Name = "navExportHtml";
-			this.navExportHtml.Size = new System.Drawing.Size(38, 39);
-			this.navExportHtml.Text = "Html";
-			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
-			this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
-			// 
-			// navFilter
-			// 
-			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
-			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navFilter.Name = "navFilter";
-			this.navFilter.Size = new System.Drawing.Size(37, 39);
-			this.navFilter.Text = "Filter";
-			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
-			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
-			// 
-			// navPrint
-			// 
-			this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
-			this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navPrint.Name = "navPrint";
-			this.navPrint.Size = new System.Drawing.Size(36, 39);
-			this.navPrint.Text = "Print";
-			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navPrint.Click += new System.EventHandler(this.navPrintResults_Click);
-			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(5, 47);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
-			this.RowStatusLabel.TabIndex = 108;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
-			// 
-			// winStatus
-			// 
-			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 534);
-			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(1213, 22);
-			this.winStatus.TabIndex = 109;
-			this.winStatus.Text = "statusStrip1";
-			// 
-			// winStatusMsg
-			// 
-			this.winStatusMsg.Name = "winStatusMsg";
-			this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
 			// 
 			// SanctionId
 			// 
@@ -858,6 +764,100 @@
 			this.ScoreNotes.Name = "ScoreNotes";
 			this.ScoreNotes.ReadOnly = true;
 			this.ScoreNotes.Width = 125;
+			// 
+			// winNavStrip
+			// 
+			this.winNavStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.winNavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.navRefresh,
+            this.navExport,
+            this.navExportHtml,
+            this.navFilter,
+            this.navPrint});
+			this.winNavStrip.Location = new System.Drawing.Point(0, 0);
+			this.winNavStrip.Name = "winNavStrip";
+			this.winNavStrip.Size = new System.Drawing.Size(1213, 42);
+			this.winNavStrip.TabIndex = 104;
+			this.winNavStrip.Text = "toolStrip1";
+			// 
+			// navRefresh
+			// 
+			this.navRefresh.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navRefresh.Name = "navRefresh";
+			this.navRefresh.Size = new System.Drawing.Size(50, 39);
+			this.navRefresh.Text = "Refresh";
+			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
+			// 
+			// navExport
+			// 
+			this.navExport.Image = ((System.Drawing.Image)(resources.GetObject("navExport.Image")));
+			this.navExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExport.Name = "navExport";
+			this.navExport.Size = new System.Drawing.Size(45, 39);
+			this.navExport.Text = "Export";
+			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
+			this.navExport.Click += new System.EventHandler(this.navExport_Click);
+			// 
+			// navExportHtml
+			// 
+			this.navExportHtml.Image = ((System.Drawing.Image)(resources.GetObject("navExportHtml.Image")));
+			this.navExportHtml.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportHtml.Name = "navExportHtml";
+			this.navExportHtml.Size = new System.Drawing.Size(38, 39);
+			this.navExportHtml.Text = "Html";
+			this.navExportHtml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportHtml.ToolTipText = "Export visible data to an HTML file";
+			this.navExportHtml.Click += new System.EventHandler(this.navExportHtml_Click);
+			// 
+			// navFilter
+			// 
+			this.navFilter.Image = ((System.Drawing.Image)(resources.GetObject("navFilter.Image")));
+			this.navFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navFilter.Name = "navFilter";
+			this.navFilter.Size = new System.Drawing.Size(37, 39);
+			this.navFilter.Text = "Filter";
+			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
+			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
+			// 
+			// navPrint
+			// 
+			this.navPrint.Image = global::WaterskiScoringSystem.Properties.Resources.Printer_Network;
+			this.navPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPrint.Name = "navPrint";
+			this.navPrint.Size = new System.Drawing.Size(36, 39);
+			this.navPrint.Text = "Print";
+			this.navPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPrint.Click += new System.EventHandler(this.navPrintResults_Click);
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(5, 47);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 108;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			// 
+			// winStatus
+			// 
+			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.winStatusMsg});
+			this.winStatus.Location = new System.Drawing.Point(0, 534);
+			this.winStatus.Name = "winStatus";
+			this.winStatus.Size = new System.Drawing.Size(1213, 22);
+			this.winStatus.TabIndex = 109;
+			this.winStatus.Text = "statusStrip1";
+			// 
+			// winStatusMsg
+			// 
+			this.winStatusMsg.Name = "winStatusMsg";
+			this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
 			// 
 			// BoatPathExport
 			// 

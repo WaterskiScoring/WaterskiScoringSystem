@@ -25,11 +25,10 @@ namespace WaterskiScoringSystem.Tools {
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BoatPathDriverUpdate));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winNavStrip = new System.Windows.Forms.ToolStrip();
@@ -37,38 +36,38 @@ namespace WaterskiScoringSystem.Tools {
 			this.navExport = new System.Windows.Forms.ToolStripButton();
 			this.navSave = new System.Windows.Forms.ToolStripButton();
 			this.navFilter = new System.Windows.Forms.ToolStripButton();
-			this.label1 = new System.Windows.Forms.Label();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.dataGridView = new System.Windows.Forms.DataGridView();
-			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SlalomSelectButton = new System.Windows.Forms.RadioButton();
+			this.JumpSelectButton = new System.Windows.Forms.RadioButton();
+			this.BPPK = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PassNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassSpeedKph = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PassLineLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BoatSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.LineLen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PassScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SkierRunNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Boat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.DriverMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.DriverName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BpmsDriverId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.BpmsDriverName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AssignedDriverId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AssignedDriver = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.UpdateDriverCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.PassNote = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RerideNote = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.InsertDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.LastUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.winStatus.SuspendLayout();
 			this.winNavStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(-132, -32);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
-			this.RowStatusLabel.TabIndex = 111;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
 			// 
 			// winStatusMsg
 			// 
@@ -108,6 +107,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.navRefresh.Size = new System.Drawing.Size(50, 39);
 			this.navRefresh.Text = "Refresh";
 			this.navRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navRefresh.Click += new System.EventHandler(this.navRefresh_Click);
 			// 
 			// navExport
 			// 
@@ -118,6 +118,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.navExport.Text = "Export";
 			this.navExport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navExport.ToolTipText = "Export visible data to a tab delimited text file";
+			this.navExport.Click += new System.EventHandler(this.navExport_Click);
 			// 
 			// navSave
 			// 
@@ -126,6 +127,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.navSave.Size = new System.Drawing.Size(35, 39);
 			this.navSave.Text = "Save";
 			this.navSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSave.Click += new System.EventHandler(this.navSave_Click);
 			// 
 			// navFilter
 			// 
@@ -136,16 +138,17 @@ namespace WaterskiScoringSystem.Tools {
 			this.navFilter.Text = "Filter";
 			this.navFilter.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navFilter.ToolTipText = "Filter skier list by specified criteria using dialog window";
+			this.navFilter.Click += new System.EventHandler(this.navFilter_Click);
 			// 
-			// label1
+			// RowStatusLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(12, 43);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(106, 14);
-			this.label1.TabIndex = 115;
-			this.label1.Text = "Row 1 of 9999";
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(12, 43);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 115;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
 			// 
 			// dataGridView
 			// 
@@ -154,30 +157,38 @@ namespace WaterskiScoringSystem.Tools {
 			this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.PK,
+            this.BPPK,
             this.SanctionId,
             this.SkierMemberId,
             this.SkierName,
             this.Event,
+            this.EventGroup,
             this.EventClass,
             this.Round,
             this.PassNumber,
-            this.PassSpeedKph,
-            this.PassLineLength,
+            this.BoatSpeed,
+            this.LineLen,
+            this.Score,
+            this.PassScore,
             this.SkierRunNum,
             this.Boat,
-            this.DriverMemberId,
-            this.DriverName,
+            this.BpmsDriverId,
+            this.BpmsDriverName,
+            this.AssignedDriverId,
+            this.AssignedDriver,
+            this.UpdateDriverCheckBox,
+            this.PassNote,
+            this.RerideNote,
             this.InsertDate,
             this.LastUpdateDate});
 			this.dataGridView.Location = new System.Drawing.Point(12, 60);
@@ -186,14 +197,40 @@ namespace WaterskiScoringSystem.Tools {
 			this.dataGridView.TabIndex = 114;
 			this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			// 
-			// PK
+			// SlalomSelectButton
 			// 
-			this.PK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PK.HeaderText = "PK";
-			this.PK.Name = "PK";
-			this.PK.ReadOnly = true;
-			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PK.Width = 45;
+			this.SlalomSelectButton.AutoSize = true;
+			this.SlalomSelectButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SlalomSelectButton.Location = new System.Drawing.Point(324, 37);
+			this.SlalomSelectButton.Name = "SlalomSelectButton";
+			this.SlalomSelectButton.Size = new System.Drawing.Size(75, 20);
+			this.SlalomSelectButton.TabIndex = 116;
+			this.SlalomSelectButton.TabStop = true;
+			this.SlalomSelectButton.Text = "Slalom";
+			this.SlalomSelectButton.UseVisualStyleBackColor = true;
+			this.SlalomSelectButton.CheckedChanged += new System.EventHandler(this.SlalomSelectButton_CheckedChanged);
+			// 
+			// JumpSelectButton
+			// 
+			this.JumpSelectButton.AutoSize = true;
+			this.JumpSelectButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.JumpSelectButton.Location = new System.Drawing.Point(415, 37);
+			this.JumpSelectButton.Name = "JumpSelectButton";
+			this.JumpSelectButton.Size = new System.Drawing.Size(65, 20);
+			this.JumpSelectButton.TabIndex = 117;
+			this.JumpSelectButton.TabStop = true;
+			this.JumpSelectButton.Text = "Jump";
+			this.JumpSelectButton.UseVisualStyleBackColor = true;
+			this.JumpSelectButton.CheckedChanged += new System.EventHandler(this.SlalomSelectButton_CheckedChanged);
+			// 
+			// BPPK
+			// 
+			this.BPPK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BPPK.HeaderText = "BPPK";
+			this.BPPK.Name = "BPPK";
+			this.BPPK.ReadOnly = true;
+			this.BPPK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BPPK.Width = 45;
 			// 
 			// SanctionId
 			// 
@@ -211,6 +248,7 @@ namespace WaterskiScoringSystem.Tools {
 			this.SkierMemberId.HeaderText = "MemberId";
 			this.SkierMemberId.Name = "SkierMemberId";
 			this.SkierMemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierMemberId.Visible = false;
 			this.SkierMemberId.Width = 65;
 			// 
 			// SkierName
@@ -230,13 +268,21 @@ namespace WaterskiScoringSystem.Tools {
 			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Event.Width = 45;
 			// 
+			// EventGroup
+			// 
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EventGroup.HeaderText = "Grp";
+			this.EventGroup.Name = "EventGroup";
+			this.EventGroup.ReadOnly = true;
+			this.EventGroup.Width = 45;
+			// 
 			// EventClass
 			// 
 			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle6;
-			this.EventClass.HeaderText = "Class";
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle2;
+			this.EventClass.HeaderText = "Cls";
 			this.EventClass.MaxInputLength = 16;
 			this.EventClass.Name = "EventClass";
 			this.EventClass.ReadOnly = true;
@@ -246,9 +292,9 @@ namespace WaterskiScoringSystem.Tools {
 			// Round
 			// 
 			this.Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.Round.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.Round.DefaultCellStyle = dataGridViewCellStyle3;
 			this.Round.HeaderText = "Rd";
 			this.Round.Name = "Round";
 			this.Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -257,29 +303,43 @@ namespace WaterskiScoringSystem.Tools {
 			// PassNumber
 			// 
 			this.PassNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassNumber.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassNumber.DefaultCellStyle = dataGridViewCellStyle4;
 			this.PassNumber.HeaderText = "Pass";
 			this.PassNumber.Name = "PassNumber";
 			this.PassNumber.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PassNumber.Width = 35;
 			// 
-			// PassSpeedKph
+			// BoatSpeed
 			// 
-			this.PassSpeedKph.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PassSpeedKph.HeaderText = "Speed Kph";
-			this.PassSpeedKph.Name = "PassSpeedKph";
-			this.PassSpeedKph.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassSpeedKph.Width = 50;
+			this.BoatSpeed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BoatSpeed.HeaderText = "Speed Kph";
+			this.BoatSpeed.Name = "BoatSpeed";
+			this.BoatSpeed.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BoatSpeed.Width = 50;
 			// 
-			// PassLineLength
+			// LineLen
 			// 
-			this.PassLineLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PassLineLength.HeaderText = "Line Length";
-			this.PassLineLength.Name = "PassLineLength";
-			this.PassLineLength.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PassLineLength.Width = 50;
+			this.LineLen.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.LineLen.HeaderText = "Line Length";
+			this.LineLen.Name = "LineLen";
+			this.LineLen.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.LineLen.Width = 50;
+			// 
+			// Score
+			// 
+			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Score.HeaderText = "Score";
+			this.Score.Name = "Score";
+			this.Score.ReadOnly = true;
+			// 
+			// PassScore
+			// 
+			this.PassScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PassScore.HeaderText = "PassScore";
+			this.PassScore.Name = "PassScore";
+			this.PassScore.ReadOnly = true;
 			// 
 			// SkierRunNum
 			// 
@@ -295,23 +355,64 @@ namespace WaterskiScoringSystem.Tools {
 			this.Boat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Boat.HeaderText = "Boat";
 			this.Boat.Name = "Boat";
+			this.Boat.Visible = false;
 			this.Boat.Width = 125;
 			// 
-			// DriverMemberId
+			// BpmsDriverId
 			// 
-			this.DriverMemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.DriverMemberId.HeaderText = "Driver MemberId";
-			this.DriverMemberId.Name = "DriverMemberId";
-			this.DriverMemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.DriverMemberId.Width = 65;
+			this.BpmsDriverId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BpmsDriverId.HeaderText = "BPMS DriverId";
+			this.BpmsDriverId.Name = "BpmsDriverId";
+			this.BpmsDriverId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.BpmsDriverId.Width = 65;
 			// 
-			// DriverName
+			// BpmsDriverName
 			// 
-			this.DriverName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.DriverName.HeaderText = "Driver Name";
-			this.DriverName.Name = "DriverName";
-			this.DriverName.ReadOnly = true;
-			this.DriverName.Width = 125;
+			this.BpmsDriverName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.BpmsDriverName.HeaderText = "BPMS Driver";
+			this.BpmsDriverName.Name = "BpmsDriverName";
+			this.BpmsDriverName.ReadOnly = true;
+			this.BpmsDriverName.Width = 125;
+			// 
+			// AssignedDriverId
+			// 
+			this.AssignedDriverId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.AssignedDriverId.HeaderText = "Assigned DriverId";
+			this.AssignedDriverId.Name = "AssignedDriverId";
+			this.AssignedDriverId.ReadOnly = true;
+			this.AssignedDriverId.Width = 65;
+			// 
+			// AssignedDriver
+			// 
+			this.AssignedDriver.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.AssignedDriver.HeaderText = "Assigned Driver";
+			this.AssignedDriver.Name = "AssignedDriver";
+			this.AssignedDriver.ReadOnly = true;
+			this.AssignedDriver.Width = 125;
+			// 
+			// UpdateDriverCheckBox
+			// 
+			this.UpdateDriverCheckBox.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.UpdateDriverCheckBox.HeaderText = "Upd";
+			this.UpdateDriverCheckBox.Name = "UpdateDriverCheckBox";
+			this.UpdateDriverCheckBox.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.UpdateDriverCheckBox.Width = 40;
+			// 
+			// PassNote
+			// 
+			this.PassNote.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PassNote.HeaderText = "PassNote";
+			this.PassNote.Name = "PassNote";
+			this.PassNote.ReadOnly = true;
+			this.PassNote.Width = 125;
+			// 
+			// RerideNote
+			// 
+			this.RerideNote.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.RerideNote.HeaderText = "RerideNote";
+			this.RerideNote.Name = "RerideNote";
+			this.RerideNote.ReadOnly = true;
+			this.RerideNote.Width = 80;
 			// 
 			// InsertDate
 			// 
@@ -336,10 +437,11 @@ namespace WaterskiScoringSystem.Tools {
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1190, 603);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.JumpSelectButton);
+			this.Controls.Add(this.SlalomSelectButton);
+			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.dataGridView);
 			this.Controls.Add(this.winNavStrip);
-			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.winStatus);
 			this.Name = "BoatPathDriverUpdate";
 			this.Text = "BoatPathDriverUpdate";
@@ -356,7 +458,6 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
 		#endregion
-		private System.Windows.Forms.Label RowStatusLabel;
 		private System.Windows.Forms.ToolStripStatusLabel winStatusMsg;
 		private System.Windows.Forms.StatusStrip winStatus;
 		private System.Windows.Forms.ToolStrip winNavStrip;
@@ -364,22 +465,32 @@ namespace WaterskiScoringSystem.Tools {
 		private System.Windows.Forms.ToolStripButton navExport;
 		private System.Windows.Forms.ToolStripButton navSave;
 		private System.Windows.Forms.ToolStripButton navFilter;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label RowStatusLabel;
 		private System.Windows.Forms.DataGridView dataGridView;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
+		private System.Windows.Forms.RadioButton SlalomSelectButton;
+		private System.Windows.Forms.RadioButton JumpSelectButton;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BPPK;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierMemberId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Round;
 		private System.Windows.Forms.DataGridViewTextBoxColumn PassNumber;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassSpeedKph;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PassLineLength;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BoatSpeed;
+		private System.Windows.Forms.DataGridViewTextBoxColumn LineLen;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassScore;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SkierRunNum;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Boat;
-		private System.Windows.Forms.DataGridViewTextBoxColumn DriverMemberId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn DriverName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BpmsDriverId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn BpmsDriverName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AssignedDriverId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AssignedDriver;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn UpdateDriverCheckBox;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PassNote;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RerideNote;
 		private System.Windows.Forms.DataGridViewTextBoxColumn InsertDate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDate;
 	}

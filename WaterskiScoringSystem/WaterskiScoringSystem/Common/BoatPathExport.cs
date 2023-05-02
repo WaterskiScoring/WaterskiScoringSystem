@@ -581,5 +581,6 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "ORDER BY SortSeq" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
+
 	}
 }

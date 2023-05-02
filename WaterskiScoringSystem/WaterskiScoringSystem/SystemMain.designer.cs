@@ -112,6 +112,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
+			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -466,42 +467,42 @@
 			// navTrickCalc
 			// 
 			this.navTrickCalc.Name = "navTrickCalc";
-			this.navTrickCalc.Size = new System.Drawing.Size(180, 22);
+			this.navTrickCalc.Size = new System.Drawing.Size(167, 22);
 			this.navTrickCalc.Text = "Trick Calculator";
 			this.navTrickCalc.Click += new System.EventHandler(this.navTrickCalc_Click);
 			// 
 			// navTrickRunningOrder
 			// 
 			this.navTrickRunningOrder.Name = "navTrickRunningOrder";
-			this.navTrickRunningOrder.Size = new System.Drawing.Size(180, 22);
+			this.navTrickRunningOrder.Size = new System.Drawing.Size(167, 22);
 			this.navTrickRunningOrder.Text = "&Running Order";
 			this.navTrickRunningOrder.Click += new System.EventHandler(this.navTrickRunningOrder_Click);
 			// 
 			// navTrickSummary
 			// 
 			this.navTrickSummary.Name = "navTrickSummary";
-			this.navTrickSummary.Size = new System.Drawing.Size(180, 22);
+			this.navTrickSummary.Size = new System.Drawing.Size(167, 22);
 			this.navTrickSummary.Text = "&Summary";
 			this.navTrickSummary.Click += new System.EventHandler(this.navTrickSummary_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(167, 22);
 			this.toolStripMenuItem3.Text = "&Awards Summary";
 			this.toolStripMenuItem3.Click += new System.EventHandler(this.navTrickSummaryAwards_Click);
 			// 
 			// navTrickTeamSummary
 			// 
 			this.navTrickTeamSummary.Name = "navTrickTeamSummary";
-			this.navTrickTeamSummary.Size = new System.Drawing.Size(180, 22);
+			this.navTrickTeamSummary.Size = new System.Drawing.Size(167, 22);
 			this.navTrickTeamSummary.Text = "&Team Summary";
 			this.navTrickTeamSummary.Click += new System.EventHandler(this.navTrickTeamSummary_Click);
 			// 
 			// navLoadVideoFiles
 			// 
 			this.navLoadVideoFiles.Name = "navLoadVideoFiles";
-			this.navLoadVideoFiles.Size = new System.Drawing.Size(180, 22);
+			this.navLoadVideoFiles.Size = new System.Drawing.Size(167, 22);
 			this.navLoadVideoFiles.Text = "Load Video Files";
 			this.navLoadVideoFiles.Click += new System.EventHandler(this.navLoadVideoFiles_Click);
 			// 
@@ -626,6 +627,7 @@
             this.navListMaintenance,
             this.navNopsDataMainenance,
             this.publishReportDeleteToolStripMenuItem,
+            this.boatPathDriverUpdateToolStripMenuItem,
             this.navViewRankingList,
             this.navTrickListMaint,
             this.navImportData,
@@ -805,6 +807,13 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
+			// boatPathDriverUpdateToolStripMenuItem
+			// 
+			this.boatPathDriverUpdateToolStripMenuItem.Name = "boatPathDriverUpdateToolStripMenuItem";
+			this.boatPathDriverUpdateToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
+			this.boatPathDriverUpdateToolStripMenuItem.Text = "Boat Path Driver Update";
+			this.boatPathDriverUpdateToolStripMenuItem.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
+			// 
 			// SystemMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -918,6 +927,7 @@
 		private System.Windows.Forms.ToolStripMenuItem importRegistrationsForWorldWaterSkiersToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem publishReportDeleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem navImportLwData;
+		private System.Windows.Forms.ToolStripMenuItem boatPathDriverUpdateToolStripMenuItem;
 	}
 }
 

@@ -453,6 +453,16 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
+        private void boatPathDriverUpdateToolStripMenuItem_Click( object sender, EventArgs e ) {
+            BoatPathDriverUpdate curForm = new BoatPathDriverUpdate();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
         private void navSetDatabase_Click( object sender, EventArgs e ) {
             DataAccess.DataAccessClose( true );
             SetDatabaseLocation curForm = new SetDatabaseLocation();
