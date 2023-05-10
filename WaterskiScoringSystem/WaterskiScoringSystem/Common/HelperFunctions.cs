@@ -5,7 +5,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-
+using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Common {
@@ -476,5 +476,44 @@ namespace WaterskiScoringSystem.Common {
 			return outBuffer;
 		}
 
+		public static void updateEventRegSkierClass( String inSanctionId, String inTourRules, String inTourEditCode, String inTourEventDate
+			, String inEvent, String inSkierGroup, String inSkierClassOld, String inSkierClassNew
+			, ListSkierClass inSkierClassList ) {
+			
+			String curMethodName = "HelperFunctions: updateEventRegSkierClass: ";
+			int rowsProc = 0, curRowsUpdated = 0;
+			DataRow curSkierClassRow;
+			DataRow curClassERow = inSkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			
+			curSqlStmt.Append( "Select PK, MemberId From EventReg " );
+			curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' " );
+			if ( !inEvent.ToLower().Equals( "all" ) ) curSqlStmt.Append( "And Event = '" + inEvent + "' " );
+			if ( !inSkierClassOld.ToLower().Equals( "all" ) ) curSqlStmt.Append( "And EventClass = '" + inSkierClassOld + "' " );
+			if ( !inSkierGroup.ToLower().Equals( "all" ) ) curSqlStmt.Append( "And EventGroup = '" + inSkierGroup + "' " );
+
+			String curSkierClass = "";
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				curSkierClass = inSkierClassNew.ToUpper();
+				curSkierClassRow = inSkierClassList.SkierClassDataTable.Select( "ListCode = '" + curSkierClass + "'" )[0];
+				if ( (Decimal)curSkierClassRow["ListCodeNum"] > (Decimal)curClassERow["ListCodeNum"] || inTourRules.ToUpper().Equals( "IWWF" ) ) {
+					if ( !( IwwfMembership.validateIwwfMembership( inSanctionId, inTourEditCode, (String)curRow["MemberId"], inTourEventDate ) ) ) {
+						curSkierClass = "E";
+					}
+				}
+
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Update EventReg Set " );
+				curSqlStmt.Append( "EventClass = '" + curSkierClass + "', LastUpdateDate = GETDATE() " );
+				curSqlStmt.Append( "Where PK = " + HelperFunctions.getDataRowColValue( curRow, "PK", "0" ) );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				curRowsUpdated += rowsProc;
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+			}
+
+			MessageBox.Show( "Total skiers updated for class change: " + curRowsUpdated );
+
+		}
 	}
 }

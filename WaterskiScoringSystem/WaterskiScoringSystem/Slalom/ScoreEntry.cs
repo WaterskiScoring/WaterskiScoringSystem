@@ -3352,85 +3352,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 				String curColName = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
 				if ( curColName.StartsWith( "Judge" ) ) {
-					#region Validate any of the judge score cells
-					String curJudgeEntry = (String)e.FormattedValue;
-					if ( HelperFunctions.isObjectEmpty( curJudgeEntry ) ) {
-						myModCellValue = "";
-					} else {
-						if ( curJudgeEntry != myOrigCellValue ) {
-							if ( curJudgeEntry.IndexOf( '.' ) < 0 ) {
-								String modJudgeEntry = "";
-								String curLastChar = curJudgeEntry.Substring( curJudgeEntry.Length - 1, 1 ).ToUpper();
-								if ( curLastChar.Equals( "Q" ) ) {
-									if ( curJudgeEntry.Length > 1 ) {
-										modJudgeEntry = curJudgeEntry.Substring( 0, curJudgeEntry.Length - 1 ) + ".25";
-									} else {
-										modJudgeEntry = ".25";
-									}
-								} else if ( curLastChar.Equals( "H" ) ) {
-									if ( curJudgeEntry.Length > 1 ) {
-										modJudgeEntry = curJudgeEntry.Substring( 0, curJudgeEntry.Length - 1 ) + ".5";
-									} else {
-										modJudgeEntry = ".5";
-									}
-								} else {
-									modJudgeEntry = curJudgeEntry.Substring( 0, 1 ) + "." + curJudgeEntry.Substring( 1 );
-								}
-								curJudgeEntry = modJudgeEntry;
-								myModCellValue = curJudgeEntry;
-							}
-							try {
-								Decimal curJudgeScore = Convert.ToDecimal( curJudgeEntry );
-								if ( curJudgeScore > 6 ) {
-									myRecapRow.ErrorText = " Value in " + curColName + " must be less than or equal to 6";
-									MessageBox.Show( myRecapRow.ErrorText );
-									e.Cancel = true;
-								} else {
-									Int32 posDelim = curJudgeEntry.IndexOf( '.' );
-									if ( posDelim > -1 ) {
-										if ( curJudgeEntry.Substring( posDelim ).Equals( ".25" )
-											|| curJudgeEntry.Substring( posDelim ).Equals( ".5" )
-											|| curJudgeEntry.Substring( posDelim ).Equals( ".50" )
-											|| curJudgeEntry.Substring( posDelim ).Equals( ".0" )
-											|| curJudgeEntry.Substring( posDelim ).Equals( ".00" )
-											|| curJudgeEntry.Substring( posDelim ).Equals( "." )
-											) {
-											//Value is valid
-											myModCellValue = curJudgeScore.ToString( "0.00" );
-										} else if ( curJudgeEntry.Substring( posDelim ).Equals( ".75" ) ) {
-											if ( SlalomEventData.isCollegiateEvent() ) {
-												if ( myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "CM" )
-													|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "CW" )
-													|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "BM" )
-													|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "BW" )
-													) {
-													//Value is valid
-													myModCellValue = curJudgeScore.ToString( "0.00" );
-												} else {
-													myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
-													MessageBox.Show( myRecapRow.ErrorText );
-													e.Cancel = true;
-												}
-											} else {
-												myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
-												MessageBox.Show( myRecapRow.ErrorText );
-												e.Cancel = true;
-											}
-										} else {
-											myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
-											MessageBox.Show( myRecapRow.ErrorText );
-											e.Cancel = true;
-										}
-									}
-								}
-							} catch ( Exception ex ) {
-								myRecapRow.ErrorText = "Value in " + curColName + " must be numeric (if Q or H must be last characer";
-								MessageBox.Show( myRecapRow.ErrorText + " :Exception=" + ex.Message );
-								e.Cancel = true;
-							}
-						}
-					}
-					#endregion
+					if ( validateJudgeScoreInput( curColName, (String)e.FormattedValue ) ) return;
+					e.Cancel = true;
 
 				} else if ( curColName.StartsWith( "BoatTime" ) && myRecapRow.Cells[e.ColumnIndex].Value != null ) {
 					#region Validate boat time
@@ -3459,6 +3382,90 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 		}
 
+		/* 
+		 * Validate any of the judge score cells
+		 */
+		private bool validateJudgeScoreInput( String curColName, String curJudgeEntry ) {
+			if ( HelperFunctions.isObjectEmpty( curJudgeEntry ) ) {
+				myModCellValue = "";
+				return true;
+			}
+			if ( curJudgeEntry.Equals( myOrigCellValue ) ) return true;
+
+			if ( curJudgeEntry.IndexOf( '.' ) < 0 ) {
+				String modJudgeEntry = "";
+				String curLastChar = curJudgeEntry.Substring( curJudgeEntry.Length - 1, 1 ).ToUpper();
+				if ( curLastChar.Equals( "Q" ) ) {
+					if ( curJudgeEntry.Length > 1 ) {
+						modJudgeEntry = curJudgeEntry.Substring( 0, curJudgeEntry.Length - 1 ) + ".25";
+					} else {
+						modJudgeEntry = ".25";
+					}
+				} else if ( curLastChar.Equals( "H" ) ) {
+					if ( curJudgeEntry.Length > 1 ) {
+						modJudgeEntry = curJudgeEntry.Substring( 0, curJudgeEntry.Length - 1 ) + ".5";
+					} else {
+						modJudgeEntry = ".5";
+					}
+				} else {
+					modJudgeEntry = curJudgeEntry.Substring( 0, 1 ) + "." + curJudgeEntry.Substring( 1 );
+				}
+				curJudgeEntry = modJudgeEntry;
+				myModCellValue = curJudgeEntry;
+			}
+			try {
+				Decimal curJudgeScore = Convert.ToDecimal( curJudgeEntry );
+				if ( curJudgeScore > 6 ) {
+					myRecapRow.ErrorText = " Value in " + curColName + " must be less than or equal to 6";
+					MessageBox.Show( myRecapRow.ErrorText );
+					return false;
+				}
+				Int32 posDelim = curJudgeEntry.IndexOf( '.' );
+				if ( posDelim > -1 ) {
+					if ( curJudgeEntry.Substring( posDelim ).Equals( ".25" )
+						|| curJudgeEntry.Substring( posDelim ).Equals( ".5" )
+						|| curJudgeEntry.Substring( posDelim ).Equals( ".50" )
+						|| curJudgeEntry.Substring( posDelim ).Equals( ".0" )
+						|| curJudgeEntry.Substring( posDelim ).Equals( ".00" )
+						|| curJudgeEntry.Substring( posDelim ).Equals( "." )
+						) {
+						//Value is valid
+						myModCellValue = curJudgeScore.ToString( "0.00" );
+					} else if ( curJudgeEntry.Substring( posDelim ).Equals( ".75" ) ) {
+						if ( SlalomEventData.isCollegiateEvent() ) {
+							if ( myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "CM" )
+								|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "CW" )
+								|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "BM" )
+								|| myRecapRow.Cells["AgeGroupRecap"].Value.Equals( "BW" )
+								) {
+								//Value is valid
+								myModCellValue = curJudgeScore.ToString( "0.00" );
+							} else {
+								myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
+								MessageBox.Show( myRecapRow.ErrorText );
+								return false;
+							}
+						} else {
+							myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
+							MessageBox.Show( myRecapRow.ErrorText );
+							return false;
+						}
+					} else {
+						myRecapRow.ErrorText = " Decimal value in " + curColName + " must only contain .0 or .25 or .5 or .75";
+						MessageBox.Show( myRecapRow.ErrorText );
+						return false;
+					}
+				}
+			
+			} catch ( Exception ex ) {
+				myRecapRow.ErrorText = "Value in " + curColName + " must be numeric (if Q or H must be last characer";
+				MessageBox.Show( myRecapRow.ErrorText + " :Exception=" + ex.Message );
+				return false;
+			}
+
+			return true;
+		}
+
 		private void slalomRecapDataGridView_CellValidated( object sender, DataGridViewCellEventArgs e ) {
 			if ( myWindowFocus ) {
 				if ( myRecapRow == null ) return;
@@ -3467,60 +3474,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 				String curColName = slalomRecapDataGridView.Columns[e.ColumnIndex].Name;
 				if ( curColName.StartsWith( "Judge" ) ) {
-					#region Validate any of the judge score cells
-					String curInputValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
-					if ( HelperFunctions.isObjectEmpty( curInputValue ) ) {
-						if ( HelperFunctions.isObjectEmpty( myOrigCellValue ) ) {
-							//No new data input, no action required
-						} else {
-							isDataModified = true;
-							myRecapRow.Cells["Updated"].Value = "Y";
-						}
-					} else {
-						if ( SlalomLineSelect.Enabled || SlalomSpeedSelection.Enabled ) {
-							SlalomLineSelect.Enabled = false;
-							SlalomSpeedSelection.Enabled = false;
-						}
-
-						if ( curInputValue != myOrigCellValue ) {
-							isDataModified = true;
-							myRecapRow.Cells["Updated"].Value = "Y";
-							try {
-								if ( myModCellValue.Length > 0 ) curInputValue = myModCellValue;
-								Decimal curJudgeScore = Convert.ToDecimal( curInputValue );
-								myRecapRow.Cells[e.ColumnIndex].Value = curJudgeScore.ToString( "#.00" );
-								if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value.ToString() ) ) ) {
-									SlalomTimeValidate();
-								}
-								myOrigCellValue = (String)myRecapRow.Cells[e.ColumnIndex].Value;
-							} catch ( Exception ex ) {
-								myRecapRow.ErrorText = "Value in " + curColName + " must be numeric";
-								MessageBox.Show( "Exception: " + ex.Message );
-								return;
-							}
-							if ( ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
-								&& ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
-								Decimal curPassScore = Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value );
-								if ( curPassScore == 6 ) {
-									if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
-										&& ( String )myRecapRow.Cells["BoatPathGoodRecap"].Value == "Y"
-										) {
-										if ( mySlalomSetAnalysis.isExitGatesGood() ) {
-											isAddRecapRowInProg = true;
-											Timer curTimerObj = new Timer();
-											curTimerObj.Interval = 5;
-											curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-											curTimerObj.Start();
-										} else {
-											skierPassMsg.ForeColor = Color.Red;
-											skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
-										}
-									}
-								}
-							}
-						}
-					}
-					#endregion
+					validateJudgeScore( curColName, e.ColumnIndex );
 
 				} else if ( curColName.Equals( "BoatTimeRecap" ) ) {
 					#region Validate boat time
@@ -3548,7 +3502,7 @@ namespace WaterskiScoringSystem.Slalom {
 							boatTimeValidation();
 
 							if ( boatPathDataGridView.Visible ) {
-								decimal curPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "0" ) );
+								Decimal curPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "0" ) );
 								loadBoatPathDataGridView( "Slalom"
 									, TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventClass"].Value.ToString()
 									, (String)myRecapRow.Cells["MemberIdRecap"].Value
@@ -3649,6 +3603,77 @@ namespace WaterskiScoringSystem.Slalom {
 			myRecapRow.Cells["Updated"].Value = "Y";
 
 			SlalomTimeValidate();
+		}
+
+		/*
+		 * Validate any of the judge score cells
+		 */
+		private void validateJudgeScore( String inColName, int inColIndex ) {
+			Decimal curPassScore;
+			String curInputValue = (String)myRecapRow.Cells[inColIndex].Value;
+			
+			if ( HelperFunctions.isObjectEmpty( curInputValue ) ) {
+				if ( HelperFunctions.isObjectEmpty( myOrigCellValue ) ) return; //No new data input, no action required
+
+				// Judge score cell input has been deleted
+				isDataModified = true;
+				myRecapRow.Cells["Updated"].Value = "Y";
+				myRecapRow.Cells["ScoreRecap"].Value = "";
+				
+				curPassScore = mySlalomSetAnalysis.calcScoreForPass();
+				myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
+				return;
+			}
+
+			if ( SlalomLineSelect.Enabled || SlalomSpeedSelection.Enabled ) {
+				SlalomLineSelect.Enabled = false;
+				SlalomSpeedSelection.Enabled = false;
+			}
+
+			if ( curInputValue.Equals( myOrigCellValue ) ) return; //No new data input, no action required
+
+			isDataModified = true;
+			myRecapRow.Cells["Updated"].Value = "Y";
+			myRecapRow.Cells["ScoreRecap"].Value = "";
+			curPassScore = mySlalomSetAnalysis.calcScoreForPass();
+			myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
+			try {
+				if ( myModCellValue.Length > 0 ) curInputValue = myModCellValue;
+				Decimal curJudgeScore = Convert.ToDecimal( curInputValue );
+				myRecapRow.Cells[inColIndex].Value = curJudgeScore.ToString( "#.00" );
+				if ( HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( myRecapRow, "BoatTimeRecap", "" ) )
+					&& HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "" ) )
+					) {
+					SlalomTimeValidate();
+				}
+				myOrigCellValue = (String)myRecapRow.Cells[inColIndex].Value;
+			
+			} catch ( Exception ex ) {
+				myRecapRow.ErrorText = "Value in " + inColName + " must be numeric";
+				MessageBox.Show( "Exception: " + ex.Message );
+				return;
+			}
+
+			if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "TimeInTolRecap", "" ) )
+				|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "" ) ) ) return;
+
+			curPassScore = Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value );
+			if ( curPassScore == 6 ) {
+				if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
+					&& (String)myRecapRow.Cells["BoatPathGoodRecap"].Value == "Y"
+					) {
+					if ( mySlalomSetAnalysis.isExitGatesGood() ) {
+						isAddRecapRowInProg = true;
+						Timer curTimerObj = new Timer();
+						curTimerObj.Interval = 5;
+						curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+						curTimerObj.Start();
+					} else {
+						skierPassMsg.ForeColor = Color.Red;
+						skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
+					}
+				}
+			}
 		}
 
 		private void checkAddNewPass() {

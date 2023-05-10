@@ -431,20 +431,25 @@ namespace WaterskiScoringSystem.Tournament {
 						PrintEventRotation.Visible = false;
 					}
 				}
-				if ( slalomButton.Checked ) {
+                DataTable curPrintColumnSelectList = columnSelectDialogcs.ColumnList;
+                if ( slalomButton.Checked ) {
 					PrintTrickBoat.Visible = false;
 					PrintJumpHeight.Visible = false;
 
 				} else if ( trickButton.Checked ) {
-					PrintTrickBoat.Visible = true;
-					PrintJumpHeight.Visible = false;
-
-				} else if ( jumpButton.Checked ) {
 					PrintTrickBoat.Visible = false;
-					PrintJumpHeight.Visible = true;
-				}
+					PrintJumpHeight.Visible = false;
+                    DataRow[] curFindRows = curPrintColumnSelectList.Select( "Name = 'PrintTrickBoat'" );
+                    if ( curFindRows.Length > 0 && (Boolean)curFindRows[0]["Visible"] ) PrintTrickBoat.Visible = true;
 
-				foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
+                } else if ( jumpButton.Checked ) {
+					PrintTrickBoat.Visible = false;
+					PrintJumpHeight.Visible = false;
+                    DataRow[] curFindRows = curPrintColumnSelectList.Select( "Name = 'PrintJumpHeight'" );
+                    if ( curFindRows.Length > 0 && (Boolean)curFindRows[0]["Visible"] ) PrintJumpHeight.Visible = true;
+                }
+
+                foreach ( DataRow curDataRow in myEventRegDataTable.Rows ) {
 					curPrintIdx = PrintDataGridView.Rows.Add();
 					curPrintRow = PrintDataGridView.Rows[curPrintIdx];
 
@@ -962,12 +967,11 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navClassChangeButton_Click(object sender, EventArgs e) {
-            String curMethodName = "RunningOrder:navClassChangeButton_Click";
-			String curEvent = getCurrentEvent();
-
+            String curEvent = getCurrentEvent();
 			RunOrderClassForm curForm = new RunOrderClassForm();
             curForm.showClassChangeWindow( myTourRow, curEvent );
             curForm.ShowDialog( this );
+            
             // Determine if the OK button was clicked on the dialog box.
             if (curForm.DialogResult == DialogResult.OK) {
                 String curSkierClassNew = curForm.CopyToClass;
@@ -977,30 +981,16 @@ namespace WaterskiScoringSystem.Tournament {
                 if (curSkierClassNew.Equals( curSkierClassOld )) {
                 } else if (mySkierClassList.compareClassChange( curSkierClassNew, myTourClass ) < 0) {
                     MessageBox.Show( "Class " + curSkierClassNew + " cannot be assigned to a skier in a class " + myTourClass + " tournament" );
-                } else {
-                    try {
-                        StringBuilder curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update EventReg Set " );
-                        curSqlStmt.Append( "EventClass = '" + curSkierClassNew + "'" );
-                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                        curSqlStmt.Append( "And Event = '" + curEvent + "' " );
-                        if (!curSkierClassOld.ToLower().Equals( "all" )) {
-                            curSqlStmt.Append( "And EventClass = '" + curSkierClassOld + "' " );
-                        }
-                        if (!curSkierGroup.ToLower().Equals( "all" )) {
-                            curSqlStmt.Append( "And EventGroup = '" + curSkierGroup + "' " );
-                        }
-                        int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                        isDataModified = false;
-                        navRefresh_Click( null, null );                        
-                    } catch (Exception excp) {
-                        String curMsg = "Error attempting to update skier class for group \n" + excp.Message;
-                        MessageBox.Show( curMsg );
-                        Log.WriteFile( curMethodName + curMsg );
-                    }
+                    return;
                 }
+
+                HelperFunctions.updateEventRegSkierClass( mySanctionNum
+                    , HelperFunctions.getDataRowColValue(myTourRow, "Rules", "AWSA")
+                    , HelperFunctions.getDataRowColValue( myTourRow, "SanctionEditCode", "" )
+                    , HelperFunctions.getDataRowColValue( myTourRow, "EventDates", "" )
+                    , curEvent, curSkierGroup, curSkierClassOld, curSkierClassNew, mySkierClassList );
+
+                navRefresh_Click( null, null );
             }
         }
 

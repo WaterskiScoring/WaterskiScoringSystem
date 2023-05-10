@@ -265,12 +265,13 @@ namespace WaterskiScoringSystem.Admin {
 
             editName.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourName", "" );
             editSanctionEditCode.Text = HelperFunctions.getViewRowColValue( curViewRow, "SanctionEditCode", "" );
-            editClass.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourClass", "" );
-            editFederation.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourFederation", "" );
+            editClass.SelectedValue = HelperFunctions.getViewRowColValue( curViewRow, "TourClass", "" );
+
+            editFederation.SelectedValue = HelperFunctions.getViewRowColValue( curViewRow, "TourFederation", "" );
             editEventDates.Text = HelperFunctions.getViewRowColValue( curViewRow, "EventDates", "" );
             editTourDataLoc.Text = HelperFunctions.getViewRowColValue( curViewRow, "TourDataLoc", "" );
             editEventLocation.Text = HelperFunctions.getViewRowColValue( curViewRow, "EventLocation", "" );
-            editRules.Text = HelperFunctions.getViewRowColValue( curViewRow, "Rules", "" );
+            editRules.SelectedValue = HelperFunctions.getViewRowColValue( curViewRow, "Rules", "" );
             editSlalomRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "SlalomRounds", "" );
             editTrickRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "TrickRounds", "" );
             editJumpRounds.Text = HelperFunctions.getViewRowColValue( curViewRow, "JumpRounds", "" );
@@ -1409,20 +1410,16 @@ namespace WaterskiScoringSystem.Admin {
                         curDataTable = getData( curSqlStmt.ToString() );
                         if (curDataTable.Rows.Count > 0) {
                             String curTourEventClassOrig = (String)curDataTable.Rows[0]["EventClass"];
-                            try {
-                                curSqlStmt = new StringBuilder( "" );
-                                curSqlStmt.Append( "Update EventReg " );
-                                curSqlStmt.Append( "SET EventClass = '" + curTourEventClass + "' " );
-                                curSqlStmt.Append("WHERE SanctionId = '" + curSanctionId + "' AND EventClass = '" + curTourEventClassOrig + "' ");
-                                int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                            } catch (Exception ex) {
-                                String ExcpMsg = ex.Message;
-                                if (curSqlStmt.ToString().Length > 0) {
-                                    ExcpMsg += "\n" + curSqlStmt.ToString();
-                                }
-                                MessageBox.Show( "Error attempting to change tournament class " + "\n\nError: " + ExcpMsg);
-                                return;
-                            }
+
+                            ListSkierClass curSkierClassList = new ListSkierClass();
+                            curSkierClassList.ListSkierClassLoad();
+
+                            HelperFunctions.updateEventRegSkierClass( curSanctionId
+                                , HelperFunctions.getViewRowColValue( myTourViewRow, "Rules", "AWSA" )
+                                , HelperFunctions.getViewRowColValue( myTourViewRow, "SanctionEditCode", "" )
+                                , HelperFunctions.getViewRowColValue( myTourViewRow, "EventDates", "" )
+                                , "All", "All", curTourEventClassOrig, curTourEventClass, curSkierClassList );
+
                         }
                     }
                 }

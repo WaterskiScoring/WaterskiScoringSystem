@@ -127,7 +127,10 @@ namespace WaterskiScoringSystem.Tools {
 			isDataLoading = true;
 
 			dataGridView.Rows.Clear();
-			if ( myDataTable == null || myDataTable.Rows.Count == 0 ) return;
+			if ( myDataTable == null || myDataTable.Rows.Count == 0 ) {
+				MessageBox.Show( "All boat path drivers matched available driver assignments" );
+				return;
+			}
 			int curIdx = 0;
 			foreach ( DataRow curRow in myDataTable.Rows ) {
 				curIdx = dataGridView.Rows.Add();
@@ -228,64 +231,16 @@ namespace WaterskiScoringSystem.Tools {
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Update BoatPath Set " );
-			curSqlStmt.Append( ", DriverMemberId = '" + curDriverMemberId + "'" );
+			curSqlStmt.Append( "DriverMemberId = '" + curDriverMemberId + "'" );
 			curSqlStmt.Append( ", DriverName = '" + curDriverName + "'" );
 			curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
 			curSqlStmt.Append( "Where PK = " + curPK );
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			Log.WriteFile( "BoatPathDriverUpdate:Save:Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-
-			return true;
+			if ( rowsProc > 0 ) return true;
+			return false;
 		}
-
-		private void dataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
-			if ( isDataLoading ) return;
-			if ( myDataTable.Rows.Count == 0 ) return;
-
-			DataGridView curView = (DataGridView)sender;
-			curView.EndEdit();
-
-			int curRowPos = e.RowIndex + 1;
-			RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + curView.Rows.Count.ToString();
-
-			//Update data if changes are detected
-			if ( isDataModified ) {
-				try {
-					navSave_Click( null, null );
-					winStatusMsg.Text = "Previous row saved.";
-				} catch ( Exception excp ) {
-					MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
-				}
-			}
-			if ( !( isDataModified ) ) {
-				//Sent current tournament registration row
-				if ( curView.Rows[e.RowIndex].Cells[e.ColumnIndex] != null ) {
-					if ( !( HelperFunctions.isObjectEmpty( curView.Rows[e.RowIndex].Cells["SkierMemberId"].Value ) ) ) {
-						myRowIdx = e.RowIndex;
-						isDataModified = false;
-					}
-				}
-			}
-		}
-
-		private void dataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
-			if ( dataGridView.Rows.Count > 0 ) {
-				if ( !( dataGridView.Columns[e.ColumnIndex].ReadOnly ) ) {
-					String curColName = dataGridView.Columns[e.ColumnIndex].Name;
-					if ( curColName.Equals( "SkierMemberId" )
-						|| curColName.Equals( "DriverMemberId" )
-						|| curColName.Equals( "PassSpeedKph" )
-						|| curColName.Equals( "PassLineLength" )
-						|| curColName.Equals( "Round" )
-						|| curColName.Equals( "PassNumber" )
-						|| curColName.Equals( "Boat" )
-						) {
-						myOrigItemValue = HelperFunctions.getViewRowColValue( dataGridView.Rows[e.RowIndex], curColName, "" );
-					}
-				}
-			}
-		}
-		
+	
 		private DataTable getBoatPath() {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT BP.PK as BPPK, S.SanctionId, T.SkierName, T.MemberId as SkierMemberId, E.Event, S.AgeGroup as Div, E.EventGroup, E.EventClass" );
@@ -321,7 +276,8 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "INNER JOIN OfficialWorkAsgmt O ON O.SanctionId = S.SanctionId AND O.Event = E.Event AND O.EventGroup = E.EventGroup AND O.Round = S.Round AND O.WorkAsgmt = 'Driver' " );
 			curSqlStmt.Append( "INNER JOIN TourReg OT ON O.MemberId = OT.MemberId AND O.SanctionId = OT.SanctionId " );
 			curSqlStmt.Append( "Where S.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + myEvent + "' " );
-			curSqlStmt.Append( "AND BP.DriverMemberId != O.MemberId " );
+			curSqlStmt.Append( "AND BP.DriverMemberId NOT IN (Select OO.MemberId From OfficialWorkAsgmt OO Where OO.SanctionId = S.SanctionId AND OO.Event = E.Event AND OO.EventGroup = E.EventGroup AND OO.Round = S.Round AND OO.WorkAsgmt = 'Driver' ) " );
+
 			if ( myFilterCmd.Length > 0 ) {
 				String curFilterCmd = myFilterCmd.Replace( "InsertDate", "B.InsertDate" );
 				curFilterCmd = curFilterCmd.Replace( "Round", "B.Round" );
