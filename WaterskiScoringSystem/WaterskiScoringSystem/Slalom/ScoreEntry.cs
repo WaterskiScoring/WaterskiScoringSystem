@@ -428,7 +428,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private bool saveScore() {
-			String curMethodName = "Slalom:ScoreEntry:saveScore";
+			String curMethodName = "Slalom:ScoreEntry:saveScore: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			if ( StartTimerButton.Visible ) StartTimerButton_Click( null, null );
 
@@ -436,7 +436,6 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( slalomRecapDataGridView.Rows.Count <= 0 ) return true;
 
 			try {
-				String curSanctionId = (String)myRecapRow.Cells["SanctionIdRecap"].Value;
 				String curMemberId = (String)myRecapRow.Cells["MemberIdRecap"].Value;
 				String curAgeGroup = (String)myRecapRow.Cells["AgeGroupRecap"].Value;
 				byte curRound = Convert.ToByte( (String)myRecapRow.Cells["RoundRecap"].Value );
@@ -450,18 +449,18 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 
 				// Update skier score for current pass
-				decimal curScoreRecap = saveSkierPassScore( curSanctionId, curMemberId, curAgeGroup, curRound );
+				decimal curScoreRecap = saveSkierPassScore( curMemberId, curAgeGroup, curRound );
 				if ( curScoreRecap < 0M ) {
 					MessageBox.Show( "Attempt to update score for current pass has failed" );
 					return false;
 				}
 
 				// Update skier total score for round
-				int rowsProc = saveSkierScore( curSanctionId, curMemberId, curAgeGroup, curRound, curScoreRecap );
+				int rowsProc = saveSkierScore( curMemberId, curAgeGroup, curRound, curScoreRecap );
 				if ( rowsProc == 0 ) return false;
 
 				//Send scores and information to any defined external reporting system
-				transmitExternalScoreboard( curSanctionId, curMemberId, curAgeGroup, curRound, myRecapRow.Index + 1 );
+				transmitExternalScoreboard( curMemberId, curAgeGroup, curRound, myRecapRow.Index + 1 );
 
 				// Check to see if score is equal to or great than divisions current record score
 				String curCheckRecordMsg = SlalomEventData.myCheckEventRecord.checkRecordSlalom( curAgeGroup, scoreTextBox.Text, (byte)myScoreRow["SkiYearAge"], (string)myScoreRow["Gender"] );
@@ -506,7 +505,7 @@ namespace WaterskiScoringSystem.Slalom {
 				return true;
 
 			} catch ( Exception excp ) {
-				String curMsg = ":Error attempting to update skier score \n" + excp.Message + "\n" + curSqlStmt.ToString();
+				String curMsg = "Error attempting to update skier score \n" + excp.Message + "\n" + curSqlStmt.ToString();
 				MessageBox.Show( curMsg );
 				Log.WriteFile( curMethodName + curMsg );
 				return false;
@@ -516,7 +515,7 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Update skier score for current pass
 		 */
-		private int saveSkierScore( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, decimal curScoreRecap ) {
+		private int saveSkierScore( String curMemberId, String curAgeGroup, byte curRound, decimal curScoreRecap ) {
 			String curMethodName = "saveSkierScore: ";
 			int rowsProc = 0;
 			String curStatus = "TBD", curBoatCode = "", curNote = ""; ;
@@ -620,7 +619,7 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			if ( isScoreRowExist( curSanctionId, curMemberId, curAgeGroup, curRound ) ) {
+			if ( isScoreRowExist( SlalomEventData.mySanctionNum, curMemberId, curAgeGroup, curRound ) ) {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Update SlalomScore Set " );
 				curSqlStmt.Append( "Score = " + curScore.ToString( "##0.00" ) );
@@ -645,7 +644,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 				curSqlStmt.Append( ", LastUpdateDate = GETDATE()" );
 				curSqlStmt.Append( ", Note = '" + curNote + "' " );
-				curSqlStmt.Append( "Where SanctionId = '" + curSanctionId + "' " );
+				curSqlStmt.Append( "Where SanctionId = '" + SlalomEventData.mySanctionNum + "' " );
 				curSqlStmt.Append( "AND MemberId = '" + curMemberId + "' " );
 				curSqlStmt.Append( "AND AgeGroup = '" + curAgeGroup + "' " );
 				curSqlStmt.Append( "AND Round = " + curRound );
@@ -663,7 +662,7 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 				curSqlStmt.Append( ", LastUpdateDate, InsertDate, Note" );
 				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + curSanctionId + "'" );
+				curSqlStmt.Append( "'" + SlalomEventData.mySanctionNum + "'" );
 				curSqlStmt.Append( ", '" + curMemberId + "'" );
 				curSqlStmt.Append( ", '" + curAgeGroup + "'" );
 				curSqlStmt.Append( ", " + curRound );
@@ -711,7 +710,7 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Update skier score for current pass
 		 */
-		private decimal saveSkierPassScore( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound ) {
+		private decimal saveSkierPassScore( String curMemberId, String curAgeGroup, byte curRound ) {
 			String curMethodName = "saveSkierPassScore: ";
 			int rowsProc = 0;
 
@@ -756,7 +755,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curNote = curNote.Replace( "'", "''" );
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			if ( isRecapRowExist( curSanctionId, curMemberId, curAgeGroup, curRound, curSkierRunNum ) ) {
+			if ( isRecapRowExist( SlalomEventData.mySanctionNum, curMemberId, curAgeGroup, curRound, curSkierRunNum ) ) {
 				curSqlStmt.Append( "Update SlalomRecap Set " );
 				curSqlStmt.Append( "PassSpeedKph = " + curPassSpeedKph.ToString( "00" ) );
 				curSqlStmt.Append( ", PassLineLength = " + curPassLineLengthMeters.ToString( "00.00" ) );
@@ -781,7 +780,7 @@ namespace WaterskiScoringSystem.Slalom {
 				curSqlStmt.Append( ", LastUpdateDate = getdate()" );
 				curSqlStmt.Append( ", RerideReason = '" + curRerideReason + "'" );
 				curSqlStmt.Append( ", Note = '" + curNote + "' " );
-				curSqlStmt.Append( "Where SanctionId = '" + curSanctionId + "' " );
+				curSqlStmt.Append( "Where SanctionId = '" + SlalomEventData.mySanctionNum + "' " );
 				curSqlStmt.Append( "AND MemberId = '" + curMemberId + "' " );
 				curSqlStmt.Append( "AND AgeGroup = '" + curAgeGroup + "' " );
 				curSqlStmt.Append( "AND Round = " + curRound + " " );
@@ -797,7 +796,7 @@ namespace WaterskiScoringSystem.Slalom {
 				curSqlStmt.Append( ", ExitGate1, ExitGate2, ExitGate3" );
 				curSqlStmt.Append( ", BoatTime, Score, ProtectedScore, TimeInTol, ScoreProt, BoatPathGood, LastUpdateDate, InsertDate, RerideReason, Note" );
 				curSqlStmt.Append( ") Values ( " );
-				curSqlStmt.Append( "'" + curSanctionId + "'" );
+				curSqlStmt.Append( "'" + SlalomEventData.mySanctionNum + "'" );
 				curSqlStmt.Append( ", '" + curMemberId + "'" );
 				curSqlStmt.Append( ", '" + curAgeGroup + "'" );
 				curSqlStmt.Append( ", " + curRound );
@@ -837,10 +836,15 @@ namespace WaterskiScoringSystem.Slalom {
 				return Convert.ToDecimal( curScoreRecap );
 			}
 
-			return -1;
+			String curMsg = ":Zero rows added or updated.  This is unexpected.  "
+				+ "Review data for current pass and correct any input errors.  "
+				+ "If error persists then send an email to the development team and include the tournament log and note the time of the issue.";
+			Log.WriteFile( curMethodName + curMsg );
+			MessageBox.Show( curMethodName + curMsg );
+			return 0;
 		}
 
-		private void transmitExternalScoreboard( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
+		private void transmitExternalScoreboard( String curMemberId, String curAgeGroup, byte curRound, int curSkierRunNum ) {
 			String curSkierName = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
 			String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 
@@ -3621,7 +3625,7 @@ namespace WaterskiScoringSystem.Slalom {
 				myRecapRow.Cells["ScoreRecap"].Value = "";
 				
 				curPassScore = mySlalomSetAnalysis.calcScoreForPass();
-				myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
+				if ( curPassScore >= 0 ) myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
 				return;
 			}
 
@@ -3636,7 +3640,7 @@ namespace WaterskiScoringSystem.Slalom {
 			myRecapRow.Cells["Updated"].Value = "Y";
 			myRecapRow.Cells["ScoreRecap"].Value = "";
 			curPassScore = mySlalomSetAnalysis.calcScoreForPass();
-			myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
+			if ( curPassScore >= 0 ) myRecapRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
 			try {
 				if ( myModCellValue.Length > 0 ) curInputValue = myModCellValue;
 				Decimal curJudgeScore = Convert.ToDecimal( curInputValue );

@@ -217,6 +217,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			getSanctionNum();
 			
 			try {
+				String curScore = score;
+				if ( athleteEvent.Equals("Slalom" ) ) curScore = String.Format( "{0} @ {1} / {2}", score, speed, rope);
 				Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
 					{ "athleteId", athleteId }
 					, { "athleteName", athleteName }
@@ -227,7 +229,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					, { "passNumber", passNumber }
 					, { "speed", speed }
 					, { "rope", rope }
-					, { "score", score + "@" + speed.ToString() + "/" + rope }
+					, { "score", curScore }
 				};
 				// 	, { "score_buoys", (decimal)curDataRow["Score"] }
 				// consider changing how the score attribute is show for jump
@@ -283,6 +285,18 @@ namespace WaterskiScoringSystem.Externalnterface {
 							, { "athleteGroup", (String)curDataRow["EventGroup"] }
 							, { "position_current", Convert.ToInt32(curRow + 1) }
 							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+							};
+						
+						} else if ( athleteEvent.Equals( "Trick" ) ) {
+							curSkier = new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0} {1} {2}", (decimal)curDataRow["Score"], (decimal)curDataRow["ScorePass1"], (decimal)curDataRow["ScorePass2"]) }
 							};
 						}
 
@@ -839,6 +853,19 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.EventGroup = '" + athleteGroup + "' " );
 				curSqlStmt.Append( "AND ER.Event = '" + athleteEvent + "' AND SS.Round = " + inRound + " " );
 				curSqlStmt.Append( "ORDER BY ER.ReadyForPlcmt DESC, ER.EventGroup, SS.ScoreMeters DESC, ScoreFeet DESC, TR.SkierName, SS.Round " );
+
+			} else if ( athleteEvent.Equals( "Trick" ) ) {
+				curSqlStmt.Append( "SELECT TR.MemberId, TR.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, TR.State" );
+				curSqlStmt.Append( ", COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmt, TR.Federation, T.Federation as TourFederation" );
+				curSqlStmt.Append( ", SS.Round, SS.Score, SS.ScorePass1, , SS.ScorePass2 " );
+				curSqlStmt.Append( "FROM TourReg TR " );
+				curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN TrickScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup" );
+				curSqlStmt.Append( "  INNER JOIN Tournament T ON T.SanctionId = TR.SanctionId " );
+				curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.EventGroup = '" + athleteGroup + "' " );
+				curSqlStmt.Append( "AND ER.Event = '" + athleteEvent + "' AND SS.Round = " + inRound + " " );
+				curSqlStmt.Append( "ORDER BY ER.ReadyForPlcmt DESC, ER.EventGroup, SS.Score DESC, TR.SkierName, SS.Round " );
+
 			} else {
 				return null;
 			}

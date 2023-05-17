@@ -30,17 +30,40 @@
 			System.Windows.Forms.Label InprogMsgLabel;
 			System.Windows.Forms.Label ScoredMsgLabel;
 			System.Windows.Forms.Label UnscoredMsgLabel;
-			System.Windows.Forms.Label ActiveSkierNameLabel;
 			System.Windows.Forms.Label EventGroupLabel;
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScoreCalc));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -68,35 +91,29 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.scoreLabel = new System.Windows.Forms.Label();
 			this.nopsScoreLabel = new System.Windows.Forms.Label();
 			this.scorePass1Label = new System.Windows.Forms.Label();
 			this.scorePass2Label = new System.Windows.Forms.Label();
 			this.TourEventRegDataGridView = new System.Windows.Forms.DataGridView();
+			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RunOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
 			this.scoreTextBox = new System.Windows.Forms.TextBox();
@@ -105,7 +122,43 @@
 			this.scorePass1 = new System.Windows.Forms.TextBox();
 			this.scorePass2 = new System.Windows.Forms.TextBox();
 			this.Pass1DataGridView = new System.Windows.Forms.DataGridView();
+			this.Pass1Pk = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1PassNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Seq = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Skis = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Results = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.Pass1Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1PointsTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Note = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1StartPos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1NumTurns = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1RuleNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1TypeCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass1AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Pass2DataGridView = new System.Windows.Forms.DataGridView();
+			this.Pass2Pk = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2PassNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Seq = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Skis = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Results = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.Pass2Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2PointsTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Note = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2StartPos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2NumTurns = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2RuleNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2TypeCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Pass2AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.CalcScoreButton = new System.Windows.Forms.Button();
 			this.ViewTrickListButton = new System.Windows.Forms.Button();
 			this.topNavMenu = new System.Windows.Forms.ToolStrip();
@@ -116,6 +169,7 @@
 			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.navSaveItem = new System.Windows.Forms.ToolStripButton();
+			this.navWaterSkiConnect = new System.Windows.Forms.ToolStripButton();
 			this.navLiveWeb = new System.Windows.Forms.ToolStripButton();
 			this.navExportRecord = new System.Windows.Forms.ToolStripButton();
 			this.BoatSelectButton = new System.Windows.Forms.Button();
@@ -170,61 +224,8 @@
 			this.BoatSelectInfoLabel = new System.Windows.Forms.Label();
 			this.hcapScoreLabel = new System.Windows.Forms.Label();
 			this.hcapScoreTextBox = new System.Windows.Forms.TextBox();
-			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RunOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
-			this.Pass1Pk = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1PassNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Seq = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Skis = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Results = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Pass1Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1PointsTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Note = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1StartPos = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1NumTurns = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1RuleNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1TypeCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass1AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Pk = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Round = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2PassNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Seq = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Skis = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Results = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Pass2Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2PointsTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Note = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2StartPos = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2NumTurns = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2RuleNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2TypeCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2Updated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Pass2AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			activeLabel = new System.Windows.Forms.Label();
 			noteLabel = new System.Windows.Forms.Label();
 			TourBoatLabel = new System.Windows.Forms.Label();
@@ -232,7 +233,6 @@
 			InprogMsgLabel = new System.Windows.Forms.Label();
 			ScoredMsgLabel = new System.Windows.Forms.Label();
 			UnscoredMsgLabel = new System.Windows.Forms.Label();
-			ActiveSkierNameLabel = new System.Windows.Forms.Label();
 			EventGroupLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.TourEventRegDataGridView)).BeginInit();
 			this.winStatus.SuspendLayout();
@@ -330,17 +330,6 @@
 			UnscoredMsgLabel.Text = "Skier unscored";
 			UnscoredMsgLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// ActiveSkierNameLabel
-			// 
-			ActiveSkierNameLabel.AutoSize = true;
-			ActiveSkierNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			ActiveSkierNameLabel.Location = new System.Drawing.Point(359, 39);
-			ActiveSkierNameLabel.Name = "ActiveSkierNameLabel";
-			ActiveSkierNameLabel.Size = new System.Drawing.Size(76, 13);
-			ActiveSkierNameLabel.TabIndex = 0;
-			ActiveSkierNameLabel.Text = "Active Skier";
-			ActiveSkierNameLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-			// 
 			// EventGroupLabel
 			// 
 			EventGroupLabel.AutoSize = true;
@@ -370,7 +359,7 @@
 			this.nopsScoreLabel.AutoSize = true;
 			this.nopsScoreLabel.CausesValidation = false;
 			this.nopsScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsScoreLabel.Location = new System.Drawing.Point(534, 92);
+			this.nopsScoreLabel.Location = new System.Drawing.Point(547, 87);
 			this.nopsScoreLabel.Name = "nopsScoreLabel";
 			this.nopsScoreLabel.Size = new System.Drawing.Size(41, 13);
 			this.nopsScoreLabel.TabIndex = 0;
@@ -461,13 +450,244 @@
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TourEventRegDataGridView_RowEnter);
 			// 
+			// SkierName
+			// 
+			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierName.DefaultCellStyle = dataGridViewCellStyle2;
+			this.SkierName.HeaderText = "Skier";
+			this.SkierName.Name = "SkierName";
+			this.SkierName.ReadOnly = true;
+			this.SkierName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SkierName.Width = 110;
+			// 
+			// AgeGroup
+			// 
+			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle3;
+			this.AgeGroup.HeaderText = "Div";
+			this.AgeGroup.Name = "AgeGroup";
+			this.AgeGroup.ReadOnly = true;
+			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.AgeGroup.Width = 30;
+			// 
+			// TeamCode
+			// 
+			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TeamCode.DefaultCellStyle = dataGridViewCellStyle4;
+			this.TeamCode.HeaderText = "Team";
+			this.TeamCode.Name = "TeamCode";
+			this.TeamCode.ReadOnly = true;
+			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.TeamCode.Width = 50;
+			// 
+			// EventClass
+			// 
+			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle5;
+			this.EventClass.HeaderText = "Cls";
+			this.EventClass.Name = "EventClass";
+			this.EventClass.ReadOnly = true;
+			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventClass.Width = 26;
+			// 
+			// EventGroup
+			// 
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle6;
+			this.EventGroup.HeaderText = "Grp";
+			this.EventGroup.Name = "EventGroup";
+			this.EventGroup.ReadOnly = true;
+			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventGroup.Width = 31;
+			// 
+			// Score
+			// 
+			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle7;
+			this.Score.HeaderText = "Score";
+			this.Score.Name = "Score";
+			this.Score.ReadOnly = true;
+			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Score.Width = 45;
+			// 
+			// RankingScore
+			// 
+			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle8.Format = "N0";
+			dataGridViewCellStyle8.NullValue = null;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle8;
+			this.RankingScore.HeaderText = "Rank";
+			this.RankingScore.Name = "RankingScore";
+			this.RankingScore.ReadOnly = true;
+			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingScore.Width = 50;
+			// 
+			// ScoreWithHcap
+			// 
+			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle9;
+			this.ScoreWithHcap.HeaderText = "ScoreH";
+			this.ScoreWithHcap.Name = "ScoreWithHcap";
+			this.ScoreWithHcap.ReadOnly = true;
+			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ScoreWithHcap.Width = 55;
+			// 
+			// HCapBase
+			// 
+			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle10.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle10;
+			this.HCapBase.HeaderText = "HBase";
+			this.HCapBase.Name = "HCapBase";
+			this.HCapBase.ReadOnly = true;
+			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapBase.Width = 55;
+			// 
+			// HCapScore
+			// 
+			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle11.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle11;
+			this.HCapScore.HeaderText = "HCap";
+			this.HCapScore.Name = "HCapScore";
+			this.HCapScore.ReadOnly = true;
+			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapScore.Width = 55;
+			// 
+			// Status
+			// 
+			this.Status.HeaderText = "Status";
+			this.Status.Name = "Status";
+			this.Status.ReadOnly = true;
+			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Status.Width = 50;
+			// 
+			// RunOrder
+			// 
+			this.RunOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle12.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RunOrder.DefaultCellStyle = dataGridViewCellStyle12;
+			this.RunOrder.HeaderText = "Ord";
+			this.RunOrder.Name = "RunOrder";
+			this.RunOrder.ReadOnly = true;
+			this.RunOrder.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RunOrder.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RunOrder.Width = 30;
+			// 
+			// TrickBoat
+			// 
+			this.TrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TrickBoat.HeaderText = "Boat";
+			this.TrickBoat.Name = "TrickBoat";
+			this.TrickBoat.ReadOnly = true;
+			this.TrickBoat.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.TrickBoat.Width = 40;
+			// 
+			// RankingRating
+			// 
+			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle13.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingRating.DefaultCellStyle = dataGridViewCellStyle13;
+			this.RankingRating.HeaderText = "Rating";
+			this.RankingRating.Name = "RankingRating";
+			this.RankingRating.ReadOnly = true;
+			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingRating.Visible = false;
+			this.RankingRating.Width = 50;
+			// 
+			// PK
+			// 
+			this.PK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PK.HeaderText = "PK";
+			this.PK.Name = "PK";
+			this.PK.ReadOnly = true;
+			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PK.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PK.Visible = false;
+			this.PK.Width = 30;
+			// 
+			// SanctionId
+			// 
+			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SanctionId.HeaderText = "SanctionId";
+			this.SanctionId.Name = "SanctionId";
+			this.SanctionId.ReadOnly = true;
+			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SanctionId.Visible = false;
+			this.SanctionId.Width = 50;
+			// 
+			// MemberId
+			// 
+			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.MemberId.HeaderText = "MemberId";
+			this.MemberId.Name = "MemberId";
+			this.MemberId.ReadOnly = true;
+			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.MemberId.Visible = false;
+			this.MemberId.Width = 50;
+			// 
+			// Event
+			// 
+			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Event.HeaderText = "Event";
+			this.Event.Name = "Event";
+			this.Event.ReadOnly = true;
+			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Event.Visible = false;
+			this.Event.Width = 35;
+			// 
 			// winStatus
 			// 
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
 			this.winStatus.Location = new System.Drawing.Point(0, 537);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(964, 22);
+			this.winStatus.Size = new System.Drawing.Size(1016, 22);
 			this.winStatus.TabIndex = 12;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -600,6 +820,220 @@
 			this.Pass1DataGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridView_KeyUp);
 			this.Pass1DataGridView.Leave += new System.EventHandler(this.DataGridView_Leave);
 			// 
+			// Pass1Pk
+			// 
+			this.Pass1Pk.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1Pk.HeaderText = "PK";
+			this.Pass1Pk.Name = "Pass1Pk";
+			this.Pass1Pk.ReadOnly = true;
+			this.Pass1Pk.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Pk.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Pk.Visible = false;
+			// 
+			// Pass1SanctionId
+			// 
+			this.Pass1SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1SanctionId.HeaderText = "SanctionId";
+			this.Pass1SanctionId.Name = "Pass1SanctionId";
+			this.Pass1SanctionId.ReadOnly = true;
+			this.Pass1SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1SanctionId.Visible = false;
+			// 
+			// Pass1MemberId
+			// 
+			this.Pass1MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1MemberId.HeaderText = "MemberId";
+			this.Pass1MemberId.Name = "Pass1MemberId";
+			this.Pass1MemberId.ReadOnly = true;
+			this.Pass1MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1MemberId.Visible = false;
+			// 
+			// Pass1Round
+			// 
+			this.Pass1Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1Round.HeaderText = "Rd";
+			this.Pass1Round.Name = "Pass1Round";
+			this.Pass1Round.ReadOnly = true;
+			this.Pass1Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Round.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Round.Visible = false;
+			this.Pass1Round.Width = 25;
+			// 
+			// Pass1PassNum
+			// 
+			this.Pass1PassNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1PassNum.HeaderText = "PassNum";
+			this.Pass1PassNum.Name = "Pass1PassNum";
+			this.Pass1PassNum.ReadOnly = true;
+			this.Pass1PassNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1PassNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1PassNum.Visible = false;
+			this.Pass1PassNum.Width = 50;
+			// 
+			// Pass1Seq
+			// 
+			this.Pass1Seq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle17.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Seq.DefaultCellStyle = dataGridViewCellStyle17;
+			this.Pass1Seq.HeaderText = "Seq";
+			this.Pass1Seq.Name = "Pass1Seq";
+			this.Pass1Seq.ReadOnly = true;
+			this.Pass1Seq.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Seq.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Seq.Width = 25;
+			// 
+			// Pass1Skis
+			// 
+			this.Pass1Skis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.Pass1Skis.DefaultCellStyle = dataGridViewCellStyle18;
+			this.Pass1Skis.HeaderText = "Skis";
+			this.Pass1Skis.Name = "Pass1Skis";
+			this.Pass1Skis.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Skis.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Skis.Width = 35;
+			// 
+			// Pass1Code
+			// 
+			this.Pass1Code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle19.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Code.DefaultCellStyle = dataGridViewCellStyle19;
+			this.Pass1Code.HeaderText = "Trick";
+			this.Pass1Code.Name = "Pass1Code";
+			this.Pass1Code.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Code.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Code.Width = 65;
+			// 
+			// Pass1Results
+			// 
+			this.Pass1Results.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Results.DefaultCellStyle = dataGridViewCellStyle20;
+			this.Pass1Results.HeaderText = "Credit";
+			this.Pass1Results.Items.AddRange(new object[] {
+            "Credit",
+            "Fall",
+            "No Credit",
+            "Before",
+            "OOC",
+            "Repeat",
+            "Unresolved"});
+			this.Pass1Results.Name = "Pass1Results";
+			this.Pass1Results.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Results.Width = 75;
+			// 
+			// Pass1Points
+			// 
+			this.Pass1Points.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle21.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle21.Format = "N0";
+			dataGridViewCellStyle21.NullValue = null;
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Points.DefaultCellStyle = dataGridViewCellStyle21;
+			this.Pass1Points.HeaderText = "Points";
+			this.Pass1Points.Name = "Pass1Points";
+			this.Pass1Points.ReadOnly = true;
+			this.Pass1Points.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Points.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Points.Width = 40;
+			// 
+			// Pass1PointsTotal
+			// 
+			this.Pass1PointsTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle22.Font = new System.Drawing.Font("Arial", 8.25F);
+			dataGridViewCellStyle22.Format = "N0";
+			dataGridViewCellStyle22.NullValue = null;
+			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1PointsTotal.DefaultCellStyle = dataGridViewCellStyle22;
+			this.Pass1PointsTotal.HeaderText = "Total";
+			this.Pass1PointsTotal.Name = "Pass1PointsTotal";
+			this.Pass1PointsTotal.ReadOnly = true;
+			this.Pass1PointsTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1PointsTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1PointsTotal.Width = 50;
+			// 
+			// Pass1Note
+			// 
+			this.Pass1Note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1Note.HeaderText = "Note";
+			this.Pass1Note.Name = "Pass1Note";
+			this.Pass1Note.ReadOnly = true;
+			this.Pass1Note.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Note.Visible = false;
+			// 
+			// Pass1StartPos
+			// 
+			this.Pass1StartPos.HeaderText = "StartPos";
+			this.Pass1StartPos.Name = "Pass1StartPos";
+			this.Pass1StartPos.ReadOnly = true;
+			this.Pass1StartPos.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1StartPos.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1StartPos.Visible = false;
+			// 
+			// Pass1NumTurns
+			// 
+			this.Pass1NumTurns.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1NumTurns.HeaderText = "Num Turns";
+			this.Pass1NumTurns.Name = "Pass1NumTurns";
+			this.Pass1NumTurns.ReadOnly = true;
+			this.Pass1NumTurns.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1NumTurns.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1NumTurns.Visible = false;
+			this.Pass1NumTurns.Width = 25;
+			// 
+			// Pass1RuleNum
+			// 
+			this.Pass1RuleNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1RuleNum.HeaderText = "RuleNum";
+			this.Pass1RuleNum.Name = "Pass1RuleNum";
+			this.Pass1RuleNum.ReadOnly = true;
+			this.Pass1RuleNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1RuleNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1RuleNum.Visible = false;
+			// 
+			// Pass1TypeCode
+			// 
+			this.Pass1TypeCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1TypeCode.HeaderText = "TypeCode";
+			this.Pass1TypeCode.Name = "Pass1TypeCode";
+			this.Pass1TypeCode.ReadOnly = true;
+			this.Pass1TypeCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1TypeCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1TypeCode.Visible = false;
+			// 
+			// Pass1Updated
+			// 
+			this.Pass1Updated.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1Updated.HeaderText = "Updated";
+			this.Pass1Updated.Name = "Pass1Updated";
+			this.Pass1Updated.ReadOnly = true;
+			this.Pass1Updated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1Updated.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1Updated.Visible = false;
+			this.Pass1Updated.Width = 50;
+			// 
+			// Pass1AgeGroup
+			// 
+			this.Pass1AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass1AgeGroup.HeaderText = "Div";
+			this.Pass1AgeGroup.Name = "Pass1AgeGroup";
+			this.Pass1AgeGroup.ReadOnly = true;
+			this.Pass1AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass1AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass1AgeGroup.Visible = false;
+			this.Pass1AgeGroup.Width = 35;
+			// 
 			// Pass2DataGridView
 			// 
 			this.Pass2DataGridView.AllowUserToAddRows = false;
@@ -667,6 +1101,224 @@
 			this.Pass2DataGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridView_KeyUp);
 			this.Pass2DataGridView.Leave += new System.EventHandler(this.DataGridView_Leave);
 			// 
+			// Pass2Pk
+			// 
+			this.Pass2Pk.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2Pk.HeaderText = "PK";
+			this.Pass2Pk.Name = "Pass2Pk";
+			this.Pass2Pk.ReadOnly = true;
+			this.Pass2Pk.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Pk.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Pk.Visible = false;
+			this.Pass2Pk.Width = 35;
+			// 
+			// Pass2SanctionId
+			// 
+			this.Pass2SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2SanctionId.HeaderText = "SanctionId";
+			this.Pass2SanctionId.Name = "Pass2SanctionId";
+			this.Pass2SanctionId.ReadOnly = true;
+			this.Pass2SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2SanctionId.Visible = false;
+			// 
+			// Pass2MemberId
+			// 
+			this.Pass2MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2MemberId.HeaderText = "MemberId";
+			this.Pass2MemberId.Name = "Pass2MemberId";
+			this.Pass2MemberId.ReadOnly = true;
+			this.Pass2MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2MemberId.Visible = false;
+			// 
+			// Pass2Round
+			// 
+			this.Pass2Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2Round.HeaderText = "Rd";
+			this.Pass2Round.Name = "Pass2Round";
+			this.Pass2Round.ReadOnly = true;
+			this.Pass2Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Round.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Round.Visible = false;
+			this.Pass2Round.Width = 25;
+			// 
+			// Pass2PassNum
+			// 
+			this.Pass2PassNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2PassNum.HeaderText = "PassNum";
+			this.Pass2PassNum.Name = "Pass2PassNum";
+			this.Pass2PassNum.ReadOnly = true;
+			this.Pass2PassNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2PassNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2PassNum.Visible = false;
+			this.Pass2PassNum.Width = 50;
+			// 
+			// Pass2Seq
+			// 
+			this.Pass2Seq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle26.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Seq.DefaultCellStyle = dataGridViewCellStyle26;
+			this.Pass2Seq.HeaderText = "Seq";
+			this.Pass2Seq.Name = "Pass2Seq";
+			this.Pass2Seq.ReadOnly = true;
+			this.Pass2Seq.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Seq.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Seq.Width = 25;
+			// 
+			// Pass2Skis
+			// 
+			this.Pass2Skis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Skis.DefaultCellStyle = dataGridViewCellStyle27;
+			this.Pass2Skis.HeaderText = "Skis";
+			this.Pass2Skis.Name = "Pass2Skis";
+			this.Pass2Skis.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Skis.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Skis.Width = 35;
+			// 
+			// Pass2Code
+			// 
+			this.Pass2Code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle28.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle28.NullValue = null;
+			dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Code.DefaultCellStyle = dataGridViewCellStyle28;
+			this.Pass2Code.HeaderText = "Trick";
+			this.Pass2Code.Name = "Pass2Code";
+			this.Pass2Code.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Code.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Code.Width = 65;
+			// 
+			// Pass2Results
+			// 
+			this.Pass2Results.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle29.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Results.DefaultCellStyle = dataGridViewCellStyle29;
+			this.Pass2Results.HeaderText = "Credit";
+			this.Pass2Results.Items.AddRange(new object[] {
+            "Credit",
+            "Fall",
+            "No Credit",
+            "Before",
+            "OOC",
+            "Repeat",
+            "Unresolved"});
+			this.Pass2Results.Name = "Pass2Results";
+			this.Pass2Results.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Results.Width = 75;
+			// 
+			// Pass2Points
+			// 
+			this.Pass2Points.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle30.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle30.Format = "N0";
+			dataGridViewCellStyle30.NullValue = null;
+			dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Points.DefaultCellStyle = dataGridViewCellStyle30;
+			this.Pass2Points.HeaderText = "Points";
+			this.Pass2Points.Name = "Pass2Points";
+			this.Pass2Points.ReadOnly = true;
+			this.Pass2Points.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Points.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Points.Width = 40;
+			// 
+			// Pass2PointsTotal
+			// 
+			this.Pass2PointsTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle31.Font = new System.Drawing.Font("Arial", 8.25F);
+			dataGridViewCellStyle31.Format = "N0";
+			dataGridViewCellStyle31.NullValue = null;
+			dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2PointsTotal.DefaultCellStyle = dataGridViewCellStyle31;
+			this.Pass2PointsTotal.HeaderText = "Total";
+			this.Pass2PointsTotal.Name = "Pass2PointsTotal";
+			this.Pass2PointsTotal.ReadOnly = true;
+			this.Pass2PointsTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2PointsTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2PointsTotal.Width = 50;
+			// 
+			// Pass2Note
+			// 
+			this.Pass2Note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2Note.HeaderText = "Note";
+			this.Pass2Note.Name = "Pass2Note";
+			this.Pass2Note.ReadOnly = true;
+			this.Pass2Note.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Note.Visible = false;
+			// 
+			// Pass2StartPos
+			// 
+			this.Pass2StartPos.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2StartPos.HeaderText = "StartPos";
+			this.Pass2StartPos.Name = "Pass2StartPos";
+			this.Pass2StartPos.ReadOnly = true;
+			this.Pass2StartPos.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2StartPos.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2StartPos.Visible = false;
+			// 
+			// Pass2NumTurns
+			// 
+			this.Pass2NumTurns.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2NumTurns.HeaderText = "Num Turns";
+			this.Pass2NumTurns.Name = "Pass2NumTurns";
+			this.Pass2NumTurns.ReadOnly = true;
+			this.Pass2NumTurns.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2NumTurns.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2NumTurns.Visible = false;
+			this.Pass2NumTurns.Width = 25;
+			// 
+			// Pass2RuleNum
+			// 
+			this.Pass2RuleNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2RuleNum.HeaderText = "RuleNum";
+			this.Pass2RuleNum.Name = "Pass2RuleNum";
+			this.Pass2RuleNum.ReadOnly = true;
+			this.Pass2RuleNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2RuleNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2RuleNum.Visible = false;
+			// 
+			// Pass2TypeCode
+			// 
+			this.Pass2TypeCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2TypeCode.HeaderText = "TypeCode";
+			this.Pass2TypeCode.Name = "Pass2TypeCode";
+			this.Pass2TypeCode.ReadOnly = true;
+			this.Pass2TypeCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2TypeCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2TypeCode.Visible = false;
+			// 
+			// Pass2Updated
+			// 
+			this.Pass2Updated.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2Updated.HeaderText = "Updated";
+			this.Pass2Updated.Name = "Pass2Updated";
+			this.Pass2Updated.ReadOnly = true;
+			this.Pass2Updated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2Updated.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2Updated.Visible = false;
+			this.Pass2Updated.Width = 50;
+			// 
+			// Pass2AgeGroup
+			// 
+			this.Pass2AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Pass2AgeGroup.HeaderText = "Div";
+			this.Pass2AgeGroup.Name = "Pass2AgeGroup";
+			this.Pass2AgeGroup.ReadOnly = true;
+			this.Pass2AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Pass2AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Pass2AgeGroup.Visible = false;
+			this.Pass2AgeGroup.Width = 35;
+			// 
 			// CalcScoreButton
 			// 
 			this.CalcScoreButton.Location = new System.Drawing.Point(311, 179);
@@ -697,11 +1349,12 @@
             this.navFilter,
             this.navSort,
             this.navSaveItem,
+            this.navWaterSkiConnect,
             this.navLiveWeb,
             this.navExportRecord});
 			this.topNavMenu.Location = new System.Drawing.Point(0, 0);
 			this.topNavMenu.Name = "topNavMenu";
-			this.topNavMenu.Size = new System.Drawing.Size(964, 38);
+			this.topNavMenu.Size = new System.Drawing.Size(1016, 38);
 			this.topNavMenu.TabIndex = 41;
 			this.topNavMenu.Text = "toolStrip1";
 			// 
@@ -775,6 +1428,16 @@
 			this.navSaveItem.Text = "Save";
 			this.navSaveItem.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navSaveItem.Click += new System.EventHandler(this.navSaveItem_Click);
+			// 
+			// navWaterSkiConnect
+			// 
+			this.navWaterSkiConnect.Image = global::WaterskiScoringSystem.Properties.Resources.uLauncher;
+			this.navWaterSkiConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navWaterSkiConnect.Name = "navWaterSkiConnect";
+			this.navWaterSkiConnect.Size = new System.Drawing.Size(102, 35);
+			this.navWaterSkiConnect.Text = "WaterSkiConnect";
+			this.navWaterSkiConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navWaterSkiConnect.Click += new System.EventHandler(this.navWaterSkiConnect_Click);
 			// 
 			// navLiveWeb
 			// 
@@ -1002,7 +1665,7 @@
 			this.EventDelayReasonLabel.BackColor = System.Drawing.Color.DimGray;
 			this.EventDelayReasonLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventDelayReasonLabel.ForeColor = System.Drawing.Color.White;
-			this.EventDelayReasonLabel.Location = new System.Drawing.Point(512, 81);
+			this.EventDelayReasonLabel.Location = new System.Drawing.Point(525, 76);
 			this.EventDelayReasonLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
 			this.EventDelayReasonLabel.Name = "EventDelayReasonLabel";
 			this.EventDelayReasonLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
@@ -1016,7 +1679,7 @@
 			this.EventDelayReasonTextBox.BackColor = System.Drawing.Color.PaleGoldenrod;
 			this.EventDelayReasonTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventDelayReasonTextBox.ForeColor = System.Drawing.Color.Black;
-			this.EventDelayReasonTextBox.Location = new System.Drawing.Point(512, 97);
+			this.EventDelayReasonTextBox.Location = new System.Drawing.Point(525, 92);
 			this.EventDelayReasonTextBox.MaxLength = 128;
 			this.EventDelayReasonTextBox.Name = "EventDelayReasonTextBox";
 			this.EventDelayReasonTextBox.Size = new System.Drawing.Size(300, 21);
@@ -1026,7 +1689,7 @@
 			// StartTimerButton
 			// 
 			this.StartTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.play;
-			this.StartTimerButton.Location = new System.Drawing.Point(663, 67);
+			this.StartTimerButton.Location = new System.Drawing.Point(676, 62);
 			this.StartTimerButton.Name = "StartTimerButton";
 			this.StartTimerButton.Size = new System.Drawing.Size(23, 25);
 			this.StartTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1037,7 +1700,7 @@
 			// PauseTimerButton
 			// 
 			this.PauseTimerButton.Image = global::WaterskiScoringSystem.Properties.Resources.pause;
-			this.PauseTimerButton.Location = new System.Drawing.Point(664, 47);
+			this.PauseTimerButton.Location = new System.Drawing.Point(677, 42);
 			this.PauseTimerButton.Name = "PauseTimerButton";
 			this.PauseTimerButton.Size = new System.Drawing.Size(23, 25);
 			this.PauseTimerButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1050,7 +1713,7 @@
 			this.EventRunInfoData.BackColor = System.Drawing.Color.DimGray;
 			this.EventRunInfoData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventRunInfoData.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunInfoData.Location = new System.Drawing.Point(603, 40);
+			this.EventRunInfoData.Location = new System.Drawing.Point(616, 35);
 			this.EventRunInfoData.Name = "EventRunInfoData";
 			this.EventRunInfoData.Size = new System.Drawing.Size(60, 40);
 			this.EventRunInfoData.TabIndex = 0;
@@ -1061,7 +1724,7 @@
 			this.EventRunPerfData.BackColor = System.Drawing.Color.DimGray;
 			this.EventRunPerfData.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventRunPerfData.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunPerfData.Location = new System.Drawing.Point(793, 40);
+			this.EventRunPerfData.Location = new System.Drawing.Point(806, 35);
 			this.EventRunPerfData.Name = "EventRunPerfData";
 			this.EventRunPerfData.Size = new System.Drawing.Size(40, 40);
 			this.EventRunPerfData.TabIndex = 0;
@@ -1072,7 +1735,7 @@
 			this.EventRunPerfLabel.BackColor = System.Drawing.Color.DimGray;
 			this.EventRunPerfLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventRunPerfLabel.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunPerfLabel.Location = new System.Drawing.Point(689, 40);
+			this.EventRunPerfLabel.Location = new System.Drawing.Point(702, 35);
 			this.EventRunPerfLabel.Name = "EventRunPerfLabel";
 			this.EventRunPerfLabel.Size = new System.Drawing.Size(105, 40);
 			this.EventRunPerfLabel.TabIndex = 0;
@@ -1084,7 +1747,7 @@
 			this.EventRunInfoLabel.BackColor = System.Drawing.Color.DimGray;
 			this.EventRunInfoLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EventRunInfoLabel.ForeColor = System.Drawing.Color.Gold;
-			this.EventRunInfoLabel.Location = new System.Drawing.Point(509, 40);
+			this.EventRunInfoLabel.Location = new System.Drawing.Point(522, 35);
 			this.EventRunInfoLabel.Name = "EventRunInfoLabel";
 			this.EventRunInfoLabel.Size = new System.Drawing.Size(93, 40);
 			this.EventRunInfoLabel.TabIndex = 0;
@@ -1392,11 +2055,11 @@
 			// 
 			this.LiveWebLabel.AutoSize = true;
 			this.LiveWebLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
-			this.LiveWebLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LiveWebLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LiveWebLabel.ForeColor = System.Drawing.Color.Gold;
 			this.LiveWebLabel.Location = new System.Drawing.Point(256, 34);
 			this.LiveWebLabel.Name = "LiveWebLabel";
-			this.LiveWebLabel.Size = new System.Drawing.Size(86, 13);
+			this.LiveWebLabel.Size = new System.Drawing.Size(104, 14);
 			this.LiveWebLabel.TabIndex = 106;
 			this.LiveWebLabel.Text = "Live Web Active";
 			this.LiveWebLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1502,237 +2165,6 @@
 			this.hcapScoreTextBox.TabIndex = 111;
 			this.hcapScoreTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// SkierName
-			// 
-			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.SkierName.DefaultCellStyle = dataGridViewCellStyle2;
-			this.SkierName.HeaderText = "Skier";
-			this.SkierName.Name = "SkierName";
-			this.SkierName.ReadOnly = true;
-			this.SkierName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SkierName.Width = 110;
-			// 
-			// AgeGroup
-			// 
-			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle3;
-			this.AgeGroup.HeaderText = "Div";
-			this.AgeGroup.Name = "AgeGroup";
-			this.AgeGroup.ReadOnly = true;
-			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.AgeGroup.Width = 30;
-			// 
-			// TeamCode
-			// 
-			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TeamCode.DefaultCellStyle = dataGridViewCellStyle4;
-			this.TeamCode.HeaderText = "Team";
-			this.TeamCode.Name = "TeamCode";
-			this.TeamCode.ReadOnly = true;
-			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.TeamCode.Width = 50;
-			// 
-			// EventClass
-			// 
-			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle5;
-			this.EventClass.HeaderText = "Cls";
-			this.EventClass.Name = "EventClass";
-			this.EventClass.ReadOnly = true;
-			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventClass.Width = 26;
-			// 
-			// EventGroup
-			// 
-			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle6.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle6;
-			this.EventGroup.HeaderText = "Grp";
-			this.EventGroup.Name = "EventGroup";
-			this.EventGroup.ReadOnly = true;
-			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventGroup.Width = 31;
-			// 
-			// Score
-			// 
-			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle7;
-			this.Score.HeaderText = "Score";
-			this.Score.Name = "Score";
-			this.Score.ReadOnly = true;
-			this.Score.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Score.Width = 45;
-			// 
-			// RankingScore
-			// 
-			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle8.Format = "N0";
-			dataGridViewCellStyle8.NullValue = null;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle8;
-			this.RankingScore.HeaderText = "Rank";
-			this.RankingScore.Name = "RankingScore";
-			this.RankingScore.ReadOnly = true;
-			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingScore.Width = 50;
-			// 
-			// ScoreWithHcap
-			// 
-			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle9;
-			this.ScoreWithHcap.HeaderText = "ScoreH";
-			this.ScoreWithHcap.Name = "ScoreWithHcap";
-			this.ScoreWithHcap.ReadOnly = true;
-			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.ScoreWithHcap.Width = 55;
-			// 
-			// HCapBase
-			// 
-			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle10.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle10;
-			this.HCapBase.HeaderText = "HBase";
-			this.HCapBase.Name = "HCapBase";
-			this.HCapBase.ReadOnly = true;
-			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapBase.Width = 55;
-			// 
-			// HCapScore
-			// 
-			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle11.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle11;
-			this.HCapScore.HeaderText = "HCap";
-			this.HCapScore.Name = "HCapScore";
-			this.HCapScore.ReadOnly = true;
-			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapScore.Width = 55;
-			// 
-			// Status
-			// 
-			this.Status.HeaderText = "Status";
-			this.Status.Name = "Status";
-			this.Status.ReadOnly = true;
-			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Status.Width = 50;
-			// 
-			// RunOrder
-			// 
-			this.RunOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle12.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RunOrder.DefaultCellStyle = dataGridViewCellStyle12;
-			this.RunOrder.HeaderText = "Ord";
-			this.RunOrder.Name = "RunOrder";
-			this.RunOrder.ReadOnly = true;
-			this.RunOrder.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RunOrder.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RunOrder.Width = 30;
-			// 
-			// TrickBoat
-			// 
-			this.TrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TrickBoat.HeaderText = "Boat";
-			this.TrickBoat.Name = "TrickBoat";
-			this.TrickBoat.ReadOnly = true;
-			this.TrickBoat.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.TrickBoat.Width = 40;
-			// 
-			// RankingRating
-			// 
-			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle13.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingRating.DefaultCellStyle = dataGridViewCellStyle13;
-			this.RankingRating.HeaderText = "Rating";
-			this.RankingRating.Name = "RankingRating";
-			this.RankingRating.ReadOnly = true;
-			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingRating.Visible = false;
-			this.RankingRating.Width = 50;
-			// 
-			// PK
-			// 
-			this.PK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PK.HeaderText = "PK";
-			this.PK.Name = "PK";
-			this.PK.ReadOnly = true;
-			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PK.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PK.Visible = false;
-			this.PK.Width = 30;
-			// 
-			// SanctionId
-			// 
-			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SanctionId.HeaderText = "SanctionId";
-			this.SanctionId.Name = "SanctionId";
-			this.SanctionId.ReadOnly = true;
-			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SanctionId.Visible = false;
-			this.SanctionId.Width = 50;
-			// 
-			// MemberId
-			// 
-			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.MemberId.HeaderText = "MemberId";
-			this.MemberId.Name = "MemberId";
-			this.MemberId.ReadOnly = true;
-			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.MemberId.Visible = false;
-			this.MemberId.Width = 50;
-			// 
-			// Event
-			// 
-			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Event.HeaderText = "Event";
-			this.Event.Name = "Event";
-			this.Event.ReadOnly = true;
-			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Event.Visible = false;
-			this.Event.Width = 35;
-			// 
 			// roundActiveSelect
 			// 
 			this.roundActiveSelect.AutoScroll = true;
@@ -1746,443 +2178,27 @@
 			this.roundActiveSelect.TabIndex = 11;
 			this.roundActiveSelect.Tag = "";
 			// 
-			// Pass1Pk
-			// 
-			this.Pass1Pk.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1Pk.HeaderText = "PK";
-			this.Pass1Pk.Name = "Pass1Pk";
-			this.Pass1Pk.ReadOnly = true;
-			this.Pass1Pk.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Pk.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Pk.Visible = false;
-			// 
-			// Pass1SanctionId
-			// 
-			this.Pass1SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1SanctionId.HeaderText = "SanctionId";
-			this.Pass1SanctionId.Name = "Pass1SanctionId";
-			this.Pass1SanctionId.ReadOnly = true;
-			this.Pass1SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1SanctionId.Visible = false;
-			// 
-			// Pass1MemberId
-			// 
-			this.Pass1MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1MemberId.HeaderText = "MemberId";
-			this.Pass1MemberId.Name = "Pass1MemberId";
-			this.Pass1MemberId.ReadOnly = true;
-			this.Pass1MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1MemberId.Visible = false;
-			// 
-			// Pass1Round
-			// 
-			this.Pass1Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1Round.HeaderText = "Rd";
-			this.Pass1Round.Name = "Pass1Round";
-			this.Pass1Round.ReadOnly = true;
-			this.Pass1Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Round.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Round.Visible = false;
-			this.Pass1Round.Width = 25;
-			// 
-			// Pass1PassNum
-			// 
-			this.Pass1PassNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1PassNum.HeaderText = "PassNum";
-			this.Pass1PassNum.Name = "Pass1PassNum";
-			this.Pass1PassNum.ReadOnly = true;
-			this.Pass1PassNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1PassNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1PassNum.Visible = false;
-			this.Pass1PassNum.Width = 50;
-			// 
-			// Pass1Seq
-			// 
-			this.Pass1Seq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle17.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Seq.DefaultCellStyle = dataGridViewCellStyle17;
-			this.Pass1Seq.HeaderText = "Seq";
-			this.Pass1Seq.Name = "Pass1Seq";
-			this.Pass1Seq.ReadOnly = true;
-			this.Pass1Seq.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Seq.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Seq.Width = 25;
-			// 
-			// Pass1Skis
-			// 
-			this.Pass1Skis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			this.Pass1Skis.DefaultCellStyle = dataGridViewCellStyle18;
-			this.Pass1Skis.HeaderText = "Skis";
-			this.Pass1Skis.Name = "Pass1Skis";
-			this.Pass1Skis.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Skis.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Skis.Width = 35;
-			// 
-			// Pass1Code
-			// 
-			this.Pass1Code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle19.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Code.DefaultCellStyle = dataGridViewCellStyle19;
-			this.Pass1Code.HeaderText = "Trick";
-			this.Pass1Code.Name = "Pass1Code";
-			this.Pass1Code.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Code.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Code.Width = 65;
-			// 
-			// Pass1Results
-			// 
-			this.Pass1Results.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Results.DefaultCellStyle = dataGridViewCellStyle20;
-			this.Pass1Results.HeaderText = "Credit";
-			this.Pass1Results.Items.AddRange(new object[] {
-            "Credit",
-            "Fall",
-            "No Credit",
-            "Before",
-            "OOC",
-            "Repeat",
-            "Unresolved"});
-			this.Pass1Results.Name = "Pass1Results";
-			this.Pass1Results.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Results.Width = 75;
-			// 
-			// Pass1Points
-			// 
-			this.Pass1Points.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle21.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle21.Format = "N0";
-			dataGridViewCellStyle21.NullValue = null;
-			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Points.DefaultCellStyle = dataGridViewCellStyle21;
-			this.Pass1Points.HeaderText = "Points";
-			this.Pass1Points.Name = "Pass1Points";
-			this.Pass1Points.ReadOnly = true;
-			this.Pass1Points.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Points.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Points.Width = 40;
-			// 
-			// Pass1PointsTotal
-			// 
-			this.Pass1PointsTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle22.Font = new System.Drawing.Font("Arial", 8.25F);
-			dataGridViewCellStyle22.Format = "N0";
-			dataGridViewCellStyle22.NullValue = null;
-			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1PointsTotal.DefaultCellStyle = dataGridViewCellStyle22;
-			this.Pass1PointsTotal.HeaderText = "Total";
-			this.Pass1PointsTotal.Name = "Pass1PointsTotal";
-			this.Pass1PointsTotal.ReadOnly = true;
-			this.Pass1PointsTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1PointsTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1PointsTotal.Width = 50;
-			// 
-			// Pass1Note
-			// 
-			this.Pass1Note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1Note.HeaderText = "Note";
-			this.Pass1Note.Name = "Pass1Note";
-			this.Pass1Note.ReadOnly = true;
-			this.Pass1Note.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Note.Visible = false;
-			// 
-			// Pass1StartPos
-			// 
-			this.Pass1StartPos.HeaderText = "StartPos";
-			this.Pass1StartPos.Name = "Pass1StartPos";
-			this.Pass1StartPos.ReadOnly = true;
-			this.Pass1StartPos.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1StartPos.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1StartPos.Visible = false;
-			// 
-			// Pass1NumTurns
-			// 
-			this.Pass1NumTurns.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1NumTurns.HeaderText = "Num Turns";
-			this.Pass1NumTurns.Name = "Pass1NumTurns";
-			this.Pass1NumTurns.ReadOnly = true;
-			this.Pass1NumTurns.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1NumTurns.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1NumTurns.Visible = false;
-			this.Pass1NumTurns.Width = 25;
-			// 
-			// Pass1RuleNum
-			// 
-			this.Pass1RuleNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1RuleNum.HeaderText = "RuleNum";
-			this.Pass1RuleNum.Name = "Pass1RuleNum";
-			this.Pass1RuleNum.ReadOnly = true;
-			this.Pass1RuleNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1RuleNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1RuleNum.Visible = false;
-			// 
-			// Pass1TypeCode
-			// 
-			this.Pass1TypeCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1TypeCode.HeaderText = "TypeCode";
-			this.Pass1TypeCode.Name = "Pass1TypeCode";
-			this.Pass1TypeCode.ReadOnly = true;
-			this.Pass1TypeCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1TypeCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1TypeCode.Visible = false;
-			// 
-			// Pass1Updated
-			// 
-			this.Pass1Updated.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1Updated.HeaderText = "Updated";
-			this.Pass1Updated.Name = "Pass1Updated";
-			this.Pass1Updated.ReadOnly = true;
-			this.Pass1Updated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1Updated.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1Updated.Visible = false;
-			this.Pass1Updated.Width = 50;
-			// 
-			// Pass1AgeGroup
-			// 
-			this.Pass1AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass1AgeGroup.HeaderText = "Div";
-			this.Pass1AgeGroup.Name = "Pass1AgeGroup";
-			this.Pass1AgeGroup.ReadOnly = true;
-			this.Pass1AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass1AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass1AgeGroup.Visible = false;
-			this.Pass1AgeGroup.Width = 35;
-			// 
-			// Pass2Pk
-			// 
-			this.Pass2Pk.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2Pk.HeaderText = "PK";
-			this.Pass2Pk.Name = "Pass2Pk";
-			this.Pass2Pk.ReadOnly = true;
-			this.Pass2Pk.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Pk.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Pk.Visible = false;
-			this.Pass2Pk.Width = 35;
-			// 
-			// Pass2SanctionId
-			// 
-			this.Pass2SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2SanctionId.HeaderText = "SanctionId";
-			this.Pass2SanctionId.Name = "Pass2SanctionId";
-			this.Pass2SanctionId.ReadOnly = true;
-			this.Pass2SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2SanctionId.Visible = false;
-			// 
-			// Pass2MemberId
-			// 
-			this.Pass2MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2MemberId.HeaderText = "MemberId";
-			this.Pass2MemberId.Name = "Pass2MemberId";
-			this.Pass2MemberId.ReadOnly = true;
-			this.Pass2MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2MemberId.Visible = false;
-			// 
-			// Pass2Round
-			// 
-			this.Pass2Round.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2Round.HeaderText = "Rd";
-			this.Pass2Round.Name = "Pass2Round";
-			this.Pass2Round.ReadOnly = true;
-			this.Pass2Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Round.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Round.Visible = false;
-			this.Pass2Round.Width = 25;
-			// 
-			// Pass2PassNum
-			// 
-			this.Pass2PassNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2PassNum.HeaderText = "PassNum";
-			this.Pass2PassNum.Name = "Pass2PassNum";
-			this.Pass2PassNum.ReadOnly = true;
-			this.Pass2PassNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2PassNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2PassNum.Visible = false;
-			this.Pass2PassNum.Width = 50;
-			// 
-			// Pass2Seq
-			// 
-			this.Pass2Seq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle26.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Seq.DefaultCellStyle = dataGridViewCellStyle26;
-			this.Pass2Seq.HeaderText = "Seq";
-			this.Pass2Seq.Name = "Pass2Seq";
-			this.Pass2Seq.ReadOnly = true;
-			this.Pass2Seq.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Seq.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Seq.Width = 25;
-			// 
-			// Pass2Skis
-			// 
-			this.Pass2Skis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Skis.DefaultCellStyle = dataGridViewCellStyle27;
-			this.Pass2Skis.HeaderText = "Skis";
-			this.Pass2Skis.Name = "Pass2Skis";
-			this.Pass2Skis.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Skis.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Skis.Width = 35;
-			// 
-			// Pass2Code
-			// 
-			this.Pass2Code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle28.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle28.NullValue = null;
-			dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Code.DefaultCellStyle = dataGridViewCellStyle28;
-			this.Pass2Code.HeaderText = "Trick";
-			this.Pass2Code.Name = "Pass2Code";
-			this.Pass2Code.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Code.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Code.Width = 65;
-			// 
-			// Pass2Results
-			// 
-			this.Pass2Results.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle29.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Results.DefaultCellStyle = dataGridViewCellStyle29;
-			this.Pass2Results.HeaderText = "Credit";
-			this.Pass2Results.Items.AddRange(new object[] {
-            "Credit",
-            "Fall",
-            "No Credit",
-            "Before",
-            "OOC",
-            "Repeat",
-            "Unresolved"});
-			this.Pass2Results.Name = "Pass2Results";
-			this.Pass2Results.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Results.Width = 75;
-			// 
-			// Pass2Points
-			// 
-			this.Pass2Points.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle30.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle30.Format = "N0";
-			dataGridViewCellStyle30.NullValue = null;
-			dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Points.DefaultCellStyle = dataGridViewCellStyle30;
-			this.Pass2Points.HeaderText = "Points";
-			this.Pass2Points.Name = "Pass2Points";
-			this.Pass2Points.ReadOnly = true;
-			this.Pass2Points.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Points.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Points.Width = 40;
-			// 
-			// Pass2PointsTotal
-			// 
-			this.Pass2PointsTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle31.Font = new System.Drawing.Font("Arial", 8.25F);
-			dataGridViewCellStyle31.Format = "N0";
-			dataGridViewCellStyle31.NullValue = null;
-			dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2PointsTotal.DefaultCellStyle = dataGridViewCellStyle31;
-			this.Pass2PointsTotal.HeaderText = "Total";
-			this.Pass2PointsTotal.Name = "Pass2PointsTotal";
-			this.Pass2PointsTotal.ReadOnly = true;
-			this.Pass2PointsTotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2PointsTotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2PointsTotal.Width = 50;
-			// 
-			// Pass2Note
-			// 
-			this.Pass2Note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2Note.HeaderText = "Note";
-			this.Pass2Note.Name = "Pass2Note";
-			this.Pass2Note.ReadOnly = true;
-			this.Pass2Note.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Note.Visible = false;
-			// 
-			// Pass2StartPos
-			// 
-			this.Pass2StartPos.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2StartPos.HeaderText = "StartPos";
-			this.Pass2StartPos.Name = "Pass2StartPos";
-			this.Pass2StartPos.ReadOnly = true;
-			this.Pass2StartPos.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2StartPos.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2StartPos.Visible = false;
-			// 
-			// Pass2NumTurns
-			// 
-			this.Pass2NumTurns.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2NumTurns.HeaderText = "Num Turns";
-			this.Pass2NumTurns.Name = "Pass2NumTurns";
-			this.Pass2NumTurns.ReadOnly = true;
-			this.Pass2NumTurns.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2NumTurns.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2NumTurns.Visible = false;
-			this.Pass2NumTurns.Width = 25;
-			// 
-			// Pass2RuleNum
-			// 
-			this.Pass2RuleNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2RuleNum.HeaderText = "RuleNum";
-			this.Pass2RuleNum.Name = "Pass2RuleNum";
-			this.Pass2RuleNum.ReadOnly = true;
-			this.Pass2RuleNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2RuleNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2RuleNum.Visible = false;
-			// 
-			// Pass2TypeCode
-			// 
-			this.Pass2TypeCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2TypeCode.HeaderText = "TypeCode";
-			this.Pass2TypeCode.Name = "Pass2TypeCode";
-			this.Pass2TypeCode.ReadOnly = true;
-			this.Pass2TypeCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2TypeCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2TypeCode.Visible = false;
-			// 
-			// Pass2Updated
-			// 
-			this.Pass2Updated.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2Updated.HeaderText = "Updated";
-			this.Pass2Updated.Name = "Pass2Updated";
-			this.Pass2Updated.ReadOnly = true;
-			this.Pass2Updated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2Updated.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2Updated.Visible = false;
-			this.Pass2Updated.Width = 50;
-			// 
-			// Pass2AgeGroup
-			// 
-			this.Pass2AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Pass2AgeGroup.HeaderText = "Div";
-			this.Pass2AgeGroup.Name = "Pass2AgeGroup";
-			this.Pass2AgeGroup.ReadOnly = true;
-			this.Pass2AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Pass2AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Pass2AgeGroup.Visible = false;
-			this.Pass2AgeGroup.Width = 35;
+			// WaterskiConnectLabel
+			// 
+			this.WaterskiConnectLabel.AutoSize = true;
+			this.WaterskiConnectLabel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+			this.WaterskiConnectLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.WaterskiConnectLabel.ForeColor = System.Drawing.Color.Gold;
+			this.WaterskiConnectLabel.Location = new System.Drawing.Point(362, 34);
+			this.WaterskiConnectLabel.Name = "WaterskiConnectLabel";
+			this.WaterskiConnectLabel.Padding = new System.Windows.Forms.Padding(1);
+			this.WaterskiConnectLabel.Size = new System.Drawing.Size(155, 16);
+			this.WaterskiConnectLabel.TabIndex = 112;
+			this.WaterskiConnectLabel.Text = "WaterskiConnect Active";
+			this.WaterskiConnectLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.WaterskiConnectLabel.Visible = false;
 			// 
 			// ScoreCalc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(964, 559);
+			this.ClientSize = new System.Drawing.Size(1016, 559);
+			this.Controls.Add(this.WaterskiConnectLabel);
 			this.Controls.Add(this.hcapScoreLabel);
 			this.Controls.Add(this.hcapScoreTextBox);
 			this.Controls.Add(this.listApprovedBoatsDataGridView);
@@ -2198,7 +2214,6 @@
 			this.Controls.Add(this.RefreshLabel1);
 			this.Controls.Add(EventGroupLabel);
 			this.Controls.Add(this.EventGroupList);
-			this.Controls.Add(ActiveSkierNameLabel);
 			this.Controls.Add(this.activeSkierName);
 			this.Controls.Add(ErrorMsgLabel);
 			this.Controls.Add(InprogMsgLabel);
@@ -2393,5 +2408,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Pass2TypeCode;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Pass2Updated;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Pass2AgeGroup;
+		private System.Windows.Forms.ToolStripButton navWaterSkiConnect;
+		private System.Windows.Forms.Label WaterskiConnectLabel;
 	}
 }

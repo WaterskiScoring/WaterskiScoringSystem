@@ -756,7 +756,7 @@ namespace WaterskiScoringSystem.Tournament {
 			String curMethodName = "updateEventGroup: ";
 			int rowsProc = 0;
 			StringBuilder curSqlStmt = new StringBuilder("");
-			if (isObjectEmpty(newEventGroup)) newEventGroup = "";
+			if ( HelperFunctions.isObjectEmpty(newEventGroup) ) newEventGroup = "";
 
 			try {
 				curSqlStmt.Append("SELECT E.Event, E.SanctionId, E.MemberId, O.MemberId as RunOrderMember, T.SkierName, E.AgeGroup, E.EventGroup, O.EventGroup as EventGroupRO, O.RunOrderGroup, O.Round ");
@@ -916,12 +916,12 @@ namespace WaterskiScoringSystem.Tournament {
             curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
                 + "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = '" + curEvent + "' "
                 + "Where XT.SanctionId = '" + mySanctionNum + "' ";
-            if ( !( isObjectEmpty(curFilterCmd) ) && curFilterCmd.Length > 0 ) {
+            if ( HelperFunctions.isObjectPopulated( curFilterCmd) ) {
                 curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
             }
 
             curSelectCommand[1] = "Select * from EventReg XT ";
-            if ( isObjectEmpty(curFilterCmd) ) {
+            if ( HelperFunctions.isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[1] = curSelectCommand[1]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = '" + curEvent + "'";
@@ -939,7 +939,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             curSelectCommand[2] = "Select * from EventRunOrder XT ";
-            if (isObjectEmpty(curFilterCmd) ) {
+            if (HelperFunctions.isObjectEmpty(curFilterCmd) ) {
                 curSelectCommand[2] = curSelectCommand[2]
                     + " Where SanctionId = '" + mySanctionNum + "'"
                     + " And Event = '" + curEvent + "'";
@@ -1537,11 +1537,11 @@ namespace WaterskiScoringSystem.Tournament {
 				
 				if (curColName.Equals( "EventGroup" )) {
                     String curValue = e.FormattedValue.ToString();
-                    if (isObjectEmpty( curValue )) {
+                    if (HelperFunctions.isObjectEmpty( curValue )) {
                         MessageBox.Show( "An event group is required" );
                         e.Cancel = true;
                     } else {
-                        if (!( isObjectEmpty( myOrigItemValue ) )) {
+                        if ( HelperFunctions.isObjectPopulated( myOrigItemValue ) ) {
 							String curEvent = getCurrentEvent();
 							StringBuilder curSqlStmt = new StringBuilder( "" );
                             curSqlStmt.Append( "SELECT Count(*) as GroupCount " );
@@ -1626,7 +1626,7 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
                 if (curColName.Equals("RunOrder")) {
                     if ( myOrigItemValue == null ) myOrigItemValue = "0";
-                    if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
+                    if ( HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
                         if ( Convert.ToInt16( myOrigItemValue ) != 0 ) {
                             isDataModified = true;
                             curViewRow.Cells["Updated"].Value = "Y";
@@ -1646,8 +1646,8 @@ namespace WaterskiScoringSystem.Tournament {
                     || curColName.Equals( "TrickBoat" )
                     || curColName.Equals( "JumpHeight" )
                     ) {
-                    if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
-                        if ( !(isObjectEmpty(myOrigItemValue)) ) {
+                    if ( HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
+                        if ( HelperFunctions.isObjectPopulated(myOrigItemValue ) ) {
                             if (curColName.Equals( "TrickBoat" ) || curColName.Equals( "JumpHeight" )) {
                                 updateTourRegData( curViewRow, curColName, "" );
                             } else {
@@ -1671,8 +1671,8 @@ namespace WaterskiScoringSystem.Tournament {
                         || curColName.Equals( "RankingScore" )
                         ) {
                     if ( myOrigItemValue == null ) myOrigItemValue = "0";
-                    if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
-                        if ( Convert.ToInt16( myOrigItemValue) != 0 ) {
+                    if ( HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
+                        if ( Convert.ToDecimal( myOrigItemValue) != 0 ) {
                             isDataModified = true;
                             curViewRow.Cells["Updated"].Value = "Y";
                         }
@@ -2030,18 +2030,5 @@ namespace WaterskiScoringSystem.Tournament {
 			return curValue;
 		}
 
-		private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-		}
 	}
 }

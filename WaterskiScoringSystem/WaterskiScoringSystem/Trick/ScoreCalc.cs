@@ -159,6 +159,8 @@ namespace WaterskiScoringSystem.Trick {
             //Retrieve and load tournament event entries
             loadEventGroupList( Convert.ToByte( roundActiveSelect.RoundValue ) );
 
+            navWaterSkiConnect_Click( null, null );
+
             if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
                 LiveWebLabel.Visible = true;
             } else {
@@ -318,14 +320,14 @@ namespace WaterskiScoringSystem.Trick {
                 MessageBox.Show( "Error attempting to save changes for trick score \n" + excp.Message );
                 return;
             }
-
-            if ( LiveWebLabel.Visible ) {
-                String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
-                String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
-                String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
-                byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
-                LiveWebHandler.sendCurrentSkier( "Trick", TrickEventData.mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
-            }
+            
+            //Send scores and information to any defined external reporting system
+            String curEventGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value;
+            String curMemberId = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["MemberId"].Value;
+            String curAgeGroup = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value;
+            byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
+            
+            transmitExternalScoreboard( curMemberId, curAgeGroup, curRound );
 
             // Set focus and objection positioning when save processing has been successful
             isDataModified = false;
@@ -509,6 +511,28 @@ namespace WaterskiScoringSystem.Trick {
             } catch {
                 myScoreRow["Status"] = "TBD";
             }
+        }
+
+        private void transmitExternalScoreboard( String curMemberId, String curAgeGroup, byte curRound ) {
+            String curSkierName = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value;
+            String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
+
+            if ( LiveWebLabel.Visible ) {
+                LiveWebHandler.sendCurrentSkier( "Trick", TrickEventData.mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
+            }
+            if ( WscHandler.isConnectActive ) {
+                String skierFed = HelperFunctions.getDataRowColValue( TrickEventData.myTourRow, "Federation", "" );
+                if ( HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "Federation", "" ) ) ) {
+                    skierFed = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["Federation"].Value;
+                }
+                WscHandler.sendAthleteScore( curMemberId
+                    , (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["SkierName"].Value
+                    , "Trick", skierFed
+                    , (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["State"].Value
+                    , (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value
+                    , curRound, 0, 0, "", scoreTextBox.Text );
+            }
+            if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
         }
 
         private void showEventRunInfo() {
@@ -1280,6 +1304,17 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
 
+        private void navWaterSkiConnect_Click( object sender, EventArgs e ) {
+            WscHandler.checkWscConnectStatus( sender != null );
+            if ( WscHandler.isConnectActive ) {
+                WaterskiConnectLabel.Visible = true;
+                return;
+            }
+
+            WaterskiConnectLabel.Visible = false;
+            return;
+        }
+
         private void loadEventGroupList( int inRound ) {
             isLoadInProg = true;
 
@@ -1693,6 +1728,9 @@ namespace WaterskiScoringSystem.Trick {
         private void setTrickScoreEntry( DataGridViewRow inTourEventRegRow, Byte inRound ) {
             isDataModified = false;
             isLoadInProg = true;
+
+            if ( !( WscHandler.isConnectActive ) ) navWaterSkiConnect_Click( null, null );
+
             String curMemberId = (String)inTourEventRegRow.Cells["MemberId"].Value;
             String curAgeGroup = (String)inTourEventRegRow.Cells["AgeGroup"].Value;
             activeSkierName.Text = (String)inTourEventRegRow.Cells["SkierName"].Value;
@@ -3377,5 +3415,6 @@ namespace WaterskiScoringSystem.Trick {
 
             return false;
         }
-	}
+
+    }
 }

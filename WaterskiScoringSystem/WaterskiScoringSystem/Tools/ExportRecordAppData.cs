@@ -16,7 +16,7 @@ namespace WaterskiScoringSystem.Tools {
         private String myDeploymentDirectory = "";
 
         //private const String myExcelAppUID = "Excel.Application";
-        private const String myExcelAppUID = "Excel.ApplicationX";
+        private const String myExcelAppUID = "Excel.Application";
         private object myExcelApp = null;
         private object myExcelWorkBooks, myExcelWorkBook, myExcelSheets, myExcelActiveSheet, myExcelRange;
 

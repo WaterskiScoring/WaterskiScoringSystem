@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Data;
 using System.Drawing;
-using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -280,7 +278,7 @@ namespace WaterskiScoringSystem.Tournament {
 					String curAwsaMbrshpPaymt = HelperFunctions.getViewRowColValue( curViewRow, "AwsaMbrshpPaymt", "Null" );
 					String curPaymentMethod = HelperFunctions.getViewRowColValue( curViewRow, "PaymentMethod", "" );
 					String curAwsaMbrshpComment = HelperFunctions.getViewRowColValue( curViewRow, "AwsaMbrshpComment", "" );
-					String curNotes = HelperFunctions.getViewRowColValue( curViewRow, "Notes", "Null" );
+					String curNotes = HelperFunctions.getViewRowColValue( curViewRow, "Notes", "" );
 
 					StringBuilder curSqlStmt = new StringBuilder( "" );
 					curSqlStmt.Append( "Update TourReg Set " );
