@@ -44,7 +44,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '23.03', 23.03, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '23.04', 23.04, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
@@ -58,7 +58,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
 
-				if ( myDatabaseVersion < 23.02M ) {
+				if ( myDatabaseVersion < 23.04M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}

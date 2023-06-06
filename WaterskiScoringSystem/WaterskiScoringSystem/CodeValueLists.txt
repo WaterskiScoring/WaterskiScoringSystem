@@ -378,7 +378,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		137	(41.9m) 51kph 5ft 8/27/2022 Joel Norton
-0	AWSARecords	M8-S		141	Mens 8 - Slalom		98.50	2.5 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 6/19/2021 Steve Raphael 7/23/2022 Daniel Warmhoff
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		99.00	3.0 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 4/23/2023 Jack Everett
 0	AWSARecords	M8-T		142	Mens 8 - Trick		3110	9/5/2021 Bruce Kistler
 0	AWSARecords	M8-J		143	Mens 8 - Jump		123	(37.6m) 5 51kph 9/25/2021 Frankie Dees
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		92.00	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/27/2022 Bill Mahan
@@ -394,7 +394,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
 0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
 0	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
-0	AWSARecords	W2-T		192	Womens 2 - Trick		10180	8/16/2020 Erika Lang
+0	AWSARecords	W2-T		192	Womens 2 - Trick		11360 	5/19/2023 Erika Lang
 0	AWSARecords	W2-J		193	Womens 2 - Jump		158	 5 54kph 10/6/1996 Brenda Baldwin  
 0	AWSARecords	W3-S		201	Womens 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 8/30/2014 April Coble-Eller
 0	AWSARecords	W3-T		202	Womens 3 - Trick		8250	8/7/2020 Regina Jaquess
@@ -414,7 +414,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W8-S		251	Womens 8 - Slalom		80.00	2 buoys at 12m @ 49 kph (35 off @ 30.4 mph) 9/25/2021 Leza Harrison
 0	AWSARecords	W8-T		252	Womens 8 - Trick		2700 	4/25/2022 Leza Harrison
 0	AWSARecords	W8-J		253	Womens 8 - Jump		57	5 45kph 7/9/2006 Thelma Salmas  
-0	AWSARecords	W9-S		261	Womens 9 - Slalom		68	2 bouys at 13.00m @ 46 kph (32 off @ 28.6 mph) 9/22/2013 Maria Walsh
+0	AWSARecords	W9-S		261	Womens 9 - Slalom		71.00	5 bouys at 13.00m @ 46 kph (32 off @ 28.6 mph) 4/29/2023 Chris Quackenbush
 0	AWSARecords	W9-T		262	Womens 9 - Trick		1670	 10/20/2007 Artis Price  
 0	AWSARecords	W9-J		263	Womens 9 - jump		45	5 45kph 8/16/1990 Lucille Borgen  
 0	AWSARecords	WA-S		271	Womens 10 - Slalom		56	2 buoys at 16m @ 46 kph (22 off @ 28.6 mph) 9/15/2007 Francis Woofenden  
@@ -427,7 +427,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	OM-T		292	Open Men - Trick		12090	4/30/2011 Jimmy Siemers
 0	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3M) 6 57kph 5/1/2014 Freddy Krueger
 0	AWSARecords	OW-S		301	Open Womens - Slalom		112.5	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
-0	AWSARecords	OW-T		302	Open Womens - Trick		11260	10/5/2019 Erika Lang
+0	AWSARecords	OW-T		302	Open Womens - Trick		11360	5/19/2023 Erika Lang
 0	AWSARecords	OW-J		303	Open Women - Jump		188	(57.4m) 5.5 54kph 10/16/2016 Alex Lauretano
 0	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers 8/23/2019 Adam Caldwell
 0	AWSARecords	MM-T		312	Master Men - Trick		11570	 5/8/2010 Russell Gay  
