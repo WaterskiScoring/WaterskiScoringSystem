@@ -271,8 +271,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
 							, { "athleteGroup", (String)curDataRow["EventGroup"] }
 							, { "position_current", Convert.ToInt32(curRow + 1) }
-							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["FinalPassScore"], (String)curDataRow["FinalLen"], (byte)curDataRow["FinalSpeedKph"]) }
-							, { "score_buoys", (decimal)curDataRow["Score"] }
+							, { "score_current", String.Format("{0}/{1}@{2}"
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "FinalPassScore", "0", 2)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "FinalLen", "0", 2)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "FinalSpeedKph", "0", 0) ) }
 							};
 
 						} else if ( athleteEvent.Equals( "Jump" ) ) {
@@ -284,7 +286,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
 							, { "athleteGroup", (String)curDataRow["EventGroup"] }
 							, { "position_current", Convert.ToInt32(curRow + 1) }
-							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+							, { "score_current", String.Format("{0}/{1}@{2}"
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "ScoreMeters", "0", 1)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "ScoreFeet", "0", 0)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "BoatSpeed", "0", 0) ) }
 							};
 						
 						} else if ( athleteEvent.Equals( "Trick" ) ) {
@@ -296,7 +301,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
 							, { "athleteGroup", (String)curDataRow["EventGroup"] }
 							, { "position_current", Convert.ToInt32(curRow + 1) }
-							, { "score_current", String.Format("{0} {1} {2}", (decimal)curDataRow["Score"], (decimal)curDataRow["ScorePass1"], (decimal)curDataRow["ScorePass2"]) }
+							, { "score_current", String.Format("{0} {1} {2}"
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "Score", "0", 0)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "ScorePass1", "0", 0)
+								, HelperFunctions.getDataRowColValueDecimal(curDataRow, "ScorePass2", "0", 0) ) }
 							};
 						}
 
@@ -327,6 +335,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 						, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["FinalPassScore"], (String)curDataRow["FinalLen"], (byte)curDataRow["FinalSpeedKph"]) }
 						, { "score_buoys", (decimal)curDataRow["Score"] }
 					};
+
 				} else if ( athleteEvent.Equals( "Jump" ) ) {
 					curLeader = new Dictionary<string, object> {
 						{ "athleteId", (String)curDataRow["MemberId"] }
@@ -337,6 +346,18 @@ namespace WaterskiScoringSystem.Externalnterface {
 						, { "athleteGroup", (String)curDataRow["EventGroup"] }
 						, { "position_current", Convert.ToInt32(curRow + 1) }
 						, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+					};
+
+				} else if ( athleteEvent.Equals( "Trick" ) ) {
+					curLeader = new Dictionary<string, object> {
+						{ "athleteId", (String)curDataRow["MemberId"] }
+						, { "athleteName", (String)curDataRow["SkierName"] }
+						, { "athleteCountry", curFederation.ToUpper() }
+						, { "athleteRegion", (String)curDataRow["State"] }
+						, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+						, { "athleteGroup", (String)curDataRow["EventGroup"] }
+						, { "position_current", Convert.ToInt32(curRow + 1) }
+						, { "score_current", String.Format("{0}, {1}, {2}", (Int16)curDataRow["Score"], (Int16)curDataRow["ScorePass1"], (Int16)curDataRow["ScorePass2"]) }
 					};
 				}
 
@@ -374,6 +395,18 @@ namespace WaterskiScoringSystem.Externalnterface {
 							, { "athleteGroup", (String)curDataRow["EventGroup"] }
 							, { "position_current", Convert.ToInt32(curRow + 1) }
 							, { "score_current", String.Format("{0}/{1}@{2}", (decimal)curDataRow["ScoreMeters"], (decimal)curDataRow["ScoreFeet"], (byte)curDataRow["BoatSpeed"]) }
+							} );
+
+					} else if ( athleteEvent.Equals( "Trick" ) ) {
+						leaderBoard.Add( new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["MemberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_current", String.Format("{0}, {1}, {2}", (Int16)curDataRow["Score"], (Int16)curDataRow["ScorePass1"], (Int16)curDataRow["ScorePass2"]) }
 							} );
 					}
 
@@ -857,7 +890,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			} else if ( athleteEvent.Equals( "Trick" ) ) {
 				curSqlStmt.Append( "SELECT TR.MemberId, TR.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, TR.State" );
 				curSqlStmt.Append( ", COALESCE(ER.ReadyForPlcmt, 'N') as ReadyForPlcmt, TR.Federation, T.Federation as TourFederation" );
-				curSqlStmt.Append( ", SS.Round, SS.Score, SS.ScorePass1, , SS.ScorePass2 " );
+				curSqlStmt.Append( ", SS.Round, SS.Score, SS.ScorePass1, SS.ScorePass2 " );
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "  INNER JOIN EventReg ER ON TR.MemberId = ER.MemberId AND TR.SanctionId = ER.SanctionId AND TR.AgeGroup = ER.AgeGroup" );
 				curSqlStmt.Append( "  INNER JOIN TrickScore SS ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup" );

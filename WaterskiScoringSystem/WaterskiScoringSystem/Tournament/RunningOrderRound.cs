@@ -35,6 +35,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataGridViewPrinter myPrintDataGrid;
         private PrintDocument myPrintDoc;
         private TourProperties myTourProperties;
+        private SortDialogForm sortDialogForm;
         #endregion
 
         public RunningOrderRound() {
@@ -46,16 +47,8 @@ namespace WaterskiScoringSystem.Tournament {
             myTourProperties = TourProperties.Instance;
             myTourRow = inTourRow;
             myEvent = inEvent;
-            if (inEvent.Equals("Slalom")) {
-                this.Text = myWindowTitle + " - Slalom";
-                mySortCmd = myTourProperties.RunningOrderSortSlalom;
-            } else if (inEvent.Equals( "Trick" )) {
-                this.Text = myWindowTitle + " - Trick";
-                mySortCmd = myTourProperties.RunningOrderSortTrick;
-            } else if (inEvent.Equals( "Jump" )) {
-                this.Text = myWindowTitle + " - Jump";
-                mySortCmd = myTourProperties.RunningOrderSortJump;
-            }
+            getSortOrder();
+
             myTourRules = (String)myTourRow["Rules"];
 
             if (myTourRow["SlalomRounds"] == DBNull.Value) {
@@ -91,12 +84,8 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void RunningOrderRound_Load(object sender, EventArgs e) {
-            if (Properties.Settings.Default.RunningOrderRound_Width > 0) {
-                this.Width = Properties.Settings.Default.RunningOrderRound_Width;
-            }
-            if (Properties.Settings.Default.RunningOrderRound_Height > 0) {
-                this.Height = Properties.Settings.Default.RunningOrderRound_Height;
-            }
+            if (Properties.Settings.Default.RunningOrderRound_Width > 0) this.Width = Properties.Settings.Default.RunningOrderRound_Width;
+            if (Properties.Settings.Default.RunningOrderRound_Height > 0) this.Height = Properties.Settings.Default.RunningOrderRound_Height;
             if (Properties.Settings.Default.RunningOrder_Location.X > 0
                 && Properties.Settings.Default.RunningOrderRound_Location.Y > 0) {
                     this.Location = Properties.Settings.Default.RunningOrderRound_Location;
@@ -107,6 +96,11 @@ namespace WaterskiScoringSystem.Tournament {
             myRunOrderCopyDialog = new RunOrderCopyDialogForm();
             myRunOrderElimDialog = new RunOrderElimDialogForm();
             myCalcSummary = new CalcScoreSummary();
+
+            String[] curList = { "SkierName", "EventGroup", "Div", "DivOrder", "RunOrder", "TeamCode", "EventClass", "ReadyForPlcmt"
+                    , "RankingScore", "RankingRating", "JumpHeight", "TrickBoat", "HCapBase", "HCapScore" };
+            sortDialogForm = new SortDialogForm();
+            sortDialogForm.ColumnListArray = curList;
 
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             isDataModified = false;
@@ -442,7 +436,7 @@ namespace WaterskiScoringSystem.Tournament {
                 StringBuilder curSqlStmt = new StringBuilder("");
                 curSqlStmt.Append("SELECT Count(PK) as Count FROM EventRunOrder ");
                 curSqlStmt.Append("WHERE SanctionId = '" + mySanctionNum + "' AND Event = '" + myEvent + "' and Round = " + inRound.ToString());
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 int curCount = (int)curDataTable.Rows[0]["Count"];
                 if ( curCount > 0 ) {
                     if (inConfirm) {
@@ -605,7 +599,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append("WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + myEvent + "' ");
                     curSqlStmt.Append("  AND Not Exists ( ");
                     curSqlStmt.Append("      Select 1 From EventRunOrder O Where E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound + " ) ");
-                    DataTable curDataTable = getData(curSqlStmt.ToString());
+                    DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString());
                     foreach ( DataRow curRow in curDataTable.Rows ) {
                         curMemberId = (String)curRow["MemberId"];
                         curGroup = (String)curRow["EventGroup"];
@@ -818,6 +812,32 @@ namespace WaterskiScoringSystem.Tournament {
                 if (outBuffer != null) {
                     outBuffer.Close();
                 }
+            }
+        }
+
+        private void navSort_Click( object sender, EventArgs e ) {
+            HelperFunctions.replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
+            sortDialogForm.SortCommand = mySortCmd;
+            sortDialogForm.ShowDialog( this );
+
+            // Determine if the OK button was clicked on the dialog box.
+            if ( sortDialogForm.DialogResult == DialogResult.OK ) {
+                mySortCmd = sortDialogForm.SortCommand;
+                winStatusMsg.Text = "Sorted by " + mySortCmd;
+                if ( myEvent.Equals( "Slalom" ) ) {
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "JumpHeight" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
+                    myTourProperties.RunningOrderSortSlalomRound = mySortCmd;
+                
+                } else if ( myEvent.Equals( "Trick" ) ) {
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
+                    myTourProperties.RunningOrderSortTrickRound = mySortCmd;
+
+                } else if ( myEvent.Equals( "Jump" ) ) {
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "JumpHeight" );
+                    myTourProperties.RunningOrderSortJumpRound = mySortCmd;
+                }
+                loadEventRegView( Convert.ToInt16( roundActiveSelect.RoundValue ), myPlcmtOrg, myCommandType );
             }
         }
 
@@ -1352,6 +1372,25 @@ namespace WaterskiScoringSystem.Tournament {
             return curDataTable;
         }
 
+        private void getSortOrder() {
+            if ( myEvent.Equals( "Slalom" ) ) {
+                this.Text = myWindowTitle + " - Slalom";
+                mySortCmd = myTourProperties.RunningOrderSortSlalomRound;
+                if ( HelperFunctions.isObjectEmpty( mySortCmd ) ) mySortCmd = myTourProperties.RunningOrderSortSlalom;
+
+            } else if ( myEvent.Equals( "Trick" ) ) {
+                this.Text = myWindowTitle + " - Trick";
+                mySortCmd = myTourProperties.RunningOrderSortTrickRound;
+                if ( HelperFunctions.isObjectEmpty( mySortCmd ) ) mySortCmd = myTourProperties.RunningOrderSortTrick;
+
+            } else if ( myEvent.Equals( "Jump" ) ) {
+                this.Text = myWindowTitle + " - Jump";
+                mySortCmd = myTourProperties.RunningOrderSortJumpRound;
+                if ( HelperFunctions.isObjectEmpty( mySortCmd ) ) mySortCmd = myTourProperties.RunningOrderSortJump;
+            }
+
+        }
+
         private DataTable getEventRoundSkierOrder(Int16 inRound, String inPlcmtOrg, String inCommandType) {
             String curPlcmtOrg = inPlcmtOrg;
             if (inPlcmtOrg == null) curPlcmtOrg = "";
@@ -1368,7 +1407,8 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON O.SanctionId = D.SanctionId AND O.AgeGroup = D.AgeGroup AND O.Event = D.Event " );
 			curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' AND O.Event = '" + myEvent + "' AND O.Round = " + inRound.ToString() + " " );
 
-            if (curPlcmtOrg.Length == 0) {
+            getSortOrder();
+            if ( curPlcmtOrg.Length == 0) {
 				if (mySortCmd.Length > 0) {
 					curSqlStmt.Append("ORDER BY " + mySortCmd);
 				} else {
@@ -1400,7 +1440,7 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getEventDivMaxMinSpeed() {
@@ -1410,7 +1450,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "INNER JOIN CodeValueList AS L2 ON L2.ListCode = L1.ListCode AND L2.ListName IN ('AWSASlalomMax', 'IwwfSlalomMax', 'NcwsaSlalomMax') " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS L3 ON L3.ListCode = L1.ListCode AND L3.ListName IN ('IwwfSlalomMin', 'NcwsaSlalomMin') " );
             curSqlStmt.Append( "WHERE L1.ListName LIKE '%AgeGroup' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getJumpDivMaxSpeedRamp() {
@@ -1420,11 +1460,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "INNER JOIN CodeValueList AS L2 ON L2.ListCode = L1.ListCode AND L2.ListName IN ('AWSAJumpMax', 'IwwfJumpMax', 'NcwsaJumpMax') " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList AS L3 ON L3.ListCode = L1.ListCode AND L3.ListName IN ('AWSARampMax', 'IwwfRampMax', 'NcwsaRampMax') " );
             curSqlStmt.Append( "WHERE L1.ListName LIKE '%AgeGroup' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private StreamWriter getExportFile(String inFileName) {

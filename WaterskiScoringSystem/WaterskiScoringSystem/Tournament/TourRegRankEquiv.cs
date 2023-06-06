@@ -299,10 +299,10 @@ namespace WaterskiScoringSystem.Tournament {
 			/* -----------------------------------------------------------------------
             * Validate TourID value for scores to be Exported.
 			* Validate TourID value for scores to be Exported.
-			* http://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&MemberId=700040630
-			* http://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&FirstName=Jeff&LastName=Clark
-			* http://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&State=MA
-			* http://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19E013&MemberId=700040630&user=19E013&password=10460
+			* https://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&MemberId=700040630
+			* https://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&FirstName=Jeff&LastName=Clark
+			* https://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19U038&State=MA
+			* https://www.usawaterski.org/admin/GetMemberRankEquivExportJson.asp?SanctionId=19E013&MemberId=700040630&user=19E013&password=10460
             *
             *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:www.usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
             ----------------------------------------------------------------------- */

@@ -547,7 +547,7 @@ namespace WaterskiScoringSystem.Tools {
             String curMethodName = "Tournament:RunOrderElimDialogForm:loadDataGridViewElim";
             String curGroup = "", curDiv = "", curPlcmt = "", curSortCmd = "", curReportGroup = "", prevReportGroup = "";
             String curPlcmtName = "", curRoundName = "", curGroupName = "", curScoreName = "", curFilterCmd = "";
-            int curIdx = 0, curNumPlcmt = 0, curRunOrder = 0, curSkierSeed = 0, curGroupNumSkiers = 0;
+            int curIdx = 0, curNumPlcmt = 0, curRunOrder = 0, curSkierSeed = 0, curGroupNumSkiers = 0, curMaxSkiersSelect = 0;
             DataTable curDataTable = null;
             DataTable curSummaryDataTable = null;
             DataRow[] curFindRows = null;
@@ -622,7 +622,7 @@ namespace WaterskiScoringSystem.Tools {
 				} else if ( myPlcmtOrg.ToLower().Equals( "divgr" ) ) {
 					curSortCmd = "AgeGroup ASC, " + curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC, " + curRoundName + " ASC";
 				} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
-					curSortCmd = curGroupName + " ASC, " + curPlcmtName + " DESC, SkierName ASC ";
+					curSortCmd = curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC ";
 				} else {
 					curSortCmd = curPlcmtName + " ASC, SkierName ASC ";
 				}
@@ -643,7 +643,8 @@ namespace WaterskiScoringSystem.Tools {
 				previewDataGridView.Rows.Clear();
 				if ( curDataTable.Rows.Count > 0 ) {
 					curGroupNumSkiers = curDataTable.Rows.Count;
-					DataGridViewRow curViewRow;
+                    if ( curDataTable.Rows.Count < myNumSkiers ) curMaxSkiersSelect = curDataTable.Rows.Count;
+                    DataGridViewRow curViewRow;
 					foreach ( DataRow curDataRow in curDataTable.Rows ) {
 						curIdx = previewDataGridView.Rows.Add();
 
@@ -671,8 +672,8 @@ namespace WaterskiScoringSystem.Tools {
 						if ( curReportGroup != prevReportGroup ) {
 							curFindRows = curDataTable.Select( curFilterCmd );
 							curGroupNumSkiers = curFindRows.Length;
-							if ( curGroupNumSkiers > myNumSkiers ) {
-								curRunOrder = myNumSkiers;
+							if ( curGroupNumSkiers > curMaxSkiersSelect ) {
+								curRunOrder = curMaxSkiersSelect;
 							} else {
 								curRunOrder = curGroupNumSkiers;
 							}
@@ -685,10 +686,10 @@ namespace WaterskiScoringSystem.Tools {
 							}
 						} else {
 							curSkierSeed += 1;
-							if ( curSkierSeed > myNumSkiers ) {
-								curRunOrder = curGroupNumSkiers - curSkierSeed + myNumSkiers + 1;
+							if ( curSkierSeed > curMaxSkiersSelect ) {
+								curRunOrder = curGroupNumSkiers - curSkierSeed + curMaxSkiersSelect + 1;
 							} else {
-								curRunOrder = myNumSkiers - curSkierSeed + 1;
+								curRunOrder = curMaxSkiersSelect - curSkierSeed + 1;
 							}
 						}
 						if ( curPlcmt.Contains( "T" ) ) {
@@ -707,10 +708,10 @@ namespace WaterskiScoringSystem.Tools {
 								curViewRow.Cells["previewSelected"].Value = false;
 							}
 						} else {
-							if ( curSkierSeed <= myNumSkiers ) {
+							if ( curSkierSeed <= curMaxSkiersSelect ) {
 								curViewRow.Cells["previewSelected"].Value = true;
 							} else {
-								if ( curSkierSeed < ( myNumSkiers + 1 ) ) {
+								if ( curSkierSeed < ( curMaxSkiersSelect + 1 ) ) {
 									curViewRow = previewDataGridView.Rows[curIdx];
 									curViewRow.DefaultCellStyle.BackColor = Color.LightCyan;
 									previewDataGridView.Rows[curIdx].Height = 2;

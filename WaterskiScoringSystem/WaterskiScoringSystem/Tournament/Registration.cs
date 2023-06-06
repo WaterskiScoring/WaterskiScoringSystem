@@ -54,13 +54,15 @@ namespace WaterskiScoringSystem.Tournament {
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 			if ( mySanctionNum == null || mySanctionNum.Length < 6 ) {
 				MessageBox.Show( "An active tournament must be selected from the Administration > Tournament List" );
-				this.Close();
+				closeWindow();
+				return;
 			}
 			//Retrieve selected tournament attributes
 			DataTable curTourDataTable = getTourData();
 			if ( curTourDataTable.Rows.Count == 0 ) {
 				MessageBox.Show( "An active tournament must be selected from the Administration > Tournament List" );
-				this.Close();
+				closeWindow();
+				return;
 			}
 
 			myTourRow = curTourDataTable.Rows[0];
@@ -101,6 +103,20 @@ namespace WaterskiScoringSystem.Tournament {
 			loadTourRegView();
 
 			isDataModified = false;
+		}
+
+		private void closeWindow() {
+			Timer curTimerObj = new Timer();
+			curTimerObj.Interval = 15;
+			curTimerObj.Tick += new EventHandler( CloseWindowTimer );
+			curTimerObj.Start();
+			return;
+		}
+		private void CloseWindowTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( CloseWindowTimer );
+			this.Close();
 		}
 
 		private void loadTourRegView() {

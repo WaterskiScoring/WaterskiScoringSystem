@@ -332,7 +332,7 @@ namespace WscMessageHandler.Message {
 				curSqlStmt.Append( ", '" + curEvent + "'" );
 
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "driverId" ) + "'" );
-				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "driverName" ) + "'" );
+				curSqlStmt.Append( ", '" + HelperFunctions.stringReplace( HelperFunctions.getAttributeValue( curMsgDataList, "driverName" ).ToString(), HelperFunctions.singleQuoteDelim, "''" ) + "'" );
 				curSqlStmt.Append( ", '" + curBoatInfoMsg + "'" );
 
 				curSqlStmt.Append( ", '" + HelperFunctions.getAttributeValue( curMsgDataList, "homologation" ) + "'" );

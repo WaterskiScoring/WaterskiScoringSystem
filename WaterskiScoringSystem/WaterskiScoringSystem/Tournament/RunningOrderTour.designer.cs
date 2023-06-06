@@ -187,7 +187,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.EventRegDataGridView.RowHeadersVisible = false;
 			this.EventRegDataGridView.RowHeadersWidth = 31;
 			this.EventRegDataGridView.ShowEditingIcon = false;
-			this.EventRegDataGridView.Size = new System.Drawing.Size(1024, 317);
+			this.EventRegDataGridView.Size = new System.Drawing.Size(1024, 304);
 			this.EventRegDataGridView.TabIndex = 20;
 			this.EventRegDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventRegDataGridView_CellEnter);
 			this.EventRegDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventRegDataGridView_CellValidated);

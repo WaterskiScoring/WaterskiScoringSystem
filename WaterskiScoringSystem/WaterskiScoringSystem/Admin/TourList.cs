@@ -1517,7 +1517,7 @@ namespace WaterskiScoringSystem.Admin {
             ----------------------------------------------------------------------- */
 			String curQueryString = "?SanctionId=" + curSanctionNum;
 			String curContentType = "application/json; charset=UTF-8";
-			String curOfficialExportListUrl = "http://www.usawaterski.org/admin/GetSanctionExportJson.asp";
+			String curOfficialExportListUrl = "https://www.usawaterski.org/admin/GetSanctionExportJson.asp";
 			String curReqstUrl = curOfficialExportListUrl + curQueryString;
 
 			NameValueCollection curHeaderParams = new NameValueCollection();

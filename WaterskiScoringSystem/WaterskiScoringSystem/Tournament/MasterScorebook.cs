@@ -544,7 +544,7 @@ namespace WaterskiScoringSystem.Tournament {
             Timer curTimerObj = (Timer)sender;
             curTimerObj.Stop();
             curTimerObj.Tick -= new EventHandler( publishReportTimer );
-            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", "Overall", mySanctionNum );
+            if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "Results", "Overall", mySanctionNum );
         }
         private void printReportTimer( object sender, EventArgs e ) {
             Timer curTimerObj = (Timer)sender;

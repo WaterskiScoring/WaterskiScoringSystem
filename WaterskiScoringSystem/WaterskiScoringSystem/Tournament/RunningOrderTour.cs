@@ -80,16 +80,22 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void RunningOrderTour_Load(object sender, EventArgs e) {
-            if (Properties.Settings.Default.RunningOrder_Width > 0) {
-                this.Width = Properties.Settings.Default.RunningOrder_Width;
+            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+            if ( !(getTourData()) ) {
+                Timer curTimerObj = new Timer();
+                curTimerObj.Interval = 15;
+                curTimerObj.Tick += new EventHandler( CloseWindowTimer );
+                curTimerObj.Start();
+                return;
             }
-            if (Properties.Settings.Default.RunningOrder_Height > 0) {
-                this.Height = Properties.Settings.Default.RunningOrder_Height;
-            }
+
+            if ( Properties.Settings.Default.RunningOrder_Width > 0) this.Width = Properties.Settings.Default.RunningOrder_Width;
+            if (Properties.Settings.Default.RunningOrder_Height > 0) this.Height = Properties.Settings.Default.RunningOrder_Height;
             if (Properties.Settings.Default.RunningOrder_Location.X > 0
                 && Properties.Settings.Default.RunningOrder_Location.Y > 0) {
                 this.Location = Properties.Settings.Default.RunningOrder_Location;
             }
+            
             isLoadInProg = true;
             myTourProperties = TourProperties.Instance;
 
@@ -104,74 +110,58 @@ namespace WaterskiScoringSystem.Tournament {
             sortDialogForm = new SortDialogForm();
             sortDialogForm.ColumnListArray = curList;
 
-			// Retrieve data from database
-			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+            // Retrieve data from database
+            myTourRules = (String)myTourRow["Rules"];
+            myTourEventClass = (String)myTourRow["EventClass"];
+            myTourClass = (String)myTourRow["Class"];
 
-			if ( mySanctionNum == null) {
-                MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
-                //this.Close();
-            } else {
-                if (mySanctionNum.Length < 6) {
-                    MessageBox.Show("An active tournament must be selected from the Administration menu Tournament List option");
-                    //this.Close();
+            mySkierClassList = new ListSkierClass();
+            mySkierClassList.ListSkierClassLoad();
+            EventClass.DataSource = mySkierClassList.DropdownList;
+            EventClass.DisplayMember = "ItemName";
+            EventClass.ValueMember = "ItemValue";
+
+            myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+            myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+
+            if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
+            if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
+            if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
+            if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) slalomButton.Visible = false;
+            if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) trickButton.Visible = false;
+            if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) jumpButton.Visible = false;
+
+            if ( slalomButton.Checked ) {
+                if ( (Byte)myTourRow["SlalomRounds"] == 0 ) {
+                    MessageBox.Show( "Slalom event is not active for this tournament" );
                 } else {
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData( mySanctionNum );
-                    if ( curTourDataTable.Rows.Count > 0 ) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        myTourRules = (String)myTourRow["Rules"];
-                        myTourEventClass = (String)myTourRow["EventClass"];
-                        myTourClass = (String)myTourRow["Class"];
-
-                        mySkierClassList = new ListSkierClass();
-                        mySkierClassList.ListSkierClassLoad();
-                        EventClass.DataSource = mySkierClassList.DropdownList;
-                        EventClass.DisplayMember = "ItemName";
-                        EventClass.ValueMember = "ItemValue";
-
-						myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
-						myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
-
-						if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
-                        if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
-                        if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
-                        if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) {
-                            slalomButton.Visible = false;
-                        }
-                        if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) {
-                            trickButton.Visible = false;
-                        }
-                        if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) {
-                            jumpButton.Visible = false;
-                        }
-
-                        if (slalomButton.Checked) {
-                            if ( (Byte) myTourRow["SlalomRounds"] == 0 ) {
-                                MessageBox.Show("Slalom event is not active for this tournament");
-                            } else {
-                                mySortCmd = myTourProperties.RunningOrderSortSlalom;
-                            }
-                        } else if (trickButton.Checked) {
-                            if ( (Byte) myTourRow["TrickRounds"] == 0 ) {
-                                MessageBox.Show("Trick event is not active for this tournament");
-                            } else {
-                                mySortCmd = myTourProperties.RunningOrderSortTrick;
-                            }
-                        } else if (jumpButton.Checked) {
-                            if ( (Byte)myTourRow["JumpRounds"] == 0 ) {
-                                MessageBox.Show("Jump event is not active for this tournament");
-                            } else {
-                                mySortCmd = myTourProperties.RunningOrderSortJump;
-                            }
-                        }
-
-                    } else {
-                        MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                    }
+                    mySortCmd = myTourProperties.RunningOrderSortSlalom;
+                }
+            
+            } else if ( trickButton.Checked ) {
+                if ( (Byte)myTourRow["TrickRounds"] == 0 ) {
+                    MessageBox.Show( "Trick event is not active for this tournament" );
+                } else {
+                    mySortCmd = myTourProperties.RunningOrderSortTrick;
+                }
+            
+            } else if ( jumpButton.Checked ) {
+                if ( (Byte)myTourRow["JumpRounds"] == 0 ) {
+                    MessageBox.Show( "Jump event is not active for this tournament" );
+                } else {
+                    mySortCmd = myTourProperties.RunningOrderSortJump;
                 }
             }
+
             isDataModified = false;
             isLoadInProg = false;
+        }
+
+        private void CloseWindowTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( CloseWindowTimer );
+            this.Close();
         }
 
         private void RunningOrderTour_FormClosed(object sender, FormClosedEventArgs e) {
@@ -262,115 +252,46 @@ namespace WaterskiScoringSystem.Tournament {
 					curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
 					curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
 
-					try {
-						curViewRow.Cells["TrickBoat"].Value = (String)curDataRow["TrickBoat"];
-					} catch {
-						curViewRow.Cells["TrickBoat"].Value = "";
-					}
-					try {
-						curJumpHeight = (Decimal)curDataRow["JumpHeight"];
-						if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
-							curViewRow.Cells["JumpHeight"].Value = "5";
-						} else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
-							curViewRow.Cells["JumpHeight"].Value = "H";
-						} else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
-							curViewRow.Cells["JumpHeight"].Value = "6";
-						} else {
-							if ( curJumpHeight < 1M ) {
-								if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
-									curViewRow.Cells["JumpHeight"].Value = "4";
-								} else {
-									curViewRow.Cells["JumpHeight"].Value = "";
-								}
-							} else {
-								if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
-									curViewRow.Cells["JumpHeight"].Value = "4";
-								} else {
-									curViewRow.Cells["JumpHeight"].Value = "";
-								}
-							}
-						}
-					} catch {
-						curViewRow.Cells["JumpHeight"].Value = "";
-					}
-					try {
-						curViewRow.Cells["State"].Value = (String)curDataRow["State"];
-					} catch {
-						curViewRow.Cells["State"].Value = "";
-					}
-					try {
-						curViewRow.Cells["City"].Value = (String)curDataRow["City"];
-					} catch {
-						curViewRow.Cells["City"].Value = "";
-					}
-					try {
-						curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-					} catch {
-						curViewRow.Cells["EventGroup"].Value = "";
-					}
-					try {
-						curViewRow.Cells["ReadyForPlcmt"].Value = (String)curDataRow["ReadyForPlcmt"];
-					} catch {
-						curViewRow.Cells["ReadyForPlcmt"].Value = "";
-					}
-					try {
-						curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
-					} catch {
-						curViewRow.Cells["EventClass"].Value = "";
-					}
-					try {
-						curViewRow.Cells["RunOrder"].Value = ( (Int16)curDataRow["RunOrder"] ).ToString( "##0" );
-					} catch {
-						curViewRow.Cells["RunOrder"].Value = "0";
-					}
-					try {
-						curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
-					} catch {
-						curViewRow.Cells["TeamCode"].Value = "";
-					}
-					try {
-						curViewRow.Cells["RankingRating"].Value = (String)curDataRow["RankingRating"];
-					} catch {
-						curViewRow.Cells["RankingRating"].Value = "";
-					}
+                    curViewRow.Cells["TrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "" );
+                    curJumpHeight = HelperFunctions.getDataRowColValueDecimal( curDataRow, "JumpHeight", 5 );
+                    if ( curJumpHeight == myJump5FootM || curJumpHeight == myJump5Foot ) {
+                        curViewRow.Cells["JumpHeight"].Value = "5";
+                    } else if ( curJumpHeight == myJump5HFootM || curJumpHeight == myJump5HFoot ) {
+                        curViewRow.Cells["JumpHeight"].Value = "H";
+                    } else if ( curJumpHeight == myJump6FootM || curJumpHeight == myJump6Foot ) {
+                        curViewRow.Cells["JumpHeight"].Value = "6";
+                    } else {
+                        if ( curJumpHeight < 1M ) {
+                            if ( curJumpHeight < myJump5FootM && curJumpHeight > 0M ) {
+                                curViewRow.Cells["JumpHeight"].Value = "4";
+                            } else {
+                                curViewRow.Cells["JumpHeight"].Value = "";
+                            }
+                        } else {
+                            if ( curJumpHeight < myJump5Foot && curJumpHeight > 0M ) {
+                                curViewRow.Cells["JumpHeight"].Value = "4";
+                            } else {
+                                curViewRow.Cells["JumpHeight"].Value = "";
+                            }
+                        }
+                    }
+                    curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+                    curViewRow.Cells["City"].Value = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
+                    curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                    curViewRow.Cells["ReadyForPlcmt"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyForPlcmt", "" );
+                    curViewRow.Cells["EventClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventClass", "" );
+                    curViewRow.Cells["RunOrder"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RunOrder", "" );
+                    curViewRow.Cells["TeamCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
+                    curViewRow.Cells["RankingRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RankingRating", "" );
 					if ( trickButton.Checked ) {
-						try {
-							curRankingScore = (Decimal)curDataRow["RankingScore"];
-							curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "####0" );
-						} catch {
-							curViewRow.Cells["RankingScore"].Value = "";
-						}
-						try {
-							curHCapBase = (Decimal)curDataRow["HCapBase"];
-							curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "####0" );
-						} catch {
-							curViewRow.Cells["HCapBase"].Value = "";
-						}
-						try {
-							curHCapScore = (Decimal)curDataRow["HCapScore"];
-							curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "####0" );
-						} catch {
-							curViewRow.Cells["HCapScore"].Value = "";
-						}
-					} else {
-						try {
-							curRankingScore = (Decimal)curDataRow["RankingScore"];
-							curViewRow.Cells["RankingScore"].Value = curRankingScore.ToString( "##0.0" );
-						} catch {
-							curViewRow.Cells["RankingScore"].Value = "";
-						}
-						try {
-							curHCapBase = (Decimal)curDataRow["HCapBase"];
-							curViewRow.Cells["HCapBase"].Value = curHCapBase.ToString( "##0.0" );
-						} catch {
-							curViewRow.Cells["HCapBase"].Value = "";
-						}
-						try {
-							curHCapScore = (Decimal)curDataRow["HCapScore"];
-							curViewRow.Cells["HCapScore"].Value = curHCapScore.ToString( "##0.0" );
-						} catch {
-							curViewRow.Cells["HCapScore"].Value = "";
-						}
+                        curViewRow.Cells["RankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "", 0 );
+                        curViewRow.Cells["HCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "", 0 );
+                        curViewRow.Cells["HCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "", 0 );
+					
+                    } else {
+                        curViewRow.Cells["RankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "", 1 );
+                        curViewRow.Cells["HCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "", 1 );
+                        curViewRow.Cells["HCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "", 1 );
 					}
 				}
 				
@@ -670,51 +591,16 @@ namespace WaterskiScoringSystem.Tournament {
                             String curRecapTable = (String)curViewRow.Cells["Event"].Value + "Recap";
                             if ( trickButton.Checked ) curRecapTable = "TrickPass";
 
-                            try {
-                                curEventGroup = (String)curViewRow.Cells["EventGroup"].Value;
-                            } catch {
-                                curEventGroup = "";
-                            }
-                            try {
-                                curReadyForPlcmt = (String) curViewRow.Cells["ReadyForPlcmt"].Value;
-                            } catch {
-                                curReadyForPlcmt = "";
-                            }
-                            try {
-                                curTeamCode = (String)curViewRow.Cells["TeamCode"].Value;
-                            } catch {
-                                curTeamCode = "";
-                            }
-                            try {
-                                curEventClass = (String)curViewRow.Cells["EventClass"].Value;
-                            } catch {
-                                curEventClass = "";
-                            }
-                            try {
-                                curRankingRating = (String)curViewRow.Cells["RankingRating"].Value;
-                            } catch {
-                                curRankingRating = "";
-                            }
-                            try {
-                                curHCapBase = Convert.ToDecimal((String)curViewRow.Cells["HCapBase"].Value);
-                            } catch {
-                                curHCapBase = 0;
-                            }
-                            try {
-                                curHCapScore = Convert.ToDecimal((String)curViewRow.Cells["HCapScore"].Value);
-                            } catch {
-                                curHCapScore = 0;
-                            }
-                            try {
-                                curRankingScore = Convert.ToDecimal( (String)curViewRow.Cells["RankingScore"].Value );
-                            } catch {
-                                curRankingScore = 0;
-                            }
-                            try {
-                                curRunOrder = Convert.ToInt16( (String)curViewRow.Cells["RunOrder"].Value );
-                            } catch {
-                                curRunOrder = 0;
-                            }
+                            curEventGroup = HelperFunctions.getViewRowColValue( curViewRow, "EventGroup", "" );
+                            curReadyForPlcmt = HelperFunctions.getViewRowColValue( curViewRow, "ReadyForPlcmt", "" );
+
+                            curTeamCode = HelperFunctions.getViewRowColValue( curViewRow, "TeamCode", "" );
+                            curEventClass = HelperFunctions.getViewRowColValue( curViewRow, "EventClass", "" );
+                            curRankingRating = HelperFunctions.getViewRowColValue( curViewRow, "RankingRating", "" );
+                            curHCapBase = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HCapBase", "0" );
+                            curHCapScore = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HCapScore", "0" );
+                            curRankingScore = HelperFunctions.getViewRowColValueDecimal( curViewRow, "RankingScore", "0" );
+                            curRunOrder = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( curViewRow, "RunOrder", "0" ) );
 
 							updateEventGroup(curMemberId, (String)curViewRow.Cells["AgeGroup"].Value, (String)curViewRow.Cells["Event"].Value, curEventGroup);
 
@@ -808,7 +694,7 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void navSort_Click(object sender, EventArgs e) {
-            replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
+            HelperFunctions.replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
             sortDialogForm.SortCommand = mySortCmd;
             sortDialogForm.ShowDialog( this );
 
@@ -817,53 +703,20 @@ namespace WaterskiScoringSystem.Tournament {
                 mySortCmd = sortDialogForm.SortCommand;
                 winStatusMsg.Text = "Sorted by " + mySortCmd;
                 if ( slalomButton.Checked ) {
-                    mySortCmd = removeInvalidAttr(mySortCmd, "JumpHeight" );
-                    mySortCmd = removeInvalidAttr( mySortCmd, "TrickBoat" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr(mySortCmd, "JumpHeight" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
                     myTourProperties.RunningOrderSortSlalom = mySortCmd;
+                
                 } else if (trickButton.Checked) {
-                    mySortCmd = removeInvalidAttr( mySortCmd, "JumpHeight" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
                     myTourProperties.RunningOrderSortTrick = mySortCmd;
+                
                 } else if (jumpButton.Checked) {
-                    mySortCmd = removeInvalidAttr( mySortCmd, "TrickBoat" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "JumpHeight" );
                     myTourProperties.RunningOrderSortJump = mySortCmd;
                 }
                 loadEventRegView();
             }
-        }
-
-        private String removeInvalidAttr(String inSortCmd, String inAttrName) {
-            String curReturnValue = "";
-
-            int curDelim = inSortCmd.IndexOf( inAttrName );
-            if ( curDelim < 0 ) {
-                curReturnValue = inSortCmd;
-            } else {
-                String tmpSortCmd = "";
-                int curDelimComma = inSortCmd.IndexOf( ",", curDelim );
-                if ( curDelimComma > 0 ) {
-                    tmpSortCmd = inSortCmd.Substring( 0, curDelim ) + inSortCmd.Substring( curDelimComma + 2 );
-                } else {
-                    tmpSortCmd = inSortCmd.Substring( 0, curDelim - 2 );
-                }
-                curReturnValue = tmpSortCmd;
-            }
-
-            return curReturnValue;
-        }
-
-        private String replaceAttr(String inSortCmd, String inAttrName, String inReplaceValue) {
-            String curReturnValue = "";
-
-            int curDelim = inSortCmd.IndexOf( inAttrName );
-            if (curDelim < 0) {
-                curReturnValue = inSortCmd;
-            } else if (curDelim > 0) {
-                curReturnValue = inSortCmd.Substring( 0, curDelim ) + inReplaceValue + inSortCmd.Substring( curDelim + inAttrName.Length );
-            } else {
-                curReturnValue = inReplaceValue + inSortCmd.Substring( inAttrName.Length );
-            }
-
-            return curReturnValue;
         }
 
 		private void navColumnSelect_Click( object sender, EventArgs e ) {
@@ -1942,15 +1795,27 @@ namespace WaterskiScoringSystem.Tournament {
 			return "Slalom";
 		}
 
-		private DataTable getTourData(String inSanctionId) {
+		private bool getTourData() {
+            if ( mySanctionNum == null || mySanctionNum.Length < 6 ) {
+                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+                return false;
+            }
+
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventClass, T.Federation, SanctionEditCode" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation " );
             curSqlStmt.Append(", HcapSlalomBase, HcapSlalomPct, HcapTrickBase, HcapTrickPct, HcapJumpBase, HcapJumpPct ");
             curSqlStmt.Append( "FROM Tournament T " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
-            curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
-            return DataAccess.getDataTable( curSqlStmt.ToString() );
+            curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
+            DataTable curTourDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curTourDataTable.Rows.Count <= 0 ) {
+                MessageBox.Show( "An active tournament is not properly defined" );
+                return false;
+            }
+            
+            myTourRow = curTourDataTable.Rows[0];
+            return true;
         }
 
 		private DataTable getEventRegData() {

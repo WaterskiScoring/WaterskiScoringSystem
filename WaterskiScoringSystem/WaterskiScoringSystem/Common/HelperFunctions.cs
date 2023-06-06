@@ -515,5 +515,41 @@ namespace WaterskiScoringSystem.Common {
 			MessageBox.Show( "Total skiers updated for class change: " + curRowsUpdated );
 
 		}
+
+		public static String removeInvalidAttr( String inSortCmd, String inAttrName ) {
+			String curReturnValue = "";
+
+			int curDelim = inSortCmd.IndexOf( inAttrName );
+			if ( curDelim < 0 ) {
+				curReturnValue = inSortCmd;
+			} else {
+				String tmpSortCmd = "";
+				int curDelimComma = inSortCmd.IndexOf( ",", curDelim );
+				if ( curDelimComma > 0 ) {
+					tmpSortCmd = inSortCmd.Substring( 0, curDelim ) + inSortCmd.Substring( curDelimComma + 2 );
+				} else {
+					tmpSortCmd = inSortCmd.Substring( 0, curDelim - 2 );
+				}
+				curReturnValue = tmpSortCmd;
+			}
+
+			return curReturnValue;
+		}
+
+		public static String replaceAttr( String inSortCmd, String inAttrName, String inReplaceValue ) {
+			String curReturnValue = "";
+
+			int curDelim = inSortCmd.IndexOf( inAttrName );
+			if ( curDelim < 0 ) {
+				curReturnValue = inSortCmd;
+			} else if ( curDelim > 0 ) {
+				curReturnValue = inSortCmd.Substring( 0, curDelim ) + inReplaceValue + inSortCmd.Substring( curDelim + inAttrName.Length );
+			} else {
+				curReturnValue = inReplaceValue + inSortCmd.Substring( inAttrName.Length );
+			}
+
+			return curReturnValue;
+		}
+
 	}
 }

@@ -24,8 +24,8 @@
         /// </summary>
         private void InitializeComponent() {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -33,6 +33,7 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.NumSkiersLabel = new System.Windows.Forms.Label();
 			this.NumSkiersTextbox = new System.Windows.Forms.TextBox();
 			this.CancelButton = new System.Windows.Forms.Button();
@@ -56,6 +57,14 @@
 			this.rawScoreButton = new System.Windows.Forms.RadioButton();
 			this.RemoveUnscoredButton = new System.Windows.Forms.Button();
 			this.previewDataGridView = new System.Windows.Forms.DataGridView();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
+			this.SelectButton = new System.Windows.Forms.Button();
+			this.RefreshButton = new System.Windows.Forms.Button();
+			this.reseedButton = new System.Windows.Forms.RadioButton();
+			this.h2hNextGroupBox = new System.Windows.Forms.GroupBox();
+			this.bracketButton = new System.Windows.Forms.RadioButton();
+			this.EventGroupListLabel = new System.Windows.Forms.Label();
+			this.EventGroupList = new System.Windows.Forms.ComboBox();
 			this.previewSanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.previewMemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.previewEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,14 +78,6 @@
 			this.PreviewOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PreviewScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.previewSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
-			this.SelectButton = new System.Windows.Forms.Button();
-			this.RefreshButton = new System.Windows.Forms.Button();
-			this.reseedButton = new System.Windows.Forms.RadioButton();
-			this.h2hNextGroupBox = new System.Windows.Forms.GroupBox();
-			this.bracketButton = new System.Windows.Forms.RadioButton();
-			this.EventGroupListLabel = new System.Windows.Forms.Label();
-			this.EventGroupList = new System.Windows.Forms.ComboBox();
 			this.PointsMethodGroupBox.SuspendLayout();
 			this.plcmtGroupBox.SuspendLayout();
 			this.plcmtMethodGroupBox.SuspendLayout();
@@ -88,20 +89,18 @@
 			// 
 			this.NumSkiersLabel.AutoSize = true;
 			this.NumSkiersLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.NumSkiersLabel.Location = new System.Drawing.Point(495, 146);
-			this.NumSkiersLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.NumSkiersLabel.Location = new System.Drawing.Point(371, 119);
 			this.NumSkiersLabel.Name = "NumSkiersLabel";
-			this.NumSkiersLabel.Size = new System.Drawing.Size(98, 18);
+			this.NumSkiersLabel.Size = new System.Drawing.Size(80, 14);
 			this.NumSkiersLabel.TabIndex = 0;
 			this.NumSkiersLabel.Text = "# of Skiers";
 			this.NumSkiersLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// NumSkiersTextbox
 			// 
-			this.NumSkiersTextbox.Location = new System.Drawing.Point(605, 143);
-			this.NumSkiersTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.NumSkiersTextbox.Location = new System.Drawing.Point(454, 116);
 			this.NumSkiersTextbox.Name = "NumSkiersTextbox";
-			this.NumSkiersTextbox.Size = new System.Drawing.Size(35, 22);
+			this.NumSkiersTextbox.Size = new System.Drawing.Size(27, 20);
 			this.NumSkiersTextbox.TabIndex = 72;
 			this.NumSkiersTextbox.Validating += new System.ComponentModel.CancelEventHandler(this.NumSkiersTextbox_Validating);
 			this.NumSkiersTextbox.Validated += new System.EventHandler(this.NumSkiersTextbox_Validated);
@@ -110,10 +109,9 @@
 			// 
 			this.CancelButton.AutoSize = true;
 			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CancelButton.Location = new System.Drawing.Point(599, 41);
-			this.CancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.CancelButton.Location = new System.Drawing.Point(449, 33);
 			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(100, 28);
+			this.CancelButton.Size = new System.Drawing.Size(75, 23);
 			this.CancelButton.TabIndex = 27;
 			this.CancelButton.Text = "Cancel";
 			this.CancelButton.UseVisualStyleBackColor = true;
@@ -121,10 +119,9 @@
 			// TotalScoreButton
 			// 
 			this.TotalScoreButton.AutoSize = true;
-			this.TotalScoreButton.Location = new System.Drawing.Point(385, 41);
-			this.TotalScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.TotalScoreButton.Location = new System.Drawing.Point(289, 33);
 			this.TotalScoreButton.Name = "TotalScoreButton";
-			this.TotalScoreButton.Size = new System.Drawing.Size(100, 28);
+			this.TotalScoreButton.Size = new System.Drawing.Size(75, 23);
 			this.TotalScoreButton.TabIndex = 23;
 			this.TotalScoreButton.Text = "Total Score";
 			this.TotalScoreButton.UseVisualStyleBackColor = true;
@@ -134,10 +131,9 @@
 			// 
 			this.LastScoreButton.AutoSize = true;
 			this.LastScoreButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.LastScoreButton.Location = new System.Drawing.Point(260, 41);
-			this.LastScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.LastScoreButton.Location = new System.Drawing.Point(195, 33);
 			this.LastScoreButton.Name = "LastScoreButton";
-			this.LastScoreButton.Size = new System.Drawing.Size(114, 27);
+			this.LastScoreButton.Size = new System.Drawing.Size(89, 23);
 			this.LastScoreButton.TabIndex = 22;
 			this.LastScoreButton.Text = "Previous Score";
 			this.LastScoreButton.UseVisualStyleBackColor = true;
@@ -147,10 +143,9 @@
 			// 
 			this.BestScoreButton.AutoSize = true;
 			this.BestScoreButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.BestScoreButton.Location = new System.Drawing.Point(161, 41);
-			this.BestScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.BestScoreButton.Location = new System.Drawing.Point(121, 33);
 			this.BestScoreButton.Name = "BestScoreButton";
-			this.BestScoreButton.Size = new System.Drawing.Size(87, 27);
+			this.BestScoreButton.Size = new System.Drawing.Size(69, 23);
 			this.BestScoreButton.TabIndex = 21;
 			this.BestScoreButton.Text = "Best Score";
 			this.BestScoreButton.UseVisualStyleBackColor = true;
@@ -160,10 +155,9 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(85, 11);
-			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label1.Location = new System.Drawing.Point(64, 9);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(483, 24);
+			this.label1.Size = new System.Drawing.Size(385, 19);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Select methods to create running order for round ";
 			// 
@@ -174,11 +168,9 @@
 			this.PointsMethodGroupBox.Controls.Add(this.kBasePointsButton);
 			this.PointsMethodGroupBox.Controls.Add(this.plcmtPointsButton);
 			this.PointsMethodGroupBox.Controls.Add(this.nopsPointsButton);
-			this.PointsMethodGroupBox.Location = new System.Drawing.Point(521, 73);
-			this.PointsMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.PointsMethodGroupBox.Location = new System.Drawing.Point(391, 59);
 			this.PointsMethodGroupBox.Name = "PointsMethodGroupBox";
-			this.PointsMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.PointsMethodGroupBox.Size = new System.Drawing.Size(317, 68);
+			this.PointsMethodGroupBox.Size = new System.Drawing.Size(238, 55);
 			this.PointsMethodGroupBox.TabIndex = 60;
 			this.PointsMethodGroupBox.TabStop = false;
 			this.PointsMethodGroupBox.Text = "Points Calculation Method ";
@@ -187,10 +179,9 @@
 			// 
 			this.ratioPointsButton.AutoSize = true;
 			this.ratioPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ratioPointsButton.Location = new System.Drawing.Point(111, 44);
-			this.ratioPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.ratioPointsButton.Location = new System.Drawing.Point(83, 36);
 			this.ratioPointsButton.Name = "ratioPointsButton";
-			this.ratioPointsButton.Size = new System.Drawing.Size(98, 21);
+			this.ratioPointsButton.Size = new System.Drawing.Size(77, 17);
 			this.ratioPointsButton.TabIndex = 34;
 			this.ratioPointsButton.Text = "Base Ratio";
 			this.ratioPointsButton.UseVisualStyleBackColor = true;
@@ -200,10 +191,9 @@
 			// 
 			this.handicapPointsButton.AutoSize = true;
 			this.handicapPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.handicapPointsButton.Location = new System.Drawing.Point(111, 18);
-			this.handicapPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.handicapPointsButton.Location = new System.Drawing.Point(83, 15);
 			this.handicapPointsButton.Name = "handicapPointsButton";
-			this.handicapPointsButton.Size = new System.Drawing.Size(89, 21);
+			this.handicapPointsButton.Size = new System.Drawing.Size(71, 17);
 			this.handicapPointsButton.TabIndex = 33;
 			this.handicapPointsButton.Text = "Handicap";
 			this.handicapPointsButton.UseVisualStyleBackColor = true;
@@ -213,10 +203,9 @@
 			// 
 			this.kBasePointsButton.AutoSize = true;
 			this.kBasePointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.kBasePointsButton.Location = new System.Drawing.Point(7, 44);
-			this.kBasePointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.kBasePointsButton.Location = new System.Drawing.Point(5, 36);
 			this.kBasePointsButton.Name = "kBasePointsButton";
-			this.kBasePointsButton.Size = new System.Drawing.Size(97, 21);
+			this.kBasePointsButton.Size = new System.Drawing.Size(76, 17);
 			this.kBasePointsButton.TabIndex = 32;
 			this.kBasePointsButton.Text = "1000 Base";
 			this.kBasePointsButton.UseVisualStyleBackColor = true;
@@ -226,10 +215,10 @@
 			// 
 			this.plcmtPointsButton.AutoSize = true;
 			this.plcmtPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtPointsButton.Location = new System.Drawing.Point(218, 18);
+			this.plcmtPointsButton.Location = new System.Drawing.Point(164, 15);
 			this.plcmtPointsButton.Margin = new System.Windows.Forms.Padding(0);
 			this.plcmtPointsButton.Name = "plcmtPointsButton";
-			this.plcmtPointsButton.Size = new System.Drawing.Size(95, 21);
+			this.plcmtPointsButton.Size = new System.Drawing.Size(75, 17);
 			this.plcmtPointsButton.TabIndex = 35;
 			this.plcmtPointsButton.Text = "Placement";
 			this.plcmtPointsButton.UseVisualStyleBackColor = true;
@@ -240,10 +229,9 @@
 			this.nopsPointsButton.AutoSize = true;
 			this.nopsPointsButton.Checked = true;
 			this.nopsPointsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.nopsPointsButton.Location = new System.Drawing.Point(7, 18);
-			this.nopsPointsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.nopsPointsButton.Location = new System.Drawing.Point(5, 15);
 			this.nopsPointsButton.Name = "nopsPointsButton";
-			this.nopsPointsButton.Size = new System.Drawing.Size(68, 21);
+			this.nopsPointsButton.Size = new System.Drawing.Size(55, 17);
 			this.nopsPointsButton.TabIndex = 31;
 			this.nopsPointsButton.TabStop = true;
 			this.nopsPointsButton.Text = "NOPS";
@@ -256,11 +244,9 @@
 			this.plcmtGroupBox.Controls.Add(this.plcmtDivButton);
 			this.plcmtGroupBox.Controls.Add(this.plcmtTourButton);
 			this.plcmtGroupBox.Controls.Add(this.groupPlcmtButton);
-			this.plcmtGroupBox.Location = new System.Drawing.Point(319, 73);
-			this.plcmtGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtGroupBox.Location = new System.Drawing.Point(239, 59);
 			this.plcmtGroupBox.Name = "plcmtGroupBox";
-			this.plcmtGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.plcmtGroupBox.Size = new System.Drawing.Size(197, 68);
+			this.plcmtGroupBox.Size = new System.Drawing.Size(148, 55);
 			this.plcmtGroupBox.TabIndex = 50;
 			this.plcmtGroupBox.TabStop = false;
 			this.plcmtGroupBox.Text = "Placement";
@@ -269,10 +255,9 @@
 			// 
 			this.plcmtDivGrpButton.AutoSize = true;
 			this.plcmtDivGrpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtDivGrpButton.Location = new System.Drawing.Point(88, 44);
-			this.plcmtDivGrpButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtDivGrpButton.Location = new System.Drawing.Point(66, 36);
 			this.plcmtDivGrpButton.Name = "plcmtDivGrpButton";
-			this.plcmtDivGrpButton.Size = new System.Drawing.Size(93, 21);
+			this.plcmtDivGrpButton.Size = new System.Drawing.Size(75, 17);
 			this.plcmtDivGrpButton.TabIndex = 54;
 			this.plcmtDivGrpButton.Text = "Div/Group";
 			this.plcmtDivGrpButton.UseVisualStyleBackColor = true;
@@ -282,10 +267,9 @@
 			// 
 			this.plcmtDivButton.AutoSize = true;
 			this.plcmtDivButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtDivButton.Location = new System.Drawing.Point(7, 44);
-			this.plcmtDivButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtDivButton.Location = new System.Drawing.Point(5, 36);
 			this.plcmtDivButton.Name = "plcmtDivButton";
-			this.plcmtDivButton.Size = new System.Drawing.Size(49, 21);
+			this.plcmtDivButton.Size = new System.Drawing.Size(41, 17);
 			this.plcmtDivButton.TabIndex = 52;
 			this.plcmtDivButton.Text = "Div";
 			this.plcmtDivButton.UseVisualStyleBackColor = true;
@@ -295,10 +279,9 @@
 			// 
 			this.plcmtTourButton.AutoSize = true;
 			this.plcmtTourButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.plcmtTourButton.Location = new System.Drawing.Point(88, 18);
-			this.plcmtTourButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtTourButton.Location = new System.Drawing.Point(66, 15);
 			this.plcmtTourButton.Name = "plcmtTourButton";
-			this.plcmtTourButton.Size = new System.Drawing.Size(98, 21);
+			this.plcmtTourButton.Size = new System.Drawing.Size(76, 17);
 			this.plcmtTourButton.TabIndex = 53;
 			this.plcmtTourButton.Text = "No Groups";
 			this.plcmtTourButton.UseVisualStyleBackColor = true;
@@ -309,10 +292,9 @@
 			this.groupPlcmtButton.AutoSize = true;
 			this.groupPlcmtButton.Checked = true;
 			this.groupPlcmtButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.groupPlcmtButton.Location = new System.Drawing.Point(7, 18);
-			this.groupPlcmtButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.groupPlcmtButton.Location = new System.Drawing.Point(5, 15);
 			this.groupPlcmtButton.Name = "groupPlcmtButton";
-			this.groupPlcmtButton.Size = new System.Drawing.Size(69, 21);
+			this.groupPlcmtButton.Size = new System.Drawing.Size(54, 17);
 			this.groupPlcmtButton.TabIndex = 51;
 			this.groupPlcmtButton.TabStop = true;
 			this.groupPlcmtButton.Text = "Group";
@@ -323,11 +305,9 @@
 			// 
 			this.plcmtMethodGroupBox.Controls.Add(this.pointsScoreButton);
 			this.plcmtMethodGroupBox.Controls.Add(this.rawScoreButton);
-			this.plcmtMethodGroupBox.Location = new System.Drawing.Point(161, 73);
-			this.plcmtMethodGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.plcmtMethodGroupBox.Location = new System.Drawing.Point(121, 59);
 			this.plcmtMethodGroupBox.Name = "plcmtMethodGroupBox";
-			this.plcmtMethodGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.plcmtMethodGroupBox.Size = new System.Drawing.Size(152, 68);
+			this.plcmtMethodGroupBox.Size = new System.Drawing.Size(114, 55);
 			this.plcmtMethodGroupBox.TabIndex = 40;
 			this.plcmtMethodGroupBox.TabStop = false;
 			this.plcmtMethodGroupBox.Text = "Placement Method";
@@ -336,10 +316,9 @@
 			// 
 			this.pointsScoreButton.AutoSize = true;
 			this.pointsScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pointsScoreButton.Location = new System.Drawing.Point(8, 44);
-			this.pointsScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.pointsScoreButton.Location = new System.Drawing.Point(6, 36);
 			this.pointsScoreButton.Name = "pointsScoreButton";
-			this.pointsScoreButton.Size = new System.Drawing.Size(68, 21);
+			this.pointsScoreButton.Size = new System.Drawing.Size(54, 17);
 			this.pointsScoreButton.TabIndex = 42;
 			this.pointsScoreButton.Text = "Points";
 			this.pointsScoreButton.UseVisualStyleBackColor = true;
@@ -349,10 +328,9 @@
 			// 
 			this.rawScoreButton.AutoSize = true;
 			this.rawScoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.rawScoreButton.Location = new System.Drawing.Point(8, 18);
-			this.rawScoreButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.rawScoreButton.Location = new System.Drawing.Point(6, 15);
 			this.rawScoreButton.Name = "rawScoreButton";
-			this.rawScoreButton.Size = new System.Drawing.Size(97, 21);
+			this.rawScoreButton.Size = new System.Drawing.Size(78, 17);
 			this.rawScoreButton.TabIndex = 41;
 			this.rawScoreButton.Text = "Raw Score";
 			this.rawScoreButton.UseVisualStyleBackColor = true;
@@ -362,10 +340,9 @@
 			// 
 			this.RemoveUnscoredButton.AutoSize = true;
 			this.RemoveUnscoredButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.RemoveUnscoredButton.Location = new System.Drawing.Point(7, 41);
-			this.RemoveUnscoredButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.RemoveUnscoredButton.Location = new System.Drawing.Point(5, 33);
 			this.RemoveUnscoredButton.Name = "RemoveUnscoredButton";
-			this.RemoveUnscoredButton.Size = new System.Drawing.Size(142, 27);
+			this.RemoveUnscoredButton.Size = new System.Drawing.Size(111, 23);
 			this.RemoveUnscoredButton.TabIndex = 15;
 			this.RemoveUnscoredButton.Text = "Remove Un-Scored";
 			this.RemoveUnscoredButton.UseVisualStyleBackColor = true;
@@ -403,31 +380,116 @@
             this.PreviewOrder,
             this.PreviewScore,
             this.previewSelected});
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.previewDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
-			this.previewDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-			this.previewDataGridView.Location = new System.Drawing.Point(47, 170);
-			this.previewDataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.previewDataGridView.Name = "previewDataGridView";
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle10.NullValue = null;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle10.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
 			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
 			dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.previewDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.previewDataGridView.DefaultCellStyle = dataGridViewCellStyle10;
+			this.previewDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+			this.previewDataGridView.Location = new System.Drawing.Point(35, 138);
+			this.previewDataGridView.Name = "previewDataGridView";
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle11.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle11.NullValue = null;
+			dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.previewDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
 			this.previewDataGridView.RowHeadersVisible = false;
 			this.previewDataGridView.RowHeadersWidth = 31;
-			this.previewDataGridView.Size = new System.Drawing.Size(739, 412);
+			this.previewDataGridView.Size = new System.Drawing.Size(554, 335);
 			this.previewDataGridView.TabIndex = 100;
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(43, 118);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Size = new System.Drawing.Size(106, 14);
+			this.RowStatusLabel.TabIndex = 0;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			// 
+			// SelectButton
+			// 
+			this.SelectButton.AutoSize = true;
+			this.SelectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.SelectButton.Location = new System.Drawing.Point(369, 33);
+			this.SelectButton.Name = "SelectButton";
+			this.SelectButton.Size = new System.Drawing.Size(75, 23);
+			this.SelectButton.TabIndex = 26;
+			this.SelectButton.Text = "Select";
+			this.SelectButton.UseVisualStyleBackColor = true;
+			this.SelectButton.Click += new System.EventHandler(this.SelectButton_Click);
+			// 
+			// RefreshButton
+			// 
+			this.RefreshButton.AutoSize = true;
+			this.RefreshButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.RefreshButton.Location = new System.Drawing.Point(470, 8);
+			this.RefreshButton.Name = "RefreshButton";
+			this.RefreshButton.Size = new System.Drawing.Size(54, 23);
+			this.RefreshButton.TabIndex = 14;
+			this.RefreshButton.Text = "Refresh";
+			this.RefreshButton.UseVisualStyleBackColor = true;
+			this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
+			// 
+			// reseedButton
+			// 
+			this.reseedButton.AutoSize = true;
+			this.reseedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.reseedButton.Location = new System.Drawing.Point(4, 36);
+			this.reseedButton.Name = "reseedButton";
+			this.reseedButton.Size = new System.Drawing.Size(67, 17);
+			this.reseedButton.TabIndex = 32;
+			this.reseedButton.Text = "Re-Seed";
+			this.reseedButton.UseVisualStyleBackColor = true;
+			// 
+			// h2hNextGroupBox
+			// 
+			this.h2hNextGroupBox.Controls.Add(this.bracketButton);
+			this.h2hNextGroupBox.Controls.Add(this.reseedButton);
+			this.h2hNextGroupBox.Location = new System.Drawing.Point(5, 59);
+			this.h2hNextGroupBox.Name = "h2hNextGroupBox";
+			this.h2hNextGroupBox.Size = new System.Drawing.Size(112, 55);
+			this.h2hNextGroupBox.TabIndex = 30;
+			this.h2hNextGroupBox.TabStop = false;
+			this.h2hNextGroupBox.Text = "Matchup Method";
+			// 
+			// bracketButton
+			// 
+			this.bracketButton.AutoSize = true;
+			this.bracketButton.Checked = true;
+			this.bracketButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.bracketButton.Location = new System.Drawing.Point(4, 15);
+			this.bracketButton.Name = "bracketButton";
+			this.bracketButton.Size = new System.Drawing.Size(62, 17);
+			this.bracketButton.TabIndex = 31;
+			this.bracketButton.TabStop = true;
+			this.bracketButton.Text = "Bracket";
+			this.bracketButton.UseVisualStyleBackColor = true;
+			// 
+			// EventGroupListLabel
+			// 
+			this.EventGroupListLabel.AutoSize = true;
+			this.EventGroupListLabel.Location = new System.Drawing.Point(191, 120);
+			this.EventGroupListLabel.Name = "EventGroupListLabel";
+			this.EventGroupListLabel.Size = new System.Drawing.Size(72, 13);
+			this.EventGroupListLabel.TabIndex = 0;
+			this.EventGroupListLabel.Text = "Filter Division:";
+			// 
+			// EventGroupList
+			// 
+			this.EventGroupList.FormattingEnabled = true;
+			this.EventGroupList.Location = new System.Drawing.Point(266, 115);
+			this.EventGroupList.Name = "EventGroupList";
+			this.EventGroupList.Size = new System.Drawing.Size(84, 21);
+			this.EventGroupList.TabIndex = 71;
 			// 
 			// previewSanctionId
 			// 
@@ -560,6 +622,10 @@
 			// PreviewScore
 			// 
 			this.PreviewScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle9.Format = "N2";
+			dataGridViewCellStyle9.NullValue = null;
+			this.PreviewScore.DefaultCellStyle = dataGridViewCellStyle9;
 			this.PreviewScore.HeaderText = "Score";
 			this.PreviewScore.MaxInputLength = 8;
 			this.PreviewScore.Name = "PreviewScore";
@@ -576,106 +642,11 @@
 			this.previewSelected.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.previewSelected.Width = 50;
 			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(57, 145);
-			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Size = new System.Drawing.Size(130, 18);
-			this.RowStatusLabel.TabIndex = 0;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
-			// 
-			// SelectButton
-			// 
-			this.SelectButton.AutoSize = true;
-			this.SelectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.SelectButton.Location = new System.Drawing.Point(492, 41);
-			this.SelectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.SelectButton.Name = "SelectButton";
-			this.SelectButton.Size = new System.Drawing.Size(100, 28);
-			this.SelectButton.TabIndex = 26;
-			this.SelectButton.Text = "Select";
-			this.SelectButton.UseVisualStyleBackColor = true;
-			this.SelectButton.Click += new System.EventHandler(this.SelectButton_Click);
-			// 
-			// RefreshButton
-			// 
-			this.RefreshButton.AutoSize = true;
-			this.RefreshButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.RefreshButton.Location = new System.Drawing.Point(627, 10);
-			this.RefreshButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.RefreshButton.Name = "RefreshButton";
-			this.RefreshButton.Size = new System.Drawing.Size(68, 27);
-			this.RefreshButton.TabIndex = 14;
-			this.RefreshButton.Text = "Refresh";
-			this.RefreshButton.UseVisualStyleBackColor = true;
-			this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
-			// 
-			// reseedButton
-			// 
-			this.reseedButton.AutoSize = true;
-			this.reseedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.reseedButton.Location = new System.Drawing.Point(5, 44);
-			this.reseedButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.reseedButton.Name = "reseedButton";
-			this.reseedButton.Size = new System.Drawing.Size(85, 21);
-			this.reseedButton.TabIndex = 32;
-			this.reseedButton.Text = "Re-Seed";
-			this.reseedButton.UseVisualStyleBackColor = true;
-			// 
-			// h2hNextGroupBox
-			// 
-			this.h2hNextGroupBox.Controls.Add(this.bracketButton);
-			this.h2hNextGroupBox.Controls.Add(this.reseedButton);
-			this.h2hNextGroupBox.Location = new System.Drawing.Point(7, 73);
-			this.h2hNextGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.h2hNextGroupBox.Name = "h2hNextGroupBox";
-			this.h2hNextGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.h2hNextGroupBox.Size = new System.Drawing.Size(149, 68);
-			this.h2hNextGroupBox.TabIndex = 30;
-			this.h2hNextGroupBox.TabStop = false;
-			this.h2hNextGroupBox.Text = "Matchup Method";
-			// 
-			// bracketButton
-			// 
-			this.bracketButton.AutoSize = true;
-			this.bracketButton.Checked = true;
-			this.bracketButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bracketButton.Location = new System.Drawing.Point(5, 18);
-			this.bracketButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.bracketButton.Name = "bracketButton";
-			this.bracketButton.Size = new System.Drawing.Size(77, 21);
-			this.bracketButton.TabIndex = 31;
-			this.bracketButton.TabStop = true;
-			this.bracketButton.Text = "Bracket";
-			this.bracketButton.UseVisualStyleBackColor = true;
-			// 
-			// EventGroupListLabel
-			// 
-			this.EventGroupListLabel.AutoSize = true;
-			this.EventGroupListLabel.Location = new System.Drawing.Point(255, 148);
-			this.EventGroupListLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.EventGroupListLabel.Name = "EventGroupListLabel";
-			this.EventGroupListLabel.Size = new System.Drawing.Size(96, 17);
-			this.EventGroupListLabel.TabIndex = 0;
-			this.EventGroupListLabel.Text = "Filter Division:";
-			// 
-			// EventGroupList
-			// 
-			this.EventGroupList.FormattingEnabled = true;
-			this.EventGroupList.Location = new System.Drawing.Point(355, 142);
-			this.EventGroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.EventGroupList.Name = "EventGroupList";
-			this.EventGroupList.Size = new System.Drawing.Size(111, 24);
-			this.EventGroupList.TabIndex = 71;
-			// 
 			// RunOrderElimDialogForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(844, 588);
+			this.ClientSize = new System.Drawing.Size(633, 478);
 			this.Controls.Add(this.EventGroupListLabel);
 			this.Controls.Add(this.EventGroupList);
 			this.Controls.Add(this.h2hNextGroupBox);
@@ -694,7 +665,6 @@
 			this.Controls.Add(this.CancelButton);
 			this.Controls.Add(this.NumSkiersLabel);
 			this.Controls.Add(this.NumSkiersTextbox);
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "RunOrderElimDialogForm";
 			this.Text = "Run Order For Round";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RunOrderElimDialogForm_FormClosed);

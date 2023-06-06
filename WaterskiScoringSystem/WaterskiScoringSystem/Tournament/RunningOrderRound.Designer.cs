@@ -58,6 +58,7 @@
 			this.TopNavMenu = new System.Windows.Forms.ToolStrip();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
 			this.navPrintFormButton = new System.Windows.Forms.ToolStripButton();
+			this.navPublish = new System.Windows.Forms.ToolStripButton();
 			this.PrintDataGridView = new System.Windows.Forms.DataGridView();
 			this.PrintEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintEventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -100,11 +101,11 @@
 			this.HeadToHeadNextButton = new System.Windows.Forms.Button();
 			this.RemoveButton = new System.Windows.Forms.Button();
 			this.CloseButton = new System.Windows.Forms.Button();
-			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.PickAndChoseButton = new System.Windows.Forms.Button();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.SendSkierListButton = new System.Windows.Forms.Button();
-			this.navPublish = new System.Windows.Forms.ToolStripButton();
+			this.navSort = new System.Windows.Forms.ToolStripButton();
+			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.winStatus.SuspendLayout();
 			this.TopNavMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -178,7 +179,8 @@
             this.navPublish,
             this.navExport,
             this.navSave,
-            this.navExportRunorder});
+            this.navExportRunorder,
+            this.navSort});
 			this.TopNavMenu.Location = new System.Drawing.Point(0, 0);
 			this.TopNavMenu.Name = "TopNavMenu";
 			this.TopNavMenu.Size = new System.Drawing.Size(605, 42);
@@ -206,6 +208,16 @@
 			this.navPrintFormButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navPrintFormButton.ToolTipText = "Export visible data to a tab delimited text file";
 			this.navPrintFormButton.Click += new System.EventHandler(this.navPrintFormButton_Click);
+			// 
+			// navPublish
+			// 
+			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublish.Name = "navPublish";
+			this.navPublish.Size = new System.Drawing.Size(50, 39);
+			this.navPublish.Text = "Publish";
+			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
 			// 
 			// PrintDataGridView
 			// 
@@ -269,6 +281,7 @@
 			this.PrintEvent.ReadOnly = true;
 			this.PrintEvent.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintEvent.Visible = false;
+			this.PrintEvent.Width = 38;
 			// 
 			// PrintEventGroup
 			// 
@@ -767,20 +780,6 @@
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
 			// 
-			// roundActiveSelect
-			// 
-			this.roundActiveSelect.AutoScroll = true;
-			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
-			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.roundActiveSelect.Location = new System.Drawing.Point(5, 38);
-			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.roundActiveSelect.Name = "roundActiveSelect";
-			this.roundActiveSelect.RoundValue = "";
-			this.roundActiveSelect.Size = new System.Drawing.Size(150, 45);
-			this.roundActiveSelect.TabIndex = 10;
-			this.roundActiveSelect.Tag = "";
-			// 
 			// PickAndChoseButton
 			// 
 			this.PickAndChoseButton.Location = new System.Drawing.Point(162, 82);
@@ -821,15 +820,29 @@
 			this.SendSkierListButton.Visible = false;
 			this.SendSkierListButton.Click += new System.EventHandler(this.SendSkierListButton_Click);
 			// 
-			// navPublish
+			// navSort
 			// 
-			this.navPublish.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
-			this.navPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navPublish.Name = "navPublish";
-			this.navPublish.Size = new System.Drawing.Size(50, 39);
-			this.navPublish.Text = "Publish";
-			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
+			this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
+			this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navSort.Name = "navSort";
+			this.navSort.Size = new System.Drawing.Size(32, 39);
+			this.navSort.Text = "Sort";
+			this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSort.Click += new System.EventHandler(this.navSort_Click);
+			// 
+			// roundActiveSelect
+			// 
+			this.roundActiveSelect.AutoScroll = true;
+			this.roundActiveSelect.BackColor = System.Drawing.Color.Silver;
+			this.roundActiveSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.roundActiveSelect.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.roundActiveSelect.Location = new System.Drawing.Point(5, 38);
+			this.roundActiveSelect.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.roundActiveSelect.Name = "roundActiveSelect";
+			this.roundActiveSelect.RoundValue = "";
+			this.roundActiveSelect.Size = new System.Drawing.Size(150, 45);
+			this.roundActiveSelect.TabIndex = 10;
+			this.roundActiveSelect.Tag = "";
 			// 
 			// RunningOrderRound
 			// 
@@ -926,5 +939,6 @@
 		private System.Windows.Forms.Label WaterskiConnectLabel;
 		private System.Windows.Forms.Button SendSkierListButton;
 		private System.Windows.Forms.ToolStripButton navPublish;
+		private System.Windows.Forms.ToolStripButton navSort;
 	}
 }

@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -23,6 +22,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private bool isRecapRowEnterHandled = false;
 		private bool myGateValueChg = false;
 		private bool isLastPassSelectActive = false;
+		private bool isOrderByRoundActive = false;
 
 		private int myEventRegViewIdx = 0;
 		private int myStartCellIndex = 0;
@@ -50,14 +50,12 @@ namespace WaterskiScoringSystem.Slalom {
 		private DataRow myScoreRow;
 		private DataRow myPassRow;
 		private DataRow myPassRowLastCompleted;
-		//private DataRow myTimeRow;
 		private DataRow myBoatPathDataRow;
 
 		private TourProperties myTourProperties;
 		private DataTable myTourEventRegDataTable;
 		private DataTable myScoreDataTable;
 		private DataTable myRecapDataTable;
-		private DataTable myPassDataTable;
 
 		private List<String> myCompletedNotices = new List<String>();
 
@@ -107,17 +105,7 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( SlalomEventData.isCollegiateEvent() ) TeamCode.Visible = true;
 			
 			myTourProperties = TourProperties.Instance;
-			mySortCommand = myTourProperties.RunningOrderSortSlalom;
-
-			int curDelim = mySortCommand.IndexOf( "AgeGroup" );
-			if ( curDelim == 0 ) {
-				mySortCommand = "DivOrder" + mySortCommand.Substring( "AgeGroup".Length );
-				myTourProperties.RunningOrderSortTrick = mySortCommand;
-
-			} else if ( curDelim > 0 ) {
-				mySortCommand = mySortCommand.Substring( 0, curDelim ) + "DivOrder" + mySortCommand.Substring( curDelim + "AgeGroup".Length );
-				myTourProperties.RunningOrderSortTrick = mySortCommand;
-			}
+			mySortCommand = getSortCommand();
 
 			ResizeNarrow.Visible = false;
 			ResizeNarrow.Enabled = false;
@@ -871,9 +859,11 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 		}
 
+		/*
+		 * Retrieve data for current tournament
+		 * Used for initial load and to refresh data after updates
+		 */
 		private void loadTourEventRegView() {
-			//Retrieve data for current tournament
-			//Used for initial load and to refresh data after updates
 
 			try {
 				isDataModified = false;
@@ -886,6 +876,9 @@ namespace WaterskiScoringSystem.Slalom {
 
 				winStatusMsg.Text = "Retrieving tournament entries";
 				Cursor.Current = Cursors.WaitCursor;
+
+				isOrderByRoundActive = isRunOrderByRound( Convert.ToByte( roundActiveSelect.RoundValue ) );
+				mySortCommand = getSortCommand();
 
 				slalomRecapDataGridView.Rows.Clear();
 				TourEventRegDataGridView.Rows.Clear();
@@ -954,7 +947,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			String curWarnMsg = "Warn:RunOrder:Round:" + roundActiveSelect.RoundValue;
 			if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
-				if ( isRunOrderByRound( Convert.ToByte( roundActiveSelect.RoundValue ) ) ) {
+				if ( isOrderByRoundActive ) {
 					MessageBox.Show( "WARNING \nThis running order is specific for this round" );
 					myCompletedNotices.Add( curWarnMsg );
 				}
@@ -2232,13 +2225,18 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void navSort_Click( object sender, EventArgs e ) {
 			// Display the form as a modal dialog box.
+			mySortCommand = getSortCommand();
 			sortDialogForm.SortCommand = mySortCommand;
 			sortDialogForm.ShowDialog( this );
 
 			// Determine if the OK button was clicked on the dialog box.
 			if ( sortDialogForm.DialogResult == DialogResult.OK ) {
 				mySortCommand = sortDialogForm.SortCommand;
-				myTourProperties.RunningOrderSortSlalom = mySortCommand;
+				if ( isOrderByRoundActive ) {
+					myTourProperties.RunningOrderSortSlalomRound = mySortCommand;
+				} else {
+					myTourProperties.RunningOrderSortSlalom = mySortCommand;
+				}
 				winStatusMsg.Text = "Sorted by " + mySortCommand;
 				loadTourEventRegView();
 			}
@@ -3602,11 +3600,38 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void boatTimeValidation() {
+			if ( !( isJudgeScoresAvailable() ) ) {
+				MessageBox.Show( "All required judge scores have not been entered" );
+				return;
+			}
+
 			isRecapRowEnterHandled = true;
 			isDataModified = true;
 			myRecapRow.Cells["Updated"].Value = "Y";
 
 			SlalomTimeValidate();
+		}
+
+		private bool isJudgeScoresAvailable() {
+			if ( myNumJudges == 1 ) return HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( myRecapRow, "Judge1ScoreRecap", "" ) );
+
+			if ( myNumJudges > 1 ) {
+				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge1ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge2ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge3ScoreRecap", "" ) )
+					) return false;
+
+			} 
+			if ( myNumJudges > 3 ) {
+				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge1ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge2ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge3ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge4ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapRow, "Judge5ScoreRecap", "" ) )
+					) return false;
+			}
+
+			return true;
 		}
 
 		/*
@@ -4333,7 +4358,6 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private int cleanSkierSlalomScore(String inMemberId, String inAgeGroup, int inRound ) {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete SlalomScore " );
-			curSqlStmt.Append( "Where SanctionId = '" + SlalomEventData.mySanctionNum + "' " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND MemberId = '{2}' AND MemberId = '{3}'"
 				, SlalomEventData.mySanctionNum, inMemberId, inAgeGroup, inRound ) );
 			return DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -4368,6 +4392,29 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 		}
 
+		private String getSortCommand() {
+			String curSortCommand = myTourProperties.RunningOrderSortSlalom;
+			if ( isOrderByRoundActive ) curSortCommand = myTourProperties.RunningOrderSortSlalomRound;
+
+			int curDelim = mySortCommand.IndexOf( "AgeGroup" );
+			if ( curDelim == 0 ) {
+				curSortCommand = "DivOrder" + mySortCommand.Substring( "AgeGroup".Length );
+				if ( isOrderByRoundActive ) {
+					myTourProperties.RunningOrderSortSlalomRound = curSortCommand;
+				} else {
+					myTourProperties.RunningOrderSortSlalom = curSortCommand;
+				}
+
+			} else if ( curDelim > 0 ) {
+				curSortCommand = mySortCommand.Substring( 0, curDelim ) + "DivOrder" + mySortCommand.Substring( curDelim + "AgeGroup".Length );
+				if ( isOrderByRoundActive ) {
+					myTourProperties.RunningOrderSortSlalomRound = curSortCommand;
+				} else {
+					myTourProperties.RunningOrderSortSlalom = curSortCommand;
+				}
+			}
+			return curSortCommand;
+		}
 		private void driverDropdown_SelectedValueChanged( object sender, EventArgs e ) {
 			if ( isLoadInProg ) return;
 			if ( ( (ComboBox)sender ).Items.Count == 0 ) return;

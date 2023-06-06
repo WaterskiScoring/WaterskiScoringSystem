@@ -718,7 +718,22 @@ namespace WaterskiScoringSystem.Common {
             updateProperty( "RunningOrderSortSlalom", value, 310 );
         }
 
-		public Dictionary<string, Boolean> RunningOrderColumnFilterSlalom {
+        public String RunningOrderSortSlalomRound {
+            get {
+                String curReturnValue = getPropertyByName( "RunningOrderSortSlalomRound" );
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = getPropertyByName( "RunningOrderSortSlalom" );
+                    setRunningOrderSortSlalom( curReturnValue );
+                }
+                return curReturnValue;
+            }
+            set { setRunningOrderSortSlalomRound( value ); }
+        }
+        public void setRunningOrderSortSlalomRound( String value ) {
+            updateProperty( "RunningOrderSortSlalomRound", value, 310 );
+        }
+
+        public Dictionary<string, Boolean> RunningOrderColumnFilterSlalom {
 			get {
 				Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
 				String curPropValue = getPropertyByName( "RunningOrderColumnFilterSlalom" );
@@ -984,7 +999,22 @@ namespace WaterskiScoringSystem.Common {
             updateProperty( "RunningOrderSortTrick", value, 410 );
         }
 
-		public Dictionary<string, Boolean> RunningOrderColumnFilterTrick {
+        public String RunningOrderSortTrickRound {
+            get {
+                String curReturnValue = getPropertyByName( "RunningOrderSortTrickRound" );
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = getPropertyByName( "RunningOrderSortTrick" );
+                    setRunningOrderSortTrick( curReturnValue );
+                }
+                return curReturnValue;
+            }
+            set { setRunningOrderSortTrickRound( value ); }
+        }
+        public void setRunningOrderSortTrickRound( String value ) {
+            updateProperty( "RunningOrderSortTrickRound", value, 310 );
+        }
+
+        public Dictionary<string, Boolean> RunningOrderColumnFilterTrick {
 			get {
 				Dictionary<string, Boolean> curPropValueList = new Dictionary<string, Boolean>();
 				String curPropValue = getPropertyByName( "RunningOrderColumnFilterTrick" );
@@ -1246,6 +1276,21 @@ namespace WaterskiScoringSystem.Common {
         }
         public void setRunningOrderSortJump(String value) {
             updateProperty( "RunningOrderSortJump", value, 510 );
+        }
+
+        public String RunningOrderSortJumpRound {
+            get {
+                String curReturnValue = getPropertyByName( "RunningOrderSortJumpRound" );
+                if ( curReturnValue.Length == 0 ) {
+                    curReturnValue = getPropertyByName( "RunningOrderSortJump" );
+                    setRunningOrderSortJump( curReturnValue );
+                }
+                return curReturnValue;
+            }
+            set { setRunningOrderSortJumpRound( value ); }
+        }
+        public void setRunningOrderSortJumpRound( String value ) {
+            updateProperty( "RunningOrderSortJumpRound", value, 310 );
         }
 
         //JumpEntryNumJudges
