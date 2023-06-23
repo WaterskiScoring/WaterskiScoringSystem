@@ -59,16 +59,25 @@ namespace WaterskiScoringSystem.Common {
 		public static ArrayList buildEventGroupList( String inSanctionNum, String inEvent, int inRound) {
 			ArrayList curEventGroupList = new ArrayList();
 			curEventGroupList.Add( "All" );
-			String curSqlStmt = String.Format( "SELECT DISTINCT EventGroup From EventRunOrder WHERE SanctionId = '{0}' And Event = '{1}' And Round = {2} Order by EventGroup", inSanctionNum, inEvent, inRound );
+			String curSqlStmt = String.Format( "SELECT DISTINCT EventGroup, COALESCE(RunOrderGroup, '') as RunOrderGroup From EventRunOrder WHERE SanctionId = '{0}' And Event = '{1}' And Round = {2} Order by EventGroup, COALESCE(RunOrderGroup, '')", inSanctionNum, inEvent, inRound );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
-			if ( curDataTable.Rows.Count == 0 ) {
+			if ( curDataTable.Rows.Count > 0 ) {
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					if ( isObjectPopulated( (String)curRow["RunOrderGroup"] ) ) {
+						curEventGroupList.Add( (String)curRow["EventGroup"] + "-" + (String)curRow["RunOrderGroup"] );
+					} else {
+						curEventGroupList.Add( (String)curRow["EventGroup"] );
+					}
+				}
+			
+			} else { 
 				curSqlStmt = String.Format( "SELECT DISTINCT EventGroup From EventReg WHERE SanctionId = '{0}' And Event = '{1}' Order by EventGroup", inSanctionNum, inEvent, inRound );
 				curDataTable = DataAccess.getDataTable( curSqlStmt );
+				foreach ( DataRow curRow in curDataTable.Rows ) {
+					curEventGroupList.Add( (String)curRow["EventGroup"] );
+				}
 			}
 
-			foreach ( DataRow curRow in curDataTable.Rows ) {
-				curEventGroupList.Add( (String)curRow["EventGroup"] );
-			}
 			return curEventGroupList;
 		}
 

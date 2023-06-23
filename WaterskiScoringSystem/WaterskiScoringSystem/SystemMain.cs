@@ -16,6 +16,7 @@ using WaterskiScoringSystem.Tournament;
 using WaterskiScoringSystem.Trick;
 
 using Microsoft.Win32;
+using System.Configuration;
 
 namespace WaterskiScoringSystem {
     public partial class SystemMain : Form {
@@ -37,7 +38,7 @@ namespace WaterskiScoringSystem {
             }
             Properties.Settings.Default.AppRegistryName = curAppRegName;
 
-            #region Set application window attributes from application configuration file
+            // Set application window attributes from application configuration file
             if ( Properties.Settings.Default.Mdi_Width > 0 ) this.Width = Properties.Settings.Default.Mdi_Width;
             if ( Properties.Settings.Default.Mdi_Height > 0 ) this.Height = Properties.Settings.Default.Mdi_Height;
             if ( Properties.Settings.Default.Mdi_Location.X > 0
@@ -49,191 +50,103 @@ namespace WaterskiScoringSystem {
             } else {
                 this.Text = Properties.Settings.Default.AppTitle;
             }
-            #endregion
 
             #region Check system settings and current database connection
-            bool IsFirstRun = false;
-            bool showDebugMsgs = false;
-            //showDebugMsgs = true;
-            String myDataDirectory = "", myDeploymentDirectory = "", myDeploymentDataDirectory = "", curAppConnectString = "";
+            bool curShowDebugMsgs = false;
+            //curShowDebugMsgs = true;
+            String curDataDirectory = "", curDeploymentDirectory = "", curDeploymentDataDirectory = "", curAppConnectString = "", curRegAppVersion = "";
 
-            myAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
-            if ( myAppRegKey != null ) {
-                if ( myAppRegKey.GetValue( "ShowDebugValues" ) != null ) {
-                    String curShowDebugRegValue = myAppRegKey.GetValue( "ShowDebugValues" ).ToString();
-                    if ( curShowDebugRegValue.Equals( "true" ) ) {
-                        showDebugMsgs = true;
-                    }
-                }
-            }
-
-            if ( showDebugMsgs ) {
-                MessageBox.Show( "Application Execution Information"
-                    + "\n StartupPath=" + Application.StartupPath
-                    + "\n\n UserAppDataPath=" + Application.UserAppDataPath
-                    + "\n\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
-                    + "\n\n ExecutablePath=" + Application.ExecutablePath
-                    + "\n\n UserAppDataRegistry=" + Application.UserAppDataRegistry
-                    + "\n\n ProductName=" + Application.ProductName
-                    + "\n\n ProductVersion=" + Application.ProductVersion
-                    );
-            }
-
-            //Check and set application version
-            try {
-                IsFirstRun = ApplicationDeployment.CurrentDeployment.IsFirstRun;
-            } catch (Exception ex) {
-                IsFirstRun = false;
-            }
             try {
                 Properties.Settings.Default.AppVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-            } catch ( Exception ex ) {
+            } catch {
                 if ( Properties.Settings.Default.AppVersion == null ) { Properties.Settings.Default.AppVersion = "0.00.00"; }
                 if ( Properties.Settings.Default.AppVersion.Length == 0 ) { Properties.Settings.Default.AppVersion = "0.00.00"; }
             }
-            //Check and set user data directory
-            try {
-                myDeploymentDataDirectory = Application.LocalUserAppDataPath;
-                myDeploymentDirectory = Application.StartupPath;
-                if (myDeploymentDirectory == null) { myDeploymentDirectory = ""; }
+            
+            curDeploymentDataDirectory = Application.LocalUserAppDataPath;
+            curDeploymentDirectory = Application.StartupPath;
+            if ( curDeploymentDirectory == null ) { curDeploymentDirectory = ""; }
+
+            if ( curDeploymentDirectory.Length < 1 ) {
+                curDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\bin\\Debug";
+            }
+            if ( curDeploymentDataDirectory.Length < 1 ) {
+                curDeploymentDataDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\bin\\Debug";
+            }
+
+            /*
+             * Retrieve / Create application entry in Windows registry
+             * Retrieve attributes used to establish database location and connection parameters
+             */
+            myAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
+            if ( myAppRegKey == null ) {
+                myAppRegKey = Registry.CurrentUser.CreateSubKey( curAppRegName );
+                myAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
+            }
+            if ( myAppRegKey.GetValue( "ShowDebugValues" ) == null ) {
+                myAppRegKey.SetValue( "ShowDebugValues", "False" );
+            } else {
+                curShowDebugMsgs = HelperFunctions.isValueTrue( myAppRegKey.GetValue( "ShowDebugValues" ).ToString() );
+            }
+
+            if ( myAppRegKey.GetValue( "DataDirectory" ) == null ) {
+                setDatabaseFirstTime( curDeploymentDirectory, curDeploymentDataDirectory, curShowDebugMsgs );
+                curDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
+
+            } else {
+                curDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
+            }
+            //Establish active data directory in active application domain
+            AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
+
+            if ( myAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
                 curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-            } catch (Exception ex) {
-                myDeploymentDirectory = "";
-                if (myAppRegKey.GetValue( "DataDirectory" ) == null) {
-                    myDataDirectory = Application.UserAppDataPath;
-                    myAppRegKey.SetValue( "DataDirectory", myDataDirectory );
-                }
-                myDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
-                AppDomain.CurrentDomain.SetData( "DataDirectory", myDataDirectory );
+                myAppRegKey.SetValue( "DatabaseConnectionString", curAppConnectString );
+
+            } else {
+                curAppConnectString = myAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
             }
 
-            try {
-                //Determine if data directory is available in the registry
-                //If available in registry than assume that is the most current
-                if ( myDeploymentDirectory.Length < 1 ) {
-                    myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\bin\\Debug";
-                }
-                if ( myDeploymentDataDirectory.Length < 1 ) {
-                    myDeploymentDataDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\bin\\Debug";
-                }
-                
-                if ( myAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                    myDataDirectory = "";
-                } else {
-                    myDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
-                }
-                #region Debug Msgs
-                if ( showDebugMsgs ) {
-                    StringBuilder tmpMsg = new StringBuilder();
-                    try {
-                        tmpMsg.Append( "\n DataDirectory=" + ApplicationDeployment.CurrentDeployment.DataDirectory );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n CommonAppDataPath=" + Application.CommonAppDataPath );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n\n CurrentVersion=" + ApplicationDeployment.CurrentDeployment.CurrentVersion );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n\n IsFirstRun=" + ApplicationDeployment.CurrentDeployment.IsFirstRun );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n\n AppConnectString=" + curAppConnectString );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n\n myDataDirectory=" + myDataDirectory );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n myDeploymentDirectory=" + myDeploymentDirectory );
-                    } catch {
-                    }
-                    try {
-                        tmpMsg.Append( "\n myDeploymentDataDirectory=" + myDeploymentDataDirectory );
-                    } catch {
-                    }
-                    MessageBox.Show( "Application Execution Information - CurrentDeployment" + tmpMsg.ToString() );
-                }
-                #endregion
-                if (myDataDirectory.Length > 1) {
-                    if ( showDebugMsgs ) {
-                        MessageBox.Show( "Application Execution Information - CurrentDeployment"
-                            + "\n myAppRegKey DataDirectory=" + myDataDirectory );
-                    }
-                    //If first run after a new version has been loaded or on first loaded
-                    //IsFirstRun = true;
-                    if ( IsFirstRun ) {
-                        //Save current version to registry
-                        myAppRegKey.SetValue( "CurrentVersion", Properties.Settings.Default.AppVersion );
-                        //Establish active data directory in active application domain
-                        AppDomain.CurrentDomain.SetData( "DataDirectory", myDataDirectory );
-                        //Check for existing database in active data directory
-                        //If one exists give user option to keep existing or loading application default
-                        //If one does not exist load application default to user data directory
-                        if ( checkDbConnection( curAppConnectString ) ) {
-                            //Eliminate the option to replace database because data was being inadvertently overlayed.
-                        } else {
-                            MessageBox.Show( "Database not found at the specified location " + myDataDirectory
-                                + "\n\n" + "In the file open dialog to follow please select a location and provide a file name"
-                                + "\n" + "The database supplied with the application will be copied to your specified location" );
-                            copyDatabase( myDeploymentDataDirectory, myDataDirectory, myAppRegKey );
-                        }
-                    } else {
-                        //Establish active data directory in active application domain
-                        AppDomain.CurrentDomain.SetData( "DataDirectory", myDataDirectory );
-                        String curPropAppVersion = Properties.Settings.Default.AppVersion;
-                        String curRegAppVersion = "";
-                        try {
-                            curRegAppVersion = myAppRegKey.GetValue( "CurrentVersion" ).ToString();
-                        } catch ( Exception ex ) {
-                            curRegAppVersion = "0.00.00";
-                        }
+            if ( myAppRegKey.GetValue( "CurrentVersion" ) == null ) {
+                curRegAppVersion = "0.00.00";
+                myAppRegKey.SetValue( "CurrentVersion", curRegAppVersion );
+            } else {
+                curRegAppVersion = myAppRegKey.GetValue( "CurrentVersion" ).ToString();
+            }
 
-                        if ( !( curPropAppVersion.Equals( curRegAppVersion ) ) ) {
-                            //New version has been detected.  Save new version in registry
-                            //Determine if valid database exists at current data directory location.
-                            //If one exists give user option to keep existing or loading application default
-                            //If one does not exist load application default to user data directory
-                            myAppRegKey.SetValue( "CurrentVersion", Properties.Settings.Default.AppVersion );
-                            if ( checkDbConnection( curAppConnectString ) ) {
-                            } else {
-                                MessageBox.Show( "Database not found at the specified location " + myDataDirectory
-                                    + "\n\n" + "In the file open dialog to follow please select a location and provide a file name"
-                                    + "\n" + "The database supplied with the application will be copied to your specified location" );
-                                copyDatabase( myDeploymentDataDirectory, myDataDirectory, myAppRegKey );
-                            }
-                        }
-                    }
+            if ( curShowDebugMsgs ) {
+                MessageBox.Show( "Application Execution Information"
+                    + "\n StartupPath=" + Application.StartupPath
+                    + "\n UserAppDataPath=" + Application.UserAppDataPath
+                    + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
+                    + "\n ExecutablePath=" + Application.ExecutablePath
+                    + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
+                    + "\n ProductName=" + Application.ProductName
+                    + "\n ProductVersion=" + Application.ProductVersion
+                    + "\n DataDirectory=" + curDataDirectory
+                    + "\n DatabaseConnectionString=" + curAppConnectString
+                    );
+            }
+
+            String curPropAppVersion = Properties.Settings.Default.AppVersion;
+
+            if ( !( curPropAppVersion.Equals( curRegAppVersion ) ) ) {
+                //New version has been detected.  Save new version in registry
+                //Determine if valid database exists at current data directory location.
+                //If one exists give user option to keep existing or loading application default
+                //If one does not exist load application default to user data directory
+                Properties.Settings.Default.Upgrade();
+
+                myAppRegKey.SetValue( "CurrentVersion", Properties.Settings.Default.AppVersion );
+                if ( checkDbConnection( curAppConnectString ) ) {
                 } else {
-                    //Establish current data directry using application default
-                    //Analyze default location and establish the desired data directory
-                    myDataDirectory = myDeploymentDirectory;
-                    int posDelim = myDataDirectory.IndexOf( "/Data" );
-                    if ( posDelim > 0 ) {
-                        String tmpDataDirectory = myDataDirectory.Substring( 0, posDelim + 5 );
-                        if ( showDebugMsgs ) {
-                            MessageBox.Show( "tmpDataDirectory = " + tmpDataDirectory );
-                        }
-                        //Establish active data directory in active application domain
-                        myDataDirectory = tmpDataDirectory;
-                    }
-                    MessageBox.Show( "Database location has not been specified"
-                        + "\n\n" + "In the next dialog that displays please select a location and provide a file name for the database (default name is waterski.sdf) "
+                    MessageBox.Show( "Database not found at the specified location " + curDataDirectory
+                        + "\n\n" + "In the file open dialog to follow please select a location and provide a file name"
                         + "\n" + "The database supplied with the application will be copied to your specified location" );
-                    copyDatabase( myDeploymentDataDirectory, myDataDirectory, myAppRegKey );
+                    copyDatabase( curDeploymentDataDirectory, curDataDirectory );
                 }
-
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Exception encountered during application load \n" + ex.Message );
             }
 
-            myDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
-            curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
             if ( checkDbConnection( curAppConnectString ) ) {
                 UpgradeDatabase curUpgradeDatabase = new UpgradeDatabase();
                 curUpgradeDatabase.checkForUpgrade();
@@ -270,28 +183,51 @@ namespace WaterskiScoringSystem {
 
                 MessageBox.Show( "Database connection failed"
                     + "\n Use the Tools menu,  SetDatabaseLocaton option, to find and set your database"
-                    + "\n\n DataDirectory: " + myDataDirectory
+                    + "\n\n DataDirectory: " + curDataDirectory
                     + "\n\n AppConnectString: " + curAppConnectString );
             }
 
-            if (showDebugMsgs) {
+            if (curShowDebugMsgs) {
                 MessageBox.Show( "Application Execution Information"
                     + "\n StartupPath=" + Application.StartupPath
-                    + "\n\n UserAppDataPath=" + Application.UserAppDataPath
-                    + "\n\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
-                    + "\n\n ExecutablePath=" + Application.ExecutablePath
-                    + "\n\n UserAppDataRegistry=" + Application.UserAppDataRegistry
-                    + "\n\n ProductName=" + Application.ProductName
-                    + "\n\n ProductVersion=" + Application.ProductVersion
+                    + "\n UserAppDataPath=" + Application.UserAppDataPath
+                    + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
+                    + "\n ExecutablePath=" + Application.ExecutablePath
+                    + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
+                    + "\n ProductName=" + Application.ProductName
+                    + "\n ProductVersion=" + Application.ProductVersion
+                    + "\n DataDirectory=" + curDataDirectory
+                    + "\n DatabaseConnectionString=" + curAppConnectString
                     );
             }
             #endregion
         }
 
-        private bool copyDatabase( String inSourDir, String inDestDir, RegistryKey inAppRegKey ) {
+        /*
+        Establish current data directry using application default
+        Analyze default location and establish the desired data directory
+         */
+        private void setDatabaseFirstTime( String curDeploymentDirectory, String curDeploymentDataDirectory, bool curShowDebugMsgs ) {
+            String curDataDirectory = curDeploymentDirectory;
+            int posDelim = curDataDirectory.IndexOf( "/Data" );
+            if ( posDelim > 0 ) {
+                String tmpDataDirectory = curDataDirectory.Substring( 0, posDelim + 5 );
+                if ( curShowDebugMsgs ) {
+                    MessageBox.Show( "tmpDataDirectory = " + tmpDataDirectory );
+                }
+                //Establish active data directory in active application domain
+                curDataDirectory = tmpDataDirectory;
+            }
+            MessageBox.Show( "Database location has not been specified"
+                + "\n\n" + "In the next dialog that displays please select a location and provide a file name for the database (default name is waterski.sdf) "
+                + "\n" + "The database supplied with the application will be copied to your specified location" );
+            copyDatabase( curDeploymentDataDirectory, curDataDirectory );
+        }
+
+        private bool copyDatabase( String inSourDir, String inDestDir ) {
             SetDatabaseLocation curForm = new SetDatabaseLocation();
             //Application.StartupPath
-            return curForm.copyDatabaseFile( inSourDir, inDestDir, inAppRegKey );
+            return curForm.copyDatabaseFile( inSourDir, inDestDir, myAppRegKey );
         }
 
         private bool checkDbConnection( String inConnectString ) {
@@ -302,9 +238,11 @@ namespace WaterskiScoringSystem {
                 myDbConn.ConnectionString = inConnectString;
                 myDbConn.Open();
                 dbConnGood = true;
+            
             } catch ( Exception ex ) {
                 dbConnGood = false;
                 MessageBox.Show( "checkDbConnection:Exception: " + ex.Message );
+            
             } finally {
                 if ( myDbConn != null ) {
                     myDbConn.Close();
@@ -323,7 +261,7 @@ namespace WaterskiScoringSystem {
             Properties.Settings.Default.Mdi_Title = this.Text;
             Properties.Settings.Default.Save();
         }
-		private void SystemMain_FormClosing( object sender, FormClosingEventArgs e ) {
+        private void SystemMain_FormClosing( object sender, FormClosingEventArgs e ) {
 			e.Cancel = false;
 		}
 
@@ -988,11 +926,7 @@ namespace WaterskiScoringSystem {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
 		private void importMemberFileToolStripMenuItem1_Click( object sender, EventArgs e ) {

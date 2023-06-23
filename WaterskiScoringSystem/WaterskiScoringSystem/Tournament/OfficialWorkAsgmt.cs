@@ -483,6 +483,7 @@ namespace WaterskiScoringSystem.Tournament {
                     try {
                         roundActiveSelect.RoundValue = curValue;
                         if ( !( isLoadActive ) ) {
+                            loadEventGroupList();
                             navRefreshByEvent();
                         }
                     } catch ( Exception ex ) {
@@ -510,37 +511,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curEventAttr = "";
                 }
 
-                if ( myEvent.ToUpper().Equals( "ALL" ) ) {
-                    EventGroupList.Visible = false;
-                    roundActiveSelect.Visible = false;
-                    activeLabel.Visible = false;
-					//navRefreshByEvent();
-
-				} else {
-                    EventGroupList.Visible = true;
-                    roundActiveSelect.Visible = true;
-                    activeLabel.Visible = true;
-
-					myEventGroupDropdownList = new ArrayList();
-                    if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                        myEventGroupDropdownList.Add( "Men A" );
-                        myEventGroupDropdownList.Add( "Women A" );
-                        myEventGroupDropdownList.Add( "Men B" );
-                        myEventGroupDropdownList.Add( "Women B" );
-                        myEventGroupDropdownList.Add( "Non Team" );
-
-					} else {
-                        String curSqlStmt = "SELECT DISTINCT EventGroup FROM EventReg "
-                            + "WHERE SanctionId = '" + mySanctionNum + "' "
-                            + curEventAttr
-                            + "Order by EventGroup";
-                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
-                        foreach ( DataRow curRow in curDataTable.Rows ) {
-                            myEventGroupDropdownList.Add( (String)curRow["EventGroup"] );
-                        }
-                    }
-                    EventGroupList.DataSource = myEventGroupDropdownList;
-                }
+                loadEventGroupList();
             }
         }
 
@@ -1388,6 +1359,51 @@ namespace WaterskiScoringSystem.Tournament {
             return true;
         }
 
+        private void loadEventGroupList() {
+            if ( myEvent.ToUpper().Equals( "ALL" ) ) {
+                EventGroupList.Visible = false;
+                roundActiveSelect.Visible = false;
+                activeLabel.Visible = false;
+                return;
+            }
+
+            EventGroupList.Visible = true;
+            roundActiveSelect.Visible = true;
+            activeLabel.Visible = true;
+
+            myEventGroupDropdownList = new ArrayList();
+            String curGroupValue = "";
+            if ( EventGroupList.DataSource != null ) {
+                if ( ( (ArrayList)EventGroupList.DataSource ).Count > 0 ) {
+                    try {
+                        curGroupValue = EventGroupList.SelectedItem.ToString();
+                    } catch {
+                        curGroupValue = "";
+                    }
+                }
+            }
+
+            if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+                EventGroupList.DataSource = HelperFunctions.buildEventGroupListNcwsa();
+
+            } else {
+                myEventGroupDropdownList = HelperFunctions.buildEventGroupList( mySanctionNum, myEvent, Convert.ToByte( roundActiveSelect.RoundValue ) );
+            }
+            myEventGroupDropdownList.RemoveAt( 0 );
+            EventGroupList.DataSource = myEventGroupDropdownList;
+
+            if ( curGroupValue.Length > 0 ) {
+                foreach ( String curValue in (ArrayList)EventGroupList.DataSource ) {
+                    if ( curValue.Equals( curGroupValue ) ) {
+                        EventGroupList.SelectedItem = curGroupValue;
+                        EventGroupList.Text = curGroupValue;
+                        return;
+                    }
+                }
+            }
+
+            return;
+        }
 
         // The PrintPage action for the PrintDocument control
         private void printDoc_PrintPage( object sender, System.Drawing.Printing.PrintPageEventArgs e ) {

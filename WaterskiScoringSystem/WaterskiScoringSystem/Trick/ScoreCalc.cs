@@ -22,6 +22,7 @@ namespace WaterskiScoringSystem.Trick {
         private bool isTrickValid = true;
         private int myEventRegViewIdx = 0;
         private int myBoatListIdx = 0;
+        private bool isOrderByRoundActive = false;
 
         private int mySkierRunCount = 0;
         private int myPassRunCount = 0;
@@ -93,7 +94,7 @@ namespace WaterskiScoringSystem.Trick {
             if ( TrickEventData.isCollegiateEvent() ) TeamCode.Visible = true;
 
             myTourProperties = TourProperties.Instance;
-            mySortCommand = myTourProperties.RunningOrderSortTrick;
+            mySortCommand = getSortCommand();
 
             ResizeNarrow.Visible = false;
             ResizeNarrow.Enabled = false;
@@ -106,16 +107,6 @@ namespace WaterskiScoringSystem.Trick {
             StartTimerButton.Visible = false;
             PauseTimerButton.Visible = true;
             StartTimerButton.Location = PauseTimerButton.Location;
-
-            int curDelim = mySortCommand.IndexOf( "AgeGroup" );
-            if ( curDelim == 0 ) {
-                mySortCommand = "DivOrder" + mySortCommand.Substring( "AgeGroup".Length );
-                myTourProperties.RunningOrderSortTrick = mySortCommand;
-
-            } else if ( curDelim > 0 ) {
-                mySortCommand = mySortCommand.Substring( 0, curDelim ) + "DivOrder" + mySortCommand.Substring( curDelim + "AgeGroup".Length );
-                myTourProperties.RunningOrderSortTrick = mySortCommand;
-            }
 
             String[] curList = { "SkierName", "Div", "DivOrder", "EventGroup", "RunOrder", "TrickBoat", "TeamCode", "EventClass", "ReadyForPlcmt"
                     , "RankingScore", "RankingRating", "HCapBase", "HCapScore" };
@@ -1130,14 +1121,19 @@ namespace WaterskiScoringSystem.Trick {
                 MessageBox.Show( "Data has been modified.  Request cannot be completed." );
             } else {
                 // Display the form as a modal dialog box.
-                sortDialogForm.SortCommand = myTourProperties.RunningOrderSortTrick;
+                mySortCommand = getSortCommand();
+                sortDialogForm.SortCommand = mySortCommand;
                 sortDialogForm.ShowDialog( this );
 
                 // Determine if the OK button was clicked on the dialog box.
                 if ( sortDialogForm.DialogResult == DialogResult.OK ) {
                     mySortCommand = sortDialogForm.SortCommand;
-                    myTourProperties.RunningOrderSortTrick = mySortCommand;
-                    loadTourEventRegView( myEventRegDataTable, mySortCommand, myFilterCmd );
+                    if ( isOrderByRoundActive ) {
+                        myTourProperties.RunningOrderSortTrickRound = mySortCommand;
+                    } else {
+                        myTourProperties.RunningOrderSortTrick = mySortCommand;
+                    }
+                    loadTourEventRegView();
                     winStatusMsg.Text = "Sorted by " + mySortCommand;
                 }
             }
@@ -1160,7 +1156,7 @@ namespace WaterskiScoringSystem.Trick {
                 // Determine if the OK button was clicked on the dialog box.
                 if ( filterDialogForm.DialogResult == DialogResult.OK ) {
                     myFilterCmd = filterDialogForm.FilterCommand;
-                    loadTourEventRegView( myEventRegDataTable, mySortCommand, myFilterCmd );
+                    loadTourEventRegView();
                 }
             }
         }
@@ -1217,28 +1213,12 @@ namespace WaterskiScoringSystem.Trick {
 
         private void navRefresh_Click( object sender, EventArgs e ) {
             // Retrieve data from database
-            myFilterCmd = "";
             String curGroupValue = "All";
-            try {
-                curGroupValue = EventGroupList.SelectedItem.ToString();
-                if ( TrickEventData.isCollegiateEvent() ) {
-                    myFilterCmd = HelperFunctions.getEventGroupFilterNcwsa( curGroupValue );
-
-                } else {
-                    if ( curGroupValue.ToLower().Equals( "all" ) ) {
-                        myFilterCmd = "";
-                    } else {
-                        myFilterCmd = "EventGroup = '" + curGroupValue + "' ";
-                    }
-                }
-
-            } catch {
-                curGroupValue = "All";
-            }
+            curGroupValue = EventGroupList.SelectedItem.ToString();
 
             roundActiveSelect.RoundValue = roundActiveSelect.RoundValue;
             getEventRegData( curGroupValue, Convert.ToByte( roundActiveSelect.RoundValue ) );
-            loadTourEventRegView( myEventRegDataTable, mySortCommand, myFilterCmd );
+            loadTourEventRegView();
             if ( myEventRegDataTable.Rows.Count > 0 ) {
                 setTrickScoreEntry( TourEventRegDataGridView.CurrentRow, Convert.ToByte( roundActiveSelect.RoundValue ) );
                 setTrickPassEntry( TourEventRegDataGridView.CurrentRow, Convert.ToByte( roundActiveSelect.RoundValue ) );
@@ -1280,7 +1260,6 @@ namespace WaterskiScoringSystem.Trick {
                     String curEventGroup = EventGroupList.SelectedItem.ToString();
                     byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
                     LiveWebHandler.sendSkiers( "Trick", TrickEventData.mySanctionNum, curRound, curEventGroup );
-                    // ExportLiveWeb.exportCurrentSkiers( "Trick", TrickEventData.mySanctionNum, curRound, curEventGroup
                 }
 
             } else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "DiableSkier" ) ) {
@@ -1299,7 +1278,6 @@ namespace WaterskiScoringSystem.Trick {
                     String curEventGroup = EventGroupList.SelectedItem.ToString();
                     byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
                     LiveWebHandler.sendDisableSkiers( "Trick", TrickEventData.mySanctionNum, curRound, curEventGroup );
-                    //ExportLiveWeb.exportCurrentSkiers( "Trick", TrickEventData.mySanctionNum, curRound, curEventGroup )
                 }
             }
         }
@@ -1370,7 +1348,7 @@ namespace WaterskiScoringSystem.Trick {
             }
         }
 
-        private void loadTourEventRegView( DataTable inEventRegDataTable, String inSortCmd, String inFilterCmd ) {
+        private void loadTourEventRegView() {
             DataGridViewRow curViewRow;
 
             try {
@@ -1383,11 +1361,10 @@ namespace WaterskiScoringSystem.Trick {
                 }
                 if ( isDataModified ) {
                     MessageBox.Show( "Data has been modified.  Request cannot be completed." );
-                    //TourEventRegDataGridView.CurrentCell = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells[e.ColumnIndex];
                     return;
                 }
 
-                if ( inEventRegDataTable == null || inEventRegDataTable.Rows.Count == 0 ) {
+                if ( myEventRegDataTable == null || myEventRegDataTable.Rows.Count == 0 ) {
                     Pass1DataGridView.Rows.Clear();
                     Pass2DataGridView.Rows.Clear();
                     TourEventRegDataGridView.Rows.Clear();
@@ -1397,14 +1374,16 @@ namespace WaterskiScoringSystem.Trick {
 
                 winStatusMsg.Text = "Retrieving tournament entries";
                 Cursor.Current = Cursors.WaitCursor;
+                isOrderByRoundActive = isRunOrderByRound( Convert.ToByte( roundActiveSelect.RoundValue ) );
+                mySortCommand = getSortCommand();
 
                 Pass1DataGridView.Rows.Clear();
                 Pass2DataGridView.Rows.Clear();
                 TourEventRegDataGridView.Rows.Clear();
 
-                inEventRegDataTable.DefaultView.Sort = inSortCmd;
-                inEventRegDataTable.DefaultView.RowFilter = inFilterCmd;
-                DataTable curEventRegDataTable = inEventRegDataTable.DefaultView.ToTable();
+                myEventRegDataTable.DefaultView.Sort = mySortCommand;
+                myEventRegDataTable.DefaultView.RowFilter = myFilterCmd;
+                DataTable curEventRegDataTable = myEventRegDataTable.DefaultView.ToTable();
                 myEventRegDataTable = curEventRegDataTable;
 
                 myEventRegViewIdx = 0;
@@ -1445,7 +1424,7 @@ namespace WaterskiScoringSystem.Trick {
                     setEventRegRowStatus( HelperFunctions.getDataRowColValue( curDataRow, "Status", "TBD" ) );
                 }
 
-                if ( inEventRegDataTable.Rows.Count > 0 ) {
+                if ( myEventRegDataTable.Rows.Count > 0 ) {
                     myEventRegViewIdx = 0;
                     TourEventRegDataGridView.CurrentCell = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"];
 
@@ -1473,7 +1452,7 @@ namespace WaterskiScoringSystem.Trick {
             }
             String curWarnMsg = "Warn:RunOrder:Round:" + roundActiveSelect.RoundValue;
             if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
-                if ( isRunOrderByRound( Convert.ToByte( roundActiveSelect.RoundValue ) ) ) {
+                if ( isOrderByRoundActive ) {
                     MessageBox.Show( "WARNING \nThis running order is specific for this round" );
                     myCompletedNotices.Add( curWarnMsg );
                 }
@@ -1777,6 +1756,8 @@ namespace WaterskiScoringSystem.Trick {
             newDataRow["AgeGroup"] = HelperFunctions.getViewRowColValue( inTourEventRegRow, "AgeGroup", "" ); ;
             newDataRow["Round"] = inRound;
             newDataRow["EventClass"] = (String)inTourEventRegRow.Cells["EventClass"].Value;
+            newDataRow["SkiYearAge"] = (byte)0;
+            newDataRow["Gender"] = "";
 
             newDataRow["PK"] = -1;
             newDataRow["Score"] = 0;
@@ -1843,11 +1824,16 @@ namespace WaterskiScoringSystem.Trick {
                 ) {
                 Pass1DataGridView.CurrentCell = Pass1DataGridView.Rows[Pass1DataGridView.Rows.Count - 1].Cells["Pass1Code"];
             }
-            Pass1DataGridView.Select();
-            Pass1DataGridView.DefaultCellStyle.BackColor = SystemColors.Window;
-            Pass1DataGridView.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+
             Pass2DataGridView.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
             Pass2DataGridView.DefaultCellStyle.ForeColor = Color.Silver;
+
+            Pass1DataGridView.Select();
+            Pass1DataGridView.Focus();
+            if ( Pass1DataGridView.RowCount > 0 ) Pass1DataGridView.CurrentCell = Pass1DataGridView.Rows[Pass1DataGridView.RowCount - 1].Cells["Pass1Code"];
+            Pass1DataGridView.DefaultCellStyle.BackColor = SystemColors.Window;
+            Pass1DataGridView.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+
             isLoadInProg = false;
         }
 
@@ -2487,7 +2473,7 @@ namespace WaterskiScoringSystem.Trick {
                 }
             }
             
-            myOrigCodeValue = (String)curPassRow.Cells[e.ColumnIndex].Value;
+            //myOrigCodeValue = (String)curPassRow.Cells[e.ColumnIndex].Value;
         }
 
         /*
@@ -3279,49 +3265,52 @@ namespace WaterskiScoringSystem.Trick {
             getEventRegData( "All", inRound );
         }
         private void getEventRegData( String inEventGroup, int inRound ) {
-            int curIdx = 0, curRowCount = 0;
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            while (curIdx < 2 && curRowCount == 0) {
-                curSqlStmt = new StringBuilder( "" );
-                if (curIdx == 0) {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, O.RunOrder, E.RunOrder, E.TeamCode, T.State" );
-					curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) as EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
-					curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.AgeGroup" );
-                    curSqlStmt.Append(", E.HCapBase, E.HCapScore, T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
-                    curSqlStmt.Append( ", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
-                    curSqlStmt.Append( "FROM EventReg E " );
-                    curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-                    curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
-                    curSqlStmt.Append( "     LEFT OUTER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-                    curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-                    curSqlStmt.Append( "WHERE E.SanctionId = '" + TrickEventData.mySanctionNum + "' AND E.Event = 'Trick' " );
+            curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, O.RunOrder, E.TeamCode, T.State" );
+            curSqlStmt.Append( ", O.EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
+            curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
+            curSqlStmt.Append( ", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate" );
+            curSqlStmt.Append( ", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+            curSqlStmt.Append( "FROM EventReg E " );
+            curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+            curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+            curSqlStmt.Append( "WHERE E.SanctionId = '" + TrickEventData.mySanctionNum + "' AND E.Event = 'Trick' " );
+            if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                if ( TrickEventData.isCollegiateEvent() ) {
+                    curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+
                 } else {
-                    curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.EventGroup, '' as RunOrderGroup, E.RunOrder, E.TeamCode, T.State" );
-                    curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, E.HCapBase, E.HCapScore" );
-                    curSqlStmt.Append(", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate, E.AgeGroup as Div");
-                    curSqlStmt.Append(", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt ");
-                    curSqlStmt.Append( "FROM EventReg E " );
-                    curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-                    curSqlStmt.Append( "     LEFT OUTER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-                    curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-                    curSqlStmt.Append( "WHERE E.SanctionId = '" + TrickEventData.mySanctionNum + "' AND E.Event = 'Trick' " );
+                    curSqlStmt.Append( "And (O.EventGroup = '" + inEventGroup + "' AND (O.RunOrderGroup IS NULL OR O.RunOrderGroup = '')" );
+                    curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
                 }
-                if (!(inEventGroup.ToLower().Equals( "all" ))) {
-                    if (TrickEventData.isCollegiateEvent()) {
-						curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup  ) );
-                    
-					} else {
-                        if (curIdx == 0) {
-                            curSqlStmt.Append( "And O.EventGroup = '" + inEventGroup + "' " );
-                        } else {
-                            curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
-                        }
+            }
+            myEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+
+            if ( myEventRegDataTable.Rows.Count == 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, E.RunOrder, E.TeamCode, T.State" );
+                curSqlStmt.Append( ", E.EventGroup, '' as RunOrderGroup" );
+                curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
+                curSqlStmt.Append( ", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate" );
+                curSqlStmt.Append( ", COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+                curSqlStmt.Append( "FROM EventReg E " );
+                curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN TrickScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+                curSqlStmt.Append( "WHERE E.SanctionId = '" + TrickEventData.mySanctionNum + "' AND E.Event = 'Trick' " );
+
+                if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                    if ( TrickEventData.isCollegiateEvent() ) {
+                        curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+
+                    } else {
+                        curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
                     }
                 }
-
                 myEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                curRowCount = myEventRegDataTable.Rows.Count;
-                curIdx++;
             }
         }
 
@@ -3338,7 +3327,31 @@ namespace WaterskiScoringSystem.Trick {
 
 		}
 
-		private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
+        private String getSortCommand() {
+            String curSortCommand = myTourProperties.RunningOrderSortTrick;
+            if ( isOrderByRoundActive ) curSortCommand = myTourProperties.RunningOrderSortTrickRound;
+
+            int curDelim = mySortCommand.IndexOf( "AgeGroup" );
+            if ( curDelim == 0 ) {
+                curSortCommand = "DivOrder" + mySortCommand.Substring( "AgeGroup".Length );
+                if ( isOrderByRoundActive ) {
+                    myTourProperties.RunningOrderSortTrickRound = curSortCommand;
+                } else {
+                    myTourProperties.RunningOrderSortTrick = curSortCommand;
+                }
+
+            } else if ( curDelim > 0 ) {
+                curSortCommand = mySortCommand.Substring( 0, curDelim ) + "DivOrder" + mySortCommand.Substring( curDelim + "AgeGroup".Length );
+                if ( isOrderByRoundActive ) {
+                    myTourProperties.RunningOrderSortTrickRound = curSortCommand;
+                } else {
+                    myTourProperties.RunningOrderSortTrick = curSortCommand;
+                }
+            }
+            return curSortCommand;
+        }
+        
+        private void getSkierScoreByRound( String inMemberId, String inAgeGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append("SELECT S.PK, S.SanctionId, S.MemberId, S.AgeGroup, S.Round, S.EventClass");
             curSqlStmt.Append( ", S.Score, S.ScorePass1, S.ScorePass2, S.NopsScore, E.HCapScore, S.Rating, S.Boat, S.Status, S.Note" );

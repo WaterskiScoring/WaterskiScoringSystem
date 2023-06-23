@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -14,7 +9,6 @@ namespace WaterskiScoringSystem.Admin {
     public partial class EditMemberOfficialsRatings : Form {
         private String mySanctionNum;
         private String myMemberId;
-        private String myTourRules;
 
         private DataRow myTourRow;
 
@@ -50,7 +44,6 @@ namespace WaterskiScoringSystem.Admin {
                     DataTable curTourDataTable = getTourData();
                     if (curTourDataTable.Rows.Count > 0) {
                         myTourRow = curTourDataTable.Rows[0];
-                        myTourRules = (String)myTourRow["Rules"];
 
                         loadRatingSelect( "JudgeRating", JudgeSlalomRatingSelect );
                         loadRatingSelect( "JudgeRating", JudgeTrickRatingSelect );
@@ -102,7 +95,7 @@ namespace WaterskiScoringSystem.Admin {
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
 
-			DataTable curDataTable = getData( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count == 0) {
 
 				curSqlStmt = new StringBuilder( "" );
@@ -122,7 +115,7 @@ namespace WaterskiScoringSystem.Admin {
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
-                curDataTable = getData( curSqlStmt.ToString() );
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
 
             if (curDataTable.Rows.Count > 0) {
@@ -161,70 +154,54 @@ namespace WaterskiScoringSystem.Admin {
 
         private void saveButton_Click(object sender, EventArgs e) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            SqlCeConnection curDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            SqlCeCommand curSqlCmd = curDbConn.CreateCommand();
-            try {
-                curDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                curDbConn.Open();
 
-                if (editEntityName.Text.Equals( "TR" )) {
-                    //Insert OfficialWork
-                    curSqlStmt.Append( "Insert INTO OfficialWork (" );
-                    curSqlStmt.Append( "SanctionId, MemberId, LastUpdateDate" );
-                    curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
-                    curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
-                    curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                    curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
-                    curSqlStmt.Append( ") Values (" );
-                    curSqlStmt.Append( "'" + mySanctionNum + "'" );
-                    curSqlStmt.Append( ", '" + editMemberId.Text + "'" );
-                    curSqlStmt.Append( ", getdate() " );
-                    curSqlStmt.Append( ", '" + JudgeSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + JudgeTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + JudgeJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + DriverSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + DriverTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + DriverJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + ScorerSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + ScorerTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + ScorerJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + SafetyRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + TechOfficialRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", '" + AnncrOfficialRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ")" );
-                } else {
-                    //Update OfficialWork
-                    curSqlStmt.Append( "Update OfficialWork Set " );
-                    curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
-                    curSqlStmt.Append( ", JudgeSlalomRating = '" + JudgeSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", JudgeTrickRating = '" + JudgeTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", JudgeJumpRating = '" + JudgeJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", DriverSlalomRating = '" + DriverSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", DriverTrickRating = '" + DriverTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", DriverJumpRating = '" + DriverJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", ScorerSlalomRating = '" + ScorerSlalomRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", ScorerTrickRating = '" + ScorerTrickRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", ScorerJumpRating = '" + ScorerJumpRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", SafetyOfficialRating = '" + SafetyRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", TechOfficialRating = '" + TechOfficialRatingSelect.SelectedItem + "'" );
-                    curSqlStmt.Append( ", AnncrOfficialRating = '" + AnncrOfficialRatingSelect.SelectedItem + "' " );
-                    curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + " ' AND MemberId = '" + editMemberId.Text + "' " );
-                }
-                curSqlCmd.CommandText = curSqlStmt.ToString();
-                int rowsProc = curSqlCmd.ExecuteNonQuery();
-                if (rowsProc > 0) {
-                    MessageBox.Show( "Official ratings for skier have been updated" );
-                }
-            } catch (Exception ex) {
-                String ExcpMsg = ex.Message;
-                if (curSqlCmd != null) {
-                    ExcpMsg += "\n" + curSqlCmd.CommandText;
-                }
-                MessageBox.Show( "Error attempting to save officials ratings "  + "\n\nError: " + ExcpMsg
-                    );
-            } finally {
-                curDbConn.Close();
+            if ( editEntityName.Text.Equals( "TR" ) ) {
+                //Insert OfficialWork
+                curSqlStmt.Append( "Insert INTO OfficialWork (" );
+                curSqlStmt.Append( "SanctionId, MemberId, LastUpdateDate" );
+                curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
+                curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
+                curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
+                curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+                curSqlStmt.Append( ") Values (" );
+                curSqlStmt.Append( "'" + mySanctionNum + "'" );
+                curSqlStmt.Append( ", '" + editMemberId.Text + "'" );
+                curSqlStmt.Append( ", getdate() " );
+                curSqlStmt.Append( ", '" + JudgeSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + JudgeTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + JudgeJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + DriverSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + DriverTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + DriverJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + ScorerSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + ScorerTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + ScorerJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + SafetyRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + TechOfficialRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + AnncrOfficialRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ")" );
+            
+            } else {
+                //Update OfficialWork
+                curSqlStmt.Append( "Update OfficialWork Set " );
+                curSqlStmt.Append( "LastUpdateDate = GETDATE() " );
+                curSqlStmt.Append( ", JudgeSlalomRating = '" + JudgeSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", JudgeTrickRating = '" + JudgeTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", JudgeJumpRating = '" + JudgeJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", DriverSlalomRating = '" + DriverSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", DriverTrickRating = '" + DriverTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", DriverJumpRating = '" + DriverJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", ScorerSlalomRating = '" + ScorerSlalomRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", ScorerTrickRating = '" + ScorerTrickRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", ScorerJumpRating = '" + ScorerJumpRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", SafetyOfficialRating = '" + SafetyRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", TechOfficialRating = '" + TechOfficialRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", AnncrOfficialRating = '" + AnncrOfficialRatingSelect.SelectedItem + "' " );
+                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + " ' AND MemberId = '" + editMemberId.Text + "' " );
             }
+
+            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+            if ( rowsProc > 0 ) MessageBox.Show( "Official ratings for skier have been updated" );
         }
 
         private void loadRatingSelect(String inListName, ComboBox curSelectBox) {
@@ -235,7 +212,7 @@ namespace WaterskiScoringSystem.Admin {
 
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT ListCode, CodeValue FROM CodeValueList WHERE ListName = '" + inListName + "' ORDER BY SortSeq" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             foreach (DataRow curRow in curDataTable.Rows) {
                 curListCode = (String)curRow["ListCode"];
                 curCodeValue = (String)curRow["CodeValue"];
@@ -254,25 +231,7 @@ namespace WaterskiScoringSystem.Admin {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty(object inObject) {
-            bool curReturnValue = false;
-            if (inObject == null) {
-                curReturnValue = true;
-            } else if (inObject == System.DBNull.Value) {
-                curReturnValue = true;
-            } else if (inObject.ToString().Length > 0) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         public String JudgeSlalomRating {

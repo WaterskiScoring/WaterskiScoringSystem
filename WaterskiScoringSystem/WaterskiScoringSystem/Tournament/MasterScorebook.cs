@@ -554,6 +554,12 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private bool printReport( bool inPublish ) {
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+                MessageBox.Show( "Request to publish report but live web not successfully connected." );
+                return false;
+            }
+
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
 
             bool CenterOnPage = true;

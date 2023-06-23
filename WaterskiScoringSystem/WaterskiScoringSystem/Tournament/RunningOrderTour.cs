@@ -1568,7 +1568,13 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private bool printReport( bool inPublish ) {
-			myEventRegDataTable = getEventRegData();
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+                MessageBox.Show( "Request to publish running order but live web not successfully connected." );
+                return false;
+            }
+
+            myEventRegDataTable = getEventRegData();
 			loadPrintDataGrid();
 
             bool CenterOnPage = true;

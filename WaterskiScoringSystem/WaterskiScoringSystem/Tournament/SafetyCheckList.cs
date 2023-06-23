@@ -21,9 +21,6 @@ namespace WaterskiScoringSystem.Tournament {
         private Int16 myJumpRounds;
         private DataRow myTourRow;
         private DataRow mySafetyCheckList;
-
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
         #endregion 
 
         public SafetyCheckList() {
@@ -50,9 +47,6 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( mySanctionNum.Length < 6 ) {
                     MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
                 } else {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-
                     DataTable curTourDataTable = getTourData();
                     if ( curTourDataTable.Rows.Count > 0 ) {
                         myTourRow = curTourDataTable.Rows[0];
@@ -81,115 +75,95 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void SaveButton_Click( object sender, EventArgs e ) {
             String curMethodName = "Tournament:SafetyCheckList:saveButton_Click";
-            bool curReturn = true;
             int rowsProc = 0;
             StringBuilder curSqlStmt = null;
 
-            try {
-                curSqlStmt = new StringBuilder( "Select PK From SafetycheckList WHERE SanctionId = '" + mySanctionNum + "' " );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
+            curSqlStmt = new StringBuilder( "Select PK From SafetycheckList WHERE SanctionId = '" + mySanctionNum + "' " );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-                try {
-                    myDbConn.Open();
-                    mySqlStmt = myDbConn.CreateCommand();
-                    mySqlStmt.CommandText = "";
+            if ( curDataTable.Rows.Count > 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Update SafetycheckList Set " );
+                curSqlStmt.Append( "SponsorClubName = '" + sponsorClubNameTextBox.Text + "' " );
+                curSqlStmt.Append( ", NumInjuries = '" + numInjuriesTextBox.Text + "' " );
+                curSqlStmt.Append( ", CommAvail = '" + commAvailTextBox.Text + "' " );
+                curSqlStmt.Append( ", MedAccptCheck = '" + medAccptCheckTextBox.Text + "' " );
+                curSqlStmt.Append( ", MedAvail = '" + medAvailTextBox.Text + "' " );
+                curSqlStmt.Append( ", PostedMedRoute = '" + postedMedRouteTextBox.Text + "' " );
+                curSqlStmt.Append( ", HazFree = '" + hazFreeTextBox.Text + "' " );
+                curSqlStmt.Append( ", ObstructionsMarked = '" + obstructionsMarkedTextBox.Text + "' " );
+                curSqlStmt.Append( ", LandingClear = '" + landingClearTextBox.Text + "' " );
+                curSqlStmt.Append( ", DockChecked = '" + dockCheckedTextBox.Text + "' " );
+                curSqlStmt.Append( ", JumpInspect = '" + jumpInspectTextBox.Text + "' " );
+                curSqlStmt.Append( ", JumpSecure = '" + jumpSecureTextBox.Text + "' " );
+                curSqlStmt.Append( ", JumpSurfaceSafe = '" + jumpSurfaceSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", JumpColor = '" + jumpColorTextBox.Text + "' " );
+                curSqlStmt.Append( ", JumpAlgaeRemoved = '" + jumpAlgaeRemovedTextBox.Text + "' " );
+                curSqlStmt.Append( ", CourseSafeDist = '" + courseSafeDistTextBox.Text + "' " );
+                curSqlStmt.Append( ", TowerStable = '" + towerStableTextBox.Text + "' " );
+                curSqlStmt.Append( ", TowerLadderSafe = '" + towerLadderSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", TowerFloorSafe = '" + towerFloorSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", RefuelFireExtn = '" + refuelFireExtnTextBox.Text + "' " );
+                curSqlStmt.Append( ", RefuelSignsPosted = '" + refuelSignsPostedTextBox.Text + "' " );
+                curSqlStmt.Append( ", RefuelGrounded = '" + refuelGroundedTextBox.Text + "' " );
+                curSqlStmt.Append( ", SafetyPfd = '" + safetyPfdTextBox.Text + "' " );
+                curSqlStmt.Append( ", SafetyRadio = '" + safetyRadioTextBox.Text + "' " );
+                curSqlStmt.Append( ", SafetyVolunteers = '" + safetyVolunteersTextBox.Text + "' " );
+                curSqlStmt.Append( ", SafetyBoats = '" + safetyBoatsTextBox.Text + "' " );
+                curSqlStmt.Append( ", FirstAidArea = '" + firstAidAreaTextBox.Text + "' " );
+                curSqlStmt.Append( ", SpineBoard = '" + spineBoardTextBox.Text + "' " );
+                curSqlStmt.Append( ", SafetyCid = '" + safetyCidTextBox.Text + "' " );
+                curSqlStmt.Append( ", FirstAidKit = '" + firstAidKitTextBox.Text + "' " );
+                curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
 
-                    if ( curDataTable.Rows.Count > 0 ) {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Update SafetycheckList Set " );
-                        curSqlStmt.Append( "SponsorClubName = '" + sponsorClubNameTextBox.Text + "' " );
-                        curSqlStmt.Append( ", NumInjuries = '" + numInjuriesTextBox.Text + "' " );
-                        curSqlStmt.Append( ", CommAvail = '" + commAvailTextBox.Text + "' " );
-                        curSqlStmt.Append( ", MedAccptCheck = '" + medAccptCheckTextBox.Text + "' " );
-                        curSqlStmt.Append( ", MedAvail = '" + medAvailTextBox.Text + "' " );
-                        curSqlStmt.Append( ", PostedMedRoute = '" + postedMedRouteTextBox.Text + "' " );
-                        curSqlStmt.Append( ", HazFree = '" + hazFreeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", ObstructionsMarked = '" + obstructionsMarkedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", LandingClear = '" + landingClearTextBox.Text + "' " );
-                        curSqlStmt.Append( ", DockChecked = '" + dockCheckedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", JumpInspect = '" + jumpInspectTextBox.Text + "' " );
-                        curSqlStmt.Append( ", JumpSecure = '" + jumpSecureTextBox.Text + "' " );
-                        curSqlStmt.Append( ", JumpSurfaceSafe = '" + jumpSurfaceSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", JumpColor = '" + jumpColorTextBox.Text + "' " );
-                        curSqlStmt.Append( ", JumpAlgaeRemoved = '" + jumpAlgaeRemovedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", CourseSafeDist = '" + courseSafeDistTextBox.Text + "' " );
-                        curSqlStmt.Append( ", TowerStable = '" + towerStableTextBox.Text + "' " );
-                        curSqlStmt.Append( ", TowerLadderSafe = '" + towerLadderSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", TowerFloorSafe = '" + towerFloorSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", RefuelFireExtn = '" + refuelFireExtnTextBox.Text + "' " );
-                        curSqlStmt.Append( ", RefuelSignsPosted = '" + refuelSignsPostedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", RefuelGrounded = '" + refuelGroundedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SafetyPfd = '" + safetyPfdTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SafetyRadio = '" + safetyRadioTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SafetyVolunteers = '" + safetyVolunteersTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SafetyBoats = '" + safetyBoatsTextBox.Text + "' " );
-                        curSqlStmt.Append( ", FirstAidArea = '" + firstAidAreaTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SpineBoard = '" + spineBoardTextBox.Text + "' " );
-                        curSqlStmt.Append( ", SafetyCid = '" + safetyCidTextBox.Text + "' " );
-                        curSqlStmt.Append( ", FirstAidKit = '" + firstAidKitTextBox.Text + "' " );
-                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                    } else {
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Insert SafetycheckList ( " );
-                        curSqlStmt.Append( "SanctionId, SponsorClubName, NumInjuries, MedAccptCheck" );
-                        curSqlStmt.Append( ", CommAvail, MedAvail, PostedMedRoute, HazFree, ObstructionsMarked" );
-                        curSqlStmt.Append( ", LandingClear, DockChecked, JumpInspect, JumpSecure, JumpSurfaceSafe, JumpColor, JumpAlgaeRemoved" );
-                        curSqlStmt.Append( ", CourseSafeDist, TowerStable, TowerLadderSafe, TowerFloorSafe, RefuelFireExtn, RefuelSignsPosted, RefuelGrounded" );
-                        curSqlStmt.Append( ", SafetyPfd, SafetyRadio, SafetyVolunteers, SafetyBoats, FirstAidArea, SpineBoard, SafetyCid, FirstAidKit, LastUpdateDate " );
-                        curSqlStmt.Append( ") Values ( " );
-                        curSqlStmt.Append( "'" + mySanctionNum + "'" );
-                        curSqlStmt.Append( ", '" + sponsorClubNameTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + numInjuriesTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + medAccptCheckTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + commAvailTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + medAvailTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + postedMedRouteTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + hazFreeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + obstructionsMarkedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + landingClearTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + dockCheckedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + jumpInspectTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + jumpSecureTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + jumpSurfaceSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + jumpColorTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + jumpAlgaeRemovedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + courseSafeDistTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + towerStableTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + towerLadderSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + towerFloorSafeTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + refuelFireExtnTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + refuelSignsPostedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + refuelGroundedTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + safetyPfdTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + safetyRadioTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + safetyVolunteersTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + safetyBoatsTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + firstAidAreaTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + spineBoardTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + safetyCidTextBox.Text + "' " );
-                        curSqlStmt.Append( ", '" + firstAidKitTextBox.Text + "' " );
-                        curSqlStmt.Append( ", GETDATE() )" );
-                        mySqlStmt.CommandText = curSqlStmt.ToString();
-                    }
-                    rowsProc = mySqlStmt.ExecuteNonQuery();
-                    if ( rowsProc > 0 ) {
-                        isDataModified = false;
-                    }
-                } catch ( Exception excp ) {
-                    curReturn = false;
-                    String curMsg = ":Error attempting to update SafetycheckList information \n" + excp.Message;
-                    MessageBox.Show( curMsg );
-                } finally {
-                    myDbConn.Close();
-                }
-            } catch ( Exception excp ) {
-                curReturn = false;
-                String curMsg = ":Error attempting to update SafetycheckList information \n" + excp.Message;
-                MessageBox.Show( curMsg );
+            } else {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Insert SafetycheckList ( " );
+                curSqlStmt.Append( "SanctionId, SponsorClubName, NumInjuries, MedAccptCheck" );
+                curSqlStmt.Append( ", CommAvail, MedAvail, PostedMedRoute, HazFree, ObstructionsMarked" );
+                curSqlStmt.Append( ", LandingClear, DockChecked, JumpInspect, JumpSecure, JumpSurfaceSafe, JumpColor, JumpAlgaeRemoved" );
+                curSqlStmt.Append( ", CourseSafeDist, TowerStable, TowerLadderSafe, TowerFloorSafe, RefuelFireExtn, RefuelSignsPosted, RefuelGrounded" );
+                curSqlStmt.Append( ", SafetyPfd, SafetyRadio, SafetyVolunteers, SafetyBoats, FirstAidArea, SpineBoard, SafetyCid, FirstAidKit, LastUpdateDate " );
+                curSqlStmt.Append( ") Values ( " );
+                curSqlStmt.Append( "'" + mySanctionNum + "'" );
+                curSqlStmt.Append( ", '" + sponsorClubNameTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + numInjuriesTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + medAccptCheckTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + commAvailTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + medAvailTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + postedMedRouteTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + hazFreeTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + obstructionsMarkedTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + landingClearTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + dockCheckedTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + jumpInspectTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + jumpSecureTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + jumpSurfaceSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + jumpColorTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + jumpAlgaeRemovedTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + courseSafeDistTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + towerStableTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + towerLadderSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + towerFloorSafeTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + refuelFireExtnTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + refuelSignsPostedTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + refuelGroundedTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + safetyPfdTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + safetyRadioTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + safetyVolunteersTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + safetyBoatsTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + firstAidAreaTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + spineBoardTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + safetyCidTextBox.Text + "' " );
+                curSqlStmt.Append( ", '" + firstAidKitTextBox.Text + "' " );
+                curSqlStmt.Append( ", GETDATE() )" );
             }
-            
+            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+            if ( rowsProc > 0 ) {
+                isDataModified = false;
+            }
+
         }
 
         public void ShowTour( String inSanctionId ) {
@@ -393,7 +367,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as SkierCount "
                     + " From (SELECT DISTINCT MemberId From SlalomScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     SlalomNumTextBox.Text = curRow["SkierCount"].ToString();
@@ -405,7 +379,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as RideCount "
                     + " From SlalomScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     SlalomRidesTextBox.Text = curRow["RideCount"].ToString();
@@ -423,7 +397,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as SkierCount "
                     + " From (SELECT DISTINCT MemberId From TrickScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     TrickNumTextBox.Text = curRow["SkierCount"].ToString();
@@ -435,7 +409,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as RideCount "
                     + " From TrickScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     TrickRidesTextBox.Text = curRow["RideCount"].ToString();
@@ -453,7 +427,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as SkierCount "
                     + " From (SELECT DISTINCT MemberId From JumpScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     JumpNumTextBox.Text = curRow["SkierCount"].ToString();
@@ -465,7 +439,7 @@ namespace WaterskiScoringSystem.Tournament {
                 selectStmt = "Select count(*) as RideCount "
                     + " From JumpScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
-                curDataTable = getData( selectStmt );
+                curDataTable = DataAccess.getDataTable( selectStmt );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = (DataRow)curDataTable.Rows[0];
                     JumpRidesTextBox.Text = curRow["RideCount"].ToString();
@@ -497,7 +471,7 @@ namespace WaterskiScoringSystem.Tournament {
                 + "       WHERE SanctionId = EventReg.SanctionId AND MemberId = EventReg.MemberId AND AgeGroup = EventReg.AgeGroup) "
                 + " ) ) myTable";
 
-            curDataTable = getData( selectStmt );
+            curDataTable = DataAccess.getDataTable( selectStmt );
             if ( curDataTable.Rows.Count > 0 ) {
                 curRow = (DataRow)curDataTable.Rows[0];
                 TotalSkiersTextBox.Text = curRow["SkierCount"].ToString();
@@ -1106,7 +1080,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", SafetyPfd, SafetyRadio, SafetyVolunteers, SafetyBoats, FirstAidArea, SpineBoard, SafetyCid, FirstAidKit, LastUpdateDate " );
             curSqlStmt.Append( "FROM SafetycheckList " );
             curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourData() {
@@ -1128,7 +1102,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) SD " );
             curSqlStmt.Append( "    ON SD.SanctionId = T.SanctionId AND SD.MemberId = T.SafetyDirMemberId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataRow getTourMemberRating(String inMemberId) {
@@ -1142,7 +1116,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count == 0) {
                 curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Select Distinct 'TR' as EntityName, TR.SanctionId, TR.MemberId, TR.SkierName" );
@@ -1161,7 +1135,7 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
-				curDataTable = getData( curSqlStmt.ToString() );
+				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
 
             if (curDataTable.Rows.Count > 0) {
@@ -1170,10 +1144,6 @@ namespace WaterskiScoringSystem.Tournament {
             } else {
                 return null;
             }
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
         }
 
         public void PrintButton_Click( object sender, EventArgs e ) {

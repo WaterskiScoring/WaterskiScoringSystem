@@ -792,7 +792,13 @@ namespace WaterskiScoringSystem.Trick {
             printReport( false );
         }
         private bool printReport( bool inPublish ) {
-			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+                MessageBox.Show( "Request to publish report but live web not successfully connected." );
+                return false;
+            }
+
+            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             TeamPrintDialogForm curTeamPrintDialog = new TeamPrintDialogForm();
 			if ( curTeamPrintDialog.ShowDialog() != DialogResult.OK ) return false;
 

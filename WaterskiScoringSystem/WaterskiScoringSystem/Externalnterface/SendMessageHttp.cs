@@ -103,6 +103,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 						curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
 					}
 				}
+                /*
+                 */
 				if (inUrl.ToLower().StartsWith("https")) {
 					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 					ServicePointManager.Expect100Continue = false;
@@ -613,10 +615,9 @@ namespace WaterskiScoringSystem.Externalnterface {
             return true;
         }
 
-		public static DataTable readJsonResponseAsDataTable(HttpWebResponse curResponse) {
-			String curMethodName = "readJsonResponseAsDataTable: ";
-
-			Stream curResponseStream = null;
+        public static DataTable readJsonResponseAsDataTable( HttpWebResponse curResponse ) {
+            String curMethodName = "readJsonResponseAsDataTable: ";
+            Stream curResponseStream = null;
 			StreamReader curStreamReader = null;
 			JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
 			jsonSerializer.MaxJsonLength = Int32.MaxValue;

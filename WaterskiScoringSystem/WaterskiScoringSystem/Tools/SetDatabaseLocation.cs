@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
+using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
     public partial class SetDatabaseLocation : Form {
@@ -19,20 +20,29 @@ namespace WaterskiScoringSystem.Tools {
             bool curReturn = false;
             String curDataDirectory = "", curDestFileName = "";
             String myFileName = null;
-            String myConnectName = WaterskiScoringSystem.Properties.Settings.Default.AppConnectName;
-            String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+            String curAppConnectString = "";
 
-            String curAppRegName = Properties.Settings.Default.AppRegistryName;
-            RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
-            if ( curAppRegKey.GetValue( "DataDirectory" ) == null ) {
+            if ( inAppRegKey.GetValue( "DataDirectory" ) == null ) {
                 try {
                     curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
                 } catch ( Exception ex ) {
                     curDataDirectory = Application.UserAppDataPath;
                 }
+                inAppRegKey.SetValue( "DataDirectory", curDataDirectory );
+
             } else {
-                curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
+                curDataDirectory = inAppRegKey.GetValue( "DataDirectory" ).ToString();
             }
+            if ( inAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
+                curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+                inAppRegKey.SetValue( "DatabaseConnectionString", curAppConnectString );
+
+            } else {
+                curAppConnectString = inAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
+            }
+            
+            //Establish active data directory in active application domain
+            AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
 
             MessageBox.Show( "Current Database Connection String \n "
                 + "\n ConnectionString: " + curAppConnectString
@@ -51,7 +61,7 @@ namespace WaterskiScoringSystem.Tools {
                     if ( myFileName != null ) {
                         int posDelim = myFileName.LastIndexOf( "\\" );
                         curDataDirectory = myFileName.Substring( 0, posDelim);
-                        curAppRegKey.SetValue( "DataDirectory", curDataDirectory );
+                        inAppRegKey.SetValue( "DataDirectory", curDataDirectory );
                         curDestFileName = myFileName.Substring( posDelim + 1 );
                         curReturn = setConnectionString( curDataDirectory, curDestFileName, inAppRegKey );
                     }
@@ -149,7 +159,13 @@ namespace WaterskiScoringSystem.Tools {
         public bool setConnectionString( String inDataDirectory, String inDatabaseFileName, RegistryKey inAppRegKey ) {
             bool curReturn = false;
             String curAttrName, curAttrValue, newConnectionString = "";
-            String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+            String curAppConnectString = "";
+            if ( inAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
+                curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+
+            } else {
+                curAppConnectString = inAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
+            }
 
             String[] curAttrEntry;
             String[] curConnAttrList = curAppConnectString.Split( ';' );
@@ -168,33 +184,34 @@ namespace WaterskiScoringSystem.Tools {
             inAppRegKey.SetValue( "DataDirectory", inDataDirectory );
             AppDomain.CurrentDomain.SetData( "DataDirectory", inDataDirectory );
 
-            Boolean dbConnGood = false;
-            SqlCeConnection myDbConn = null;
+            SqlCeConnection curDbConn = null;
             try {
-                myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                myDbConn.ConnectionString = newConnectionString;
-                myDbConn.Open();
-                dbConnGood = true;
+                DataAccess.DataAccessClose( true );
 
+                curDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
+                curDbConn.ConnectionString = newConnectionString;
+                curDbConn.Open();
+
+                inAppRegKey.SetValue( "DatabaseConnectionString", newConnectionString );
                 UpgradeDatabase curUpgradeDatabase = new UpgradeDatabase();
                 curUpgradeDatabase.checkForUpgrade();
 
                 MessageBox.Show( "Database connection successful!"
-                    + "\n ConnectionString: " + Properties.Settings.Default.waterskiConnectionStringApp
+                    + "\n ConnectionString: " + newConnectionString
                     + "\n\n Data location: " + AppDomain.CurrentDomain.GetData( "DataDirectory" )
                     + "\n\n You must close the application and restart it to use the new database selection"
                     );
                 curReturn = true;
+            
             } catch ( Exception ex ) {
-                dbConnGood = false;
                 MessageBox.Show( "Database connection failed!"
-                    + "\n ConnectionString: " + myDbConn.ConnectionString
+                    + "\n ConnectionString: " + curDbConn.ConnectionString
                     + "\n\n Data location: " + inDataDirectory 
                     );
 
             } finally {
-                if ( myDbConn != null ) {
-                    myDbConn.Close();
+                if ( curDbConn != null ) {
+                    curDbConn.Close();
                 }
             }
 

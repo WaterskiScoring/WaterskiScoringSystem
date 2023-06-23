@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -11,8 +10,6 @@ namespace WaterskiScoringSystem.Admin {
         private Boolean isDataModified = false;
         private String myOrigItemValue;
         private DataTable myDataTable;
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
 
         public TourEventTech() {
             InitializeComponent();
@@ -25,9 +22,6 @@ namespace WaterskiScoringSystem.Admin {
 
         public void TourEventTech_Show( String inSanctionNum ) {
             //Retrieve tournament list and set current position to active tournament
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-
             mySanctionNum = inSanctionNum;
             navRefresh_Click( null, null );
         }
@@ -85,95 +79,83 @@ namespace WaterskiScoringSystem.Admin {
             bool curReturnValue = false;
             int rowsProc = 0;
 
-            try {
-                String curValue = "";
-                String curSlalomRopesSpecs = "Rope 1"
-                    + ";" + Rope1Line2300TextBox.Text
-                    + ";" + Rope1Line1825TextBox.Text
-                    + ";" + Rope1Line1600TextBox.Text
-                    + ";" + Rope1Line1425TextBox.Text
-                    + ";" + Rope1Line1300TextBox.Text
-                    + ";" + Rope1Line1200TextBox.Text
-                    + ";" + Rope1Line1125TextBox.Text
-                    + ";" + Rope1Line1075TextBox.Text
-                    + ";" + Rope1Line1025TextBox.Text
-                    + ";Rope 2"
-                    + ";" + Rope2Line2300TextBox.Text
-                    + ";" + Rope2Line1825TextBox.Text
-                    + ";" + Rope2Line1600TextBox.Text
-                    + ";" + Rope2Line1425TextBox.Text
-                    + ";" + Rope2Line1300TextBox.Text
-                    + ";" + Rope2Line1200TextBox.Text
-                    + ";" + Rope2Line1125TextBox.Text
-                    + ";" + Rope2Line1075TextBox.Text
-                    + ";" + Rope2Line1025TextBox.Text
-                    + ";Rope 3"
-                    + ";" + Rope3Line2300TextBox.Text
-                    + ";" + Rope3Line1825TextBox.Text
-                    + ";" + Rope3Line1600TextBox.Text
-                    + ";" + Rope3Line1425TextBox.Text
-                    + ";" + Rope3Line1300TextBox.Text
-                    + ";" + Rope3Line1200TextBox.Text
-                    + ";" + Rope3Line1125TextBox.Text
-                    + ";" + Rope3Line1075TextBox.Text
-                    + ";" + Rope3Line1025TextBox.Text
-                    ;
-                curValue = HelperFunctions.escapeString( curSlalomRopesSpecs );
-                curSlalomRopesSpecs = curValue;
+            String curValue = "";
+            String curSlalomRopesSpecs = "Rope 1"
+                + ";" + Rope1Line2300TextBox.Text
+                + ";" + Rope1Line1825TextBox.Text
+                + ";" + Rope1Line1600TextBox.Text
+                + ";" + Rope1Line1425TextBox.Text
+                + ";" + Rope1Line1300TextBox.Text
+                + ";" + Rope1Line1200TextBox.Text
+                + ";" + Rope1Line1125TextBox.Text
+                + ";" + Rope1Line1075TextBox.Text
+                + ";" + Rope1Line1025TextBox.Text
+                + ";Rope 2"
+                + ";" + Rope2Line2300TextBox.Text
+                + ";" + Rope2Line1825TextBox.Text
+                + ";" + Rope2Line1600TextBox.Text
+                + ";" + Rope2Line1425TextBox.Text
+                + ";" + Rope2Line1300TextBox.Text
+                + ";" + Rope2Line1200TextBox.Text
+                + ";" + Rope2Line1125TextBox.Text
+                + ";" + Rope2Line1075TextBox.Text
+                + ";" + Rope2Line1025TextBox.Text
+                + ";Rope 3"
+                + ";" + Rope3Line2300TextBox.Text
+                + ";" + Rope3Line1825TextBox.Text
+                + ";" + Rope3Line1600TextBox.Text
+                + ";" + Rope3Line1425TextBox.Text
+                + ";" + Rope3Line1300TextBox.Text
+                + ";" + Rope3Line1200TextBox.Text
+                + ";" + Rope3Line1125TextBox.Text
+                + ";" + Rope3Line1075TextBox.Text
+                + ";" + Rope3Line1025TextBox.Text
+                ;
+            curValue = HelperFunctions.escapeString( curSlalomRopesSpecs );
+            curSlalomRopesSpecs = curValue;
 
-                String curRopeHandlesSpecs = "Rope Handle"
-                    + ";" + RopeHandle1TextBox.Text
-                    + ";" + RopeHandle2TextBox.Text
-                    + ";" + RopeHandle3TextBox.Text
-                    + ";" + RopeHandle4TextBox.Text
-                    ;
-                curValue = HelperFunctions.escapeString( curRopeHandlesSpecs );
-                curRopeHandlesSpecs = curValue;
+            String curRopeHandlesSpecs = "Rope Handle"
+                + ";" + RopeHandle1TextBox.Text
+                + ";" + RopeHandle2TextBox.Text
+                + ";" + RopeHandle3TextBox.Text
+                + ";" + RopeHandle4TextBox.Text
+                ;
+            curValue = HelperFunctions.escapeString( curRopeHandlesSpecs );
+            curRopeHandlesSpecs = curValue;
 
-                String curJumpRopesSpecs = "Jump Line"
-                    + ";" + JumpLine1TextBox.Text
-                    + ";" + JumpLine2TextBox.Text
-                    + ";" + JumpLine3TextBox.Text
-                    + ";" + JumpLine4TextBox.Text
-                    + ";" + "Jump Handle"
-                    + ";" + JumpHandle1TextBox.Text
-                    + ";" + JumpHandle2TextBox.Text
-                    + ";" + JumpHandle3TextBox.Text
-                    + ";" + JumpHandle4TextBox.Text
-                    ;
-                curValue = HelperFunctions.escapeString( curJumpRopesSpecs );
-                curJumpRopesSpecs = curValue;
+            String curJumpRopesSpecs = "Jump Line"
+                + ";" + JumpLine1TextBox.Text
+                + ";" + JumpLine2TextBox.Text
+                + ";" + JumpLine3TextBox.Text
+                + ";" + JumpLine4TextBox.Text
+                + ";" + "Jump Handle"
+                + ";" + JumpHandle1TextBox.Text
+                + ";" + JumpHandle2TextBox.Text
+                + ";" + JumpHandle3TextBox.Text
+                + ";" + JumpHandle4TextBox.Text
+                ;
+            curValue = HelperFunctions.escapeString( curJumpRopesSpecs );
+            curJumpRopesSpecs = curValue;
 
-                myDbConn.Open();
-                mySqlStmt = myDbConn.CreateCommand();
-                mySqlStmt.CommandText = "";
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "Update Tournament Set " );
+            curSqlStmt.Append( "LastUpdateDate = getdate() " );
+            curSqlStmt.Append( ", SlalomRopesSpecs = '" + curSlalomRopesSpecs + "'" );
+            curSqlStmt.Append( ", RopeHandlesSpecs = '" + curRopeHandlesSpecs + "'" );
+            curSqlStmt.Append( ", JumpRopesSpecs = '" + curJumpRopesSpecs + "'" );
+            curSqlStmt.Append( ", SlalomCourseSpecs = '" + HelperFunctions.escapeString( slalomCourseSpecsTextBox.Text ) + "'" );
+            curSqlStmt.Append( ", JumpCourseSpecs = '" + HelperFunctions.escapeString( jumpCourseSpecsTextBox.Text ) + "'" );
+            curSqlStmt.Append( ", TrickCourseSpecs = '" + HelperFunctions.escapeString( trickCourseSpecsTextBox.Text ) + "'" );
+            curSqlStmt.Append( ", BuoySpecs = '" + HelperFunctions.escapeString( buoySpecsTextBox.Text ) + "' " );
+            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
 
-                StringBuilder curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append("Update Tournament Set ");
-                curSqlStmt.Append( "LastUpdateDate = getdate() " );
-                curSqlStmt.Append( ", SlalomRopesSpecs = '" + curSlalomRopesSpecs + "'" );
-                curSqlStmt.Append( ", RopeHandlesSpecs = '" + curRopeHandlesSpecs + "'" );
-                curSqlStmt.Append( ", JumpRopesSpecs = '" + curJumpRopesSpecs + "'" );
-                curSqlStmt.Append( ", SlalomCourseSpecs = '" + HelperFunctions.escapeString(slalomCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", JumpCourseSpecs = '" + HelperFunctions.escapeString(jumpCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", TrickCourseSpecs = '" + HelperFunctions.escapeString(trickCourseSpecsTextBox.Text) + "'" );
-                curSqlStmt.Append( ", BuoySpecs = '" + HelperFunctions.escapeString(buoySpecsTextBox.Text) + "' " );
-                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-
-                mySqlStmt.CommandText = curSqlStmt.ToString();
-                rowsProc = mySqlStmt.ExecuteNonQuery();
-                if (rowsProc > 0) {
-                    isDataModified = false;
-                    curReturnValue = true;
-                }
-                winStatusMsg.Text = "Changes successfully saved";
-
-            } catch (Exception excp) {
-                curReturnValue = false;
-                MessageBox.Show( "Error attempting to update tournament data \n" + excp.Message );
-            } finally {
-                myDbConn.Close();
+            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+            if ( rowsProc > 0 ) {
+                isDataModified = false;
+                curReturnValue = true;
             }
+            winStatusMsg.Text = "Changes successfully saved";
+
             return curReturnValue;
         }
 
@@ -287,11 +269,7 @@ namespace WaterskiScoringSystem.Admin {
             curSqlStmt.Append( "FROM Tournament T " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
     }

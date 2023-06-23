@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tools {
     public partial class RunOrderElimDialogForm : Form {
@@ -643,6 +639,7 @@ namespace WaterskiScoringSystem.Tools {
 				previewDataGridView.Rows.Clear();
 				if ( curDataTable.Rows.Count > 0 ) {
 					curGroupNumSkiers = curDataTable.Rows.Count;
+                    curMaxSkiersSelect = myNumSkiers;
                     if ( curDataTable.Rows.Count < myNumSkiers ) curMaxSkiersSelect = curDataTable.Rows.Count;
                     DataGridViewRow curViewRow;
 					foreach ( DataRow curDataRow in curDataTable.Rows ) {

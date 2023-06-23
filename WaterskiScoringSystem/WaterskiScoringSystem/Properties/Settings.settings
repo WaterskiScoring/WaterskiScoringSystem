@@ -74,14 +74,6 @@
     <Setting Name="AppExeName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">WaterskiScoringSystem.exe</Value>
     </Setting>
-    <Setting Name="waterskiConnectionLocalString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=|DataDirectory|\waterski.sdf;Password=waterski;Persist Security Info=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;Microsoft.SqlServerCe.Client.3.5&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=|DataDirectory|\waterski.sdf;Password=waterski;Persist Security Info=True</Value>
-    </Setting>
     <Setting Name="TourRegList_Width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -129,14 +121,6 @@
     </Setting>
     <Setting Name="JumpEntry_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
-    </Setting>
-    <Setting Name="waterskiConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=|DataDirectory|\waterski.sdf;Password=waterski;Persist Security Info=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;Microsoft.SqlServerCe.Client.3.5&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=|DataDirectory|\waterski.sdf;Password=waterski;Persist Security Info=True</Value>
     </Setting>
     <Setting Name="SlalomScoreSummary_Width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -205,7 +189,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AppVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8.1.2.2</Value>
+      <Value Profile="(Default)">8.1.2.5</Value>
     </Setting>
     <Setting Name="MasterSummary_Height" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -305,14 +289,6 @@
     </Setting>
     <Setting Name="SafetyCheckList_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
-    </Setting>
-    <Setting Name="waterskiConnectionString1" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=C:\apps\WaterskiScoring\Data\WaterskiDev.sdf;Password=waterski;Persist Security Info=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;Microsoft.SqlServerCe.Client.3.5&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=C:\apps\WaterskiScoring\Data\WaterskiDev.sdf;Password=waterski;Persist Security Info=True</Value>
     </Setting>
     <Setting Name="SlalomTeamSummary_Width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -414,7 +390,7 @@
       <Value Profile="(Default)">0, 0</Value>
     </Setting>
     <Setting Name="BuildVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">8.1.2.2 6/6/2023</Value>
+      <Value Profile="(Default)">8.1.2.5 6/24/2023</Value>
     </Setting>
     <Setting Name="SkierDoneReason_Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>

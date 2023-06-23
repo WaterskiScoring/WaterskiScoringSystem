@@ -6,32 +6,32 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	SlalomBoatPathRerideRopeMin	C	4	4	11.25M / 38 OFF	11.25	11.25	Class C Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathDevMax	GATE-C	0	11	Entry Gate Class C Deviation Max	0	0	No  Deviation Max at Gates
 0	SlalomBoatPathDevMax	B1-C	1	12	Buoy 1 Class C Deviation Max	25	25	Score 0.25 - 1 Deviation Max
-0	SlalomBoatPathDevMax	B2-C	2	13	Buoy 2 Class C Deviation Max	25	30	Score 1.25 - 2 Deviation Max
+0	SlalomBoatPathDevMax	B2-C	2	13	Buoy 2 Class C Deviation Max	25	28	Score 1.25 - 2 Deviation Max
 0	SlalomBoatPathDevMax	B3-C	3	14	Buoy 3 Class C Deviation Max	25	35	Score 2.25 - 3 Deviation Max
 0	SlalomBoatPathDevMax	B4-C	4	15	Buoy 4 Class C Deviation Max	25	40	Score 3.25 - 4 Deviation Max
 0	SlalomBoatPathDevMax	B5-C	5	16	Buoy 5 Class C Deviation Max	25	45	Score 4.25 - 5 Deviation Max
-0	SlalomBoatPathDevMax	B6-C	6	17	Buoy 6 Class C Deviation Max	25	50	Score 5.25 - 6 Deviation Max
+0	SlalomBoatPathDevMax	B6-C	6	17	Buoy 6 Class C Deviation Max	25	49	Score 5.25 - 6 Deviation Max
 0	SlalomBoatPathDevMax	GATE-E	0	21	Entry Gate Class E Deviation Max	0	0	No  Deviation Max at Gates
 0	SlalomBoatPathDevMax	B1-E	1	22	Buoy 1 Class E Deviation Max	25	25	Score 0.25 - 1 Deviation Max
-0	SlalomBoatPathDevMax	B2-E	2	23	Buoy 2 Class E Deviation Max	25	30	Score 1.25 - 2 Deviation Max
+0	SlalomBoatPathDevMax	B2-E	2	23	Buoy 2 Class E Deviation Max	25	28	Score 1.25 - 2 Deviation Max
 0	SlalomBoatPathDevMax	B3-E	3	24	Buoy 3 Class E Deviation Max	25	35	Score 2.25 - 3 Deviation Max
 0	SlalomBoatPathDevMax	B4-E	4	25	Buoy 4 Class E Deviation Max	25	40	Score 3.25 - 4 Deviation Max
 0	SlalomBoatPathDevMax	B5-E	5	26	Buoy 5 Class E Deviation Max	25	45	Score 4.25 - 5 Deviation Max
-0	SlalomBoatPathDevMax	B6-E	6	27	Buoy 6 Class E Deviation Max	25	50	Score 5.25 - 6 Deviation Max
+0	SlalomBoatPathDevMax	B6-E	6	27	Buoy 6 Class E Deviation Max	25	49	Score 5.25 - 6 Deviation Max
 0	SlalomBoatPathDevMax	GATE-L	0	21	Entry Gate Class L Deviation Max	0	0	No  Deviation Max at Gates
 0	SlalomBoatPathDevMax	B1-L	1	22	Buoy 1 Class L Deviation Max	25	25	Score 0.25 - 1 Deviation Max
-0	SlalomBoatPathDevMax	B2-L	2	23	Buoy 2 Class L Deviation Max	25	30	Score 1.25 - 2 Deviation Max
+0	SlalomBoatPathDevMax	B2-L	2	23	Buoy 2 Class L Deviation Max	25	28	Score 1.25 - 2 Deviation Max
 0	SlalomBoatPathDevMax	B3-L	3	24	Buoy 3 Class L Deviation Max	25	35	Score 2.25 - 3 Deviation Max
 0	SlalomBoatPathDevMax	B4-L	4	25	Buoy 4 Class L Deviation Max	25	40	Score 3.25 - 4 Deviation Max
 0	SlalomBoatPathDevMax	B5-L	5	26	Buoy 5 Class L Deviation Max	25	45	Score 4.25 - 5 Deviation Max
-0	SlalomBoatPathDevMax	B6-L	6	27	Buoy 6 Class L Deviation Max	25	50	Score 5.25 - 6 Deviation Max
+0	SlalomBoatPathDevMax	B6-L	6	27	Buoy 6 Class L Deviation Max	25	49	Score 5.25 - 6 Deviation Max
 0	SlalomBoatPathDevMax	GATE-R	0	31	Entry Gate Class R Deviation Max	0	0	No  Deviation Max at Gates
 0	SlalomBoatPathDevMax	B1-R	1	32	Buoy 1 Class R Deviation Max	25	25	Score 0.25 - 1 Deviation Max
-0	SlalomBoatPathDevMax	B2-R	2	33	Buoy 2 Class R Deviation Max	25	30	Score 1.25 - 2 Deviation Max
+0	SlalomBoatPathDevMax	B2-R	2	33	Buoy 2 Class R Deviation Max	25	28	Score 1.25 - 2 Deviation Max
 0	SlalomBoatPathDevMax	B3-R	3	34	Buoy 3 Class R Deviation Max	25	35	Score 2.25 - 3 Deviation Max
 0	SlalomBoatPathDevMax	B4-R	4	35	Buoy 4 Class R Deviation Max	25	40	Score 3.25 - 4 Deviation Max
 0	SlalomBoatPathDevMax	B5-R	5	36	Buoy 5 Class R Deviation Max	25	45	Score 4.25 - 5 Deviation Max
-0	SlalomBoatPathDevMax	B6-R	6	37	Buoy 6 Class R Deviation Max	25	50	Score 5.25 - 6 Deviation Max
+0	SlalomBoatPathDevMax	B6-R	6	37	Buoy 6 Class R Deviation Max	25	49	Score 5.25 - 6 Deviation Max
 0	JumpBoatPathDevMax	B1	1	1	Buoy 1 Deviation Max	40	40	Buoy 1 Deviation Max
 0	JumpBoatPathDevMax	B2	2	2	Buoy 2 Deviation Max	40	48	Buoy 2 Deviation Max
 0	JumpBoatPathDevMax	B3	3	3	Buoy 3 Deviation Max	40	55	Buoy 3 Deviation Max
@@ -331,9 +331,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22543	AWSARampMax	NW		76	5 Foot	0.235	5	
 0	AWSARecords	B1-S		11	Boys 1 (U10) - Slalom		105	1 bouys at 11.25m @49 kph (38 off @ 30.4 mph) 6/7/2014 Cooper Tate
 0	AWSARecords	B1-T		12	Boys 1 (U10) - Trick		6130	7/27/2017 Jake Abelson
-0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		86.00	2 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 6/20/2020 Luka Zazade
+0	AWSARecords	B2-S		21	Boys 2 (U12) - Slalom		88.00	4 bouys at 12m @ 52 kph (35 off @ 32.3 mph) 7/3/2021 Ty Robbins
 0	AWSARecords	B2-T		22	Boys 2 (U12) - Trick		8930	5/22/2019 Jake Abelson
-0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		105	(32.0m) 45kph 5ft 7/11/2020 Matthew Greenwood
+0	AWSARecords	B2-J		23	Boys 2 (U12) - Jump		112	(34.1.0m) 45kph 5ft 6/20/2021 Ty Robbins
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
 0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		11100	5/15/2021 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
@@ -361,7 +361,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M1-T		72	Mens 1 - Trick		11620	6/12/2016 Adam Pickos
 0	AWSARecords	M1-J		73	Mens 1 - Jump		218	(66.5m) 5.5 57kph 10/5/2013 Zack Worden
 0	AWSARecords	M2-S		81	Mens 2 - Slalom		122	2 buoys at 9.75m @ 58 kph (43 off @ 36 mph) 6/13/2010 Chris Parrish 9/13/2020 Nate Smith
-0	AWSARecords	M2-T		82	Mens 2 - Trick		12090	4/30/2011 Jimmy Seimers
+0	AWSARecords	M2-T		82	Mens 2 - Trick		12170	6/20/2020 Adam Pickos
 0	AWSARecords	M2-J		83	Mens 2 - Jump		216	5.5 57kph 9/24/2002 Mark Lane  
 0	AWSARecords	M3-S		91	Mens 3 - Slalom		115.50	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 8/23/2019 Adam Caldwell
 0	AWSARecords	M3-T		92	Mens 3 - Trick		12070	 7/17/2005 Russell Gay  
@@ -371,7 +371,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M4-J		103	Mens 4 - Jump		191	(58.2M) 5 54kph 7/7/2018 Scot Ellis
 0	AWSARecords	M5-S		111	Mens 5 - Slalom		111.5	3.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/6/2015 Greg Badal
 0	AWSARecords	M5-T		112	Mens 5 - Trick		6230	9/4/2021 Marc Bedsole
-0	AWSARecords	M5-J		113	Mens 5 - Jump		157	(47.8M) 5 51kph 7/19/2014 Mitch Grau
+0	AWSARecords	M5-J		113	Mens 5 - Jump		162	(49.4M) 5 51kph 10/6/2020 Hutch Haines
 0	AWSARecords	M6-S		121	Mens 6 - Slalom		110	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley
 0	AWSARecords	M6-T		122	Mens 6 - Trick		4830	8/22/2014 Don Parsons
 0	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 10/12/2014 Frankie Dees
@@ -379,7 +379,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		137	(41.9m) 51kph 5ft 8/27/2022 Joel Norton
 0	AWSARecords	M8-S		141	Mens 8 - Slalom		99.00	3.0 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 4/23/2023 Jack Everett
-0	AWSARecords	M8-T		142	Mens 8 - Trick		3110	9/5/2021 Bruce Kistler
+0	AWSARecords	M8-T		142	Mens 8 - Trick		3400	9/5/2021 Bruce Kistler
 0	AWSARecords	M8-J		143	Mens 8 - Jump		123	(37.6m) 5 51kph 9/25/2021 Frankie Dees
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		92.00	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/27/2022 Bill Mahan
 0	AWSARecords	M9-T		152	Mens 9 - Trick		2520	7/14/2019 Stan Switzer
@@ -392,11 +392,11 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	MB-J		173	Mens 11 - Jump		41	(12.6m) 5 46 kph (28.5 mph) 7/23/2022 Bruce Kunde
 0	AWSARecords	W1-S		181	Womens 1 - Slalom		110.00	2 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2020 Samantha Dumala
 0	AWSARecords	W1-T		182	Womens 1 - Trick		11260	10/5/2019 Erika Lang
-0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5' @ 54kph 10/4/2015 Lauren Morgan
-0	AWSARecords	W2-S		191	Womens 2 - Slalom		112	4 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2018 Regina Jaquess
+0	AWSARecords	W1-J		183	Womens 1 - Jump		165	(50.4m) 5 @ 54kph 10/4/2015 Lauren Morgan
+0	AWSARecords	W2-S		191	Womens 2 - Slalom		112.50	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2019 Regina Jaquess
 0	AWSARecords	W2-T		192	Womens 2 - Trick		11360 	5/19/2023 Erika Lang
 0	AWSARecords	W2-J		193	Womens 2 - Jump		158	 5 54kph 10/6/1996 Brenda Baldwin  
-0	AWSARecords	W3-S		201	Womens 3 - Slalom		109	1 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 8/30/2014 April Coble-Eller
+0	AWSARecords	W3-S		201	Womens 3 - Slalom		110.50	2.5 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 9/13/2019 Regina Jaquess
 0	AWSARecords	W3-T		202	Womens 3 - Trick		8250	8/7/2020 Regina Jaquess
 0	AWSARecords	W3-J		203	Womens 3 - Jump		155	 5 51kph 10/6/2007 Brenda Baldwin  
 0	AWSARecords	W4-S		211	Womens 4 - Slalom		104.50	2.5 buoys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/29/2021 Karen Truelove
@@ -424,7 +424,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	WB-T		282	Womens 11 - Trick		1120	8/19/2014 Artis Price
 0	AWSARecords	WB-J		283	Womens 11 - Jump		0	 none none  
 0	AWSARecords	OM-S		291	Open Men - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
-0	AWSARecords	OM-T		292	Open Men - Trick		12090	4/30/2011 Jimmy Siemers
+0	AWSARecords	OM-T		292	Open Men - Trick		12170	6/20/2020 Adam Pickos
 0	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3M) 6 57kph 5/1/2014 Freddy Krueger
 0	AWSARecords	OW-S		301	Open Womens - Slalom		112.5	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
 0	AWSARecords	OW-T		302	Open Womens - Trick		11360	5/19/2023 Erika Lang
@@ -432,8 +432,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers 8/23/2019 Adam Caldwell
 0	AWSARecords	MM-T		312	Master Men - Trick		11570	 5/8/2010 Russell Gay  
 0	AWSARecords	MM-J		313	Master Men - Jump		215	(65.5m) 5.5 57kph 4/9/2011 Scot Ellis
-0	AWSARecords	MW-S		321	Master Women-Slalom		109	1 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 8/10/2015 BENCHMARK
-0	AWSARecords	MW-T		322	Master Women-Trick		6450	8/10/2015 BENCHMARK
+0	AWSARecords	MW-S		321	Master Women-Slalom		110.50	2.5 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 	9/13/2019 Regina Jaquess
+0	AWSARecords	MW-T		322	Master Women-Trick		8540	9/27/2020 Regina Jaquess
 0	AWSARecords	MW-J		323	Master Women-Jump		155	8/10/2015 BENCHMARK
 22562	AWSASlalomMax	B1		11	49kph, 30mph	30	49	
 22563	AWSASlalomMax	B2		12	52kph, 32.3mph	32	52	
@@ -819,7 +819,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		64	4 bouys at 10.25 @ 58kph 11/14/2022 Charlie Ross
 0	IwwfRecords	IB-T		472	Intl Boys U17 - Trick		12050	10/27/2019 Patricio Font
 0	IwwfRecords	IB-J		473	Intl Boys U17 - Jump		59.1	5.5ft (1.65m) at 51 kph max 8/8/2010 Tim Bradstreet
-0	IwwfRecords	IB-O		474	Intl Boys U17 Overall		2647.57		5/22/2022 Martin Labra
+0	IwwfRecords	IB-O		474	Intl Boys U17 Overall		2647.57	5/22/2022 Martin Labra
 0	IwwfRecords	IG-S		481	Intl Girls U17 - Slalom		56	2 bouys at 10.75 @ 55kph 1/8/2017 Brook Baldwin
 0	IwwfRecords	IG-T		482	Intl Girls U17 - Trick		10440	1/8/2017 Anna Gay
 0	IwwfRecords	IG-J		483	Intl Girls U17 - Jump		46.0	1/5/2017 Dominique Grondin-Allard
@@ -827,11 +827,11 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
-0	IwwfRecords	IM-O		394	Intl Men Overall		2660.12		10/14/2022 Joel Poland
+0	IwwfRecords	IM-O		394	Intl Men Overall		2660.12	10/14/2022 Joel Poland
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		70.50	4.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
 0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
 0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
-0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26		5/19/2012 Natallia Berdnikava
+0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26	5/19/2012 Natallia Berdnikava
 0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		64	4 at 10.25 @ 58kph 11/14/2022 Charlie Ross
 0	IwwfRecords	JM-T		412	Intl Junior Men - Trick		12250	5/28/2022 Patricio Font
 0	IwwfRecords	JM-J		413	Intl Junior Men - Jump		69.0	5.5ft (1.65m) at 51 kph max 11/30/2003 Jimmy Seimers

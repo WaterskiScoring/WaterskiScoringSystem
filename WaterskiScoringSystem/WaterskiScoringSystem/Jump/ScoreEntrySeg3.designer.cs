@@ -302,7 +302,7 @@
 			ErrorMsgLabel.BackColor = System.Drawing.Color.Red;
 			ErrorMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ErrorMsgLabel.ForeColor = System.Drawing.Color.White;
-			ErrorMsgLabel.Location = new System.Drawing.Point(138, 440);
+			ErrorMsgLabel.Location = new System.Drawing.Point(138, 423);
 			ErrorMsgLabel.Name = "ErrorMsgLabel";
 			ErrorMsgLabel.Size = new System.Drawing.Size(132, 18);
 			ErrorMsgLabel.TabIndex = 41;
@@ -315,7 +315,7 @@
 			InprogMsgLabel.BackColor = System.Drawing.Color.LimeGreen;
 			InprogMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			InprogMsgLabel.ForeColor = System.Drawing.Color.White;
-			InprogMsgLabel.Location = new System.Drawing.Point(138, 417);
+			InprogMsgLabel.Location = new System.Drawing.Point(138, 400);
 			InprogMsgLabel.Name = "InprogMsgLabel";
 			InprogMsgLabel.Size = new System.Drawing.Size(132, 18);
 			InprogMsgLabel.TabIndex = 42;
@@ -328,7 +328,7 @@
 			ScoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			ScoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ScoredMsgLabel.ForeColor = System.Drawing.Color.DarkBlue;
-			ScoredMsgLabel.Location = new System.Drawing.Point(5, 440);
+			ScoredMsgLabel.Location = new System.Drawing.Point(5, 423);
 			ScoredMsgLabel.Name = "ScoredMsgLabel";
 			ScoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			ScoredMsgLabel.TabIndex = 39;
@@ -340,7 +340,7 @@
 			UnscoredMsgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			UnscoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			UnscoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 417);
+			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 400);
 			UnscoredMsgLabel.Name = "UnscoredMsgLabel";
 			UnscoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			UnscoredMsgLabel.TabIndex = 40;
@@ -419,7 +419,7 @@
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 566);
+			this.winStatus.Location = new System.Drawing.Point(0, 617);
 			this.winStatus.Name = "winStatus";
 			this.winStatus.Size = new System.Drawing.Size(1265, 22);
 			this.winStatus.TabIndex = 19;
@@ -547,7 +547,7 @@
 			this.jumpRecapDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
-			this.jumpRecapDataGridView.Size = new System.Drawing.Size(1765, 200);
+			this.jumpRecapDataGridView.Size = new System.Drawing.Size(2073, 200);
 			this.jumpRecapDataGridView.TabIndex = 31;
 			this.jumpRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellContentClick);
 			this.jumpRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellEnter);
@@ -1071,7 +1071,7 @@
 			this.TourEventRegDataGridView.RowHeadersVisible = false;
 			this.TourEventRegDataGridView.RowHeadersWidth = 26;
 			this.TourEventRegDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 284);
+			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 267);
 			this.TourEventRegDataGridView.TabIndex = 43;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourEventRegDataGridView_RowEnter);
@@ -2413,7 +2413,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-			this.ClientSize = new System.Drawing.Size(1188, 605);
+			this.ClientSize = new System.Drawing.Size(1188, 656);
 			this.Controls.Add(this.BpmsDriver);
 			this.Controls.Add(this.BpmsDriverLabel);
 			this.Controls.Add(this.InvalidateBoatPathButton);

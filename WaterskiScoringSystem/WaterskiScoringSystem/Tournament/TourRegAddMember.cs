@@ -519,14 +519,14 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataTable sendRequest( String inMemberId, String inLastName, String inFirstName, String inState ) {
 			String curMethodName = "sendRequest";
 			String curContentType = "application/json; charset=UTF-8";
-			String curMemberExportListUrl = "https://usawaterski.org/admin/GetMemberRegExportJson.asp";
-			String curMemberSearchListUrl = "https://usawaterski.org/admin/GetMemberExportJson.asp";
+			String curMemberExportListUrl = "https://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curMemberSearchListUrl = "https://www.usawaterski.org/admin/GetMemberExportJson.asp";
 			String curExportUrl = "";
 
 			/* -----------------------------------------------------------------------
             * Validate TourID value for scores to be Exported.
-            * https://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
-            * https://usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&FirstName=David&LastName=Allen
+            * https://www.usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
+            * https://www.usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&FirstName=David&LastName=Allen
             *
             *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:www.usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
             ----------------------------------------------------------------------- */

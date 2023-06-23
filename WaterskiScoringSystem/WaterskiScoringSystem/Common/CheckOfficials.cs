@@ -64,7 +64,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "     INNER JOIN CodeValueList AS L ON L.ListName = 'OfficialAsgmt' AND L.CodeValue = O.WorkAsgmt " );
 			curSqlStmt.Append( "WHERE O.SanctionId = '" + inSanctionNum + "' " );
 			if ( inEvent != null ) curSqlStmt.Append( "  AND O.Event = '" + inEvent + "' " );
-			if ( inEventGroup != null && inEventGroup.Length > 0 ) curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
+			if ( HelperFunctions.isObjectPopulated( inEventGroup ) ) curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
 			if ( inRound != null ) curSqlStmt.Append( "  AND O.Round = " + inRound + " " );
 			curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
@@ -81,7 +81,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "WHERE O.SanctionId = '" + inSanctionNum + "' " );
 			curSqlStmt.Append( "  AND O.WorkAsgmt = 'Driver' " );
 			if ( inEvent != null ) curSqlStmt.Append( "  AND O.Event = '" + inEvent + "' " );
-			if ( inEventGroup != null && inEventGroup.Length > 0 ) curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
+			if ( HelperFunctions.isObjectPopulated(inEventGroup) ) curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
 			if ( inRound != null ) curSqlStmt.Append( "  AND O.Round = " + inRound + " " );
 			curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );

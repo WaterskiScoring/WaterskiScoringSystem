@@ -305,17 +305,6 @@ namespace WaterskiScoringSystem.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|DataDirectory|\\waterski.sdf;Password=waterski;Persist Security Info=" +
-            "True")]
-        public string waterskiConnectionLocalString {
-            get {
-                return ((string)(this["waterskiConnectionLocalString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
@@ -505,17 +494,6 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["JumpEntry_Location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|DataDirectory|\\waterski.sdf;Password=waterski;Persist Security Info=" +
-            "True")]
-        public string waterskiConnectionString {
-            get {
-                return ((string)(this["waterskiConnectionString"]));
             }
         }
         
@@ -785,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.5")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1191,17 +1169,6 @@ namespace WaterskiScoringSystem.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=C:\\apps\\WaterskiScoring\\Data\\WaterskiDev.sdf;Password=waterski;Persis" +
-            "t Security Info=True")]
-        public string waterskiConnectionString1 {
-            get {
-                return ((string)(this["waterskiConnectionString1"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
@@ -1601,7 +1568,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.2 6/6/2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.5 6/24/2023")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));

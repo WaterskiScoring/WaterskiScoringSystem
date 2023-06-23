@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
 
 using LiveWebMessageHandler.Common;
 
@@ -23,35 +22,38 @@ namespace LiveWebMessageHandler.Externalnterface {
                     curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round " );
                     curSqlStmt.Append( "From TrickVideo S " );
                     curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
-                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId " );
-                    curSqlStmt.Append( "      AND ER.AgeGroup = S.AgeGroup AND ER.Event = 'Trick' " );
+                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup" );
                     curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
+                    curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
+                    curSqlStmt.Append( "AND S.Round = " + inRound + " " );
                     curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)" );
                     curSqlStmt.Append( "Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
                     curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
                 } else {
-                    curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, ER.EventGroup " );
+                    curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, COALESCE(O.EventGroup + '-' + O.RunOrderGroup, ER.EventGroup) AS EventGroup " );
                     curSqlStmt.Append( "From " + inEvent + "Score S " );
                     curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
-                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId " );
-                    curSqlStmt.Append( "      AND ER.AgeGroup = S.AgeGroup AND ER.Event = '" + inEvent + "' " );
+                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
+                    curSqlStmt.Append( "LEFT OUTER JOIN EventRunOrder O ON ER.SanctionId = O.SanctionId AND ER.MemberId = O.MemberId AND ER.AgeGroup = O.AgeGroup AND ER.Event = O.Event AND S.Round = O.Round " );
                     curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
+                    curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
                     curSqlStmt.Append( "AND S.Round = " + inRound + " " );
                     if ( inEventGroup != null ) {
                         if ( inEventGroup.Equals( "All" ) ) {
                         } else if ( inEventGroup.ToUpper().Equals( "MEN A" ) ) {
-                            curSqlStmt.Append( "And ER.AgeGroup = 'CM' " );
+                            curSqlStmt.Append( "AND ER.AgeGroup = 'CM' " );
                         } else if ( inEventGroup.ToUpper().Equals( "WOMEN A" ) ) {
-                            curSqlStmt.Append( "And ER.AgeGroup = 'CW' " );
+                            curSqlStmt.Append( "AND ER.AgeGroup = 'CW' " );
                         } else if ( inEventGroup.ToUpper().Equals( "MEN B" ) ) {
-                            curSqlStmt.Append( "And ER.AgeGroup = 'BM' " );
+                            curSqlStmt.Append( "AND ER.AgeGroup = 'BM' " );
                         } else if ( inEventGroup.ToUpper().Equals( "WOMEN B" ) ) {
-                            curSqlStmt.Append( "And ER.AgeGroup = 'BW' " );
+                            curSqlStmt.Append( "AND ER.AgeGroup = 'BW' " );
                         } else if ( inEventGroup.ToUpper().Equals( "NON TEAM" ) ) {
-                            curSqlStmt.Append( "And ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') " );
+                            curSqlStmt.Append( "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') " );
                         } else {
-                            curSqlStmt.Append( "AND ER.EventGroup = '" + inEventGroup + "' " );
+                            curSqlStmt.Append( "AND COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inEventGroup + "' " );
+
                         }
                     }
                     curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
@@ -502,38 +504,40 @@ namespace LiveWebMessageHandler.Externalnterface {
 
 			try {
 				if (inEvent.Equals("TrickVideo")) {
-					curSqlStmt.Append("Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round ");
-					curSqlStmt.Append("From TrickVideo S ");
-					curSqlStmt.Append("Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup ");
-					curSqlStmt.Append("Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId ");
-					curSqlStmt.Append("      AND ER.AgeGroup = S.AgeGroup AND ER.Event = 'Trick' ");
-					curSqlStmt.Append("Where S.SanctionId = '" + inSanctionId + "' ");
-					curSqlStmt.Append("AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)");
-					curSqlStmt.Append("Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId");
-					curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+                    curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round " );
+                    curSqlStmt.Append( "From TrickVideo S " );
+                    curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
+                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
+                    curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
+                    curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
+                    curSqlStmt.Append( "AND S.Round = " + inRound + " " );
+                    curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1)" );
+                    curSqlStmt.Append( "Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
+                    curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-				} else {
-					curSqlStmt.Append("Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, ER.EventGroup ");
-					curSqlStmt.Append("From " + inEvent + "Score S ");
-					curSqlStmt.Append("Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup ");
-					curSqlStmt.Append("Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId ");
-					curSqlStmt.Append("      AND ER.AgeGroup = S.AgeGroup AND ER.Event = '" + inEvent + "' ");
-					curSqlStmt.Append("Where S.SanctionId = '" + inSanctionId + "' ");
-					curSqlStmt.Append("AND S.Round = " + inRound + " ");
-					if (inEventGroup != null) {
+                } else {
+                    curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round, COALESCE(O.EventGroup + '-' + O.RunOrderGroup, ER.EventGroup) AS EventGroup " );
+                    curSqlStmt.Append( "From " + inEvent + "Score S " );
+                    curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
+                    curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
+                    curSqlStmt.Append( "LEFT OUTER JOIN EventRunOrder O ON ER.SanctionId = O.SanctionId AND ER.MemberId = O.MemberId AND ER.AgeGroup = O.AgeGroup AND ER.Event = O.Event AND S.Round = O.Round " );
+                    curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
+                    curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
+                    curSqlStmt.Append( "AND S.Round = " + inRound + " " );
+                    if ( inEventGroup != null) {
 						if (inEventGroup.Equals("All")) {
 						} else if (inEventGroup.ToUpper().Equals("MEN A")) {
-							curSqlStmt.Append("And ER.AgeGroup = 'CM' ");
+							curSqlStmt.Append( "AND ER.AgeGroup = 'CM' " );
 						} else if (inEventGroup.ToUpper().Equals("WOMEN A")) {
-							curSqlStmt.Append("And ER.AgeGroup = 'CW' ");
+							curSqlStmt.Append( "AND ER.AgeGroup = 'CW' " );
 						} else if (inEventGroup.ToUpper().Equals("MEN B")) {
-							curSqlStmt.Append("And ER.AgeGroup = 'BM' ");
+							curSqlStmt.Append( "AND ER.AgeGroup = 'BM' " );
 						} else if (inEventGroup.ToUpper().Equals("WOMEN B")) {
-							curSqlStmt.Append("And ER.AgeGroup = 'BW' ");
+							curSqlStmt.Append( "AND ER.AgeGroup = 'BW' " );
 						} else if (inEventGroup.ToUpper().Equals("NON TEAM")) {
-							curSqlStmt.Append("And ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ");
+							curSqlStmt.Append( "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') " );
 						} else {
-							curSqlStmt.Append("AND ER.EventGroup = '" + inEventGroup + "' ");
+                            curSqlStmt.Append( "AND COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inEventGroup + "' " );
 						}
 					}
 					curSqlStmt.Append("Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup");

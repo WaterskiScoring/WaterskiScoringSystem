@@ -1,27 +1,17 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Common {
     class ListTourClass {
         private ArrayList myDropdownList = new ArrayList();
-        private SqlCeConnection myDbConn = null;
         private DataTable myDataTable = null;
 
         public ListTourClass() {
         }
 
         public void ListTourClassLoad() {
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-            myDbConn.Open();
             myDataTable = getClassList();
 
             String curListCode, curCodeValue;
@@ -82,11 +72,8 @@ namespace WaterskiScoringSystem.Common {
             curSqlStmt.Append("FROM CodeValueList ");
             curSqlStmt.Append("WHERE ListName = 'ClassTour' ");
             curSqlStmt.Append("Order by SortSeq ");
-            return getData(curSqlStmt.ToString());
+            return DataAccess.getDataTable( curSqlStmt.ToString());
         }
 
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
     }
 }

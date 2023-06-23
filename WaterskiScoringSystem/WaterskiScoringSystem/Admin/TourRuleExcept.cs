@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -11,8 +10,6 @@ namespace WaterskiScoringSystem.Admin {
         private Boolean isDataModified = false;
         private String myOrigItemValue;
         private DataTable myDataTable;
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
 
         public TourRuleExcept() {
             InitializeComponent();
@@ -25,8 +22,6 @@ namespace WaterskiScoringSystem.Admin {
 
         public void TourRuleExcept_Show( String inSanctionNum ) {
             //Retrieve tournament list and set current position to active tournament
-            myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-            myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
             mySanctionNum = inSanctionNum;
             navRefresh_Click( null, null );
         }
@@ -83,41 +78,29 @@ namespace WaterskiScoringSystem.Admin {
             bool curReturnValue = false;
             int rowsProc = 0;
 
-            try {
-                myDbConn.Open();
-                mySqlStmt = myDbConn.CreateCommand();
-                mySqlStmt.CommandText = "";
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "Update Tournament Set " );
+            curSqlStmt.Append( "LastUpdateDate = getdate() " );
+            curSqlStmt.Append( ",RuleExceptions = '" + HelperFunctions.escapeString( ruleExceptionsTextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleExceptQ1 = '" + HelperFunctions.escapeString( ruleExceptQ1TextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleExceptQ2 = '" + HelperFunctions.escapeString( ruleExceptQ2TextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleExceptQ3 = '" + ruleExceptQ3TextBox.Text + "'" );
+            curSqlStmt.Append( ",RuleExceptQ4 = '" + ruleExceptQ4TextBox.Text + "'" );
+            curSqlStmt.Append( ",RuleInterpretations = '" + HelperFunctions.escapeString( ruleInterpretationsTextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleInterQ1 = '" + HelperFunctions.escapeString( ruleInterQ1TextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleInterQ2 = '" + HelperFunctions.escapeString( ruleInterQ2TextBox.Text ) + "'" );
+            curSqlStmt.Append( ",RuleInterQ3 = '" + ruleInterQ3TextBox.Text + "'" );
+            curSqlStmt.Append( ",RuleInterQ4 = '" + ruleInterQ4TextBox.Text + "'" );
+            curSqlStmt.Append( ",SafetyDirPerfReport = '" + HelperFunctions.escapeString( safetyDirPerfReportTextBox.Text ) + "'" );
+            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
 
-                StringBuilder curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "Update Tournament Set " );
-                curSqlStmt.Append( "LastUpdateDate = getdate() " );
-                curSqlStmt.Append( ",RuleExceptions = '" + HelperFunctions.escapeString(ruleExceptionsTextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleExceptQ1 = '" + HelperFunctions.escapeString(ruleExceptQ1TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleExceptQ2 = '" + HelperFunctions.escapeString(ruleExceptQ2TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleExceptQ3 = '" + ruleExceptQ3TextBox.Text + "'" );
-                curSqlStmt.Append( ",RuleExceptQ4 = '" + ruleExceptQ4TextBox.Text + "'" );
-                curSqlStmt.Append( ",RuleInterpretations = '" + HelperFunctions.escapeString(ruleInterpretationsTextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleInterQ1 = '" + HelperFunctions.escapeString(ruleInterQ1TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleInterQ2 = '" + HelperFunctions.escapeString(ruleInterQ2TextBox.Text) + "'" );
-                curSqlStmt.Append( ",RuleInterQ3 = '" + ruleInterQ3TextBox.Text + "'" );
-                curSqlStmt.Append( ",RuleInterQ4 = '" + ruleInterQ4TextBox.Text + "'" );
-                curSqlStmt.Append( ",SafetyDirPerfReport = '" + HelperFunctions.escapeString(safetyDirPerfReportTextBox.Text) + "'" );
-                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-
-                mySqlStmt.CommandText = curSqlStmt.ToString();
-                rowsProc = mySqlStmt.ExecuteNonQuery();
-                if (rowsProc > 0) {
-                    isDataModified = false;
-                    curReturnValue = true;
-                }
-                winStatusMsg.Text = "Changes successfully saved";
-
-            } catch (Exception excp) {
-                curReturnValue = false;
-                MessageBox.Show( "Error attempting to update tournament data \n" + excp.Message );
-            } finally {
-                myDbConn.Close();
+            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+            if ( rowsProc > 0 ) {
+                isDataModified = false;
+                curReturnValue = true;
             }
+            winStatusMsg.Text = "Changes successfully saved";
+
             return curReturnValue;
         }
 

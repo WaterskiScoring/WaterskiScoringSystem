@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Deployment.Application;
 using System.Windows.Forms;
 
@@ -10,8 +9,6 @@ using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Admin {
     public partial class HelpAbout : Form {
-        private SqlCeConnection myDbConn = null;
-
         public HelpAbout() {
             InitializeComponent();
         }
@@ -33,7 +30,8 @@ namespace WaterskiScoringSystem.Admin {
             }
             try {
                 curDataDir = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                
+                if ( curDataDir.Length < 1 ) curDataDir = AppDomain.CurrentDomain.GetData( "DataDirectory" ).ToString();
+
                 try {
                     String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
                     int curDelimPos1 = curConnString.IndexOf( "\\" );
@@ -48,7 +46,7 @@ namespace WaterskiScoringSystem.Admin {
             }
             textDatabasePath.Text = curDatabaseFilename;
 
-            textConnectionString.Text = Properties.Settings.Default.waterskiConnectionStringApp;
+            textConnectionString.Text = DataAccess.getConnectionString();
             textExecutablePath.Text = Application.ExecutablePath;
             textProductName.Text = Application.ProductName;
             
@@ -62,19 +60,12 @@ namespace WaterskiScoringSystem.Admin {
             textUserAppDataPath.Text = Application.UserAppDataPath;
             textUserAppDataRegistry.Text = Application.UserAppDataRegistry.Name;
 
-            try {
-                if ( openDbConn() ) {
-                    SqlCeCommand sqlStmt = myDbConn.CreateCommand();
-                    String curSqlStmt = "SELECT MinValue as VersionNum FROM CodeValueList WHERE ListName = 'DatabaseVersion'";
-                    DataTable curDataTable = getData( curSqlStmt );
-                    if ( curDataTable.Rows.Count > 0 ) {
-                        decimal curDatabaseVersion = (decimal)curDataTable.Rows[0]["VersionNum"];
-                        textDatabaseVersion.Text = curDatabaseVersion.ToString();
-                    }
-                } else {
-                    textDatabaseVersion.Text = "Not available";
-                }
-            } catch {
+            String curSqlStmt = "SELECT MinValue as VersionNum FROM CodeValueList WHERE ListName = 'DatabaseVersion'";
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
+            if ( curDataTable.Rows.Count > 0 ) {
+                textDatabaseVersion.Text = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "VersionNum", "Not available" );
+
+            } else {
                 textDatabaseVersion.Text = "Not available";
             }
 
@@ -127,24 +118,5 @@ namespace WaterskiScoringSystem.Admin {
             }
         }
 
-        private bool openDbConn(  ) {
-            bool curReturnValue = true;
-            try {
-                if ( myDbConn == null ) {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
-                }
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                MessageBox.Show( "Error connecting to database " + "\n\nError: " + ExcpMsg );
-            }
-            return curReturnValue;
-        }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
     }
 }

@@ -251,7 +251,7 @@ namespace WaterskiScoringSystem.Admin {
             if ( !( isDataModified ) ) {
                 if ( myTourViewIdx != e.RowIndex ) {
                     myTourViewIdx = e.RowIndex;
-                    if ( !( isObjectEmpty( myDataView.Rows[myTourViewIdx].Cells["SanctionId"].Value ) ) ) {
+                    if ( HelperFunctions.isObjectPopulated( myDataView.Rows[myTourViewIdx].Cells["SanctionId"].Value ) ) {
                         myTourViewRow = (DataGridViewRow)myDataView.Rows[myTourViewIdx];
                         setEntryForEdit( myTourViewRow );
                     }
@@ -328,8 +328,8 @@ namespace WaterskiScoringSystem.Admin {
 
                 curValue = HelperFunctions.getViewRowColValueDecimal( curViewRow, "HcapJumpPct", "0" );
                 if ( curValue == 0 ) curValue = 0.95M;
-                editHcapJumpBase.Text = curValue.ToString( "0.##" );
-            
+                editHcapJumpPct.Text = curValue.ToString( "0.##" );
+
             } else {
                 editHcapJumpBase.Text = "";
                 editHcapJumpPct.Text = "";
@@ -762,7 +762,7 @@ namespace WaterskiScoringSystem.Admin {
             Decimal curHcapSlalomBase = 0, curHcapTrickBase = 0, curHcapJumpBase = 0;
             Decimal curHcapSlalomPct = 0, curHcapTrickPct = 0, curHcapJumpPct = 0;
             try {
-                if ( isObjectEmpty( editHcapSlalomBase.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapSlalomBase.Text ) ) {
                     editHcapSlalomBase.Text = "0";
                 } else {
                     curHcapSlalomBase = Convert.ToDecimal( editHcapSlalomBase.Text );
@@ -773,7 +773,7 @@ namespace WaterskiScoringSystem.Admin {
                 curHcapSlalomBase = 0;
             }
             try {
-                if ( isObjectEmpty( editHcapSlalomPct.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapSlalomPct.Text ) ) {
                     editHcapSlalomPct.Text = "0";
                 } else {
                     curHcapSlalomPct = Convert.ToDecimal( editHcapSlalomPct.Text );
@@ -790,7 +790,7 @@ namespace WaterskiScoringSystem.Admin {
             }
 
             try {
-                if ( isObjectEmpty( editHcapTrickBase.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapTrickBase.Text ) ) {
                     editHcapTrickBase.Text = "0";
                 } else {
                     curHcapTrickBase = Convert.ToDecimal( editHcapTrickBase.Text );
@@ -801,7 +801,7 @@ namespace WaterskiScoringSystem.Admin {
                 curHcapTrickBase = 0;
             }
             try {
-                if ( isObjectEmpty( editHcapTrickPct.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapTrickPct.Text ) ) {
                     editHcapTrickPct.Text = "0";
                 } else {
                     curHcapTrickPct = Convert.ToDecimal( editHcapTrickPct.Text );
@@ -818,7 +818,7 @@ namespace WaterskiScoringSystem.Admin {
             }
 
             try {
-                if ( isObjectEmpty( editHcapJumpBase.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapJumpBase.Text ) ) {
                     editHcapJumpBase.Text = "0";
                 } else {
                     curHcapJumpBase = Convert.ToDecimal( editHcapJumpBase.Text );
@@ -829,7 +829,7 @@ namespace WaterskiScoringSystem.Admin {
                 curHcapJumpBase = 0;
             }
             try {
-                if ( isObjectEmpty( editHcapJumpPct.Text ) ) {
+                if ( HelperFunctions.isObjectEmpty( editHcapJumpPct.Text ) ) {
                     editHcapJumpPct.Text = "0";
                 } else {
                     curHcapJumpPct = Convert.ToDecimal( editHcapJumpPct.Text );
@@ -1041,7 +1041,7 @@ namespace WaterskiScoringSystem.Admin {
             MessageBox.Show( "Preparing tournament for scoring.  This will take a moment" );
 
             String curDataLoc = dataGridView.Rows[myTourViewIdx].Cells["TourDataLoc"].Value.ToString();
-            if (isObjectEmpty( curDataLoc )) {
+            if ( HelperFunctions.isObjectEmpty( curDataLoc )) {
                 MessageBox.Show( "A data directory must be supplied before the tournament can be selected"
                     + "\nPlease use the Browse button to select a folder on a local drive or attached external drive" );
 				return;
@@ -1108,21 +1108,21 @@ namespace WaterskiScoringSystem.Admin {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             if (curSlalomRounds > 0) {
                 curSqlStmt = new StringBuilder( "Select Distinct SanctionId From DivOrder Where SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' AND Event = 'Slalom' " );
-                curDivDataTable = getData( curSqlStmt.ToString() );
+                curDivDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if (curDivDataTable.Rows.Count == 0) {
                     curMsg = "It is recommended, but not required, to setup Division order data for the slalom event";
                 }
             }
             if (curTrickRounds > 0) {
                 curSqlStmt = new StringBuilder( "Select Distinct SanctionId From DivOrder Where SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' AND Event = 'Trick'" );
-                curDivDataTable = getData( curSqlStmt.ToString() );
+                curDivDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if (curDivDataTable.Rows.Count == 0) {
                     curMsg += "\nIt is recommended, but not required, to setup Division order data for the slalom event";
                 }
             }
             if (curJumpRounds > 0) {
                 curSqlStmt = new StringBuilder( "Select Distinct SanctionId From DivOrder Where SanctionId = '" + Properties.Settings.Default.AppSanctionNum + "' AND Event = 'Jump'" );
-                curDivDataTable = getData( curSqlStmt.ToString() );
+                curDivDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if (curDivDataTable.Rows.Count == 0) {
                     curMsg += "\nIt is recommended, but not required, to setup Division order data for the slalom event";
                 }
@@ -1400,14 +1400,14 @@ namespace WaterskiScoringSystem.Admin {
                     StringBuilder curSqlStmt = new StringBuilder( "" );
                     curSqlStmt.Append( "SELECT CodeValue as EventClass " );
                     curSqlStmt.Append( "FROM CodeValueList Where ListName = 'ClassToEvent' AND ListCode = '" + curTourClass + "' " );
-                    curDataTable = getData( curSqlStmt.ToString() );
+                    curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                     if (curDataTable.Rows.Count > 0) {
                         String curTourEventClass = (String)curDataTable.Rows[0]["EventClass"];
                     
                         curSqlStmt = new StringBuilder( "" );
                         curSqlStmt.Append( "SELECT CodeValue as EventClass " );
                         curSqlStmt.Append( "FROM CodeValueList Where ListName = 'ClassToEvent' AND ListCode = '" + myOrigEventClass + "' " );
-                        curDataTable = getData( curSqlStmt.ToString() );
+                        curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                         if (curDataTable.Rows.Count > 0) {
                             String curTourEventClassOrig = (String)curDataTable.Rows[0]["EventClass"];
 
@@ -1616,7 +1616,7 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' " );
             }
             curSqlStmt.Append( "ORDER BY SanctionId " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private Decimal getEventRecordValue( String inSanctionId, String inEvent ) {
@@ -1628,7 +1628,7 @@ namespace WaterskiScoringSystem.Admin {
             curSqlStmt.Append( "SELECT Event, AgeGroup, SkiYear, RatingRec " );
             curSqlStmt.Append( "FROM NopsData " );
             curSqlStmt.Append( "WHERE Event = '" + inEvent + "' AND AgeGroup = 'M1' AND SkiYear = " + curSkiYear.ToString() + " " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if ( curDataTable.Rows.Count > 0 ) {
                 curRow = curDataTable.Rows[0];
             } else {
@@ -1637,7 +1637,7 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( "FROM NopsData " );
                 curSqlStmt.Append( "WHERE Event = '" + inEvent + "' AND AgeGroup = 'M1'" );
                 curSqlStmt.Append( "  AND SkiYear IN (SELECT MAX(SkiYear) AS Expr1 FROM NopsData) " );
-                curDataTable = getData( curSqlStmt.ToString() );
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if ( curDataTable.Rows.Count > 0 ) {
                     curRow = curDataTable.Rows[0];
                 }
@@ -1650,22 +1650,5 @@ namespace WaterskiScoringSystem.Admin {
             return curRatingValue;
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
 	}
 }

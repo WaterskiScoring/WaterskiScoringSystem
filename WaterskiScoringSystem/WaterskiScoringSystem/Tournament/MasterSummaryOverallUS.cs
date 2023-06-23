@@ -584,7 +584,13 @@ namespace WaterskiScoringSystem.Tournament {
             printReport( false );
         }
         private bool printReport( bool inPublish ) {
-			PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+                MessageBox.Show( "Request to publish report but live web not successfully connected." );
+                return false;
+            }
+
+            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             Font saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
             scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 10, FontStyle.Regular );
 

@@ -233,7 +233,7 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( "FROM Tournament T " );
 			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
 			curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
-			DataTable curDataTable = Common.DataAccess.getDataTable( curSqlStmt.ToString() );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			return curDataTable;
 		}
 

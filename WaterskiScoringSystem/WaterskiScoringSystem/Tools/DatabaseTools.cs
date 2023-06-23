@@ -23,7 +23,7 @@ namespace WaterskiScoringSystem.Tools {
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             String curSqlStmt = "SELECT ListName, ListCode, CodeValue as VersionNumText, MinValue as VersionNum "
                 + "FROM CodeValueList WHERE ListName = 'DatabaseVersion'";
-            DataTable curDataTable = getData( curSqlStmt );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
             if ( curDataTable.Rows.Count > 0 ) {
                 myDatabaseVersion = (decimal)curDataTable.Rows[0]["VersionNum"];
             }
@@ -393,8 +393,5 @@ namespace WaterskiScoringSystem.Tools {
             return myReader;
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
     }
 }

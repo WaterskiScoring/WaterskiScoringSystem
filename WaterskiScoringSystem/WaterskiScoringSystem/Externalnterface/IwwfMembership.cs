@@ -30,12 +30,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 * http://iwwfsc.qubiteq.com/Staging/Orders/Process/01039103ab644c7ead8e61872c05902bjumtlm1rejo5cabf1f768vqsg3d1jzllkwwofze1fdg8y8k801gskkcxd4mti0ho9duq
 		 * 
 		 * Retrieve member information with foreign identifier if not a USA federation skier
-		 * http://usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
+		 * https://www.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
 		 */
 
 		//private static String IwwfWebLocationStage = "http://iwwfsc.qubiteq.com/staging/api/licenses/check";
 		private static String IwwfWebLocationProd = "https://ems.iwwf.sport/api/licenses/check";
-		private static String GetForeignMember = "http://usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=";
+		private static String GetForeignMember = "https://www.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=";
 		private static String IwwfWebLocation = IwwfWebLocationProd;
 
 		private static String authApiKey = "IWWF";

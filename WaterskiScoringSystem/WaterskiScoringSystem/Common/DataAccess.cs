@@ -23,19 +23,25 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public static bool DataAccessOpen() {
-            String curMethodName = "DataAccess:DataAccessOpen";
+            String curMethodName = "DataAccess:DataAccessOpen: ";
+
             // Open database connection if needed
             try {
-                if (DataAccessConnection == null) {
+                if ( DataAccessConnection == null) {
+                    String curAppConnectString = getConnectionString();
+                    if ( curAppConnectString.Length < 1 ) return false;
                     DataAccessTraceActive = Properties.Settings.Default.DataAccessTraceActive;
+
                     //DataAccessTraceActive = true;
                     DataAccessOpenCount = 1;
-                    DataAccessConnection = new SqlCeConnection( global::WaterskiScoringSystem.Properties.Settings.Default.waterskiConnectionStringApp );
+                    DataAccessConnection = new SqlCeConnection( curAppConnectString );
                     DataAccessConnection.Open();
+                
                 } else {
                     DataAccessOpenCount++;
                 }
                 return true;
+            
             } catch (Exception ex) {
                 Log.WriteFile(curMethodName + ":Exception Performing SQL operation: " + ex.Message);
                 MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ex.Message );
@@ -318,9 +324,7 @@ namespace WaterskiScoringSystem.Common {
 
         public static String getDatabaseFilename() {
             String curDataDirectory = "";
-            //String cuFileName = null;
-            //String curConnectName = WaterskiScoringSystem.Properties.Settings.Default.AppConnectName;
-            String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+            String curAppConnectString = getConnectionString();
             int curIndex1 = curAppConnectString.IndexOf( "\\" );
             int curIndex2 = curAppConnectString.IndexOf( ";" );
             String cuFilename = curAppConnectString.Substring( curIndex1 + 1, curIndex2 - curIndex1 );
@@ -367,5 +371,28 @@ namespace WaterskiScoringSystem.Common {
                 , "SafetyCheckList"
                 , "DivOrder"
             };
+
+        public static String getConnectionString() {
+            String curMethodName = "DataAccess:getConnectionString: ";
+            String curAppConnectString = "";
+            String curAppRegName = Properties.Settings.Default.AppRegistryName;
+            RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
+            if ( curAppRegKey == null ) {
+                String curMsg = String.Format( "{0}Registry key {1} was not found and is required", curMethodName, curAppRegName );
+                Log.WriteFile( curMsg );
+                MessageBox.Show( curMsg );
+                return curAppConnectString;
+            
+            } else if ( curAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
+                curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
+                curAppRegKey.SetValue( "DatabaseConnectionString", curAppConnectString );
+
+            } else {
+                curAppConnectString = curAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
+            }
+
+            return curAppConnectString;
+        }
+
     }
 }

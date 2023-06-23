@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Tools {
     class ExportTourSummary {
@@ -23,8 +16,6 @@ namespace WaterskiScoringSystem.Tools {
         private DataRow myTourRow;
 
         private StreamWriter myOutBuffer = null;
-        private SqlCeCommand mySqlStmt = null;
-        private SqlCeConnection myDbConn = null;
         private TourProperties myTourProperties;
 
         public ExportTourSummary() {
@@ -35,9 +26,6 @@ namespace WaterskiScoringSystem.Tools {
                 } else {
                     if ( mySanctionNum.Length < 6 ) {
                         MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                    } else {
-                        myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                        myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
                     }
                 }
             } catch ( Exception ex ) {
@@ -1018,7 +1006,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
 
 
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getOfficialWorkAsgmt() {
@@ -1031,7 +1019,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "     INNER JOIN CodeValueList AS L ON L.ListName = 'OfficialAsgmt' AND L.CodeValue = O.WorkAsgmt " );
             curSqlStmt.Append( "WHERE O.SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSlalomScores() {
@@ -1045,7 +1033,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON S.SanctionId = ER.SanctionId AND S.MemberId = ER.MemberId AND S.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Slalom' " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, ER.AgeGroup, TR.SkierName, S.MemberId, S.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getSlalomDetail() {
@@ -1059,7 +1047,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( " FROM SlalomRecap " );
             curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "'" );
             curSqlStmt.Append( " ORDER BY SanctionId, AgeGroup, MemberId, Round, SkierRunNum" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTrickScores() {
@@ -1072,7 +1060,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON S.SanctionId = ER.SanctionId AND S.MemberId = ER.MemberId AND S.AgeGroup = TR.AgeGroup " );
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Trick' " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, ER.AgeGroup, TR.SkierName, S.MemberId, S.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTrickDetail() {
@@ -1082,7 +1070,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( " FROM TrickPass E " );
             curSqlStmt.Append( " WHERE SanctionId = '" + mySanctionNum + "'" );
             curSqlStmt.Append( " ORDER BY SanctionId, AgeGroup, MemberId, Round, PassNum, Seq" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getJumpScores() {
@@ -1095,7 +1083,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  INNER JOIN EventReg ER ON S.SanctionId = ER.SanctionId AND S.MemberId = ER.MemberId AND S.AgeGroup = ER.AgeGroup " );
             curSqlStmt.Append( "WHERE S.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Jump' " );
             curSqlStmt.Append( "ORDER BY S.SanctionId, ER.AgeGroup, TR.SkierName, S.MemberId, S.Round" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getJumpDetail() {
@@ -1108,14 +1096,14 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "FROM JumpRecap E " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "ORDER BY SanctionId, AgeGroup, MemberId, Round, PassNum" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTeamList() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT * From TeamList " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourParticipants() {
@@ -1131,7 +1119,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "        WHERE (SanctionId = TR.SanctionId) AND (MemberId = TR.MemberId) AND (AgeGroup = TR.AgeGroup))" );
             curSqlStmt.Append( "     ) " );
             curSqlStmt.Append( "Order by AgeGroup, SkierName" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourParticipantsNonSkiing() {
@@ -1141,7 +1129,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  AND NOT EXISTS (SELECT 1 AS Expr1 FROM EventReg AS ER" );
             curSqlStmt.Append( "      WHERE (SanctionId = TR.SanctionId) AND (MemberId = TR.MemberId) AND (AgeGroup = TR.AgeGroup))" );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getTourSkierCounts() {
@@ -1157,7 +1145,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  OR EXISTS (SELECT 1 AS Expr1 FROM JumpScore AS SS " );
             curSqlStmt.Append( "     WHERE SS.SanctionId = TR.SanctionId AND SS.MemberId = TR.MemberId AND SS.AgeGroup = TR.AgeGroup) " );
             curSqlStmt.Append( ") " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getEventSkierCounts() {
@@ -1180,7 +1168,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  INNER JOIN JumpScore AS SS ON SS.SanctionId = TR.SanctionId AND SS.MemberId = TR.MemberId AND SS.AgeGroup = TR.AgeGroup " );
             curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Jump' " );
             curSqlStmt.Append( "Order BY TR.SanctionId, ER.Event, TR.AgeGroup, TR.SkierName " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getEventSkierGroupCounts() {
@@ -1203,11 +1191,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  INNER JOIN JumpScore AS SS ON SS.SanctionId = TR.SanctionId AND SS.MemberId = TR.MemberId AND SS.AgeGroup = TR.AgeGroup " );
             curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Jump' " );
             curSqlStmt.Append( "Order BY TR.SanctionId, ER.Event, ER.EventGroup, TR.SkierName " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
     }

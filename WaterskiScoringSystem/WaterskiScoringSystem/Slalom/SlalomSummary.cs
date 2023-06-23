@@ -766,6 +766,12 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private bool printReport( bool inPublish ) {
+			if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+			if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+				MessageBox.Show( "Request to publish report but live web not successfully connected." );
+				return false;
+			}
+
 			if ( h2hScoreButton.Checked ) {
 				if ( mySummaryDataTable.Rows.Count > 0 ) {
 					printHeadToHeadAwards();

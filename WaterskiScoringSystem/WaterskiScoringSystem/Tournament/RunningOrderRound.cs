@@ -1192,7 +1192,13 @@ namespace WaterskiScoringSystem.Tournament {
         }
         
         private bool printReport( bool inPublish ) {
-			int curCount = 0;
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+            if ( inPublish && !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+                MessageBox.Show( "Request to publish running order but live web not successfully connected." );
+                return false;
+            }
+            
+            int curCount = 0;
             String curTourPlcmtOrg = "tour";
             foreach(DataGridViewRow curRow in EventRegDataGridView.Rows) {
                 if (( (String)curRow.Cells["RunOrderGroup"].Value ).Equals( "HH1" )) {
