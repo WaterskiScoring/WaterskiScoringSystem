@@ -1568,7 +1568,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.5 6/24/2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.2.5 7/13/2023")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));

@@ -2211,7 +2211,7 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curColumnName.Equals( "ReturnToBaseRecap" )
 				 || curColumnName.Equals( "RerideRecap" )
 			   ) {
-				SendKeys.Send( "{TAB}" );
+					SendKeys.Send( "{TAB}" );
 
 			} else if ( curColumnName.StartsWith( "TimeInTolImg" ) ) {
 				if ( curBoatSplitTime.Length == 0 && curBoatSplitTime2.Length == 0 && curBoatEndTime.Length == 0
@@ -2700,6 +2700,7 @@ namespace WaterskiScoringSystem.Jump {
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
 					myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
+					myRecapRow.Cells["RerideCanImproveRecap"].Value = "Y";
 					if ( curCommand.ToLower().Equals( "updatewithprotect" ) ) myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
 				
 				} else {
@@ -2882,9 +2883,8 @@ namespace WaterskiScoringSystem.Jump {
 					isDataModified = true;
 					myRecapRow.Cells["Updated"].Value = "Y";
 					myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
-					if ( curCommand.ToLower().Equals( "updatewithprotect" ) ) {
-						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-					}
+					if ( curCommand.ToLower().Equals( "updatewithprotect" ) ) myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
+					myRecapRow.Cells["RerideCanImproveRecap"].Value = "Y";
 					checkRoundCalcSkierScore( "Y" );
 
 				} else {

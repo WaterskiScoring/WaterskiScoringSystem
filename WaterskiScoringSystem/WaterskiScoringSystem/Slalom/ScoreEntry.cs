@@ -962,8 +962,13 @@ namespace WaterskiScoringSystem.Slalom {
 				listBoatTimesDataGridView.Rows.Clear();
 				SlalomEventData.myTimesDataTable.DefaultView.RowFilter = "ListCode like '" + inSpeed.ToString() + "-" + (String)mySlalomSetAnalysis.ClassRowSkier["ListCode"] + "-%'";
 				DataTable curDataTable = SlalomEventData.myTimesDataTable.DefaultView.ToTable();
-
-				if ( curDataTable.Rows.Count == 0 ) return;
+				if ( curDataTable.Rows.Count == 0 ) {
+					SlalomEventData.myTimesDataTable.DefaultView.RowFilter = "ListCode like '" + inSpeed.ToString() + "-C-%'";
+					curDataTable = SlalomEventData.myTimesDataTable.DefaultView.ToTable();
+					if ( curDataTable.Rows.Count == 0 ) {
+						MessageBox.Show( "Boat times not available.  Pleaes contact the development team as this is an error." );
+					}
+				}
 
 				DataGridViewRow curViewRow;
 				int curViewIdx = 0;
@@ -3189,6 +3194,7 @@ namespace WaterskiScoringSystem.Slalom {
 					", score {1} protected, can improve "
 					, curRerideOptional, curPassScore );
 				myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
+				myRecapRow.Cells["ProtectedScoreRecap"].Value = curPassScore;
 				myRecapRow.Cells["RerideRecap"].Value = "Y";
 				myRecapRow.Cells["RerideReasonRecap"].Value = errMsg;
 				skierPassMsg.ForeColor = Color.Red;
@@ -3553,6 +3559,7 @@ namespace WaterskiScoringSystem.Slalom {
 							myRecapRow.Cells["RerideReasonRecap"].Value = rerideReasonDialogForm.RerideReasonText;
 							if ( curCommand.ToLower().Equals( "updatewithprotect" ) ) {
 								myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
+								myRecapRow.Cells["ProtectedScoreRecap"].Value = (String)myRecapRow.Cells["ScoreRecap"].Value; ;
 							}
 							if ( myRecapRow.Index == 0 ) {
 								SlalomSpeedSelection.Enabled = true;

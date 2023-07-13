@@ -675,6 +675,13 @@ namespace WaterskiScoringSystem.Tournament {
 				|| curColName.Equals( "Withdrawn" )
 				) {
 				SendKeys.Send( "{TAB}" );
+
+			} else if ( curColName.Equals( "IwwfLicense" ) ) {
+				DataGridViewRow curViewRow = tourRegDataGridView.Rows[e.RowIndex];
+				if ( tourRegDataGridView.Rows.Count > 0 ) {
+					String curValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "N" );
+					if ( curValue.Equals( "N" ) ) checkEmsLicense( curViewRow );
+				}
 			}
 		}
 
@@ -864,7 +871,27 @@ namespace WaterskiScoringSystem.Tournament {
                 curViewRow.Cells["JumpReg"].Value = "N";
             }
         }
-		
+
+		private void checkEmsLicense( DataGridViewRow curViewRow ) {
+			String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
+			String curAgeGroup = (String)curViewRow.Cells["AgeGroup"].Value;
+			String curWithdrawn = HelperFunctions.getViewRowColValue( curViewRow, "Withdrawn", "N" );
+			if ( curWithdrawn.Equals( "Y" ) ) {
+				curViewRow.Cells["IwwfLicense"].Value = "N";
+				MessageBox.Show( "Skier is marked as withdrawn no action required" );
+				return;
+			}
+
+			if ( myTourEventReg.checkEmsLicense( curMemberId, curAgeGroup, "Y" ) ) {
+				curViewRow.Cells["IwwfLicense"].Value = "Y";
+				StringBuilder curSqlStmt = new StringBuilder(
+					String.Format( "Update TourReg Set IwwfLicense = 'Y' "
+					+ " Where MemberId = '{0}' And SanctionId = '{1}' And AgeGroup = '{2}'"
+					, curMemberId, mySanctionNum, curAgeGroup ) );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			}
+		}
+
 		private bool removeRow( DataGridViewRow curViewRow ) {
 			String curMethodName = "Tournament:Registration:removeRow";
 			String curMsg = "";
@@ -1069,7 +1096,7 @@ namespace WaterskiScoringSystem.Tournament {
             deleteJumpEntry(curViewRow, curMemberId, curAgeGroup);
         }
 
-        private bool deleteSlalomEntry( DataGridViewRow curViewRow, String inMemberId, String inAgeGroup ) {
+		private bool deleteSlalomEntry( DataGridViewRow curViewRow, String inMemberId, String inAgeGroup ) {
             try {
                 bool returnStatus = myTourEventReg.deleteSlalomEntry(inMemberId, inAgeGroup);
                 if ( returnStatus ) {

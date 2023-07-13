@@ -91,6 +91,9 @@ namespace WaterskiScoringSystem.Common {
                     inScoreEntry.Nops = calcJumpNops( inScoreEntry.Score, curRow );
                     inScoreEntry.Rating = getRating( inScoreEntry.Score, curRow );
                 }
+            } else {
+                inScoreEntry.Nops = 0;
+                inScoreEntry.Rating = "";
             }
         }
 
@@ -134,6 +137,9 @@ namespace WaterskiScoringSystem.Common {
                             curEntry.Nops = calcJumpNops( curEntry.Score, curRow );
                             curEntry.Rating = getRating( curEntry.Score, curRow );
                         }
+                    } else {
+                        curEntry.Nops = 0;
+                        curEntry.Rating = "";
                     }
                 }
             }

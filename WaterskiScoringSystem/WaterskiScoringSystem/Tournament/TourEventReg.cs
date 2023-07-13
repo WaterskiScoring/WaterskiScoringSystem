@@ -158,7 +158,74 @@ namespace WaterskiScoringSystem.Tournament {
 			return false;
 		}
 
-		private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
+        public bool checkEmsLicense( String inMemberId, String inAgeDiv, String inEmsLicenseValue ) {
+            String curMethodName = "Tournament:TourEventReg:checkEmsLicense";
+            String curMsg = "";
+
+            DataRow curTourRegRow = getTourMemberRow( mySanctionNum, inMemberId, inAgeDiv );
+            if ( curTourRegRow == null ) {
+                curMsg = "Member " + inMemberId + " is not registered in tournament\n Unable to check EMS license ";
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMethodName + curMsg );
+                return false;
+            }
+
+            if ( HelperFunctions.isValueTrue( inEmsLicenseValue ) ) {
+                if ( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], inMemberId, (String)this.myTourRow["EventDates"] ) ) {
+                    updateTourMemberIwwfLicense( mySanctionNum, inMemberId, inAgeDiv, "Y" );
+
+                    String curEventClass = setSkierEventClass( "", "Slalom", inAgeDiv );
+                    DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curEventClass.ToUpper() + "'" )[0];
+                    if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"]
+                        || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
+                        StringBuilder curSqlStmt = new StringBuilder( "" );
+                        curSqlStmt.Append( "Update EventReg " );
+                        curSqlStmt.Append( "Set EventClass = '" + curEventClass + "'" );
+                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                        curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND EventClass NOT IN ('L', 'R') "
+                            , mySanctionNum, inMemberId, inAgeDiv ) );
+                        int curRowsUpdated = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+                        curSqlStmt = new StringBuilder( "" );
+                        curSqlStmt.Append( "Update SlalomScore " );
+                        curSqlStmt.Append( "Set EventClass = '" + curEventClass + "'" );
+                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                        curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND EventClass NOT IN ('L', 'R') "
+                            , mySanctionNum, inMemberId, inAgeDiv ) );
+                        int curRowsUpdatedSlalom = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+                        curSqlStmt = new StringBuilder( "" );
+                        curSqlStmt.Append( "Update TrickScore " );
+                        curSqlStmt.Append( "Set EventClass = '" + curEventClass + "'" );
+                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                        curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND EventClass NOT IN ('L', 'R') "
+                            , mySanctionNum, inMemberId, inAgeDiv ) );
+                        int curRowsUpdatedTrick = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+                        curSqlStmt = new StringBuilder( "" );
+                        curSqlStmt.Append( "Update JumpScore " );
+                        curSqlStmt.Append( "Set EventClass = '" + curEventClass + "'" );
+                        curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                        curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}' AND EventClass NOT IN ('L', 'R') "
+                            , mySanctionNum, inMemberId, inAgeDiv ) );
+                        int curRowsUpdatedJump = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+                        MessageBox.Show( "Updated " + curRowsUpdated + " event registration records"
+                            + "\nUpdated class for " + curRowsUpdatedSlalom + " slalom scores "
+                            + "\nUpdated class for " + curRowsUpdatedTrick + " Trick scores "
+                            + "\nUpdated class for " + curRowsUpdatedJump + " jump scores "
+                            );
+
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool addEvent( String inMemberId, String inEvent, String inEventGroup, String inEventClass, String inAgeDiv, String inTeamCode ) {
             String curMethodName = "Tournament:TourEventReg:addEvent";
             String curMsg = "";
             String curEventGroup, curEventClass, curRankingRating = "";
@@ -943,7 +1010,7 @@ namespace WaterskiScoringSystem.Tournament {
 			return DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 		}
 
-		private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
+        private DataRow getTourMemberRow( String inSanctionId, String inMemberId, String inAgeGroup ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append("SELECT PK, MemberId, SanctionId, SkierName, AgeGroup");
 			curSqlStmt.Append( ", COALESCE(ReadyForPlcmt, 'N') as ReadyForPlcmt, COALESCE(IwwfLicense, 'N') as IwwfLicense" );

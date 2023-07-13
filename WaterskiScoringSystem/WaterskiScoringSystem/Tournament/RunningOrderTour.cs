@@ -1379,12 +1379,13 @@ namespace WaterskiScoringSystem.Tournament {
 					
 					DataRow curClassRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = '" + curSkierClass.ToUpper() + "'" )[0];
 					if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
-						//if ( (Decimal)curClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] || ( (String)myTourRow["Rules"] ).ToUpper().Equals( "IWWF" ) ) {
 						if ( !( IwwfMembership.validateIwwfMembership( mySanctionNum, (String)this.myTourRow["SanctionEditCode"], (String)EventRegDataGridView.Rows[myViewIdx].Cells["MemberId"].Value, (String)this.myTourRow["EventDates"] ) ) ) {
 							( (ComboBox)EventRegDataGridView.EditingControl ).SelectedValue = "E";
 							e.Cancel = true;
 						}
 					}
+
+                    checkUpdateScoreClass( curSkierClass );
 					return;
 				} 
 				
@@ -1491,6 +1492,7 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["Updated"].Value = "Y";
                         }
                     }
+                
                 } else if ( curColName.Equals( "EventGroup" )
                     || curColName.Equals( "TeamCode" )
                     || curColName.Equals( "EventClass" )
@@ -1519,6 +1521,7 @@ namespace WaterskiScoringSystem.Tournament {
                             }
                         }
                     }
+                
                 } else if ( curColName.Equals( "HCapBase" )
                         || curColName.Equals( "HCapScore" )
                         || curColName.Equals( "RankingScore" )
@@ -1703,7 +1706,42 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnValue;
         }
 
-		private String buildFilterCmd() {
+        private void checkUpdateScoreClass( String inSkierClass ) {
+            DataTable curDataTable;
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
+            String curEvent = getCurrentEvent();
+
+            curSqlStmt.Append( "Select * From " + curEvent + "Score " );
+            curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}'"
+                , mySanctionNum
+                , HelperFunctions.getViewRowColValue( curViewRow, "MemberId", "" )
+                , HelperFunctions.getViewRowColValue( curViewRow, "AgeGroup", "" )
+                ) );
+            curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable.Rows.Count > 0 ) {
+                String dialogMsg = "Do you want to update the class for the scored " + curEvent + " entries?";
+                DialogResult msgResp =
+                    MessageBox.Show( dialogMsg, "Change Warning",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button1 );
+                if ( msgResp == DialogResult.Yes ) {
+                    curSqlStmt = new StringBuilder( "" );
+                    curSqlStmt.Append( "Update " + curEvent + "Score " );
+                    curSqlStmt.Append( "Set EventClass = '" + inSkierClass + "'" );
+                    curSqlStmt.Append( ", LastUpdateDate = GETDATE() " );
+                    curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND MemberId = '{1}' AND AgeGroup = '{2}'"
+                        , mySanctionNum
+                        , HelperFunctions.getViewRowColValue( curViewRow, "MemberId", "" )
+                        , HelperFunctions.getViewRowColValue( curViewRow, "AgeGroup", "" )
+                       ) );
+                    DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                }
+            }
+        }
+
+        private String buildFilterCmd() {
 			String curFilterCmd = "", curGroupFilter = "";
 
 			foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {

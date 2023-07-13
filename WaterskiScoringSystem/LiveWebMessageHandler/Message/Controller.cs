@@ -142,6 +142,14 @@ namespace LiveWebMessageHandler.Message {
 			curViewRow.Cells["CreationDatetime"].Value = DateTime.Now.ToString( myDisplayDateFormat );
 			if ( boldMessage ) curViewRow.Cells["Message"].Style.Font = myMsgFontBold;
 			if ( errorMsg ) curViewRow.Cells["Message"].Style.ForeColor = Color.Red;
+
+			MessageView.FirstDisplayedScrollingRowIndex = curViewIdx;
+			MessageView.Rows[curViewIdx].Selected = true;
+			MessageView.Rows[curViewIdx].Cells[0].Selected = true;
+			MessageView.CurrentCell = MessageView.Rows[curViewIdx].Cells["Message"];
+
+			int curRowPos = curViewIdx + 1;
+			RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + MessageView.Rows.Count.ToString();
 		}
 
 		private void startTransmitter() {

@@ -627,8 +627,9 @@ namespace WaterskiScoringSystem.Tournament {
 
             myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
             myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+            myPrintDoc.DefaultPageSettings.Landscape = true;
 
+            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
             curPreviewDialog.Document = myPrintDoc;
             curPreviewDialog.Focus();
             curPreviewDialog.ShowDialog();
