@@ -302,7 +302,7 @@
 			ErrorMsgLabel.BackColor = System.Drawing.Color.Red;
 			ErrorMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ErrorMsgLabel.ForeColor = System.Drawing.Color.White;
-			ErrorMsgLabel.Location = new System.Drawing.Point(138, 406);
+			ErrorMsgLabel.Location = new System.Drawing.Point(138, 629);
 			ErrorMsgLabel.Name = "ErrorMsgLabel";
 			ErrorMsgLabel.Size = new System.Drawing.Size(132, 18);
 			ErrorMsgLabel.TabIndex = 41;
@@ -315,7 +315,7 @@
 			InprogMsgLabel.BackColor = System.Drawing.Color.LimeGreen;
 			InprogMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			InprogMsgLabel.ForeColor = System.Drawing.Color.White;
-			InprogMsgLabel.Location = new System.Drawing.Point(138, 383);
+			InprogMsgLabel.Location = new System.Drawing.Point(138, 606);
 			InprogMsgLabel.Name = "InprogMsgLabel";
 			InprogMsgLabel.Size = new System.Drawing.Size(132, 18);
 			InprogMsgLabel.TabIndex = 42;
@@ -328,7 +328,7 @@
 			ScoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			ScoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			ScoredMsgLabel.ForeColor = System.Drawing.Color.DarkBlue;
-			ScoredMsgLabel.Location = new System.Drawing.Point(5, 406);
+			ScoredMsgLabel.Location = new System.Drawing.Point(5, 629);
 			ScoredMsgLabel.Name = "ScoredMsgLabel";
 			ScoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			ScoredMsgLabel.TabIndex = 39;
@@ -340,7 +340,7 @@
 			UnscoredMsgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			UnscoredMsgLabel.BackColor = System.Drawing.SystemColors.Window;
 			UnscoredMsgLabel.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 383);
+			UnscoredMsgLabel.Location = new System.Drawing.Point(5, 606);
 			UnscoredMsgLabel.Name = "UnscoredMsgLabel";
 			UnscoredMsgLabel.Size = new System.Drawing.Size(100, 18);
 			UnscoredMsgLabel.TabIndex = 40;
@@ -416,12 +416,13 @@
 			// 
 			// winStatus
 			// 
+			this.winStatus.Dock = System.Windows.Forms.DockStyle.None;
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
 			this.winStatus.Location = new System.Drawing.Point(0, 617);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(1265, 22);
+			this.winStatus.Size = new System.Drawing.Size(17, 22);
 			this.winStatus.TabIndex = 19;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -477,9 +478,6 @@
 			// 
 			this.jumpRecapDataGridView.AllowUserToAddRows = false;
 			this.jumpRecapDataGridView.AllowUserToDeleteRows = false;
-			this.jumpRecapDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.jumpRecapDataGridView.BackgroundColor = System.Drawing.Color.LightSteelBlue;
 			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
 			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -534,8 +532,8 @@
 			dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.jumpRecapDataGridView.DefaultCellStyle = dataGridViewCellStyle15;
-			this.jumpRecapDataGridView.Location = new System.Drawing.Point(276, 347);
-			this.jumpRecapDataGridView.MinimumSize = new System.Drawing.Size(640, 200);
+			this.jumpRecapDataGridView.Location = new System.Drawing.Point(277, 347);
+			this.jumpRecapDataGridView.MinimumSize = new System.Drawing.Size(840, 200);
 			this.jumpRecapDataGridView.Name = "jumpRecapDataGridView";
 			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
@@ -547,7 +545,7 @@
 			this.jumpRecapDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
 			this.jumpRecapDataGridView.RowHeadersVisible = false;
 			this.jumpRecapDataGridView.ShowRowErrors = false;
-			this.jumpRecapDataGridView.Size = new System.Drawing.Size(2150, 200);
+			this.jumpRecapDataGridView.Size = new System.Drawing.Size(846, 200);
 			this.jumpRecapDataGridView.TabIndex = 31;
 			this.jumpRecapDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellContentClick);
 			this.jumpRecapDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.jumpRecapDataGridView_CellEnter);
@@ -1071,7 +1069,7 @@
 			this.TourEventRegDataGridView.RowHeadersVisible = false;
 			this.TourEventRegDataGridView.RowHeadersWidth = 26;
 			this.TourEventRegDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 250);
+			this.TourEventRegDataGridView.Size = new System.Drawing.Size(265, 473);
 			this.TourEventRegDataGridView.TabIndex = 43;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourEventRegDataGridView_RowEnter);
@@ -1339,7 +1337,7 @@
             this.navExportRecord});
 			this.topMenuNav.Location = new System.Drawing.Point(0, 0);
 			this.topMenuNav.Name = "topMenuNav";
-			this.topMenuNav.Size = new System.Drawing.Size(1265, 42);
+			this.topMenuNav.Size = new System.Drawing.Size(1193, 42);
 			this.topMenuNav.TabIndex = 44;
 			this.topMenuNav.Text = "toolStrip1";
 			// 
@@ -1619,9 +1617,6 @@
 			// 
 			this.listApprovedBoatsDataGridView.AllowUserToAddRows = false;
 			this.listApprovedBoatsDataGridView.AllowUserToDeleteRows = false;
-			this.listApprovedBoatsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.listApprovedBoatsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
 			this.listApprovedBoatsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
 			dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
@@ -1654,8 +1649,7 @@
 			dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.listApprovedBoatsDataGridView.DefaultCellStyle = dataGridViewCellStyle44;
 			this.listApprovedBoatsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(276, 386);
-			this.listApprovedBoatsDataGridView.MaximumSize = new System.Drawing.Size(900, 250);
+			this.listApprovedBoatsDataGridView.Location = new System.Drawing.Point(277, 386);
 			this.listApprovedBoatsDataGridView.MinimumSize = new System.Drawing.Size(600, 150);
 			this.listApprovedBoatsDataGridView.Name = "listApprovedBoatsDataGridView";
 			dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -1669,7 +1663,7 @@
 			this.listApprovedBoatsDataGridView.RowHeadersWidth = 21;
 			dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.listApprovedBoatsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle46;
-			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(900, 150);
+			this.listApprovedBoatsDataGridView.Size = new System.Drawing.Size(912, 161);
 			this.listApprovedBoatsDataGridView.TabIndex = 48;
 			this.listApprovedBoatsDataGridView.TabStop = false;
 			this.listApprovedBoatsDataGridView.Visible = false;
@@ -2197,7 +2191,7 @@
 			dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Info;
 			dataGridViewCellStyle55.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.boatPathDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle55;
-			this.boatPathDataGridView.Size = new System.Drawing.Size(180, 160);
+			this.boatPathDataGridView.Size = new System.Drawing.Size(146, 160);
 			this.boatPathDataGridView.TabIndex = 112;
 			this.boatPathDataGridView.Visible = false;
 			// 
@@ -2319,7 +2313,7 @@
 			this.BpmsDriver.Enabled = false;
 			this.BpmsDriver.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.BpmsDriver.ForeColor = System.Drawing.Color.MediumBlue;
-			this.BpmsDriver.Location = new System.Drawing.Point(1115, 328);
+			this.BpmsDriver.Location = new System.Drawing.Point(1039, 121);
 			this.BpmsDriver.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
 			this.BpmsDriver.Name = "BpmsDriver";
 			this.BpmsDriver.Size = new System.Drawing.Size(150, 16);
@@ -2333,7 +2327,7 @@
 			this.BpmsDriverLabel.AutoSize = true;
 			this.BpmsDriverLabel.Enabled = false;
 			this.BpmsDriverLabel.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.BpmsDriverLabel.Location = new System.Drawing.Point(1039, 328);
+			this.BpmsDriverLabel.Location = new System.Drawing.Point(1056, 105);
 			this.BpmsDriverLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
 			this.BpmsDriverLabel.Name = "BpmsDriverLabel";
 			this.BpmsDriverLabel.Size = new System.Drawing.Size(78, 16);
@@ -2390,7 +2384,7 @@
 			this.JumpSpeedSelect.Location = new System.Drawing.Point(277, 114);
 			this.JumpSpeedSelect.Margin = new System.Windows.Forms.Padding(4);
 			this.JumpSpeedSelect.Name = "JumpSpeedSelect";
-			this.JumpSpeedSelect.Size = new System.Drawing.Size(120, 125);
+			this.JumpSpeedSelect.Size = new System.Drawing.Size(640, 125);
 			this.JumpSpeedSelect.TabIndex = 16;
 			this.JumpSpeedSelect.Tag = "";
 			// 
@@ -2413,7 +2407,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-			this.ClientSize = new System.Drawing.Size(1188, 656);
+			this.ClientSize = new System.Drawing.Size(1193, 667);
 			this.Controls.Add(this.BpmsDriver);
 			this.Controls.Add(this.BpmsDriverLabel);
 			this.Controls.Add(this.InvalidateBoatPathButton);
@@ -2483,7 +2477,7 @@
 			this.Controls.Add(this.roundActiveSelect);
 			this.Controls.Add(this.jumpRecapDataGridView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(970, 500);
+			this.MinimumSize = new System.Drawing.Size(900, 500);
 			this.Name = "ScoreEntrySeg3";
 			this.Text = "Jump Score Entry - 3 Segment Timing";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScoreEntry_FormClosing);

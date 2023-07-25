@@ -8,9 +8,7 @@ namespace WscMessageHandler.Common {
 	class ConnectMgmtData {
 		private static readonly String myWscApplicationKey = "CAD2FB59-3CCB-4691-9D26-7D68C2222788";
 		private static readonly String myWscWebLocationDefault = "http://ewscdata.com:40000/";
-		private static readonly String myWaterskiRegKeyName = "Software\\WSTIMS For Windows\\WSTIMS For Windows";
-
-
+		
 		private static String mySanctionNum = "";
 		private static String myEventSubId = "";
 		private static bool myUseJumpTimes = false;
@@ -24,10 +22,6 @@ namespace WscMessageHandler.Common {
 
 		public static String wscWebLocationDefault {
 			get { return myWscWebLocationDefault; }
-		}
-
-		public static String WaterskiRegKeyName {
-			get { return myWaterskiRegKeyName; }
 		}
 
 		public static String sanctionNum {

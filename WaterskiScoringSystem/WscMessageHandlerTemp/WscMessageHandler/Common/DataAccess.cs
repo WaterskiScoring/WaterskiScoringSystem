@@ -1,8 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlServerCe;
-using System.IO;
 using System.Windows.Forms;
 
 namespace WscMessageHandler.Common {
@@ -22,8 +20,7 @@ namespace WscMessageHandler.Common {
 			String curMethodName = "DataAccess:DataAccessOpen: ";
 			// Open database connection if needed
 			try {
-				String curDatabaseConnectionString = getCurrentConnectionString();
-				if ( HelperFunctions.isObjectEmpty( curDatabaseConnectionString ) ) {
+				if ( Properties.Settings.Default.DatabaseConnectionString.Length <= 0 ) {
 					String curMsg = "DatabaseConnectionString is not available";
 					Log.WriteFile( curMethodName + curMsg );
 					MessageBox.Show( curMethodName + curMsg );
@@ -32,7 +29,7 @@ namespace WscMessageHandler.Common {
 
 				if ( DataAccessConnection == null ) {
 					DataAccessOpenCount = 1;
-					DataAccessConnection = new SqlCeConnection( curDatabaseConnectionString );
+					DataAccessConnection = new SqlCeConnection( Properties.Settings.Default.DatabaseConnectionString );
 					DataAccessConnection.Open();
 
 				} else {
@@ -260,43 +257,6 @@ namespace WscMessageHandler.Common {
 			}
 
 			return curReturnValue;
-		}
-
-		public static String getCurrentConnectionString() {
-			/*
-			  * Retrieve / Create application entry in Windows registry
-			  * Retrieve attributes used to establish database location and connection parameters
-			  */
-			Microsoft.Win32.RegistryKey curAppRegKey = null;
-			String curDataDirectory = "";
-
-			curAppRegKey = Registry.CurrentUser.OpenSubKey( ConnectMgmtData.WaterskiRegKeyName, true );
-			if ( curAppRegKey == null ) {
-				curAppRegKey = Registry.CurrentUser.CreateSubKey( ConnectMgmtData.WaterskiRegKeyName );
-				curAppRegKey = Registry.CurrentUser.OpenSubKey( ConnectMgmtData.WaterskiRegKeyName, true );
-			}
-
-			if ( curAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
-				bool curNewFileFound = getNewDatabaseFile();
-				if ( curNewFileFound ) return Properties.Settings.Default.DatabaseConnectionString;
-				return "";
-
-			} else {
-				String curRegDatabaseConnectionString = curAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
-				if ( curAppRegKey.GetValue( "DataDirectory" ) != null ) {
-					curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-					int curDelimStart = curRegDatabaseConnectionString.IndexOf( "|DataDirectory|" );
-					int curDelimEnd = curRegDatabaseConnectionString.IndexOf( ";", curDelimStart );
-					String curDatabaseFilename = curRegDatabaseConnectionString.Substring( curDelimStart + 16, curDelimEnd - curDelimStart - 16 );
-					Properties.Settings.Default.DatabaseFilename = Path.Combine(curDataDirectory, curDatabaseFilename);
-				}
-
-				Properties.Settings.Default.DatabaseConnectionString =
-					String.Format( "Data Source = {0}; Password = waterski; Persist Security Info = True"
-					, Properties.Settings.Default.DatabaseFilename );
-				return Properties.Settings.Default.DatabaseConnectionString;
-			}
-
 		}
 
 		public static bool getNewDatabaseFile( String inFilename ) {

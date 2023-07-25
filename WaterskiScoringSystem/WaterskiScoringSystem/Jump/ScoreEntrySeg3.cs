@@ -1133,9 +1133,12 @@ namespace WaterskiScoringSystem.Jump {
 						String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
 						if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
 							if ( myCheckOfficials.officialAsgmtCount == 0 ) {
-								MessageBox.Show( "No officials have been assigned for this event group and round "
-									+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
-								myCompletedNotices.Add( curWarnMsg );
+								String curAgeGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["AgeGroup"].Value.ToString();
+								if ( !checkLoadOfficialAssgmt( curAgeGroup, curEventGroup ) ) {
+									MessageBox.Show( "No officials have been assigned for this event group and round "
+										+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
+									myCompletedNotices.Add( curWarnMsg );
+								}
 							}
 						}
 					}
@@ -1892,29 +1895,7 @@ namespace WaterskiScoringSystem.Jump {
 
 			driverDropdown.SelectedValue = "";
 			driverDropdown.Text = "";
-
-			myCheckOfficials.readOfficialAssignments( JumpEventData.mySanctionNum, "Jump", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
-			isLoadInProg = true;
-			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
-			driverDropdown.DisplayMember = "MemberName";
-			driverDropdown.ValueMember = "MemberId";
-			if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 1 ) {
-				driverLabel.ForeColor = Color.Red;
-			} else {
-				driverLabel.ForeColor = Color.Black;
-			}
-			isLoadInProg = false;
-			if ( myDriverMemberId.Length > 0 ) {
-				for ( int curIdx = 0; curIdx < myCheckOfficials.driverAsgmtDataTable.Rows.Count; curIdx++ ) {
-					if ( myCheckOfficials.driverAsgmtDataTable.Rows[curIdx]["MemberId"].Equals( myDriverMemberId ) ) {
-						driverDropdown.SelectedValue = myDriverMemberId;
-						driverDropdown.SelectedIndex = curIdx;
-						break;
-					}
-				}
-			} else if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 0 ) {
-				driverDropdown.SelectedIndex = 0;
-			}
+			checkLoadOfficialAssgmt( curAgeGroup, curEventGroup );
 
 			myScoreDataTable = getSkierScoreByRound( curMemberId, curAgeGroup, inRound );
 			if ( myScoreDataTable.Rows.Count > 0 ) {
@@ -3663,6 +3644,34 @@ namespace WaterskiScoringSystem.Jump {
 
 		private Boolean checkForSkierRoundScore( String inMemberId, int inRound, String inAgeGroup ) {
 			return HelperFunctions.checkForSkierRoundScore( JumpEventData.mySanctionNum, "Jump", inMemberId, inRound, inAgeGroup );
+		}
+
+		private bool checkLoadOfficialAssgmt( String inAgeGroup, String inEventGroup ) {
+			myCheckOfficials.readOfficialAssignments( JumpEventData.mySanctionNum, "Jump", inAgeGroup, inEventGroup, roundActiveSelect.RoundValue );
+			isLoadInProg = true;
+			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
+			driverDropdown.DisplayMember = "MemberName";
+			driverDropdown.ValueMember = "MemberId";
+			if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 1 ) {
+				driverLabel.ForeColor = Color.Red;
+			} else {
+				driverLabel.ForeColor = Color.Black;
+			}
+			isLoadInProg = false;
+			if ( myDriverMemberId.Length > 0 ) {
+				for ( int curIdx = 0; curIdx < myCheckOfficials.driverAsgmtDataTable.Rows.Count; curIdx++ ) {
+					if ( myCheckOfficials.driverAsgmtDataTable.Rows[curIdx]["MemberId"].Equals( myDriverMemberId ) ) {
+						driverDropdown.SelectedValue = myDriverMemberId;
+						driverDropdown.SelectedIndex = curIdx;
+						break;
+					}
+				}
+			} else if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 0 ) {
+				driverDropdown.SelectedIndex = 0;
+			}
+
+			if ( myCheckOfficials.officialAsgmtCount > 0 ) return true;
+			return false;
 		}
 
 		private Decimal getSkier1stRoundRampHeight(String inMemberId, String inAgeGroup) {

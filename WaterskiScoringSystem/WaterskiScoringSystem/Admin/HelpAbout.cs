@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Deployment.Application;
+using System.IO;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
@@ -14,9 +15,7 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private void HelpAbout_Load( object sender, EventArgs e ) {
-            String curDeployVer = "", curUpdatedVer = "", curDataDir = "";
-            String curDatabaseFilename = "";
-            String curConnFilename = "\\Not available";
+            String curDeployVer = "", curUpdatedVer = "";
 
             try {
                 curDeployVer = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
@@ -28,25 +27,9 @@ namespace WaterskiScoringSystem.Admin {
             } catch {
                 curUpdatedVer = "Not available";
             }
-            try {
-                curDataDir = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                if ( curDataDir.Length < 1 ) curDataDir = AppDomain.CurrentDomain.GetData( "DataDirectory" ).ToString();
 
-                try {
-                    String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    int curDelimPos1 = curConnString.IndexOf( "\\" );
-                    int curDelimPos2 = curConnString.IndexOf( ";" );
-                    if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
-                    curDatabaseFilename = curDataDir + curConnFilename;
-                } catch {
-                    curDatabaseFilename = curDataDir;
-                }
-            } catch {
-                curDataDir = "Not available";
-            }
-            textDatabasePath.Text = curDatabaseFilename;
-
-            textConnectionString.Text = DataAccess.getConnectionString();
+            textDatabasePath.Text = DataAccess.getDatabaseFilename();
+            textConnectionString.Text = DataAccess.getConnectionString(); ;
             textExecutablePath.Text = Application.ExecutablePath;
             textProductName.Text = Application.ProductName;
             

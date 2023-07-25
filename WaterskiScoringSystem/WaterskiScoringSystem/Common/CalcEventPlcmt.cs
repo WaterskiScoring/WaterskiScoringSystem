@@ -422,7 +422,7 @@ namespace WaterskiScoringSystem.Common {
                     }
                     #endregion
                 }
-            } else if (curRules.ToLower().Equals( "ncwsa" )) {
+            } else if (HelperFunctions.isCollegiateEvent(curRules)) {
                 if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
                     #region Collegiate placement calculations - placements for ties for the total tournament
                     if (curPlcmtResults.Columns.Contains( "PlcmtTour" )) {
@@ -1255,17 +1255,6 @@ namespace WaterskiScoringSystem.Common {
                     MessageBox.Show( "Overall detail not found for skier" );
                 }
                 newSkierScoreRow.EndEdit();
-                /*
-                MessageBox.Show( "   MemberId: " + newSkierScoreRow["MemberId"]
-                    + "\n    AgeGroup: " + newSkierScoreRow["AgeGroup"]
-                    + "\n       Round: " + newSkierScoreRow["Round"]
-                    + "\n       Score: " + newSkierScoreRow["Score"]
-                    + "\n   PassScore: " + newSkierScoreRow["PassScore"]
-                    + "\n  FirstScore: " + newSkierScoreRow["FirstScore"]
-                    + "\n BackupScore: " + newSkierScoreRow["BackupScore"]
-                    + "\n RunoffScore: " + newSkierScoreRow["RunoffScore"]
-                    );
-                 */
             }
 
             return curSkierScoreList;
@@ -1515,7 +1504,7 @@ namespace WaterskiScoringSystem.Common {
                 }
                 if (inPlcmtMethod.ToLower().Equals( "score" )) {
                     if ( inEvent.ToLower().Equals("jump") ) {
-                        curSortCmd += "ScoreFeet DESC, ScoreMeters, SkierName ASC ";
+                        curSortCmd += "ScoreFeet DESC, ScoreMeters DESC, SkierName ASC ";
                     } else {
                         curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
                     }
@@ -1527,7 +1516,8 @@ namespace WaterskiScoringSystem.Common {
                     }
                 }
                 curPlcmtResults.DefaultView.Sort = curSortCmd;
-                curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+                DataTable tempPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+                curPlcmtResults = tempPlcmtResults;
 
                 foreach ( DataRow curRow in curPlcmtResults.Rows ) {
                     curPlcmt = "";

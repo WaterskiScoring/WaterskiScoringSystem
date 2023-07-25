@@ -19,6 +19,7 @@ namespace WaterSkiConnectMonitor {
 		private static String myEventSubId = "";
 		private static String myPinNum = "";
 		private static int myCountPing = 0;
+		private static bool myLogActive = false;
 
 		private static SocketIO socketClient = null;
 
@@ -59,6 +60,14 @@ namespace WaterSkiConnectMonitor {
 			mySanctionNum = inputArgs[0].Trim().ToUpper();
 			myEventSubId = inputArgs[1].Trim();
 			myPinNum = inputArgs[2].Trim();
+			if ( inputArgs.Length == 4 ) {
+				if ( Log.OpenFile( mySanctionNum ) ) {
+					myLogActive = true;
+					Console.WriteLine( "Logging has been activated" );
+				} else {
+					Console.WriteLine( "Attempt to open logging has failed" );
+				}
+			}
 
 			execConnect();
 
@@ -286,7 +295,7 @@ namespace WaterSkiConnectMonitor {
 			Console.WriteLine( String.Format( "{0} {1}: {2}", DateTime.Now, txnName, argData ) );
 			Console.WriteLine( "------------------------------------------------------------" );
 			Console.WriteLine( "" );
-
+			if ( myLogActive ) Log.WriteFile( String.Format( "{0} {1}: {2}", DateTime.Now, txnName, argData ) );
 		}
 
 		private static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {

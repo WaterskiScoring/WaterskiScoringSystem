@@ -62,6 +62,7 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( HelperFunctions.isObjectEmpty( myRecapViewRow.Cells["BoatTimeRecap"].Value ) ) return false;
 			decimal curScore = calcScoreForPass();
 			if ( curScore < 0 ) return false;
+			myRecapViewRow.Cells["ScoreRecap"].Value = curScore.ToString("#.00");
 
 			Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassSpeedKphRecap", "0" ) );
 			decimal curPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassLineLengthRecap", "0" );

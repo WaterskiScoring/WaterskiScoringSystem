@@ -1040,29 +1040,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 			driverDropdown.SelectedValue = "";
 			driverDropdown.Text = "";
-			
-			myCheckOfficials.readOfficialAssignments( SlalomEventData.mySanctionNum, "Slalom", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
-			isLoadInProg = true;
-			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
-			driverDropdown.DisplayMember = "MemberName";
-			driverDropdown.ValueMember = "MemberId";
-			if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 1 ) {
-				driverLabel.ForeColor = Color.Red;
-			} else {
-				driverLabel.ForeColor = Color.Black;
-			}
-			isLoadInProg = false;
-			if ( myDriverMemberId.Length > 0 ) {
-				for (int curIdx = 0; curIdx < myCheckOfficials.driverAsgmtDataTable.Rows.Count; curIdx++ ) {
-					if ( myCheckOfficials.driverAsgmtDataTable.Rows[curIdx]["MemberId"].Equals( myDriverMemberId ) ) {
-						driverDropdown.SelectedValue = myDriverMemberId;
-						driverDropdown.SelectedIndex = curIdx;
-						break;
-					}
-				}
-			} else if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 0) {
-				driverDropdown.SelectedIndex = 0;
-			}
+
+			checkLoadOfficialAssgmt( curAgeGroup, curEventGroup );
 
 			getSkierScoreByRound( curMemberId, curAgeGroup, inRound );
 			if ( myScoreDataTable.Rows.Count > 0 ) {
@@ -1421,9 +1400,12 @@ namespace WaterskiScoringSystem.Slalom {
 						String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
 						if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
 							if ( myCheckOfficials.officialAsgmtCount == 0 ) {
-								MessageBox.Show( "No officials have been assigned for this event group and round "
-									+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
-								myCompletedNotices.Add( curWarnMsg );
+								String curAgeGroup = curEventRegRow.Cells["AgeGroup"].Value.ToString();
+								if ( !checkLoadOfficialAssgmt( curAgeGroup, curEventGroup ) ) {
+									MessageBox.Show( "No officials have been assigned for this event group and round "
+										+ "\n\nThese assignments are not mandatory but they are strongly recommended and are very helpful for the TCs" );
+									myCompletedNotices.Add( curWarnMsg );
+								}
 							}
 						}
 					}
@@ -3511,32 +3493,36 @@ namespace WaterskiScoringSystem.Slalom {
 					try {
 						if ( myGateValueChg ) {
 							Boolean curGateValue = (Boolean)myRecapRow.Cells[curColName].Value;
-							if ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value ) ) ) {
-								SlalomTimeValidate();
-								if ( ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
+							//myRecapRow.Cells["ScoreRecap"].Value = "";
+
+							if ( HelperFunctions.isObjectEmpty( myRecapRow.Cells["BoatTimeRecap"].Value ) ) return;
+
+							SlalomTimeValidate();
+							if ( ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["ScoreRecap"].Value ) ) )
 									&& ( !( HelperFunctions.isObjectEmpty( myRecapRow.Cells["TimeInTolRecap"].Value ) ) ) ) {
-									if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
-										if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y" 
-											&& (String)myRecapRow.Cells["BoatPathGoodRecap"].Value == "Y"
-											) {
-											if ( mySlalomSetAnalysis.isExitGatesGood() ) {
-												if ( curGateValue ) {
-													isAddRecapRowInProg = true;
-													Timer curTimerObj = new Timer();
-													curTimerObj.Interval = 5;
-													curTimerObj.Tick += new EventHandler( addRecapRowTimer );
-													curTimerObj.Start();
-												}
-											} else {
-												skierPassMsg.ForeColor = Color.Red;
-												skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
-												MessageBox.Show( skierPassMsg.Text );
+								if ( Convert.ToDecimal( myRecapRow.Cells["ScoreRecap"].Value ) == 6 ) {
+									if ( (String)myRecapRow.Cells["TimeInTolRecap"].Value == "Y"
+										&& (String)myRecapRow.Cells["BoatPathGoodRecap"].Value == "Y"
+										) {
+										if ( mySlalomSetAnalysis.isExitGatesGood() ) {
+											if ( curGateValue ) {
+												isAddRecapRowInProg = true;
+												Timer curTimerObj = new Timer();
+												curTimerObj.Interval = 5;
+												curTimerObj.Tick += new EventHandler( addRecapRowTimer );
+												curTimerObj.Start();
 											}
+										} else {
+											skierPassMsg.ForeColor = Color.Red;
+											skierPassMsg.Text = "Time good, score 6, no continue missed exit gates";
+											MessageBox.Show( skierPassMsg.Text );
 										}
 									}
 								}
 							}
+							myGateValueChg = false;
 						}
+
 					} catch {
 						//This situation only seems to be possible when the window is closing 
 						//so just ending method to allow window to close.
@@ -4353,6 +4339,34 @@ namespace WaterskiScoringSystem.Slalom {
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND MemberId = '{2}' AND MemberId = '{3}'"
 				, SlalomEventData.mySanctionNum, inMemberId, inAgeGroup, inRound ) );
 			return DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+		}
+
+		private bool checkLoadOfficialAssgmt( String inAgeGroup, String inEventGroup ) {
+			myCheckOfficials.readOfficialAssignments( SlalomEventData.mySanctionNum, "Slalom", inAgeGroup, inEventGroup, roundActiveSelect.RoundValue );
+			isLoadInProg = true;
+			driverDropdown.DataSource = myCheckOfficials.driverAsgmtDataTable;
+			driverDropdown.DisplayMember = "MemberName";
+			driverDropdown.ValueMember = "MemberId";
+			if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 1 ) {
+				driverLabel.ForeColor = Color.Red;
+			} else {
+				driverLabel.ForeColor = Color.Black;
+			}
+			isLoadInProg = false;
+			if ( myDriverMemberId.Length > 0 ) {
+				for ( int curIdx = 0; curIdx < myCheckOfficials.driverAsgmtDataTable.Rows.Count; curIdx++ ) {
+					if ( myCheckOfficials.driverAsgmtDataTable.Rows[curIdx]["MemberId"].Equals( myDriverMemberId ) ) {
+						driverDropdown.SelectedValue = myDriverMemberId;
+						driverDropdown.SelectedIndex = curIdx;
+						break;
+					}
+				}
+			} else if ( myCheckOfficials.driverAsgmtDataTable.Rows.Count > 0 ) {
+				driverDropdown.SelectedIndex = 0;
+			}
+
+			if ( myCheckOfficials.officialAsgmtCount > 0 ) return true;
+			return false;
 		}
 
 		private Boolean isScoreRowExist( String curSanctionId, String curMemberId, String curAgeGroup, byte curRound ) {

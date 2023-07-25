@@ -708,11 +708,11 @@ namespace WaterskiScoringSystem.Tournament {
                     myTourProperties.RunningOrderSortSlalom = mySortCmd;
                 
                 } else if (trickButton.Checked) {
-                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "JumpHeight" );
                     myTourProperties.RunningOrderSortTrick = mySortCmd;
                 
                 } else if (jumpButton.Checked) {
-                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "JumpHeight" );
+                    mySortCmd = HelperFunctions.removeInvalidAttr( mySortCmd, "TrickBoat" );
                     myTourProperties.RunningOrderSortJump = mySortCmd;
                 }
                 loadEventRegView();
