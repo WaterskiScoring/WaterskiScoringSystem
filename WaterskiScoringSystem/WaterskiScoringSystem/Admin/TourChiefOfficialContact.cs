@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Externalnterface;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace WaterskiScoringSystem.Admin {
     public partial class TourChiefOfficialContact : Form {
@@ -14,7 +16,6 @@ namespace WaterskiScoringSystem.Admin {
         private Boolean isDataModified = false;
         private String myOrigItemValue;
         private DataTable myDataTable;
-        private SqlCeCommand mySqlStmt = null;
 
         public TourChiefOfficialContact() {
             InitializeComponent();
@@ -79,6 +80,107 @@ namespace WaterskiScoringSystem.Admin {
 
             } catch (Exception excp) {
                 MessageBox.Show("Error attempting to save changes \n" + excp.Message);
+            }
+        }
+
+        private void loadButton_Click( object sender, EventArgs e ) {
+            myDataTable = getTourData( mySanctionNum );
+            if ( myDataTable == null || myDataTable.Rows.Count == 0 ) {
+                MessageBox.Show( "Chief official references not found" );
+                return;
+            }
+            DataRow curRow = myDataTable.Rows[0];
+            
+            String curSanctionEditCode = HelperFunctions.getDataRowColValue( curRow, "SanctionEditCode", "" );
+            String curContactMemberId = HelperFunctions.getDataRowColValue( curRow, "ContactMemberId", "" );
+            String curChiefJudgeMemberId = HelperFunctions.getDataRowColValue( curRow, "ChiefJudgeMemberId", "" );
+            String curChiefDriverMemberId = HelperFunctions.getDataRowColValue( curRow, "ChiefDriverMemberId", "" );
+            String curChiefScorerMemberId = HelperFunctions.getDataRowColValue( curRow, "ChiefScorerMemberId", "" );
+            String curSafetyDirMemberId = HelperFunctions.getDataRowColValue( curRow, "SafetyDirMemberId", "" );
+
+            Cursor.Current = Cursors.WaitCursor;
+            //Dictionary<string, object> curContactData = getSanctionFromUSAWS();
+            List<object> curResponseDataList = getChiefOfficialContacts( curSanctionEditCode, curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
+
+            if ( curResponseDataList == null || curResponseDataList.Count == 0 ) {
+                MessageBox.Show( "Chief official contact information was not found on the AWSA database" );
+                return;
+            }
+            String curMemberId;
+            foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+                curMemberId = HelperFunctions.getAttributeValue( curEntry, "MemberId" );
+                if ( curMemberId.Equals( curContactMemberId ) ) {
+                    contactAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" ) 
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                    contactPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
+                        + ", " + formatPhone( HelperFunctions.getAttributeValue( curEntry, "MobilePhone" ) );
+                    contactEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
+                } 
+                if ( curMemberId.Equals( curChiefJudgeMemberId ) ) {
+                    //chiefJudgeNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    chiefJudgeAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                    chiefJudgePhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
+                        + ", " + formatPhone( HelperFunctions.getAttributeValue( curEntry, "MobilePhone" ) );
+                    chiefJudgeEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
+                } 
+                if ( curMemberId.Equals( curChiefDriverMemberId ) ) {
+                    //chiefDriverNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    chiefDriverAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                    chiefDriverPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
+                        + ", " + formatPhone( HelperFunctions.getAttributeValue( curEntry, "MobilePhone" ) );
+                    chiefDriverEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
+                } 
+                if ( curMemberId.Equals( curChiefScorerMemberId ) ) {
+                    //chiefScorerNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    chiefScorerAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                    chiefScorerPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
+                        + ", " + formatPhone( HelperFunctions.getAttributeValue( curEntry, "MobilePhone" ) );
+                    chiefScorerEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
+                } 
+                if ( curMemberId.Equals( curSafetyDirMemberId ) ) {
+                    //chiefSafetyNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    safetyDirAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                    safetyDirPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
+                        + ", " + formatPhone( HelperFunctions.getAttributeValue( curEntry, "MobilePhone" ) );
+                    safetyDirEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
+                }
+            }
+            Cursor.Current = Cursors.Default;
+        }
+
+        private String formatPhone( String inPhone ) {
+            String curTempValue;
+            if ( HelperFunctions.isObjectEmpty( inPhone ) ) return inPhone;
+
+            if ( inPhone.Substring(0, 2).Equals("+1")) {
+                curTempValue = inPhone.Substring( 2 ).Trim();
+                if ( curTempValue.Length == 10 ) {
+                    return "(" + curTempValue.Substring( 0, 3 ) + ") " + curTempValue.Substring( 3, 3 ) + "-" + curTempValue.Substring( 6 );
+                } else {
+                    return curTempValue;
+                }
+            
+            } else {
+                return inPhone;
             }
         }
 
@@ -153,106 +255,30 @@ namespace WaterskiScoringSystem.Admin {
                         }
 
                         DataRow curRow = myDataTable.Rows[0];
-                        try {
-                            contactNameSelect.SelectedValue = (String)curRow["ContactMemberId"];
-                        } catch {
-                            contactNameSelect.SelectedValue = "";
-                        }
-                        try {
-                            contactAddressTextBox.Text = (String)curRow["ContactAddress"];
-                        } catch {
-                            contactAddressTextBox.Text = "";
-                        }
-                        try {
-                            contactPhoneTextBox.Text = (String)curRow["ContactPhone"];
-                        } catch {
-                            contactPhoneTextBox.Text = "";
-                        }
-                        try {
-                            contactEmailTextBox.Text = (String)curRow["ContactEmail"];
-                        } catch {
-                            contactEmailTextBox.Text = "";
-                        }
-                        try {
-                            chiefJudgeNameTextBox.Text = (String)curRow["ChiefJudgeName"];
-                        } catch {
-                            chiefJudgeNameTextBox.Text = "";
-                        }
-                        try {
-                            chiefJudgeAddressTextBox.Text = (String)curRow["ChiefJudgeAddress"];
-                        } catch {
-                            chiefJudgeAddressTextBox.Text = "";
-                        }
-                        try {
-                            chiefJudgePhoneTextBox.Text = (String)curRow["ChiefJudgePhone"];
-                        } catch {
-                            chiefJudgePhoneTextBox.Text = "";
-                        }
-                        try {
-                            chiefJudgeEmailTextBox.Text = (String)curRow["ChiefJudgeEmail"];
-                        } catch {
-                            chiefJudgeEmailTextBox.Text = "";
-                        }
-                        try {
-                            chiefDriverNameTextBox.Text = (String)curRow["ChiefDriverName"];
-                        } catch {
-                            chiefDriverNameTextBox.Text = "";
-                        }
-                        try {
-                            chiefDriverAddressTextBox.Text = (String)curRow["ChiefDriverAddress"];
-                        } catch {
-                            chiefDriverAddressTextBox.Text = "";
-                        }
-                        try {
-                            chiefDriverPhoneTextBox.Text = (String)curRow["ChiefDriverPhone"];
-                        } catch {
-                            chiefDriverPhoneTextBox.Text = "";
-                        }
-                        try {
-                            chiefDriverEmailTextBox.Text = (String)curRow["ChiefDriverEmail"];
-                        } catch {
-                            chiefDriverEmailTextBox.Text = "";
-                        }
-                        try {
-                            chiefScorerNameTextBox.Text = (String)curRow["ChiefScorerName"];
-                        } catch {
-                            chiefScorerNameTextBox.Text = "";
-                        }
-                        try {
-                            chiefScorerAddressTextBox.Text = (String)curRow["ChiefScorerAddress"];
-                        } catch {
-                            chiefScorerAddressTextBox.Text = "";
-                        }
-                        try {
-                            chiefScorerPhoneTextBox.Text = (String)curRow["ChiefScorerPhone"];
-                        } catch {
-                            chiefScorerPhoneTextBox.Text = "";
-                        }
-                        try {
-                            chiefScorerEmailTextBox.Text = (String)curRow["ChiefScorerEmail"];
-                        } catch {
-                            chiefScorerEmailTextBox.Text = "";
-                        }
-                        try {
-                            chiefSafetyNameTextBox.Text = (String)curRow["ChiefSafetyName"];
-                        } catch {
-                            chiefSafetyNameTextBox.Text = "";
-                        }
-                        try {
-                            safetyDirAddressTextBox.Text = (String)curRow["SafetyDirAddress"];
-                        } catch {
-                            safetyDirAddressTextBox.Text = "";
-                        }
-                        try {
-                            safetyDirPhoneTextBox.Text = (String)curRow["SafetyDirPhone"];
-                        } catch {
-                            safetyDirPhoneTextBox.Text = "";
-                        }
-                        try {
-                            safetyDirEmailTextBox.Text = (String)curRow["SafetyDirEmail"];
-                        } catch {
-                            safetyDirEmailTextBox.Text = "";
-                        }
+                        contactNameSelect.SelectedValue = HelperFunctions.getDataRowColValue( curRow, "ContactMemberId", "" );
+                        contactAddressTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ContactAddress", "" );
+                        contactPhoneTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ContactPhone", "" );
+                        contactEmailTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ContactEmail", "" );
+
+                        chiefJudgeNameTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefJudgeName", "" );
+                        chiefJudgeAddressTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefJudgeAddress", "" );
+                        chiefJudgePhoneTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefJudgePhone", "" );
+                        chiefJudgeEmailTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefJudgeEmail", "" );
+
+                        chiefDriverNameTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefDriverName", "" );
+                        chiefDriverAddressTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefDriverAddress", "" );
+                        chiefDriverPhoneTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefDriverPhone", "" );
+                        chiefDriverEmailTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefDriverEmail", "" );
+
+                        chiefScorerNameTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefScorerName", "" );
+                        chiefScorerAddressTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefScorerAddress", "" );
+                        chiefScorerPhoneTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefScorerPhone", "" );
+                        chiefScorerEmailTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefScorerEmail", "" );
+
+                        chiefSafetyNameTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefSafetyName", "" );
+                        safetyDirAddressTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "SafetyDirAddress", "" );
+                        safetyDirPhoneTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "SafetyDirPhone", "" );
+                        safetyDirEmailTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "SafetyDirEmail", "" );
                     }
                 }
             
@@ -271,9 +297,29 @@ namespace WaterskiScoringSystem.Admin {
             }
         }
 
+        private List<object> getChiefOfficialContacts( String curSanctionEditCode, String curContactMemberId, String curChiefJudgeMemberId, String curChiefDriverMemberId, String curChiefScorerMemberId, String curSafetyDirMemberId ) {
+            NameValueCollection curHeaderParams = new NameValueCollection();
+
+            /* -----------------------------------------------------------------------
+            * Configure URL to retrieve all skiers pre-registered for the active tournament
+			* This will include all appointed officials
+            ----------------------------------------------------------------------- */
+            String curQueryString = String.Format( "?SanctionId={0}&ContactMemberId={1}&CJMemberId={2}&CDMemberId={3}&CCMemberId={4}&CSMemberId={5}"
+                , mySanctionNum, curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
+            String curContentType = "application/json; charset=UTF-8";
+            String curExportListUrl = "https://www.usawaterski.org/admin/GetChiefOfficalContactExportJson.asp";
+            String curReqstUrl = curExportListUrl + curQueryString;
+
+            List<object> curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+            if ( curResponseDataList != null && curResponseDataList.Count > 0 ) return curResponseDataList;
+
+            MessageBox.Show( "Contact information could not be retrieved for this tournaments chief officials " );
+            return null;
+        }
+
         private DataTable getTourData( String inSanctionId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT Distinct T.SanctionId, T.Name, T.Class, T.Federation, T.TourDataLoc, T.LastUpdateDate" );
+            curSqlStmt.Append( "SELECT Distinct T.SanctionId, T.Name, T.Class, T.Federation, T.TourDataLoc, SanctionEditCode, T.LastUpdateDate" );
             curSqlStmt.Append( ", T.SlalomRounds, T.TrickRounds, T.JumpRounds, T.Rules, T.EventDates, T.EventLocation" );
             curSqlStmt.Append( ", T.HcapSlalomBase, T.HcapTrickBase, T.HcapJumpBase, T.HcapSlalomPct, T.HcapTrickPct, T.HcapJumpPct " );
             curSqlStmt.Append( ", T.RopeHandlesSpecs, T.SlalomRopesSpecs, T.JumpRopesSpecs, T.SlalomCourseSpecs, T.JumpCourseSpecs, T.TrickCourseSpecs, T.BuoySpecs" );
@@ -423,5 +469,6 @@ namespace WaterskiScoringSystem.Admin {
 		private void contactNameSelect_SelectedIndexChanged( object sender, EventArgs e ) {
 			isDataModified = true;
 		}
+
 	}
 }

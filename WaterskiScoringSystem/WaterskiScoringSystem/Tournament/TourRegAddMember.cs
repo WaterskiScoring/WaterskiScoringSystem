@@ -360,13 +360,14 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["JumpRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRank", "" );
 						curViewRow.Cells["SlalomRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRating", "" );
 						curViewRow.Cells["TrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRating", "" );
+						curViewRow.Cells["OverallRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRank", "" );
 						curViewRow.Cells["JumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRating", "" );
 						curViewRow.Cells["OverallRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRating", "" );
 						curViewRow.Cells["SlmQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlmQfy", "" );
 						curViewRow.Cells["TrkQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrkQfy", "" );
 						curViewRow.Cells["JmpQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JmpQfy", "" );
-						curViewRow.Cells["TtrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TtrickBoat", "" );
-						curViewRow.Cells["JumpRamp"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRamp", "" );
+						curViewRow.Cells["TrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "" );
+						curViewRow.Cells["JumpRamp"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
 						
 						curViewRow.Cells["Prereg"].Value = false;
 						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "Prereg", "" ).ToLower();

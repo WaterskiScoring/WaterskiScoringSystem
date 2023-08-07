@@ -68,14 +68,18 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SlalomRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.OverallRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SlalomRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.OverallRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventSlalom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventTrick = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventJump = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SlmQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrkQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JmpQfy = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TtrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TrickBoat = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.JumpRamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SlalomClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TrickClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -211,14 +215,18 @@ namespace WaterskiScoringSystem.Tournament {
             this.SlalomRank,
             this.TrickRank,
             this.JumpRank,
+            this.OverallRank,
             this.SlalomRating,
             this.TrickRating,
             this.JumpRating,
             this.OverallRating,
+            this.EventSlalom,
+            this.EventTrick,
+            this.EventJump,
             this.SlmQfy,
             this.TrkQfy,
             this.JmpQfy,
-            this.TtrickBoat,
+            this.TrickBoat,
             this.JumpRamp,
             this.SlalomClass,
             this.TrickClass,
@@ -570,6 +578,12 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JumpRank.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.JumpRank.Width = 50;
 			// 
+			// OverallRank
+			// 
+			this.OverallRank.HeaderText = "Overall Avg";
+			this.OverallRank.Name = "OverallRank";
+			this.OverallRank.ReadOnly = true;
+			// 
 			// SlalomRating
 			// 
 			this.SlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -606,6 +620,30 @@ namespace WaterskiScoringSystem.Tournament {
 			this.OverallRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.OverallRating.Width = 40;
 			// 
+			// EventSlalom
+			// 
+			this.EventSlalom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EventSlalom.HeaderText = "Event Slalom";
+			this.EventSlalom.Name = "EventSlalom";
+			this.EventSlalom.ReadOnly = true;
+			this.EventSlalom.Width = 50;
+			// 
+			// EventTrick
+			// 
+			this.EventTrick.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EventTrick.HeaderText = "Event Trick";
+			this.EventTrick.Name = "EventTrick";
+			this.EventTrick.ReadOnly = true;
+			this.EventTrick.Width = 50;
+			// 
+			// EventJump
+			// 
+			this.EventJump.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.EventJump.HeaderText = "Event Jump";
+			this.EventJump.Name = "EventJump";
+			this.EventJump.ReadOnly = true;
+			this.EventJump.Width = 50;
+			// 
 			// SlmQfy
 			// 
 			this.SlmQfy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -633,14 +671,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JmpQfy.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.JmpQfy.Width = 40;
 			// 
-			// TtrickBoat
+			// TrickBoat
 			// 
-			this.TtrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TtrickBoat.HeaderText = "Ttrick Boat";
-			this.TtrickBoat.Name = "TtrickBoat";
-			this.TtrickBoat.ReadOnly = true;
-			this.TtrickBoat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TtrickBoat.Width = 50;
+			this.TrickBoat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TrickBoat.HeaderText = "Trick Boat";
+			this.TrickBoat.Name = "TrickBoat";
+			this.TrickBoat.ReadOnly = true;
+			this.TrickBoat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TrickBoat.Width = 50;
 			// 
 			// JumpRamp
 			// 
@@ -837,14 +875,18 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomRank;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickRank;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpRank;
+		private System.Windows.Forms.DataGridViewTextBoxColumn OverallRank;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomRating;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickRating;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpRating;
 		private System.Windows.Forms.DataGridViewTextBoxColumn OverallRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventSlalom;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventTrick;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventJump;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlmQfy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrkQfy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JmpQfy;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TtrickBoat;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TrickBoat;
 		private System.Windows.Forms.DataGridViewTextBoxColumn JumpRamp;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SlalomClass;
 		private System.Windows.Forms.DataGridViewTextBoxColumn TrickClass;

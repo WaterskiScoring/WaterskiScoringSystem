@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 
@@ -265,32 +261,28 @@ namespace WaterskiScoringSystem.Tournament {
 
         private void setTourStats() {
             String selectStmt = "";
+            int curIdx = 0;
+            int curNumRides = 0;
+            DataGridViewRow curViewRow;
             DataTable curDataTable;
             DataRow curRow;
-            int curNumRides = 0;
-            int curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
 
-            if ( myTourRow["SlalomRounds"] != DBNull.Value ) {
-                curSlalomRounds = (Byte) myTourRow["SlalomRounds"];
-            }
-            if ( myTourRow["TrickRounds"] != DBNull.Value ) {
-                curTrickRounds = (Byte) myTourRow["TrickRounds"];
-            }
-            if ( myTourRow["JumpRounds"] != DBNull.Value ) {
-                curJumpRounds = (Byte) myTourRow["JumpRounds"];
-            }
 
-            if ( curSlalomRounds > 0 ) {
+            if ( HelperFunctions.getDataRowColValueDecimal( myTourRow, "SlalomRounds", 0 ) > 0 ) {
                 // Calcualte number of slalom participants
+                curIdx = eventStatsDataGridView.Rows.Add();
+                curViewRow = eventStatsDataGridView.Rows[curIdx];
+                curViewRow.Cells["EventName"].Value = "Slalom";
+
                 selectStmt = "Select count(*) as SkierCount "
-                    + " From (SELECT DISTINCT MemberId From SlalomScore "
-                    + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
+                    + "From (SELECT DISTINCT MemberId From SlalomScore "
+                    + "WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    SlalomNumTextBox.Text = curRow["SkierCount"].ToString();
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["SkierCount"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierCount", "0" );
                 } else {
-                    SlalomNumTextBox.Text = "";
+                    curViewRow.Cells["SkierCount"].Value = "0";
                 }
 
                 // Calcualte number of slalom rides
@@ -299,28 +291,44 @@ namespace WaterskiScoringSystem.Tournament {
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    SlalomRidesTextBox.Text = curRow["RideCount"].ToString();
-                    curNumRides += (int) curRow["RideCount"];
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["RideCount"].Value = HelperFunctions.getDataRowColValue( curRow, "RideCount", "0" );
+                    curNumRides += (int)curRow["RideCount"];
+                
                 } else {
-                    SlalomRidesTextBox.Text = "";
+                    curViewRow.Cells["RideCount"].Value = "0";
                 }
-            } else {
-                SlalomNumTextBox.Text = "";
-                SlalomRidesTextBox.Text = "";
+
+                // Calcualte number of Slalom passes
+                selectStmt = "Select count(*) as PassCount "
+                    + " From SlalomRecap "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData( selectStmt );
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["PassCount"].Value = HelperFunctions.getDataRowColValue( curRow, "PassCount", "0" );
+                
+                } else {
+                    curViewRow.Cells["PassCount"].Value = "0";
+                }
             }
 
-            if ( curTrickRounds > 0 ) {
+            if ( HelperFunctions.getDataRowColValueDecimal( myTourRow, "TrickRounds", 0 ) > 0 ) {
                 // Calcualte number of trick participants
+                curIdx = eventStatsDataGridView.Rows.Add();
+                curViewRow = eventStatsDataGridView.Rows[curIdx];
+                curViewRow.Cells["EventName"].Value = "Trick";
+
                 selectStmt = "Select count(*) as SkierCount "
                     + " From (SELECT DISTINCT MemberId From TrickScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    TrickNumTextBox.Text = curRow["SkierCount"].ToString();
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["SkierCount"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierCount", "0" );
+                
                 } else {
-                    TrickNumTextBox.Text = "";
+                    curViewRow.Cells["SkierCount"].Value = "0";
                 }
 
                 // Calcualte number of trick rides
@@ -329,28 +337,44 @@ namespace WaterskiScoringSystem.Tournament {
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    TrickRidesTextBox.Text = curRow["RideCount"].ToString();
-                    curNumRides += (int) curRow["RideCount"];
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["RideCount"].Value = HelperFunctions.getDataRowColValue( curRow, "RideCount", "0" );
+                    curNumRides += (int)curRow["RideCount"];
+
                 } else {
-                    TrickRidesTextBox.Text = "";
+                    curViewRow.Cells["RideCount"].Value = "0";
                 }
-            } else {
-                TrickNumTextBox.Text = "";
-                TrickRidesTextBox.Text = "";
+
+                // Calcualte number of trick rides
+                selectStmt = "Select count(*) as PassCount "
+                    + " From TrickPass "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData( selectStmt );
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["PassCount"].Value = HelperFunctions.getDataRowColValue( curRow, "PassCount", "0" );
+                
+                } else {
+                    curViewRow.Cells["PassCount"].Value = "0";
+                }
             }
 
-            if ( curJumpRounds > 0 ) {
+            if ( HelperFunctions.getDataRowColValueDecimal( myTourRow, "JumpRounds", 0 ) > 0 ) {
+                curIdx = eventStatsDataGridView.Rows.Add();
+                curViewRow = eventStatsDataGridView.Rows[curIdx];
+                curViewRow.Cells["EventName"].Value = "Jump";
+
                 // Calcualte number of jump participants
                 selectStmt = "Select count(*) as SkierCount "
                     + " From (SELECT DISTINCT MemberId From JumpScore "
                     + " WHERE (SanctionId = '" + mySanctionNum + "')) myTable";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    JumpNumTextBox.Text = curRow["SkierCount"].ToString();
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["SkierCount"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierCount", "0" );
+                
                 } else {
-                    JumpNumTextBox.Text = "";
+                    curViewRow.Cells["SkierCount"].Value = "0";
                 }
 
                 // Calcualte number of jump rides
@@ -359,19 +383,33 @@ namespace WaterskiScoringSystem.Tournament {
                     + " WHERE (SanctionId = '" + mySanctionNum + "')";
                 curDataTable = getData(selectStmt);
                 if ( curDataTable.Rows.Count > 0 ) {
-                    curRow = (DataRow) curDataTable.Rows[0];
-                    JumpRidesTextBox.Text = curRow["RideCount"].ToString();
-                    curNumRides += (int) curRow["RideCount"];
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["RideCount"].Value = HelperFunctions.getDataRowColValue( curRow, "RideCount", "0" );
+                    curNumRides += (int)curRow["RideCount"];
+                
                 } else {
-                    JumpRidesTextBox.Text = "";
+                    curViewRow.Cells["RideCount"].Value = "0";
                 }
-            } else {
-                JumpNumTextBox.Text = "";
-                JumpRidesTextBox.Text = "";
+
+                // Calcualte number of Slalom passes
+                selectStmt = "Select count(*) as PassCount "
+                    + " From JumpRecap "
+                    + " WHERE (SanctionId = '" + mySanctionNum + "')";
+                curDataTable = getData( selectStmt );
+                if ( curDataTable.Rows.Count > 0 ) {
+                    curRow = (DataRow)curDataTable.Rows[0];
+                    curViewRow.Cells["PassCount"].Value = HelperFunctions.getDataRowColValue( curRow, "PassCount", "0" );
+                
+                } else {
+                    curViewRow.Cells["PassCount"].Value = "0";
+                }
             }
 
-            // Calcualte total number of ski rides
-            TotalRidesTextBox.Text = curNumRides.ToString();
+            // Total number of ski rides
+            curIdx = eventStatsDataGridView.Rows.Add();
+            curViewRow = eventStatsDataGridView.Rows[curIdx];
+            curViewRow.Cells["EventName"].Value = "Total";
+            curViewRow.Cells["RideCount"].Value = curNumRides.ToString();
 
             // Calcualte total number of participants
             selectStmt = "Select count(*) as SkierCount "
@@ -392,11 +430,11 @@ namespace WaterskiScoringSystem.Tournament {
             curDataTable = getData(selectStmt);
             if ( curDataTable.Rows.Count > 0 ) {
                 curRow = (DataRow) curDataTable.Rows[0];
-                TotalSkiersTextBox.Text = curRow["SkierCount"].ToString();
-                TotalNumTextBox.Text = TotalSkiersTextBox.Text;
+                curViewRow.Cells["SkierCount"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierCount", "0" );
+                TotalSkiersTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "SkierCount", "0" );
+
             } else {
                 TotalSkiersTextBox.Text = "";
-                TotalNumTextBox.Text = "";
             }
         }
 
@@ -499,41 +537,101 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navPrint_Click( object sender, EventArgs e ) {
-            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
-            PrintDialog curPrintDialog = new PrintDialog();
+            Timer curTimerObj = new Timer();
+            curTimerObj.Interval = 5;
+            curTimerObj.Tick += new EventHandler( printReportTimer );
+            curTimerObj.Start();
+        }
 
+        private void printReportTimer( object sender, EventArgs e ) {
+            Timer curTimerObj = (Timer)sender;
+            curTimerObj.Stop();
+            curTimerObj.Tick -= new EventHandler( printReportTimer );
+            printReport( false );
+        }
+
+        private bool printReport( bool inPublish ) {
+            PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
+            Font saveShowDefaultCellStyle = eventStatsDataGridView.DefaultCellStyle.Font;
+            eventStatsDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
+
+            bool returnValue = true;
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
             Font fontPrintTitle = new Font( "Arial Narrow", 14, FontStyle.Bold );
             Font fontPrintFooter = new Font( "Times New Roman", 10 );
 
-            curPrintDialog.AllowCurrentPage = true;
-            curPrintDialog.AllowPrintToFile = true;
-            curPrintDialog.AllowSelection = false;
-            curPrintDialog.AllowSomePages = true;
-            curPrintDialog.PrintToFile = false;
-            curPrintDialog.ShowHelp = false;
-            curPrintDialog.ShowNetwork = false;
-            curPrintDialog.UseEXDialog = true;
+            PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
 
-            if ( curPrintDialog.ShowDialog() == DialogResult.OK ) {
-                String printTitle = Properties.Settings.Default.Mdi_Title
-                    + "\n Sanction " + mySanctionNum + " held on " + myTourRow["EventDates"].ToString()
-                    + "\n" + this.Text;
-                myPrintDoc = new PrintDocument();
-                myPrintDoc.DocumentName = this.Text;
-                myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
-                myPrintDoc.DefaultPageSettings.Landscape = false;
-                myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
-                    CenterOnPage, WithTitle, printTitle, fontPrintTitle, Color.DarkBlue, WithPaging );
+            StringBuilder printTitle = new StringBuilder( Properties.Settings.Default.Mdi_Title );
+            printTitle.Append( "\n Sanction " + mySanctionNum );
+            printTitle.Append( "held on " + myTourRow["EventDates"].ToString() );
+            printTitle.Append( "\n" + this.Text );
 
-                myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
-                myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
-                myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
-                curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
-            }
+            myPrintDoc = new PrintDocument();
+            myPrintDoc.DocumentName = this.Text;
+            myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+            myPrintDoc.DefaultPageSettings.Landscape = false;
+
+            myPrintDataGrid = new DataGridViewPrinter( eventStatsDataGridView, myPrintDoc,
+                CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+            
+            myPrintDataGrid.SubtitleList();
+            Font fontPrintSubTitle = new Font( "Arial", 12, FontStyle.Bold );
+            StringFormat SubtitleStringFormat = new StringFormat();
+            SubtitleStringFormat.Trimming = StringTrimming.Word;
+            SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            SubtitleStringFormat.Alignment = StringAlignment.Center;
+            StringRowPrinter curSubtitle = new StringRowPrinter( "Number of Participants: " + TotalSkiersTextBox.Text, 250, 0, 250, 50
+                , Color.DarkBlue, Color.White, fontPrintSubTitle, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = curSubtitle;
+
+            myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+            myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
+
+            eventStatsDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+
+            /*
+             * Print event stat details
+             */
+            saveShowDefaultCellStyle = scoreSummaryDataGridView.DefaultCellStyle.Font;
+            scoreSummaryDataGridView.DefaultCellStyle.Font = new Font( "Tahoma", 12, FontStyle.Regular );
+
+            curPrintDialog = HelperPrintFunctions.getPrintSettings();
+            if ( curPrintDialog == null ) return false;
+
+            myPrintDataGrid = new DataGridViewPrinter( scoreSummaryDataGridView, myPrintDoc,
+                CenterOnPage, WithTitle, printTitle.ToString(), fontPrintTitle, Color.DarkBlue, WithPaging );
+
+            myPrintDoc = new PrintDocument();
+            myPrintDoc.DocumentName = this.Text;
+            myPrintDoc.DefaultPageSettings.Margins = new Margins( 25, 25, 25, 25 );
+            myPrintDoc.DefaultPageSettings.Landscape = false;
+
+            myPrintDataGrid.SubtitleList();
+            fontPrintSubTitle = new Font( "Arial", 12, FontStyle.Bold );
+            SubtitleStringFormat = new StringFormat();
+            SubtitleStringFormat.Trimming = StringTrimming.Word;
+            SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            SubtitleStringFormat.Alignment = StringAlignment.Center;
+
+            myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
+            myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
+            myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
+            curPreviewDialog.Document = myPrintDoc;
+            curPreviewDialog.Focus();
+            curPreviewDialog.ShowDialog();
+
+            scoreSummaryDataGridView.DefaultCellStyle.Font = saveShowDefaultCellStyle;
+
+
+            return returnValue;
         }
 
         // The PrintPage action for the PrintDocument control

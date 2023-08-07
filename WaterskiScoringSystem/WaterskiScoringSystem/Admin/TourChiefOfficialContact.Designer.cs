@@ -86,6 +86,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactPhoneTextBox = new System.Windows.Forms.TextBox();
 			this.contactNameSelect = new System.Windows.Forms.ComboBox();
 			this.label11 = new System.Windows.Forms.Label();
+			this.loadButton = new System.Windows.Forms.Button();
 			ChiefJudgeLabel = new System.Windows.Forms.Label();
 			TechnicalReportLabel = new System.Windows.Forms.Label();
 			ChiefDriverLabel = new System.Windows.Forms.Label();
@@ -385,7 +386,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(510, 247);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(181, 19);
+			this.label1.Size = new System.Drawing.Size(146, 16);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Address, City, State Zip";
 			// 
@@ -394,7 +395,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(510, 272);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(286, 19);
+			this.label2.Size = new System.Drawing.Size(252, 16);
 			this.label2.TabIndex = 0;
 			this.label2.Text = "Day: xxx-xxx-xxxx Evening: xxx-xxx-xxxx";
 			// 
@@ -403,9 +404,9 @@ namespace WaterskiScoringSystem.Admin {
 			this.winStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.winStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.winStatusMsg});
-			this.winStatus.Location = new System.Drawing.Point(0, 723);
+			this.winStatus.Location = new System.Drawing.Point(0, 728);
 			this.winStatus.Name = "winStatus";
-			this.winStatus.Size = new System.Drawing.Size(807, 22);
+			this.winStatus.Size = new System.Drawing.Size(791, 22);
 			this.winStatus.TabIndex = 189;
 			this.winStatus.Text = "statusStrip1";
 			// 
@@ -437,7 +438,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefScorerPhoneTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefScorerPhoneTextBox.Location = new System.Drawing.Point(160, 537);
 			this.chiefScorerPhoneTextBox.Name = "chiefScorerPhoneTextBox";
-			this.chiefScorerPhoneTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefScorerPhoneTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefScorerPhoneTextBox.TabIndex = 32;
 			this.chiefScorerPhoneTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefScorerPhoneTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -447,7 +448,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefScorerEmailTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefScorerEmailTextBox.Location = new System.Drawing.Point(160, 562);
 			this.chiefScorerEmailTextBox.Name = "chiefScorerEmailTextBox";
-			this.chiefScorerEmailTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefScorerEmailTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefScorerEmailTextBox.TabIndex = 33;
 			this.chiefScorerEmailTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefScorerEmailTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.textItem_Validating);
@@ -458,7 +459,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefScorerAddressTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefScorerAddressTextBox.Location = new System.Drawing.Point(160, 512);
 			this.chiefScorerAddressTextBox.Name = "chiefScorerAddressTextBox";
-			this.chiefScorerAddressTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefScorerAddressTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefScorerAddressTextBox.TabIndex = 31;
 			this.chiefScorerAddressTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefScorerAddressTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -468,7 +469,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefJudgeAddressTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefJudgeAddressTextBox.Location = new System.Drawing.Point(160, 244);
 			this.chiefJudgeAddressTextBox.Name = "chiefJudgeAddressTextBox";
-			this.chiefJudgeAddressTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefJudgeAddressTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefJudgeAddressTextBox.TabIndex = 11;
 			this.chiefJudgeAddressTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefJudgeAddressTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -478,7 +479,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefJudgePhoneTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefJudgePhoneTextBox.Location = new System.Drawing.Point(160, 269);
 			this.chiefJudgePhoneTextBox.Name = "chiefJudgePhoneTextBox";
-			this.chiefJudgePhoneTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefJudgePhoneTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefJudgePhoneTextBox.TabIndex = 12;
 			this.chiefJudgePhoneTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefJudgePhoneTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -488,7 +489,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefJudgeEmailTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefJudgeEmailTextBox.Location = new System.Drawing.Point(160, 294);
 			this.chiefJudgeEmailTextBox.Name = "chiefJudgeEmailTextBox";
-			this.chiefJudgeEmailTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefJudgeEmailTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefJudgeEmailTextBox.TabIndex = 13;
 			this.chiefJudgeEmailTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefJudgeEmailTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.textItem_Validating);
@@ -499,7 +500,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefDriverAddressTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefDriverAddressTextBox.Location = new System.Drawing.Point(160, 377);
 			this.chiefDriverAddressTextBox.Name = "chiefDriverAddressTextBox";
-			this.chiefDriverAddressTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefDriverAddressTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefDriverAddressTextBox.TabIndex = 21;
 			this.chiefDriverAddressTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefDriverAddressTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -509,7 +510,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefDriverPhoneTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefDriverPhoneTextBox.Location = new System.Drawing.Point(160, 402);
 			this.chiefDriverPhoneTextBox.Name = "chiefDriverPhoneTextBox";
-			this.chiefDriverPhoneTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefDriverPhoneTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefDriverPhoneTextBox.TabIndex = 22;
 			this.chiefDriverPhoneTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefDriverPhoneTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -519,7 +520,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefDriverEmailTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chiefDriverEmailTextBox.Location = new System.Drawing.Point(160, 427);
 			this.chiefDriverEmailTextBox.Name = "chiefDriverEmailTextBox";
-			this.chiefDriverEmailTextBox.Size = new System.Drawing.Size(350, 26);
+			this.chiefDriverEmailTextBox.Size = new System.Drawing.Size(350, 22);
 			this.chiefDriverEmailTextBox.TabIndex = 23;
 			this.chiefDriverEmailTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.chiefDriverEmailTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.textItem_Validating);
@@ -530,7 +531,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.safetyDirAddressTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.safetyDirAddressTextBox.Location = new System.Drawing.Point(160, 647);
 			this.safetyDirAddressTextBox.Name = "safetyDirAddressTextBox";
-			this.safetyDirAddressTextBox.Size = new System.Drawing.Size(350, 26);
+			this.safetyDirAddressTextBox.Size = new System.Drawing.Size(350, 22);
 			this.safetyDirAddressTextBox.TabIndex = 41;
 			this.safetyDirAddressTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.safetyDirAddressTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -540,7 +541,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.safetyDirPhoneTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.safetyDirPhoneTextBox.Location = new System.Drawing.Point(160, 672);
 			this.safetyDirPhoneTextBox.Name = "safetyDirPhoneTextBox";
-			this.safetyDirPhoneTextBox.Size = new System.Drawing.Size(350, 26);
+			this.safetyDirPhoneTextBox.Size = new System.Drawing.Size(350, 22);
 			this.safetyDirPhoneTextBox.TabIndex = 42;
 			this.safetyDirPhoneTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.safetyDirPhoneTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -550,7 +551,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.safetyDirEmailTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.safetyDirEmailTextBox.Location = new System.Drawing.Point(160, 697);
 			this.safetyDirEmailTextBox.Name = "safetyDirEmailTextBox";
-			this.safetyDirEmailTextBox.Size = new System.Drawing.Size(350, 26);
+			this.safetyDirEmailTextBox.Size = new System.Drawing.Size(350, 22);
 			this.safetyDirEmailTextBox.TabIndex = 43;
 			this.safetyDirEmailTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.safetyDirEmailTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.textItem_Validating);
@@ -562,7 +563,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefSafetyNameTextBox.Location = new System.Drawing.Point(160, 622);
 			this.chiefSafetyNameTextBox.Name = "chiefSafetyNameTextBox";
 			this.chiefSafetyNameTextBox.ReadOnly = true;
-			this.chiefSafetyNameTextBox.Size = new System.Drawing.Size(200, 26);
+			this.chiefSafetyNameTextBox.Size = new System.Drawing.Size(200, 22);
 			this.chiefSafetyNameTextBox.TabIndex = 202;
 			// 
 			// chiefDriverNameTextBox
@@ -571,7 +572,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefDriverNameTextBox.Location = new System.Drawing.Point(160, 352);
 			this.chiefDriverNameTextBox.Name = "chiefDriverNameTextBox";
 			this.chiefDriverNameTextBox.ReadOnly = true;
-			this.chiefDriverNameTextBox.Size = new System.Drawing.Size(200, 26);
+			this.chiefDriverNameTextBox.Size = new System.Drawing.Size(200, 22);
 			this.chiefDriverNameTextBox.TabIndex = 20;
 			// 
 			// chiefJudgeNameTextBox
@@ -580,7 +581,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefJudgeNameTextBox.Location = new System.Drawing.Point(160, 219);
 			this.chiefJudgeNameTextBox.Name = "chiefJudgeNameTextBox";
 			this.chiefJudgeNameTextBox.ReadOnly = true;
-			this.chiefJudgeNameTextBox.Size = new System.Drawing.Size(200, 26);
+			this.chiefJudgeNameTextBox.Size = new System.Drawing.Size(200, 22);
 			this.chiefJudgeNameTextBox.TabIndex = 10;
 			// 
 			// chiefScorerNameTextBox
@@ -589,7 +590,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.chiefScorerNameTextBox.Location = new System.Drawing.Point(160, 487);
 			this.chiefScorerNameTextBox.Name = "chiefScorerNameTextBox";
 			this.chiefScorerNameTextBox.ReadOnly = true;
-			this.chiefScorerNameTextBox.Size = new System.Drawing.Size(200, 26);
+			this.chiefScorerNameTextBox.Size = new System.Drawing.Size(200, 22);
 			this.chiefScorerNameTextBox.TabIndex = 30;
 			// 
 			// label3
@@ -597,7 +598,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(510, 405);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(286, 19);
+			this.label3.Size = new System.Drawing.Size(252, 16);
 			this.label3.TabIndex = 0;
 			this.label3.Text = "Day: xxx-xxx-xxxx Evening: xxx-xxx-xxxx";
 			// 
@@ -606,7 +607,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(510, 380);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(181, 19);
+			this.label4.Size = new System.Drawing.Size(146, 16);
 			this.label4.TabIndex = 0;
 			this.label4.Text = "Address, City, State Zip";
 			// 
@@ -615,7 +616,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(510, 540);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(286, 19);
+			this.label5.Size = new System.Drawing.Size(252, 16);
 			this.label5.TabIndex = 0;
 			this.label5.Text = "Day: xxx-xxx-xxxx Evening: xxx-xxx-xxxx";
 			// 
@@ -624,7 +625,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(510, 515);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(181, 19);
+			this.label6.Size = new System.Drawing.Size(146, 16);
 			this.label6.TabIndex = 0;
 			this.label6.Text = "Address, City, State Zip";
 			// 
@@ -633,7 +634,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(510, 675);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(286, 19);
+			this.label7.Size = new System.Drawing.Size(252, 16);
 			this.label7.TabIndex = 0;
 			this.label7.Text = "Day: xxx-xxx-xxxx Evening: xxx-xxx-xxxx";
 			// 
@@ -642,14 +643,14 @@ namespace WaterskiScoringSystem.Admin {
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(510, 650);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(181, 19);
+			this.label8.Size = new System.Drawing.Size(146, 16);
 			this.label8.TabIndex = 0;
 			this.label8.Text = "Address, City, State Zip";
 			// 
 			// saveButton
 			// 
 			this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.saveButton.Location = new System.Drawing.Point(276, 1);
+			this.saveButton.Location = new System.Drawing.Point(244, 1);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
 			this.saveButton.TabIndex = 205;
@@ -660,7 +661,7 @@ namespace WaterskiScoringSystem.Admin {
 			// cancelButton
 			// 
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(412, 1);
+			this.cancelButton.Location = new System.Drawing.Point(327, 1);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 203;
@@ -673,7 +674,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(521, 137);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(286, 19);
+			this.label9.Size = new System.Drawing.Size(252, 16);
 			this.label9.TabIndex = 0;
 			this.label9.Text = "Day: xxx-xxx-xxxx Evening: xxx-xxx-xxxx";
 			// 
@@ -682,7 +683,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.label10.AutoSize = true;
 			this.label10.Location = new System.Drawing.Point(521, 112);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(181, 19);
+			this.label10.Size = new System.Drawing.Size(146, 16);
 			this.label10.TabIndex = 0;
 			this.label10.Text = "Address, City, State Zip";
 			// 
@@ -691,7 +692,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactAddressTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.contactAddressTextBox.Location = new System.Drawing.Point(171, 109);
 			this.contactAddressTextBox.Name = "contactAddressTextBox";
-			this.contactAddressTextBox.Size = new System.Drawing.Size(350, 26);
+			this.contactAddressTextBox.Size = new System.Drawing.Size(350, 22);
 			this.contactAddressTextBox.TabIndex = 214;
 			this.contactAddressTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.contactAddressTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -701,7 +702,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactEmailTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.contactEmailTextBox.Location = new System.Drawing.Point(171, 159);
 			this.contactEmailTextBox.Name = "contactEmailTextBox";
-			this.contactEmailTextBox.Size = new System.Drawing.Size(350, 26);
+			this.contactEmailTextBox.Size = new System.Drawing.Size(350, 22);
 			this.contactEmailTextBox.TabIndex = 216;
 			this.contactEmailTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.contactEmailTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.textItem_Validating);
@@ -712,7 +713,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactPhoneTextBox.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.contactPhoneTextBox.Location = new System.Drawing.Point(171, 134);
 			this.contactPhoneTextBox.Name = "contactPhoneTextBox";
-			this.contactPhoneTextBox.Size = new System.Drawing.Size(350, 26);
+			this.contactPhoneTextBox.Size = new System.Drawing.Size(350, 22);
 			this.contactPhoneTextBox.TabIndex = 215;
 			this.contactPhoneTextBox.Enter += new System.EventHandler(this.EnterItemTextBox);
 			this.contactPhoneTextBox.Validated += new System.EventHandler(this.textItem_Validated);
@@ -725,7 +726,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.contactNameSelect.Location = new System.Drawing.Point(184, 85);
 			this.contactNameSelect.MaxLength = 24;
 			this.contactNameSelect.Name = "contactNameSelect";
-			this.contactNameSelect.Size = new System.Drawing.Size(200, 25);
+			this.contactNameSelect.Size = new System.Drawing.Size(200, 21);
 			this.contactNameSelect.TabIndex = 217;
 			this.contactNameSelect.SelectedIndexChanged += new System.EventHandler(this.contactNameSelect_SelectedIndexChanged);
 			// 
@@ -734,18 +735,30 @@ namespace WaterskiScoringSystem.Admin {
 			this.label11.AutoSize = true;
 			this.label11.Location = new System.Drawing.Point(388, 88);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(260, 19);
+			this.label11.Size = new System.Drawing.Size(209, 16);
 			this.label11.TabIndex = 0;
 			this.label11.Text = "Post tournament reporting contact ";
+			// 
+			// loadButton
+			// 
+			this.loadButton.AutoSize = true;
+			this.loadButton.Location = new System.Drawing.Point(414, 1);
+			this.loadButton.Name = "loadButton";
+			this.loadButton.Size = new System.Drawing.Size(119, 26);
+			this.loadButton.TabIndex = 218;
+			this.loadButton.Text = "Load Contact Info";
+			this.loadButton.UseVisualStyleBackColor = true;
+			this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
 			// 
 			// TourChiefOfficialContact
 			// 
 			this.AcceptButton = this.saveButton;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(791, 750);
+			this.Controls.Add(this.loadButton);
 			this.Controls.Add(this.label11);
 			this.Controls.Add(this.contactNameSelect);
 			this.Controls.Add(this.label9);
@@ -861,5 +874,6 @@ namespace WaterskiScoringSystem.Admin {
         private System.Windows.Forms.TextBox contactPhoneTextBox;
         private System.Windows.Forms.ComboBox contactNameSelect;
         private System.Windows.Forms.Label label11;
-    }
+		private System.Windows.Forms.Button loadButton;
+	}
 }

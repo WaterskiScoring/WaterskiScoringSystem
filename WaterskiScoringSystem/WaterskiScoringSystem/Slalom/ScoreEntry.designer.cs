@@ -106,8 +106,8 @@
 			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -240,6 +240,7 @@
 			this.InvalidateBoatPathButton = new System.Windows.Forms.Button();
 			this.BpmsDriverLabel = new System.Windows.Forms.Label();
 			this.BpmsDriver = new System.Windows.Forms.Label();
+			this.SimulationPassButton = new System.Windows.Forms.Button();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.SlalomLineSelect = new WaterskiScoringSystem.Common.SlalomLineSelect();
 			this.SlalomSpeedSelection = new WaterskiScoringSystem.Common.SlalomSpeedSelect();
@@ -436,8 +437,8 @@
             this.EventClass,
             this.EventGroup,
             this.Score,
-            this.ScoreWithHcap,
             this.RankingScore,
+            this.ScoreWithHcap,
             this.HCapBase,
             this.HCapScore,
             this.Status,
@@ -543,32 +544,32 @@
 			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.Score.Width = 40;
 			// 
-			// ScoreWithHcap
-			// 
-			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.Format = "N2";
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle6;
-			this.ScoreWithHcap.HeaderText = "ScoreH";
-			this.ScoreWithHcap.Name = "ScoreWithHcap";
-			this.ScoreWithHcap.ReadOnly = true;
-			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.ScoreWithHcap.Width = 45;
-			// 
 			// RankingScore
 			// 
 			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle6;
 			this.RankingScore.HeaderText = "Rank";
 			this.RankingScore.Name = "RankingScore";
 			this.RankingScore.ReadOnly = true;
 			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.RankingScore.Width = 40;
+			// 
+			// ScoreWithHcap
+			// 
+			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle7.Format = "N2";
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.DefaultCellStyle = dataGridViewCellStyle7;
+			this.ScoreWithHcap.HeaderText = "ScoreH";
+			this.ScoreWithHcap.Name = "ScoreWithHcap";
+			this.ScoreWithHcap.ReadOnly = true;
+			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ScoreWithHcap.Width = 45;
 			// 
 			// HCapBase
 			// 
@@ -2279,7 +2280,7 @@
 			this.ResendPassButton.AutoSize = true;
 			this.ResendPassButton.Enabled = false;
 			this.ResendPassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ResendPassButton.Location = new System.Drawing.Point(554, 453);
+			this.ResendPassButton.Location = new System.Drawing.Point(554, 454);
 			this.ResendPassButton.Margin = new System.Windows.Forms.Padding(0);
 			this.ResendPassButton.Name = "ResendPassButton";
 			this.ResendPassButton.Padding = new System.Windows.Forms.Padding(1);
@@ -2330,6 +2331,22 @@
 			this.BpmsDriver.TabIndex = 107;
 			this.BpmsDriver.Text = "Bpms Driver:";
 			this.BpmsDriver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// SimulationPassButton
+			// 
+			this.SimulationPassButton.AutoSize = true;
+			this.SimulationPassButton.Enabled = false;
+			this.SimulationPassButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.SimulationPassButton.Location = new System.Drawing.Point(1177, 454);
+			this.SimulationPassButton.Margin = new System.Windows.Forms.Padding(0);
+			this.SimulationPassButton.Name = "SimulationPassButton";
+			this.SimulationPassButton.Padding = new System.Windows.Forms.Padding(1);
+			this.SimulationPassButton.Size = new System.Drawing.Size(111, 33);
+			this.SimulationPassButton.TabIndex = 108;
+			this.SimulationPassButton.Text = "Simulation Pass";
+			this.SimulationPassButton.UseVisualStyleBackColor = true;
+			this.SimulationPassButton.Visible = false;
+			this.SimulationPassButton.Click += new System.EventHandler(this.SimulationPassButton_Click);
 			// 
 			// roundActiveSelect
 			// 
@@ -2388,6 +2405,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1373, 741);
+			this.Controls.Add(this.SimulationPassButton);
 			this.Controls.Add(this.BpmsDriver);
 			this.Controls.Add(this.BpmsDriverLabel);
 			this.Controls.Add(this.InvalidateBoatPathButton);
@@ -2550,25 +2568,6 @@
 		private System.Windows.Forms.ToolStripButton navWaterSkiConnect;
 		private System.Windows.Forms.ComboBox driverDropdown;
 		private System.Windows.Forms.Label driverLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreWithHcap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
-		private System.Windows.Forms.DataGridViewTextBoxColumn State;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
 		private System.Windows.Forms.Button ResendPassButton;
 		private System.Windows.Forms.DataGridViewTextBoxColumn BoatTimeKey;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ListCodeNum;
@@ -2624,5 +2623,25 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberIdRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroupRecap;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreWithHcap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn State;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
+		private System.Windows.Forms.Button SimulationPassButton;
 	}
 }

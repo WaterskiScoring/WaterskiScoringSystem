@@ -1017,6 +1017,8 @@ namespace WaterskiScoringSystem.Slalom {
 		private void setSlalomScoreEntry( DataGridViewRow inTourEventRegRow, int inRound ) {
 			Int16 curMinSpeedKph = 0, curMaxSpeedKph = 0;
 
+			SimulationPassButton.Enabled = false;
+			SimulationPassButton.Visible = false;
 			if ( !(WscHandler.isConnectActive) ) navWaterSkiConnect_Click( null, null );
 
 			String curMemberId = (String)inTourEventRegRow.Cells["MemberId"].Value;
@@ -1087,6 +1089,12 @@ namespace WaterskiScoringSystem.Slalom {
 			} else {
 				myScoreRow = null;
 				DataRow[] curLineRow = SlalomLineSelect.myDataTable.Select( "ListCodeNum = 18.25" );
+
+				if ( WscHandler.isConnectActive ) {
+					SimulationPassButton.Enabled = true;
+					SimulationPassButton.Visible = true;
+					SimulationPassButton.Text = "Simulation Pass";
+				}
 
 				SlalomLineSelect.CurrentValue = (String)curLineRow[0]["ListCode"];
 				SlalomSpeedSelection.SelectSpeekKph = curDefaultStartSpeed;
@@ -1367,6 +1375,40 @@ namespace WaterskiScoringSystem.Slalom {
 			Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 			sendPassDataEwsc( TourEventRegDataGridView.Rows[myEventRegViewIdx], curPassSpeedKph, curPassLineLengthMeters );
 		}
+		
+		private void SimulationPassButton_Click( object sender, EventArgs e ) {
+			String curSimMemberId = "000000000";
+			Int16 curPassSpeedKph = 58;
+			Decimal curPassLineLengthMeters = (decimal)18.25;
+
+			if ( SimulationPassButton.Text.ToLower().Equals("check bpms") ) {
+				loadBoatPathDataGridView( "Slalom", "L", curSimMemberId, "1", "1", (decimal)6 );
+				if ( InvalidateBoatPathButton.Visible ) SimulationPassButton.Text = "Simulation Pass";
+
+			} else {
+				SimulationPassButton.Text = "Check BPMS";
+				WscHandler.sendPassData( curSimMemberId
+					, "Simulation Pass"
+					, "Slalom"
+					, "USA"
+					, ""
+					, ""
+					, ""
+					, ""
+					, ""
+					, "1"
+					, 1
+					, curPassSpeedKph
+					, curPassLineLengthMeters.ToString( "00.00" )
+					, ""
+					, (String)driverDropdown.SelectedValue );
+			}
+
+
+			/*
+			 */
+
+		}
 
 		private void addPassButton_Click( object sender, EventArgs e ) {
 			DataGridViewRow curEventRegRow = TourEventRegDataGridView.Rows[myEventRegViewIdx];
@@ -1431,6 +1473,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		private void addRecapRow() {
+			String curMethodName = "Slalom:ScoreEntry:addRecapRow: ";
 			Int16 curSkierPass, curPassSpeedKph, curStartSpeedKph;
 			Decimal curPassLineLengthMeters = 0M, curPassScore = 0M;
 			isAddRecapRowInProg = true;
@@ -1461,8 +1504,8 @@ namespace WaterskiScoringSystem.Slalom {
 					bool curScoreProtCkd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreProtRecap", "Y" ) );
 					bool curBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapRow, "BoatPathGoodRecap", "Y" ) );
 
-					if ( ( curTimeGood && curBoatPathGood && !(curRerideReqd) && curPassScore == 6 )
-							|| ( !(curTimeGood) && curBoatPathGood && curScoreProtCkd && curPassScore == 6 )
+					if ( ( curTimeGood && curBoatPathGood && !( curRerideReqd ) && curPassScore == 6 )
+							|| ( !( curTimeGood ) && curBoatPathGood && curScoreProtCkd && curPassScore == 6 )
 							|| ( curTimeGood && curBoatPathGood && curRerideReqd && curScoreProtCkd && curPassScore == 6 )
 							|| ( curRerideReqd && curTimeGood && curSkierPass == 1 && mySlalomSetAnalysis.isExitGatesGood() && !( mySlalomSetAnalysis.isEntryGatesGood() ) )
 							) {
@@ -1474,7 +1517,7 @@ namespace WaterskiScoringSystem.Slalom {
 							 */
 							DataRow curClassRowSkier = SlalomEventData.getSkierClass( HelperFunctions.getViewRowColValue( curEventRegRow, "EventClass", SlalomEventData.myTourClass ) );
 							if ( SlalomEventData.isQualifiedAltScoreMethod( curAgeGroup, (String)curClassRowSkier["ListCode"] ) ) {
-								if ( !(curRerideReqd)
+								if ( !( curRerideReqd )
 									|| ( curRerideReqd && curTimeGood && curSkierPass == 1 && mySlalomSetAnalysis.isExitGatesGood() && !( mySlalomSetAnalysis.isEntryGatesGood() ) ) ) {
 									nextPassWithOption();
 								} else {
@@ -1495,7 +1538,24 @@ namespace WaterskiScoringSystem.Slalom {
 							addPassNextLine();
 						}
 
-					} else if ( curRerideReqd ) AddNewRecapRow();
+					} else {
+						if ( curRerideReqd ) {
+							AddNewRecapRow();
+						
+						} else {
+							Log.WriteFile( String.Format( curMethodName + ":Unexpected fall thru when attempting to determine the speed and line length for the next pass "
+								+ "MemberId: {0}, AgeGroup: {1}, Round: {2}, PassNum: {3}, Speed: {4}, LineLenth: {5}"
+								, HelperFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "" )
+								, HelperFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" )
+								, HelperFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "" )
+								, curSkierPass
+								, curPassSpeedKph
+								, curPassLineLengthMeters
+								) );
+							MessageBox.Show( "Check new pass because it might be the same as the previous pass.  If yes please send log file to David Allen" );
+						}
+
+					}
 
 				} catch ( Exception ex ) {
 					myPassRow = null;
@@ -2155,25 +2215,25 @@ namespace WaterskiScoringSystem.Slalom {
 
 		private void sendPassDataEwsc( DataGridViewRow tourEventRegRow, Int16 curPassSpeedKph, decimal curPassLineLengthMeters ) {
 			if ( WscHandler.isConnectActive ) {
-				String skierFed = HelperFunctions.getDataRowColValue( SlalomEventData.myTourRow, "Federation", "" );
-				if ( HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( tourEventRegRow, "Federation", "" ) ) ) {
-					skierFed = HelperFunctions.getViewRowColValue( tourEventRegRow, "Federation", "" );
-				}
-				WscHandler.sendPassData( (String)myRecapRow.Cells["MemberIdRecap"].Value
-					, (String)tourEventRegRow.Cells["SkierName"].Value
-					, "Slalom"
-					, skierFed
-					, (String)tourEventRegRow.Cells["State"].Value
-					, (String)tourEventRegRow.Cells["EventGroup"].Value
-					, (String)tourEventRegRow.Cells["AgeGroup"].Value
-					, (String)tourEventRegRow.Cells["Gender"].Value
-					, (String)scoreEventClass.SelectedValue
-					, roundActiveSelect.RoundValue
-					, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
-					, curPassSpeedKph
-					, curPassLineLengthMeters.ToString( "00.00" )
-					, "0"
-					, (String)driverDropdown.SelectedValue );
+					String skierFed = HelperFunctions.getDataRowColValue( SlalomEventData.myTourRow, "Federation", "" );
+					if ( HelperFunctions.isObjectPopulated( HelperFunctions.getViewRowColValue( tourEventRegRow, "Federation", "" ) ) ) {
+						skierFed = HelperFunctions.getViewRowColValue( tourEventRegRow, "Federation", "" );
+					}
+					WscHandler.sendPassData( (String)myRecapRow.Cells["MemberIdRecap"].Value
+						, (String)tourEventRegRow.Cells["SkierName"].Value
+						, "Slalom"
+						, skierFed
+						, (String)tourEventRegRow.Cells["State"].Value
+						, (String)tourEventRegRow.Cells["EventGroup"].Value
+						, (String)tourEventRegRow.Cells["AgeGroup"].Value
+						, (String)tourEventRegRow.Cells["Gender"].Value
+						, (String)scoreEventClass.SelectedValue
+						, roundActiveSelect.RoundValue
+						, Convert.ToInt16( (String)myRecapRow.Cells["skierPassRecap"].Value )
+						, curPassSpeedKph
+						, curPassLineLengthMeters.ToString( "00.00" )
+						, "0"
+						, (String)driverDropdown.SelectedValue );
 			}
 			if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
@@ -3045,7 +3105,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			try {
 				boatPathDataGridView.Rows.Clear();
-				if ( myRecapRow == null || slalomRecapDataGridView.CurrentRow == null ) {
+				if ( (myRecapRow == null || slalomRecapDataGridView.CurrentRow == null) && !(curMemberId.Equals("000000000")) ) {
 					boatPathDataGridView.Visible = false;
 					InvalidateBoatPathButton.Visible = false;
 					InvalidateBoatPathButton.Enabled = false;
@@ -3056,9 +3116,17 @@ namespace WaterskiScoringSystem.Slalom {
 					BpmsDriver.Text = "";
 					return curPassScore;
 				}
-				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum
-					, Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value )
-					, Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value ) );
+				Int16 curPassSpeedKph;
+				decimal curPassLineLength;
+				if ( curMemberId.Equals( "000000000" ) ) {
+					curPassLineLength = (decimal)18.25;
+					curPassSpeedKph = (Int16)58;
+				} else {
+					curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+					curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
+
+				}
+				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
 				if ( myBoatPathDataRow == null ) {
 					boatPathDataGridView.Visible = false;
 					InvalidateBoatPathButton.Visible = false;
@@ -3091,9 +3159,8 @@ namespace WaterskiScoringSystem.Slalom {
 				BpmsDriver.Visible = true;
 				BpmsDriver.Enabled = true;
 				BpmsDriver.Text = HelperFunctions.getDataRowColValue( myBoatPathDataRow, "DriverName", "" );
-				
 
-				myRecapRow.Cells["BoatPathGoodRecap"].Value = "Y";
+				if ( !( curMemberId.Equals( "000000000" ) ) ) myRecapRow.Cells["BoatPathGoodRecap"].Value = "Y";
 				if ( isRerideReqd && Convert.ToInt32(curPassNum) == slalomRecapDataGridView.RowCount) {
 					return checkBoatPathReride( curSkierClass, curPassScore );
 				}

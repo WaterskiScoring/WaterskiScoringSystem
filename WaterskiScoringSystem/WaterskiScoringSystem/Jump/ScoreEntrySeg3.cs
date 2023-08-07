@@ -535,7 +535,12 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curScoreFeet.Length == 0 ) curScoreFeet = "Null";
 			String curScoreMeters = scoreMetersTextBox.Text;
 			if ( curScoreMeters.Length == 0 ) curScoreMeters = "Null";
-			String curNopsScore = nopsScoreTextBox.Text;
+			decimal curNopsScoreNum = Convert.ToDecimal( nopsScoreTextBox.Text );
+			if ( curNopsScoreNum > 99999m ) {
+				curNopsScoreNum = 99999m;
+				scoreMetersTextBox.Text = curNopsScoreNum.ToString( "####0.0" ); ;
+			}
+			String curNopsScore = curNopsScoreNum.ToString("####0.0");
 			if ( curNopsScore.Length == 0 ) curNopsScore = "Null";
 			String curRampHeight = RampHeightSelect.CurrentValue.ToString( "0.0" );
 			if ( curRampHeight.Length == 0 ) curRampHeight = "Null";

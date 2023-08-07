@@ -93,6 +93,7 @@
 			this.navListMaintenance = new System.Windows.Forms.ToolStripMenuItem();
 			this.navNopsDataMainenance = new System.Windows.Forms.ToolStripMenuItem();
 			this.publishReportDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,9 +102,7 @@
 			this.navMetricTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.shrinkDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navDatabaseBackup = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.databaseToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.logRecoveryUtilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navSetDatabase = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +111,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.navPublishPDF = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -627,18 +626,17 @@
             this.navListMaintenance,
             this.navNopsDataMainenance,
             this.publishReportDeleteToolStripMenuItem,
+            this.navPublishPDF,
+            this.navImportData,
+            this.navImportLwData,
             this.boatPathDriverUpdateToolStripMenuItem,
             this.navViewRankingList,
             this.navTrickListMaint,
-            this.navImportData,
-            this.navImportLwData,
             this.regionalJuniorExtractsToolStripMenuItem,
             this.navMetricTool,
             this.shrinkDatabaseToolStripMenuItem,
             this.navDatabaseBackup,
-            this.toolStripMenuItem1,
             this.databaseToolToolStripMenuItem,
-            this.logRecoveryUtilityToolStripMenuItem,
             this.navSetDatabase,
             this.toolStripSeparator3});
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
@@ -671,7 +669,14 @@
 			this.publishReportDeleteToolStripMenuItem.Name = "publishReportDeleteToolStripMenuItem";
 			this.publishReportDeleteToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.publishReportDeleteToolStripMenuItem.Text = "Publish Report Delete";
-			this.publishReportDeleteToolStripMenuItem.Click += new System.EventHandler(this.publishReportDeleteToolStripMenuItem_Click);
+			this.publishReportDeleteToolStripMenuItem.Click += new System.EventHandler(this.navPublishReportDelete_Click);
+			// 
+			// boatPathDriverUpdateToolStripMenuItem
+			// 
+			this.boatPathDriverUpdateToolStripMenuItem.Name = "boatPathDriverUpdateToolStripMenuItem";
+			this.boatPathDriverUpdateToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
+			this.boatPathDriverUpdateToolStripMenuItem.Text = "Boat Path Driver Update";
+			this.boatPathDriverUpdateToolStripMenuItem.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
 			// 
 			// navViewRankingList
 			// 
@@ -729,27 +734,12 @@
 			this.navDatabaseBackup.Text = "Backup Database";
 			this.navDatabaseBackup.Click += new System.EventHandler(this.navDatabaseBackup_Click);
 			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(265, 22);
-			this.toolStripMenuItem1.Text = "Load Data From Log";
-			this.toolStripMenuItem1.Visible = false;
-			this.toolStripMenuItem1.Click += new System.EventHandler(this.loadDataFromLog_Click);
-			// 
 			// databaseToolToolStripMenuItem
 			// 
 			this.databaseToolToolStripMenuItem.Name = "databaseToolToolStripMenuItem";
 			this.databaseToolToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.databaseToolToolStripMenuItem.Text = "Database Tool";
 			this.databaseToolToolStripMenuItem.Click += new System.EventHandler(this.databaseToolToolStripMenuItem_Click);
-			// 
-			// logRecoveryUtilityToolStripMenuItem
-			// 
-			this.logRecoveryUtilityToolStripMenuItem.Name = "logRecoveryUtilityToolStripMenuItem";
-			this.logRecoveryUtilityToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-			this.logRecoveryUtilityToolStripMenuItem.Text = "Log Recovery Utility";
-			this.logRecoveryUtilityToolStripMenuItem.Click += new System.EventHandler(this.logRecoveryUtilityToolStripMenuItem_Click);
 			// 
 			// navSetDatabase
 			// 
@@ -807,12 +797,12 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
-			// boatPathDriverUpdateToolStripMenuItem
+			// navPublishPDF
 			// 
-			this.boatPathDriverUpdateToolStripMenuItem.Name = "boatPathDriverUpdateToolStripMenuItem";
-			this.boatPathDriverUpdateToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-			this.boatPathDriverUpdateToolStripMenuItem.Text = "Boat Path Driver Update";
-			this.boatPathDriverUpdateToolStripMenuItem.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
+			this.navPublishPDF.Name = "navPublishPDF";
+			this.navPublishPDF.Size = new System.Drawing.Size(265, 22);
+			this.navPublishPDF.Text = "Publish PDF";
+			this.navPublishPDF.Click += new System.EventHandler(this.navPublishPDF_Click);
 			// 
 			// SystemMain
 			// 
@@ -901,12 +891,10 @@
         private System.Windows.Forms.ToolStripMenuItem navDivOrder;
         private System.Windows.Forms.ToolStripMenuItem databaseToolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navEventRunStats;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem navJumpSummaryAwards;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem navLoadVideoFiles;
-        private System.Windows.Forms.ToolStripMenuItem logRecoveryUtilityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navImportTourReg;
 		private System.Windows.Forms.ToolStripMenuItem navDatabaseBackup;
 		private System.Windows.Forms.ToolStripMenuItem regionalJuniorExtractsToolStripMenuItem;
@@ -928,6 +916,7 @@
 		private System.Windows.Forms.ToolStripMenuItem publishReportDeleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem navImportLwData;
 		private System.Windows.Forms.ToolStripMenuItem boatPathDriverUpdateToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem navPublishPDF;
 	}
 }
 

@@ -54,14 +54,6 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScoreEntrySeg3));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -91,6 +83,14 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.driverLabel = new System.Windows.Forms.Label();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
@@ -138,28 +138,6 @@
 			this.addPassButton = new System.Windows.Forms.Button();
 			this.skierPassMsg = new System.Windows.Forms.Label();
 			this.TourEventRegDataGridView = new System.Windows.Forms.DataGridView();
-			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Gender = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SkiYearAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.topMenuNav = new System.Windows.Forms.ToolStrip();
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
@@ -240,6 +218,28 @@
 			this.RampHeightSelect = new WaterskiScoringSystem.Common.RampHeightSelect();
 			this.JumpSpeedSelect = new WaterskiScoringSystem.Common.JumpSpeedSelect();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
+			this.SkierName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.AgeGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.TeamCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Gender = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.EventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Score = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ScoreWithHcap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapBase = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HCapScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.JumpHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.RankingRating = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SkiYearAge = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Event = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.PK = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			noteLabel = new System.Windows.Forms.Label();
 			startSpeedLabel = new System.Windows.Forms.Label();
 			RampHeightLabel = new System.Windows.Forms.Label();
@@ -1030,8 +1030,8 @@
             this.EventClass,
             this.EventGroup,
             this.Score,
-            this.ScoreWithHcap,
             this.RankingScore,
+            this.ScoreWithHcap,
             this.HCapBase,
             this.HCapScore,
             this.JumpHeight,
@@ -1073,253 +1073,6 @@
 			this.TourEventRegDataGridView.TabIndex = 43;
 			this.TourEventRegDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView_DataError);
 			this.TourEventRegDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tourEventRegDataGridView_RowEnter);
-			// 
-			// SkierName
-			// 
-			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SkierName.HeaderText = "Skier";
-			this.SkierName.Name = "SkierName";
-			this.SkierName.ReadOnly = true;
-			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SkierName.Width = 110;
-			// 
-			// AgeGroup
-			// 
-			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle18;
-			this.AgeGroup.HeaderText = "Div";
-			this.AgeGroup.Name = "AgeGroup";
-			this.AgeGroup.ReadOnly = true;
-			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.AgeGroup.ToolTipText = "Federation division";
-			this.AgeGroup.Width = 26;
-			// 
-			// TeamCode
-			// 
-			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.TeamCode.HeaderText = "Team";
-			this.TeamCode.Name = "TeamCode";
-			this.TeamCode.ReadOnly = true;
-			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.TeamCode.Width = 50;
-			// 
-			// Gender
-			// 
-			this.Gender.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Gender.HeaderText = "Gender";
-			this.Gender.Name = "Gender";
-			this.Gender.ReadOnly = true;
-			this.Gender.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Gender.Visible = false;
-			this.Gender.Width = 50;
-			// 
-			// EventClass
-			// 
-			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.DefaultCellStyle = dataGridViewCellStyle19;
-			this.EventClass.HeaderText = "Cls";
-			this.EventClass.Name = "EventClass";
-			this.EventClass.ReadOnly = true;
-			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventClass.Width = 26;
-			// 
-			// EventGroup
-			// 
-			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle20;
-			this.EventGroup.HeaderText = "Grp";
-			this.EventGroup.Name = "EventGroup";
-			this.EventGroup.ReadOnly = true;
-			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.EventGroup.Width = 31;
-			// 
-			// Score
-			// 
-			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Score.DefaultCellStyle = dataGridViewCellStyle21;
-			this.Score.HeaderText = "Score";
-			this.Score.Name = "Score";
-			this.Score.ReadOnly = true;
-			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Score.Width = 40;
-			// 
-			// ScoreWithHcap
-			// 
-			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.ScoreWithHcap.HeaderText = "ScoreH";
-			this.ScoreWithHcap.Name = "ScoreWithHcap";
-			this.ScoreWithHcap.ReadOnly = true;
-			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.ScoreWithHcap.Width = 45;
-			// 
-			// RankingScore
-			// 
-			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle22;
-			this.RankingScore.HeaderText = "Rank";
-			this.RankingScore.Name = "RankingScore";
-			this.RankingScore.ReadOnly = true;
-			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingScore.Width = 40;
-			// 
-			// HCapBase
-			// 
-			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle23;
-			this.HCapBase.HeaderText = "HBase";
-			this.HCapBase.Name = "HCapBase";
-			this.HCapBase.ReadOnly = true;
-			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapBase.Width = 40;
-			// 
-			// HCapScore
-			// 
-			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle24;
-			this.HCapScore.HeaderText = "HCap";
-			this.HCapScore.Name = "HCapScore";
-			this.HCapScore.ReadOnly = true;
-			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.HCapScore.Width = 40;
-			// 
-			// JumpHeight
-			// 
-			this.JumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.JumpHeight.HeaderText = "Ramp";
-			this.JumpHeight.Name = "JumpHeight";
-			this.JumpHeight.ReadOnly = true;
-			this.JumpHeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.JumpHeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.JumpHeight.Width = 40;
-			// 
-			// Status
-			// 
-			this.Status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Status.HeaderText = "Status";
-			this.Status.Name = "Status";
-			this.Status.ReadOnly = true;
-			this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Status.Width = 55;
-			// 
-			// Order
-			// 
-			this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.Order.DefaultCellStyle = dataGridViewCellStyle25;
-			this.Order.HeaderText = "Ord";
-			this.Order.Name = "Order";
-			this.Order.ReadOnly = true;
-			this.Order.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Order.Width = 26;
-			// 
-			// RankingRating
-			// 
-			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.RankingRating.HeaderText = "Rating";
-			this.RankingRating.Name = "RankingRating";
-			this.RankingRating.ReadOnly = true;
-			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.RankingRating.Visible = false;
-			this.RankingRating.Width = 50;
-			// 
-			// SkiYearAge
-			// 
-			this.SkiYearAge.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SkiYearAge.HeaderText = "Ski Age";
-			this.SkiYearAge.Name = "SkiYearAge";
-			this.SkiYearAge.ReadOnly = true;
-			this.SkiYearAge.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SkiYearAge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SkiYearAge.Visible = false;
-			this.SkiYearAge.Width = 35;
-			// 
-			// SanctionId
-			// 
-			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.SanctionId.HeaderText = "SanctionId";
-			this.SanctionId.Name = "SanctionId";
-			this.SanctionId.ReadOnly = true;
-			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.SanctionId.Visible = false;
-			this.SanctionId.Width = 50;
-			// 
-			// MemberId
-			// 
-			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.MemberId.HeaderText = "MemberId";
-			this.MemberId.Name = "MemberId";
-			this.MemberId.ReadOnly = true;
-			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.MemberId.Visible = false;
-			this.MemberId.Width = 50;
-			// 
-			// Event
-			// 
-			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Event.HeaderText = "Event";
-			this.Event.Name = "Event";
-			this.Event.ReadOnly = true;
-			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Event.Visible = false;
-			this.Event.Width = 45;
-			// 
-			// PK
-			// 
-			this.PK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.PK.HeaderText = "PK";
-			this.PK.Name = "PK";
-			this.PK.ReadOnly = true;
-			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PK.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PK.Visible = false;
-			this.PK.Width = 50;
-			// 
-			// Federation
-			// 
-			this.Federation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.Federation.HeaderText = "Fed";
-			this.Federation.MaxInputLength = 64;
-			this.Federation.Name = "Federation";
-			this.Federation.ReadOnly = true;
-			this.Federation.Visible = false;
-			this.Federation.Width = 60;
-			// 
-			// State
-			// 
-			this.State.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.State.HeaderText = "State";
-			this.State.Name = "State";
-			this.State.ReadOnly = true;
-			this.State.Visible = false;
-			this.State.Width = 45;
 			// 
 			// topMenuNav
 			// 
@@ -2401,6 +2154,253 @@
 			this.roundActiveSelect.TabIndex = 11;
 			this.roundActiveSelect.Tag = "";
 			// 
+			// SkierName
+			// 
+			this.SkierName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SkierName.HeaderText = "Skier";
+			this.SkierName.Name = "SkierName";
+			this.SkierName.ReadOnly = true;
+			this.SkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SkierName.Width = 110;
+			// 
+			// AgeGroup
+			// 
+			this.AgeGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.DefaultCellStyle = dataGridViewCellStyle18;
+			this.AgeGroup.HeaderText = "Div";
+			this.AgeGroup.Name = "AgeGroup";
+			this.AgeGroup.ReadOnly = true;
+			this.AgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.AgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.AgeGroup.ToolTipText = "Federation division";
+			this.AgeGroup.Width = 26;
+			// 
+			// TeamCode
+			// 
+			this.TeamCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.TeamCode.HeaderText = "Team";
+			this.TeamCode.Name = "TeamCode";
+			this.TeamCode.ReadOnly = true;
+			this.TeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.TeamCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.TeamCode.Width = 50;
+			// 
+			// Gender
+			// 
+			this.Gender.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Gender.HeaderText = "Gender";
+			this.Gender.Name = "Gender";
+			this.Gender.ReadOnly = true;
+			this.Gender.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Gender.Visible = false;
+			this.Gender.Width = 50;
+			// 
+			// EventClass
+			// 
+			this.EventClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.DefaultCellStyle = dataGridViewCellStyle19;
+			this.EventClass.HeaderText = "Cls";
+			this.EventClass.Name = "EventClass";
+			this.EventClass.ReadOnly = true;
+			this.EventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventClass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventClass.Width = 26;
+			// 
+			// EventGroup
+			// 
+			this.EventGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.DefaultCellStyle = dataGridViewCellStyle20;
+			this.EventGroup.HeaderText = "Grp";
+			this.EventGroup.Name = "EventGroup";
+			this.EventGroup.ReadOnly = true;
+			this.EventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.EventGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.EventGroup.Width = 31;
+			// 
+			// Score
+			// 
+			this.Score.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Score.DefaultCellStyle = dataGridViewCellStyle21;
+			this.Score.HeaderText = "Score";
+			this.Score.Name = "Score";
+			this.Score.ReadOnly = true;
+			this.Score.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Score.Width = 40;
+			// 
+			// RankingScore
+			// 
+			this.RankingScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.DefaultCellStyle = dataGridViewCellStyle22;
+			this.RankingScore.HeaderText = "Rank";
+			this.RankingScore.Name = "RankingScore";
+			this.RankingScore.ReadOnly = true;
+			this.RankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingScore.Width = 40;
+			// 
+			// ScoreWithHcap
+			// 
+			this.ScoreWithHcap.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ScoreWithHcap.HeaderText = "ScoreH";
+			this.ScoreWithHcap.Name = "ScoreWithHcap";
+			this.ScoreWithHcap.ReadOnly = true;
+			this.ScoreWithHcap.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.ScoreWithHcap.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.ScoreWithHcap.Width = 45;
+			// 
+			// HCapBase
+			// 
+			this.HCapBase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.DefaultCellStyle = dataGridViewCellStyle23;
+			this.HCapBase.HeaderText = "HBase";
+			this.HCapBase.Name = "HCapBase";
+			this.HCapBase.ReadOnly = true;
+			this.HCapBase.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapBase.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapBase.Width = 40;
+			// 
+			// HCapScore
+			// 
+			this.HCapScore.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.DefaultCellStyle = dataGridViewCellStyle24;
+			this.HCapScore.HeaderText = "HCap";
+			this.HCapScore.Name = "HCapScore";
+			this.HCapScore.ReadOnly = true;
+			this.HCapScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.HCapScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.HCapScore.Width = 40;
+			// 
+			// JumpHeight
+			// 
+			this.JumpHeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.JumpHeight.HeaderText = "Ramp";
+			this.JumpHeight.Name = "JumpHeight";
+			this.JumpHeight.ReadOnly = true;
+			this.JumpHeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.JumpHeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.JumpHeight.Width = 40;
+			// 
+			// Status
+			// 
+			this.Status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Status.HeaderText = "Status";
+			this.Status.Name = "Status";
+			this.Status.ReadOnly = true;
+			this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Status.Width = 55;
+			// 
+			// Order
+			// 
+			this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.Order.DefaultCellStyle = dataGridViewCellStyle25;
+			this.Order.HeaderText = "Ord";
+			this.Order.Name = "Order";
+			this.Order.ReadOnly = true;
+			this.Order.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Order.Width = 26;
+			// 
+			// RankingRating
+			// 
+			this.RankingRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.RankingRating.HeaderText = "Rating";
+			this.RankingRating.Name = "RankingRating";
+			this.RankingRating.ReadOnly = true;
+			this.RankingRating.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.RankingRating.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.RankingRating.Visible = false;
+			this.RankingRating.Width = 50;
+			// 
+			// SkiYearAge
+			// 
+			this.SkiYearAge.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SkiYearAge.HeaderText = "Ski Age";
+			this.SkiYearAge.Name = "SkiYearAge";
+			this.SkiYearAge.ReadOnly = true;
+			this.SkiYearAge.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkiYearAge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SkiYearAge.Visible = false;
+			this.SkiYearAge.Width = 35;
+			// 
+			// SanctionId
+			// 
+			this.SanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SanctionId.HeaderText = "SanctionId";
+			this.SanctionId.Name = "SanctionId";
+			this.SanctionId.ReadOnly = true;
+			this.SanctionId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SanctionId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.SanctionId.Visible = false;
+			this.SanctionId.Width = 50;
+			// 
+			// MemberId
+			// 
+			this.MemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.MemberId.HeaderText = "MemberId";
+			this.MemberId.Name = "MemberId";
+			this.MemberId.ReadOnly = true;
+			this.MemberId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.MemberId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.MemberId.Visible = false;
+			this.MemberId.Width = 50;
+			// 
+			// Event
+			// 
+			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Event.HeaderText = "Event";
+			this.Event.Name = "Event";
+			this.Event.ReadOnly = true;
+			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Event.Visible = false;
+			this.Event.Width = 45;
+			// 
+			// PK
+			// 
+			this.PK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.PK.HeaderText = "PK";
+			this.PK.Name = "PK";
+			this.PK.ReadOnly = true;
+			this.PK.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PK.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.PK.Visible = false;
+			this.PK.Width = 50;
+			// 
+			// Federation
+			// 
+			this.Federation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Federation.HeaderText = "Fed";
+			this.Federation.MaxInputLength = 64;
+			this.Federation.Name = "Federation";
+			this.Federation.ReadOnly = true;
+			this.Federation.Visible = false;
+			this.Federation.Width = 60;
+			// 
+			// State
+			// 
+			this.State.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.State.HeaderText = "State";
+			this.State.Name = "State";
+			this.State.ReadOnly = true;
+			this.State.Visible = false;
+			this.State.Width = 45;
+			// 
 			// ScoreEntrySeg3
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2586,28 +2586,6 @@
 		private System.Windows.Forms.TextBox SkierBoatPathTextBox;
 		private System.Windows.Forms.ComboBox driverDropdown;
 		private System.Windows.Forms.Label driverLabel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreWithHcap;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
-		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
-		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
-		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SkiYearAge;
-		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
-		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
-		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathBuoy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatTimeBuoy;
 		private System.Windows.Forms.DataGridViewTextBoxColumn boatPathDev;
@@ -2653,5 +2631,27 @@
 		private System.Windows.Forms.Label BpmsDriver;
 		private System.Windows.Forms.Label BpmsDriverLabel;
 		private System.Windows.Forms.Button InvalidateBoatPathButton;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkierName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn AgeGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn TeamCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventClass;
+		private System.Windows.Forms.DataGridViewTextBoxColumn EventGroup;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Score;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ScoreWithHcap;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapBase;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HCapScore;
+		private System.Windows.Forms.DataGridViewTextBoxColumn JumpHeight;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+		private System.Windows.Forms.DataGridViewTextBoxColumn RankingRating;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SkiYearAge;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MemberId;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Event;
+		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
+		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 	}
 }

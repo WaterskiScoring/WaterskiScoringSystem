@@ -576,20 +576,41 @@ namespace WaterskiScoringSystem.Externalnterface {
 						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountTourRegAdded++;
 					}
-
+					String curSaveAgeGroup;
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupSlalom ) ) {
+						curSaveAgeGroup = "";
+						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) ) {
+							curSaveAgeGroup = curMemberEntry.AgeGroup;
+							curMemberEntry.AgeGroup = curMemberEntry.EventGroupSlalom;
+						}
+
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountSlalomAdded++;
+						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupTrick ) ) {
+						curSaveAgeGroup = "";
+						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) ) {
+							curSaveAgeGroup = curMemberEntry.AgeGroup;
+							curMemberEntry.AgeGroup = curMemberEntry.EventGroupTrick;
+						}
+
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountTrickAdded++;
+						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
+						curSaveAgeGroup = "";
+						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupJump ) ) ) {
+							curSaveAgeGroup = curMemberEntry.AgeGroup;
+							curMemberEntry.AgeGroup = curMemberEntry.EventGroupJump;
+						}
+
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountJumpAdded++;
+						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.Team ) ) {

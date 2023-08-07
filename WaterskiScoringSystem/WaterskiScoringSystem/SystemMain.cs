@@ -16,7 +16,6 @@ using WaterskiScoringSystem.Tournament;
 using WaterskiScoringSystem.Trick;
 
 using Microsoft.Win32;
-using System.Configuration;
 
 namespace WaterskiScoringSystem {
     public partial class SystemMain : Form {
@@ -141,18 +140,19 @@ namespace WaterskiScoringSystem {
                 if ( checkDbConnection( curAppConnectString ) ) {
                 } else {
                     MessageBox.Show( "Database not found at the specified location " + curDataDirectory
-                        + "\n\n" + "In the file open dialog to follow please select a location and provide a file name"
+                        + "\n\n" + "In the file open dialog please select a location and provide a file name"
                         + "\n" + "The database supplied with the application will be copied to your specified location" );
                     copyDatabase( curDeploymentDataDirectory, curDataDirectory );
                 }
             }
 
+            String mySanctionNum = "";
             if ( checkDbConnection( curAppConnectString ) ) {
                 UpgradeDatabase curUpgradeDatabase = new UpgradeDatabase();
                 curUpgradeDatabase.checkForUpgrade();
 
                 //Check to ensure currently active tournament is a valid tournament in the current database
-                String mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+                mySanctionNum = Properties.Settings.Default.AppSanctionNum;
                 if ( mySanctionNum != null ) {
                     if ( mySanctionNum.Length == 6 ) {
                         Log.OpenFile();
@@ -189,6 +189,8 @@ namespace WaterskiScoringSystem {
 
             if (curShowDebugMsgs) {
                 MessageBox.Show( "Application Execution Information"
+                    + "\n AppSanctionNum=" + Properties.Settings.Default.AppSanctionNum
+                    + "\n mySanctionNum=" + mySanctionNum
                     + "\n StartupPath=" + Application.StartupPath
                     + "\n UserAppDataPath=" + Application.UserAppDataPath
                     + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
@@ -361,7 +363,7 @@ namespace WaterskiScoringSystem {
             mdiStatusMsg.Text = curForm.Name + " open";
         }
 
-        private void publishReportDeleteToolStripMenuItem_Click( object sender, EventArgs e ) {
+        private void navPublishReportDelete_Click( object sender, EventArgs e ) {
             PublishReportDelete curForm = new PublishReportDelete();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
@@ -369,6 +371,11 @@ namespace WaterskiScoringSystem {
             curForm.MdiParent = this;
             curForm.Show();
             mdiStatusMsg.Text = curForm.Name + " open";
+        }
+
+        private void navPublishPDF_Click( object sender, EventArgs e ) {
+            String mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+            ExportLiveWeb.uploadReportFile( "Other", "Tour", mySanctionNum );
         }
 
         private void navNopsDataMainenance_Click( object sender, EventArgs e ) {
@@ -878,26 +885,6 @@ namespace WaterskiScoringSystem {
 
 		private void databaseToolToolStripMenuItem_Click( object sender, EventArgs e ) {
             SqlCommandTool curForm = new SqlCommandTool();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
-        }
-
-        private void logRecoveryUtilityToolStripMenuItem_Click( object sender, EventArgs e ) {
-            LogRecoveryUtility curForm = new LogRecoveryUtility();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
-        }
-
-        private void loadDataFromLog_Click(object sender, EventArgs e) {
-            LogRecoveryUtility curForm = new LogRecoveryUtility();
             mdiStatusMsg.Text = curForm.Name + " opening";
 
             // Set the Parent Form and display requested form
