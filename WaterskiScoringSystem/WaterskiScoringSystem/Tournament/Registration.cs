@@ -17,7 +17,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private int myTourRegRowIdx;
 		private DataRow myTourRow;
 		private TourRegAddMember myTourRegAddDialog;
-		private TourRegRankEquiv myTourRegRankEquivDialog;
 		private SortDialogForm sortDialogForm;
 		private FilterDialogForm filterDialogForm;
 		private TourEventReg myTourEventReg;
@@ -96,7 +95,6 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 			myTourRegAddDialog = new TourRegAddMember();
 			myEditRegMemberDialog = new EditRegMember();
-			myTourRegRankEquivDialog = new TourRegRankEquiv();
 
 			myTourEventReg = new TourEventReg();
 			myTourRegRowIdx = 0;
@@ -548,26 +546,6 @@ namespace WaterskiScoringSystem.Tournament {
 			// Open dialog for selecting skiers
 			myTourRegAddDialog.setInputMemberId( memberId );
 			myTourRegAddDialog.ShowDialog( this );
-		}
-
-		private void navImportRankEquiv_Click( object sender, EventArgs e ) {
-			// Ensure row focus change processing performed
-			if ( isDataModified ) {
-				try {
-					isDataModified = false;
-					winStatusMsg.Text = "Previous row saved.";
-				} catch ( Exception excp ) {
-					MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
-				}
-			}
-
-			// Open dialog for selecting skiers
-			myTourRegRankEquivDialog.ShowDialog( this );
-
-			// Refresh data from database
-			if ( myTourRegRankEquivDialog.isDataModified ) {
-				//loadTourRegView();
-			}
 		}
 
 		private void navRemove_Click( object sender, EventArgs e ) {

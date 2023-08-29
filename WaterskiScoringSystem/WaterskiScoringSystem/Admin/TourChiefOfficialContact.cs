@@ -120,10 +120,15 @@ namespace WaterskiScoringSystem.Admin {
                     contactEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
                 } 
                 if ( curMemberId.Equals( curChiefJudgeMemberId ) ) {
-                    //chiefJudgeNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    /*
+                    chiefJudgeNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
                     chiefJudgeAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                     */
+                    chiefJudgeAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "City" )
                         + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
                     chiefJudgePhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
@@ -131,10 +136,15 @@ namespace WaterskiScoringSystem.Admin {
                     chiefJudgeEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
                 } 
                 if ( curMemberId.Equals( curChiefDriverMemberId ) ) {
-                    //chiefDriverNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    /*
+                    chiefDriverNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
                     chiefDriverAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                     */
+                    chiefDriverAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "City" )
                         + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
                     chiefDriverPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
@@ -142,10 +152,15 @@ namespace WaterskiScoringSystem.Admin {
                     chiefDriverEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
                 } 
                 if ( curMemberId.Equals( curChiefScorerMemberId ) ) {
-                    //chiefScorerNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    /*
+                    chiefScorerNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
                     chiefScorerAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                     */
+                    chiefScorerAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "City" )
                         + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
                     chiefScorerPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
@@ -153,10 +168,15 @@ namespace WaterskiScoringSystem.Admin {
                     chiefScorerEmailTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Email" );
                 } 
                 if ( curMemberId.Equals( curSafetyDirMemberId ) ) {
-                    //chiefSafetyNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
+                    /*
+                    chiefSafetyNameTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "FirstName" ) + " " + HelperFunctions.getAttributeValue( curEntry, "LastName" );
                     safetyDirAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "Address1" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Address2" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "City" )
+                        + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
+                        + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
+                     */
+                    safetyDirAddressTextBox.Text = HelperFunctions.getAttributeValue( curEntry, "City" )
                         + ", " + HelperFunctions.getAttributeValue( curEntry, "State" )
                         + " " + HelperFunctions.getAttributeValue( curEntry, "Zip" );
                     safetyDirPhoneTextBox.Text = formatPhone( HelperFunctions.getAttributeValue( curEntry, "Phone" ) )
@@ -304,8 +324,8 @@ namespace WaterskiScoringSystem.Admin {
             * Configure URL to retrieve all skiers pre-registered for the active tournament
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
-            String curQueryString = String.Format( "?SanctionId={0}&ContactMemberId={1}&CJMemberId={2}&CDMemberId={3}&CCMemberId={4}&CSMemberId={5}"
-                , mySanctionNum, curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
+            String curQueryString = String.Format( "?ContactMemberId={1}&CJMemberId={2}&CDMemberId={3}&CCMemberId={4}&CSMemberId={5}"
+                , curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
             String curContentType = "application/json; charset=UTF-8";
             String curExportListUrl = "https://www.usawaterski.org/admin/GetChiefOfficalContactExportJson.asp";
             String curReqstUrl = curExportListUrl + curQueryString;

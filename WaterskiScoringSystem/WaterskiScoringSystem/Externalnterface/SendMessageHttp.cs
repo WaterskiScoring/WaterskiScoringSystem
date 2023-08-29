@@ -220,7 +220,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				//Set the Method property of the request to POST.
 				curRequest.Method = "POST";
                 curRequest.KeepAlive = true;
-                curRequest.Timeout = 10000;
+                curRequest.Timeout = 250000;
                 if ( inUrl.Contains( "sproutvideo" ) ) curRequest.Timeout = 500000;
 
 				if ( inUserAccount != null ) {

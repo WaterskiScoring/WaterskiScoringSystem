@@ -35,6 +35,7 @@
 			System.Windows.Forms.Label insertDateLabel;
 			System.Windows.Forms.Label updateDateLabel;
 			System.Windows.Forms.Label cityLabel;
+			System.Windows.Forms.Label ForeignFederationIDLabel;
 			this.label1 = new System.Windows.Forms.Label();
 			this.reqdFlagGender = new System.Windows.Forms.Label();
 			this.reqdFlagFirstName = new System.Windows.Forms.Label();
@@ -55,6 +56,7 @@
 			this.editGenderSelect = new WaterskiScoringSystem.Common.GenderSelect();
 			this.editCity = new System.Windows.Forms.TextBox();
 			this.showMemberStatus = new System.Windows.Forms.Label();
+			this.editForeignFederationID = new System.Windows.Forms.TextBox();
 			reqdFlagInfo = new System.Windows.Forms.Label();
 			labelGender = new System.Windows.Forms.Label();
 			memberIdLabel = new System.Windows.Forms.Label();
@@ -67,6 +69,7 @@
 			insertDateLabel = new System.Windows.Forms.Label();
 			updateDateLabel = new System.Windows.Forms.Label();
 			cityLabel = new System.Windows.Forms.Label();
+			ForeignFederationIDLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// reqdFlagInfo
@@ -75,7 +78,7 @@
 			reqdFlagInfo.Location = new System.Drawing.Point(19, 7);
 			reqdFlagInfo.Name = "reqdFlagInfo";
 			reqdFlagInfo.Size = new System.Drawing.Size(107, 13);
-			reqdFlagInfo.TabIndex = 78;
+			reqdFlagInfo.TabIndex = 0;
 			reqdFlagInfo.Text = "= required data items";
 			reqdFlagInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -83,7 +86,7 @@
 			// 
 			labelGender.AutoSize = true;
 			labelGender.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			labelGender.Location = new System.Drawing.Point(58, 121);
+			labelGender.Location = new System.Drawing.Point(58, 114);
 			labelGender.Name = "labelGender";
 			labelGender.Size = new System.Drawing.Size(51, 15);
 			labelGender.TabIndex = 0;
@@ -105,7 +108,7 @@
 			// 
 			lastNameLabel.AutoSize = true;
 			lastNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			lastNameLabel.Location = new System.Drawing.Point(39, 92);
+			lastNameLabel.Location = new System.Drawing.Point(39, 86);
 			lastNameLabel.Name = "lastNameLabel";
 			lastNameLabel.Size = new System.Drawing.Size(70, 15);
 			lastNameLabel.TabIndex = 0;
@@ -116,7 +119,7 @@
 			// 
 			firstNameLabel.AutoSize = true;
 			firstNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			firstNameLabel.Location = new System.Drawing.Point(39, 63);
+			firstNameLabel.Location = new System.Drawing.Point(39, 60);
 			firstNameLabel.Name = "firstNameLabel";
 			firstNameLabel.Size = new System.Drawing.Size(70, 15);
 			firstNameLabel.TabIndex = 0;
@@ -127,7 +130,7 @@
 			// 
 			stateLabel.AutoSize = true;
 			stateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			stateLabel.Location = new System.Drawing.Point(71, 216);
+			stateLabel.Location = new System.Drawing.Point(71, 194);
 			stateLabel.Name = "stateLabel";
 			stateLabel.Size = new System.Drawing.Size(38, 15);
 			stateLabel.TabIndex = 0;
@@ -138,7 +141,7 @@
 			// 
 			federationLabel.AutoSize = true;
 			federationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			federationLabel.Location = new System.Drawing.Point(40, 276);
+			federationLabel.Location = new System.Drawing.Point(40, 248);
 			federationLabel.Name = "federationLabel";
 			federationLabel.Size = new System.Drawing.Size(69, 15);
 			federationLabel.TabIndex = 0;
@@ -149,7 +152,7 @@
 			// 
 			skiYearAgeLabel.AutoSize = true;
 			skiYearAgeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			skiYearAgeLabel.Location = new System.Drawing.Point(33, 150);
+			skiYearAgeLabel.Location = new System.Drawing.Point(33, 138);
 			skiYearAgeLabel.Name = "skiYearAgeLabel";
 			skiYearAgeLabel.Size = new System.Drawing.Size(79, 15);
 			skiYearAgeLabel.TabIndex = 0;
@@ -161,7 +164,7 @@
 			memberStatusLabel.AutoSize = true;
 			memberStatusLabel.CausesValidation = false;
 			memberStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			memberStatusLabel.Location = new System.Drawing.Point(15, 184);
+			memberStatusLabel.Location = new System.Drawing.Point(15, 169);
 			memberStatusLabel.Margin = new System.Windows.Forms.Padding(0);
 			memberStatusLabel.Name = "memberStatusLabel";
 			memberStatusLabel.Size = new System.Drawing.Size(94, 15);
@@ -173,7 +176,7 @@
 			// 
 			insertDateLabel.AutoSize = true;
 			insertDateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			insertDateLabel.Location = new System.Drawing.Point(40, 306);
+			insertDateLabel.Location = new System.Drawing.Point(40, 304);
 			insertDateLabel.Name = "insertDateLabel";
 			insertDateLabel.Size = new System.Drawing.Size(69, 15);
 			insertDateLabel.TabIndex = 0;
@@ -184,7 +187,7 @@
 			// 
 			updateDateLabel.AutoSize = true;
 			updateDateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			updateDateLabel.Location = new System.Drawing.Point(30, 334);
+			updateDateLabel.Location = new System.Drawing.Point(30, 332);
 			updateDateLabel.Name = "updateDateLabel";
 			updateDateLabel.Size = new System.Drawing.Size(79, 15);
 			updateDateLabel.TabIndex = 0;
@@ -195,7 +198,7 @@
 			// 
 			cityLabel.AutoSize = true;
 			cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			cityLabel.Location = new System.Drawing.Point(83, 243);
+			cityLabel.Location = new System.Drawing.Point(83, 221);
 			cityLabel.Name = "cityLabel";
 			cityLabel.Size = new System.Drawing.Size(26, 15);
 			cityLabel.TabIndex = 0;
@@ -219,11 +222,11 @@
 			this.reqdFlagGender.BackColor = System.Drawing.Color.Transparent;
 			this.reqdFlagGender.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.reqdFlagGender.ForeColor = System.Drawing.Color.Red;
-			this.reqdFlagGender.Location = new System.Drawing.Point(49, 121);
+			this.reqdFlagGender.Location = new System.Drawing.Point(49, 114);
 			this.reqdFlagGender.Margin = new System.Windows.Forms.Padding(0);
 			this.reqdFlagGender.Name = "reqdFlagGender";
 			this.reqdFlagGender.Size = new System.Drawing.Size(10, 12);
-			this.reqdFlagGender.TabIndex = 79;
+			this.reqdFlagGender.TabIndex = 0;
 			this.reqdFlagGender.Text = "*";
 			// 
 			// reqdFlagFirstName
@@ -231,11 +234,11 @@
 			this.reqdFlagFirstName.BackColor = System.Drawing.Color.Transparent;
 			this.reqdFlagFirstName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.reqdFlagFirstName.ForeColor = System.Drawing.Color.Red;
-			this.reqdFlagFirstName.Location = new System.Drawing.Point(31, 63);
+			this.reqdFlagFirstName.Location = new System.Drawing.Point(31, 60);
 			this.reqdFlagFirstName.Margin = new System.Windows.Forms.Padding(0);
 			this.reqdFlagFirstName.Name = "reqdFlagFirstName";
 			this.reqdFlagFirstName.Size = new System.Drawing.Size(10, 12);
-			this.reqdFlagFirstName.TabIndex = 76;
+			this.reqdFlagFirstName.TabIndex = 0;
 			this.reqdFlagFirstName.Text = "*";
 			// 
 			// reqdFlagLastName
@@ -243,11 +246,11 @@
 			this.reqdFlagLastName.BackColor = System.Drawing.Color.Transparent;
 			this.reqdFlagLastName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.reqdFlagLastName.ForeColor = System.Drawing.Color.Red;
-			this.reqdFlagLastName.Location = new System.Drawing.Point(32, 93);
+			this.reqdFlagLastName.Location = new System.Drawing.Point(32, 87);
 			this.reqdFlagLastName.Margin = new System.Windows.Forms.Padding(0);
 			this.reqdFlagLastName.Name = "reqdFlagLastName";
 			this.reqdFlagLastName.Size = new System.Drawing.Size(10, 12);
-			this.reqdFlagLastName.TabIndex = 74;
+			this.reqdFlagLastName.TabIndex = 0;
 			this.reqdFlagLastName.Text = "*";
 			// 
 			// reqdFlagMemberId
@@ -259,14 +262,14 @@
 			this.reqdFlagMemberId.Margin = new System.Windows.Forms.Padding(0);
 			this.reqdFlagMemberId.Name = "reqdFlagMemberId";
 			this.reqdFlagMemberId.Size = new System.Drawing.Size(10, 12);
-			this.reqdFlagMemberId.TabIndex = 75;
+			this.reqdFlagMemberId.TabIndex = 0;
 			this.reqdFlagMemberId.Text = "*";
 			// 
 			// editFederation
 			// 
 			this.editFederation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.editFederation.FormattingEnabled = true;
-			this.editFederation.Location = new System.Drawing.Point(116, 272);
+			this.editFederation.Location = new System.Drawing.Point(116, 244);
 			this.editFederation.Name = "editFederation";
 			this.editFederation.Size = new System.Drawing.Size(125, 23);
 			this.editFederation.TabIndex = 90;
@@ -275,7 +278,7 @@
 			// 
 			this.editUpdateDateShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.editUpdateDateShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editUpdateDateShow.Location = new System.Drawing.Point(116, 331);
+			this.editUpdateDateShow.Location = new System.Drawing.Point(116, 329);
 			this.editUpdateDateShow.Name = "editUpdateDateShow";
 			this.editUpdateDateShow.Size = new System.Drawing.Size(125, 20);
 			this.editUpdateDateShow.TabIndex = 0;
@@ -287,7 +290,7 @@
 			this.editInsertDateShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.editInsertDateShow.CausesValidation = false;
 			this.editInsertDateShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editInsertDateShow.Location = new System.Drawing.Point(116, 303);
+			this.editInsertDateShow.Location = new System.Drawing.Point(116, 301);
 			this.editInsertDateShow.Name = "editInsertDateShow";
 			this.editInsertDateShow.Size = new System.Drawing.Size(125, 20);
 			this.editInsertDateShow.TabIndex = 0;
@@ -307,7 +310,7 @@
 			// editLastName
 			// 
 			this.editLastName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editLastName.Location = new System.Drawing.Point(116, 89);
+			this.editLastName.Location = new System.Drawing.Point(116, 83);
 			this.editLastName.MaxLength = 128;
 			this.editLastName.Name = "editLastName";
 			this.editLastName.Size = new System.Drawing.Size(125, 21);
@@ -317,7 +320,7 @@
 			// editFirstName
 			// 
 			this.editFirstName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editFirstName.Location = new System.Drawing.Point(116, 60);
+			this.editFirstName.Location = new System.Drawing.Point(116, 57);
 			this.editFirstName.MaxLength = 128;
 			this.editFirstName.Name = "editFirstName";
 			this.editFirstName.Size = new System.Drawing.Size(125, 21);
@@ -326,7 +329,7 @@
 			// editState
 			// 
 			this.editState.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editState.Location = new System.Drawing.Point(116, 213);
+			this.editState.Location = new System.Drawing.Point(116, 191);
 			this.editState.MaxLength = 2;
 			this.editState.Name = "editState";
 			this.editState.Size = new System.Drawing.Size(30, 21);
@@ -336,7 +339,7 @@
 			// editSkiYearAge
 			// 
 			this.editSkiYearAge.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editSkiYearAge.Location = new System.Drawing.Point(116, 147);
+			this.editSkiYearAge.Location = new System.Drawing.Point(116, 135);
 			this.editSkiYearAge.MaxLength = 3;
 			this.editSkiYearAge.Name = "editSkiYearAge";
 			this.editSkiYearAge.Size = new System.Drawing.Size(30, 21);
@@ -347,7 +350,7 @@
 			// saveButton
 			// 
 			this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.saveButton.Location = new System.Drawing.Point(51, 371);
+			this.saveButton.Location = new System.Drawing.Point(51, 360);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(75, 23);
 			this.saveButton.TabIndex = 100;
@@ -358,7 +361,7 @@
 			// cancelButton
 			// 
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(151, 371);
+			this.cancelButton.Location = new System.Drawing.Point(151, 360);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 105;
@@ -369,7 +372,7 @@
 			// AgeAsOfLabel
 			// 
 			this.AgeAsOfLabel.AutoSize = true;
-			this.AgeAsOfLabel.Location = new System.Drawing.Point(152, 151);
+			this.AgeAsOfLabel.Location = new System.Drawing.Point(152, 139);
 			this.AgeAsOfLabel.Name = "AgeAsOfLabel";
 			this.AgeAsOfLabel.Size = new System.Drawing.Size(100, 13);
 			this.AgeAsOfLabel.TabIndex = 0;
@@ -388,7 +391,7 @@
 			// editGenderSelect
 			// 
 			this.editGenderSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editGenderSelect.Location = new System.Drawing.Point(116, 114);
+			this.editGenderSelect.Location = new System.Drawing.Point(116, 107);
 			this.editGenderSelect.Margin = new System.Windows.Forms.Padding(0);
 			this.editGenderSelect.Name = "editGenderSelect";
 			this.editGenderSelect.RatingValue = "";
@@ -400,7 +403,7 @@
 			// editCity
 			// 
 			this.editCity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.editCity.Location = new System.Drawing.Point(116, 240);
+			this.editCity.Location = new System.Drawing.Point(116, 218);
 			this.editCity.MaxLength = 129;
 			this.editCity.Name = "editCity";
 			this.editCity.Size = new System.Drawing.Size(120, 21);
@@ -414,7 +417,7 @@
 			this.showMemberStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.showMemberStatus.CausesValidation = false;
 			this.showMemberStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.showMemberStatus.Location = new System.Drawing.Point(117, 181);
+			this.showMemberStatus.Location = new System.Drawing.Point(117, 166);
 			this.showMemberStatus.Margin = new System.Windows.Forms.Padding(0);
 			this.showMemberStatus.Name = "showMemberStatus";
 			this.showMemberStatus.Size = new System.Drawing.Size(324, 20);
@@ -422,13 +425,36 @@
 			this.showMemberStatus.Text = "Active ";
 			this.showMemberStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// ForeignFederationIDLabel
+			// 
+			ForeignFederationIDLabel.AutoSize = true;
+			ForeignFederationIDLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			ForeignFederationIDLabel.Location = new System.Drawing.Point(18, 278);
+			ForeignFederationIDLabel.Name = "ForeignFederationIDLabel";
+			ForeignFederationIDLabel.Size = new System.Drawing.Size(91, 15);
+			ForeignFederationIDLabel.TabIndex = 0;
+			ForeignFederationIDLabel.Text = "Foreign Fed ID:";
+			ForeignFederationIDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// editForeignFederationID
+			// 
+			this.editForeignFederationID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.editForeignFederationID.Location = new System.Drawing.Point(116, 275);
+			this.editForeignFederationID.MaxLength = 9;
+			this.editForeignFederationID.Name = "editForeignFederationID";
+			this.editForeignFederationID.Size = new System.Drawing.Size(75, 21);
+			this.editForeignFederationID.TabIndex = 95;
+			this.editForeignFederationID.WordWrap = false;
+			// 
 			// EditMember
 			// 
 			this.AcceptButton = this.saveButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new System.Drawing.Size(444, 412);
+			this.ClientSize = new System.Drawing.Size(444, 394);
+			this.Controls.Add(ForeignFederationIDLabel);
+			this.Controls.Add(this.editForeignFederationID);
 			this.Controls.Add(this.showMemberStatus);
 			this.Controls.Add(cityLabel);
 			this.Controls.Add(this.editCity);
@@ -493,5 +519,6 @@
         internal System.Windows.Forms.Label NextAvailableLabel;
         private System.Windows.Forms.TextBox editCity;
 		private System.Windows.Forms.Label showMemberStatus;
+		private System.Windows.Forms.TextBox editForeignFederationID;
 	}
 }

@@ -93,11 +93,12 @@
 			this.navListMaintenance = new System.Windows.Forms.ToolStripMenuItem();
 			this.navNopsDataMainenance = new System.Windows.Forms.ToolStripMenuItem();
 			this.publishReportDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.navPublishPDF = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
+			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
-			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
-			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionalJuniorExtractsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.navMetricTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.shrinkDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,7 +112,7 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.navPublishPDF = new System.Windows.Forms.ToolStripMenuItem();
+			this.navExportIwwfScores = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -630,6 +631,7 @@
             this.navImportData,
             this.navImportLwData,
             this.boatPathDriverUpdateToolStripMenuItem,
+            this.navExportIwwfScores,
             this.navViewRankingList,
             this.navTrickListMaint,
             this.regionalJuniorExtractsToolStripMenuItem,
@@ -671,6 +673,27 @@
 			this.publishReportDeleteToolStripMenuItem.Text = "Publish Report Delete";
 			this.publishReportDeleteToolStripMenuItem.Click += new System.EventHandler(this.navPublishReportDelete_Click);
 			// 
+			// navPublishPDF
+			// 
+			this.navPublishPDF.Name = "navPublishPDF";
+			this.navPublishPDF.Size = new System.Drawing.Size(265, 22);
+			this.navPublishPDF.Text = "Publish PDF";
+			this.navPublishPDF.Click += new System.EventHandler(this.navPublishPDF_Click);
+			// 
+			// navImportData
+			// 
+			this.navImportData.Name = "navImportData";
+			this.navImportData.Size = new System.Drawing.Size(265, 22);
+			this.navImportData.Text = "Import WSTIMS Data";
+			this.navImportData.Click += new System.EventHandler(this.navImportData_Click);
+			// 
+			// navImportLwData
+			// 
+			this.navImportLwData.Name = "navImportLwData";
+			this.navImportLwData.Size = new System.Drawing.Size(265, 22);
+			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
+			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
+			// 
 			// boatPathDriverUpdateToolStripMenuItem
 			// 
 			this.boatPathDriverUpdateToolStripMenuItem.Name = "boatPathDriverUpdateToolStripMenuItem";
@@ -691,20 +714,6 @@
 			this.navTrickListMaint.Size = new System.Drawing.Size(265, 22);
 			this.navTrickListMaint.Text = "Trick List View";
 			this.navTrickListMaint.Click += new System.EventHandler(this.navTrickListMaint_Click);
-			// 
-			// navImportData
-			// 
-			this.navImportData.Name = "navImportData";
-			this.navImportData.Size = new System.Drawing.Size(265, 22);
-			this.navImportData.Text = "Import WSTIMS Data";
-			this.navImportData.Click += new System.EventHandler(this.navImportData_Click);
-			// 
-			// navImportLwData
-			// 
-			this.navImportLwData.Name = "navImportLwData";
-			this.navImportLwData.Size = new System.Drawing.Size(265, 22);
-			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
-			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
 			// 
 			// regionalJuniorExtractsToolStripMenuItem
 			// 
@@ -797,12 +806,12 @@
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
 			// 
-			// navPublishPDF
+			// navExportIwwfScores
 			// 
-			this.navPublishPDF.Name = "navPublishPDF";
-			this.navPublishPDF.Size = new System.Drawing.Size(265, 22);
-			this.navPublishPDF.Text = "Publish PDF";
-			this.navPublishPDF.Click += new System.EventHandler(this.navPublishPDF_Click);
+			this.navExportIwwfScores.Name = "navExportIwwfScores";
+			this.navExportIwwfScores.Size = new System.Drawing.Size(265, 22);
+			this.navExportIwwfScores.Text = "Iwwf Score Export";
+			this.navExportIwwfScores.Click += new System.EventHandler(this.navExportIwwfScores_Click);
 			// 
 			// SystemMain
 			// 
@@ -917,6 +926,7 @@
 		private System.Windows.Forms.ToolStripMenuItem navImportLwData;
 		private System.Windows.Forms.ToolStripMenuItem boatPathDriverUpdateToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem navPublishPDF;
+		private System.Windows.Forms.ToolStripMenuItem navExportIwwfScores;
 	}
 }
 

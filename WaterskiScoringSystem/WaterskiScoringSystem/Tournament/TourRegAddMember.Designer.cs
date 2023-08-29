@@ -52,6 +52,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.City = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.ForeignFederationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.EffTo = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Waiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.MemberStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -199,6 +200,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.City,
             this.State,
             this.Federation,
+            this.ForeignFederationID,
             this.EffTo,
             this.Waiver,
             this.MemberStatus,
@@ -246,7 +248,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.DataGridView.Location = new System.Drawing.Point(4, 105);
 			this.DataGridView.Name = "DataGridView";
 			this.DataGridView.RowHeadersWidth = 31;
-			this.DataGridView.Size = new System.Drawing.Size(1174, 329);
+			this.DataGridView.Size = new System.Drawing.Size(1235, 399);
 			this.DataGridView.TabIndex = 40;
 			this.DataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellContentDoubleClick);
 			this.DataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
@@ -434,6 +436,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.Federation.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Federation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
 			this.Federation.Width = 50;
+			// 
+			// ForeignFederationID
+			// 
+			this.ForeignFederationID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.ForeignFederationID.HeaderText = "Foreign ID";
+			this.ForeignFederationID.Name = "ForeignFederationID";
+			this.ForeignFederationID.ReadOnly = true;
+			this.ForeignFederationID.Width = 70;
 			// 
 			// EffTo
 			// 
@@ -798,7 +808,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(1181, 440);
+			this.ClientSize = new System.Drawing.Size(1242, 510);
 			this.Controls.Add(this.ExportButton);
 			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.searchLocGroupBox);
@@ -859,6 +869,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn City;
 		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ForeignFederationID;
 		private System.Windows.Forms.DataGridViewTextBoxColumn EffTo;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn Waiver;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberStatus;

@@ -104,6 +104,7 @@ namespace WaterskiScoringSystem {
 
             } else {
                 curAppConnectString = myAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
+                Properties.Settings.Default.waterskiConnectionStringApp = curAppConnectString;
             }
 
             if ( myAppRegKey.GetValue( "CurrentVersion" ) == null ) {
@@ -376,6 +377,24 @@ namespace WaterskiScoringSystem {
         private void navPublishPDF_Click( object sender, EventArgs e ) {
             String mySanctionNum = Properties.Settings.Default.AppSanctionNum;
             ExportLiveWeb.uploadReportFile( "Other", "Tour", mySanctionNum );
+        }
+
+        private void navExportIwwfScores_Click( object sender, EventArgs e ) {
+            IwwfScoresExport curForm = new IwwfScoresExport();
+            mdiStatusMsg.Text = curForm.Name + " opening";
+
+            // Check for open instance of selected form
+            for ( int idx = 0; idx < this.MdiChildren.Length; idx++ ) {
+                if ( ( (Form)this.MdiChildren[idx] ).Name == curForm.Name ) {
+                    ( (Form)this.MdiChildren[idx] ).Activate();
+                    return;
+                }
+            }
+
+            // Set the Parent Form and display requested form
+            curForm.MdiParent = this;
+            curForm.Show();
+            mdiStatusMsg.Text = curForm.Name + " open";
         }
 
         private void navNopsDataMainenance_Click( object sender, EventArgs e ) {

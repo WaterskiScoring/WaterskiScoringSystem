@@ -1832,7 +1832,11 @@ namespace WaterskiScoringSystem.Jump {
 				listBoatTimesDataGridView.Rows.Clear();
 				JumpEventData.myTimesDataTable.DefaultView.RowFilter = "ListCode like '" + inSpeed.ToString() + "-" + inSkierClass + "-%'";
 				DataTable curDataTable = JumpEventData.myTimesDataTable.DefaultView.ToTable();
-				if ( curDataTable.Rows.Count == 0 ) return;
+				if ( curDataTable.Rows.Count == 0 ) {
+					JumpEventData.myTimesDataTable.DefaultView.RowFilter = "ListCode like '" + inSpeed.ToString() + "-C-%'";
+					curDataTable = JumpEventData.myTimesDataTable.DefaultView.ToTable();
+					if ( curDataTable.Rows.Count == 0 ) return;
+				}
 
 				Cursor.Current = Cursors.WaitCursor;
 				DataGridViewRow curViewRow;

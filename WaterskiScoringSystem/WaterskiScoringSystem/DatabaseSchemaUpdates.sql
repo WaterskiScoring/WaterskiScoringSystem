@@ -894,10 +894,6 @@ CREATE TABLE EventRunOrderFilters (
     , LastUpdateDate datetime 
 );
 
-
-## v20.08
-DROP TABLE EventRunOrderFilters;
-
 ## v21.11
 CREATE TABLE EwscMsg (
     PK          int NOT NULL IDENTITY,
@@ -1142,3 +1138,9 @@ ALTER TABLE WscMonitorMsg ADD PRIMARY KEY ([PK]);
 ## v22.90
 ALTER TABLE [JumpRecap] ADD COLUMN  RerideIfBest nchar(1);
 ALTER TABLE [JumpRecap] ADD COLUMN  RerideCanImprove nchar(1);
+
+//------------------------------------------------------------
+## v23.08
+ALTER TABLE MemberList ADD COLUMN ForeignFederationID nvarchar(12);
+
+ALTER TABLE TourReg ADD COLUMN ForeignFederationID nvarchar(12);

@@ -39,9 +39,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private static String IwwfWebLocation = IwwfWebLocationProd;
 
 		private static String authApiKey = "IWWF";
-		private static String authApiValueProd = "uppdxfsblcgefnrprowjtwjjrnrhismf"; // Prod
-		//private static String authApiValueStage1 = "cf1vfhl587mtny2eaeri6wfujusrfrnb"; // Staging
-		//private static String authApiValueStage2 = "9g2yh2wb2hhs4vc4yzjb1n4tsibs2wfq"; // Staging V2
+		//private static String authApiValueProd = "uppdxfsblcgefnrprowjtwjjrnrhismf"; // Prod Obsolete as 8/24/2023
+		//private static String authApiValueStage1 = "cf1vfhl587mtny2eaeri6wfujusrfrnb"; // Staging Obsolete as 8/24/2023
+		private static String authApiValueProd = "57c539ad24fb434aa0093d8f26cef57e"; // Prod Active as of 8/24/2023
+		//private static String authApiValueStage1 = "b85e309e661b4f17a69fe8b9377af7ff"; // Staging Active as of 8/24/2023
 		private static String authApiValue = authApiValueProd;
 
 		//private static Boolean showWarnMessage = true;
@@ -75,22 +76,29 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 
 			try {
-				String inIWWFAthleteId = "USA" + inMemberId;
-				Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, inIWWFAthleteId, curTourDate );
-				if ( respMsg == null ) {
-					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
-					return false;
-				}
-
-				if ( readRespMsg( inIWWFAthleteId, respMsg ) ) return true;
-
+				String curIwwfAthleteId;
+				String curFedCode = "USA";
 				DataRow curDataRow = getMemberTourReg( inSanctionId, inMemberId );
-				if ( curDataRow == null || ( curDataRow["Federation"] == System.DBNull.Value ) || ( (String)curDataRow["Federation"] ).ToLower().Equals( "usa" ) ) {
-					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
+				if ( curDataRow == null ) {
+					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 					return false;
 				}
 
-				return validateForeignMembership( inSanctionId, inEditCode, inMemberId, curTourDate );
+				curFedCode = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToUpper();
+				if ( HelperFunctions.isObjectEmpty( curFedCode ) ) curFedCode = "USA";
+				if ( curFedCode.Equals("USA" ) ) {
+					curIwwfAthleteId = curFedCode + inMemberId;
+					Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, curIwwfAthleteId, curTourDate );
+					if ( respMsg == null ) {
+						showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
+						return false;
+					}
+					if ( readRespMsg( curIwwfAthleteId, respMsg ) ) return true;
+					showNoLicenseMsg( inSanctionId, inMemberId, "N/A", respMsg );
+					return false;
+				} 
+
+				return validateForeignMembership( curDataRow, inSanctionId, inEditCode, inMemberId, curTourDate );
 
 			} catch ( Exception ex ) {
 				String curMsg = String.Format( "Exception encountered attempting to validate IWWF license for AWSA MemberId {0}{1}{2}"
@@ -105,40 +113,73 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-		private static Boolean validateForeignMembership( String inSanctionId, String inEditCode, String inMemberId, DateTime curTourDate ) {
+		private static Boolean validateForeignMembership( DataRow curTourRegRow, String inSanctionId, String inEditCode, String inMemberId, DateTime curTourDate ) {
+			String curFedCode, curForeignFedID, curIWWFAthleteId;
+			Dictionary<string, object> respMsg;
+
+			// Check to see if the skiers foreign member number is already available in the tournament.
+			// If it is then use that to validate the license
+			curFedCode = HelperFunctions.getDataRowColValue( curTourRegRow, "Federation", "" ).ToUpper();
+			curForeignFedID = HelperFunctions.getDataRowColValue( curTourRegRow, "ForeignFederationID", "" );
+
+			// Check to see if the foreign federation number also contains the federation code as the first 3 charaters
+			// If it does use it otherwise concatenate the federation and the foreign member number
+			if ( HelperFunctions.isObjectPopulated( curFedCode ) && HelperFunctions.isObjectPopulated( curForeignFedID ) ) {
+				if ( curForeignFedID.Length > curFedCode.Length && curForeignFedID.Substring( 0, curFedCode.Length ).ToUpper().Equals( curFedCode ) ) {
+					curIWWFAthleteId = curForeignFedID;
+				} else {
+					curIWWFAthleteId = curFedCode + curForeignFedID;
+				}
+				respMsg = readIwwfMembership( inSanctionId, inEditCode, curIWWFAthleteId, curTourDate );
+				if ( readRespMsg( curIWWFAthleteId, respMsg ) ) return true;
+			}
+
+			// Foreign member number is not in the current tournament so accessing AWSA to see if there is more current information to use for the license validation
 			NameValueCollection curHeaderParams = new NameValueCollection();
 			String requstUrl = GetForeignMember + inMemberId;
 			DataTable curDataTable = SendMessageHttp.getMessageResponseDataTable( requstUrl, curHeaderParams, "application/Json", inSanctionId, inEditCode, false );
-			if ( curDataTable == null || curDataTable.Rows.Count == 0 ) return false;
-			
-			DataRow curRow = curDataTable.Rows[0];
-			String federationCode = (String)curRow["FederationCode"];
-			if ( federationCode.Equals( "USA" ) ) {
+			if ( curDataTable == null ) {
+				MessageBox.Show( String.Format("License validation failure because there was an error attempting to retrieve AWSA member data for {0} ({1})"
+					, HelperFunctions.getDataRowColValue( curTourRegRow, "SkierName", "" ), inMemberId ) );
+				return false;
+			}
+			if ( curDataTable.Rows.Count == 0 ) {
+				showNoLicenseMsg( inSanctionId, inMemberId, inMemberId, null );
+				return false;
+			}
+
+			DataRow curRespDataRow = curDataTable.Rows[0];
+			curFedCode = HelperFunctions.getDataRowColValue( curRespDataRow, "FederationCode", "" ).ToUpper();
+			if ( curFedCode.Equals( "USA" ) ) {
 				showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 				return false;
 			}
-			String foreignIDStatus = (String)curRow["ForeignIDStatus"];
+			String foreignIDStatus = HelperFunctions.getDataRowColValue( curRespDataRow, "ForeignIDStatus", "" );
 			if ( !( foreignIDStatus.Equals( "Available" ) ) ) {
 				showNoLicenseMsg( inSanctionId, inMemberId, "N/A", null );
 				return false;
 			}
-			String inIWWFAthleteId = (String)curRow["ForeignFederationID"];
-			if ( inIWWFAthleteId.Length == 0 ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, null );
+			// Check to see if the foreign federation number also contains the federation code as the first 3 charaters
+			// If it does use it otherwise concatenate the federation and the foreign member number
+			curForeignFedID = HelperFunctions.getDataRowColValue( curRespDataRow, "ForeignFederationID", "" );
+			if ( HelperFunctions.isObjectEmpty( curForeignFedID) ) {
+				showNoLicenseMsg( inSanctionId, inMemberId, curForeignFedID, null );
 				return false;
 			}
-			if ( !( inIWWFAthleteId.Substring(0, federationCode.Length ).Equals( federationCode )) ) inIWWFAthleteId = federationCode + inIWWFAthleteId;
-
-			Dictionary<string, object> respMsg = readIwwfMembership( inSanctionId, inEditCode, inIWWFAthleteId, curTourDate );
+			if ( curForeignFedID.Length > curFedCode.Length && curForeignFedID.Substring( 0, curFedCode.Length ).ToUpper().Equals( curFedCode ) ) {
+				curIWWFAthleteId = curForeignFedID;
+			} else {
+				curIWWFAthleteId = curFedCode + curForeignFedID;
+			}
+			respMsg = readIwwfMembership( inSanctionId, inEditCode, curIWWFAthleteId, curTourDate );
 			if ( respMsg == null ) {
-				showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, respMsg );
+				showNoLicenseMsg( inSanctionId, inMemberId, curIWWFAthleteId, respMsg );
 				return false;
 			}
 
-			if ( readRespMsg( inIWWFAthleteId, respMsg ) ) return true;
-			showNoLicenseMsg( inSanctionId, inMemberId, inIWWFAthleteId, respMsg );
+			if ( readRespMsg( curIWWFAthleteId, respMsg ) ) return true;
+			showNoLicenseMsg( inSanctionId, inMemberId, curIWWFAthleteId, respMsg );
 			return false;
-
 		}
 
 		private static Dictionary<string, object> readIwwfMembership( String inSanctionId, String inEditCode, String inIWWFAthleteId, DateTime curTourDate ) {
@@ -288,9 +329,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		private static DataRow getMemberTourReg( String inSanctionId, String inMemberId ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT Distinct TR.MemberId, TR.SkierName, TR.Federation " );
-			curSqlStmt.Append( "FROM TourReg TR " );
-			curSqlStmt.Append( "WHERE TR.SanctionId = '" + inSanctionId + "' AND TR.MemberId = '" + inMemberId + "'" );
+			curSqlStmt.Append( "SELECT Distinct MemberId, SkierName, Federation, ForeignFederationID " );
+			curSqlStmt.Append( "FROM TourReg " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionId + "' AND MemberId = '" + inMemberId + "'" );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
 				return curDataTable.Rows[0];

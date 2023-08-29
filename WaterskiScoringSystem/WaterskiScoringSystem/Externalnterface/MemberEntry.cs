@@ -8,6 +8,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private String myLastName = "";
 		private String myFirstName = "";
 		private String myFederation = "";
+		private String myForeignFederationID = "";
 		private String myAddress1 = "";
 		private String myAddress2 = "";
 		private String myCity = "";
@@ -73,6 +74,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		
 		public string AgeGroup { get => myAgeGroup; set => myAgeGroup = value; }
 		public string Federation { get => myFederation; set => myFederation = value; }
+		public string ForeignFederationID { get => myForeignFederationID; set => myForeignFederationID = value; }
 		public string Address1 { get => myAddress1; set => myAddress1 = value; }
 		public string Address2 { get => myAddress2; set => myAddress2 = value; }
 		public string City { get => myCity; set => myCity = value; }

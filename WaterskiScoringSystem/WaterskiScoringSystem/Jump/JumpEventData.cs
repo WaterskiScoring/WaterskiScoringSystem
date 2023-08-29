@@ -179,79 +179,98 @@ namespace WaterskiScoringSystem.Jump {
 				curFilterCmd = curFilterCmd.Replace( "AgeGroup =", "XT.AgeGroup =" );
 			}
 
-			curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
+			String tmpFilterCmd = "";
+			if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+
+			int curIdx = 0;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[1] = "Select * from EventReg XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from EventReg XT "
 				+ " Where SanctionId = '" + JumpEventData.mySanctionNum + "'"
 				+ " And Event = 'Jump'";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[1] = curSelectCommand[1] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[2] = "Select * from EventRunOrder XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from EventRunOrder XT "
 				+ " Where SanctionId = '" + JumpEventData.mySanctionNum + "'"
 				+ " And Event = 'Jump' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[2] = curSelectCommand[2] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[3] = "SELECT XT.* FROM JumpScore XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM JumpScore XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[4] = "SELECT XT.* FROM JumpRecap XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM JumpRecap XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
 			//----------------------------------------
 			//Export data related to officials
 			//----------------------------------------
-			String tmpFilterCmd = "";
-			if ( !(curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
-
-			//----------------------------------------
-			//Export data related to officials
-			//----------------------------------------
-			curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round in (" + curRound + ", 25) "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
-			curSelectCommand[6] = curSelectCommand[6] + "Union "
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = curSelectCommand[curIdx] + "Union "
 				+ "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Jump' AND ER.Round in (" + curRound + ", 25) "
 				+ "Where XT.SanctionId = '" + JumpEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from OfficialWorkAsgmt "
 				+ " Where SanctionId = '" + JumpEventData.mySanctionNum + "' And Event = 'Jump' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
 
 			//----------------------------------------
 			//Export data provided by boat path measurement system using Waterski Connect
 			//----------------------------------------
-			curSelectCommand[8] = "SELECT BT.* FROM BoatTime BT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT BT.* FROM BoatTime BT "
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + JumpEventData.mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[8] = curSelectCommand[8] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[9] = "SELECT BT.* FROM BoatPath BT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT BT.* FROM BoatPath BT "
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + JumpEventData.mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[9] = curSelectCommand[9] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[10] = "SELECT BT.* FROM JumpMeasurement BT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT BT.* FROM JumpMeasurement BT "
 				+ "INNER JOIN  JumpScore XT on BT.SanctionId = XT.SanctionId AND BT.MemberId = XT.MemberId AND BT.Round = XT.Round AND BT.Event = 'Jump' "
 				+ "INNER JOIN EventReg ER on BT.SanctionId = ER.SanctionId AND BT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Jump' "
 				+ "Where BT.SanctionId = '" + JumpEventData.mySanctionNum + "' AND BT.Event = 'Jump' And BT.Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[10] = curSelectCommand[10] + "And " + curFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
 			return curSelectCommand;
 		}

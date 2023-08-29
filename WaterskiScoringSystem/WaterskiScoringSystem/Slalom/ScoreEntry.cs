@@ -1384,8 +1384,14 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( SimulationPassButton.Text.ToLower().Equals("check bpms") ) {
 				loadBoatPathDataGridView( "Slalom", "L", curSimMemberId, "1", "1", (decimal)6 );
 				if ( InvalidateBoatPathButton.Visible ) SimulationPassButton.Text = "Simulation Pass";
+				DialogResult dialogResult = MessageBox.Show( "No deviations found.  Do you want to reset the dialog?", "Simulation Reset", MessageBoxButtons.YesNo );
+				if ( dialogResult == DialogResult.Yes ) SimulationPassButton.Text = "Simulation Pass";
 
 			} else {
+				StringBuilder curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( String.Format("Delete From BoatPath Where SanctionId = '{0}' AND MemberId = '{1}'", SlalomEventData.mySanctionNum, curSimMemberId ) );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
 				SimulationPassButton.Text = "Check BPMS";
 				WscHandler.sendPassData( curSimMemberId
 					, "Simulation Pass"

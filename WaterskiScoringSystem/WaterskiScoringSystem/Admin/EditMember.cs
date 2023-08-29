@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
@@ -16,6 +16,7 @@ namespace WaterskiScoringSystem.Admin {
         private String mySkiYearAge = "";
         private String mySanctionNum;
         private String myMemberId;
+        private String myTourRules;
 
         private DataRow myTourRow;
 
@@ -57,10 +58,10 @@ namespace WaterskiScoringSystem.Admin {
 			}
 
 			myTourRow = curTourDataTable.Rows[0];
-			AgeAsOfLabel.Text = AgeAsOfLabel.Text.Substring( 0, AgeAsOfLabel.Text.Length - 2 )
-				+ mySanctionNum.Substring( 0, 2 );
+			AgeAsOfLabel.Text = AgeAsOfLabel.Text.Substring( 0, AgeAsOfLabel.Text.Length - 2 ) + mySanctionNum.Substring( 0, 2 );
+            myTourRules = (String)myTourRow["Rules"];
 
-			myFedDropdownList = new FedDropdownList();
+            myFedDropdownList = new FedDropdownList();
 			myMemberIdValidate = new MemberIdValidate();
 
 			editFederation.DataSource = myFedDropdownList.DropdownList;
@@ -182,15 +183,16 @@ namespace WaterskiScoringSystem.Admin {
 			try {
 				curSqlStmt = new StringBuilder( "" );
 				curSqlStmt.Append( "Insert MemberList (" );
-				curSqlStmt.Append( "MemberId, LastName, FirstName, State, City, Federation, SkiYearAge, Gender, MemberStatus, InsertDate, UpdateDate" );
+				curSqlStmt.Append( "MemberId, LastName, FirstName, State, City, Federation, ForeignFederationID, SkiYearAge, Gender, MemberStatus, InsertDate, UpdateDate" );
 				curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( " '" + curMemberEntry.MemberId + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getLastNameForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getFirstNameForDB() + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.getCityForDB() + "'" );
-				curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
-				curSqlStmt.Append( ", " + curMemberEntry.SkiYearAge.ToString() );
+                curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.ForeignFederationID + "'" );
+                curSqlStmt.Append( ", " + curMemberEntry.SkiYearAge.ToString() );
 				curSqlStmt.Append( ", '" + curMemberEntry.Gender + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.MemberStatus + "'" );
 				curSqlStmt.Append( ", GetDate() " );
@@ -215,7 +217,7 @@ namespace WaterskiScoringSystem.Admin {
 
         private bool updateMemberData() {
             String curReadyToSki = "N";
-			MemberEntry curMemberEntry = validateInput( true );
+			MemberEntry curMemberEntry = validateInput( false );
 			if ( curMemberEntry == null ) return false;
 
 			if ( curMemberEntry.MemberStatus.ToUpper().Equals( "ACTIVE" ) ) curReadyToSki = "Y";
@@ -228,10 +230,11 @@ namespace WaterskiScoringSystem.Admin {
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
-				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+                curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
+                curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
 				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
 				curSqlStmt.Append( ", MemberStatus = '" + curMemberEntry.MemberStatus + "'" );
-				curSqlStmt.Append( ", UpdateDate = 'GetDate() " );
+				curSqlStmt.Append( ", UpdateDate = GetDate() " );
 				curSqlStmt.Append( " Where MemberId = '" + curMemberEntry.MemberId + "'" );
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
@@ -241,10 +244,12 @@ namespace WaterskiScoringSystem.Admin {
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
-				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+                curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
+                curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
 				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
 				curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
-				curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "'" );
+                curSqlStmt.Append( ", LastUpdateDate = GetDate() " );
+                curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "' AND MemberId = '" + curMemberEntry.MemberId + "'" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				isDataModified = false;
@@ -289,11 +294,11 @@ namespace WaterskiScoringSystem.Admin {
 			if ( !( editState_Validation() ) ) return null;
 			curMemberEntry.State = editState.Text;
 			if ( !( editCity_Validation() ) ) return null;
-			curMemberEntry.City = editState.Text;
+			curMemberEntry.City = editCity.Text;
 			if ( !( editFederation_Validation() ) ) return null;
-			curMemberEntry.Federation = (String)editFederation.SelectedValue;
-
-			return curMemberEntry;
+            curMemberEntry.Federation = ((String)editFederation.SelectedValue).ToUpper();
+            curMemberEntry.ForeignFederationID = editForeignFederationID.Text;
+            return curMemberEntry;
 		}
 
 		private void cancelButton_Click( object sender, EventArgs e ) {
@@ -329,6 +334,7 @@ namespace WaterskiScoringSystem.Admin {
             editState.Text = "";
             editCity.Text = "";
             editFederation.SelectedValue = "";
+            editForeignFederationID.Text = "";
             editInsertDateShow.Text = "";
             editUpdateDateShow.Text = "";
 
@@ -363,8 +369,10 @@ namespace WaterskiScoringSystem.Admin {
 			showMemberStatus.Text = HelperFunctions.getDataRowColValue( curMemberRow, "MemberStatus", "" );
 			editCity.Text = HelperFunctions.getDataRowColValue( curMemberRow, "City", "" );
 			editState.Text = HelperFunctions.getDataRowColValue( curMemberRow, "State", "" );
-			editFederation.Text = HelperFunctions.getDataRowColValue( curMemberRow, "Federation", "" );
-			editInsertDateShow.Text = HelperFunctions.getDataRowColValue( curMemberRow, "InsertDate", "" );
+            editFederation.SelectedValue = HelperFunctions.getDataRowColValue( curMemberRow, "Federation", "" ).ToLower();
+            editForeignFederationID.Text = HelperFunctions.getDataRowColValue( curMemberRow, "ForeignFederationID", "" );
+
+            editInsertDateShow.Text = HelperFunctions.getDataRowColValue( curMemberRow, "InsertDate", "" );
 			editUpdateDateShow.Text = HelperFunctions.getDataRowColValue( curMemberRow, "UpdateDate", "" );
         }
 
@@ -372,10 +380,10 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private bool editMemberId_Validation() {
-            bool curReturnStatus = true;
             isDataModified = true;
             isMemberIdChanged = false;
-            if ( editMemberId.Text.Length == 9 ) {
+
+            if ( Regex.IsMatch( editMemberId.Text, "^[0-9]{9}" ) ) {
                 if ( myMemberIdValidate.checkMemberId( editMemberId.Text ) ) {
                     if ( isEditRequest ) {
                         if ( !( myMemberId.Equals( editMemberId.Text ) ) ) {
@@ -383,17 +391,35 @@ namespace WaterskiScoringSystem.Admin {
                         }
                     }
                 } else {
-                    curReturnStatus = false;
+                    if ( HelperFunctions.isObjectPopulated( (String)editFederation.SelectedValue )
+                        && !( ( (String)editFederation.SelectedValue ).Equals( "USA" ) )
+                        ) {
+                        showMemberStatus.Text = "ACTIVE";
+                        return true;
+                    }
                     MessageBox.Show( "MemberId is not valid, failed checksum verification" );
+                    return false;
                 }
+            
             } else if ( editMemberId.Text.Length == 0 ) {
-                curReturnStatus = false;
                 MessageBox.Show( "MemberId is a required field" );
+                return false;
+            
             } else {
-                curReturnStatus = false;
-                MessageBox.Show( "MemberId must be 9 characters in length with no dashes " );
+                if ( Regex.IsMatch( editMemberId.Text, "^[0-9]+$" ) ) {
+                    if ( HelperFunctions.isObjectPopulated( (String)editFederation.SelectedValue )
+                        && !( ( (String)editFederation.SelectedValue ).Equals( "USA" ) )
+                        ) {
+                        showMemberStatus.Text = "ACTIVE";
+                        return true;
+                    }
+                }
+                MessageBox.Show( "MemberId must be 9 numeric characters with no dashes " );
+                return false;
+
             }
-            return curReturnStatus;
+
+            return true;
         }
 
         private void editSkiYearAge_Validated( object sender, EventArgs e ) {
@@ -451,6 +477,9 @@ namespace WaterskiScoringSystem.Admin {
                 curReturnStatus = false;
                 MessageBox.Show( "First name is a required field" );
             }
+
+            Regex curRegExNumeric = new Regex( "[^0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase ); //e.g. If RegExNumeric.Test(dataValue) Then Good Else bad End If
+
             return curReturnStatus;
         }
 

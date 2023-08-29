@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Admin;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Admin {
@@ -256,7 +250,7 @@ namespace WaterskiScoringSystem.Admin {
         private DataTable getMemberList() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, SkiYearAge, Gender" );
-			curSqlStmt.Append( ", State, City, Federation" );
+			curSqlStmt.Append( ", State, City, Federation, ForeignFederationID" );
 			curSqlStmt.Append( ", MemberStatus, MemberExpireDate, InsertDate, UpdateDate " );
 			curSqlStmt.Append( ", Coalesce( JudgeSlalomRating, '' ) as JudgeSlalom" );
 			curSqlStmt.Append( ", Coalesce( JudgeTrickRating, '' ) as JudgeTrick" );

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 
@@ -90,59 +87,71 @@ namespace WaterskiScoringSystem.Trick {
 				curFilterCmd = curFilterCmd.Replace( "AgeGroup =", "XT.AgeGroup =" );
 			}
 
-			curSelectCommand[0] = "SELECT XT.* FROM TourReg XT "
-				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[0] = curSelectCommand[0] + "And " + curFilterCmd + " ";
-
-			curSelectCommand[1] = "Select * from EventReg XT "
-				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
-				+ " And Event = 'Trick'";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[1] = curSelectCommand[1] + "And " + curFilterCmd + " ";
-
-			curSelectCommand[2] = "Select * from EventRunOrder XT "
-				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
-				+ " And Event = 'Trick' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[2] = curSelectCommand[2] + "And " + curFilterCmd + " ";
-
-			curSelectCommand[3] = "SELECT XT.* FROM TrickScore XT "
-				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[3] = curSelectCommand[3] + "And " + curFilterCmd + " ";
-
-			curSelectCommand[4] = "SELECT XT.* FROM TrickPass XT "
-				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[4] = curSelectCommand[4] + "And " + curFilterCmd + " ";
-
-			//----------------------------------------
-			//Export data related to officials
-			//----------------------------------------
 			String tmpFilterCmd = "";
 			if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
 
+			int curIdx = 0;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
+				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from EventReg XT "
+				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
+				+ " And Event = 'Trick'";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from EventRunOrder XT "
+				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
+				+ " And Event = 'Trick' And Round in (" + curRound + ", 25) ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TrickScore XT "
+				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TrickPass XT "
+				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
+				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+
 			//----------------------------------------
 			//Export data related to officials
 			//----------------------------------------
-			curSelectCommand[5] = "SELECT XT.* FROM TourReg XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round in (" + curRound + ", 25) "
 				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[5] = curSelectCommand[5] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[6] = "SELECT XT.* FROM OfficialWork XT "
+			curIdx++;
+			curSelectCommand[curIdx] = "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' "
 				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
-			curSelectCommand[6] = curSelectCommand[6] + "Union "
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = curSelectCommand[curIdx] + "Union "
 				+ "SELECT XT.* FROM OfficialWork XT "
 				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round in (" + curRound + ", 25) "
 				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[6] = curSelectCommand[6] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
 
-			curSelectCommand[7] = "Select * from OfficialWorkAsgmt "
+			curIdx++;
+			curSelectCommand[curIdx] = "Select * from OfficialWorkAsgmt "
 				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "' And Event = 'Trick' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[7] = curSelectCommand[7] + tmpFilterCmd + " ";
-
+			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
 			return curSelectCommand;
 		}
 

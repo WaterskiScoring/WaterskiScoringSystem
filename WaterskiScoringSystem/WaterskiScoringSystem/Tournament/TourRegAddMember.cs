@@ -234,91 +234,29 @@ namespace WaterskiScoringSystem.Tournament {
 					#region Member record information common to all data sources
 					curViewRow.Cells["LastName"].Value = (String) curDataRow["LastName"];
 					curViewRow.Cells["FirstName"].Value = (String) curDataRow["FirstName"];
-					try {
-						curViewRow.Cells["City"].Value = (String) curDataRow["City"];
-					} catch {
-						curViewRow.Cells["City"].Value = "";
-					}
-					try {
-						curViewRow.Cells["State"].Value = (String) curDataRow["State"];
-					} catch {
-						curViewRow.Cells["State"].Value = "";
-					}
-                    try {
-						curViewRow.Cells["Federation"].Value = (String) curDataRow["Federation"];
-					} catch {
-						curViewRow.Cells["Federation"].Value = "";
-					}
-					try {
-						curViewRow.Cells["Gender"].Value = (String) curDataRow["Gender"];
-					} catch {
-						curViewRow.Cells["Gender"].Value = "";
-					}
-					try {
-						curViewRow.Cells["JudgeSlalom"].Value = (String) curDataRow["JudgeSlalom"];
-					} catch {
-						curViewRow.Cells["JudgeSlalom"].Value = "";
-					}
-					try {
-						curViewRow.Cells["JudgeTrick"].Value = (String) curDataRow["JudgeTrick"];
-					} catch {
-						curViewRow.Cells["JudgeTrick"].Value = "";
-					}
-					try {
-						curViewRow.Cells["JudgeJump"].Value = (String) curDataRow["JudgeJump"];
-					} catch {
-						curViewRow.Cells["JudgeJump"].Value = "";
-					}
-					try {
-						curViewRow.Cells["DriverSlalom"].Value = (String) curDataRow["DriverSlalom"];
-					} catch {
-						curViewRow.Cells["DriverSlalom"].Value = "";
-					}
-					try {
-						curViewRow.Cells["DriverTrick"].Value = (String) curDataRow["DriverTrick"];
-					} catch {
-						curViewRow.Cells["DriverTrick"].Value = "";
-					}
-					try {
-						curViewRow.Cells["DriverJump"].Value = (String) curDataRow["DriverJump"];
-					} catch {
-						curViewRow.Cells["DriverJump"].Value = "";
-					}
-					try {
-						curViewRow.Cells["ScorerSlalom"].Value = (String) curDataRow["ScorerSlalom"];
-					} catch {
-						curViewRow.Cells["ScorerSlalom"].Value = "";
-					}
-					try {
-						curViewRow.Cells["ScorerTrick"].Value = (String) curDataRow["ScorerTrick"];
-					} catch {
-						curViewRow.Cells["ScorerTrick"].Value = "";
-					}
-					try {
-						curViewRow.Cells["ScorerJump"].Value = (String) curDataRow["ScorerJump"];
-					} catch {
-						curViewRow.Cells["ScorerJump"].Value = "";
-					}
-					try {
-						curViewRow.Cells["Safety"].Value = (String) curDataRow["Safety"];
-					} catch {
-						curViewRow.Cells["Safety"].Value = "";
-					}
-					try {
-						curViewRow.Cells["TechController"].Value = (String) curDataRow["TechController"];
-					} catch {
-						curViewRow.Cells["TechController"].Value = "";
-					}
+					curViewRow.Cells["City"].Value = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
+					curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+					curViewRow.Cells["Federation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" );
+					curViewRow.Cells["ForeignFederationID"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ForeignFederationID", "" );
+
+					curViewRow.Cells["Gender"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
+					curViewRow.Cells["JudgeSlalom"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JudgeSlalom", "" );
+					curViewRow.Cells["JudgeTrick"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JudgeTrick", "" );
+					curViewRow.Cells["JudgeJump"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JudgeJump", "" );
+					curViewRow.Cells["DriverSlalom"].Value = HelperFunctions.getDataRowColValue( curDataRow, "DriverSlalom", "" );
+					curViewRow.Cells["DriverTrick"].Value = HelperFunctions.getDataRowColValue( curDataRow, "DriverTrick", "" );
+					curViewRow.Cells["DriverJump"].Value = HelperFunctions.getDataRowColValue( curDataRow, "DriverJump", "" );
+					curViewRow.Cells["ScorerSlalom"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerSlalom", "" );
+					curViewRow.Cells["ScorerTrick"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerTrick", "" );
+					curViewRow.Cells["ScorerJump"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerJump", "" );
+					curViewRow.Cells["Safety"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Safety", "" );
+					curViewRow.Cells["TechController"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechController", "" );
 					#endregion
 
 					if ( localSearchLoc.Checked ) {
 						#region Member record retrieved from local member list
 
-						try {
-							curViewRow.Cells["MemberId"].Value = (String) curDataRow["MemberId"];
-						} catch {
-							curViewRow.Cells["MemberId"].Value = "";
-						}
+						curViewRow.Cells["MemberId"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MemberId", "" );
 
 						try {
 							curEffTo = (DateTime) curDataRow["MemberExpireDate"];
@@ -466,7 +404,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable searchMemberList( String inMemberId, String inLastName, String inFirstName, String inState ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, State, City" );
-			curSqlStmt.Append( ", Country, SkiYearAge, Federation, Gender, MemberStatus, MemberExpireDate" );
+			curSqlStmt.Append( ", Country, SkiYearAge, Federation, ForeignFederationID, Gender, MemberStatus, MemberExpireDate" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeSlalomRating, '' ) as JudgeSlalom" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeTrickRating, '' ) as JudgeTrick" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeJumpRating, '' ) as JudgeJump" );
@@ -521,33 +459,19 @@ namespace WaterskiScoringSystem.Tournament {
 			String curMethodName = "sendRequest";
 			String curContentType = "application/json; charset=UTF-8";
 			String curMemberExportListUrl = "https://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
-			String curMemberSearchListUrl = "https://www.usawaterski.org/admin/GetMemberExportJson.asp";
 			String curExportUrl = "";
 
-			/* -----------------------------------------------------------------------
-            * Validate TourID value for scores to be Exported.
-            * https://www.usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&MemberId=700040630
-            * https://www.usawaterski.org/admin/GetMemberRegExportJson.asp?SanctionId=18E014&FirstName=David&LastName=Allen
-            *
-            *HTTP_AUTHORIZATION:Basic wstims:Slalom38tTrick13Jump250\nHTTP_HOST:www.usawaterski.org\nHTTP_USER_AGENT:.NET Framework CustomUserAgent Water Ski Scoring
-            ----------------------------------------------------------------------- */
-
 			StringBuilder curQueryString = new StringBuilder( "" );
-			if (inState.Equals("bypass") && inState.Length > 0 && inMemberId.Length == 0 && inFirstName.Length == 0 && inLastName.Length == 0) {
-				curExportUrl = curMemberSearchListUrl;
-				curQueryString.Append("?State=" + inState);
-			} else {
-				curExportUrl = curMemberExportListUrl;
-				curQueryString.Append("?SanctionId=" + mySanctionNum);
-				if (inMemberId.Length > 0) {
-					curQueryString.Append("&MemberId=" + inMemberId);
-				}
-				if (inFirstName.Length > 0 || inLastName.Length > 0) {
-					curQueryString.Append("&FirstName=" + inFirstName + "&LastName=" + inLastName);
-				}
-				if (inState.Length > 0) {
-					curQueryString.Append("&State=" + inState);
-				}
+			curExportUrl = curMemberExportListUrl;
+			curQueryString.Append( "?SanctionId=" + mySanctionNum );
+			if ( inMemberId.Length > 0 ) {
+				curQueryString.Append( "&MemberId=" + inMemberId );
+			}
+			if ( inFirstName.Length > 0 || inLastName.Length > 0 ) {
+				curQueryString.Append( "&FirstName=" + inFirstName + "&LastName=" + inLastName );
+			}
+			if ( inState.Length > 0 ) {
+				curQueryString.Append( "&State=" + inState );
 			}
 
 			String curReqstUrl = curExportUrl + curQueryString.ToString();

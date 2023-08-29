@@ -1052,10 +1052,16 @@ namespace WaterskiScoringSystem.Tournament {
 						curCheckBox.Checked = false;
 					}
 
-					this.printHeaderNote.Text = (String) curDataTable.Rows[0]["PrintTitle"];
-					myFilterCmd = (String) curDataTable.Rows[0]["GroupFilterCriteria"];
-					setGroupFilters( myFilterCmd );
-					myOrigGroupFilterValue = curFilterName;
+					this.printHeaderNote.Text = HelperFunctions.getDataRowColValue(curDataTable.Rows[0], "PrintTitle", "");
+					myFilterCmd = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "GroupFilterCriteria", "" );
+                    if ( myFilterCmd.Length == 0 ) {
+                        EventRegDataGridView.Rows.Clear();
+                        MessageBox.Show( "Group filter has no groups selected" );
+                        return;
+                    }
+                    
+                    setGroupFilters( myFilterCmd );
+                    myOrigGroupFilterValue = curFilterName;
 
 					loadEventRegView();
 

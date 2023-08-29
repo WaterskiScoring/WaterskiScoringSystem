@@ -505,7 +505,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "Insert TourReg (" );
             curSqlStmt.Append( " MemberId, SanctionId, SkierName, AgeGroup, Team, ReadyToSki, ReadyForPlcmt, IwwfLicense" );
-            curSqlStmt.Append( ", TrickBoat, JumpHeight, Federation, Gender, City, State, SkiYearAge" );
+            curSqlStmt.Append( ", TrickBoat, JumpHeight, Federation, ForeignFederationID, Gender, City, State, SkiYearAge" );
             curSqlStmt.Append( ", SlalomClassReg, TrickClassReg, JumpClassReg, Notes, AwsaMbrshpComment" );
             curSqlStmt.Append( ", LastUpdateDate" );
             curSqlStmt.Append( ") Values (" );
@@ -520,6 +520,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", '" + inTrickBoat + "'" );
             curSqlStmt.Append( ", " + curJumpHeight );
             curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
+            curSqlStmt.Append( ", '" + curMemberEntry.ForeignFederationID + "'" );
             curSqlStmt.Append( ", '" + curMemberEntry.Gender + "'" );
             curSqlStmt.Append( ", '" + curMemberEntry.getCityForDB() + "'" );
             curSqlStmt.Append( ", '" + curMemberEntry.State + "'" );
@@ -1037,7 +1038,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         private DataRow getMemberRow( String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Select MemberId, LastName, FirstName, Address1, Address2, City, State, Federation, Country, Postalcode" );
+            curSqlStmt.Append( "Select MemberId, LastName, FirstName, Address1, Address2, City, State, Federation, ForeignFederationID,  Country, Postalcode" );
             curSqlStmt.Append( ", SkiYearAge, DateOfBirth, Gender, MemberStatus, MemberExpireDate" );
 			curSqlStmt.Append( ", Coalesce( JudgeSlalomRating, '' ) as JudgeSlalomRating" );
 			curSqlStmt.Append( ", Coalesce( JudgeTrickRating, '' ) as JudgeTrickRating" );

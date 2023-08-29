@@ -1073,8 +1073,9 @@ namespace WaterskiScoringSystem.Admin {
 			if ( curResults == false ) {
 				ReportPropButton_Click( null, null );
 			}
+            Properties.Settings.Default.Save();
 
-			MessageBox.Show( "Setting current application tournament to "
+            MessageBox.Show( "Setting current application tournament to "
 				+ Properties.Settings.Default.AppSanctionNum
 				+ "\n\n Tournament data location: "
 				+ Properties.Settings.Default.ExportDirectory
@@ -1515,10 +1516,9 @@ namespace WaterskiScoringSystem.Admin {
             * Configure URL to retrieve all skiers pre-registered for the active tournament
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
-			String curQueryString = "?SanctionId=" + curSanctionNum;
 			String curContentType = "application/json; charset=UTF-8";
 			String curOfficialExportListUrl = "https://www.usawaterski.org/admin/GetSanctionExportJson.asp";
-			String curReqstUrl = curOfficialExportListUrl + curQueryString;
+			String curReqstUrl = curOfficialExportListUrl;
 
 			NameValueCollection curHeaderParams = new NameValueCollection();
 			List<object> curResponseDataList = null;

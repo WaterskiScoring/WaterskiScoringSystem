@@ -130,10 +130,10 @@ namespace WaterskiScoringSystem.Externalnterface {
             * Configure URL to retrieve all skiers pre-registered for the active tournament
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
-			String curQueryString = "?SanctionId=" + mySanctionNum;
+			//String curQueryString = "?SanctionId=" + mySanctionNum;
 			String curContentType = "application/json; charset=UTF-8";
 			String curRegExportListUrl = "https://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
-			String curReqstUrl = curRegExportListUrl + curQueryString;
+			String curReqstUrl = curRegExportListUrl;
 			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
 				MessageBox.Show( "Sanction edit code is required to retrieve skier registrations and member information.  Enter required value on Tournament Form" );
@@ -144,7 +144,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 			List<object> curResponseDataList = null;
 
 			Cursor.Current = Cursors.WaitCursor;
-			//curResponseDataList = SendMessageHttp.getMessageResponseJsonArray(curReqstUrl, curHeaderParams, curContentType, "wstims", "Slalom38tTrick13Jump250", false);
 			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
 			if ( curResponseDataList == null || curResponseDataList.Count == 0 ) {
 				displayMemberProcessCounts();
@@ -202,10 +201,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return;
 			}
 			//String curQueryString = "&SanctionID=" + mySanctionNum;
-			String curQueryString = "&sanctionID=22S085R";
+			//String curQueryString = "&sanctionID=22S085R";
 			String curContentType = "application/json; charset=UTF-8";
 			String curRegExportListUrl = "https://global.api.worldwaterskiers.com/wstims/getParticipantsBySanctionID?apiToken=wstims";
-			String curReqstUrl = curRegExportListUrl + curQueryString;
+			//String curReqstUrl = curRegExportListUrl + curQueryString;
+			String curReqstUrl = curRegExportListUrl;
 			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
 				MessageBox.Show( "Sanction edit code is required to retrieve skier registrations and member information.  Enter required value on Tournament Form" );
@@ -281,6 +281,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 
 				curMemberEntry.Federation = HelperFunctions.getAttributeValue( curImportMemberEntry, "Federation" );
+				curMemberEntry.ForeignFederationID = HelperFunctions.getAttributeValue( curImportMemberEntry, "ForeignFederationID" );
 				curMemberEntry.City = HelperFunctions.getAttributeValue( curImportMemberEntry, "City" );
 				curMemberEntry.State = HelperFunctions.getAttributeValue( curImportMemberEntry, "State" );
 				curMemberEntry.Team = HelperFunctions.getAttributeValue( curImportMemberEntry, "Team" ).ToUpper();
@@ -853,7 +854,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			if ( newMember ) {
                 curSqlStmt = new StringBuilder("");
                 curSqlStmt.Append("Insert MemberList (");
-                curSqlStmt.Append("MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, Federation, MemberStatus");
+                curSqlStmt.Append( "MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, Federation, ForeignFederationID, MemberStatus" );
                 curSqlStmt.Append(", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating");
                 curSqlStmt.Append(", DriverSlalomRating, DriverTrickRating, DriverJumpRating");
                 curSqlStmt.Append(", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating");
@@ -868,7 +869,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curSqlStmt.Append(", '" + curMemberEntry.getCityForDB() + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.State + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.Federation + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.MemberStatus + "'");
+				curSqlStmt.Append( ", '" + curMemberEntry.ForeignFederationID + "'" );
+				curSqlStmt.Append(", '" + curMemberEntry.MemberStatus + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.JudgeSlalomRating + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.JudgeTrickRating + "'");
                 curSqlStmt.Append(", '" + curMemberEntry.JudgeJumpRating + "'");
@@ -897,7 +899,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curSqlStmt.Append(", City = '" + curMemberEntry.getCityForDB() + "'");
                 curSqlStmt.Append(", State = '" + curMemberEntry.State + "'");
                 curSqlStmt.Append(", Federation = '" + curMemberEntry.Federation + "'");
-                curSqlStmt.Append(", MemberStatus = '" + curMemberEntry.MemberStatus + "'");
+				curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
+				curSqlStmt.Append(", MemberStatus = '" + curMemberEntry.MemberStatus + "'");
                 curSqlStmt.Append(", Note = '" + curMemberEntry.Note +"'");
                 curSqlStmt.Append(", MemberExpireDate = '" + Convert.ToDateTime( curMemExpireDate ).ToString( "MM/dd/yy" ) + "'");
                 curSqlStmt.Append(", UpdateDate = getdate()");

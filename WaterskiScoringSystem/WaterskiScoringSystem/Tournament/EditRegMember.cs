@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
@@ -284,6 +285,9 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( !( editFederation_Validation() ) ) return false;
 			curMemberEntry.Federation = (String)editFederation.SelectedValue;
 
+            if ( !( editForeignFederationID_Validation() ) ) return false;
+            curMemberEntry.ForeignFederationID = editForeignFederationID.Text;
+
             StringBuilder curSqlStmt = new StringBuilder( "" );
             try {
 				curSqlStmt.Append( "Update MemberList " );
@@ -292,7 +296,8 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
-				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+                curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
+                curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
 				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
 				curSqlStmt.Append( ", MemberStatus = '" + curMemberEntry.MemberStatus + "'" );
 				curSqlStmt.Append( ", UpdateDate = getdate() " );
@@ -305,7 +310,8 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
 				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
 				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
-				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
+                curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
+                curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge.ToString() );
 				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
 				curSqlStmt.Append( ", ReadyToSki = '" + curReadyToSki + "'" );
 				curSqlStmt.Append( ", AwsaMbrshpComment = '" + curMemberEntry.MemberStatus + "'" );
@@ -406,11 +412,9 @@ namespace WaterskiScoringSystem.Tournament {
 
             editCity.Text = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
             editState.Text = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
-            String curFedValue = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToLower();
-            editFederation.Text = curFedValue;
-            editFederation.SelectedValue = curFedValue;
+            editFederation.SelectedValue = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" ).ToLower();
+            editForeignFederationID.Text = HelperFunctions.getDataRowColValue( curDataRow, "ForeignFederationID", "" );
             showMemberStatus.Text = HelperFunctions.getDataRowColValue( curDataRow, "MemberStatus", "Inactive" );
-
             AddButton.Visible = false;
             AddButton.Enabled = false;
         }
@@ -429,10 +433,8 @@ namespace WaterskiScoringSystem.Tournament {
             }
             editFirstName.Text = (String)myImportMemberEntry["FirstName"];
             editLastName.Text = (String)myImportMemberEntry["LastName"];
-
-            String curFedValue = HelperFunctions.getAttributeValue( myImportMemberEntry, "Federation" ).ToLower();
-            editFederation.Text = curFedValue;
-            editFederation.SelectedValue = curFedValue;
+            editFederation.SelectedValue = HelperFunctions.getAttributeValue( myImportMemberEntry, "Federation" ).ToLower();
+            editForeignFederationID.Text = HelperFunctions.getAttributeValue( myImportMemberEntry, "ForeignFederationID" );
             editCity.Text = HelperFunctions.getAttributeValue( myImportMemberEntry, "City" );
             editState.Text = HelperFunctions.getAttributeValue( myImportMemberEntry, "State" );
 
@@ -637,9 +639,11 @@ namespace WaterskiScoringSystem.Tournament {
                         }
                     }
                 }
+            
             } else if ( editMemberId.Text.Length == 0 ) {
                 curReturnStatus = false;
                 MessageBox.Show( "MemberId is a required field" );
+            
             } else {
                 curReturnStatus = false;
                 MessageBox.Show( "MemberId must be 9 characters in length with no dashes " );
@@ -862,6 +866,16 @@ namespace WaterskiScoringSystem.Tournament {
             return curReturnStatus;
         }
 
+        private bool editForeignFederationID_Validation() {
+            if ( HelperFunctions.isObjectEmpty( editForeignFederationID.Text ) ) return true;
+            if ( !( Regex.IsMatch( editForeignFederationID.Text, "^[0-9]+$" ) ) ) {
+                MessageBox.Show( "ForeignFederationID is not valid.  Must be numeric" );
+                return false;
+            }
+            isDataModified = true;
+            return true;
+        }
+
         private bool editGenderSelect_Validation() {
             bool curReturnStatus = true;
             isDataModified = true;
@@ -887,7 +901,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataRow getMemberData( String inMemberId ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, State, City" );
-			curSqlStmt.Append( ", Country, SkiYearAge, Federation, Gender, MemberStatus, MemberExpireDate" );
+			curSqlStmt.Append( ", Country, SkiYearAge, Federation, ForeignFederationID, Gender, MemberStatus, MemberExpireDate" );
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
 			curSqlStmt.Append( "From MemberList " );
 			curSqlStmt.Append( "Where MemberId = '" + inMemberId + "'" );
@@ -903,8 +917,9 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataRow getMemberTourReg(String inMemberId, String inAgeGroup) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT TR.MemberId, TR.SkierName, ML.LastName, ML.FirstName, TR.City, TR.State" );
-			curSqlStmt.Append( ", TR.Federation, TR.SkiYearAge, TR.AgeGroup, TR.Gender, TR.ReadyToSki " );
-			curSqlStmt.Append(", Coalesce(AwsaMbrshpComment, ML.MemberStatus) AS MemberStatus, Coalesce(ML.MemberExpireDate, '') AS MemberExpireDate ");
+			curSqlStmt.Append( ", TR.Federation, Coalesce(TR.ForeignFederationID, ML.ForeignFederationID) AS ForeignFederationID" );
+            curSqlStmt.Append( ", TR.SkiYearAge, TR.AgeGroup, TR.Gender, TR.ReadyToSki" );
+            curSqlStmt.Append(", Coalesce(AwsaMbrshpComment, ML.MemberStatus) AS MemberStatus, Coalesce(ML.MemberExpireDate, '') AS MemberExpireDate ");
 			curSqlStmt.Append( "FROM TourReg TR" );
 			curSqlStmt.Append( "  LEFT OUTER JOIN MemberList ML ON ML.MemberId = TR.MemberId " );
 			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "' AND TR.MemberId = '" + inMemberId + "' AND TR.AgeGroup = '" + inAgeGroup + "'" );
