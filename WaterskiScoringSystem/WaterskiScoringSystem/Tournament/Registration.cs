@@ -74,6 +74,9 @@ namespace WaterskiScoringSystem.Tournament {
 			} else {
 				Team.Visible = false;
 			}
+			String curEventClass = HelperFunctions.getDataRowColValue( myTourRow, "EventScoreClass", "C" );
+			IwwfLicense.Visible = false;
+			if ( curEventClass.Equals("E") || curEventClass.Equals( "L" ) || curEventClass.Equals( "R" ) ) IwwfLicense.Visible = true;
 
 			if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) {
 				SlalomReg.Visible = false;

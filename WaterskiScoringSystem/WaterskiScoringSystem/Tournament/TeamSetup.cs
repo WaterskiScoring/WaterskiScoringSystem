@@ -404,6 +404,8 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 isDataModified = false;
+                Int16 curRunOrder;
+                String curValue;
                 myTeamRowIdx = 0;
                 TeamDataGridView.Rows.Clear();
                 myTeamDataTable = getTeamData();
@@ -413,6 +415,7 @@ namespace WaterskiScoringSystem.Tournament {
                         String[] curDivList = { "CM", "CW", "BM", "BW" };
                         foreach ( String curDiv in curDivList ) {
                             curFindRows = myTeamDataTable.Select( "AgeGroup = '" + curDiv + "'" );
+                            if ( curFindRows.Length <= 0 ) continue;
                             foreach ( DataRow curDataRow in curFindRows ) {
                                 myTeamRowIdx = TeamDataGridView.Rows.Add();
                                 curViewRow = TeamDataGridView.Rows[myTeamRowIdx];
@@ -420,58 +423,34 @@ namespace WaterskiScoringSystem.Tournament {
                                 curViewRow.Cells["TeamPK"].Value = ( (Int64)curDataRow["TeamPK"] ).ToString();
                                 curViewRow.Cells["OrderPK"].Value = ( (Int64)curDataRow["OrderPK"] ).ToString();
                                 curViewRow.Cells["TeamSanctionId"].Value = (String)curDataRow["SanctionId"];
-                                try {
-                                    curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
-                                } catch {
-                                    curViewRow.Cells["TeamCode"].Value = "";
+                                
+                                curViewRow.Cells["TeamCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
+                                curViewRow.Cells["TeamName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Name", "" );
+                                curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+                                curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamSlalomOrder", "" );
+                                if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                    curViewRow.Cells["TeamSlalomOrder"].Value = Convert.ToInt16( curValue );
+                                } else {
+                                    curViewRow.Cells["TeamSlalomOrder"].Value = "";
                                 }
-                                try {
-                                    curViewRow.Cells["TeamName"].Value = (String)curDataRow["Name"];
-                                } catch {
-                                    curViewRow.Cells["TeamName"].Value = "";
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamTrickOrder", "" );
+                                if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                    curViewRow.Cells["TeamTrickOrder"].Value = Convert.ToInt16( curValue );
+                                } else {
+                                    curViewRow.Cells["TeamTrickOrder"].Value = "";
                                 }
-                                try {
-                                    curViewRow.Cells["AgeGroup"].Value = ( (String)curDataRow["AgeGroup"] ).ToString();
-                                } catch {
-                                    curViewRow.Cells["AgeGroup"].Value = "";
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamJumpOrder", "" );
+                                if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                    curViewRow.Cells["TeamJumpOrder"].Value = Convert.ToInt16( curValue );
+                                } else {
+                                    curViewRow.Cells["TeamJumpOrder"].Value = "";
                                 }
-                                try {
-                                    curViewRow.Cells["EventGroup"].Value = ( (String)curDataRow["EventGroup"] ).ToString();
-                                } catch {
-                                    curViewRow.Cells["EventGroup"].Value = "";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamSlalomOrder"].Value = ( (Int16)curDataRow["SlalomRunOrder"] ).ToString();
-                                } catch {
-                                    curViewRow.Cells["TeamSlalomOrder"].Value = "0";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamTrickOrder"].Value = ( (Int16)curDataRow["TrickRunOrder"] ).ToString();
-                                } catch {
-                                    curViewRow.Cells["TeamTrickOrder"].Value = "0";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamJumpOrder"].Value = ( (Int16)curDataRow["JumpRunOrder"] ).ToString();
-                                } catch {
-                                    curViewRow.Cells["TeamJumpOrder"].Value = "0";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamContactName"].Value = (String)curDataRow["ContactName"];
-                                } catch {
-                                    curViewRow.Cells["TeamContactName"].Value = "";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamContactInfo"].Value = (String)curDataRow["ContactInfo"];
-                                } catch {
-                                    curViewRow.Cells["TeamContactInfo"].Value = "";
-                                }
-                                try {
-                                    curViewRow.Cells["TeamNotes"].Value = (String)curDataRow["Notes"];
-                                } catch {
-                                    curViewRow.Cells["TeamNotes"].Value = "";
-                                }
+                                curViewRow.Cells["TeamContactName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ContactName", "" );
+                                curViewRow.Cells["TeamContactInfo"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ContactInfo", "" );
+                                curViewRow.Cells["TeamNotes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
                             }
-                            myTeamRowIdx = TeamDataGridView.Rows.Add();
+                            //myTeamRowIdx = TeamDataGridView.Rows.Add();
                         }
                     } else {
                         foreach ( DataRow curDataRow in myTeamDataTable.Rows ) {
@@ -482,56 +461,31 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["OrderPK"].Value = ( (Int64)curDataRow["OrderPK"] ).ToString();
                             curViewRow.Cells["TeamSanctionId"].Value = (String)curDataRow["SanctionId"];
 
-                            try {
-                                curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
-                            } catch {
-                                curViewRow.Cells["TeamCode"].Value = "";
+                            curViewRow.Cells["TeamCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
+                            curViewRow.Cells["TeamName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Name", "" );
+                            curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+                            curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamSlalomOrder", "" );
+                            if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                curViewRow.Cells["TeamSlalomOrder"].Value = Convert.ToInt16( curValue );
+                            } else {
+                                curViewRow.Cells["TeamSlalomOrder"].Value = "";
                             }
-                            try {
-                                curViewRow.Cells["TeamName"].Value = (String)curDataRow["Name"];
-                            } catch {
-                                curViewRow.Cells["TeamName"].Value = "";
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamTrickOrder", "" );
+                            if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                curViewRow.Cells["TeamTrickOrder"].Value = Convert.ToInt16( curValue );
+                            } else {
+                                curViewRow.Cells["TeamTrickOrder"].Value = "";
                             }
-                            try {
-                                curViewRow.Cells["AgeGroup"].Value = ( (String)curDataRow["AgeGroup"] ).ToString();
-                            } catch {
-                                curViewRow.Cells["AgeGroup"].Value = "";
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamJumpOrder", "" );
+                            if ( HelperFunctions.isObjectPopulated( curValue ) ) {
+                                curViewRow.Cells["TeamJumpOrder"].Value = Convert.ToInt16( curValue );
+                            } else {
+                                curViewRow.Cells["TeamJumpOrder"].Value = "";
                             }
-                            try {
-                                curViewRow.Cells["EventGroup"].Value = ( (String)curDataRow["EventGroup"] ).ToString();
-                            } catch {
-                                curViewRow.Cells["EventGroup"].Value = "";
-                            }
-                            try {
-                                curViewRow.Cells["TeamSlalomOrder"].Value = ( (Int16)curDataRow["SlalomRunOrder"] ).ToString();
-                            } catch {
-                                curViewRow.Cells["TeamSlalomOrder"].Value = "0";
-                            }
-                            try {
-                                curViewRow.Cells["TeamTrickOrder"].Value = ( (Int16)curDataRow["TrickRunOrder"] ).ToString();
-                            } catch {
-                                curViewRow.Cells["TeamTrickOrder"].Value = "0";
-                            }
-                            try {
-                                curViewRow.Cells["TeamJumpOrder"].Value = ( (Int16)curDataRow["JumpRunOrder"] ).ToString();
-                            } catch {
-                                curViewRow.Cells["TeamJumpOrder"].Value = "0";
-                            }
-                            try {
-                                curViewRow.Cells["TeamContactName"].Value = (String)curDataRow["ContactName"];
-                            } catch {
-                                curViewRow.Cells["TeamContactName"].Value = "";
-                            }
-                            try {
-                                curViewRow.Cells["TeamContactInfo"].Value = (String)curDataRow["ContactInfo"];
-                            } catch {
-                                curViewRow.Cells["TeamContactInfo"].Value = "";
-                            }
-                            try {
-                                curViewRow.Cells["TeamNotes"].Value = (String)curDataRow["Notes"];
-                            } catch {
-                                curViewRow.Cells["TeamNotes"].Value = "";
-                            }
+                            curViewRow.Cells["TeamContactName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ContactName", "" );
+                            curViewRow.Cells["TeamContactInfo"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ContactInfo", "" );
+                            curViewRow.Cells["TeamNotes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
                         }
                     }
                     myTeamRowIdx = 0;
@@ -1341,27 +1295,16 @@ namespace WaterskiScoringSystem.Tournament {
 
             try {
                 isDataModified = true;
-                String curTeamCode = "";
-                try {
-                    curTeamCode = TeamDataGridView.Rows[myTeamRowIdx].Cells["TeamCode"].Value.ToString();
-                } catch {
-                    curTeamCode = "";
+                String curTeamCode = HelperFunctions.getViewRowColValue( TeamDataGridView.Rows[myTeamRowIdx], "TeamCode", "" );
+                if ( HelperFunctions.isObjectEmpty(curTeamCode) ) {
+                    TeamDataGridView.Rows.Remove(TeamDataGridView.Rows[myTeamRowIdx]);
+                    return;
                 }
-                Int64 curTeamPK = Convert.ToInt64( TeamDataGridView.Rows[myTeamRowIdx].Cells["TeamPK"].Value.ToString() );
-                String curAgeGroup = "";
-                try {
-                    curAgeGroup = TeamDataGridView.Rows[myTeamRowIdx].Cells["AgeGroup"].Value.ToString();
-                } catch {
-                    curAgeGroup = "";
-                }
-                String curEventGroup = "";
-                try {
-                    curEventGroup = TeamDataGridView.Rows[myTeamRowIdx].Cells["EventGroup"].Value.ToString();
-                } catch {
-                    curEventGroup = "";
-                }
-                Int64 curOrderPK = Convert.ToInt64( TeamDataGridView.Rows[myTeamRowIdx].Cells["OrderPK"].Value.ToString() );
 
+                Int64 curTeamPK = Convert.ToInt64( HelperFunctions.getViewRowColValue( TeamDataGridView.Rows[myTeamRowIdx], "TeamPK", "0" ) );
+                String curAgeGroup = HelperFunctions.getViewRowColValue( TeamDataGridView.Rows[myTeamRowIdx], "AgeGroup", "" );
+                String curEventGroup = HelperFunctions.getViewRowColValue( TeamDataGridView.Rows[myTeamRowIdx], "EventGroup", "" );
+                Int64 curOrderPK = Convert.ToInt64( HelperFunctions.getViewRowColValue( TeamDataGridView.Rows[myTeamRowIdx], "OrderPK", "0" ) );
                 if ( curOrderPK > 0 ) {
                     curSqlStmt.Append( "Delete TeamOrder Where PK = " + curOrderPK.ToString() );
                     int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1867,12 +1810,23 @@ namespace WaterskiScoringSystem.Tournament {
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "Insert into TeamOrder (" );
-                curSqlStmt.Append( "SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder ) " );
-                curSqlStmt.Append( "SELECT DISTINCT SanctionId, TeamCode, '', 1, 1, 1 " );
-                curSqlStmt.Append( "FROM TeamList WHERE SanctionId = '" + mySanctionNum + "' " );
+                if ( myRules.ToLower().Equals( "ncwsa" ) ) {
+                    curSqlStmt.Append( "SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder ) " );
+                    curSqlStmt.Append( "SELECT DISTINCT SanctionId, TeamCode, AgeGroup, 1, 1, 1 " );
+                    curSqlStmt.Append( "FROM EventReg " );
+                    curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
+                    curSqlStmt.Append( "  AND TeamCode IS NOT NULL AND TeamCode <> '' " );
+                    curSqlStmt.Append( "  AND AgeGroup in ('CM', 'CW', 'BM', 'BW') " );
+                    curSqlStmt.Append( "  AND NOT EXISTS (SELECT 1 FROM TeamOrder " );
+                    curSqlStmt.Append( "      WHERE TeamOrder.SanctionId = EventReg.SanctionId AND TeamOrder.TeamCode = EventReg.TeamCode AND TeamOrder.AgeGroup = EventReg.AgeGroup ) " );
+
+                } else {
+                    curSqlStmt.Append( "SanctionId, TeamCode, AgeGroup, SlalomRunOrder, TrickRunOrder, JumpRunOrder ) " );
+                    curSqlStmt.Append( "SELECT DISTINCT SanctionId, TeamCode, '', 1, 1, 1 " );
+                    curSqlStmt.Append( "FROM TeamList WHERE SanctionId = '" + mySanctionNum + "' " );
+                }
                 rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                 Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "Update TeamList Set LastUpdateDate = getdate() WHERE SanctionId = '" + mySanctionNum + "' " );

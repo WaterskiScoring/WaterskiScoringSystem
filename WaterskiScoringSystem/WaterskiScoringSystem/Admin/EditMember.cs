@@ -328,7 +328,7 @@ namespace WaterskiScoringSystem.Admin {
             editMemberId.Text = "";
             editFirstName.Text = "";
             editLastName.Text = "";
-            editGenderSelect.Text = "M";
+            editGenderSelect.Text = "";
             editSkiYearAge.Text = "";
 			showMemberStatus.Text = "Inactive";
             editState.Text = "";
@@ -435,6 +435,8 @@ namespace WaterskiScoringSystem.Admin {
                         MessageBox.Show( "Ski year age must be numeric " );
                     }
                 }
+            } else {
+                editSkiYearAge.Text = "0";
             }
             mySkiYearAge = editSkiYearAge.Text;
         }
@@ -496,9 +498,12 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private bool editFederation_Validation() {
-            bool curReturnStatus = true;
+            if ( HelperFunctions.isObjectEmpty( editFederation.SelectedValue ) ) {
+                MessageBox.Show( "Federation is required" );
+                return false;
+            }
             isDataModified = true;
-            return curReturnStatus;
+            return true;
         }
 
         private bool editGenderSelect_Validation() {

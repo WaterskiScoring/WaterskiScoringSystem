@@ -1200,6 +1200,27 @@ namespace WaterskiScoringSystem.Tournament {
                 checkModifyPrompt();
             }
             if (!(isDataModified)) {
+                foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {
+                    if ( !( curCheckBox.Text.Equals( "All" ) ) ) continue;
+                    if ( curCheckBox.Checked ) {
+                        if ( slalomButton.Checked ) {
+                            loadGroupSelectList( "Slalom", checkBoxGroup_CheckedChanged );
+                            getRunningOrderColumnfilter();
+                            loadGroupFilterComboBox();
+                        
+                        } else if ( trickButton.Checked ) {
+                            loadGroupSelectList( "Trick", checkBoxGroup_CheckedChanged );
+                            getRunningOrderColumnfilter();
+                            loadGroupFilterComboBox();
+                        
+                        } else if ( jumpButton.Checked ) {
+                            loadGroupSelectList( "Jump", checkBoxGroup_CheckedChanged );
+                            getRunningOrderColumnfilter();
+                            loadGroupFilterComboBox();
+                        }
+                    }
+                }
+
                 loadEventRegView();
                 winStatusMsg.Text = "Sorted by " + mySortCmd;
             }

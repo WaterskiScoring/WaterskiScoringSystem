@@ -818,7 +818,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) SD " );
             curSqlStmt.Append( "    ON SD.SanctionId = T.SanctionId AND SD.MemberId = T.SafetyDirMemberId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private DataTable getMemberData( String inSanctionId ) {
@@ -836,7 +836,7 @@ namespace WaterskiScoringSystem.Tools {
                 + "WHERE (T.SanctionId = '" + inSanctionId + "')"
                 + "ORDER BY SkierName, T.AgeGroup"
             ;
-            DataTable curDataTable = getData( selectStmt );
+            DataTable curDataTable = DataAccess.getDataTable( selectStmt );
             return curDataTable;
         }
 
@@ -847,7 +847,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "WHERE ListName = 'IWWFSlalomMin' " );
             curSqlStmt.Append( "  AND ListCode = '" + inDiv + "' " );
             curSqlStmt.Append( "ORDER BY SortSeq" );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count > 0) {
                 return ( (Decimal)curDataTable.Rows[0]["MaxValue"] ).ToString( "00" );
             } else {
@@ -882,8 +882,5 @@ namespace WaterskiScoringSystem.Tools {
             return outBuffer;
         }
 
-        public DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
     }
 }

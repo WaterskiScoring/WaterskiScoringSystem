@@ -46,7 +46,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
-						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
@@ -98,7 +98,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if (inUserAccount != null) {
 					if (inUrl.Contains("usawaterski")) {
-						inHeaderParams.Add("WSTIMS", "Basic " + inUserAccount + ":" + inPassword);
+						inHeaderParams.Add("WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword);
 					} else {
 						curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
 					}
@@ -151,7 +151,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
-						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
@@ -225,7 +225,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
-						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
@@ -329,7 +329,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
                 if ( inUserAccount != null ) {
                     if (inUrl.Contains("usawaterski")) {
-                        curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+                        curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
                     } else {
                         curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
                     }
@@ -408,7 +408,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
-						curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+						curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
@@ -584,7 +584,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                         curRequest.Method = "POST";
 						if ( inUserAccount != null ) {
 							if ( inUrl.Contains( "usawaterski" ) ) {
-								curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
+								curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
 							} else {
 								curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 							}

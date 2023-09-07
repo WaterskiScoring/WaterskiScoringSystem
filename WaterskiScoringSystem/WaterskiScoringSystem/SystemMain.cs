@@ -20,6 +20,7 @@ using Microsoft.Win32;
 namespace WaterskiScoringSystem {
     public partial class SystemMain : Form {
         private RegistryKey myAppRegKey = null;
+        private bool myShowDebugMsgs = false;
 
         public SystemMain() {
             InitializeComponent();
@@ -51,8 +52,7 @@ namespace WaterskiScoringSystem {
             }
 
             #region Check system settings and current database connection
-            bool curShowDebugMsgs = false;
-            //curShowDebugMsgs = true;
+            //myShowDebugMsgs = true;
             String curDataDirectory = "", curDeploymentDirectory = "", curDeploymentDataDirectory = "", curAppConnectString = "", curRegAppVersion = "";
 
             try {
@@ -85,11 +85,11 @@ namespace WaterskiScoringSystem {
             if ( myAppRegKey.GetValue( "ShowDebugValues" ) == null ) {
                 myAppRegKey.SetValue( "ShowDebugValues", "False" );
             } else {
-                curShowDebugMsgs = HelperFunctions.isValueTrue( myAppRegKey.GetValue( "ShowDebugValues" ).ToString() );
+                myShowDebugMsgs = HelperFunctions.isValueTrue( myAppRegKey.GetValue( "ShowDebugValues" ).ToString() );
             }
 
             if ( myAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                setDatabaseFirstTime( curDeploymentDirectory, curDeploymentDataDirectory, curShowDebugMsgs );
+                setDatabaseFirstTime( curDeploymentDirectory, curDeploymentDataDirectory );
                 curDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
 
             } else {
@@ -114,7 +114,7 @@ namespace WaterskiScoringSystem {
                 curRegAppVersion = myAppRegKey.GetValue( "CurrentVersion" ).ToString();
             }
 
-            if ( curShowDebugMsgs ) {
+            if ( myShowDebugMsgs ) {
                 MessageBox.Show( "Application Execution Information"
                     + "\n StartupPath=" + Application.StartupPath
                     + "\n UserAppDataPath=" + Application.UserAppDataPath
@@ -188,7 +188,7 @@ namespace WaterskiScoringSystem {
                     + "\n\n AppConnectString: " + curAppConnectString );
             }
 
-            if (curShowDebugMsgs) {
+            if (myShowDebugMsgs) {
                 MessageBox.Show( "Application Execution Information"
                     + "\n AppSanctionNum=" + Properties.Settings.Default.AppSanctionNum
                     + "\n mySanctionNum=" + mySanctionNum
@@ -210,12 +210,12 @@ namespace WaterskiScoringSystem {
         Establish current data directry using application default
         Analyze default location and establish the desired data directory
          */
-        private void setDatabaseFirstTime( String curDeploymentDirectory, String curDeploymentDataDirectory, bool curShowDebugMsgs ) {
+        private void setDatabaseFirstTime( String curDeploymentDirectory, String curDeploymentDataDirectory ) {
             String curDataDirectory = curDeploymentDirectory;
             int posDelim = curDataDirectory.IndexOf( "/Data" );
             if ( posDelim > 0 ) {
                 String tmpDataDirectory = curDataDirectory.Substring( 0, posDelim + 5 );
-                if ( curShowDebugMsgs ) {
+                if ( myShowDebugMsgs ) {
                     MessageBox.Show( "tmpDataDirectory = " + tmpDataDirectory );
                 }
                 //Establish active data directory in active application domain
@@ -263,6 +263,23 @@ namespace WaterskiScoringSystem {
             }
             Properties.Settings.Default.Mdi_Title = this.Text;
             Properties.Settings.Default.Save();
+
+            if ( myShowDebugMsgs ) {
+                MessageBox.Show( "Application Execution Information"
+                    + "\n AppSanctionNum=" + Properties.Settings.Default.AppSanctionNum
+                    + "\n StartupPath=" + Application.StartupPath
+                    + "\n UserAppDataPath=" + Application.UserAppDataPath
+                    + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
+                    + "\n ExecutablePath=" + Application.ExecutablePath
+                    + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
+                    + "\n ProductName=" + Application.ProductName
+                    + "\n ProductVersion=" + Application.ProductVersion
+                    + "\n DatabaseConnectionString=" + Properties.Settings.Default.waterskiConnectionStringApp
+                    );
+            }
+
+
+
         }
         private void SystemMain_FormClosing( object sender, FormClosingEventArgs e ) {
 			e.Cancel = false;
@@ -380,21 +397,9 @@ namespace WaterskiScoringSystem {
         }
 
         private void navExportIwwfScores_Click( object sender, EventArgs e ) {
-            IwwfScoresExport curForm = new IwwfScoresExport();
-            mdiStatusMsg.Text = curForm.Name + " opening";
-
-            // Check for open instance of selected form
-            for ( int idx = 0; idx < this.MdiChildren.Length; idx++ ) {
-                if ( ( (Form)this.MdiChildren[idx] ).Name == curForm.Name ) {
-                    ( (Form)this.MdiChildren[idx] ).Activate();
-                    return;
-                }
-            }
-
-            // Set the Parent Form and display requested form
-            curForm.MdiParent = this;
-            curForm.Show();
-            mdiStatusMsg.Text = curForm.Name + " open";
+            String mySanctionNum = Properties.Settings.Default.AppSanctionNum.Trim();
+            ExportPerfDataIwwf myExportData = new ExportPerfDataIwwf();
+            myExportData.exportTourPerfData( mySanctionNum );
         }
 
         private void navNopsDataMainenance_Click( object sender, EventArgs e ) {

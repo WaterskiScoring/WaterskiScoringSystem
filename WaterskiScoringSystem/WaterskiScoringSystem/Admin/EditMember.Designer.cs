@@ -57,6 +57,8 @@
 			this.editCity = new System.Windows.Forms.TextBox();
 			this.showMemberStatus = new System.Windows.Forms.Label();
 			this.editForeignFederationID = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
 			reqdFlagInfo = new System.Windows.Forms.Label();
 			labelGender = new System.Windows.Forms.Label();
 			memberIdLabel = new System.Windows.Forms.Label();
@@ -204,6 +206,17 @@
 			cityLabel.TabIndex = 0;
 			cityLabel.Text = "City";
 			cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// ForeignFederationIDLabel
+			// 
+			ForeignFederationIDLabel.AutoSize = true;
+			ForeignFederationIDLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			ForeignFederationIDLabel.Location = new System.Drawing.Point(18, 278);
+			ForeignFederationIDLabel.Name = "ForeignFederationIDLabel";
+			ForeignFederationIDLabel.Size = new System.Drawing.Size(91, 15);
+			ForeignFederationIDLabel.TabIndex = 0;
+			ForeignFederationIDLabel.Text = "Foreign Fed ID:";
+			ForeignFederationIDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// label1
 			// 
@@ -425,17 +438,6 @@
 			this.showMemberStatus.Text = "Active ";
 			this.showMemberStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// ForeignFederationIDLabel
-			// 
-			ForeignFederationIDLabel.AutoSize = true;
-			ForeignFederationIDLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			ForeignFederationIDLabel.Location = new System.Drawing.Point(18, 278);
-			ForeignFederationIDLabel.Name = "ForeignFederationIDLabel";
-			ForeignFederationIDLabel.Size = new System.Drawing.Size(91, 15);
-			ForeignFederationIDLabel.TabIndex = 0;
-			ForeignFederationIDLabel.Text = "Foreign Fed ID:";
-			ForeignFederationIDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
 			// editForeignFederationID
 			// 
 			this.editForeignFederationID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -446,6 +448,30 @@
 			this.editForeignFederationID.TabIndex = 95;
 			this.editForeignFederationID.WordWrap = false;
 			// 
+			// label2
+			// 
+			this.label2.BackColor = System.Drawing.Color.Transparent;
+			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label2.ForeColor = System.Drawing.Color.Red;
+			this.label2.Location = new System.Drawing.Point(25, 138);
+			this.label2.Margin = new System.Windows.Forms.Padding(0);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(10, 12);
+			this.label2.TabIndex = 106;
+			this.label2.Text = "*";
+			// 
+			// label3
+			// 
+			this.label3.BackColor = System.Drawing.Color.Transparent;
+			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label3.ForeColor = System.Drawing.Color.Red;
+			this.label3.Location = new System.Drawing.Point(34, 248);
+			this.label3.Margin = new System.Windows.Forms.Padding(0);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(10, 12);
+			this.label3.TabIndex = 107;
+			this.label3.Text = "*";
+			// 
 			// EditMember
 			// 
 			this.AcceptButton = this.saveButton;
@@ -453,6 +479,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(444, 394);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(ForeignFederationIDLabel);
 			this.Controls.Add(this.editForeignFederationID);
 			this.Controls.Add(this.showMemberStatus);
@@ -520,5 +548,7 @@
         private System.Windows.Forms.TextBox editCity;
 		private System.Windows.Forms.Label showMemberStatus;
 		private System.Windows.Forms.TextBox editForeignFederationID;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
 	}
 }

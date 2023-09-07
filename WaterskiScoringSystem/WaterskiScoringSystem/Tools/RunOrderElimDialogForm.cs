@@ -613,14 +613,18 @@ namespace WaterskiScoringSystem.Tools {
 					curScoreName = "ScoreSlalom";
 				}
 
-				if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
-					curSortCmd = "AgeGroup ASC, " + curPlcmtName + " ASC, SkierName ASC";
+                String curSortAttrName = curPlcmtName + " ASC";
+                if ( myDataType.ToLower().Equals( "round" ) ) {
+                    curSortAttrName = curScoreName + " DESC";
+                }
+                if ( myPlcmtOrg.ToLower().Equals( "div" ) ) {
+                    curSortCmd = "AgeGroup ASC, " + curSortAttrName + ", SkierName ASC";
 				} else if ( myPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-					curSortCmd = "AgeGroup ASC, " + curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC, " + curRoundName + " ASC";
+					curSortCmd = "AgeGroup ASC, " + curGroupName + " ASC, " + curSortAttrName + ", SkierName ASC, " + curSortAttrName;
 				} else if ( myPlcmtOrg.ToLower().Equals( "group" ) ) {
-					curSortCmd = curGroupName + " ASC, " + curPlcmtName + " ASC, SkierName ASC ";
+					curSortCmd = curGroupName + " ASC, " + curSortAttrName + ", SkierName ASC ";
 				} else {
-					curSortCmd = curPlcmtName + " ASC, SkierName ASC ";
+					curSortCmd = curSortAttrName + ", SkierName ASC ";
 				}
 
 				if ( myDataType.ToLower().Equals( "round" ) ) {

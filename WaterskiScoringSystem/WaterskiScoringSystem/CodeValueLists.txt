@@ -550,7 +550,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	DriverRating	Assistant		3	Assistant			
 0	DriverRating	Regular		4	Regular			
 0	DriverRating	Senior		5	Senior			
-0	DriverRating	Emeritus		6	Emeritus			
+0	DriverRating	PanAm		6	PanAm			
+0	DriverRating	Emeritus		7	Emeritus			
 0	EndOfTourReports	F1		1	WWParm.TNY			Tournament parameter file
 0	EndOfTourReports	F5		5	######*.sbk			Scorebook
 0	EndOfTourReports	F6		6	######*.wsp			Water Ski Performance file for ranking list
@@ -896,8 +897,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22719	JudgeRating	Assistant		2	Assistant			
 22720	JudgeRating	Regular		3	Regular			
 22721	JudgeRating	Senior		4	Senior			
-22722	JudgeRating	Emeritus		5	Emeritus			
-22723	JudgeRating	PanAm		6	PanAm			
+22723	JudgeRating	PanAm		5	PanAm			
+22722	JudgeRating	Emeritus		6	Emeritus			
 22724	JumpBoatTime3Seg	57-R-52M		111	3.31	3.25	3.37	57kph,35.4mph 52M Segment Record Tolerance
 22725	JumpBoatTime3Seg	57-R-82M		112	5.18	5.11	5.25	57kph,35.4mph 82M Segment Record Tolerance
 22726	JumpBoatTime3Seg	57-R-41M		113	2.4	2.36	2.46	57kph,35.4mph 41M Segment Record Tolerance
@@ -1117,7 +1118,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22911	ScorerRating	Assistant		2	Assistant			
 22912	ScorerRating	Regular		3	Regular			
 22913	ScorerRating	Senior		4	Senior			
-22914	ScorerRating	Emeritus		5	Emeritus			
+22913	ScorerRating	PanAm		5	PanAm			
+22914	ScorerRating	Emeritus		6	Emeritus			
 22915	SlalomBoatTime	58-C-0		1	1.68	1.64	1.71	Score 0 - .5
 22916	SlalomBoatTime	58-C-1		2	4.22	4.15	4.28	Score 1 - 1.5
 22917	SlalomBoatTime	58-C-2		3	6.77	6.67	6.84	Score 2 - 2.5
