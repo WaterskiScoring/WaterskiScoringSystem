@@ -428,19 +428,19 @@ namespace WaterskiScoringSystem.Tournament {
                                 curViewRow.Cells["TeamName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Name", "" );
                                 curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
                                 curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
-                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamSlalomOrder", "" );
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRunOrder", "" ); 
                                 if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                     curViewRow.Cells["TeamSlalomOrder"].Value = Convert.ToInt16( curValue );
                                 } else {
                                     curViewRow.Cells["TeamSlalomOrder"].Value = "";
                                 }
-                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamTrickOrder", "" );
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TrickRunOrder", "" );
                                 if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                     curViewRow.Cells["TeamTrickOrder"].Value = Convert.ToInt16( curValue );
                                 } else {
                                     curViewRow.Cells["TeamTrickOrder"].Value = "";
                                 }
-                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamJumpOrder", "" );
+                                curValue = HelperFunctions.getDataRowColValue( curDataRow, "JumpRunOrder", "" );
                                 if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                     curViewRow.Cells["TeamJumpOrder"].Value = Convert.ToInt16( curValue );
                                 } else {
@@ -450,7 +450,6 @@ namespace WaterskiScoringSystem.Tournament {
                                 curViewRow.Cells["TeamContactInfo"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ContactInfo", "" );
                                 curViewRow.Cells["TeamNotes"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Notes", "" );
                             }
-                            //myTeamRowIdx = TeamDataGridView.Rows.Add();
                         }
                     } else {
                         foreach ( DataRow curDataRow in myTeamDataTable.Rows ) {
@@ -465,19 +464,19 @@ namespace WaterskiScoringSystem.Tournament {
                             curViewRow.Cells["TeamName"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Name", "" );
                             curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
                             curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
-                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamSlalomOrder", "" );
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRunOrder", "" );
                             if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                 curViewRow.Cells["TeamSlalomOrder"].Value = Convert.ToInt16( curValue );
                             } else {
                                 curViewRow.Cells["TeamSlalomOrder"].Value = "";
                             }
-                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamTrickOrder", "" );
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TrickRunOrder", "" );
                             if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                 curViewRow.Cells["TeamTrickOrder"].Value = Convert.ToInt16( curValue );
                             } else {
                                 curViewRow.Cells["TeamTrickOrder"].Value = "";
                             }
-                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "TeamJumpOrder", "" );
+                            curValue = HelperFunctions.getDataRowColValue( curDataRow, "JumpRunOrder", "" );
                             if ( HelperFunctions.isObjectPopulated( curValue ) ) {
                                 curViewRow.Cells["TeamJumpOrder"].Value = Convert.ToInt16( curValue );
                             } else {

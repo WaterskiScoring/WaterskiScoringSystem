@@ -1846,6 +1846,13 @@ namespace WaterskiScoringSystem.Jump {
         public DataRow getTimeEntry(String inTimeKey ) {
             DataRow[] curRowsFound = JumpEventData.myTimesDataTable.Select( String.Format("ListCode = '{0}'", inTimeKey ) );
             if ( curRowsFound.Length > 0 ) return curRowsFound[0];
+
+            int curDelimStart = inTimeKey.IndexOf( "-" );
+            int curDelimEnd = inTimeKey.LastIndexOf( "-" );
+            String curTimeKey = inTimeKey.Substring( 0, curDelimStart + 1 ) + "C" + inTimeKey.Substring( curDelimEnd );
+            curRowsFound = JumpEventData.myTimesDataTable.Select( String.Format( "ListCode = '{0}'", curTimeKey ) );
+            if ( curRowsFound.Length > 0 ) return curRowsFound[0];
+
             String curMsg = String.Format( "Jump boat time entry not found for key {0}", inTimeKey );
             Log.WriteFile( curMsg );
             MessageBox.Show( curMsg );

@@ -1071,10 +1071,10 @@ namespace WaterskiScoringSystem.Slalom {
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = scoreTextBox.Text;
 
 				nopsScoreTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "NopsScore", "" );
-				try {
-					hcapScoreTextBox.Text = ( (Decimal)myScoreRow["Score"] + Decimal.Parse( (String)inTourEventRegRow.Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
-				} catch {
-					hcapScoreTextBox.Text = "";
+				hcapScoreTextBox.Text = "";
+				String curHCapScore = HelperFunctions.getViewRowColValue( inTourEventRegRow, "HCapScore", "" );
+				if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+					hcapScoreTextBox.Text = ( (Decimal)myScoreRow["Score"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
 				}
 
 				noteTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "Note", "" );
@@ -3849,7 +3849,11 @@ namespace WaterskiScoringSystem.Slalom {
 				if ( HelperFunctions.isObjectPopulated( mySlalomSetAnalysis.SkierPassMsg ) ) skierPassMsg.Text = mySlalomSetAnalysis.SkierPassMsg;
 				scoreTextBox.Text = skierScore.ToString();
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = skierScore.ToString( "###.00" );
-				hcapScoreTextBox.Text = ( skierScore + Decimal.Parse( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+				hcapScoreTextBox.Text = "";
+				String curHCapScore = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "HCapScore", "" );
+				if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+					hcapScoreTextBox.Text = ( skierScore + Decimal.Parse( curHCapScore )).ToString( "##,###0.0" );
+				}
 
 				ScoreList[0].Score = Convert.ToDecimal( skierScore.ToString() );
 

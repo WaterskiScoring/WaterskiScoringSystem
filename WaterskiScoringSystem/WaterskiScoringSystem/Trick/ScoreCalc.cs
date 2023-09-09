@@ -787,6 +787,14 @@ namespace WaterskiScoringSystem.Trick {
             scoreTextBox.Text = curTotalScore.ToString();
 
             hcapScoreTextBox.Text = ( curTotalScore + HelperFunctions.getViewRowColValueDecimal( TourEventRegDataGridView.Rows[myEventRegViewIdx], "HCapScore", "0" ) ).ToString( "##,###0.0" );
+
+            nopsScoreTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "NopsScore", "" );
+            hcapScoreTextBox.Text = "";
+            String curHCapScore = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "HCapScore", "" );
+            if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+                hcapScoreTextBox.Text = ( curTotalScore + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+            }
+
             TourEventRegDataGridView.CurrentRow.Cells["Score"].Value = scoreTextBox.Text;
             TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["ScoreWithHcap"].Value = hcapScoreTextBox.Text;
             scorePass1.Text = curPass1Score.ToString();
@@ -1738,10 +1746,12 @@ namespace WaterskiScoringSystem.Trick {
             scorePass2.Text = HelperFunctions.getDataRowColValue( myScoreRow, "ScorePass2", "0" );
             nopsScoreTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "NopsScore", "0", 1 );
             noteTextBox.Text = HelperFunctions.getDataRowColValue( myScoreRow, "Note", "" );
-            try {
-                hcapScoreTextBox.Text = ( (Int16)myScoreRow["Score"] + (Decimal)myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
-            } catch {
-                hcapScoreTextBox.Text = "";
+
+
+            hcapScoreTextBox.Text = "";
+            String curHCapScore = HelperFunctions.getDataRowColValue( myScoreRow, "HCapScore", "" );
+            if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+                hcapScoreTextBox.Text = ( (Int16)myScoreRow["Score"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
             }
 
             isLoadInProg = false;

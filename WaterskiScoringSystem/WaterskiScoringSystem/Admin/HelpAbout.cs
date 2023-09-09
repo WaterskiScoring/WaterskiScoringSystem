@@ -39,6 +39,7 @@ namespace WaterskiScoringSystem.Admin {
                 + " | " + curUpdatedVer
                 + " | " + Properties.Settings.Default.BuildVersion;
             textStartupPath.Text = Application.StartupPath;
+            textLocalAppUserDataPath.Text = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
             textLocalUserAppDataPath.Text = Application.LocalUserAppDataPath;
             textUserAppDataPath.Text = Application.UserAppDataPath;
             textUserAppDataRegistry.Text = Application.UserAppDataRegistry.Name;

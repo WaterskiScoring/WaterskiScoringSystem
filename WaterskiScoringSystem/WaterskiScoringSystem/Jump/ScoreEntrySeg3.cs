@@ -1623,20 +1623,25 @@ namespace WaterskiScoringSystem.Jump {
 					}
 
 					try {
-						if ( JumpEventData.isIwwfEvent() ) {
-							curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["ScoreMeters"] + (Decimal)curDataRow["HCapScore"] ).ToString( "##0.0" );
-						} else {
-							curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["ScoreFeet"] + (Decimal)curDataRow["HCapScore"] ).ToString( "##0.0" );
+						hcapScoreTextBox.Text = "0";
+						String curHCapScore = HelperFunctions.getDataRowColValue( curDataRow, "HCapScore", "" );
+						if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+							if ( JumpEventData.isIwwfEvent() ) {
+								curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["ScoreMeters"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+							} else {
+								curViewRow.Cells["ScoreWithHcap"].Value = ( (Decimal)curDataRow["ScoreFeet"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+							}
+							hcapScoreTextBox.Text = HelperFunctions.getViewRowColValue( curViewRow, "ScoreWithHcap", "0" );
 						}
-						hcapScoreTextBox.Text = HelperFunctions.getDataRowColValue( curDataRow, "ScoreWithHcap", "0" );
+
 					} catch {
 						curViewRow.Cells["ScoreWithHcap"].Value = "";
 						hcapScoreTextBox.Text = "";
 					}
 
 					curViewRow.Cells["RankingScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "RankingScore", "", 1 );
-					curViewRow.Cells["HCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "", 1 );
-					curViewRow.Cells["HCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "", 1 );
+					curViewRow.Cells["HCapBase"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapBase", "0", 1 );
+					curViewRow.Cells["HCapScore"].Value = HelperFunctions.getDataRowColValueDecimal( curDataRow, "HCapScore", "0", 1 );
 					curViewRow.Cells["RankingRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RankingRating", "" );
 					curViewRow.Cells["JumpHeight"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
 					curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "" );
@@ -1916,10 +1921,15 @@ namespace WaterskiScoringSystem.Jump {
 				scoreMetersTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "ScoreMeters", "0", 1 );
 				nopsScoreTextBox.Text = HelperFunctions.getDataRowColValueDecimal( myScoreRow, "NopsScore", "0", 1 );
 				try {
-					if ( JumpEventData.isIwwfEvent() ) {
-						hcapScoreTextBox.Text = ( (Decimal)myScoreRow["ScoreMeters"] + (Decimal)myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
-					} else {
-						hcapScoreTextBox.Text = ( (Decimal)myScoreRow["ScoreFeet"] + (Decimal)myScoreRow["HCapScore"] ).ToString( "##,###0.0" );
+					hcapScoreTextBox.Text = "0";
+					String curHCapScore = HelperFunctions.getDataRowColValue( myScoreRow, "HCapScore", "" );
+					if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+						if ( JumpEventData.isIwwfEvent() ) {
+							hcapScoreTextBox.Text = ( (Decimal)myScoreRow["ScoreMeters"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+						} else {
+							hcapScoreTextBox.Text = ( (Decimal)myScoreRow["ScoreFeet"] + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+						}
+						hcapScoreTextBox.Text = HelperFunctions.getDataRowColValue( curDataRow, "ScoreWithHcap", "0" );
 					}
 				} catch {
 					hcapScoreTextBox.Text = "";
@@ -2151,7 +2161,9 @@ namespace WaterskiScoringSystem.Jump {
 				if ( isRecapRowEnterHandled || isAddRecapRowInProg ) {
 					isAddRecapRowInProg = false;
 					isRecapRowEnterHandled = false;
+				
 				} else {
+					if  ( ((DataGridView)sender ).CurrentCell == null ) return;
 					String curColName = curView.Columns[( (DataGridView)sender ).CurrentCell.ColumnIndex].Name;
 					if ( ( curColName.Equals( "ScoreFeetRecap" ) || curColName.Equals( "ScoreMetersRecap" ) )
 							&& ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Fall" )
@@ -3185,10 +3197,14 @@ namespace WaterskiScoringSystem.Jump {
 			scoreMetersTextBox.Text = curReturnResult.bestScoreMeters.ToString();
 			setEventRegRowStatus( curReturnResult.skierSetStatus, TourEventRegDataGridView.Rows[myEventRegViewIdx] );
 
-			if ( JumpEventData.isIwwfEvent() ) {
-				hcapScoreTextBox.Text = ( curReturnResult.bestScoreMeters + Decimal.Parse( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
-			} else {
-				hcapScoreTextBox.Text = ( curReturnResult.bestScoreFeet + Decimal.Parse( (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["HCapScore"].Value ) ).ToString( "##,###0.0" );
+			hcapScoreTextBox.Text = "0";
+			String curHCapScore = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "HCapScore", "" );
+			if ( HelperFunctions.isObjectPopulated( curHCapScore ) ) {
+				if ( JumpEventData.isIwwfEvent() ) {
+					hcapScoreTextBox.Text = ( curReturnResult.bestScoreMeters + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+				} else {
+					hcapScoreTextBox.Text = ( curReturnResult.bestScoreFeet + Decimal.Parse( curHCapScore ) ).ToString( "##,###0.0" );
+				}
 			}
 
 			String curAgeGroup = HelperFunctions.getViewRowColValue( myRecapRow, "AgeGroupRecap", "" );
