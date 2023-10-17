@@ -479,9 +479,6 @@ namespace WaterskiScoringSystem.Admin {
                 curReturnStatus = false;
                 MessageBox.Show( "First name is a required field" );
             }
-
-            Regex curRegExNumeric = new Regex( "[^0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase ); //e.g. If RegExNumeric.Test(dataValue) Then Good Else bad End If
-
             return curReturnStatus;
         }
 

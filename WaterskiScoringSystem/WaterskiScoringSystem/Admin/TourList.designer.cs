@@ -95,6 +95,7 @@ namespace WaterskiScoringSystem.Admin {
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
+			this.navExportLw = new System.Windows.Forms.ToolStripButton();
 			this.navFilter = new System.Windows.Forms.ToolStripButton();
 			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.navSaveItem = new System.Windows.Forms.ToolStripButton();
@@ -114,7 +115,6 @@ namespace WaterskiScoringSystem.Admin {
 			this.SafetyDirReportButton = new System.Windows.Forms.Button();
 			this.ReportPropButton = new System.Windows.Forms.Button();
 			this.editSanctionEditCode = new System.Windows.Forms.TextBox();
-			this.navExportLw = new System.Windows.Forms.ToolStripButton();
 			sanctionIdLabel = new System.Windows.Forms.Label();
 			nameLabel = new System.Windows.Forms.Label();
 			classLabel = new System.Windows.Forms.Label();
@@ -916,6 +916,16 @@ namespace WaterskiScoringSystem.Admin {
 			this.navExport.ToolTipText = "Export tournamnet list and optionally all tournament data";
 			this.navExport.Click += new System.EventHandler(this.navExport_Click);
 			// 
+			// navExportLw
+			// 
+			this.navExportLw.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
+			this.navExportLw.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navExportLw.Name = "navExportLw";
+			this.navExportLw.Size = new System.Drawing.Size(64, 35);
+			this.navExportLw.Text = "Export LW";
+			this.navExportLw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navExportLw.Click += new System.EventHandler(this.navExportLw_Click);
+			// 
 			// navFilter
 			// 
 			this.navFilter.Image = global::WaterskiScoringSystem.Properties.Resources.clipboard;
@@ -1142,23 +1152,13 @@ namespace WaterskiScoringSystem.Admin {
 			this.editSanctionEditCode.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.editSanctionEditCode.ForeColor = System.Drawing.SystemColors.HotTrack;
 			this.editSanctionEditCode.Location = new System.Drawing.Point(465, 101);
-			this.editSanctionEditCode.MaxLength = 8;
+			this.editSanctionEditCode.MaxLength = 9;
 			this.editSanctionEditCode.Name = "editSanctionEditCode";
 			this.editSanctionEditCode.Size = new System.Drawing.Size(75, 21);
 			this.editSanctionEditCode.TabIndex = 6;
 			this.editSanctionEditCode.WordWrap = false;
 			this.editSanctionEditCode.Enter += new System.EventHandler(this.editTextOrigValue);
 			this.editSanctionEditCode.Validated += new System.EventHandler(this.editTextValidate);
-			// 
-			// navExportLw
-			// 
-			this.navExportLw.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
-			this.navExportLw.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navExportLw.Name = "navExportLw";
-			this.navExportLw.Size = new System.Drawing.Size(64, 35);
-			this.navExportLw.Text = "Export LW";
-			this.navExportLw.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navExportLw.Click += new System.EventHandler(this.navExportLw_Click);
 			// 
 			// TourList
 			// 

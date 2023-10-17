@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.SqlServerCe;
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
@@ -16,7 +10,6 @@ namespace WaterskiScoringSystem.Tools {
         private String myTourClass;
         private DataRow myTourRow;
         private ListSkierClass mySkierClassList;
-        //private Int16 mySanctionYearFor134 = 12;
         private DataRow myClassCRow;
         private DataRow myClassERow;
         private ProgressWindow myProgressInfo;
@@ -34,32 +27,31 @@ namespace WaterskiScoringSystem.Tools {
             myProgressInfo = new ProgressWindow();
 
             DataTable curTourDataTable = getTourData( inSanctionId );
-            if ( curTourDataTable != null ) {
-                if ( curTourDataTable.Rows.Count > 0 ) {
-                    curSanctionYear = Convert.ToInt16( inSanctionId.Substring( 0, 2 ) );
-                    myTourRow = curTourDataTable.Rows[0];
-                    curTourClass = myTourRow["Class"].ToString().Trim();
-                    String curFilename = inSanctionId.Trim() + "JT.csv";
-                    outBuffer = getExportFile( curFilename );
+            if ( curTourDataTable == null || curTourDataTable.Rows.Count <= 0 ) return false;
 
-                    curEventDateOut = myTourRow["EventDates"].ToString();
-                    if ( curEventDateOut.Length > 7 ) {
-                        try {
-                            DateTime curEventDate = Convert.ToDateTime( curEventDateOut );
-                            curEventDateOut = curEventDate.ToString( "yyyyMMdd" );
-                        } catch {
-                            curEventDateOut = "";
-                        }
-                    } else {
-                        curEventDateOut = "";
-                    }
-                    mySkierClassList = new ListSkierClass();
-                    mySkierClassList.ListSkierClassLoad();
-                    myTourClass = myTourRow["Class"].ToString().ToUpper();
-                    myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
-                    myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+            curSanctionYear = Convert.ToInt16( inSanctionId.Substring( 0, 2 ) );
+            myTourRow = curTourDataTable.Rows[0];
+            curTourClass = myTourRow["Class"].ToString().Trim();
+            String curFilename = inSanctionId.Trim() + "JT.csv";
+            outBuffer = getExportFile( curFilename );
+
+            curEventDateOut = myTourRow["EventDates"].ToString();
+            if ( curEventDateOut.Length > 7 ) {
+                try {
+                    DateTime curEventDate = Convert.ToDateTime( curEventDateOut );
+                    curEventDateOut = curEventDate.ToString( "yyyyMMdd" );
+                } catch {
+                    curEventDateOut = "";
                 }
+            } else {
+                curEventDateOut = "";
             }
+            mySkierClassList = new ListSkierClass();
+            mySkierClassList.ListSkierClassLoad();
+            myTourClass = myTourRow["Class"].ToString().ToUpper();
+            myClassCRow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'C'" )[0];
+            myClassERow = mySkierClassList.SkierClassDataTable.Select( "ListCode = 'E'" )[0];
+
             Decimal curSplitTime30M, curSplitTime52M, curSplitTime82M, curBoatEndTime, curScoreMeters, curScoreFeet;
             Decimal curActualSeg52m, curActualSeg30m, curActualSeg41m, curActualSeg82m;
             String curResults, curTimeClass;
@@ -96,131 +88,84 @@ namespace WaterskiScoringSystem.Tools {
                 
                 DataTable curBoatTimeResults = getBoatTimeResults( inSanctionId );
                 myProgressInfo.setProgressMax( curBoatTimeResults.Rows.Count );
-                if (curBoatTimeResults != null) {
-                    foreach ( DataRow curRow in curBoatTimeResults.Rows ) {
-                        curRowCount++;
-                        myProgressInfo.setProgressValue( curRowCount );
-                        myProgressInfo.Refresh();
 
-                        curTimeClass = getTimeClass( (String)curRow["EventClass"] );
-                        curResults = (String)curRow["Results"];
-                        try {
-                            curSplitTime52M = (Decimal)curRow["BoatSplitTime"];
-                        } catch {
-                            curSplitTime52M = 0;
-                        }
-                        try {
-                            curSplitTime82M = (Decimal)curRow["BoatSplitTime2"];
-                        } catch {
-                            curSplitTime82M = 0;
-                        }
-                        try {
-                            curSplitTime30M = curSplitTime82M - curSplitTime52M;
-                        } catch {
-                            curSplitTime30M = 0;
-                        }
-                        try {
-                            curBoatEndTime = ((Decimal)curRow["BoatEndTime"]);
-                        } catch {
-                            curBoatEndTime = 0;
-                        }
-                        try {
-                            curScoreMeters= ((Decimal)curRow["ScoreMeters"]);
-                        } catch {
-                            curScoreMeters = 0;
-                        }
-                        try {
-                            curScoreFeet = ((Decimal)curRow["ScoreFeet"]);
-                        } catch {
-                            curScoreFeet = 0;
-                        }
-                        if (curTimeClass.Equals( "R" )) {
-                            try {
-                                curActualSeg52m = Convert.ToDecimal( (String)curRow["ActualTime52mSeg"] );
-                            } catch {
-                                curActualSeg52m = 0;
-                            }
-                            try {
-                                curActualSeg41m = Convert.ToDecimal( (String)curRow["ActualTime41mSeg"] );
-                            } catch {
-                                curActualSeg41m = 0;
-                            }
-                            try {
-                                curActualSeg82m = Convert.ToDecimal( (String)curRow["ActualTime82mSeg"] );
-                            } catch {
-                                curActualSeg82m = 0;
-                            }
-                        } else {
-                            try {
-                                curActualSeg52m = Convert.ToDecimal( (String)curRow["ActualTime52mSegR"] );
-                            } catch {
-                                curActualSeg52m = 0;
-                            }
-                            try {
-                                curActualSeg41m = Convert.ToDecimal( (String)curRow["ActualTime41mSegR"] );
-                            } catch {
-                                curActualSeg41m = 0;
-                            }
-                            try {
-                                curActualSeg82m = Convert.ToDecimal( (String)curRow["ActualTime82mSegR"] );
-                            } catch {
-                                curActualSeg82m = 0;
-                            }
-                        }
-                        try {
-                            curActualSeg30m = curActualSeg82m - curActualSeg52m;
-                        } catch {
-                            curActualSeg30m = 0;
-                        }
-                        try {
-                            curRunTime = ((DateTime)curRow["LastUpdateDate"]).ToString( "hhmm" );
-                        } catch {
-                            curRunTime = "0000";
-                        }
-
-                        outLine.Append( DoubleQuote.ToString() + inSanctionId + curTourClass + DoubleQuote.ToString() ); // 1. (7) SanctionId with class
-                        outLine.Append( "," + DoubleQuote.ToString() + curRow["EventClass"].ToString() + DoubleQuote.ToString() ); // 2. (1) Skier Class
-                        outLine.Append( "," + DoubleQuote.ToString() + curRow["Boat"].ToString().PadRight( 11, ' ' ) + DoubleQuote.ToString() ); // 3. (11) Boat
-                        outLine.Append( "," + DoubleQuote.ToString() + curEventDateOut + DoubleQuote.ToString() ); // 4. (8) Date YYYYMMDD
-                        outLine.Append( "," + DoubleQuote.ToString() + curRunTime + DoubleQuote.ToString() ); // 5. (4) Time HHMM
-                        outLine.Append( "," + DoubleQuote.ToString() + curRow["SkierName"].ToString().PadRight( 22, ' ') + DoubleQuote.ToString() ); // 6. (22) Skier Name
-                        outLine.Append( "," + DoubleQuote.ToString() + curRow["AgeGroup"].ToString() + DoubleQuote.ToString() ); // 7. (2) Age Division
-                        outLine.Append( "," + DoubleQuote.ToString() + ((byte)curRow["PassNum"]).ToString("#0").PadLeft(2, ' ') + DoubleQuote.ToString() ); // 8. (2) Pass Number
-                        outLine.Append( "," + DoubleQuote.ToString() + ((byte)curRow["BoatSpeed"]).ToString( "00" ) + DoubleQuote.ToString() ); // 9. (2) Boat Speed KM
-                        if ( curResults.ToUpper().Equals( "JUMP" ) ) {
-                            outLine.Append( "," + DoubleQuote.ToString() + curScoreMeters.ToString( "#0.0" ).PadLeft( 4, ' ' ) + DoubleQuote.ToString() ); //10. (4) Distance in Meters
-                            outLine.Append( "," + DoubleQuote.ToString() + curScoreFeet.ToString( "#00" ).PadLeft( 3, ' ' ) + DoubleQuote.ToString() ); //11. (3) Distance in Feet
-                        } else {
-                            outLine.Append( "," + DoubleQuote.ToString() + curResults.ToUpper() + DoubleQuote.ToString() ); //10. (4) Distance in Meters
-                            outLine.Append( "," + DoubleQuote.ToString() + "   " + DoubleQuote.ToString() ); //11. (3) Distance in Feet
-                        }
-                        outLine.Append( ", " + curSplitTime30M.ToString( "0.00" ) ); //12. (4 Num) 1st segment 30M Time
-                        outLine.Append( ", " + curSplitTime52M.ToString( "0.00" ) ); //13. (4 Num) 2nd segment 52M Time
-                        outLine.Append( ", " + curSplitTime82M.ToString( "0.00" ) ); //14. (4 Num) 1st & 2nd segment 82M Time
-                        outLine.Append( ", " + curBoatEndTime.ToString( "0.00" ) ); //15. (4 Num) 3rd segment 41M Time
-
-						outLine.Append( ", " + curActualSeg30m.ToString( "0.00" ) ); //16. (4 Num) 1st segment 30M Actual
-						outLine.Append( ", " + curActualSeg52m.ToString( "0.00" ) ); //17. (4 Num) 2nd segment 52M Actual
-						outLine.Append( ", " + curActualSeg82m.ToString( "0.00" ) ); //18. (4 Num) 1st & 2nd segment 82M Actual
-                        outLine.Append( ", " + curActualSeg41m.ToString( "0.00" ) ); //19. (4 Num) 3rd segment 41M Actual
-
-                        //Write output line to file
-                        outBuffer.WriteLine( outLine.ToString() );
-
-                        //Initialize output buffer
-                        outLine = new StringBuilder( "" );
-                    }
+                if ( curBoatTimeResults == null || curBoatTimeResults.Rows.Count <= 0 ) {
+                    returnStatus = true;
+                    outBuffer.Close();
+                    MessageBox.Show( "No rows found" );
                     myProgressInfo.Close();
                 }
 
+                foreach ( DataRow curRow in curBoatTimeResults.Rows ) {
+                    curRowCount++;
+                    myProgressInfo.setProgressValue( curRowCount );
+                    myProgressInfo.Refresh();
+
+                    curTimeClass = getTimeClass( HelperFunctions.getDataRowColValue( curRow, "EventClass", "C" ) );
+                    curResults = HelperFunctions.getDataRowColValue( curRow, "Results", "" );
+
+                    if ( !(decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatSplitTime", "0" ), out curSplitTime52M ) ) ) curSplitTime52M = 0;
+                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatSplitTime2", "0" ), out curSplitTime82M ) ) ) curSplitTime82M = 0;
+                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatEndTime", "0" ), out curBoatEndTime ) ) ) curBoatEndTime = 0;
+                    curSplitTime30M = curSplitTime82M - curSplitTime52M;
+
+                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreMeters", "0" ), out curScoreMeters ) ) ) curScoreMeters = 0;
+                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreFeet", "0" ), out curScoreFeet ) ) ) curScoreFeet = 0;
+                    if ( curTimeClass.Equals( "R" ) ) {
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime52mSegR", "0" ), out curActualSeg52m ) ) ) curActualSeg52m = 0;
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime41mSegR", "0" ), out curActualSeg41m ) ) ) curActualSeg41m = 0;
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime82mSegR", "0" ), out curActualSeg82m ) ) ) curActualSeg82m = 0;
+                    
+                    } else {
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime52mSeg", "0" ), out curActualSeg52m ) ) ) curActualSeg52m = 0;
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime41mSeg", "0" ), out curActualSeg41m ) ) ) curActualSeg41m = 0;
+                        if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime82mSeg", "0" ), out curActualSeg82m ) ) ) curActualSeg82m = 0;
+                    }
+                    curActualSeg30m = curActualSeg82m - curActualSeg52m;
+                    try {
+                        curRunTime = ( (DateTime)curRow["LastUpdateDate"] ).ToString( "hhmm" );
+                    } catch {
+                        curRunTime = "0000";
+                    }
+
+                    outLine.Append( DoubleQuote.ToString() + inSanctionId + curTourClass + DoubleQuote.ToString() ); // 1. (7) SanctionId with class
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "EventClass", "C" ) + DoubleQuote.ToString() ); // 2. (1) Skier Class
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "Boat", "C" ).PadRight( 11, ' ' ) + DoubleQuote.ToString() ); // 3. (11) Boat
+                    outLine.Append( "," + DoubleQuote.ToString() + curEventDateOut + DoubleQuote.ToString() ); // 4. (8) Date YYYYMMDD
+                    outLine.Append( "," + DoubleQuote.ToString() + curRunTime + DoubleQuote.ToString() ); // 5. (4) Time HHMM
+
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "SkierName", "" ).PadRight( 22, ' ' ) + DoubleQuote.ToString() );
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "AgeGroup", "" ) + DoubleQuote.ToString() ); // 7. (2) Age Division
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "PassNum", "" ).PadLeft( 2, ' ' ) + DoubleQuote.ToString() ); // 8. (2) Pass Number
+                    outLine.Append( "," + DoubleQuote.ToString() + HelperFunctions.getDataRowColValue( curRow, "BoatSpeed", "" ) + DoubleQuote.ToString() ); // 9. (2) Boat Speed KM
+                    if ( curResults.ToUpper().Equals( "JUMP" ) ) {
+                        outLine.Append( "," + DoubleQuote.ToString() + curScoreMeters.ToString( "#0.0" ).PadLeft( 4, ' ' ) + DoubleQuote.ToString() ); //10. (4) Distance in Meters
+                        outLine.Append( "," + DoubleQuote.ToString() + curScoreFeet.ToString( "#00" ).PadLeft( 3, ' ' ) + DoubleQuote.ToString() ); //11. (3) Distance in Feet
+                    } else {
+                        outLine.Append( "," + DoubleQuote.ToString() + curResults.ToUpper() + DoubleQuote.ToString() ); //10. (4) Distance in Meters
+                        outLine.Append( "," + DoubleQuote.ToString() + "   " + DoubleQuote.ToString() ); //11. (3) Distance in Feet
+                    }
+                    outLine.Append( ", " + curSplitTime30M.ToString( "0.00" ) ); //12. (4 Num) 1st segment 30M Time
+                    outLine.Append( ", " + curSplitTime52M.ToString( "0.00" ) ); //13. (4 Num) 2nd segment 52M Time
+                    outLine.Append( ", " + curSplitTime82M.ToString( "0.00" ) ); //14. (4 Num) 1st & 2nd segment 82M Time
+                    outLine.Append( ", " + curBoatEndTime.ToString( "0.00" ) ); //15. (4 Num) 3rd segment 41M Time
+
+                    outLine.Append( ", " + curActualSeg30m.ToString( "0.00" ) ); //16. (4 Num) 1st segment 30M Actual
+                    outLine.Append( ", " + curActualSeg52m.ToString( "0.00" ) ); //17. (4 Num) 2nd segment 52M Actual
+                    outLine.Append( ", " + curActualSeg82m.ToString( "0.00" ) ); //18. (4 Num) 1st & 2nd segment 82M Actual
+                    outLine.Append( ", " + curActualSeg41m.ToString( "0.00" ) ); //19. (4 Num) 3rd segment 41M Actual
+
+                    //Write output line to file
+                    outBuffer.WriteLine( outLine.ToString() );
+
+                    //Initialize output buffer
+                    outLine = new StringBuilder( "" );
+                }
+                myProgressInfo.Close();
+
                 returnStatus = true;
                 outBuffer.Close();
-
-                if ( curBoatTimeResults.Rows.Count > 0 ) {
-                    MessageBox.Show( curBoatTimeResults.Rows.Count + " rows found and written" );
-                } else {
-                    MessageBox.Show( "No rows found" );
-                }
+                MessageBox.Show( curBoatTimeResults.Rows.Count + " rows found and written" );
             }
 
             return returnStatus;

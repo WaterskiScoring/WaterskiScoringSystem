@@ -458,20 +458,22 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataTable sendRequest( String inMemberId, String inLastName, String inFirstName, String inState ) {
 			String curMethodName = "sendRequest";
 			String curContentType = "application/json; charset=UTF-8";
-			String curMemberExportListUrl = "https://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curMemberExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetMemberRegExportJson.asp";
 			String curExportUrl = "";
 
 			StringBuilder curQueryString = new StringBuilder( "" );
 			curExportUrl = curMemberExportListUrl;
-			curQueryString.Append( "?SanctionId=" + mySanctionNum );
+			String curQueryStringDelim = "?";
 			if ( inMemberId.Length > 0 ) {
-				curQueryString.Append( "&MemberId=" + inMemberId );
+				curQueryString.Append( curQueryStringDelim + "MemberId=" + inMemberId );
+				curQueryStringDelim = "&";
 			}
 			if ( inFirstName.Length > 0 || inLastName.Length > 0 ) {
-				curQueryString.Append( "&FirstName=" + inFirstName + "&LastName=" + inLastName );
+				curQueryString.Append( curQueryStringDelim + "FirstName=" + inFirstName + "&LastName=" + inLastName );
+				curQueryStringDelim = "&";
 			}
 			if ( inState.Length > 0 ) {
-				curQueryString.Append( "&State=" + inState );
+				curQueryString.Append( curQueryStringDelim + "State=" + inState );
 			}
 
 			String curReqstUrl = curExportUrl + curQueryString.ToString();

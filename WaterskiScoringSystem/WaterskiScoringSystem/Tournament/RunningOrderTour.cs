@@ -1352,35 +1352,7 @@ namespace WaterskiScoringSystem.Tournament {
                     myViewIdx = e.RowIndex;
                     String curColName = EventRegDataGridView.Columns[e.ColumnIndex].Name;
                     DataGridViewRow curViewRow = EventRegDataGridView.Rows[myViewIdx];
-                    if ( curColName.Equals( "EventGroup" )
-                        || curColName.Equals("TeamCode")
-                        || curColName.Equals("EventClass")
-                        || curColName.Equals("ReadyForPlcmt")
-                        || curColName.Equals( "RankingRating" )
-                        || curColName.Equals( "TrickBoat" )
-                        || curColName.Equals( "JumpHeight" )
-                        ) {
-                        try {
-                            myOrigItemValue = (String)curViewRow.Cells[e.ColumnIndex].Value;
-                        } catch {
-                            myOrigItemValue = "";
-                        }
-                    } else if ( curColName.Equals( "RunOrder" ) ) {
-                        try {
-                            myOrigItemValue = Convert.ToInt16( (String)curViewRow.Cells[e.ColumnIndex].Value ).ToString();
-                        } catch {
-                            myOrigItemValue = "0";
-                        }
-                    } else if ( curColName.Equals( "HCapBase" )
-                        || curColName.Equals( "HCapScore" )
-                        || curColName.Equals( "RankingScore" )
-                        ) {
-                        try {
-                            myOrigItemValue = Convert.ToDecimal( (String)curViewRow.Cells[e.ColumnIndex].Value ).ToString();
-                        } catch {
-                            myOrigItemValue = "0";
-                        }
-                    }
+                    myOrigItemValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "" );
                 }
             }
         }
@@ -1553,19 +1525,11 @@ namespace WaterskiScoringSystem.Tournament {
                         || curColName.Equals( "HCapScore" )
                         || curColName.Equals( "RankingScore" )
                         ) {
-                    if ( myOrigItemValue == null ) myOrigItemValue = "0";
-                    if ( HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
-                        if ( Convert.ToDecimal( myOrigItemValue) != 0 ) {
-                            isDataModified = true;
-                            curViewRow.Cells["Updated"].Value = "Y";
-                        }
-                    } else {
-                        Decimal curNum = Convert.ToDecimal( (String)curViewRow.Cells[e.ColumnIndex].Value );
-                        if ( myOrigItemValue == null ) myOrigItemValue = "0";
-                        if ( curNum != Convert.ToDecimal( myOrigItemValue ) ) {
-                            isDataModified = true;
-                            curViewRow.Cells["Updated"].Value = "Y";
-                        }
+                    if ( myOrigItemValue == null ) myOrigItemValue = "";
+                    String curValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "" );
+                    if ( !(myOrigItemValue.Equals( curValue )) ) {
+                        isDataModified = true;
+                        curViewRow.Cells["Updated"].Value = "Y";
                     }
                 }
             }

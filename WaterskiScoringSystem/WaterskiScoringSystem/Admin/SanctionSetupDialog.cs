@@ -32,5 +32,9 @@ namespace WaterskiScoringSystem.Admin {
 			mySanctionId = SanctionIDTextBox.Text;
 			myEditCode = EditCodeTextBox.Text;
 		}
+
+		private void SanctionSetupDialog_Load( object sender, EventArgs e ) {
+
+		}
 	}
 }

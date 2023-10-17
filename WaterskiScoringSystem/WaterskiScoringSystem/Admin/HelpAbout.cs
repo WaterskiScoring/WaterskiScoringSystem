@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Deployment.Application;
 using System.IO;
@@ -39,14 +40,17 @@ namespace WaterskiScoringSystem.Admin {
                 + " | " + curUpdatedVer
                 + " | " + Properties.Settings.Default.BuildVersion;
             textStartupPath.Text = Application.StartupPath;
-            textLocalAppUserDataPath.Text = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
+
+            Configuration curConfig = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal );
+            textLocalAppUserConfigPath.Text = curConfig.FilePath;
+            
             textLocalUserAppDataPath.Text = Application.LocalUserAppDataPath;
             textUserAppDataPath.Text = Application.UserAppDataPath;
             textUserAppDataRegistry.Text = Application.UserAppDataRegistry.Name;
 
             String curSqlStmt = "SELECT MinValue as VersionNum FROM CodeValueList WHERE ListName = 'DatabaseVersion'";
             DataTable curDataTable = DataAccess.getDataTable( curSqlStmt );
-            if ( curDataTable.Rows.Count > 0 ) {
+            if ( curDataTable != null && curDataTable.Rows.Count > 0 ) {
                 textDatabaseVersion.Text = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "VersionNum", "Not available" );
 
             } else {

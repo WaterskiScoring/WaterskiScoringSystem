@@ -71,8 +71,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
 			} catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered: {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return null;
             }
         }
@@ -103,8 +103,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 						curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
 					}
 				}
-                /*
-                 */
 				if (inUrl.ToLower().StartsWith("https")) {
 					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 					ServicePointManager.Expect100Continue = false;
@@ -122,9 +120,42 @@ namespace WaterskiScoringSystem.Externalnterface {
 				//Send request to upload file
 				return readJsonResponseAsDataTable((HttpWebResponse)curRequest.GetResponse());
 
-			} catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+            } catch ( WebException e ) {
+                using ( WebResponse response = e.Response ) {
+                    HttpWebResponse curResp = (HttpWebResponse)response;
+                    if ( curResp == null ) {
+                        Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, e.Message ) );
+                        MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1}", curMethodName, e.Message ) );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.NotFound ) {
+                        Log.WriteFile( String.Format( "{0}Target location not found, {1}", curMethodName, e.Message ) );
+                        MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1}", curMethodName, e.Message ) );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.BadRequest ) {
+                        String respMsg = getResponseAsString( curResp );
+                        String errorMsg = String.Format( "{0}Request failed {1}", curMethodName, respMsg );
+                        Log.WriteFile( errorMsg );
+                        MessageBox.Show( errorMsg );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.Unauthorized ) {
+                        String respMsg = getResponseAsString( curResp );
+                        String errorMsg = String.Format( "{0}Request failed {1}", curMethodName, respMsg );
+                        Log.WriteFile( errorMsg );
+                        MessageBox.Show( errorMsg );
+                        return null;
+                    }
+
+                    Log.WriteFile( String.Format( "{0}Request failed, {1}", curMethodName, e.Message ) );
+                    MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1} {2}", curMethodName, e.Message, inUrl ) );
+                    return null;
+                }
+
+            } catch (Exception ex) {
+				Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return null;
 			}
 		}
@@ -173,9 +204,42 @@ namespace WaterskiScoringSystem.Externalnterface {
 				//Send request to upload file
 				return readJsonResponseAsList((HttpWebResponse)curRequest.GetResponse() );
 
+            } catch ( WebException e ) {
+                using ( WebResponse response = e.Response ) {
+                    HttpWebResponse curResp = (HttpWebResponse)response;
+                    if ( curResp == null ) {
+                        Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, e.Message ) );
+                        MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1}", curMethodName, e.Message ) );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.NotFound ) {
+                        Log.WriteFile( String.Format( "{0}Target location not found, {1}", curMethodName, e.Message ) );
+                        MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1}", curMethodName, e.Message ) );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.BadRequest ) {
+                        String respMsg = getResponseAsString( curResp );
+                        String errorMsg = String.Format( "{0}Request failed {1}", curMethodName, respMsg );
+                        Log.WriteFile( errorMsg );
+                        MessageBox.Show( errorMsg );
+                        return null;
+                    }
+                    if ( curResp.StatusCode == HttpStatusCode.Unauthorized ) {
+                        String respMsg = getResponseAsString( curResp );
+                        String errorMsg = String.Format( "{0}Request failed {1}", curMethodName, respMsg );
+                        Log.WriteFile( errorMsg );
+                        MessageBox.Show( errorMsg );
+                        return null;
+                    }
+
+                    Log.WriteFile( String.Format( "{0}Request failed, {1}", curMethodName, e.Message ) );
+                    MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection on request: {1}", curMethodName, e.Message ) );
+                    return null;
+                }
+
             } catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return null;
             }
         }
@@ -297,8 +361,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
             } catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered: {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered: {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} {2}", curMethodName, ex.Message, inUrl ) );
                 return new Dictionary<string, object>() { { "Error", "Exception encountered loading video: " + ex.Message } } ;
             }
         }
@@ -375,8 +439,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
             
             } catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} {2}", curMethodName, ex.Message, inUrl ) );
                 curResponseDataList = null;
             
 			} finally {
@@ -470,8 +534,8 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
 
             } catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return null;
             }
         }
@@ -521,8 +585,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return jsonSerializer.Deserialize<Dictionary<string, object>>( getResponseAsString( curResp ) );
 
             } catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
+				Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message, inUrl ) );
+				MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return null;
             }
         }
@@ -554,7 +618,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 curRequest.BeginGetRequestStream( new AsyncCallback( GetRequestStreamCallback ), curRequestState );
 
             } catch (Exception ex) {
-				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1} {2}", curMethodName, ex.Message, inUrl ) );
                 return false;
             }
 
@@ -608,7 +672,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                 }
 
             } catch (Exception ex) {
-				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1}", curMethodName, ex.Message ) );
+				MessageBox.Show( String.Format( "{0} Likely temporary loss of internet connection {1} {2}", curMethodName, ex.Message, inUrl ) );
 				return false;
             }
 
@@ -903,7 +967,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 						dataRow[curEntryAttr.Key] = curEntryAttr.Value;
 
 					} catch ( Exception ex ) {
-						Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
+						Log.WriteFile( String.Format( "{0}Exception encountered {1} {2}", curMethodName, ex.Message ) );
 						MessageBox.Show( String.Format( "{0}Likely temporary loss of internet connection: {1}", curMethodName, ex.Message ) );
 					}
 				}

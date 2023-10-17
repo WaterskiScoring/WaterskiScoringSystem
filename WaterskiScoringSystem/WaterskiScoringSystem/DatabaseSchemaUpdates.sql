@@ -1144,3 +1144,9 @@ ALTER TABLE [JumpRecap] ADD COLUMN  RerideCanImprove nchar(1);
 ALTER TABLE MemberList ADD COLUMN ForeignFederationID nvarchar(12);
 
 ALTER TABLE TourReg ADD COLUMN ForeignFederationID nvarchar(12);
+
+## v23.10
+ALTER TABLE [TourBoatUse] ALTER COLUMN HullId nvarchar(16) NOT NULL;
+
+
+

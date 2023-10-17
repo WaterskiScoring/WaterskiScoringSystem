@@ -3469,6 +3469,78 @@ namespace WaterskiScoringSystem.Common {
 			#endregion
 		}
 
+		public void calcAwsaOverallKPoints( DataTable inSummaryDataTable, String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, String inEventGroup ) {
+			String curGroup = "", curFindCommand = "", curSortCmd = "";
+			Decimal curScore = 0, curScoreMax = 0;
+			DataRow curMaxRow;
+			DataRow[] curFindRows;
+			
+			bool isJumpEvent = inSummaryDataTable.Columns.Contains( "ScoreMeters" );
+			bool isTrickEvent = inSummaryDataTable.Columns.Contains( "ScorePass1" );
+			bool isSlalomEvent = inSummaryDataTable.Columns.Contains( "FinalPassScore" );
+			String curScoreName = "Score";
+			if ( isJumpEvent ) {
+				curScoreName = "ScoreFeet";
+			}
+
+			//Determine maximum scores per event and division
+			DataTable curMaxDataTable = buildMaxScoresPerGroup( inSanctionId, inPlcmtOrg, inRules, inEvent );
+
+			//Calculate points based on placement
+			foreach ( DataRow curRow in inSummaryDataTable.Rows ) {
+				try {
+					if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
+						curScore = (Decimal)( curRow[curScoreName] );
+					} else if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Int16" ) ) {
+						curScore = (Int16)( curRow[curScoreName] );
+					} else if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Int32" ) ) {
+						curScore = (int)( curRow[curScoreName] );
+					} else {
+						curScore = 0;
+					}
+				} catch {
+					curScore = 0;
+				}
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+					curFindCommand = "Group = '" + curGroup + "'";
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+					curFindCommand = "Group = '" + curGroup + "'";
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+					curFindCommand = "Group = '" + curGroup + "'";
+				} else {
+					curFindCommand = "Group = ''";
+				}
+				curFindRows = curMaxDataTable.Select( curFindCommand );
+				if ( curFindRows.Length > 0 ) {
+					curMaxRow = curFindRows[0];
+					curScoreMax = 0;
+					if ( isSlalomEvent ) {
+						curScoreMax = (Decimal)curMaxRow["ScoreSlalomMax"];
+					} else if ( isTrickEvent ) {
+						curScoreMax = (Int16)curMaxRow["ScoreTrickMax"];
+					} else if ( isJumpEvent ) {
+						curScoreMax = (Decimal)curMaxRow["ScoreJumpMax"];
+					}
+				} else {
+					curScoreMax = 0;
+				}
+				if ( curScore > 0 && curScoreMax > 0 ) {
+					if ( isJumpEvent ) {
+						curScore = Convert.ToDecimal( Math.Sqrt( Convert.ToDouble( ( curScore * curScore ) / ( curScoreMax * curScoreMax ) ) ) * 1000 );
+					} else {
+						curScore = Math.Round( ( ( curScore / curScoreMax ) * 1000 ), 1 );
+					}
+				} else {
+					curScore = 0;
+				}
+				curRow["NopsScore"] = curScore;
+			}
+
+		}
+
 		private void updateIwwfEventPlcmts( String inEvent, DataTable inEventPlcmtDataTable, DataTable inSummaryDataTable ) {
 			String curMemberId = "", curDiv = "", curRound = "";
 			DataRow[] curFindPlcmt = null;
@@ -3505,78 +3577,13 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		private DataTable CalcPointsKBase( String inSanctionId, DataTable inDataTable, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inRules, String inEvent ) {
-			String curGroup = "", curFindCommand = "", curSortCmd = "";
-			Decimal curScore = 0, curScoreMax = 0;
-			DataRow curMaxRow;
-			DataRow[] curFindRows;
 			DataTable curScoreDataTable = inDataTable;
 
 			if ( inRules.ToLower().Equals( "iwwf" ) ) {
 				calcIwwfOverallPoints( curScoreDataTable, inSanctionId, inPlcmtOrg, inRules, inEvent, "" );
+			
 			} else {
-				bool isJumpEvent = inDataTable.Columns.Contains( "ScoreMeters" );
-				bool isTrickEvent = inDataTable.Columns.Contains( "ScorePass1" );
-				bool isSlalomEvent = inDataTable.Columns.Contains( "FinalPassScore" );
-				String curScoreName = "Score";
-				if ( isJumpEvent ) {
-					curScoreName = "ScoreFeet";
-				}
-
-				//Determine maximum scores per event and division
-				DataTable curMaxDataTable = buildMaxScoresPerGroup( inSanctionId, inPlcmtOrg, inRules, inEvent );
-
-				//Calculate points based on placement
-				foreach ( DataRow curRow in curScoreDataTable.Rows ) {
-					try {
-						if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-							curScore = (Decimal)( curRow[curScoreName] );
-						} else if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Int16" ) ) {
-							curScore = (Int16)( curRow[curScoreName] );
-						} else if ( curRow[curScoreName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-							curScore = (int)( curRow[curScoreName] );
-						} else {
-							curScore = 0;
-						}
-					} catch {
-						curScore = 0;
-					}
-					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-						curGroup = (String)curRow["AgeGroup"];
-						curFindCommand = "Group = '" + curGroup + "'";
-					} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-						curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-						curFindCommand = "Group = '" + curGroup + "'";
-					} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-						curGroup = (String)curRow["EventGroup"];
-						curFindCommand = "Group = '" + curGroup + "'";
-					} else {
-						curFindCommand = "Group = ''";
-					}
-					curFindRows = curMaxDataTable.Select( curFindCommand );
-					if ( curFindRows.Length > 0 ) {
-						curMaxRow = curFindRows[0];
-						curScoreMax = 0;
-						if ( isSlalomEvent ) {
-							curScoreMax = (Decimal)curMaxRow["ScoreSlalomMax"];
-						} else if ( isTrickEvent ) {
-							curScoreMax = (Int16)curMaxRow["ScoreTrickMax"];
-						} else if ( isJumpEvent ) {
-							curScoreMax = (Decimal)curMaxRow["ScoreJumpMax"];
-						}
-					} else {
-						curScoreMax = 0;
-					}
-					if ( curScore > 0 && curScoreMax > 0 ) {
-						if ( isJumpEvent ) {
-							curScore = Convert.ToDecimal( Math.Sqrt( Convert.ToDouble( ( curScore * curScore ) / ( curScoreMax * curScoreMax ) ) ) * 1000 );
-						} else {
-							curScore = Math.Round( ( ( curScore / curScoreMax ) * 1000 ), 1 );
-						}
-					} else {
-						curScore = 0;
-					}
-					curRow["NopsScore"] = curScore;
-				}
+				calcAwsaOverallKPoints( curScoreDataTable, inSanctionId, inPlcmtOrg, inRules, inEvent, "" );
 			}
 
 			return curScoreDataTable;

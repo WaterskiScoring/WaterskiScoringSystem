@@ -47,7 +47,7 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.textLocalUserAppDataPath = new System.Windows.Forms.TextBox();
 			this.Label14 = new System.Windows.Forms.Label();
-			this.textLocalAppUserDataPath = new System.Windows.Forms.TextBox();
+			this.textLocalAppUserConfigPath = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
@@ -177,7 +177,7 @@
 			this.textUserAppDataRegistry.Name = "textUserAppDataRegistry";
 			this.textUserAppDataRegistry.ReadOnly = true;
 			this.textUserAppDataRegistry.Size = new System.Drawing.Size(650, 21);
-			this.textUserAppDataRegistry.TabIndex = 90;
+			this.textUserAppDataRegistry.TabIndex = 95;
 			this.textUserAppDataRegistry.Text = "UserAppDataRegistry";
 			this.textUserAppDataRegistry.WordWrap = false;
 			// 
@@ -277,7 +277,7 @@
 			this.NetFramework35Info.Name = "NetFramework35Info";
 			this.NetFramework35Info.ReadOnly = true;
 			this.NetFramework35Info.Size = new System.Drawing.Size(650, 21);
-			this.NetFramework35Info.TabIndex = 92;
+			this.NetFramework35Info.TabIndex = 96;
 			this.NetFramework35Info.Text = "Version and SP";
 			this.NetFramework35Info.WordWrap = false;
 			// 
@@ -301,7 +301,7 @@
 			this.NetFramework40Info.Name = "NetFramework40Info";
 			this.NetFramework40Info.ReadOnly = true;
 			this.NetFramework40Info.Size = new System.Drawing.Size(650, 21);
-			this.NetFramework40Info.TabIndex = 94;
+			this.NetFramework40Info.TabIndex = 97;
 			this.NetFramework40Info.Text = "Version and SP";
 			this.NetFramework40Info.WordWrap = false;
 			// 
@@ -325,7 +325,7 @@
 			this.textLocalUserAppDataPath.Name = "textLocalUserAppDataPath";
 			this.textLocalUserAppDataPath.ReadOnly = true;
 			this.textLocalUserAppDataPath.Size = new System.Drawing.Size(650, 21);
-			this.textLocalUserAppDataPath.TabIndex = 85;
+			this.textLocalUserAppDataPath.TabIndex = 90;
 			this.textLocalUserAppDataPath.Text = "LocalUserAppDataPath";
 			this.textLocalUserAppDataPath.WordWrap = false;
 			// 
@@ -340,28 +340,28 @@
 			this.Label14.Text = "App System Data Path:";
 			this.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// textLocalAppUserDataPath
+			// textLocalAppUserConfigPath
 			// 
-			this.textLocalAppUserDataPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.textLocalAppUserConfigPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.textLocalAppUserDataPath.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textLocalAppUserDataPath.Location = new System.Drawing.Point(169, 221);
-			this.textLocalAppUserDataPath.Name = "textLocalAppUserDataPath";
-			this.textLocalAppUserDataPath.ReadOnly = true;
-			this.textLocalAppUserDataPath.Size = new System.Drawing.Size(650, 21);
-			this.textLocalAppUserDataPath.TabIndex = 96;
-			this.textLocalAppUserDataPath.Text = "LocalUserAppDataPath";
-			this.textLocalAppUserDataPath.WordWrap = false;
+			this.textLocalAppUserConfigPath.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.textLocalAppUserConfigPath.Location = new System.Drawing.Point(169, 221);
+			this.textLocalAppUserConfigPath.Name = "textLocalAppUserConfigPath";
+			this.textLocalAppUserConfigPath.ReadOnly = true;
+			this.textLocalAppUserConfigPath.Size = new System.Drawing.Size(650, 21);
+			this.textLocalAppUserConfigPath.TabIndex = 85;
+			this.textLocalAppUserConfigPath.Text = "User.Config";
+			this.textLocalAppUserConfigPath.WordWrap = false;
 			// 
 			// label12
 			// 
 			this.label12.AutoSize = true;
 			this.label12.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label12.Location = new System.Drawing.Point(1, 223);
+			this.label12.Location = new System.Drawing.Point(25, 223);
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(168, 16);
+			this.label12.Size = new System.Drawing.Size(144, 16);
 			this.label12.TabIndex = 0;
-			this.label12.Text = "Property User Data Path: ";
+			this.label12.Text = "Location User Config:";
 			this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// HelpAbout
@@ -369,7 +369,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(830, 372);
-			this.Controls.Add(this.textLocalAppUserDataPath);
+			this.Controls.Add(this.textLocalAppUserConfigPath);
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.textLocalUserAppDataPath);
 			this.Controls.Add(this.Label14);
@@ -429,7 +429,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textLocalUserAppDataPath;
         private System.Windows.Forms.Label Label14;
-		private System.Windows.Forms.TextBox textLocalAppUserDataPath;
+		private System.Windows.Forms.TextBox textLocalAppUserConfigPath;
 		private System.Windows.Forms.Label label12;
 	}
 }

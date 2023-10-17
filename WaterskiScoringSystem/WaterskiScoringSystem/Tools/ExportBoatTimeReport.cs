@@ -141,46 +141,23 @@ namespace WaterskiScoringSystem.Tools {
                                 myProgressInfo.setProgressValue( curRowRoundCount );
                                 myProgressInfo.Refresh();
 
-                                curSkierName = curRow["SkierName"].ToString();
+                                curSkierName = HelperFunctions.getDataRowColValue( curRow, "SkierName", "" );
                                 if ( curSkierName.Length > 15 ) {
                                     curSkierName = curSkierName.Substring( 0, 15 );
                                 }
-                                try {
-                                    curBoatTime = (Decimal)curRow["BoatTime"];
-                                } catch {
-                                    curBoatTime = 0;
-                                }
-                                try {
-                                    curScore = ( (Decimal)curRow["PassScore"] );
-                                } catch {
-                                    curScore = 0;
-                                }
-                                try {
-                                    curEventClass = ( (String)curRow["EventClass"] );
-                                } catch {
-                                    curEventClass = "";
-                                }
+                                if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatTime", "0" ), out curBoatTime ) ) ) curBoatTime = 0;
+                                if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "PassScore", "0" ), out curScore ) ) ) curScore = 0;
+                                curEventClass = HelperFunctions.getDataRowColValue( curRow, "EventClass", "" );
                                 try {
                                     curRunTime = ((DateTime)curRow["LastUpdateDate"]).ToString( "hhmm" );
                                 } catch {
                                     curRunTime = "0000";
                                 }
+                                if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( curRow, "Reride", "N" ) ) ) curRerideCount++;
                                 try {
-                                    if ( curRow["Reride"].ToString().Equals( "Y" ) ) {
-                                        curRerideCount++;
-                                    }
-                                } catch {
-                                }
-                                try {
-									curMaxSpeed = ( (Byte) curRow["MaxSpeed"] );
-									try {
-										curSpeedKph = ( (Byte) curRow["PassSpeedKph"] );
-										curPassLineLengthKph = ( (Decimal) curRow["PassLineLengthKph"] );
-									} catch (Exception ex ) {
-										String msg = ex.Message;
-										curSpeedKph = 0;
-										curPassLineLengthKph = 0;
-                                    }
+                                    if ( !( Int16.TryParse( HelperFunctions.getDataRowColValue( curRow, "PassScore", "0" ), out curMaxSpeed ) ) ) curMaxSpeed = 0;
+                                    if ( !( Int16.TryParse( HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "0" ), out curSpeedKph ) ) ) curSpeedKph = 0;
+                                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "PassLineLengthKph", "0" ), out curPassLineLengthKph ) ) ) curPassLineLengthKph = 0;
 
 									curSpeedByPassDataTable = getSpeedByPass( curMaxSpeed, curSpeedKph, curPassLineLengthKph );
                                     if ( curSpeedByPassDataTable.Rows.Count > 0 ) {
@@ -194,6 +171,7 @@ namespace WaterskiScoringSystem.Tools {
                                             myTimeRow = null;
                                         }
                                         curActualTime = Convert.ToDecimal( (String)myTimeRow["CodeValue"] );
+                                    
                                     } else {
                                         curActualTime = 0;
                                         curSpeedDesc = "";
@@ -420,6 +398,7 @@ namespace WaterskiScoringSystem.Tools {
             Decimal curScoreMeters, curScoreFeet;
             Decimal curSplitTime52M, curSplitTime82M, curSplitTime41M;
             Decimal curActualSeg52m, curActualSeg82m, curActualSeg41m;
+            byte curBoatSpeedNum;
             StringBuilder outLine = new StringBuilder( "" );
             DataTable curSummaryTable, curStatsTable, curJumpTimes;
             myProgressInfo = new ProgressWindow();
@@ -477,60 +456,29 @@ namespace WaterskiScoringSystem.Tools {
                             myProgressInfo.setProgressValue( curRowRoundCount );
                             myProgressInfo.Refresh();
 
-                            curResults = (String)curRow["Results"];
+                            curResults = HelperFunctions.getDataRowColValue( curRow, "Results", "" );
                             if ( curResults.Length > 4 ) {
                                 curResults = curResults.Substring( 0, 4 );
                             }
-                            curSkierName = curRow["SkierName"].ToString();
+                            curSkierName = HelperFunctions.getDataRowColValue( curRow, "SkierName", "" );
                             if ( curSkierName.Length > 15 ) {
                                 curSkierName = curSkierName.Substring( 0, 15 );
                             }
-                            try {
-                                curSplitTime52M = (Decimal)curRow["BoatSplitTime"];
-                            } catch {
-                                curSplitTime52M = 0;
-                            }
-                            try {
-                                curSplitTime82M = (Decimal)curRow["BoatSplitTime2"];
-                            } catch {
-                                curSplitTime82M = 0;
-                            }
-                            try {
-                                curSplitTime41M = ( (Decimal)curRow["BoatEndTime"] );
-                            } catch {
-                                curSplitTime41M = 0;
-                            }
-                            try {
-                                curScoreMeters = ( (Decimal)curRow["ScoreMeters"] );
-                            } catch {
-                                curScoreMeters = 0;
-                            }
-                            try {
-                                curScoreFeet = ( (Decimal)curRow["ScoreFeet"] );
-                            } catch {
-                                curScoreFeet = 0;
-                            }
+
+                            if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatSplitTime", "0" ), out curSplitTime52M ) ) ) curSplitTime52M = 0;
+                            if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatSplitTime2", "0" ), out curSplitTime82M ) ) ) curSplitTime82M = 0;
+                            if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatEndTime", "0" ), out curSplitTime41M ) ) ) curSplitTime41M = 0;
+                            if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreMeters", "0" ), out curScoreMeters ) ) ) curScoreMeters = 0;
+                            if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreFeet", "0" ), out curScoreFeet ) ) ) curScoreFeet = 0;
 
                             try {
-                                curBoatSpeed = ( (byte)curRow["BoatSpeed"] ).ToString( "00" );
-                                curSkierClass = (String)curRow["EventClass"];
+                                curBoatSpeed = HelperFunctions.getDataRowColValue( curRow, "BoatSpeed", "0" );
+                                curSkierClass = HelperFunctions.getDataRowColValue( curRow, "EventClass", "" );
                                 curJumpTimes = getJumpTimes( curBoatSpeed, curSkierClass );
                                 if ( curJumpTimes.Rows.Count > 0 ) {
-                                    try {
-                                        curActualSeg52m = Convert.ToDecimal( (String)curJumpTimes.Rows[0]["ActualTime52mSeg"] );
-                                    } catch {
-                                        curActualSeg52m = 0;
-                                    }
-                                    try {
-                                        curActualSeg82m = Convert.ToDecimal( (String)curJumpTimes.Rows[0]["ActualTime82mSeg"] );
-                                    } catch {
-                                        curActualSeg82m = 0;
-                                    }
-                                    try {
-                                        curActualSeg41m = Convert.ToDecimal( (String)curJumpTimes.Rows[0]["ActualTime41mSeg"] );
-                                    } catch {
-                                        curActualSeg41m = 0;
-                                    }
+                                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime52mSeg", "0" ), out curActualSeg52m ) ) ) curActualSeg52m = 0;
+                                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime82mSeg", "0" ), out curActualSeg82m ) ) ) curActualSeg82m = 0;
+                                    if ( !( decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ActualTime41mSeg", "0" ), out curActualSeg41m ) ) ) curActualSeg41m = 0;
                                 } else {
                                     curActualSeg52m = 0;
                                     curActualSeg82m = 0;
@@ -546,12 +494,7 @@ namespace WaterskiScoringSystem.Tools {
                             } catch {
                                 curRunTime = "0000";
                             }
-                            try {
-                                if ( curRow["Reride"].ToString().Equals("Y") ) {
-                                    curRerideCount++;
-                                }
-                            } catch {
-                            }
+                            if ( HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( curRow, "Reride", "N" ) ) ) curRerideCount++;
 
                             if ( prevSkierName == curSkierName ) {
                                 outLine.Append( "".PadRight( 4, ' ' ) ); //Time HHMM (4)
@@ -561,8 +504,9 @@ namespace WaterskiScoringSystem.Tools {
                                 outLine.Append( curRunTime ); //Time HHMM (4)
                                 outLine.Append( " " + curSkierName.PadRight( 15, ' ' ) ); //Skier Name (15)
                             }
-                            outLine.Append( ( (byte)curRow["PassNum"] ).ToString( "#0" ).PadLeft( 2, ' ' ) ); //Pass Number (2) 
-                            outLine.Append( " " + ( (byte)curRow["BoatSpeed"] ).ToString( "00" ) ); //Boat Speed KM (2)
+                            outLine.Append( HelperFunctions.getDataRowColValue( curRow, "PassNum", "0" ).PadLeft( 2, ' ' ) ); //Pass Number (2) 
+                            if ( byte.TryParse( HelperFunctions.getDataRowColValue( curRow, "BoatSpeed", "0" ), out curBoatSpeedNum ) ) curBoatSpeedNum = 0;
+                            outLine.Append( " " + curBoatSpeedNum.ToString( "00" ) ); //Boat Speed KM (2)
                             if ( curResults.ToUpper().Equals( "JUMP" ) || curResults.ToUpper().Equals( "FALL" ) ) {
                                 outLine.Append( " " + curScoreFeet.ToString( "#00" ).PadLeft( 3, ' ' ) ); //Distance in Feet (3)
                                 outLine.Append( " " + curScoreMeters.ToString( "#0.0" ).PadLeft( 4, ' ' ) ); //Distance in Meters (4)

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data.SqlServerCe;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Collections;
 
 namespace WaterskiScoringSystem.Common {
@@ -18,7 +11,7 @@ namespace WaterskiScoringSystem.Common {
         public FedDropdownList() {
             // Loads data 
             String curSqlStmt = "SELECT ListCode, CodeValue FROM CodeValueList WHERE ListName = 'Federation ' ORDER BY SortSeq";
-            myDataTable = getData( curSqlStmt );
+            myDataTable = DataAccess.getDataTable( curSqlStmt );
 
             String curListCode, curCodeValue;
             foreach ( DataRow curRow in myDataTable.Rows ) {
@@ -36,10 +29,5 @@ namespace WaterskiScoringSystem.Common {
                 myDropdownList = value;
             }
         }
-
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
     }
 }

@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
 
 using WaterskiScoringSystem.Admin;
 using WaterskiScoringSystem.Common;
@@ -16,6 +15,7 @@ using WaterskiScoringSystem.Tournament;
 using WaterskiScoringSystem.Trick;
 
 using Microsoft.Win32;
+using System.Configuration;
 
 namespace WaterskiScoringSystem {
     public partial class SystemMain : Form {
@@ -53,7 +53,7 @@ namespace WaterskiScoringSystem {
 
             #region Check system settings and current database connection
             //myShowDebugMsgs = true;
-            String curDataDirectory = "", curDeploymentDirectory = "", curDeploymentDataDirectory = "", curAppConnectString = "", curRegAppVersion = "";
+            String curDeploymentDirectory = "", curDeploymentDataDirectory = "", curRegAppVersion = "";
 
             try {
                 Properties.Settings.Default.AppVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
@@ -88,25 +88,6 @@ namespace WaterskiScoringSystem {
                 myShowDebugMsgs = HelperFunctions.isValueTrue( myAppRegKey.GetValue( "ShowDebugValues" ).ToString() );
             }
 
-            if ( myAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                setDatabaseFirstTime( curDeploymentDirectory, curDeploymentDataDirectory );
-                curDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
-
-            } else {
-                curDataDirectory = myAppRegKey.GetValue( "DataDirectory" ).ToString();
-            }
-            //Establish active data directory in active application domain
-            AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
-
-            if ( myAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
-                curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-                myAppRegKey.SetValue( "DatabaseConnectionString", curAppConnectString );
-
-            } else {
-                curAppConnectString = myAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
-                Properties.Settings.Default.waterskiConnectionStringApp = curAppConnectString;
-            }
-
             if ( myAppRegKey.GetValue( "CurrentVersion" ) == null ) {
                 curRegAppVersion = "0.00.00";
                 myAppRegKey.SetValue( "CurrentVersion", curRegAppVersion );
@@ -115,16 +96,16 @@ namespace WaterskiScoringSystem {
             }
 
             if ( myShowDebugMsgs ) {
+                Configuration curConfig = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal );
                 MessageBox.Show( "Application Execution Information"
                     + "\n StartupPath=" + Application.StartupPath
+                    + "\n UserConfigPath=" + curConfig.FilePath
                     + "\n UserAppDataPath=" + Application.UserAppDataPath
                     + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
                     + "\n ExecutablePath=" + Application.ExecutablePath
                     + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
                     + "\n ProductName=" + Application.ProductName
                     + "\n ProductVersion=" + Application.ProductVersion
-                    + "\n DataDirectory=" + curDataDirectory
-                    + "\n DatabaseConnectionString=" + curAppConnectString
                     );
             }
 
@@ -138,17 +119,16 @@ namespace WaterskiScoringSystem {
                 Properties.Settings.Default.Upgrade();
 
                 myAppRegKey.SetValue( "CurrentVersion", Properties.Settings.Default.AppVersion );
-                if ( checkDbConnection( curAppConnectString ) ) {
+                if (DataAccess.DataAccessOpen() )  {
                 } else {
-                    MessageBox.Show( "Database not found at the specified location " + curDataDirectory
+                    MessageBox.Show( "Database " + DataAccess.getDatabaseFilename() + " not found"
                         + "\n\n" + "In the file open dialog please select a location and provide a file name"
                         + "\n" + "The database supplied with the application will be copied to your specified location" );
-                    copyDatabase( curDeploymentDataDirectory, curDataDirectory );
                 }
             }
 
             String mySanctionNum = "";
-            if ( checkDbConnection( curAppConnectString ) ) {
+            if ( DataAccess.DataAccessOpen() ) {
                 UpgradeDatabase curUpgradeDatabase = new UpgradeDatabase();
                 curUpgradeDatabase.checkForUpgrade();
 
@@ -184,23 +164,25 @@ namespace WaterskiScoringSystem {
 
                 MessageBox.Show( "Database connection failed"
                     + "\n Use the Tools menu,  SetDatabaseLocaton option, to find and set your database"
-                    + "\n\n DataDirectory: " + curDataDirectory
-                    + "\n\n AppConnectString: " + curAppConnectString );
+                    + "\n\n DataDirectory: " + DataAccess.getDatabaseFilename()
+                    + "\n\n AppConnectString: " + DataAccess.getConnectionString() );
             }
 
             if (myShowDebugMsgs) {
+                Configuration curConfig = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal );
                 MessageBox.Show( "Application Execution Information"
                     + "\n AppSanctionNum=" + Properties.Settings.Default.AppSanctionNum
                     + "\n mySanctionNum=" + mySanctionNum
                     + "\n StartupPath=" + Application.StartupPath
+                    + "\n UserConfigPath=" + curConfig.FilePath
                     + "\n UserAppDataPath=" + Application.UserAppDataPath
                     + "\n LocalUserAppDataPath=" + Application.LocalUserAppDataPath
                     + "\n ExecutablePath=" + Application.ExecutablePath
                     + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
                     + "\n ProductName=" + Application.ProductName
                     + "\n ProductVersion=" + Application.ProductVersion
-                    + "\n DataDirectory=" + curDataDirectory
-                    + "\n DatabaseConnectionString=" + curAppConnectString
+                    + "\n DatabaseFilename=" + DataAccess.getDatabaseFilename()
+                    + "\n DatabaseConnectionString=" + DataAccess.getConnectionString()
                     );
             }
             #endregion
@@ -231,27 +213,6 @@ namespace WaterskiScoringSystem {
             SetDatabaseLocation curForm = new SetDatabaseLocation();
             //Application.StartupPath
             return curForm.copyDatabaseFile( inSourDir, inDestDir, myAppRegKey );
-        }
-
-        private bool checkDbConnection( String inConnectString ) {
-            bool dbConnGood = false;
-            SqlCeConnection myDbConn = null;
-            try {
-                myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                myDbConn.ConnectionString = inConnectString;
-                myDbConn.Open();
-                dbConnGood = true;
-            
-            } catch ( Exception ex ) {
-                dbConnGood = false;
-                MessageBox.Show( "checkDbConnection:Exception: " + ex.Message );
-            
-            } finally {
-                if ( myDbConn != null ) {
-                    myDbConn.Close();
-                }
-            }
-            return dbConnGood;
         }
 
         private void SystemMain_FormClosed( object sender, FormClosedEventArgs e ) {

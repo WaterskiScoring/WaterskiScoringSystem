@@ -131,6 +131,7 @@
 			this.Controls.Add(this.SanctionIdLabel);
 			this.Name = "SanctionSetupDialog";
 			this.Text = "SanctionSetupDialog";
+			this.Load += new System.EventHandler(this.SanctionSetupDialog_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

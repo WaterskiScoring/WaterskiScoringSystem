@@ -1848,8 +1848,8 @@ namespace WaterskiScoringSystem.Jump {
             if ( curRowsFound.Length > 0 ) return curRowsFound[0];
 
             int curDelimStart = inTimeKey.IndexOf( "-" );
-            int curDelimEnd = inTimeKey.LastIndexOf( "-" );
-            String curTimeKey = inTimeKey.Substring( 0, curDelimStart + 1 ) + "C" + inTimeKey.Substring( curDelimEnd );
+            //int curDelimEnd = inTimeKey.LastIndexOf( "-" );
+            String curTimeKey = inTimeKey.Substring( 0, curDelimStart + 1 ) + "C" + inTimeKey.Substring( curDelimStart + 2 );
             curRowsFound = JumpEventData.myTimesDataTable.Select( String.Format( "ListCode = '{0}'", curTimeKey ) );
             if ( curRowsFound.Length > 0 ) return curRowsFound[0];
 

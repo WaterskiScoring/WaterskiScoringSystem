@@ -56,6 +56,14 @@ namespace WaterskiScoringSystem.Common {
 			return new ArrayList() { "All", "Men A", "Women A", "Men B", "Women B", "Non Team" };
 		}
 
+		public static String getEventGroupValueNcwsa( String inGroupValue ) {
+			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "CM ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "CW ";
+			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "BM ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "BW";
+			return inGroupValue;
+		}
+
 		public static ArrayList buildEventGroupList( String inSanctionNum, String inEvent, int inRound) {
 			ArrayList curEventGroupList = new ArrayList();
 			curEventGroupList.Add( "All" );
@@ -133,6 +141,13 @@ namespace WaterskiScoringSystem.Common {
 				|| inGroupValue.ToLower().Equals( "bm" )
 				|| inGroupValue.ToLower().Equals( "bw" ) );
 		}
+		public static Boolean isGroupValueNcwsa( String inGroupValue ) {
+			return (inGroupValue.ToUpper().Equals( "MEN A" )
+				|| inGroupValue.ToUpper().Equals( "WOMEN A" )
+				|| inGroupValue.ToUpper().Equals( "MEN B" )
+				|| inGroupValue.ToUpper().Equals( "WOMEN B" ) );
+		}
+
 
 		public static bool isObjectEmpty( object inObject ) {
 			if ( inObject == null ) return true;
@@ -144,6 +159,34 @@ namespace WaterskiScoringSystem.Common {
 			if ( inObject == null ) return false;
 			else if ( inObject == System.DBNull.Value ) return false;
 			else if ( inObject.ToString().Length > 0 ) return true;
+			return false;
+		}
+
+		public static bool IsObjectDecimal( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) {
+				decimal curNum;
+				return decimal.TryParse( inObject.ToString(), out curNum );
+			}
+			return false;
+		}
+		public static bool IsObjectLong( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) {
+				long curNum;
+				return long.TryParse( inObject.ToString(), out curNum );
+			}
+			return false;
+		}
+		public static bool IsObjectInt( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) {
+				int curNum;
+				return int.TryParse( inObject.ToString(), out curNum );
+			}
 			return false;
 		}
 

@@ -2321,7 +2321,9 @@ namespace WaterskiScoringSystem.Slalom {
 		private void navExport_Click( object sender, EventArgs e ) {
 			ExportData myExportData = new ExportData();
 			String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "SlalomScore", "SlalomRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt", "BoatTime", "BoatPath" };
-			String[] curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, EventGroupList.SelectedItem.ToString(), myFilterCmd );
+			String curEventGroup = EventGroupList.SelectedItem.ToString();
+			if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
+			String[] curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd );
 			myExportData.exportData( curTableName, curSelectCommand );
 		}
 

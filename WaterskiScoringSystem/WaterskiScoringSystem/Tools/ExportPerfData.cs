@@ -288,11 +288,17 @@ namespace WaterskiScoringSystem.Tools {
                 outLine.Append( "\"" + myTourFed + "\"" );
             }
 
+            outLine.Append( ",\"" + curRow["MemberId"].ToString() + "\"" ); //2. Member Identifier
             curValue = curRow["SkierName"].ToString();
             String[] curValueList = curValue.Split( ',' );
-            outLine.Append( ",\"" + curRow["MemberId"].ToString() + "\"" ); //2. Member Identifier
-            outLine.Append( ",\"" + curValueList[0].Trim() + "\"" ); //3. Last Name
-            outLine.Append( ",\"" + curValueList[1].Trim() + "\"" ); //4. First Name
+            if ( curValueList.Length == 2 ) {
+                outLine.Append( ",\"" + curValueList[0].Trim() + "\"" ); //3. Last Name
+                outLine.Append( ",\"" + curValueList[1].Trim() + "\"" ); //4. First Name
+            } else { 
+                MessageBox.Show( "Invalid SkierName=" + curValue );
+                outLine.Append( ",\"" + curValue + "\"" ); //3. Last Name
+                outLine.Append( ",\"\"" ); //4. First Name
+            }
             outLine.Append( ",\"" + curRow["Gender"].ToString() + "\"" ); //5. Gender
             curTourYear = Convert.ToInt16( inSanctionId.Substring( 0, 2 ) );
             curTourYear += 100;

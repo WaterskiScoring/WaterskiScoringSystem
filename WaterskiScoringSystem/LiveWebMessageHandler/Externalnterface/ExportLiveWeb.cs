@@ -12,7 +12,7 @@ namespace LiveWebMessageHandler.Externalnterface {
         }
 
         public static void exportCurrentSkiers( String inEvent, String inSanctionId, byte inRound, String inEventGroup ) {
-            String curMethodName = "ExportLiveWeb: exportCurrentSlalomSkiers: ";
+            String curMethodName = "ExportLiveWeb: exportCurrentSkiers: ";
             StringBuilder curSqlStmt = new StringBuilder( "" );
             int curLineCount = 0;
             DataTable curDataTable = new DataTable();
@@ -789,11 +789,12 @@ namespace LiveWebMessageHandler.Externalnterface {
                         foreach ( DataColumn curColumn in curDataTable.Columns ) {
                             if ( !( curColumn.ColumnName.ToUpper().Equals( "PK" ) ) && !( curColumn.ColumnName.ToLower().Equals( "reridereason " ) ) ) {
                                 if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
-                                    curValue = ( (DateTime)curRow[curColumn.ColumnName] ).ToString( "yyyy-MM-dd HH:mm:ss" );
+                                    curValue = HelperFunctions.getDataRowColValue( curRow, curColumn.ColumnName, "" );
+                                    if ( HelperFunctions.isObjectEmpty(curValue) ) curValue = new DateTime().ToString( "yyyy-MM-dd HH:mm:ss" );
                                     curValue = encodeXmlValue( curValue );
                                     curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
                                 } else {
-                                    curValue = stripLineFeedChar( curRow[curColumn.ColumnName].ToString() );
+                                    curValue = stripLineFeedChar( HelperFunctions.getDataRowColValue(curRow, curColumn.ColumnName, "") );
                                     curValue = HelperFunctions.stringReplace( curValue, singleQuoteDelim, "''" );
                                     curValue = encodeXmlValue( curValue );
                                     curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );

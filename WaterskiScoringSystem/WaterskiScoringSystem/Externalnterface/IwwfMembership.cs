@@ -20,23 +20,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 * Production - https://ems.iwwf.sport/api/licenses/check (after it is activated in production >> N/A yet)
 		 * The web service can accept and return either xml or json format depending on the parameters passed
 		 * 
-		 * POST method
-		 * Authorization: IWWF cf1vfhl587mtny2eaeri6wfujusrfrnb
-		 * 
-		 * cf1vfhl587mtny2eaeri6wfujusrfrnb is an api key for testing purposes
-		 * We will provide new api keys for use with the production database
-		 * 
-		 * http://iwwfsc.qubiteq.com/Staging/Orders
-		 * http://iwwfsc.qubiteq.com/Staging/Orders/Process/01039103ab644c7ead8e61872c05902bjumtlm1rejo5cabf1f768vqsg3d1jzllkwwofze1fdg8y8k801gskkcxd4mti0ho9duq
-		 * 
 		 * Retrieve member information with foreign identifier if not a USA federation skier
 		 * https://www.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
+		 * https://test.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
 		 */
-
-		//private static String IwwfWebLocationStage = "http://iwwfsc.qubiteq.com/staging/api/licenses/check";
-		private static String IwwfWebLocationProd = "https://ems.iwwf.sport/api/licenses/check";
-		private static String GetForeignMember = "https://www.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=";
-		private static String IwwfWebLocation = IwwfWebLocationProd;
+		private static String IwwfWebLocation = Properties.Settings.Default.UriIwwfEms + "/licenses/check";
+		private static String GetForeignMember = Properties.Settings.Default.UriUsaWaterski + "/admin/GetForeignMemberJson.asp?MemberId=";
 
 		private static String authApiKey = "IWWF";
 		//private static String authApiValueProd = "uppdxfsblcgefnrprowjtwjjrnrhismf"; // Prod Obsolete as 8/24/2023

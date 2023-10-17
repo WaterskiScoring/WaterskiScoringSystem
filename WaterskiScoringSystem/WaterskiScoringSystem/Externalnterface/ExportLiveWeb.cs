@@ -316,7 +316,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                                         curValue = encodeXmlValue( curValue );
                                         curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
                                     } else {
-                                        curValue = stripLineFeedChar( curRow[curColumn.ColumnName].ToString() );
+                                        curValue = stripLineFeedChar( HelperFunctions.getDataRowColValue( curRow, curColumn.ColumnName, "" ) );
                                         curValue = HelperFunctions.stringReplace( curValue, singleQuoteDelim, "''" );
                                         curValue = encodeXmlValue( curValue );
                                         curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );

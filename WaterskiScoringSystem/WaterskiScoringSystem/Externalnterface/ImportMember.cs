@@ -130,9 +130,8 @@ namespace WaterskiScoringSystem.Externalnterface {
             * Configure URL to retrieve all skiers pre-registered for the active tournament
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
-			//String curQueryString = "?SanctionId=" + mySanctionNum;
 			String curContentType = "application/json; charset=UTF-8";
-			String curRegExportListUrl = "https://www.usawaterski.org/admin/GetMemberRegExportJson.asp";
+			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curRegExportListUrl;
 			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
@@ -580,38 +579,47 @@ namespace WaterskiScoringSystem.Externalnterface {
 					String curSaveAgeGroup;
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupSlalom ) ) {
 						curSaveAgeGroup = "";
-						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) ) {
+						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) {
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountSlalomAdded++;
+						
+						} else {
 							curSaveAgeGroup = curMemberEntry.AgeGroup;
 							curMemberEntry.AgeGroup = curMemberEntry.EventGroupSlalom;
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountSlalomAdded++;
+							curMemberEntry.AgeGroup = curSaveAgeGroup;
 						}
-
-						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountSlalomAdded++;
-						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupTrick ) ) {
 						curSaveAgeGroup = "";
-						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) ) {
+						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountTrickAdded++;
+						
+						} else {
 							curSaveAgeGroup = curMemberEntry.AgeGroup;
 							curMemberEntry.AgeGroup = curMemberEntry.EventGroupTrick;
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountTrickAdded++;
+							curMemberEntry.AgeGroup = curSaveAgeGroup;
 						}
-
-						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountTrickAdded++;
-						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
 						curSaveAgeGroup = "";
-						if ( !( curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupJump ) ) ) {
+						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountJumpAdded++;
+						
+						} else {
 							curSaveAgeGroup = curMemberEntry.AgeGroup;
 							curMemberEntry.AgeGroup = curMemberEntry.EventGroupJump;
+							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
+							if ( curReqstStatus ) myCountJumpAdded++;
+							curMemberEntry.AgeGroup = curSaveAgeGroup;
 						}
-
-						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountJumpAdded++;
-						if ( HelperFunctions.isObjectPopulated( curSaveAgeGroup ) ) curMemberEntry.AgeGroup = curSaveAgeGroup;
 					}
 
 					if ( HelperFunctions.isObjectPopulated( curMemberEntry.Team ) ) {

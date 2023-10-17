@@ -34,7 +34,7 @@ namespace LiveWebMessageHandler.Common {
 				if ( dataRow[colName].GetType().Equals( typeof( Int16 ) ) ) return ( (Int16)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( byte ) ) ) return ( (byte)dataRow[colName] ).ToString();
 				if ( dataRow[colName].GetType().Equals( typeof( bool ) ) ) return ( (bool)dataRow[colName] ).ToString();
-				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "##,###0.00" );
+				if ( dataRow[colName].GetType().Equals( typeof( decimal ) ) ) return ( (decimal)dataRow[colName] ).ToString( "#####0.00" );
 				if ( dataRow[colName].GetType().Equals( typeof( DateTime ) ) ) return ( (DateTime)dataRow[colName] ).ToString( "yyyy/MM/dd HH:mm:ss" );
 
 				return ( (String)dataRow[colName] ).ToString();
@@ -85,6 +85,18 @@ namespace LiveWebMessageHandler.Common {
 			}
 
 			return "";
+		}
+		public static bool isObjectEmpty( object inObject ) {
+			if ( inObject == null ) return true;
+			else if ( inObject == System.DBNull.Value ) return true;
+			else if ( inObject.ToString().Length > 0 ) return false;
+			return true;
+		}
+		public static bool isObjectPopulated( object inObject ) {
+			if ( inObject == null ) return false;
+			else if ( inObject == System.DBNull.Value ) return false;
+			else if ( inObject.ToString().Length > 0 ) return true;
+			return false;
 		}
 
 		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {

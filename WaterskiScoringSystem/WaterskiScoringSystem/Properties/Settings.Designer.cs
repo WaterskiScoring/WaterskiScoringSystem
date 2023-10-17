@@ -763,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.5")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1568,7 +1568,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.2 9/9/2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.5 10/16/2023")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2616,6 +2616,24 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["BoatPathDriverUpdate_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.usawaterski.org")]
+        public string UriUsaWaterski {
+            get {
+                return ((string)(this["UriUsaWaterski"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://ems.iwwf.sport/api")]
+        public string UriIwwfEms {
+            get {
+                return ((string)(this["UriIwwfEms"]));
             }
         }
     }

@@ -323,25 +323,7 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public static String getDatabaseFilename() {
-            String curDataDirectory = "";
-            String curAppConnectString = getConnectionString();
-            int curIndex1 = curAppConnectString.IndexOf( "\\" );
-            int curIndex2 = curAppConnectString.IndexOf( ";" );
-            String cuFilename = curAppConnectString.Substring( curIndex1 + 1, curIndex2 - curIndex1 );
-
-            String curAppRegName = Properties.Settings.Default.AppRegistryName;
-            RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
-            if ( curAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                try {
-                    curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                } catch ( Exception ex ) {
-                    curDataDirectory = Application.UserAppDataPath;
-                }
-            } else {
-                curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-            }
-
-            return Path.Combine( curDataDirectory, cuFilename );
+            return getDatabaseFilename( getConnectionString() );
         }
 
         public static String[] TourTableList = {
@@ -390,9 +372,31 @@ namespace WaterskiScoringSystem.Common {
             } else {
                 curAppConnectString = curAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
             }
+            getDatabaseFilename( curAppConnectString );
 
             return curAppConnectString;
         }
 
+        private static String getDatabaseFilename( String curAppConnectString ) {
+            String curDataDirectory = "";
+            int curIndex1 = curAppConnectString.IndexOf( "\\" );
+            int curIndex2 = curAppConnectString.IndexOf( ";" );
+            String cuFilename = curAppConnectString.Substring( curIndex1 + 1, curIndex2 - curIndex1 );
+
+            String curAppRegName = Properties.Settings.Default.AppRegistryName;
+            RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
+            if ( curAppRegKey.GetValue( "DataDirectory" ) == null ) {
+                try {
+                    curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
+                } catch ( Exception ex ) {
+                    curDataDirectory = Application.UserAppDataPath;
+                }
+            } else {
+                curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
+            }
+            AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
+
+            return Path.Combine( curDataDirectory, cuFilename );
+        }
     }
 }

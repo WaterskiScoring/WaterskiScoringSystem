@@ -1384,7 +1384,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                EventGroupList.DataSource = HelperFunctions.buildEventGroupListNcwsa();
+                myEventGroupDropdownList = HelperFunctions.buildEventGroupListNcwsa();
 
             } else {
                 myEventGroupDropdownList = HelperFunctions.buildEventGroupList( mySanctionNum, myEvent, Convert.ToByte( roundActiveSelect.RoundValue ) );

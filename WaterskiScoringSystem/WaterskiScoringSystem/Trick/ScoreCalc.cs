@@ -1200,7 +1200,9 @@ namespace WaterskiScoringSystem.Trick {
             ExportData myExportData = new ExportData();
             String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "TrickScore", "TrickPass", "TourReg", "OfficialWork", "OfficialWorkAsgmt" };
 
-            String[] curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, EventGroupList.SelectedItem.ToString(), myFilterCmd );
+            String curEventGroup = EventGroupList.SelectedItem.ToString();
+            if ( HelperFunctions.isGroupValueNcwsa( TrickEventData.myTourRules ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
+            String[] curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd );
 
             myExportData.exportData( curTableName, curSelectCommand );
         }

@@ -1179,7 +1179,7 @@ namespace WaterskiScoringSystem.Tools {
             String curSqlStmt = "";
             curEventGroupList.Add( "All" );
             curSqlStmt = "SELECT DISTINCT AgeGroup FROM EventReg "
-                + "WHERE SanctionId = '" + (String)myTourRow["SanctionId"] + "' And Event = 'Slalom' "
+                + "WHERE SanctionId = '" + (String)myTourRow["SanctionId"] + "' And Event = '" + this.myEvent + "' "
                 + "Order by AgeGroup";
             DataTable curDataTable = getData( curSqlStmt );
 

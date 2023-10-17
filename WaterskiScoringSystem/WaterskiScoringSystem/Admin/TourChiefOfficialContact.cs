@@ -324,10 +324,10 @@ namespace WaterskiScoringSystem.Admin {
             * Configure URL to retrieve all skiers pre-registered for the active tournament
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
-            String curQueryString = String.Format( "?ContactMemberId={1}&CJMemberId={2}&CDMemberId={3}&CCMemberId={4}&CSMemberId={5}"
+            String curQueryString = String.Format( "?ContactMemberId={0}&CJMemberId={1}&CDMemberId={2}&CCMemberId={3}&CSMemberId={4}"
                 , curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
             String curContentType = "application/json; charset=UTF-8";
-            String curExportListUrl = "https://www.usawaterski.org/admin/GetChiefOfficalContactExportJson.asp";
+            String curExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetChiefOfficalContactExportJson.asp";
             String curReqstUrl = curExportListUrl + curQueryString;
 
             List<object> curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );

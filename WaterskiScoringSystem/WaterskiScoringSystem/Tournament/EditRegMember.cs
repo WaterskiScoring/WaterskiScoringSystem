@@ -555,39 +555,13 @@ namespace WaterskiScoringSystem.Tournament {
 
                         curViewRow.Cells["MemberId"].Value = (String)curDataRow["MemberId"];
                         curViewRow.Cells["SkierName"].Value = (String)curDataRow["SkierName"];
-                        try {
-                            curViewRow.Cells["City"].Value = (String)curDataRow["City"];
-                        } catch {
-                        }
-                        try {
-                            curViewRow.Cells["State"].Value = (String)curDataRow["State"];
-                        } catch {
-                        }
-                        try {
-                            curViewRow.Cells["Federation"].Value = (String)curDataRow["Federation"];
-                        } catch {
-                            curViewRow.Cells["Federation"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["SkiYearAge"].Value = ( (byte)curDataRow["SkiYearAge"] ).ToString();
-                        } catch {
-                            curViewRow.Cells["SkiYearAge"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["Gender"].Value = (String)curDataRow["Gender"];
-                        } catch {
-                            curViewRow.Cells["Gender"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
-                        } catch {
-                            curViewRow.Cells["AgeGroup"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["ReadyToSki"].Value = (String)curDataRow["ReadyToSki"];
-                        } catch {
-                            curViewRow.Cells["ReadyToSki"].Value = "";
-                        }
+                        curViewRow.Cells["City"].Value = HelperFunctions.getDataRowColValue( curDataRow, "City", "" );
+                        curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+                        curViewRow.Cells["Federation"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Federation", "" );
+                        curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "" );
+                        curViewRow.Cells["Gender"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Gender", "" );
+                        curViewRow.Cells["AgeGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AgeGroup", "" );
+                        curViewRow.Cells["ReadyToSki"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReadyToSki", "" );
                     }
                 }
             }
