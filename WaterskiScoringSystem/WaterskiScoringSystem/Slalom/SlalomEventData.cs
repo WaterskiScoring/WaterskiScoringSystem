@@ -103,7 +103,7 @@ namespace WaterskiScoringSystem.Slalom {
 			return false;
 		}
 
-		public static String[] buildScoreExport( String curRound, String curEventGroup, String curFilterCmd ) {
+		public static String[] buildScoreExport( String curRound, String curEventGroup, String curFilterCmd, bool isNcwsa ) {
 			String[] curSelectCommand = new String[10];
 			if ( curFilterCmd.Contains( "Div =" ) ) {
 				curFilterCmd = curFilterCmd.Replace( "Div =", "XT.AgeGroup =" );
@@ -116,7 +116,11 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			String tmpFilterCmd = "";
-			if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+			if ( isNcwsa ) {
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
+			} else {
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+			}
 
 			int curIdx = 0;
 			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
@@ -277,8 +281,10 @@ namespace WaterskiScoringSystem.Slalom {
 			DataRow[] curFilterRows;
 			if ( inBuoyNum == 0 ) {
 				curFilterRows = myBoatPathDevMax.Select( String.Format( "Buoy = 'GATE-{0}'", inSkierClass ) );
+				if ( curFilterRows.Length == 0 ) curFilterRows = myBoatPathDevMax.Select( String.Format( "Buoy = 'GATE-{0}'", "C" ) );
 			} else {
 				curFilterRows = myBoatPathDevMax.Select( String.Format( "Buoy = 'B{0}-{1}'", inBuoyNum, inSkierClass ) );
+				if ( curFilterRows.Length == 0 ) curFilterRows = myBoatPathDevMax.Select( String.Format( "Buoy = 'B{0}-{1}'", inBuoyNum, "C" ) );
 			}
 			if ( curFilterRows.Length > 0 ) return curFilterRows[0];
 

@@ -74,7 +74,7 @@ namespace WaterskiScoringSystem.Trick {
 			return null;
 		}
 
-		public static String[] buildScoreExport( String curRound, String curEventGroup, String inFilterCmd ) {
+		public static String[] buildScoreExport( String curRound, String curEventGroup, String inFilterCmd, bool isNcwsa ) {
 			String[] curSelectCommand = new String[8];
 			String curFilterCmd = inFilterCmd;
 			if ( curFilterCmd.Contains( "Div =" ) ) {
@@ -88,7 +88,11 @@ namespace WaterskiScoringSystem.Trick {
 			}
 
 			String tmpFilterCmd = "";
-			if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+			if ( isNcwsa ) {
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
+			} else {
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+			}
 
 			int curIdx = 0;
 			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "

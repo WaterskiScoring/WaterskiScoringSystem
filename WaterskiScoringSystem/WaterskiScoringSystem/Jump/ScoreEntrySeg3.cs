@@ -1232,9 +1232,14 @@ namespace WaterskiScoringSystem.Jump {
 		private void navExport_Click( object sender, EventArgs e ) {
 			ExportData myExportData = new ExportData();
 			String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "JumpScore", "JumpRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt", "BoatTime", "BoatPath", "JumpMeasurement" };
+			String[] curSelectCommand;
 			String curEventGroup = EventGroupList.SelectedItem.ToString();
-			if ( HelperFunctions.isGroupValueNcwsa( JumpEventData.myTourRules ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
-			String[] curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd );
+			if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
+				curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
+				curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, true );
+			} else {
+				curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, false );
+			}
 			myExportData.exportData( curTableName, curSelectCommand );
 		}
 
