@@ -18,12 +18,7 @@ namespace WaterskiScoringSystem.Tools {
 		
 		public static bool OpenFile() {
 			String curPath = Properties.Settings.Default.ExportDirectory;
-			if ( curPath.EndsWith( "\\" ) ) {
-				myLogFileName = curPath + Properties.Settings.Default.AppSanctionNum.Trim() + myLogFileExtn;
-
-			} else {
-				myLogFileName = curPath + "\\" + Properties.Settings.Default.AppSanctionNum.Trim() + myLogFileExtn;
-			}
+			myLogFileName = Path.Combine( curPath, Properties.Settings.Default.AppSanctionNum.Trim() + myLogFileExtn );
 			try {
 				if ( !( File.Exists( myLogFileName ) ) ) {
 					FileStream fileStream = File.Create( myLogFileName );

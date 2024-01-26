@@ -2,7 +2,6 @@
 using System.Data;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Externalnterface;
-using WaterskiScoringSystem.Common;
 using HelperFunctions = WaterskiScoringSystem.Common.HelperFunctions;
 using System.IO;
 
@@ -58,13 +57,9 @@ namespace WaterskiScoringSystem.Tools {
                     curViewRow.Cells["PK"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PK", "0" );
                     curViewRow.Cells["ReportTitle"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReportTitle", "" );
                     curViewRow.Cells["LastUpdateDate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "LastUpdateDate", "" );
-                    String curExportFileRef = HelperFunctions.getDataRowColValue( curDataRow, "ReportFilePath", "" );
-                    if ( curExportFileRef.Length > 21 ) {
-                        String curExportFileUri = String.Format( "http://www.waterskiresults.com/{0}", curExportFileRef.Substring( 35 ) );
-                        curViewRow.Cells["ExportFileUri"].Value = curExportFileUri;
-                    } else {
-                        curViewRow.Cells["ExportFileUri"].Value = "File not available";
-                    }
+                    String curExportFileRef = HelperFunctions.getDataRowColValue( curDataRow, "ReportFileUri", "" );
+					curViewRow.Cells["ExportFileUri"].Value = curExportFileRef;
+					if ( HelperFunctions.isObjectEmpty(curExportFileRef)) curViewRow.Cells["ExportFileUri"].Value = "File not available";
                 }
 
                 curViewIdx = 0;

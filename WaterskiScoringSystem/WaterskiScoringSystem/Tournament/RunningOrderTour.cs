@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Externalnterface;
+using WaterskiScoringSystem.Slalom;
 
 namespace WaterskiScoringSystem.Tournament {
     public partial class RunningOrderTour : Form {
@@ -1535,6 +1536,26 @@ namespace WaterskiScoringSystem.Tournament {
             }
         }
 
+		private void navPublishRunorder_Click( object sender, EventArgs e ) {
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+				MessageBox.Show( "Request to publish running order but live web not successfully connected." );
+				return;
+			}
+			
+			foreach ( CheckBox curCheckBox in EventGroupPanel.Controls ) {
+				if ( curCheckBox.Text.Equals( "All" ) && curCheckBox.Checked ) {
+					LiveWebHandler.sendRunOrder( getCurrentEvent(), mySanctionNum, "All", 0 );
+                    break;
+				
+                } else if ( curCheckBox.Checked ) {
+					LiveWebHandler.sendRunOrder( getCurrentEvent(), mySanctionNum, curCheckBox.Text, 0 );
+				}
+			}
+
+
+		}
+
 		private void navPublish_Click( object sender, EventArgs e ) {
             Timer curTimerObj = new Timer();
             curTimerObj.Interval = 5;
@@ -1553,7 +1574,7 @@ namespace WaterskiScoringSystem.Tournament {
             curTimerObj.Stop();
             curTimerObj.Tick -= new EventHandler( publishReportTimer );
             if ( printReport( true ) ) ExportLiveWeb.uploadReportFile( "RunOrder", getCurrentEvent(), mySanctionNum );
-        }
+		}
         private void printReportTimer( object sender, EventArgs e ) {
             Timer curTimerObj = (Timer)sender;
             curTimerObj.Stop();
@@ -1883,28 +1904,26 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private StreamWriter getExportFile( String inFileName ) {
-            String myFileName;
+            String curFileName;
             StreamWriter outBuffer = null;
 			String curFileFilter = "txt files (*.xml;*.txt)|*.xml|All files (*.*)|*.*";
 
-			SaveFileDialog myFileDialog = new SaveFileDialog();
+			SaveFileDialog curFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.Filter = curFileFilter;
-            myFileDialog.FilterIndex = 1;
+            curFileDialog.InitialDirectory = curPath;
+            curFileDialog.Filter = curFileFilter;
+            curFileDialog.FilterIndex = 1;
             if ( inFileName == null ) {
-                myFileDialog.FileName = "";
+                curFileDialog.FileName = "";
             } else {
-                myFileDialog.FileName = inFileName;
+                curFileDialog.FileName = inFileName;
             }
 
             try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if ( curFileName.IndexOf( '.' ) < 0 ) {
+                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+                    curFileName = curFileDialog.FileName;
+                    if ( curFileName != null ) {
+                        if ( Path.GetExtension( curFileName ) == null ) {
                             String curDefaultExt = ".xml";
                             String[] curList = curFileFilter.Split( '|' );
                             if ( curList.Length > 0 ) {
@@ -1913,9 +1932,9 @@ namespace WaterskiScoringSystem.Tournament {
                                     curDefaultExt = curList[1].Substring( curDelim - 1 );
                                 }
                             }
-                            myFileName += curDefaultExt;
+                            curFileName += curDefaultExt;
                         }
-                        outBuffer = File.CreateText( myFileName );
+                        outBuffer = File.CreateText( curFileName );
                     }
                 }
             } catch ( Exception ex ) {

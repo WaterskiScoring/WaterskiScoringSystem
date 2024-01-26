@@ -370,72 +370,56 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt = new StringBuilder( "SELECT ChiefJudgeMemberId, ChiefDriverMemberId, ChiefScorerMemberId, SafetyDirMemberId FROM Tournament " );
                 curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
                 curDataTable = getData( curSqlStmt.ToString() );
-                if (curDataTable.Rows.Count > 0) {
-                    if (curDataTable.Rows[0]["ChiefJudgeMemberId"] == System.DBNull.Value) {
-                        curMemberId = "";
-                    } else {
-                        curMemberId = (String)curDataTable.Rows[0]["ChiefJudgeMemberId"];
-                    }
-                    if (curMemberId.Length < 1) {
-                        curSqlStmt = new StringBuilder( "SELECT MemberId, JudgeChief FROM OfficialWork " );
-                        curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And JudgeChief = 'Y'" );
-                        curOfficialDataTable = getData( curSqlStmt.ToString() );
-                        if (curOfficialDataTable.Rows.Count > 0) {
-                            curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefJudgeMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        }
-                    }
+                if ( curDataTable == null | curDataTable.Rows.Count == 0 ) return;
 
-                    if (curDataTable.Rows[0]["ChiefDriverMemberId"] == System.DBNull.Value) {
-                        curMemberId = "";
-                    } else {
-                        curMemberId = (String)curDataTable.Rows[0]["ChiefDriverMemberId"];
-                    }
-                    if (curMemberId.Length < 1) {
-                        curSqlStmt = new StringBuilder( "SELECT MemberId, DriverChief FROM OfficialWork " );
-                        curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And DriverChief = 'Y'" );
-                        curOfficialDataTable = getData( curSqlStmt.ToString() );
-                        if (curOfficialDataTable.Rows.Count > 0) {
-                            curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefDriverMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        }
-                    }
+				curMemberId = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "ChiefJudgeMemberId", "" );
+				if ( HelperFunctions.isObjectPopulated( curMemberId ) ) {
+					curSqlStmt = new StringBuilder( "SELECT MemberId, JudgeChief FROM OfficialWork " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And JudgeChief = 'Y'" );
+					curOfficialDataTable = getData( curSqlStmt.ToString() );
+					if ( curOfficialDataTable.Rows.Count > 0 ) {
+						curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
+						curSqlStmt = new StringBuilder( "Update Tournament Set ChiefJudgeMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					}
+				}
 
-                    if (curDataTable.Rows[0]["ChiefScorerMemberId"] == System.DBNull.Value) {
-                        curMemberId = "";
-                    } else {
-                        curMemberId = (String)curDataTable.Rows[0]["ChiefScorerMemberId"];
-                    }
-                    if (curMemberId.Length < 1) {
-                        curSqlStmt = new StringBuilder( "SELECT MemberId, ScoreChief FROM OfficialWork " );
-                        curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And ScoreChief = 'Y'" );
-                        curOfficialDataTable = getData( curSqlStmt.ToString() );
-                        if (curOfficialDataTable.Rows.Count > 0) {
-                            curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
-                            curSqlStmt = new StringBuilder( "Update Tournament Set ChiefScorerMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        }
-                    }
+				curMemberId = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "ChiefDriverMemberId", "" );
+                if ( HelperFunctions.isObjectPopulated( curMemberId ) ) {
+					curSqlStmt = new StringBuilder( "SELECT MemberId, DriverChief FROM OfficialWork " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And DriverChief = 'Y'" );
+					curOfficialDataTable = getData( curSqlStmt.ToString() );
+					if ( curOfficialDataTable.Rows.Count > 0 ) {
+						curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
+						curSqlStmt = new StringBuilder( "Update Tournament Set ChiefDriverMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					}
+				}
 
-                    if (curDataTable.Rows[0]["SafetyDirMemberId"] == System.DBNull.Value) {
-                        curMemberId = "";
-                    } else {
-                        curMemberId = (String)curDataTable.Rows[0]["SafetyDirMemberId"];
-                    }
-                    if (curMemberId.Length < 1) {
-                        curSqlStmt = new StringBuilder( "SELECT MemberId, SafetyChief FROM OfficialWork " );
-                        curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And SafetyChief = 'Y'" );
-                        curOfficialDataTable = getData( curSqlStmt.ToString() );
-                        if (curOfficialDataTable.Rows.Count > 0) {
-                            curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
-                            curSqlStmt = new StringBuilder( "Update Tournament Set SafetyDirMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
-                            int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                        }
-                    }
-                }
+				curMemberId = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "ChiefScorerMemberId", "" );
+                if ( HelperFunctions.isObjectPopulated( curMemberId ) ) {
+					curSqlStmt = new StringBuilder( "SELECT MemberId, ScoreChief FROM OfficialWork " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And ScoreChief = 'Y'" );
+					curOfficialDataTable = getData( curSqlStmt.ToString() );
+					if ( curOfficialDataTable.Rows.Count > 0 ) {
+						curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
+						curSqlStmt = new StringBuilder( "Update Tournament Set ChiefScorerMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					}
+				}
 
+				curMemberId = HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "SafetyDirMemberId", "" );
+				if ( HelperFunctions.isObjectPopulated( curMemberId ) ) {
+					curSqlStmt = new StringBuilder( "SELECT MemberId, SafetyChief FROM OfficialWork " );
+					curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' And SafetyChief = 'Y'" );
+					curOfficialDataTable = getData( curSqlStmt.ToString() );
+					if ( curOfficialDataTable.Rows.Count > 0 ) {
+						curMemberId = (String)curOfficialDataTable.Rows[0]["MemberId"];
+						curSqlStmt = new StringBuilder( "Update Tournament Set SafetyDirMemberId = '" + curMemberId + "' WHERE SanctionId = '" + mySanctionNum + "' " );
+						int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					}
+				}
+			
             } catch (Exception ex) {
                 MessageBox.Show( curMethodName + ":" + ex.Message );
             }

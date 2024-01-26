@@ -138,9 +138,8 @@ namespace WaterskiScoringSystem.Common {
 
             try {
                 // Open connection if needed
-                if (DataAccessConnection == null) {
-                    DataAccessOpen();
-                }
+                if (DataAccessConnection == null) DataAccessOpen();
+                
                 // Create data adapter
                 DataAccessCommand = new SqlCeCommand( inSelectStmt, DataAccessConnection );
                 curReturnValue = DataAccessCommand.ExecuteNonQuery();
@@ -195,6 +194,26 @@ namespace WaterskiScoringSystem.Common {
             
             return curReturnValue;
         }
+
+        public static bool Shrink() {
+            bool curReturn = true;
+            System.Data.SqlServerCe.SqlCeEngine mySqlEngine = new SqlCeEngine();
+
+            try {
+                mySqlEngine.LocalConnectionString = getConnectionString();
+                mySqlEngine.Shrink();
+                MessageBox.Show( "Compression complete for connection \n" + mySqlEngine.LocalConnectionString );
+
+            } catch ( Exception ex ) {
+                curReturn = false;
+                MessageBox.Show( "Error attempting to shrink database"
+                    + "Database connection: " + mySqlEngine.LocalConnectionString
+                    + "\n\nError: " + ex.Message );
+            }
+
+            return curReturn;
+        }
+
 
         public static Boolean BeginTransaction(String inSelectStmt) {
             String curMethodName = "DataAccess:BeginTransaction";
@@ -371,6 +390,7 @@ namespace WaterskiScoringSystem.Common {
 
             } else {
                 curAppConnectString = curAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
+                Properties.Settings.Default.waterskiConnectionStringApp = curAppConnectString;
             }
             getDatabaseFilename( curAppConnectString );
 

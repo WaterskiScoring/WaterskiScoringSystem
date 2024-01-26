@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Windows.Forms;
 using System.Reflection;
 
@@ -723,7 +721,7 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName( "RunningOrderSortSlalomRound" );
                 if ( curReturnValue.Length == 0 ) {
                     curReturnValue = getPropertyByName( "RunningOrderSortSlalom" );
-                    setRunningOrderSortSlalom( curReturnValue );
+					setRunningOrderSortSlalomRound( curReturnValue );
                 }
                 return curReturnValue;
             }
@@ -1004,14 +1002,14 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName( "RunningOrderSortTrickRound" );
                 if ( curReturnValue.Length == 0 ) {
                     curReturnValue = getPropertyByName( "RunningOrderSortTrick" );
-                    setRunningOrderSortTrick( curReturnValue );
+                    setRunningOrderSortTrickRound( curReturnValue );
                 }
                 return curReturnValue;
             }
             set { setRunningOrderSortTrickRound( value ); }
         }
         public void setRunningOrderSortTrickRound( String value ) {
-            updateProperty( "RunningOrderSortTrickRound", value, 310 );
+            updateProperty( "RunningOrderSortTrickRound", value, 410 );
         }
 
         public Dictionary<string, Boolean> RunningOrderColumnFilterTrick {
@@ -1283,7 +1281,7 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName( "RunningOrderSortJumpRound" );
                 if ( curReturnValue.Length == 0 ) {
                     curReturnValue = getPropertyByName( "RunningOrderSortJump" );
-                    setRunningOrderSortJump( curReturnValue );
+					setRunningOrderSortJumpRound( curReturnValue );
                 }
                 return curReturnValue;
             }

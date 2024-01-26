@@ -133,6 +133,11 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+PublishWstims/
+PublishWsc/
+PublishMonitor/
+PublishSim/
+
 
 # Publish Web Output
 *.[Pp]ublish.xml

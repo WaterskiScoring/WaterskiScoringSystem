@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.SqlServerCe;
 using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Tools {
@@ -100,7 +94,13 @@ namespace WaterskiScoringSystem.Tools {
                         curSiteName = curEventLocation[0];
                         curCity = curEventLocation[1];
                         curState = curEventLocation[2];
-                    } else {
+                        if ( curState.Length != 2 ) {
+							MessageBox.Show( "State value must the valid 2 character abbreviation"
+								+ "\nPlease enter this information on the tournament window in the following format:\n"
+								+ "\nSite Name followed by a comma, then the city, followed by a comma, then the 2 character state abbreviation"
+								);
+						}
+					} else {
                         MessageBox.Show( "An event location is required."
                             + "\nPlease enter this information on the tournament window in the following format:\n"
                             + "\nSite Name followed by a comma, then the city, followed by a comma, then the 2 character state abbreviation"
@@ -322,21 +322,17 @@ namespace WaterskiScoringSystem.Tools {
         private StreamWriter getExportFile(String inFileName) {
             StreamWriter outBuffer = null;
 
-            SaveFileDialog myFileDialog = new SaveFileDialog();
+            SaveFileDialog curFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
+            curFileDialog.InitialDirectory = curPath;
+            curFileDialog.FileName = inFileName;
 
             try {
-                if (myFileDialog.ShowDialog() == DialogResult.OK) {
-                    String myFileName = myFileDialog.FileName;
-                    if (myFileName != null) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if (curFileName.IndexOf( '.' ) < 0) {
-                            myFileName += ".txt";
-                        }
-                        outBuffer = File.CreateText( myFileName );
+                if (curFileDialog.ShowDialog() == DialogResult.OK) {
+                    String curFileName = curFileDialog.FileName;
+                    if (curFileName != null) {
+                        if ( Path.GetExtension( curFileName ) == null ) curFileName += ".txt";
+                        outBuffer = File.CreateText( curFileName );
                     }
                 }
             } catch (Exception ex) {

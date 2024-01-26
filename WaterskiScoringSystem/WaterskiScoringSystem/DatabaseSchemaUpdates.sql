@@ -1058,6 +1058,7 @@ CREATE TABLE WscMsgListen (
 
 ALTER TABLE WscMsgListen ADD PRIMARY KEY ([PK]);
 
+
 CREATE TABLE WscMsgSend (
     PK          int NOT NULL IDENTITY,
     SanctionId  nchar(6) NOT NULL,

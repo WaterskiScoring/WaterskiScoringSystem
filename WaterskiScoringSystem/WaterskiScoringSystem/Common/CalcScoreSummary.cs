@@ -2948,28 +2948,15 @@ namespace WaterskiScoringSystem.Common {
 			}
 
 			DataView curDataView = inDataTable.DefaultView;
-			curDataView.RowFilter = "Plcmt" + inEvent + " not in ('  999')";
 			curDataView.Sort = curSortCmd;
 			DataTable curScoreDataTable = curDataView.ToTable();
 
 			//Calculate points based on placement
 			foreach ( DataRow curRow in curScoreDataTable.Rows ) {
-				try {
-					if ( inEvent.ToLower().Equals( "jump" ) ) {
-						curScore = (Decimal)( curRow["ScoreFeet"] );
-					} else {
-						if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-							curScore = (Decimal)( curRow["Score" + inEvent] );
-						} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-							curScore = (Int16)( curRow["Score" + inEvent] );
-						} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-							curScore = (int)( curRow["Score" + inEvent] );
-						} else {
-							curScore = 0;
-						}
-					}
-				} catch {
-					curScore = 0;
+				if ( inEvent.ToLower().Equals( "jump" ) ) {
+					curScore = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreFeet", 0.0m );
+				} else {
+					curScore = HelperFunctions.getDataRowColValueDecimal( curRow, "Score" + inEvent, 0.0m );
 				}
 
 				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
@@ -3012,7 +2999,10 @@ namespace WaterskiScoringSystem.Common {
 					curPlcmtMax = curFindList.Length;
 				}
 
-				if ( curPlcmtMax > 0 && curScore > 0 ) {
+				if ( curPlcmt == 999 ) {
+					curScore = 0;
+
+				} else 	if ( curPlcmtMax > 0 && curScore > 0 ) {
 					curScore = ( ( ( curPlcmtMax - curPlcmt ) + 1 ) * 10 ) - curTieAdj;
 				
 				} else if ( curScore == 0 && curPlcmtMax > 0 ) {

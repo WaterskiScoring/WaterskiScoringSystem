@@ -155,7 +155,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			IwwfMembership.warnMessageActive = false;
 
-			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+			if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) ) {
 				Dictionary<String, object> curTeamHeaderList = new Dictionary<String, object>();
 
 				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
@@ -182,11 +182,54 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			Cursor.Current = Cursors.Default;
 			myProgressInfo.Close();
+
+			importTourAssignedOfficials();
+
 			IwwfMembership.showBulkWarnMessage();
 			IwwfMembership.warnMessageActive = false;
 
 			displayMemberProcessCounts();
         }
+
+		private void importTourAssignedOfficials() {
+			/* -----------------------------------------------------------------------
+            * Configure URL to retrieve all skiers pre-registered for the active tournament
+			* This will include all appointed officials
+            ----------------------------------------------------------------------- */
+			String curContentType = "application/json; charset=UTF-8";
+			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetTourAssignedOfficialsJson.asp";
+			String curReqstUrl = curRegExportListUrl;
+			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
+			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
+				MessageBox.Show( "Sanction edit code is required to retrieve skier registrations and member information.  Enter required value on Tournament Form" );
+				return;
+			}
+
+			NameValueCollection curHeaderParams = new NameValueCollection();
+			List<object> curResponseDataList = null;
+
+			Cursor.Current = Cursors.WaitCursor;
+			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+			if ( curResponseDataList == null || curResponseDataList.Count == 0 ) {
+				displayMemberProcessCounts();
+				return;
+			}
+
+			myProgressInfo = new ProgressWindow();
+			myProgressInfo.setProgressMin( myCountMemberInput );
+			myProgressInfo.setProgressMax( myCountMemberInput + curResponseDataList.Count );
+
+			IwwfMembership.warnMessageActive = false;
+			foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+				myCountMemberInput++;
+				myProgressInfo.setProgressValue( myCountMemberInput );
+
+				importMemberFromAwsa( curEntry, true, false );
+			}
+
+			Cursor.Current = Cursors.Default;
+			myProgressInfo.Close();
+		}
 
 		public void importWwsRegistrations() {
 			/* -----------------------------------------------------------------------
@@ -228,7 +271,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			IwwfMembership.warnMessageActive = false;
 
-			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+			if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) ) {
 				Dictionary<String, object> curTeamHeaderList = new Dictionary<String, object>();
 
 				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
@@ -324,11 +367,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				//For collegiate divisions determine if data is valid for collegiate tournaments
 				curMemberEntry.EventGroupSlalom = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventSlalom" ).Trim().ToUpper();
-				if ( curMemberEntry.EventGroupSlalom.Equals( "OF" ) ) curMemberEntry.EventGroupSlalom = "";
 				curMemberEntry.EventGroupTrick = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventTrick" ).Trim().ToUpper();
-				if ( curMemberEntry.EventGroupTrick.Equals( "OF" ) ) curMemberEntry.EventGroupTrick = "";
 				curMemberEntry.EventGroupJump = HelperFunctions.getAttributeValue( curImportMemberEntry, "EventJump" ).Trim().ToUpper();
-				if ( curMemberEntry.EventGroupJump.Equals( "OF" ) ) curMemberEntry.EventGroupJump = "";
 
 				if ( inNcwsa ) return importMemberEntryNcwsa( curImportMemberEntry, curMemberEntry );
 				return importMemberEntry( curImportMemberEntry, curMemberEntry, inTourReg, inNcwsa );
@@ -567,156 +607,152 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				#region Register skier for specified events
 				bool curReqstStatus = false;
-				if ( curMemberEntry.AgeGroup.Equals( "OF" ) ) {
-					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+				String curSaveAgeGroup;
+				if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupSlalom ) ) {
+					curSaveAgeGroup = "";
+					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) {
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountSlalomAdded++;
+						
+					} else {
+						curSaveAgeGroup = curMemberEntry.AgeGroup;
+						curMemberEntry.AgeGroup = curMemberEntry.EventGroupSlalom;
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountSlalomAdded++;
+						curMemberEntry.AgeGroup = curSaveAgeGroup;
+					}
+				}
+
+				if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupTrick ) ) {
+					curSaveAgeGroup = "";
+					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTrickAdded++;
+						
+					} else {
+						curSaveAgeGroup = curMemberEntry.AgeGroup;
+						curMemberEntry.AgeGroup = curMemberEntry.EventGroupTrick;
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountTrickAdded++;
+						curMemberEntry.AgeGroup = curSaveAgeGroup;
+					}
+				}
+
+				if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
+					curSaveAgeGroup = "";
+					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountJumpAdded++;
+						
+					} else {
+						curSaveAgeGroup = curMemberEntry.AgeGroup;
+						curMemberEntry.AgeGroup = curMemberEntry.EventGroupJump;
+						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
+						if ( curReqstStatus ) myCountJumpAdded++;
+						curMemberEntry.AgeGroup = curSaveAgeGroup;
+					}
+				}
+
+				if ( HelperFunctions.isObjectPopulated( curMemberEntry.Team ) ) {
+					if ( !( inNcwsa ) ) {
+						String[] curTeamHeaderCols = { "TeamHeader", curMemberEntry.Team, "", curMemberEntry.Team };
+						//procTeamHeaderInput( curTeamHeaderCols, inNcwsa );
+					}
+				}
+
+				if ( HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom ) ) { }
+				if ( inTourReg
+					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom )
+					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
+					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
+					&& HelperFunctions.isObjectEmpty( curMemberEntry.Team )
+					&& !(curMemberEntry.AgeGroup.Equals( "OF" ))
+					) {
+					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
 					if ( curReqstStatus ) myCountTourRegAdded++;
-
-				} else {
-					if ( curMemberEntry.Team.ToUpper().Equals( "OFF" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
-						if ( curReqstStatus ) myCountTourRegAdded++;
-					}
-					String curSaveAgeGroup;
-					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupSlalom ) ) {
-						curSaveAgeGroup = "";
-						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) {
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountSlalomAdded++;
-						
-						} else {
-							curSaveAgeGroup = curMemberEntry.AgeGroup;
-							curMemberEntry.AgeGroup = curMemberEntry.EventGroupSlalom;
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountSlalomAdded++;
-							curMemberEntry.AgeGroup = curSaveAgeGroup;
-						}
-					}
-
-					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupTrick ) ) {
-						curSaveAgeGroup = "";
-						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountTrickAdded++;
-						
-						} else {
-							curSaveAgeGroup = curMemberEntry.AgeGroup;
-							curMemberEntry.AgeGroup = curMemberEntry.EventGroupTrick;
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountTrickAdded++;
-							curMemberEntry.AgeGroup = curSaveAgeGroup;
-						}
-					}
-
-					if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
-						curSaveAgeGroup = "";
-						if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountJumpAdded++;
-						
-						} else {
-							curSaveAgeGroup = curMemberEntry.AgeGroup;
-							curMemberEntry.AgeGroup = curMemberEntry.EventGroupJump;
-							curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
-							if ( curReqstStatus ) myCountJumpAdded++;
-							curMemberEntry.AgeGroup = curSaveAgeGroup;
-						}
-					}
-
-					if ( HelperFunctions.isObjectPopulated( curMemberEntry.Team ) ) {
-						if ( !( inNcwsa ) ) {
-							String[] curTeamHeaderCols = { "TeamHeader", curMemberEntry.Team, "", curMemberEntry.Team };
-							//procTeamHeaderInput( curTeamHeaderCols, inNcwsa );
-						}
-					}
-
-					if ( HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom ) ) { }
-					if ( inTourReg
-						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom )
-						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
-						&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
-						&& HelperFunctions.isObjectEmpty( curMemberEntry.Team )
-						&& !(curMemberEntry.AgeGroup.Equals( "OF" ))
-						) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
-						if ( curReqstStatus ) myCountTourRegAdded++;
-					}
 				}
 				#endregion
 
 				#region Analyze and process official ratings for member
 				/*
 				 * Mark officials that are indicated as the chief, assistant chief, or appointed official ratings
+					SELECT CJudgePID, TournAppID, 'CJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(CJudgePID) = 1
+					SELECT CDriverPID, TournAppID, 'CD' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(CDriverPID) = 1
+					SELECT CScorePID, TournAppID, 'CC' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(CScorePID) = 1
+					SELECT CSafPID, TournAppID, 'CS' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(CSafPID) = 1
+					SELECT TechCPID, TournAppID, 'CT' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(TechCPID) = 1
+					SELECT Ap1JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap1JPID) = 1
+					SELECT Ap2JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap2JPID) = 1
+					SELECT Ap3JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap3JPID) = 1
+					SELECT Ap4JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap4JPID) = 1
+					SELECT Ap5JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap5JPID) = 1
+					SELECT Ap6JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap6JPID) = 1
+					SELECT Ap7JPID, TournAppID, 'APTJ' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap7JPID) = 1
+					SELECT Ap1SPID, TournAppID, 'APTS' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap1SPID) = 1
+					SELECT Ap2SPID, TournAppID, 'APTS' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap2SPID) = 1
+					SELECT Ap3SPID, TournAppID, 'APTS' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap3SPID) = 1
+					SELECT Ap1DrPID, TournAppID, 'APTD' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap1DrPID) = 1
+					SELECT Ap2DrPID, TournAppID, 'APTD' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap2DrPID) = 1
+					SELECT Ap3DrPID, TournAppID, 'APTD' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(Ap3DrPID) = 1
+					SELECT PanAmPID, TournAppID, 'PanAm' AS OffCode FROM Sanctions.dbo.registration WHERE TournAppID = @SanctionId and ISNUMERIC(PanAmPID) = 1
+				 * 
 				*/
 				if ( curApptOfficial.Length > 0 ) {
 					if ( curApptOfficial.ToUpper().Equals( "CJ" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "JudgeChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "ACJ" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "JudgeAsstChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAsstChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "APTJ" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "JudgeAppointed" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "JudgeAppointed" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "CD" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "DriverChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "ACD" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "DriverAsstChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAsstChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "APTD" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "DriverAppointed" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "DriverAppointed" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "CC" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "ScoreChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "ACC" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "ScoreAsstChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAsstChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "APTS" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "ScoreAppointed" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "ScoreAppointed" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "CS" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "SafetyChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "ACS" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "SafetyAsstChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "SafetyAsstChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "CT" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "TechChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "ACT" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "TechAsstChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "TechAsstChief" );
 
 					} else if ( curApptOfficial.ToUpper().Equals( "CA" ) ) {
-						curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry, "AnncrChief" );
 						if ( curReqstStatus ) myCountTourRegAdded++;
-						curReqstStatus = myTourEventReg.addEventOfficial( curMemberEntry.MemberId, "AnncrChief" );
 					}
 				}
 				#endregion
@@ -808,7 +844,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			
 			DateTime curMemExpireDate = new DateTime(); 
 			try {
-				String curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" );
+				String curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "MembershipExpiration");
 				if ( HelperFunctions.isObjectEmpty( curimportEffDateValue ) ) curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "EffDate" );
 				curMemExpireDate = Convert.ToDateTime( curimportEffDateValue );
 			} catch (Exception ex ) {

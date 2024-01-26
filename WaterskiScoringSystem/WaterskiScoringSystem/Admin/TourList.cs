@@ -1469,7 +1469,7 @@ namespace WaterskiScoringSystem.Admin {
                     , (String)curSanctionEntry["TSiteID"]
                     , (String)curSanctionEntry["TCity"]
                     , (String)curSanctionEntry["TState"] );
-                if ( curSanctionId.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+                if ( HelperFunctions.isCollegiateSanction( curSanctionId ) ) {
                     myTourViewRow.Cells["Rules"].Value = "ncwsa";
                 } else {
                     myTourViewRow.Cells["Rules"].Value = "awsa";

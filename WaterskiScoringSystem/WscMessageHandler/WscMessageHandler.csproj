@@ -24,16 +24,17 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <InstallUrl>http://waterskiresults.com/WscMessageHandler/</InstallUrl>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>https://www.waterskiresults.com/AppRepo/WscMessageHandler/</InstallUrl>
+    <UpdateUrl>https://www.waterskiresults.com/AppRepo/WscMessageHandler/</UpdateUrl>
     <SupportUrl>http://waterskiresults.com/WscMessageHandler</SupportUrl>
     <ProductName>WscMessageHandler</ProductName>
     <PublisherName>Mass Water Ski Association</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>3.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>

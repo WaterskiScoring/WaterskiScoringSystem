@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Externalnterface;
+using WaterskiScoringSystem.Slalom;
 using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Trick {
@@ -1616,6 +1617,7 @@ namespace WaterskiScoringSystem.Trick {
         private void scoreEventClass_Validating( object sender, CancelEventArgs e ) {
             String curMethodName = "Trick:ScoreCalc:scoreEventClass_Validating";
             int rowsProc = 0;
+            if ( TourEventRegDataGridView.Rows.Count == 0 ) return;
 
             //ListItem curItem = (ListItem)scoreEventClass.SelectedItem;
             //String curEventClass = curItem.ItemValue;
@@ -2391,11 +2393,14 @@ namespace WaterskiScoringSystem.Trick {
                 String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
                 String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
                 if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-                    /*
+					if ( LiveWebLabel.Visible ) {
+						LiveWebHandler.sendRunOrder( "Trick", TrickEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+					}
+					/*
                      * Provide a warning message for class R events when official assignments have not been entered for the round and event group
                      * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
                      */
-                    myCheckOfficials.readOfficialAssignments( TrickEventData.mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
+					myCheckOfficials.readOfficialAssignments( TrickEventData.mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
                     
                     DataRow curClassRowSkier = TrickEventData.getSkierClass( (String)scoreEventClass.SelectedValue );
                     if ( (Decimal)curClassRowSkier["ListCodeNum"] >= (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) {

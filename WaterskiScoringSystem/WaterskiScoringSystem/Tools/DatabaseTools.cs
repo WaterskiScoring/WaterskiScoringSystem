@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Deployment.Application;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using WaterskiScoringSystem.Common;
-
 
 namespace WaterskiScoringSystem.Tools {
     class DatabaseTools {
         private String mySanctionNum;
         private decimal myDatabaseVersion = 0.00M;
-        private SqlCeConnection myDbConn = null;
-        private SqlCeCommand mySqlStmt = null;
         private ProgressWindow myProgressInfo;
 
         public DatabaseTools() {
@@ -67,7 +59,7 @@ namespace WaterskiScoringSystem.Tools {
                                         execCreateTable( replaceLinefeed( curSqlStmt ) );
                                         curInputCmd = new StringBuilder( "" );
                                     } else {
-                                        execSchemaCmd( replaceLinefeed( curSqlStmt ) );
+                                        DataAccess.ExecuteCommand( curSqlStmt );
                                     }
                                     curInputCmd = new StringBuilder( "" );
 
@@ -78,14 +70,11 @@ namespace WaterskiScoringSystem.Tools {
                         }
                     }
                     curSqlStmt = "";
-                    System.Data.SqlServerCe.SqlCeEngine mySqlEngine = new SqlCeEngine();
-                    mySqlEngine.LocalConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    mySqlEngine.Shrink();
 
                 } catch ( Exception ex ) {
                     curReturn = false;
                     String ExcpMsg = ex.Message;
-                    if ( mySqlStmt != null ) {
+                    if ( curSqlStmt != null ) {
                         ExcpMsg += "\n" + curSqlStmt;
                     }
                     MessageBox.Show( "Error attempting to update database schema" + "\n\nError: " + ExcpMsg );
@@ -115,13 +104,12 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     curTableName[0] = inSqlStmt.Substring( curDelimIdx + 6, curValueLen );
                     curSelectCommand[0] = "Select * from " + curTableName[0];
-                    String curFileRef = Application.StartupPath + "\\" + curTableName[0] + ".tmp";
-
+                    String curFileRef = Path.Combine( Application.StartupPath, curTableName[0] + ".tmp" );
                     if ( curTableName[0].Trim().EndsWith( "Backup" ) ) {
-                        execSchemaCmd( inSqlStmt );
+                        DataAccess.ExecuteCommand( inSqlStmt );
                     } else {
                         if ( curExportData.exportData( curTableName, curSelectCommand, curFileRef ) ) {
-                            execSchemaCmd( inSqlStmt );
+                            DataAccess.ExecuteCommand( inSqlStmt );
                         }
                     }
                 }
@@ -152,9 +140,9 @@ namespace WaterskiScoringSystem.Tools {
                         curValueLen = curDelimIdx2 - curDelimIdx - 6;
                     }
                     curTableName[0] = inSqlStmt.Substring( curDelimIdx + 6, curValueLen );
-                    String curFileRef = Application.StartupPath + "\\" + curTableName[0] + ".tmp";
+                    String curFileRef = Path.Combine( Application.StartupPath, curTableName[0] + ".tmp" );
 
-                    if ( execSchemaCmd( inSqlStmt ) ) {
+                    if ( DataAccess.ExecuteCommand( inSqlStmt ) > 0 ) {
                         if ( !( curTableName[0].EndsWith( "Backup" ) ) ) {
                             curImportData.importData( ( curFileRef ) );
                             deleteTempFile( curFileRef );
@@ -166,37 +154,6 @@ namespace WaterskiScoringSystem.Tools {
                     + "\n\nException: " + ex.Message
                  );
                 curReturnValue = false;
-            }
-            return curReturnValue;
-
-        }
-
-        private bool execSchemaCmd( String inSqlStmt ) {
-            bool curReturnValue = true;
-            try {
-                if ( openDbConn() ) {
-                    mySqlStmt = myDbConn.CreateCommand();
-                    mySqlStmt.CommandText = inSqlStmt;
-                    int rowsProc = mySqlStmt.ExecuteNonQuery();
-                }
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                if ( mySqlStmt != null ) {
-                    ExcpMsg += "\n\n" + mySqlStmt.CommandText;
-                    if ( inSqlStmt.Trim().ToLower().StartsWith( "drop table" ) ) {
-                        //Skip exception message for drop statements
-                    } else {
-                        MessageBox.Show( "Error: execSchemaCmd"
-                            + "\n\nSqlStmt: " + inSqlStmt
-                            + "\n\nError: " + ExcpMsg
-                            );
-                    }
-                }
-            } finally {
-                if ( myDbConn != null ) {
-                    myDbConn.Close();
-                }
             }
             return curReturnValue;
         }
@@ -223,68 +180,6 @@ namespace WaterskiScoringSystem.Tools {
             }
         }
 
-        private bool copyDatabaseFile() {
-            bool curReturn = false;
-            int delimPos = 0;
-            String curDataDirectory = "", curFileName = null, curDatabaseFileName = "", curSourDir = "";
-            String curDestFileName = "", curDestDatabaseRef = "";
-
-            try {
-                String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-                String myConnectName = WaterskiScoringSystem.Properties.Settings.Default.AppConnectName;
-                String curAppRegName = Properties.Settings.Default.AppRegistryName;
-                RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
-                if ( curAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                    try {
-                        curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                    } catch ( Exception ex ) {
-                        curDataDirectory = Application.UserAppDataPath;
-                    }
-                } else {
-                    curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-                }
-
-                String curAttrName = "", curAttrValue = "";
-                String[] curAttrEntry;
-                String[] curConnAttrList = curAppConnectString.Split( ';' );
-
-                for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
-                    curAttrEntry = curConnAttrList[idx].Split( '=' );
-                    curAttrName = curAttrEntry[0];
-                    curAttrValue = curAttrEntry[1];
-                    if ( curAttrName.ToLower().Trim().Equals( "data source" ) ) {
-                        delimPos = curAttrValue.LastIndexOf( '\\' );
-                        if ( delimPos > 0 ) {
-                            curDatabaseFileName = curAttrValue.Substring( delimPos + 1 );
-                            curDestFileName = curDatabaseFileName + ".bak";
-                        }
-                    }
-                }
-
-                if ( curDatabaseFileName.Length > 0 ) {
-                    if ( curDataDirectory.Substring( curDataDirectory.Length - 1 ).Equals( "\\" ) ) {
-                    } else {
-                        curDataDirectory += "\\";
-                    }
-
-                    //Declare and instantiate a new process component.
-                    System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                    //Do not receive an event when the process exits.
-                    curOSProcess.EnableRaisingEvents = true;
-
-                    //The "/C" Tells Windows to Run The Command then Terminate 
-                    string curCmdLine;
-                    curCmdLine = "/C copy \"" + curDataDirectory + curDatabaseFileName + "\" \"" + curDataDirectory + curDestFileName + "\" \n";
-                    System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                    curOSProcess.Close();
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error backing up current database file " + "\n\nError: " + ex.Message );
-            }
-            return curReturn;
-        }
-
         private String replaceLinefeed( String inValue ) {
             String curValue = inValue;
             curValue = curValue.Replace( '\n', ' ' );
@@ -293,98 +188,41 @@ namespace WaterskiScoringSystem.Tools {
             return curValue;
         }
 
-        private bool openDbConn() {
-            bool curReturnValue = true;
-            try {
-                if ( myDbConn == null ) {
-                    myDbConn = new global::System.Data.SqlServerCe.SqlCeConnection();
-                    myDbConn.ConnectionString = Properties.Settings.Default.waterskiConnectionStringApp;
-                    myDbConn.Open();
-                } else {
-                    String curState = myDbConn.State.ToString();
-                    if ( curState.ToUpper().Equals( "CLOSED" ) ) {
-                        myDbConn.Open();
-                    }
-                }
-            } catch ( Exception ex ) {
-                curReturnValue = false;
-                String ExcpMsg = ex.Message;
-                MessageBox.Show( "Error connecting to database " + "\n\nError: " + ExcpMsg );
-            }
-            return curReturnValue;
-        }
-
         private StreamReader getImportFile() {
-            String myFileName, curPath;
-            OpenFileDialog myFileDialog = new OpenFileDialog();
+            String curFileName, curPath;
+            OpenFileDialog curFileDialog = new OpenFileDialog();
             StreamReader myReader = null;
             try {
                 curPath = Properties.Settings.Default.ExportDirectory;
-                if ( curPath.Length < 2 ) {
-                    curPath = Directory.GetCurrentDirectory();
-                }
-                myFileDialog.InitialDirectory = curPath;
-                myFileDialog.Filter = "SQL files (*.sql)|*.sql|All files (*.*)|*.*";
-                myFileDialog.FilterIndex = 2;
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        curPath = myFileName.Substring( 0, delimPos );
-
-                        myReader = new StreamReader( myFileName );
+                if ( curPath.Length < 2 ) curPath = Directory.GetCurrentDirectory();
+                curFileDialog.InitialDirectory = curPath;
+                curFileDialog.Filter = "SQL files (*.sql)|*.sql|All files (*.*)|*.*";
+                curFileDialog.FilterIndex = 2;
+                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+                    curFileName = curFileDialog.FileName;
+                    if ( curFileName != null ) {
+                        myReader = new StreamReader( curFileName );
                         try {
-                            myProgressInfo.setProgessMsg( "File selected " + myFileName );
+                            myProgressInfo.setProgessMsg( "File selected " + curFileName );
                             myProgressInfo.Show();
                             myProgressInfo.Refresh();
 
                             string inputBuffer = "";
                             int curInputLineCount = 0;
-                            myReader = new StreamReader( myFileName );
+                            myReader = new StreamReader( curFileName );
                             while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
                                 curInputLineCount++;
                             }
                             myReader.Close();
                             myProgressInfo.setProgressMin( 1 );
                             myProgressInfo.setProgressMax( curInputLineCount );
+                        
                         } catch ( Exception ex ) {
-                            MessageBox.Show( "Error: Could not read file" + myFileDialog.FileName + "\n\nError: " + ex.Message );
+                            MessageBox.Show( "Error: Could not read file" + curFileDialog.FileName + "\n\nError: " + ex.Message );
                             return null;
                         }
-                        myReader = new StreamReader( myFileName );
+                        myReader = new StreamReader( curFileName );
                     }
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Could not get an import file to process " + "\n\nError: " + ex.Message );
-            }
-
-            return myReader;
-        }
-
-        private StreamReader getImportFile( String inFileName ) {
-            StreamReader myReader = null;
-            try {
-                if ( inFileName != null ) {
-                    myReader = new StreamReader( inFileName );
-                    try {
-                        myProgressInfo.setProgessMsg( "File selected " + inFileName );
-                        myProgressInfo.Show();
-                        myProgressInfo.Refresh();
-
-                        string inputBuffer = "";
-                        int curInputLineCount = 0;
-                        myReader = new StreamReader( inFileName );
-                        while ( ( inputBuffer = myReader.ReadLine() ) != null ) {
-                            curInputLineCount++;
-                        }
-                        myReader.Close();
-                        myProgressInfo.setProgressMin( 1 );
-                        myProgressInfo.setProgressMax( curInputLineCount );
-                    } catch ( Exception ex ) {
-                        MessageBox.Show( "Error: Could not read file" + inFileName + "\n\nError: " + ex.Message );
-                        return null;
-                    }
-                    myReader = new StreamReader( inFileName );
                 }
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error: Could not get an import file to process " + "\n\nError: " + ex.Message );

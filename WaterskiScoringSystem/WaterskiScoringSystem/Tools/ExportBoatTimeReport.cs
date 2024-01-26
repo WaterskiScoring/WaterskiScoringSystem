@@ -933,21 +933,17 @@ namespace WaterskiScoringSystem.Tools {
         private StreamWriter getExportFile( String inFileName ) {
             StreamWriter outBuffer = null;
 
-            SaveFileDialog myFileDialog = new SaveFileDialog();
+            SaveFileDialog curFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
+            curFileDialog.InitialDirectory = curPath;
+            curFileDialog.FileName = inFileName;
 
             try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    String myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if ( curFileName.IndexOf( '.' ) < 0 ) {
-                            myFileName += ".wsp";
-                        }
-                        outBuffer = File.CreateText( myFileName );
+                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+                    String curFileName = curFileDialog.FileName;
+                    if ( curFileName != null ) {
+                        if ( Path.GetExtension( curFileName ) == null ) curFileName += ".prn";
+                        outBuffer = File.CreateText( curFileName );
                     }
                 }
             } catch ( Exception ex ) {

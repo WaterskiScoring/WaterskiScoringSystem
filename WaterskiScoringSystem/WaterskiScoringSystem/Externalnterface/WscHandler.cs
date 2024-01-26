@@ -49,7 +49,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			DataTable curMonitorDataTable = getMonitorHeartBeatAll();
 			if ( curMonitorDataTable == null || curMonitorDataTable.Rows.Count != 3 ) {
 				String curConnFilename = "\\Not available";
-				String curConnString = Properties.Settings.Default.waterskiConnectionStringApp;
+				String curConnString = DataAccess.getConnectionString();
 				int curDelimPos1 = curConnString.IndexOf( "\\" );
 				int curDelimPos2 = curConnString.IndexOf( ";" );
 				if ( curDelimPos1 > 0 && curDelimPos2 > 0 ) curConnFilename = curConnString.Substring( curDelimPos1, curDelimPos2 - curDelimPos1 );
@@ -75,7 +75,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curWarnMessage.Append( System.Environment.NewLine + System.Environment.NewLine );
 				curWarnMessage.Append( "If you don't have the shortcut, install the application using the following " );
 				curWarnMessage.Append( System.Environment.NewLine + System.Environment.NewLine );
-				curWarnMessage.Append( "http://www.waterskiresults.com/WscMessageHandler/publish.htm" );
+				curWarnMessage.Append( Properties.Settings.Default.UriWaterskiResults + "/AppRepo/WscMessageHandler/publish.htm" );
 
 				ShowMessage showMessage = new ShowMessage();
 				showMessage.Message = curWarnMessage.ToString();
@@ -247,7 +247,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		private static void sendLeaderBoard( String athleteId, String athleteEvent, String athleteGroup, Int16 inRound ) {
-			ArrayList leaderBoard = new ArrayList();
+			ArrayList curleaderBoard = new ArrayList();
 			Dictionary<string, dynamic> curSkier = null;
 			Dictionary<string, dynamic> curLeader = null;
 			String curFederation = "";
@@ -373,7 +373,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
 
 					if ( athleteEvent.Equals( "Slalom" ) ) {
-						leaderBoard.Add( new Dictionary<string, object> {
+						curleaderBoard.Add( new Dictionary<string, object> {
 							{ "athleteId", (String)curDataRow["MemberId"] }
 							, { "athleteName", (String)curDataRow["SkierName"] }
 							, { "athleteCountry", curFederation.ToUpper() }
@@ -386,7 +386,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 							} );
 
 					} else if ( athleteEvent.Equals( "Jump" ) ) {
-						leaderBoard.Add( new Dictionary<string, object> {
+						curleaderBoard.Add( new Dictionary<string, object> {
 							{ "athleteId", (String)curDataRow["MemberId"] }
 							, { "athleteName", (String)curDataRow["SkierName"] }
 							, { "athleteCountry", curFederation.ToUpper() }
@@ -398,7 +398,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 							} );
 
 					} else if ( athleteEvent.Equals( "Trick" ) ) {
-						leaderBoard.Add( new Dictionary<string, object> {
+						curleaderBoard.Add( new Dictionary<string, object> {
 							{ "athleteId", (String)curDataRow["MemberId"] }
 							, { "athleteName", (String)curDataRow["SkierName"] }
 							, { "athleteCountry", curFederation.ToUpper() }
@@ -418,7 +418,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 			}
 
-			sendLeaderBoardMsg( athleteEvent, inRound, athleteGroup, curSkier, curLeader, leaderBoard );
+			sendLeaderBoardMsg( athleteEvent, inRound, athleteGroup, curSkier, curLeader, curleaderBoard );
 		}
 
 		/*
@@ -443,51 +443,63 @@ namespace WaterskiScoringSystem.Externalnterface {
 			addWscMsgSend( "boat_times_scoring", JsonConvert.SerializeObject( sendMsg ) );
 		}
 
-		public static Boolean sendRunningOrder( String curEvent, int curRound, DataTable curDataTable ) {
-			ArrayList startListAthletes = new ArrayList();
+		public static Boolean sendRunningOrder( String inEvent, int inRound, DataTable inDataTable ) {
 			getSanctionNum();
 
-			int curRow = 0;
-			String curEventGroup = "", prevEventGroup = "";
-			foreach ( DataRow curDataRow in curDataTable.Rows ) {
-				try {
-					curEventGroup = (String)curDataRow["EventGroup"];
-					if ( prevEventGroup != curEventGroup && startListAthletes.Count > 0 ) {
-						sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
-						startListAthletes = new ArrayList();
+			int curEventRounds = inRound;
+			int curRound = inRound;
+			if ( inRound <= 0 ) {
+				curRound = 1;
+				curEventRounds = Convert.ToInt32( HelperFunctions.getDataRowColValue( myTourRow, inEvent + "Rounds", "1" ) );
+			}
+			while ( curRound <= curEventRounds ) {
+				int curRow = 0;
+				String curEventGroup = "", prevEventGroup = "";
+				ArrayList startListAthletes = new ArrayList();
+
+				foreach ( DataRow curDataRow in inDataTable.Rows ) {
+					try {
+						curEventGroup = (String)curDataRow["EventGroup"];
+						if ( prevEventGroup != curEventGroup && startListAthletes.Count > 0 ) {
+							sendRunningOrderForGroup( inEvent, curRound, prevEventGroup, startListAthletes );
+							startListAthletes = new ArrayList();
+						}
+
+						String curFederation = "";
+						if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = (String)curDataRow["Federation"];
+						if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
+
+						startListAthletes.Add( new Dictionary<string, object> {
+							{ "athleteId", (String)curDataRow["memberId"] }
+							, { "athleteName", (String)curDataRow["SkierName"] }
+							, { "athleteCountry", curFederation.ToUpper() }
+							, { "athleteRegion", (String)curDataRow["State"] }
+							, { "athleteDivision", (String)curDataRow["AgeGroup"] }
+							, { "athleteGroup", (String)curDataRow["EventGroup"] }
+							, { "position_starting", Convert.ToInt32(curRow + 1) }
+							, { "position_seed", Convert.ToInt32(inDataTable.Rows.Count - curRow) }
+							, { "position_current", Convert.ToInt32(curRow + 1) }
+							, { "score_seed", (decimal)curDataRow["RankingScore"] }
+							, { "score_current", Convert.ToDecimal(0) }
+							} );
+
+						prevEventGroup = curEventGroup;
+						curRow++;
+
+					} catch ( Exception ex ) {
+						MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
+						String curValue = ex.Message;
 					}
-
-					String curFederation = "";
-					if ( curDataRow["Federation"] != System.DBNull.Value ) curFederation = (String)curDataRow["Federation"];
-					if ( curFederation.Length == 0 ) curFederation = (String)curDataRow["TourFederation"];
-
-					startListAthletes.Add( new Dictionary<string, object> {
-					{ "athleteId", (String)curDataRow["memberId"] }
-					, { "athleteName", (String)curDataRow["SkierName"] }
-					, { "athleteCountry", curFederation.ToUpper() }
-					, { "athleteRegion", (String)curDataRow["State"] }
-					, { "athleteDivision", (String)curDataRow["AgeGroup"] }
-					, { "athleteGroup", (String)curDataRow["EventGroup"] }
-					, { "position_starting", Convert.ToInt32(curRow + 1) }
-					, { "position_seed", Convert.ToInt32(curDataTable.Rows.Count - curRow) }
-					, { "position_current", Convert.ToInt32(curRow + 1) }
-					, { "score_seed", (decimal)curDataRow["RankingScore"] }
-					, { "score_current", Convert.ToDecimal(0) }
-					} );
-
-					prevEventGroup = curEventGroup;
-					curRow++;
-
-				} catch ( Exception ex ) {
-					MessageBox.Show( String.Format( "Exception encountered on row {0} : {1}", curRow, ex.Message ) );
-					String curValue = ex.Message;
 				}
+
+				if ( startListAthletes.Count > 0 ) {
+					sendRunningOrderForGroup( inEvent, curRound, prevEventGroup, startListAthletes );
+					checkWscConnectStatus( true );
+				}
+
+				curRound++;
 			}
 
-			if ( startListAthletes.Count > 0 ) {
-				sendRunningOrderForGroup( curEvent, curRound, prevEventGroup, startListAthletes );
-				checkWscConnectStatus( true );
-			}
 
 			return true;
 		}

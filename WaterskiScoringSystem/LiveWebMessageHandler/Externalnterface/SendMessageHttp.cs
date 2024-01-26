@@ -46,11 +46,15 @@ namespace LiveWebMessageHandler.Externalnterface {
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						inHeaderParams.Add( "WSTIMS", "Basic " + inUserAccount + ":" + inPassword );
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
-                if (inUrl.ToLower().StartsWith( "https" )) {
+				if (inUrl.ToLower().StartsWith( "https" )) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback( AcceptAllCertifications );
                     ServicePointManager.Expect100Continue = false;
                 }
@@ -124,14 +128,15 @@ namespace LiveWebMessageHandler.Externalnterface {
         }
 
         public static String sendMessagePostXml(String inUrl, String inMessage) {
-            /*
-            Log.WriteFile( String.Format( "SendMessageHttp: sendMessagePostXml: URL={0}, Message={1}", inUrl, inMessage ) );
-            return "Test complete";
-             */
-            return sendMessagePost( inUrl, inMessage, "text/xml;charset=\"utf-8\"", null, null );
-        }
+            return sendMessagePost( inUrl, inMessage, "text/xml;charset=\"utf-8\"", null, null ); // 415
+		}
+		
+		public static String sendMessagePostJson( String inUrl, String inMessage ) {
+			Log.WriteFile( String.Format( "SendMessageHttp: sendMessagePostJson: URL={0}, Message={1}", inUrl, inMessage ) );
+			return sendMessagePost( inUrl, inMessage, "application/json;charset=\"utf-8\"", null, null );
+		}
 
-        public static String sendMessagePost( String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword ) {
+		public static String sendMessagePost( String inUrl, String inMessage, String inContentType, String inUserAccount, String inPassword ) {
             String curMethodName = "SendMessageHttp:sendMessagePostAsync: ";
             String curMsg = "";
             WebRequest curRequest = null;
@@ -145,18 +150,25 @@ namespace LiveWebMessageHandler.Externalnterface {
                     curMsg = String.Format( "{0}Unable to connect to {1}", curMethodName, inUrl );
                     throw new Exception( curMsg );
                 }
-                
-                curRequest.Method = "POST";
+
+				( (HttpWebRequest)curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
+				( (HttpWebRequest)curRequest ).MediaType = "text/xml";
+
+				curRequest.Method = "POST";
                 if ( inUserAccount != null ) {
                     if ( inUrl.Contains( "usawaterski" ) ) {
-                        curRequest.Headers["WSTIMS"] = "Basic " + inUserAccount + ":" + inPassword;
-                    } else {
+                        curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
+                    } else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+					} else {
                         curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
                     }
-                }
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+				}
 
-                // Set the ContentType property of the WebRequest.
-                if ( inContentType == null ) {
+				// Set the ContentType property of the WebRequest.
+				if ( inContentType == null ) {
                     curRequest.ContentType = "application/x-www-form-urlencoded";
                 } else {
                     curRequest.ContentType = inContentType;
@@ -180,7 +192,7 @@ namespace LiveWebMessageHandler.Externalnterface {
                 HttpWebResponse curResponse = (HttpWebResponse)curRequest.GetResponse();
                 // Display the status.
                 curMsg = ( (HttpWebResponse)curResponse ).StatusDescription;
-                if ( curMsg.Equals( "OK" ) ) {
+				if ( curMsg.Equals( "OK" ) || curMsg.Equals( "Created" ) ) {
                     return getResponseAsString( curResponse );
                 }
 

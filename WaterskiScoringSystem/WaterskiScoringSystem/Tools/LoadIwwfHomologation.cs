@@ -57,7 +57,8 @@ namespace WaterskiScoringSystem.Tools {
 
                     //The "/C" Tells Windows to Run The Command then Terminate 
                     string curCmdLine;
-                    curCmdLine = "/C copy \"" + curDeploymentDirectory + curFileName + "\" \"" + curTourDirectory + curDestFileName + "\" \n";
+                    curCmdLine = "/C copy \"" + Path.Combine( curDeploymentDirectory, curFileName ).ToString() 
+                        + "\" \"" + Path.Combine( curTourDirectory, curDestFileName ).ToString() + "\" \n";
 
                     System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
                     curOSProcess.Close();

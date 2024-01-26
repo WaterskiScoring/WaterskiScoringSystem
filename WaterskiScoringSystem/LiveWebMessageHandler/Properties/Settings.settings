@@ -26,5 +26,23 @@
     <Setting Name="DatabaseConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="UriWaterskiResults" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.waterskiresults.com</Value>
+    </Setting>
+    <Setting Name="UriWaterskiResultsApi" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.waterskiresults.com/import/api</Value>
+    </Setting>
+    <Setting Name="UriWaterskiResultsProd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.waterskiresults.com</Value>
+    </Setting>
+    <Setting Name="UriWaterskiResultsApiProd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.waterskiresults.com/import/api</Value>
+    </Setting>
+    <Setting Name="UriWaterskiResultsTest" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://localhost:7007</Value>
+    </Setting>
+    <Setting Name="UriWaterskiResultsApiTest" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://localhost:7007/api</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

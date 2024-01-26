@@ -6,7 +6,6 @@ using System.Text;
 
 namespace WscMessageHandler.Common {
 	public class HelperFunctions {
-
 		public static char[] singleQuoteDelim = new char[] { '\'' };
 
 		public static DataRow getTourData() {
@@ -166,20 +165,17 @@ namespace WscMessageHandler.Common {
 		public static decimal getAttributeValueNum( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return 0;
 
-			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-				if ( Decimal.TryParse( ( (int)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) {
-					return returnValue;
-				}
+			if ( isObjectEmpty(msgAttributeList[keyName] ) ) {
+				return 0;
+
+			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
+				if ( Decimal.TryParse( ( (int)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) return returnValue;
 
 			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-				if ( Decimal.TryParse( ( (decimal)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) {
-					return returnValue;
-				}
+				if ( Decimal.TryParse( ( (decimal)msgAttributeList[keyName] ).ToString(), out decimal returnValue ) ) return returnValue;
 
 			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
-				if ( Decimal.TryParse( (String)msgAttributeList[keyName], out decimal returnValue ) ) {
-					return returnValue;
-				}
+				if ( Decimal.TryParse( (String)msgAttributeList[keyName], out decimal returnValue ) ) return returnValue;
 			}
 
 			return 0;
@@ -187,17 +183,10 @@ namespace WscMessageHandler.Common {
 
 		public static String getAttributeValue( Dictionary<string, object> msgAttributeList, String keyName ) {
 			if ( !( msgAttributeList.ContainsKey( keyName ) ) ) return "";
-
-			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-				return ( (int)msgAttributeList[keyName] ).ToString();
-
-			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-				return ( (decimal)msgAttributeList[keyName] ).ToString();
-
-			} else if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) {
-				return ( (String)msgAttributeList[keyName] ).Trim();
-			}
-
+			if ( isObjectEmpty( msgAttributeList[keyName] ) ) return "";
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Int32" ) ) return ( (int)msgAttributeList[keyName] ).ToString();
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.Decimal" ) ) return ( (decimal)msgAttributeList[keyName] ).ToString();
+			if ( msgAttributeList[keyName].GetType() == System.Type.GetType( "System.String" ) ) return ( (String)msgAttributeList[keyName] ).Trim();
 			return "";
 		}
 

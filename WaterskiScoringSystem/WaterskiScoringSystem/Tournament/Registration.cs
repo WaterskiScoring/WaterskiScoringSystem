@@ -69,7 +69,7 @@ namespace WaterskiScoringSystem.Tournament {
 			if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
 			if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
 
-			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) {
+			if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) ) {
 				Team.Visible = true;
 			} else {
 				Team.Visible = false;

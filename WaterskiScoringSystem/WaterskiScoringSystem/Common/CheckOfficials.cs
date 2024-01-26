@@ -9,7 +9,8 @@ namespace WaterskiScoringSystem.Common {
 
 		public void readOfficialAssignments( String inSanctionNum, String inEvent, String inAgeGroup, String inEventGroup, String inRound ) {
 			String curEventGroup = inEventGroup;
-			if ( inSanctionNum.Substring( 2, 1 ).Equals( "U" ) ) {
+
+			if ( HelperFunctions.isCollegiateSanction( inSanctionNum ) ) {
 				if ( inAgeGroup.Equals( "CM" ) ) {
 					curEventGroup = "MEN A";
 				} else if ( inAgeGroup.Equals( "CW" ) ) {

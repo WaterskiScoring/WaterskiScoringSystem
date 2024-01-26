@@ -46,8 +46,8 @@ namespace WscMessageHandler.Message {
 			isDataLoading = true;
 			myWscWebLocation = ConnectMgmtData.wscWebLocationDefault;
 			serverUriTextBox.Text = myWscWebLocation;
-			eventSubIdTextBox.Text = ConnectMgmtData.eventSubId;
-			UseJumpTimesCheckBox.Checked = ConnectMgmtData.useJumpTimes;
+			
+			EventSubIdDropdown.SelectedItem = ConnectMgmtData.eventSubId;
 
 			if ( isWscConnected ) {
 				MessageLabel.Text = "Listener is connected and active";
@@ -67,9 +67,14 @@ namespace WscMessageHandler.Message {
 		private void execWscConnect_Click( object sender, EventArgs e ) {
 			Properties.Settings.Default.SanctionNum = sanctionNumTextbox.Text;
 			ConnectMgmtData.sanctionNum = sanctionNumTextbox.Text;
-			ConnectMgmtData.eventSubId = eventSubIdTextBox.Text;
+			if ( EventSubIdDropdown.SelectedItem == null ) {
+				ConnectMgmtData.eventSubId = "";
+			} else if ( EventSubIdDropdown.SelectedIndex == 0 ) {
+				ConnectMgmtData.eventSubId = "";
+			} else {
+				ConnectMgmtData.eventSubId = EventSubIdDropdown.SelectedItem.ToString();
+			}
 			ConnectMgmtData.useJumpTimes = false;
-			if ( UseJumpTimesCheckBox.Checked ) ConnectMgmtData.useJumpTimes = true;
 			myDialogCommand = "Connected";
 		}
 
@@ -79,7 +84,7 @@ namespace WscMessageHandler.Message {
 
 		private void UseJumpTimesCheckBox_CheckedChanged( object sender, EventArgs e ) {
 			this.Location = myWindowLocation;
-			ConnectMgmtData.useJumpTimes = UseJumpTimesCheckBox.Checked;
+			ConnectMgmtData.useJumpTimes = false;
 		}
 
 		private void SelectDatabaseButton_Click( object sender, EventArgs e ) {
@@ -146,6 +151,5 @@ namespace WscMessageHandler.Message {
 
 			sanctionNumTextbox.Text = (String)curTourRow["SanctionId"];
 		}
-
 	}
 }

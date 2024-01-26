@@ -12,7 +12,7 @@ namespace WaterskiScoringSystem.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -761,15 +761,12 @@ namespace WaterskiScoringSystem.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.0")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
-            }
-            set {
-                this["AppVersion"] = value;
             }
         }
         
@@ -818,18 +815,6 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["AppRegistryName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("waterskiConnectionLocalString")]
-        public string AppConnectName {
-            get {
-                return ((string)(this["AppConnectName"]));
-            }
-            set {
-                this["AppConnectName"] = value;
             }
         }
         
@@ -1568,7 +1553,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8.1.3.6 10/26/2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.0 1/23/2024")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2634,6 +2619,60 @@ namespace WaterskiScoringSystem.Properties {
         public string UriIwwfEms {
             get {
                 return ((string)(this["UriIwwfEms"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.waterskiresults.com")]
+        public string UriWaterskiResults {
+            get {
+                return ((string)(this["UriWaterskiResults"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.waterskiresults.com/import/api")]
+        public string UriWaterskiResultsApi {
+            get {
+                return ((string)(this["UriWaterskiResultsApi"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.waterskiresults.com")]
+        public string UriWaterskiResultsProd {
+            get {
+                return ((string)(this["UriWaterskiResultsProd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.waterskiresults.com/import/api")]
+        public string UriWaterskiResultsApiProd {
+            get {
+                return ((string)(this["UriWaterskiResultsApiProd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7007")]
+        public string UriWaterskiResultsTest {
+            get {
+                return ((string)(this["UriWaterskiResultsTest"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7007/api")]
+        public string UriWaterskiResultsApiTest {
+            get {
+                return ((string)(this["UriWaterskiResultsApiTest"]));
             }
         }
     }

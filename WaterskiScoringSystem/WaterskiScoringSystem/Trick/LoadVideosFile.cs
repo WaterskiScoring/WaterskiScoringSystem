@@ -107,10 +107,16 @@ namespace WaterskiScoringSystem.Trick {
         }
 
         private void LiveWebButton_Click(object sender, EventArgs e) {
-            ExportLiveWeb.exportSkiersTrickVideo( "TrickVideo", mySanctionNum, 0, null );
-        }
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+				MessageBox.Show( "Request to publish running order but live web not successfully connected." );
+				return;
+			}
 
-        private void ExportButton_Click(object sender, EventArgs e) {
+			LiveWebHandler.sendSkiers( "TrickVideo", mySanctionNum, 0, "All" );
+		}
+
+		private void ExportButton_Click(object sender, EventArgs e) {
             ExportData myExportData = new ExportData();
             String[] curSelectCommand = new String[1];
             String[] curTableName = { "TrickVideo" };
@@ -215,8 +221,10 @@ namespace WaterskiScoringSystem.Trick {
 
 		private void ResendButton_Click( object sender, EventArgs e ) {
 			String curMethodName = "ResendButton_Click";
+			String curMemberId, curAgeGroup;
+			byte curRound;
 
-            myProgressInfo = new ProgressWindow();
+			myProgressInfo = new ProgressWindow();
             try {
                 if ( ReviewVideoMatchDataGridView.Rows.Count > 0 ) {
                     myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
@@ -235,15 +243,18 @@ namespace WaterskiScoringSystem.Trick {
 
                         } else {
                             if ( ( (String)curViewRow.Cells["Pass1VideoUrl"].Value ).Length > 1 || ( (String)curViewRow.Cells["Pass2VideoUrl"].Value ).Length > 1 ) {
-                                bool curResults = ExportLiveWeb.exportCurrentSkierTrickVideo( mySanctionNum, (String)curViewRow.Cells["MemberId"].Value, (String)curViewRow.Cells["AgeGroup"].Value, (Byte)curViewRow.Cells["Round"].Value );
-                                if ( curResults ) {
-                                    curViewRow.Cells["ResendStatus"].Value = "Video URL successfully attached to Live Web skier";
+								if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
+									curMemberId = HelperFunctions.getViewRowColValue( curViewRow, "MemberId", "" );
+									curAgeGroup = HelperFunctions.getViewRowColValue( curViewRow, "AgeGroup", "" );
+									curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( curViewRow, "Round", "0" ) );
+									LiveWebHandler.sendCurrentSkier( "TrickVideo", mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
+									curViewRow.Cells["ResendStatus"].Value = "Video URL attached to Live Web skier";
 
-                                } else {
-                                    curViewRow.Cells["ResendStatus"].Value = "Error encountered attaching video URL to skier";
-                                }
+								} else {
+									curViewRow.Cells["ResendStatus"].Value = "Live Web interface therefore video URL not attached";
+								}
 
-                            } else {
+							} else {
                                 curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
                             }
                         }
@@ -692,8 +703,8 @@ namespace WaterskiScoringSystem.Trick {
                     curSqlStmt.Append( "AND Round = '" + inSkierVideoEntry.Round + "' " );
                     rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
                     if (rowsProc > 0) {
-                        ExportLiveWeb.exportCurrentSkierTrickVideo( mySanctionNum, inSkierVideoEntry.MemberId, inSkierVideoEntry.AgeGroup, Convert.ToByte( inSkierVideoEntry.Round ) );
-                        return true;
+						LiveWebHandler.sendCurrentSkier( "TrickVideo", mySanctionNum, inSkierVideoEntry.MemberId, inSkierVideoEntry.AgeGroup, Convert.ToByte( inSkierVideoEntry.Round), 0 );
+						return true;
                     } else {
                         return false;
                     }

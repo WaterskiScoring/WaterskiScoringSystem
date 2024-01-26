@@ -21,7 +21,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			if ( mySanctionNum == null ) mySanctionNum = "";
 			else if ( mySanctionNum.Length < 6 ) mySanctionNum = "";
 
-			if ( mySanctionNum.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) isTourNcwsa = true;
+			if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) )  isTourNcwsa = true;
 
 			myImportMember = new ImportMember( null );
 		}

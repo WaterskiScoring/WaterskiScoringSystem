@@ -86,12 +86,31 @@ namespace LiveWebMessageHandler.Common {
 
 			return "";
 		}
+
+		public static String getEventGroupFilterSql( String inGroupValue, bool isTrickVideo ) {
+			return getEventGroupFilterSql( inGroupValue, isTrickVideo, true );
+		}
+		public static String getEventGroupFilterSql( String inGroupValue, bool isTrickVideo, bool isOrderByRound ) {
+			if ( isObjectEmpty( inGroupValue ) ) return "";
+			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "And E.AgeGroup = 'CM' ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "And E.AgeGroup = 'CW' ";
+			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "And E.AgeGroup = 'BM' ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "And E.AgeGroup = 'BW' ";
+			if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
+			if ( inGroupValue.ToUpper().Equals( "NON TEAM" ) ) return "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
+			if ( isTrickVideo ) return "And ER.AgeGroup = '" + inGroupValue + "' ";
+			if ( isOrderByRound ) return "And COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";
+			return "And ER.EventGroup = '" + inGroupValue + "' ";
+			
+		}
+
 		public static bool isObjectEmpty( object inObject ) {
 			if ( inObject == null ) return true;
 			else if ( inObject == System.DBNull.Value ) return true;
 			else if ( inObject.ToString().Length > 0 ) return false;
 			return true;
 		}
+		
 		public static bool isObjectPopulated( object inObject ) {
 			if ( inObject == null ) return false;
 			else if ( inObject == System.DBNull.Value ) return false;
@@ -120,5 +139,12 @@ namespace LiveWebMessageHandler.Common {
 			return curNewValue.ToString();
 		}
 
+		public static String stripLineFeedChar( String inValue ) {
+			String curValue = inValue;
+			curValue = curValue.Replace( '\n', ' ' );
+			curValue = curValue.Replace( '\r', ' ' );
+			curValue = curValue.Replace( '\t', ' ' );
+			return curValue;
+		}
 	}
 }

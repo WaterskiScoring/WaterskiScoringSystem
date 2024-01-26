@@ -44,7 +44,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '23.10', 23.10, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '24.02', 24.02, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
@@ -53,12 +53,12 @@ namespace WaterskiScoringSystem.Tools {
                 
 				if (myDatabaseVersion < 23.10M ) {
                     if ( DataAccess.DataAccessOpen() ) {
-                        String curFileRef = Application.StartupPath + "\\DatabaseSchemaUpdates.sql";
+                        String curFileRef = Path.Combine(Application.StartupPath, "DatabaseSchemaUpdates.sql");
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
 
-				if ( myDatabaseVersion < 23.09M ) {
+				if ( myDatabaseVersion < 24.01M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}
@@ -124,7 +124,7 @@ namespace WaterskiScoringSystem.Tools {
 				curSqltStmt.Append("Delete NopsData");
 				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
-				String curFileRef = Application.StartupPath + "\\NopsData.txt";
+				String curFileRef = Path.Combine(Application.StartupPath, "NopsData.txt");
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
 				
@@ -147,7 +147,7 @@ namespace WaterskiScoringSystem.Tools {
 				curSqltStmt.Append( "Delete TrickList" );
 				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
-                String curFileRef = Application.StartupPath + "\\TrickList.txt";
+                String curFileRef = Path.Combine( Application.StartupPath, "TrickList.txt");
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
 				return true;
@@ -169,7 +169,7 @@ namespace WaterskiScoringSystem.Tools {
 				curSqltStmt.Append( "Delete CodeValueList" );
 				rowsProc = DataAccess.ExecuteCommand( curSqltStmt.ToString() );
 
-                String curFileRef = Application.StartupPath + "\\CodeValueLists.txt";
+                String curFileRef = Path.Combine( Application.StartupPath, "CodeValueLists.txt");
                 ImportData myImportData = new ImportData();
                 myImportData.importData( curFileRef );
 				return true;
@@ -270,7 +270,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     curTableName[0] = inSqlStmt.Substring( curDelimIdx + 6, curValueLen );
                     curSelectCommand[0] = "Select * from " + curTableName[0];
-                    String curFileRef = Application.StartupPath + "\\" + curTableName[0] + ".tmp";
+                    String curFileRef = Path.Combine( Application.StartupPath,  curTableName[0] + ".tmp");
 
                     if ( curTableName[0].Trim().EndsWith( "Backup" ) ) {
                         execSchemaCmd( inSqlStmt );
@@ -302,7 +302,7 @@ namespace WaterskiScoringSystem.Tools {
                         curValueLen = curDelimIdx2 - curDelimIdx - 6;
                     }
                     curTableName[0] = inSqlStmt.Substring( curDelimIdx + 6, curValueLen );
-                    String curFileRef = Application.StartupPath + "\\" + curTableName[0] + ".tmp";
+                    String curFileRef = Path.Combine( Application.StartupPath, curTableName[0] + ".tmp");
 
                     if (execSchemaCmd( inSqlStmt ) ) {
                         if ( !( curTableName[0].EndsWith( "Backup" ) ) ) {
@@ -365,8 +365,7 @@ namespace WaterskiScoringSystem.Tools {
             String curDataDirectory = "", curDatabaseFileName = "", curDestFileName = "";
 
             try {
-                String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-                String myConnectName = WaterskiScoringSystem.Properties.Settings.Default.AppConnectName;
+                String curAppConnectString = DataAccess.getConnectionString();
                 String curAppRegName = Properties.Settings.Default.AppRegistryName;
                 RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
 

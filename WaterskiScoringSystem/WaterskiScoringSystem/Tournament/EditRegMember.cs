@@ -524,11 +524,12 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             DateTime curMemberExpireDate = new DateTime();
-            try {
-                curMemberExpireDate = Convert.ToDateTime( HelperFunctions.getAttributeValue( myImportMemberEntry, "EffTo" ) );
-            } catch {
+            if (myImportMemberEntry.ContainsKey("MembershipExpiration")) {
+                curMemberExpireDate = Convert.ToDateTime(HelperFunctions.getAttributeValue(myImportMemberEntry, "MembershipExpiration"));
+            
+            } else if (myImportMemberEntry.ContainsKey("EffTo")) {
+                curMemberExpireDate = Convert.ToDateTime(HelperFunctions.getAttributeValue(myImportMemberEntry, "EffTo"));
             }
-
             showMemberStatus.Text = ImportMember.calcMemberStatus(
                 HelperFunctions.getAttributeValue( myImportMemberEntry, "MemTypeDesc" )
                 , curMemberExpireDate

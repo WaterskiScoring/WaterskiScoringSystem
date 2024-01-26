@@ -1470,28 +1470,26 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private StreamWriter getExportFile(String inFileName) {
-            String myFileName;
+            String curFileName;
             StreamWriter outBuffer = null;
             String curFileFilter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
 
-            SaveFileDialog myFileDialog = new SaveFileDialog();
+            SaveFileDialog curFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.Filter = curFileFilter;
-            myFileDialog.FilterIndex = 1;
+            curFileDialog.InitialDirectory = curPath;
+            curFileDialog.Filter = curFileFilter;
+            curFileDialog.FilterIndex = 1;
             if (inFileName == null) {
-                myFileDialog.FileName = "";
+                curFileDialog.FileName = "";
             } else {
-                myFileDialog.FileName = inFileName;
+                curFileDialog.FileName = inFileName;
             }
 
             try {
-                if (myFileDialog.ShowDialog() == DialogResult.OK) {
-                    myFileName = myFileDialog.FileName;
-                    if (myFileName != null) {
-                        int delimPos = myFileName.LastIndexOf('\\');
-                        String curFileName = myFileName.Substring(delimPos + 1);
-                        if (curFileName.IndexOf('.') < 0) {
+                if (curFileDialog.ShowDialog() == DialogResult.OK) {
+                    curFileName = curFileDialog.FileName;
+                    if (curFileName != null) {
+                        if ( Path.GetExtension( curFileName ) == null ) {
                             String curDefaultExt = ".txt";
                             String[] curList = curFileFilter.Split('|');
                             if (curList.Length > 0) {
@@ -1500,9 +1498,9 @@ namespace WaterskiScoringSystem.Tournament {
                                     curDefaultExt = curList[1].Substring(curDelim - 1);
                                 }
                             }
-                            myFileName += curDefaultExt;
+                            curFileName += curDefaultExt;
                         }
-                        outBuffer = File.CreateText(myFileName);
+                        outBuffer = File.CreateText(curFileName);
                     }
                 }
             } catch (Exception ex) {

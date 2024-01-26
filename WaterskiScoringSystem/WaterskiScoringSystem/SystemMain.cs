@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Deployment.Application;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -55,13 +54,6 @@ namespace WaterskiScoringSystem {
             //myShowDebugMsgs = true;
             String curDeploymentDirectory = "", curDeploymentDataDirectory = "", curRegAppVersion = "";
 
-            try {
-                Properties.Settings.Default.AppVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-            } catch {
-                if ( Properties.Settings.Default.AppVersion == null ) { Properties.Settings.Default.AppVersion = "0.00.00"; }
-                if ( Properties.Settings.Default.AppVersion.Length == 0 ) { Properties.Settings.Default.AppVersion = "0.00.00"; }
-            }
-            
             curDeploymentDataDirectory = Application.LocalUserAppDataPath;
             curDeploymentDirectory = Application.StartupPath;
             if ( curDeploymentDirectory == null ) { curDeploymentDirectory = ""; }
@@ -188,33 +180,6 @@ namespace WaterskiScoringSystem {
             #endregion
         }
 
-        /*
-        Establish current data directry using application default
-        Analyze default location and establish the desired data directory
-         */
-        private void setDatabaseFirstTime( String curDeploymentDirectory, String curDeploymentDataDirectory ) {
-            String curDataDirectory = curDeploymentDirectory;
-            int posDelim = curDataDirectory.IndexOf( "/Data" );
-            if ( posDelim > 0 ) {
-                String tmpDataDirectory = curDataDirectory.Substring( 0, posDelim + 5 );
-                if ( myShowDebugMsgs ) {
-                    MessageBox.Show( "tmpDataDirectory = " + tmpDataDirectory );
-                }
-                //Establish active data directory in active application domain
-                curDataDirectory = tmpDataDirectory;
-            }
-            MessageBox.Show( "Database location has not been specified"
-                + "\n\n" + "In the next dialog that displays please select a location and provide a file name for the database (default name is waterski.sdf) "
-                + "\n" + "The database supplied with the application will be copied to your specified location" );
-            copyDatabase( curDeploymentDataDirectory, curDataDirectory );
-        }
-
-        private bool copyDatabase( String inSourDir, String inDestDir ) {
-            SetDatabaseLocation curForm = new SetDatabaseLocation();
-            //Application.StartupPath
-            return curForm.copyDatabaseFile( inSourDir, inDestDir, myAppRegKey );
-        }
-
         private void SystemMain_FormClosed( object sender, FormClosedEventArgs e ) {
             DataAccess.DataAccessClose( true );
             if (this.WindowState == FormWindowState.Normal) {
@@ -235,6 +200,7 @@ namespace WaterskiScoringSystem {
                     + "\n UserAppDataRegistry=" + Application.UserAppDataRegistry
                     + "\n ProductName=" + Application.ProductName
                     + "\n ProductVersion=" + Application.ProductVersion
+                    + "\n DataAccess.getConnectionString=" + DataAccess.getConnectionString()
                     + "\n DatabaseConnectionString=" + Properties.Settings.Default.waterskiConnectionStringApp
                     );
             }
@@ -406,8 +372,7 @@ namespace WaterskiScoringSystem {
 		}
 
 		private void shrinkDatabaseToolStripMenuItem_Click( object sender, EventArgs e ) {
-            ShrinkDatabase curForm = new ShrinkDatabase();
-            bool curReturn = curForm.Shrink();
+            DataAccess.Shrink();
         }
 
         private void navRegistration_Click( object sender, EventArgs e ) {
@@ -838,7 +803,7 @@ namespace WaterskiScoringSystem {
         }
 
 		private void overviewToolStripMenuItem_Click( object sender, EventArgs e ) {
-            MessageBox.Show( "See the Wstims For Windows Newsletter Archive \nhttp://www.waterskiresults.com/filelist.php?FolderName=Newsletters");
+            MessageBox.Show( "See the Wstims For Windows Newsletter Archive \n" + Properties.Settings.Default.UriWaterskiResults + "/Newsletters");
 		}
 
         private void navHelpAbout_Click( object sender, EventArgs e ) {

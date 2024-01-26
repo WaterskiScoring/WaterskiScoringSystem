@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Externalnterface;
+using WaterskiScoringSystem.Slalom;
 
 namespace WaterskiScoringSystem.Jump {
 	public partial class ScoreEntrySeg3 : Form {
@@ -1129,6 +1130,9 @@ namespace WaterskiScoringSystem.Jump {
 				} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
+					if ( LiveWebLabel.Visible ) {
+						LiveWebHandler.sendRunOrder( "Jump", JumpEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+					}
 					/*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
@@ -1440,6 +1444,7 @@ namespace WaterskiScoringSystem.Jump {
 		private void scoreEventClass_Validating( object sender, CancelEventArgs e ) {
 			String curMethodName = "Jump:ScoreEntrySeg3:scoreEventClass_Validating: ";
 			int rowsProc = 0;
+			if ( TourEventRegDataGridView.Rows.Count == 0 ) return;
 
 			ListItem curItem = (ListItem)scoreEventClass.SelectedItem;
 			String curSkierClass = curItem.ItemValue;

@@ -537,12 +537,7 @@ namespace WaterskiScoringSystem.Tournament {
                     myExportTourSummary.ExportData();
 
                     ExportData myExportData = new ExportData();
-                    String curTourDataFileName = curTourFolder;
-                    if (curTourFolder.Substring( curTourFolder.Length - 1 ).Equals( "\\" )) {
-                        curTourDataFileName += mySanctionNum + "TS.txt";
-                    } else {
-                        curTourDataFileName += "\\" + mySanctionNum + "TS.txt";
-                    }
+                    String curTourDataFileName = Path.Combine(curTourFolder, mySanctionNum + "TS.txt");
                     myExportData.exportTourData( mySanctionNum, curTourDataFileName );
 
                     Cursor.Current = Cursors.WaitCursor;

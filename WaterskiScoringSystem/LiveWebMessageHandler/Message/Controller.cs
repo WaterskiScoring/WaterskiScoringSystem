@@ -114,6 +114,9 @@ namespace LiveWebMessageHandler.Message {
 				curMsg = String.Format( "{0}Connected to database: {1}", curMethodName, Properties.Settings.Default.DatabaseFilename );
 				addViewMessage( curMsg, false, false );
 
+				curMsg = String.Format( "{0}Live Web Scoreboard URI: {1}, {2}", curMethodName, Properties.Settings.Default.UriWaterskiResults, Properties.Settings.Default.UriWaterskiResultsApi );
+				addViewMessage( curMsg, false, false );
+
 				curMsg = String.Format( "{0}Tournament open: {1}", curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, false, false );
 
@@ -198,6 +201,9 @@ namespace LiveWebMessageHandler.Message {
 
 					} else if ( msgType.Equals( "DisableSkiers" ) ) {
 						curReturn = handleDisableSkiersMsg( curDataRow );
+					
+					} else if ( msgType.Equals( "RunOrder" ) ) {
+						curReturn = handleRunOrderMsg( curDataRow );
 					}
 					if ( !curReturn ) break;
 				}
@@ -276,6 +282,34 @@ namespace LiveWebMessageHandler.Message {
 				String inEvent, String inSanctionId, byte inRound, String inEventGroup
 				*/
 				ExportLiveWeb.exportCurrentSkiers( curEvent, curSanctionId, (byte)curRound, curEventGroup );
+
+				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
+				addViewMessage( curMsg, false, false );
+				Log.WriteFile( curMsg );
+
+				removeLiveWebMsgSent( (int)curDataRow["PK"] );
+				return true;
+
+			} catch ( Exception ex ) {
+				String curErrMsg = String.Format( "{0}Request failed: {1}", curMethodName, ex.Message );
+				addViewMessage( curErrMsg, true, true );
+				Log.WriteFile( curErrMsg );
+				return false;
+			}
+		}
+
+		private bool handleRunOrderMsg( DataRow curDataRow ) {
+			String curMethodName = "Controller: handleRunOrderMsg: ";
+			Dictionary<string, object> curMsgDataList = null;
+
+			try {
+				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( (String)curDataRow["MsgData"] );
+
+				String curSanctionId = HelperFunctions.getAttributeValue( curMsgDataList, "sanctionId" );
+				String curEvent = HelperFunctions.getAttributeValue( curMsgDataList, "event" );
+				String curEventGroup = HelperFunctions.getAttributeValue( curMsgDataList, "eventGroup" );
+				int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
+				ExportLiveWeb.exportRunningOrder( curSanctionId, curEvent, curEventGroup, curRound );
 
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );

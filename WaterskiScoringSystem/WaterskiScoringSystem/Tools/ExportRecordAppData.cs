@@ -51,10 +51,6 @@ namespace WaterskiScoringSystem.Tools {
                         String curMsg = "Error initializing record application export processing" + "\n\nError: " + ex.Message;
                         Log.WriteFile( curMethodName + curMsg );
                         MessageBox.Show( curMsg );
-                        //if ( myDeploymentDirectory == null ) { myDeploymentDirectory = ""; }
-                        //if ( myDeploymentDirectory.Length < 1 ) {
-                        //myDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
-                        //}
                     }
                 }
 
@@ -163,7 +159,7 @@ namespace WaterskiScoringSystem.Tools {
                 String curFileName = String.Format( "\\RecordData_{0}_{1}_{2}_{3}_R{4}"
                     , inEvent, curSkierName, inMemberId, inDiv, inRound );
 
-                String curExcelTemplateFileName = myDeploymentDirectory + "\\" + myRecordAppFormFileName;
+                String curExcelTemplateFileName = Path.Combine(myDeploymentDirectory, myRecordAppFormFileName);
                 String curExcelFileName = Properties.Settings.Default.ExportDirectory + curFileName;
                 MessageBox.Show( "ExcelFileName: " + curExcelFileName );
                 
@@ -1230,21 +1226,17 @@ namespace WaterskiScoringSystem.Tools {
 		private StreamWriter getExportFile(String inFileName) {
             StreamWriter outBuffer = null;
 
-            SaveFileDialog myFileDialog = new SaveFileDialog();
+            SaveFileDialog curFileDialog = new SaveFileDialog();
             String curPath = Properties.Settings.Default.ExportDirectory;
-            myFileDialog.InitialDirectory = curPath;
-            myFileDialog.FileName = inFileName;
+            curFileDialog.InitialDirectory = curPath;
+            curFileDialog.FileName = inFileName;
 
             try {
-                if (myFileDialog.ShowDialog() == DialogResult.OK) {
-                    String myFileName = myFileDialog.FileName;
-                    if (myFileName != null) {
-                        int delimPos = myFileName.LastIndexOf( '\\' );
-                        String curFileName = myFileName.Substring( delimPos + 1 );
-                        if (curFileName.IndexOf( '.' ) < 0) {
-                            myFileName += ".wsp";
-                        }
-                        outBuffer = File.CreateText( myFileName );
+                if (curFileDialog.ShowDialog() == DialogResult.OK) {
+                    String curFileName = curFileDialog.FileName;
+                    if (curFileName != null) {
+                        if ( Path.GetExtension( curFileName ) == null ) curFileName += ".txt";
+                        outBuffer = File.CreateText( curFileName );
                     }
                 }
             } catch (Exception ex) {

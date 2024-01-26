@@ -15,7 +15,7 @@ namespace LiveWebMessageHandler.Common {
 		}
 
 		public static bool isLiveWebConnected {
-			get { return ( ExportLiveWeb.LiveWebLocation != null && ExportLiveWeb.LiveWebLocation.Length > 0 ); }
+			get { return ( ExportLiveWeb.LiveWebScoreboardUri != null && ExportLiveWeb.LiveWebScoreboardUri.Length > 0 ); }
 		}
 
 		public static bool initConnectMgmtData() {

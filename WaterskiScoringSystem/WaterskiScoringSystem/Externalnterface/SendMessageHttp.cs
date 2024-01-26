@@ -47,9 +47,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
 				if (inUrl.ToLower().StartsWith( "https" )) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback( AcceptAllCertifications );
@@ -183,9 +187,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
 				if ( inUrl.ToLower().StartsWith("https") ) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
@@ -290,11 +298,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
-                if (inUrl.ToLower().StartsWith( "https" )) {
+				if (inUrl.ToLower().StartsWith( "https" )) {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback( AcceptAllCertifications );
                     ServicePointManager.Expect100Continue = false;
                 }
@@ -394,13 +406,17 @@ namespace WaterskiScoringSystem.Externalnterface {
                 if ( inUserAccount != null ) {
                     if (inUrl.Contains("usawaterski")) {
                         curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
-                    } else {
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+					} else {
                         curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
                     }
-                }
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+				}
 
-                // Create POST data and convert it to a byte array.
-                byte[] byteArray = Encoding.UTF8.GetBytes( inMessage );
+				// Create POST data and convert it to a byte array.
+				byte[] byteArray = Encoding.UTF8.GetBytes( inMessage );
 
                 // Set the ContentLength property of the WebRequest.
                 curRequest.ContentLength = byteArray.Length;
@@ -473,11 +489,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
 						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
-				
+
 				//Set header parameters to the WebRequest
 				( (HttpWebRequest)curRequest ).UserAgent = ".NET Framework CustomUserAgent Water Ski Scoring";
                 if (inHeaderParams != null) {
@@ -649,13 +669,17 @@ namespace WaterskiScoringSystem.Externalnterface {
 						if ( inUserAccount != null ) {
 							if ( inUrl.Contains( "usawaterski" ) ) {
 								curRequest.Headers["WSTIMSAPI"] = "Basic " + inUserAccount + ":" + inPassword;
+							} else if ( inUrl.Contains( "waterskiresults" ) ) {
+								curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 							} else {
 								curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 							}
+						} else if ( inUrl.Contains( "waterskiresults" ) ) {
+							curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 						}
 
-                        // Set the ContentType property of the WebRequest.
-                        if (inContentType == null) {
+						// Set the ContentType property of the WebRequest.
+						if (inContentType == null) {
                             curRequest.ContentType = "application/x-www-form-urlencoded";
                         } else {
                             curRequest.ContentType = inContentType;

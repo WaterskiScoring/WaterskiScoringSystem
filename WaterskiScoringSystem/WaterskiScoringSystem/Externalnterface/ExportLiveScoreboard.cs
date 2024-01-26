@@ -9,7 +9,6 @@ using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveScoreboard {
-        private int myTourRounds;
         public static String myScoreboardLocation = "";
 
         public ExportLiveScoreboard() {
@@ -464,12 +463,11 @@ namespace WaterskiScoringSystem.Externalnterface {
             String curMethodName = "getExportFile";
             StreamWriter outBuffer = null;
             String curFileFilter = "";
-            String myFileName = ScoreboardLocation + "\\" + inFileName;
+            String curFileName = Path.Combine( ScoreboardLocation, inFileName );
+
             try {
-                if (myFileName != null) {
-                    int delimPos = myFileName.LastIndexOf('\\');
-                    String curFileName = myFileName.Substring(delimPos + 1);
-                    if (curFileName.IndexOf('.') < 0) {
+                if (curFileName != null) {
+                    if ( Path.GetExtension(curFileName) == null ) {
                         String curDefaultExt = ".txt";
                         String[] curList = curFileFilter.Split('|');
                         if (curList.Length > 0) {
@@ -478,16 +476,9 @@ namespace WaterskiScoringSystem.Externalnterface {
                                 curDefaultExt = curList[1].Substring(curDelim - 1);
                             }
                         }
-                        myFileName += curDefaultExt;
+                        curFileName += curDefaultExt;
                     }
-                    outBuffer = File.CreateText(myFileName);
-                    /*
-                    if (File.Exists(myFileName)) {
-                        outBuffer = File.AppendText(myFileName);
-                    } else {
-                        outBuffer = File.CreateText(myFileName);
-                    }
-                     */
+                    outBuffer = File.CreateText(curFileName);
                 }
             } catch (Exception ex) {
                 MessageBox.Show("Error: Could not get a file to export data to " + "\n\nError: " + ex.Message);

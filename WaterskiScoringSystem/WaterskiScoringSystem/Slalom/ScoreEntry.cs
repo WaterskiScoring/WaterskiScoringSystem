@@ -1440,6 +1440,10 @@ namespace WaterskiScoringSystem.Slalom {
 				if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
+					if ( LiveWebLabel.Visible ) {
+						LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+					}
+
 					/*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
@@ -2909,6 +2913,7 @@ namespace WaterskiScoringSystem.Slalom {
 		private void scoreEventClass_Validating( object sender, CancelEventArgs e ) {
 			String curMethodName = "Slalom:ScoreEntry:scoreEventClass_Validating";
 			int rowsProc = 0;
+			if ( TourEventRegDataGridView.Rows.Count == 0 ) return;
 
 			ListItem curItem = (ListItem)scoreEventClass.SelectedItem;
 			String curEventClass = curItem.ItemValue;

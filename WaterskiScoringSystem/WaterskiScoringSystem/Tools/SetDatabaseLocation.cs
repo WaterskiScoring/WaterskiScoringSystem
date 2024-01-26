@@ -19,50 +19,29 @@ namespace WaterskiScoringSystem.Tools {
         public bool getDatabaseFile(RegistryKey inAppRegKey) {
             bool curReturn = false;
             String curDataDirectory = "", curDestFileName = "";
-            String myFileName = null;
-            String curAppConnectString = "";
+            String curAppConnectString = DataAccess.getConnectionString();
+            String curFileName = DataAccess.getDatabaseFilename();
+            curDataDirectory = Path.GetDirectoryName( curFileName );
 
-            if ( inAppRegKey.GetValue( "DataDirectory" ) == null ) {
-                try {
-                    curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                } catch ( Exception ex ) {
-                    curDataDirectory = Application.UserAppDataPath;
-                }
-                inAppRegKey.SetValue( "DataDirectory", curDataDirectory );
-
-            } else {
-                curDataDirectory = inAppRegKey.GetValue( "DataDirectory" ).ToString();
-            }
-            if ( inAppRegKey.GetValue( "DatabaseConnectionString" ) == null ) {
-                curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-                inAppRegKey.SetValue( "DatabaseConnectionString", curAppConnectString );
-
-            } else {
-                curAppConnectString = inAppRegKey.GetValue( "DatabaseConnectionString" ).ToString();
-            }
-            
             //Establish active data directory in active application domain
-            AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
-
             MessageBox.Show( "Current Database Connection String \n "
                 + "\n ConnectionString: " + curAppConnectString
                 + "\n\n Data location: " + curDataDirectory
                 );
-            OpenFileDialog myFileDialog = new OpenFileDialog();
-            myFileDialog.InitialDirectory = curDataDirectory;
-            myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
-            myFileDialog.FilterIndex = 0;
-            myFileDialog.CheckPathExists = false;
-            myFileDialog.CheckFileExists = false;
+            OpenFileDialog curFileDialog = new OpenFileDialog();
+            curFileDialog.InitialDirectory = curDataDirectory;
+            curFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
+            curFileDialog.FilterIndex = 0;
+            curFileDialog.CheckPathExists = false;
+            curFileDialog.CheckFileExists = false;
 
             try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    myFileName = myFileDialog.FileName;
-                    if ( myFileName != null ) {
-                        int posDelim = myFileName.LastIndexOf( "\\" );
-                        curDataDirectory = myFileName.Substring( 0, posDelim);
+                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+                    curFileName = curFileDialog.FileName;
+                    if ( curFileName != null ) {
+                        curDataDirectory = Path.GetDirectoryName( curFileName );
                         inAppRegKey.SetValue( "DataDirectory", curDataDirectory );
-                        curDestFileName = myFileName.Substring( posDelim + 1 );
+                        curDestFileName = Path.GetFileName( curFileName );
                         curReturn = setConnectionString( curDataDirectory, curDestFileName, inAppRegKey );
                     }
                 }
@@ -73,43 +52,22 @@ namespace WaterskiScoringSystem.Tools {
             return curReturn;
         }
 
-		public String getDatabaseFilename() {
-			String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-
-			String curAttrName, curAttrValue;
-			String[] curAttrEntry;
-			String[] curConnAttrList = curAppConnectString.Split( ';' );
-			for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
-				curAttrEntry = curConnAttrList[idx].Split( '=' );
-				curAttrName = curAttrEntry[0];
-				curAttrValue = curAttrEntry[1];
-				if ( curAttrName.ToLower().Trim().Equals( "data source" ) ) {
-					int delimPos = curAttrValue.LastIndexOf( '\\' );
-					if ( delimPos > 0 ) {
-						return curAttrValue.Substring( delimPos + 1 );
-					}
-				}
-			}
-
-			return "";
-		}
-
 		public bool copyDatabaseFile( String inSourDir, String inDestDir, RegistryKey inAppRegKey ) {
             bool curReturn = false;
             String curDataDirectory = "", curSourDir = "";
 			String curDestDatabaseRef = "", curDestFileName = "";
 
-            OpenFileDialog myFileDialog = new OpenFileDialog();
-            myFileDialog.InitialDirectory = inDestDir;
-            myFileDialog.FileName = getDatabaseFilename();
-			myFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
-            myFileDialog.FilterIndex = 0;
-            myFileDialog.CheckPathExists = false;
-            myFileDialog.CheckFileExists = false;
+            OpenFileDialog curFileDialog = new OpenFileDialog();
+            curFileDialog.InitialDirectory = inDestDir;
+            curFileDialog.FileName = DataAccess.getDatabaseFilename();
+			curFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
+            curFileDialog.FilterIndex = 0;
+            curFileDialog.CheckPathExists = false;
+            curFileDialog.CheckFileExists = false;
 
             try {
-                if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-                    curDestDatabaseRef = myFileDialog.FileName;
+                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+                    curDestDatabaseRef = curFileDialog.FileName;
 
                     if ( curDestDatabaseRef == null ) { curDestDatabaseRef = ""; }
                     if ( curDestDatabaseRef.Length > 1 ) {
@@ -233,9 +191,8 @@ namespace WaterskiScoringSystem.Tools {
 				curDataDirectory = inAppRegKey.GetValue( "DataDirectory" ).ToString();
 			}
 
-			String curDatabaseFilename = getDatabaseFilename();
-
-			FolderBrowserDialog curFolderBrowserDialog = new FolderBrowserDialog();
+			String curDatabaseFilename = DataAccess.getDatabaseFilename();
+            FolderBrowserDialog curFolderBrowserDialog = new FolderBrowserDialog();
 			curFolderBrowserDialog.SelectedPath = curDataDirectory;
 			curFolderBrowserDialog.ShowNewFolderButton = true;
 

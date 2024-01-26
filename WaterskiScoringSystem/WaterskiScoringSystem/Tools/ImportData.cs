@@ -475,18 +475,18 @@ namespace WaterskiScoringSystem.Tools {
 		private ArrayList getImportFileList() {
             ArrayList curFileNameList = new ArrayList();
             String curPath = "";
-            OpenFileDialog myFileDialog = new OpenFileDialog();
+            OpenFileDialog curFileDialog = new OpenFileDialog();
             try {
                 curPath = Properties.Settings.Default.ExportDirectory;
                 if (curPath.Length < 2) {
                     curPath = Directory.GetCurrentDirectory();
                 }
-                myFileDialog.InitialDirectory = curPath;
-                myFileDialog.Multiselect = true;
-                myFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                myFileDialog.FilterIndex = 2;
-                if (myFileDialog.ShowDialog() == DialogResult.OK) {
-                    String[] curFileNames = myFileDialog.FileNames;
+                curFileDialog.InitialDirectory = curPath;
+                curFileDialog.Multiselect = true;
+                curFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                curFileDialog.FilterIndex = 2;
+                if (curFileDialog.ShowDialog() == DialogResult.OK) {
+                    String[] curFileNames = curFileDialog.FileNames;
                     foreach (String curFileName in curFileNames) {
                         curFileNameList.Add( curFileName );
                     }
@@ -499,23 +499,20 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         private StreamReader getImportFile() {
-            OpenFileDialog myFileDialog = new OpenFileDialog();
+            OpenFileDialog curFileDialog = new OpenFileDialog();
 			
 			try {
 				String curPath = Properties.Settings.Default.ExportDirectory;
 				if ( curPath.Length < 2 ) {
 					curPath = Directory.GetCurrentDirectory();
 				}
-				myFileDialog.InitialDirectory = curPath;
-				myFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-				myFileDialog.FilterIndex = 2;
-				if ( myFileDialog.ShowDialog() != DialogResult.OK ) return null;
+				curFileDialog.InitialDirectory = curPath;
+				curFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+				curFileDialog.FilterIndex = 2;
+				if ( curFileDialog.ShowDialog() != DialogResult.OK ) return null;
 
-				String curFileName = myFileDialog.FileName;
+				String curFileName = curFileDialog.FileName;
 				if ( curFileName == null ) return null;
-				int delimPos = curFileName.LastIndexOf( '\\' );
-				curPath = curFileName.Substring( 0, delimPos );
-
 				return getImportFile( curFileName );
 
 			} catch ( Exception ex ) {

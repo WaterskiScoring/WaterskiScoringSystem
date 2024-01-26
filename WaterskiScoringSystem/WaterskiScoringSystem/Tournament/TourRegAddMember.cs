@@ -290,30 +290,19 @@ namespace WaterskiScoringSystem.Tournament {
 						} else {
 							curViewRow.Cells["MemberId"].Value = curMemberId;
 						}
-						curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Age", "0" );
+						curViewRow.Cells["SkiYearAge"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SkiYearAge", "0" );
 						curViewRow.Cells["Div"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Div", "" );
-						curViewRow.Cells["OffCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OffCode", "" );
+
 						curViewRow.Cells["SlalomRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRank", "" );
 						curViewRow.Cells["TrickRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRank", "" );
 						curViewRow.Cells["JumpRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRank", "" );
+						curViewRow.Cells["OverallRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRank", "" );
+
 						curViewRow.Cells["SlalomRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomRating", "" );
 						curViewRow.Cells["TrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickRating", "" );
-						curViewRow.Cells["OverallRank"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRank", "" );
 						curViewRow.Cells["JumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpRating", "" );
 						curViewRow.Cells["OverallRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "OverallRating", "" );
-						curViewRow.Cells["SlmQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlmQfy", "" );
-						curViewRow.Cells["TrkQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrkQfy", "" );
-						curViewRow.Cells["JmpQfy"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JmpQfy", "" );
-						curViewRow.Cells["TrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "" );
-						curViewRow.Cells["JumpRamp"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
 						
-						curViewRow.Cells["Prereg"].Value = false;
-						curDataValue = HelperFunctions.getDataRowColValue( curDataRow, "Prereg", "" ).ToLower();
-						if ( curDataValue.Equals( "yes" ) ) curViewRow.Cells["Prereg"].Value = true;
-						
-						curViewRow.Cells["SlalomClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SlalomPaid", "" );
-						curViewRow.Cells["TrickClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickPaid", "" );
-						curViewRow.Cells["JumpClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpPaid", "" );
 						curViewRow.Cells["Memtype"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Memtype", "" );
 						curViewRow.Cells["MemCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MemCode", "" );
 
@@ -337,8 +326,8 @@ namespace WaterskiScoringSystem.Tournament {
 
 						DateTime curMemExpireDate = new DateTime();
 						try {
-							curMemExpireDate = Convert.ToDateTime( HelperFunctions.getDataRowColValue( curDataRow, "EffTo", "" ) );
-							curViewRow.Cells["EffTo"].Value = curMemExpireDate.ToString( "MM/dd/yy" );
+							curMemExpireDate = Convert.ToDateTime( HelperFunctions.getDataRowColValue( curDataRow, "MembershipExpiration", "" ) );
+                            curViewRow.Cells["EffTo"].Value = curMemExpireDate.ToString( "MM/dd/yy" );
 						} catch ( Exception ex ) {
 							Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
 								, HelperFunctions.getDataRowColValue( curDataRow, "EffTo", "" ), ex.Message ) );

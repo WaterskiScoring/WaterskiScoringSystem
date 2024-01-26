@@ -831,8 +831,8 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 				outLine.Append( "  Rating: " + curValue );
 				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" ) );
-                outLine.Append( "  Email: " + (String)myTourRow["SafetyDirEmail"] );
-				outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirAddress", "" ));
+                outLine.Append("  Email: " + HelperFunctions.getDataRowColValue(myTourRow, "SafetyDirEmail", ""));
+                outLine.Append( Environment.NewLine + "Address: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirAddress", "" ));
 
 				outLine.Append( Environment.NewLine + SafetyDirPerfLabel.Text + ": " + replaceLinefeed( safetyDirPerfReportTextBox.Text ) );
 				outBuffer.WriteLine( outLine.ToString() );

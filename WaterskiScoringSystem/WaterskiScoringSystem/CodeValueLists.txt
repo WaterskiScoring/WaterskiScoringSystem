@@ -341,7 +341,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		11490	6/18/2022 Jake Abelson
 0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		191	(58.2m) 5.5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
-0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		10430	 7/18/2009 Adam Pickos  
+0	AWSARecords	B5-T		35	Boys 5 (U18) - Trick		11970 	9/16/2023 Jake Abelson
 0	AWSARecords	B5-J		36	Boys 5 (U18) - Jump		193	(58.8m) 5.5 51kph 5/17/2015 Taylor Garcia
 0	AWSARecords	G1-S		41	Girls 1 (U10) - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph)6/4/2011 Neilly Ross 7/8/12 Kristen Baldwin
 0	AWSARecords	G1-T		42	Girls 1 (U10) - Trick		5340	7/24/2011 Neilly Ross
@@ -372,7 +372,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M5-S		111	Mens 5 - Slalom		111.5	3.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/6/2015 Greg Badal
 0	AWSARecords	M5-T		112	Mens 5 - Trick		6230	9/4/2021 Marc Bedsole
 0	AWSARecords	M5-J		113	Mens 5 - Jump		162	(49.4M) 5 51kph 10/6/2020 Hutch Haines
-0	AWSARecords	M6-S		121	Mens 6 - Slalom		110	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley
+0	AWSARecords	M6-S		121	Mens 6 - Slalom		110	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley 10/19/2023 Greg Badal
 0	AWSARecords	M6-T		122	Mens 6 - Trick		4830	8/22/2014 Don Parsons
 0	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 10/12/2014 Frankie Dees
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
@@ -384,7 +384,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		92.00	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/27/2022 Bill Mahan
 0	AWSARecords	M9-T		152	Mens 9 - Trick		2520	7/14/2019 Stan Switzer
 0	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 5 48kph 8/7/2014 Bruce Kunde
-0	AWSARecords	MA-S		161	Mens 10 - Slalom		77	5 bouys at 13m @ 49 kph (32 off @ 30.4 mph) 8/25/2018 Don Fournier
+0	AWSARecords	MA-S		161	Mens 10 - Slalom		80	2 bouys at 12m @ 49 kph (35 off @ 30.4 mph) 8/19/2023 Don Fournier
 0	AWSARecords	MA-T		162	Mens 10 - Trick		1600	 10/20/2007 Harry Price  
 0	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
 0	AWSARecords	MB-S		171	Mens 11 - Slalom		63.50	3.5 bouys at 14.25m @ 46 kph (28 off @ 28.6 mph) 10/2/2021 Ed Fisher
@@ -396,7 +396,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W2-S		191	Womens 2 - Slalom		112.50	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/16/2019 Regina Jaquess
 0	AWSARecords	W2-T		192	Womens 2 - Trick		11360 	5/19/2023 Erika Lang
 0	AWSARecords	W2-J		193	Womens 2 - Jump		158	 5 54kph 10/6/1996 Brenda Baldwin  
-0	AWSARecords	W3-S		201	Womens 3 - Slalom		110.50	2.5 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 9/13/2019 Regina Jaquess
+0	AWSARecords	W3-S		201	Womens 3 - Slalom		112.50	5.0 bouys at 10.25m @ 55 kph (39.5 off @ 34.2 mph) 9/15/2023 Regina Jaquess
 0	AWSARecords	W3-T		202	Womens 3 - Trick		8250	8/7/2020 Regina Jaquess
 0	AWSARecords	W3-J		203	Womens 3 - Jump		155	 5 51kph 10/6/2007 Brenda Baldwin  
 0	AWSARecords	W4-S		211	Womens 4 - Slalom		104.50	2.5 buoys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/29/2021 Karen Truelove
@@ -426,13 +426,13 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	OM-S		291	Open Men - Slalom		122.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	AWSARecords	OM-T		292	Open Men - Trick		12170	6/20/2020 Adam Pickos
 0	AWSARecords	OM-J		293	Open Mems - Jump		250	(76.3M) 6 57kph 5/1/2014 Freddy Krueger
-0	AWSARecords	OW-S		301	Open Womens - Slalom		112.5	4.5 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
+0	AWSARecords	OW-S		301	Open Womens - Slalom		115.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
 0	AWSARecords	OW-T		302	Open Womens - Trick		11360	5/19/2023 Erika Lang
 0	AWSARecords	OW-J		303	Open Women - Jump		188	(57.4m) 5.5 54kph 10/16/2016 Alex Lauretano
 0	AWSARecords	MM-S		311	Master Men - Slalom		115.5	1.5 bouys at 9.75m @ 55 kph (43 off @ 34.2 mph) 10/18/2014 Jeff Rodgers 8/23/2019 Adam Caldwell
 0	AWSARecords	MM-T		312	Master Men - Trick		11570	 5/8/2010 Russell Gay  
 0	AWSARecords	MM-J		313	Master Men - Jump		215	(65.5m) 5.5 57kph 4/9/2011 Scot Ellis
-0	AWSARecords	MW-S		321	Master Women-Slalom		110.50	2.5 bouy at 10.25m @ 55kph (41 off @ 34.2 mph) 	9/13/2019 Regina Jaquess
+0	AWSARecords	MW-S		321	Master Women-Slalom		115.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
 0	AWSARecords	MW-T		322	Master Women-Trick		8540	9/27/2020 Regina Jaquess
 0	AWSARecords	MW-J		323	Master Women-Jump		155	8/10/2015 BENCHMARK
 22562	AWSASlalomMax	B1		11	49kph, 30mph	30	49	
@@ -533,8 +533,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22645	ClassToEvent	Q		16	C			
 22646	ClassToEvent	$		17	C			
 22614	ClassTour	C	4	1	C - Competitive			
-22615	ClassTour	G	1	2	G - Grass Roots			
-22616	ClassTour	F	1	3	F - Fun			
+22616	ClassTour	F	1	3	F - Grass Roots / Fun / Novice			
 22617	ClassTour	R	9	5	R - Record			
 22618	ClassTour	E	7	9	E - National Record			
 22619	ClassTour	L	8	10	L - Ranking List			
@@ -818,9 +817,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22561	IwwfRampMax	L7		87	5 Foot	0.235	5	
 22561	IwwfRampMax	L8		88	5 Foot	0.235	5	
 0	IwwfRecords	IB-S		471	Intl Boys U17 - Slalom		64	4 bouys at 10.25 @ 58kph 11/14/2022 Charlie Ross
-0	IwwfRecords	IB-T		472	Intl Boys U17 - Trick		12050	10/27/2019 Patricio Font
+0	IwwfRecords	IB-T		472	Intl Boys U17 - Trick		12440	7/15/2023 Matias Gonzales
 0	IwwfRecords	IB-J		473	Intl Boys U17 - Jump		59.1	5.5ft (1.65m) at 51 kph max 8/8/2010 Tim Bradstreet
-0	IwwfRecords	IB-O		474	Intl Boys U17 Overall		2647.57	5/22/2022 Martin Labra
+0	IwwfRecords	IB-O		474	Intl Boys U17 Overall		2703.46	5/21/2023 Martin Labra
 0	IwwfRecords	IG-S		481	Intl Girls U17 - Slalom		56	2 bouys at 10.75 @ 55kph 1/8/2017 Brook Baldwin
 0	IwwfRecords	IG-T		482	Intl Girls U17 - Trick		10440	1/8/2017 Anna Gay
 0	IwwfRecords	IG-J		483	Intl Girls U17 - Jump		46.0	1/5/2017 Dominique Grondin-Allard
@@ -829,7 +828,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
 0	IwwfRecords	IM-O		394	Intl Men Overall		2660.12	10/14/2022 Joel Poland
-0	IwwfRecords	IW-S		401	Intl Women - Slalom		70.50	4.50 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 7/6/2019 Regina Jaquess
+0	IwwfRecords	IW-S		401	Intl Women - Slalom		71.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
 0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
 0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
 0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26	5/19/2012 Natallia Berdnikava

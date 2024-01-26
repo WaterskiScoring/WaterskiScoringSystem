@@ -120,6 +120,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.SendSkierListButton = new System.Windows.Forms.Button();
 			this.SaveFilterButton = new System.Windows.Forms.Button();
+			this.navPublishRunorder = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.EventRegDataGridView)).BeginInit();
 			this.TopNavMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PrintDataGridView)).BeginInit();
@@ -440,6 +441,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navPrint,
             this.navPrintFormButton,
             this.navPublish,
+            this.navPublishRunorder,
             this.navColumnSelect,
             this.navSort,
             this.navSave,
@@ -971,6 +973,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SaveFilterButton.UseVisualStyleBackColor = true;
 			this.SaveFilterButton.Click += new System.EventHandler(this.SaveFilterButton_Click);
 			// 
+			// navPublishRunorder
+			// 
+			this.navPublishRunorder.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublishRunorder.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublishRunorder.Name = "navPublishRunorder";
+			this.navPublishRunorder.Size = new System.Drawing.Size(104, 39);
+			this.navPublishRunorder.Text = "Publish RunOrder";
+			this.navPublishRunorder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublishRunorder.Click += new System.EventHandler(this.navPublishRunorder_Click);
+			// 
 			// RunningOrderTour
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1081,5 +1093,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.Button SendSkierListButton;
 		private System.Windows.Forms.Button SaveFilterButton;
 		private System.Windows.Forms.ToolStripButton navPublish;
+		private System.Windows.Forms.ToolStripButton navPublishRunorder;
 	}
 }

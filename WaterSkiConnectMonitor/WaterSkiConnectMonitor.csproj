@@ -15,7 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>C:\WaterskiScoring\GitHub\WaterskiScoringSystem\WaterSkiConnectMonitor\publish\</PublishUrl>
+    <PublishUrl>C:\WaterskiScoring\GitHub\WaterskiScoringSystem\PublishMonitor\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -24,16 +24,16 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <InstallUrl>http://www.waterskiresults.com/WaterSkiConnectMonitor/</InstallUrl>
-    <SupportUrl>http://waterskiresults.com/</SupportUrl>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>https://www.waterskiresults.com/AppRepo/WaterSkiConnectMonitor/</InstallUrl>
+    <SupportUrl>https://www.waterskiresults.com/AppRepo/WaterSkiConnectMonitor/</SupportUrl>
     <ProductName>WaterSkiConnectMonitor</ProductName>
     <PublisherName>Mass Water Ski Association</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationVersion>2.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>

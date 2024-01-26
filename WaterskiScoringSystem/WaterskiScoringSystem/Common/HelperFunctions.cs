@@ -14,26 +14,6 @@ namespace WaterskiScoringSystem.Common {
 		public static char[] SingleQuoteDelim = new char[] { '\'' };
 		public static String TabChar = "\t";
 
-		public static String getDatabaseFilenameFromConnectString() {
-			String curDatabaseFilename = "";
-			String curAppConnectString = Properties.Settings.Default.waterskiConnectionStringApp;
-
-			String[] curAttrEntry;
-			String[] curConnAttrList = curAppConnectString.Split( ';' );
-			for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
-				curAttrEntry = curConnAttrList[idx].Split( '=' );
-				if ( curAttrEntry[0].ToLower().Trim().Equals( "data source" ) ) {
-					if ( curAttrEntry[1].StartsWith( "|DataDirectory|\\" ) ) {
-						curDatabaseFilename = AppDomain.CurrentDomain.GetData( "DataDirectory" ) + "\\" + curAttrEntry[1].Substring( 16 );
-					} else {
-						curDatabaseFilename = curAttrEntry[1];
-					}
-					break;
-				}
-			}
-			return curDatabaseFilename;
-		}
-
 		public static String getEventGroupFilterNcwsa( String inGroupValue ) {
 			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "AgeGroup = 'CM' ";
 			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "AgeGroup = 'CW' ";
@@ -203,6 +183,10 @@ namespace WaterskiScoringSystem.Common {
 			else return false;
 		}
 
+		public static bool isCollegiateSanction( String inSanctionId ) {
+			if ( inSanctionId.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) return true;
+			return false;
+		}
 		public static bool isCollegiateEvent( String inTourRules ) {
 			if ( inTourRules.ToLower().Equals( "ncwsa" ) ) return true;
 			return false;
@@ -455,26 +439,22 @@ namespace WaterskiScoringSystem.Common {
 				curFileFilter = inFileFilter;
 			}
 
-			SaveFileDialog myFileDialog = new SaveFileDialog();
+			SaveFileDialog curFileDialog = new SaveFileDialog();
 			String curPath = Properties.Settings.Default.ExportDirectory;
-			myFileDialog.InitialDirectory = curPath;
-			myFileDialog.Filter = curFileFilter;
-			myFileDialog.FilterIndex = 1;
+			curFileDialog.InitialDirectory = curPath;
+			curFileDialog.Filter = curFileFilter;
+			curFileDialog.FilterIndex = 1;
 			if ( inFileName == null ) {
-				myFileDialog.FileName = "";
+				curFileDialog.FileName = "";
 			} else {
-				myFileDialog.FileName = inFileName;
+				curFileDialog.FileName = inFileName;
 			}
 
 			try {
-				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-					returnFileName = myFileDialog.FileName;
+				if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+					returnFileName = curFileDialog.FileName;
 					if ( returnFileName != null ) {
-						int delimPos = returnFileName.LastIndexOf( '\\' );
-						String curFileName = returnFileName.Substring( delimPos + 1 );
-
-
-						if ( curFileName.IndexOf( '.' ) < 0 ) {
+						if ( Path.GetExtension( returnFileName ) == null) { 
 							String curDefaultExt = ".txt";
 							String[] curList = curFileFilter.Split( '|' );
 							if ( curList.Length > 0 ) {
@@ -502,21 +482,17 @@ namespace WaterskiScoringSystem.Common {
 			String curMethodName = "getExportFileByName";
 			StreamWriter outBuffer = null;
 
-			SaveFileDialog myFileDialog = new SaveFileDialog();
+			SaveFileDialog curFileDialog = new SaveFileDialog();
 			String curPath = Properties.Settings.Default.ExportDirectory;
-			myFileDialog.InitialDirectory = curPath;
-			myFileDialog.FileName = inFileName;
+			curFileDialog.InitialDirectory = curPath;
+			curFileDialog.FileName = inFileName;
 
 			try {
-				if ( myFileDialog.ShowDialog() == DialogResult.OK ) {
-					String myFileName = myFileDialog.FileName;
-					if ( myFileName != null ) {
-						int delimPos = myFileName.LastIndexOf( '\\' );
-						String curFileName = myFileName.Substring( delimPos + 1 );
-						if ( curFileName.IndexOf( '.' ) < 0 ) {
-							myFileName += ".wsp";
-						}
-						outBuffer = File.CreateText( myFileName );
+				if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
+					String curFileName = curFileDialog.FileName;
+					if ( curFileName != null ) {
+						if ( Path.GetExtension(curFileName) == null ) curFileName += ".txt";
+						outBuffer = File.CreateText( curFileName );
 					}
 				}
 			} catch ( Exception ex ) {

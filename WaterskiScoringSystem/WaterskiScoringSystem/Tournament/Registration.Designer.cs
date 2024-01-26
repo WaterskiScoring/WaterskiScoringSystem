@@ -95,6 +95,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SkierNameNotEligLabel = new System.Windows.Forms.Label();
 			this.SkierWithdrawnLabel = new System.Windows.Forms.Label();
 			this.ColorCodeLabel = new System.Windows.Forms.Label();
+			this.navSearch = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.tourRegDataGridView)).BeginInit();
 			this.winStatus.SuspendLayout();
 			this.navMainMenu.SuspendLayout();
@@ -506,6 +507,7 @@ namespace WaterskiScoringSystem.Tournament {
             this.navFilter,
             this.navSort,
             this.navSave,
+            this.navSearch,
             this.navAdd,
             this.navEdit,
             this.navRemove,
@@ -621,7 +623,7 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// navShowMember
 			// 
-			this.navShowMember.Image = global::WaterskiScoringSystem.Properties.Resources.magnifying_glass_with_eye;
+			this.navShowMember.Image = global::WaterskiScoringSystem.Properties.Resources.openfolder;
 			this.navShowMember.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.navShowMember.Name = "navShowMember";
 			this.navShowMember.Size = new System.Drawing.Size(88, 39);
@@ -748,6 +750,16 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ColorCodeLabel.Text = "Color Code:";
 			this.ColorCodeLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
+			// navSearch
+			// 
+			this.navSearch.Image = global::WaterskiScoringSystem.Properties.Resources.magnifying_glass_with_eye;
+			this.navSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navSearch.Name = "navSearch";
+			this.navSearch.Size = new System.Drawing.Size(46, 39);
+			this.navSearch.Text = "Search";
+			this.navSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSearch.Click += new System.EventHandler(this.navInsert_Click);
+			// 
 			// Registration
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -839,5 +851,6 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn PK;
 		private System.Windows.Forms.DataGridViewTextBoxColumn SanctionId;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Updated;
+		private System.Windows.Forms.ToolStripButton navSearch;
 	}
 }

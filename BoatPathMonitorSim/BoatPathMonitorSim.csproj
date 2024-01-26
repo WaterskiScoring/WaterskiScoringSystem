@@ -15,7 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>C:\WaterskiScoring\GitHub\WaterskiScoringSystem\BoatPathMonitorSim\publish\</PublishUrl>
+    <PublishUrl>C:\WaterskiScoring\GitHub\WaterskiScoringSystem\PublishSim\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
