@@ -12,7 +12,6 @@ namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveWeb {
 		private static String LiveWebScoreboardApi = Properties.Settings.Default.UriWaterskiResultsApi + "/ImportScores";
 		private static String LiveWebPublishFileApi = Properties.Settings.Default.UriWaterskiResultsApi + "/ImportFiles";
-        //public static String myExportFileDownloadBase = Properties.Settings.Default.UriWaterskiResults + "/tournament/";
 
 		private static String myReportFileUploadContentType = "application/x-www-form-urlencoded;charset=UTF-8";
 

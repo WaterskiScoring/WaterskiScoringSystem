@@ -57,7 +57,8 @@ namespace WaterskiScoringSystem.Tools {
                     curViewRow.Cells["PK"].Value = HelperFunctions.getDataRowColValue( curDataRow, "PK", "0" );
                     curViewRow.Cells["ReportTitle"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReportTitle", "" );
                     curViewRow.Cells["LastUpdateDate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "LastUpdateDate", "" );
-                    String curExportFileRef = HelperFunctions.getDataRowColValue( curDataRow, "ReportFileUri", "" );
+                    //String curExportFileRef = HelperFunctions.getDataRowColValue( curDataRow, "ReportFileUri", "" );
+					String curExportFileRef = Properties.Settings.Default.UriWaterskiResults + HelperFunctions.getDataRowColValue( curDataRow, "ReportFilePath", "" );
 					curViewRow.Cells["ExportFileUri"].Value = curExportFileRef;
 					if ( HelperFunctions.isObjectEmpty(curExportFileRef)) curViewRow.Cells["ExportFileUri"].Value = "File not available";
                 }

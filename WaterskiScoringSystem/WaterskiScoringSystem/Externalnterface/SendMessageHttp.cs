@@ -100,14 +100,18 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curRequest.KeepAlive = true;
 				curRequest.Timeout = 500000;
 
-				if (inUserAccount != null) {
-					if (inUrl.Contains("usawaterski")) {
-						inHeaderParams.Add("WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword);
+				if ( inUserAccount != null ) {
+					if ( inUrl.Contains( "usawaterski" ) ) {
+						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
+					} else if ( inUrl.Contains( "waterskiresults" ) ) {
+						curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 					} else {
-						curRequest.Credentials = new NetworkCredential(inUserAccount, inPassword);
+						curRequest.Credentials = new NetworkCredential( inUserAccount, inPassword );
 					}
+				} else if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
 				}
-				if (inUrl.ToLower().StartsWith("https")) {
+				if ( inUrl.ToLower().StartsWith("https")) {
 					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 					ServicePointManager.Expect100Continue = false;
 				}
@@ -258,6 +262,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 
             try {
                 curWebClientRequest = new WebClient();
+				if ( inUrl.Contains( "waterskiresults" ) ) {
+					curWebClientRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+				}
+				
                 curWebClientRequest.DownloadFile( inUrl, inSaveFileLocation );
                 return true;
             
@@ -581,9 +589,12 @@ namespace WaterskiScoringSystem.Externalnterface {
                         curRequest.Headers[curKey] = inHeaderParams[curKey];
                     }
                 }
+				if ( inUrl.Contains( "waterskiresults" ) ) {
+					curRequest.Headers["WSTIMSAPI"] = "LiveWebScoreboard";
+				}
 
-                // Create POST data and convert it to a byte array.
-                if (inMessage != null) {
+				// Create POST data and convert it to a byte array.
+				if ( inMessage != null) {
                     byte[] byteArray = Encoding.UTF8.GetBytes( inMessage );
 
                     // Set the ContentLength property of the WebRequest.
