@@ -47,7 +47,18 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( ") " );
 			curTableList.Add( exportTableWithData( "OfficialWork", new String[] { "SanctionId", "MemberId" }, curSqlStmt.ToString(), "Update" ) );
 
-
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT TR.* FROM TourReg TR " );
+			curSqlStmt.Append( "INNER JOIN OfficialWork OW on OW.SanctionId = TR.SanctionId AND OW.MemberID = TR.MemberId " );
+			curSqlStmt.Append( String.Format( "Where TR.SanctionId = '{0}' ", inSanctionId ) );
+			curSqlStmt.Append( "AND (" );
+			curSqlStmt.Append( "JudgeChief = 'Y' OR JudgeAsstChief = 'Y' OR JudgeAppointed = 'Y' " );
+			curSqlStmt.Append( "OR DriverChief = 'Y' OR DriverAsstChief = 'Y' OR DriverAppointed = 'Y' " );
+			curSqlStmt.Append( "OR ScoreChief = 'Y' OR ScoreAsstChief = 'Y' OR ScoreAppointed = 'Y' " );
+			curSqlStmt.Append( "OR SafetyChief = 'Y' OR SafetyAsstChief = 'Y' OR SafetyAppointed = 'Y' " );
+			curSqlStmt.Append( "OR TechChief = 'Y' OR TechAsstChief = 'Y' " );
+			curSqlStmt.Append( ") " );
+			curTableList.Add( exportTableWithData( "TourReg", new String[] { "SanctionId", "MemberId", "AgeGroup" }, curSqlStmt.ToString(), "Update" ) );
 
 			curTables = new Dictionary<string, object> { { "Tables", curTableList } };
 			curLiveWebRequest = new Dictionary<string, object> { { "LiveWebRequest", curTables } };
@@ -90,7 +101,12 @@ namespace LiveWebMessageHandler.Externalnterface {
 				curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
 				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event" }, curSqlStmt.ToString(), "Update" ) );
 			}
-			
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM TourProperties " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey = 'RunningOrderSort{1}' ", inSanctionId, inEvent ) );
+			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
+
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM DivOrder " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' ", inSanctionId, inEvent ) );
@@ -789,7 +805,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 
 						if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
 							curValue = HelperFunctions.getDataRowColValue( curRow, curColumn.ColumnName, "" );
-							if ( HelperFunctions.isObjectEmpty( curValue ) ) curValue = new DateTime().ToString( "yyyy-MM-dd HH:mm:ss" );
+							if ( HelperFunctions.isObjectEmpty( curValue ) ) curValue = DateTime.Now.ToString( "yyyy-MM-dd HH:mm:ss" );
 							curTableRow.Add( curColumn.ColumnName, curValue );
 
 						} else {
