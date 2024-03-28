@@ -1019,7 +1019,7 @@ namespace WaterskiScoringSystem.Tools {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT ListCode, CodeValue, MinValue, MaxValue, CodeDesc " );
             curSqlStmt.Append( "FROM CodeValueList " );
-            curSqlStmt.Append( "WHERE ListName = 'IWWFSlalomMin' " );
+            curSqlStmt.Append( "WHERE ListName = 'IwwfSlalomMin' " );
             curSqlStmt.Append( "  AND ListCode = '" + inDiv + "' " );
             curSqlStmt.Append( "ORDER BY SortSeq" );
             DataTable curDataTable = getData( curSqlStmt.ToString() );

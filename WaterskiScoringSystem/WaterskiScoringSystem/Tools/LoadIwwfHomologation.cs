@@ -17,8 +17,6 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public bool LoadFile() {
-            bool curReturn = false;
-            int delimPos = 0;
             String curTourDirectory = "";
             String curFileName = "IwwfHomologationDossier.txt";
             String curDestFileName = mySanctionNum + "HD.TXT";
@@ -32,6 +30,7 @@ namespace WaterskiScoringSystem.Tools {
                     if ( curDeploymentDirectory.Length < 1 ) {
                         curDeploymentDirectory = "C:\\Users\\AllenFamily\\Documents\\Visual Studio 2010\\Projects\\WaterskiScoringSystem\\WaterskiScoringSystem\\\bin\\Debug";
                     }
+                
                 } catch ( Exception ex ) {
                     if ( curDeploymentDirectory == null ) { curDeploymentDirectory = ""; }
                     if ( curDeploymentDirectory.Length < 1 ) {
@@ -49,28 +48,16 @@ namespace WaterskiScoringSystem.Tools {
                         curDeploymentDirectory += "\\";
                     }
 
-                    //Declare and instantiate a new process component.
-                    System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                    //Do not receive an event when the process exits.
-                    curOSProcess.EnableRaisingEvents = true;
-
-                    //The "/C" Tells Windows to Run The Command then Terminate 
-                    string curCmdLine;
-                    curCmdLine = "/C copy \"" + Path.Combine( curDeploymentDirectory, curFileName ).ToString() 
-                        + "\" \"" + Path.Combine( curTourDirectory, curDestFileName ).ToString() + "\" \n";
-
-                    System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                    curOSProcess.Close();
+                    File.Copy( Path.Combine( curDeploymentDirectory, curFileName ).ToString(), Path.Combine( curTourDirectory, curDestFileName ).ToString() );
                     MessageBox.Show( "File " + curDeploymentDirectory + curFileName + "\n copied to \n" + curTourDirectory + curDestFileName );
+                    return true;
                 }
+            
             } catch ( Exception ex ) {
                 MessageBox.Show( "Error loading IwwfHomologation file to tournament directory " + "\n\nError: " + ex.Message );
             }
-            return curReturn;
-
-
-            return true;
+            
+            return false;
         }
     }
 }

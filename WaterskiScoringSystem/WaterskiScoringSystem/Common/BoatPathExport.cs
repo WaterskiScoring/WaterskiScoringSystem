@@ -115,6 +115,11 @@ namespace WaterskiScoringSystem.Common {
 				BoatTimeBuoy2.Visible = false;
 				BoatTimeBuoy3.Visible = false;
 
+				Space4.Visible = false;
+				PathDevJumpCut.Visible = false;
+				PathDevJumpFlight.Visible = false;
+				PathDevJumpCumul.Visible = false;
+
 			} else {
 				this.Text += " - Jump";
 
@@ -278,18 +283,18 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		private void loadDataGridSlalom( DataRow curRow, DataGridViewRow curViewRow, Font curFontBold ) {
+			String curSkierRunNum = HelperFunctions.getDataRowColValue( curRow, "SkierRunNum", "" );
+			if ( HelperFunctions.isObjectEmpty( curSkierRunNum ) ) return;
 
-			Decimal curPassScore = (Decimal)curRow["PassScore"];
-			if ( curRow["SkierRunNum"] != System.DBNull.Value ) curViewRow.Cells["SkierRunNum"].Value = ( (Int16)curRow["SkierRunNum"] ).ToString();
-			curViewRow.Cells["SkierRunNum"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierRunNum", "" );
-
-			curViewRow.Cells["Score"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "Score", "", 2 );
-			curViewRow.Cells["PassScore"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PassScore", "", 2 );
-			curViewRow.Cells["BoatTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTime", "", 2 );
+			Decimal curPassScore = HelperFunctions.getDataRowColValueDecimal( curRow, "PassScore", 0 );
+			curViewRow.Cells["SkierRunNum"].Value = curSkierRunNum;
+			curViewRow.Cells["Score"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "Score", 0 );
+			curViewRow.Cells["PassScore"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PassScore", 0 );
+			curViewRow.Cells["BoatTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTime", 0 );
 			curViewRow.Cells["TimeInTol"].Value = HelperFunctions.getDataRowColValue( curRow, "TimeInTol", "" );
 
 			if ( curRow["PathDevBuoy0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
+				curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", 0 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0
 					&& Math.Abs( (Decimal)curRow["PathDevBuoy0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevBuoy0"].Style.Font = curFontBold;
@@ -297,7 +302,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 			}
 			if ( curRow["PathDevZone0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevZone0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone0", "", 2 );
+				curViewRow.Cells["PathDevZone0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone0", 0 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] > 0 
 					&& Math.Abs( (Decimal)curRow["PathDevZone0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MinDev"] ) {
 					curViewRow.Cells["PathDevZone0"].Style.Font = curFontBold;
@@ -305,7 +310,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 			}
 			if ( curRow["PathDevCum0"] != System.DBNull.Value ) {
-				curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 2 );
+				curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", 0 );
 				if ( (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] > 0
 					&& Math.Abs( (Decimal)curRow["PathDevCum0"] ) > (Decimal)myBoatPathDevMax.Rows[0]["MaxDev"] ) {
 					curViewRow.Cells["PathDevCum0"].Style.Font = curFontBold;
@@ -316,21 +321,21 @@ namespace WaterskiScoringSystem.Common {
 				if ( curPassScore <= (curIdx - 1) ) break;
 
 				if ( curRow["PathDevBuoy" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy" + curIdx, "", 2 );
+					curViewRow.Cells["PathDevBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy" + curIdx, 0 );
 					if ( Math.Abs( (Decimal)curRow["PathDevBuoy" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MinDev"] ) {
 						curViewRow.Cells["PathDevBuoy" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevBuoy" + curIdx].Style.ForeColor = Color.Red;
 					}
 				}
 				if ( curRow["PathDevCum" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevCum" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum" + curIdx, "", 2 );
+					curViewRow.Cells["PathDevCum" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum" + curIdx, 0 );
 					if ( Math.Abs( (Decimal)curRow["PathDevCum" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MaxDev"] ) {
 						curViewRow.Cells["PathDevCum" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevCum" + curIdx].Style.ForeColor = Color.Red;
 					}
 				}
 				if ( curRow["PathDevZone" + curIdx] != System.DBNull.Value ) {
-					curViewRow.Cells["PathDevZone" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone" + curIdx, "", 2 );
+					curViewRow.Cells["PathDevZone" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone" + curIdx, 0 );
 					if ( Math.Abs( (Decimal)curRow["PathDevZone" + curIdx]) > (Decimal)myBoatPathDevMax.Rows[curIdx]["MinDev"] ) {
 						curViewRow.Cells["PathDevZone" + curIdx].Style.Font = curFontBold;
 						curViewRow.Cells["PathDevZone" + curIdx].Style.ForeColor = Color.Red;
@@ -343,11 +348,11 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		private void loadDataGridJump( DataRow curRow, DataGridViewRow curViewRow ) {
-			curViewRow.Cells["SkierRunNum"].Value = ( (Byte)curRow["PassNum"] ).ToString();
+			curViewRow.Cells["SkierRunNum"].Value = HelperFunctions.getDataRowColValue( curRow, "PassNum", "0" );
 
 			curViewRow.Cells["SkierBoatPath"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierBoatPath", "" );
-			curViewRow.Cells["ScoreFeet"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreFeet", "", 0 );
-			curViewRow.Cells["ScoreMeters"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreMeters", "", 2 );
+			curViewRow.Cells["ScoreFeet"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreFeet", 0 );
+			curViewRow.Cells["ScoreMeters"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "ScoreMeters", 0 );
 
 			curViewRow.Cells["TimeInTol"].Value = HelperFunctions.getDataRowColValue( curRow, "TimeInTol", "" );
 			curViewRow.Cells["BoatSplitTime"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatSplitTime", "", 2 );
@@ -357,12 +362,16 @@ namespace WaterskiScoringSystem.Common {
 			curViewRow.Cells["BoatTimeBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy2", "", 2 );
 			curViewRow.Cells["BoatTimeBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "BoatTimeBuoy3", "", 2 );
 
-			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
-			curViewRow.Cells["PathDevBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy1", "", 2 );
-			curViewRow.Cells["PathDevBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", "", 2 );
-			curViewRow.Cells["PathDevBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", "", 2 );
-			curViewRow.Cells["PathDevBuoy4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", "", 2 );
-			curViewRow.Cells["PathDevBuoy5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy5", "", 2 );
+			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", 0 );
+			curViewRow.Cells["PathDevBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy1", 0 );
+			curViewRow.Cells["PathDevBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", 0 );
+			curViewRow.Cells["PathDevBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", 0 );
+			curViewRow.Cells["PathDevBuoy4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", 0 );
+			curViewRow.Cells["PathDevBuoy5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy5", 0 );
+
+			curViewRow.Cells["PathDevJumpCut"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", 0 ) - HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", 0 );
+			curViewRow.Cells["PathDevJumpFlight"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", 0 ) - HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", 0 );
+			curViewRow.Cells["PathDevJumpCumul"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", 0 ) - HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", 0 );
 		}
 
 		private void dataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {

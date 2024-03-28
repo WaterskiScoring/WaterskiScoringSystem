@@ -44,27 +44,27 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '24.02', 24.02, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '24.10', 24.10, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
 
                 copyDatabaseFile();
                 
-				if (myDatabaseVersion < 23.10M ) {
+				if (myDatabaseVersion < 24.10M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         String curFileRef = Path.Combine(Application.StartupPath, "DatabaseSchemaUpdates.sql");
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
 
-				if ( myDatabaseVersion < 24.01M ) {
+				if ( myDatabaseVersion < 24.09M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}
 				}
 
-				if ( myDatabaseVersion < 23.03M ) {
+				if ( myDatabaseVersion < 24.05M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         loadTrickList();
                     }
@@ -339,102 +339,36 @@ namespace WaterskiScoringSystem.Tools {
         private bool deleteTempFile( String inFileName ) {
 			String curMethodName = "UpgradeDatabase: deleteTempFile: ";
 			try {
-                //Declare and instantiate a new process component.
-                System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                //Do not receive an event when the process exits.
-                curOSProcess.EnableRaisingEvents = true;
-
-                //The "/C" Tells Windows to Run The Command then Terminate 
-                string curCmdLine;
-                curCmdLine = "/C DEL \"" + inFileName + "\" \n";
-                System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                curOSProcess.Close();
+				File.Delete( inFileName );
                 return true;
             
 			} catch ( Exception ex ) {
 				Log.WriteFile( String.Format( "{0}Error: CDeleting temp file {1}\n\nError: {2}"
 					, curMethodName, inFileName, ex.Message ) );
-				return false;
             }
-        }
+			return false;
+		}
 
-        private bool copyDatabaseFile() {
-            bool curReturn = false;
-            int delimPos = 0;
-            String curDataDirectory = "", curDatabaseFileName = "", curDestFileName = "";
+		private bool copyDatabaseFile() {
+			String curMethodName = "UpgradeDatabase: copyDatabaseFile: ";
 
+			String curAppConnectString = DataAccess.getConnectionString();
+			String curAppRegName = Properties.Settings.Default.AppRegistryName;
+			String curDatabaseFileName = DataAccess.getDatabaseFilename( curAppConnectString );
+			String curDataDirectory = Path.GetDirectoryName( curDatabaseFileName );
+			String curDestFileName = curDatabaseFileName + "." + DateTime.Now.ToString( "yyyyMMddHHmm" ) + ".bak";
+			
             try {
-                String curAppConnectString = DataAccess.getConnectionString();
-                String curAppRegName = Properties.Settings.Default.AppRegistryName;
-                RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
-
-                try {
-                    curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-                    if (curDataDirectory == null) {
-                        if (curAppRegKey.GetValue( "DataDirectory" ) == null) {
-                            curDataDirectory = Application.UserAppDataPath;
-                        } else {
-                            curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-                        }
-                    } else if (curDataDirectory.Length > 3) {
-                        //Use value found
-                    } else {
-                        if (curAppRegKey.GetValue( "DataDirectory" ) == null) {
-                            curDataDirectory = Application.UserAppDataPath;
-                        } else {
-                            curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-                        }
-                    }
-                } catch {
-                    if (curAppRegKey.GetValue( "DataDirectory" ) == null) {
-                        curDataDirectory = Application.UserAppDataPath;
-                    } else {
-                        curDataDirectory = curAppRegKey.GetValue( "DataDirectory" ).ToString();
-                    }
-                }
-
-                String curAttrName = "", curAttrValue = "";
-                String[] curAttrEntry;
-                String[] curConnAttrList = curAppConnectString.Split( ';' );
-
-                for ( int idx = 0; idx < curConnAttrList.Length; idx++ ) {
-                    curAttrEntry = curConnAttrList[idx].Split( '=' );
-                    curAttrName = curAttrEntry[0];
-                    curAttrValue = curAttrEntry[1];
-                    if ( curAttrName.ToLower().Trim().Equals( "data source" ) ) {
-                        delimPos = curAttrValue.LastIndexOf( '\\' );
-                        if ( delimPos > 0 ) {
-                            curDatabaseFileName = curAttrValue.Substring( delimPos + 1 );
-                            curDestFileName = curDatabaseFileName + "." + DateTime.Now.ToString( "yyyyMMddHHmm") + ".bak";
-                        }
-                    }
-                }
-
-                if ( curDatabaseFileName.Length > 0 ) {
-                    if ( curDataDirectory.Substring( curDataDirectory.Length - 1 ).Equals( "\\" ) ) {
-                    } else {
-                        curDataDirectory += "\\";
-                    }
-
-                    //Declare and instantiate a new process component.
-                    System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                    //Do not receive an event when the process exits.
-                    curOSProcess.EnableRaisingEvents = true;
-
-                    //The "/C" Tells Windows to Run The Command then Terminate 
-                    string curCmdLine;
-                    curCmdLine = "/C copy \"" + curDataDirectory + curDatabaseFileName + "\" \"" + curDataDirectory + curDestFileName + "\" \n";
-                    System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                    curOSProcess.Close();
+				if ( curDatabaseFileName.Length > 0 ) {
+					File.Copy( curDatabaseFileName, curDestFileName );
+					return true;
                 }
             
 			} catch ( Exception ex ) {
-                MessageBox.Show( "Error backing up current database file " + "\n\nError: " + ex.Message );
+                MessageBox.Show( curMethodName + String.Format("Error backing up current database file {0} to {1} \n\nError: {2}", curDatabaseFileName, curDestFileName, ex.Message) );
             }
             
-			return curReturn;
+			return false;
         }
 
         private String replaceLinefeed( String inValue ) {

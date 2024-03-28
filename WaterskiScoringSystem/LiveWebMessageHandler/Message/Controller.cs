@@ -204,7 +204,11 @@ namespace LiveWebMessageHandler.Message {
 					
 					} else if ( msgType.Equals( "RunOrder" ) ) {
 						curReturn = handleRunOrderMsg( curDataRow );
+					
+					} else if ( msgType.Equals( "TeamScore" ) ) {
+						curReturn = handleTeamScoreMsg( curDataRow );
 					}
+
 					if ( !curReturn ) break;
 				}
 				
@@ -310,6 +314,31 @@ namespace LiveWebMessageHandler.Message {
 				String curEventGroup = HelperFunctions.getAttributeValue( curMsgDataList, "eventGroup" );
 				int curRound = (int)HelperFunctions.getAttributeValueNum( curMsgDataList, "round" );
 				ExportLiveWeb.exportRunningOrder( curSanctionId, curEvent, curEventGroup, curRound );
+
+				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
+				addViewMessage( curMsg, false, false );
+				Log.WriteFile( curMsg );
+
+				removeLiveWebMsgSent( (int)curDataRow["PK"] );
+				return true;
+
+			} catch ( Exception ex ) {
+				String curErrMsg = String.Format( "{0}Request failed: {1}", curMethodName, ex.Message );
+				addViewMessage( curErrMsg, true, true );
+				Log.WriteFile( curErrMsg );
+				return false;
+			}
+		}
+
+		private bool handleTeamScoreMsg( DataRow curDataRow ) {
+			String curMethodName = "Controller: handleTeamScoreMsg: ";
+			Dictionary<string, object> curMsgDataList = null;
+
+			try {
+				curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( (String)curDataRow["MsgData"] );
+
+				String curSanctionId = HelperFunctions.getAttributeValue( curMsgDataList, "sanctionId" );
+				ExportLiveWeb.exportTeamScores( curSanctionId );
 
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );

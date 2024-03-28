@@ -551,6 +551,24 @@ namespace WaterskiScoringSystem.Tournament {
 			myTourRegAddDialog.ShowDialog( this );
 		}
 
+		private void navIncidentReport_Click( object sender, EventArgs e ) {
+			if ( isDataModified ) {
+				try {
+					isDataModified = false;
+					winStatusMsg.Text = "Previous row saved.";
+				} catch ( Exception excp ) {
+					MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+				}
+			}
+
+			String memberId = (String)tourRegDataGridView.CurrentRow.Cells["MemberId"].Value;
+			SafetyIncidentReport curForm = new SafetyIncidentReport();
+
+			// Open dialog for selecting skiers
+			curForm.MemberId = memberId;
+			curForm.ShowDialog( this );
+		}
+
 		private void navRemove_Click( object sender, EventArgs e ) {
 			if ( tourRegDataGridView.SelectedRows.Count > 0 ) {
 				foreach ( DataGridViewRow curViewRow in tourRegDataGridView.SelectedRows ) {

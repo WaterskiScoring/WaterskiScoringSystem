@@ -59,6 +59,8 @@
 			this.navPrint = new System.Windows.Forms.ToolStripButton();
 			this.navPrintFormButton = new System.Windows.Forms.ToolStripButton();
 			this.navPublish = new System.Windows.Forms.ToolStripButton();
+			this.navPublishRunorder = new System.Windows.Forms.ToolStripButton();
+			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.PrintDataGridView = new System.Windows.Forms.DataGridView();
 			this.PrintEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PrintEventGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -104,7 +106,6 @@
 			this.PickAndChoseButton = new System.Windows.Forms.Button();
 			this.WaterskiConnectLabel = new System.Windows.Forms.Label();
 			this.SendSkierListButton = new System.Windows.Forms.Button();
-			this.navSort = new System.Windows.Forms.ToolStripButton();
 			this.roundActiveSelect = new WaterskiScoringSystem.Common.RoundSelect();
 			this.winStatus.SuspendLayout();
 			this.TopNavMenu.SuspendLayout();
@@ -177,6 +178,7 @@
             this.navPrint,
             this.navPrintFormButton,
             this.navPublish,
+            this.navPublishRunorder,
             this.navExport,
             this.navSave,
             this.navExportRunorder,
@@ -219,6 +221,26 @@
 			this.navPublish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.navPublish.Click += new System.EventHandler(this.navPublish_Click);
 			// 
+			// navPublishRunorder
+			// 
+			this.navPublishRunorder.Image = global::WaterskiScoringSystem.Properties.Resources.Terminal;
+			this.navPublishRunorder.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navPublishRunorder.Name = "navPublishRunorder";
+			this.navPublishRunorder.Size = new System.Drawing.Size(104, 39);
+			this.navPublishRunorder.Text = "Publish RunOrder";
+			this.navPublishRunorder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navPublishRunorder.Click += new System.EventHandler(this.navPublishRunorder_Click);
+			// 
+			// navSort
+			// 
+			this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
+			this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.navSort.Name = "navSort";
+			this.navSort.Size = new System.Drawing.Size(32, 39);
+			this.navSort.Text = "Sort";
+			this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.navSort.Click += new System.EventHandler(this.navSort_Click);
+			// 
 			// PrintDataGridView
 			// 
 			this.PrintDataGridView.AllowUserToAddRows = false;
@@ -231,7 +253,7 @@
 			this.PrintDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
 			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
 			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
 			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -257,7 +279,7 @@
             this.PrintState});
 			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
 			dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle16.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle16.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
 			dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
 			dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -281,7 +303,6 @@
 			this.PrintEvent.ReadOnly = true;
 			this.PrintEvent.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintEvent.Visible = false;
-			this.PrintEvent.Width = 38;
 			// 
 			// PrintEventGroup
 			// 
@@ -292,7 +313,7 @@
 			this.PrintEventGroup.Name = "PrintEventGroup";
 			this.PrintEventGroup.ReadOnly = true;
 			this.PrintEventGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintEventGroup.Width = 61;
+			this.PrintEventGroup.Width = 73;
 			// 
 			// PrintAgeGroup
 			// 
@@ -305,7 +326,7 @@
 			this.PrintAgeGroup.ReadOnly = true;
 			this.PrintAgeGroup.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintAgeGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintAgeGroup.Width = 28;
+			this.PrintAgeGroup.Width = 35;
 			// 
 			// PrintRunOrderGroup
 			// 
@@ -315,7 +336,7 @@
 			this.PrintRunOrderGroup.DefaultCellStyle = dataGridViewCellStyle4;
 			this.PrintRunOrderGroup.HeaderText = "RO Grp";
 			this.PrintRunOrderGroup.Name = "PrintRunOrderGroup";
-			this.PrintRunOrderGroup.Width = 66;
+			this.PrintRunOrderGroup.Width = 80;
 			// 
 			// PrintRound
 			// 
@@ -327,7 +348,7 @@
 			this.PrintRound.Name = "PrintRound";
 			this.PrintRound.ReadOnly = true;
 			this.PrintRound.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintRound.Width = 45;
+			this.PrintRound.Width = 51;
 			// 
 			// PrintEventRotation
 			// 
@@ -339,7 +360,7 @@
 			this.PrintEventRotation.Name = "PrintEventRotation";
 			this.PrintEventRotation.ReadOnly = true;
 			this.PrintEventRotation.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintEventRotation.Width = 71;
+			this.PrintEventRotation.Width = 86;
 			// 
 			// PrintSkierSep
 			// 
@@ -365,7 +386,7 @@
 			this.PrintSkierName.ReadOnly = true;
 			this.PrintSkierName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.PrintSkierName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.PrintSkierName.Width = 39;
+			this.PrintSkierName.Width = 51;
 			// 
 			// PrintRunOrder
 			// 
@@ -377,7 +398,7 @@
 			this.PrintRunOrder.Name = "PrintRunOrder";
 			this.PrintRunOrder.ReadOnly = true;
 			this.PrintRunOrder.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintRunOrder.Width = 58;
+			this.PrintRunOrder.Width = 69;
 			// 
 			// PrintSkierSep2
 			// 
@@ -398,7 +419,7 @@
 			this.PrintRankingScore.Name = "PrintRankingScore";
 			this.PrintRankingScore.ReadOnly = true;
 			this.PrintRankingScore.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintRankingScore.Width = 75;
+			this.PrintRankingScore.Width = 92;
 			// 
 			// PrintTeamCode
 			// 
@@ -410,7 +431,7 @@
 			this.PrintTeamCode.Name = "PrintTeamCode";
 			this.PrintTeamCode.ReadOnly = true;
 			this.PrintTeamCode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintTeamCode.Width = 56;
+			this.PrintTeamCode.Width = 68;
 			// 
 			// PrintEventClass
 			// 
@@ -422,7 +443,7 @@
 			this.PrintEventClass.Name = "PrintEventClass";
 			this.PrintEventClass.ReadOnly = true;
 			this.PrintEventClass.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintEventClass.Width = 57;
+			this.PrintEventClass.Width = 68;
 			// 
 			// PrintJumpHeight
 			// 
@@ -434,7 +455,7 @@
 			this.PrintJumpHeight.Name = "PrintJumpHeight";
 			this.PrintJumpHeight.ReadOnly = true;
 			this.PrintJumpHeight.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJumpHeight.Width = 71;
+			this.PrintJumpHeight.Width = 86;
 			// 
 			// PrintTrickBoat
 			// 
@@ -446,7 +467,7 @@
 			this.PrintTrickBoat.Name = "PrintTrickBoat";
 			this.PrintTrickBoat.ReadOnly = true;
 			this.PrintTrickBoat.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintTrickBoat.Width = 53;
+			this.PrintTrickBoat.Width = 62;
 			// 
 			// PrintState
 			// 
@@ -458,7 +479,7 @@
 			this.PrintState.Name = "PrintState";
 			this.PrintState.ReadOnly = true;
 			this.PrintState.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintState.Width = 41;
+			this.PrintState.Width = 47;
 			// 
 			// EventRegDataGridView
 			// 
@@ -820,16 +841,6 @@
 			this.SendSkierListButton.Visible = false;
 			this.SendSkierListButton.Click += new System.EventHandler(this.SendSkierListButton_Click);
 			// 
-			// navSort
-			// 
-			this.navSort.Image = ((System.Drawing.Image)(resources.GetObject("navSort.Image")));
-			this.navSort.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.navSort.Name = "navSort";
-			this.navSort.Size = new System.Drawing.Size(32, 39);
-			this.navSort.Text = "Sort";
-			this.navSort.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.navSort.Click += new System.EventHandler(this.navSort_Click);
-			// 
 			// roundActiveSelect
 			// 
 			this.roundActiveSelect.AutoScroll = true;
@@ -940,5 +951,6 @@
 		private System.Windows.Forms.Button SendSkierListButton;
 		private System.Windows.Forms.ToolStripButton navPublish;
 		private System.Windows.Forms.ToolStripButton navSort;
+		private System.Windows.Forms.ToolStripButton navPublishRunorder;
 	}
 }

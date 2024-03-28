@@ -317,7 +317,7 @@ namespace WaterskiScoringSystem.Common {
 					curColValue = ( (byte)viewRow.Cells[colName].Value ).ToString();
 
 				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) {
-					curColValue = ( (decimal)viewRow.Cells[colName].Value ).ToString( "##,###0.00" );
+					curColValue = viewRow.Cells[colName].FormattedValue.ToString();
 				
 				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) {
 					curColValue = ( (bool)viewRow.Cells[colName].Value ).ToString();

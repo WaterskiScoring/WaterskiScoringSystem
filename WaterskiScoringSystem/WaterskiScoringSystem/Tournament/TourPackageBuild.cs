@@ -397,11 +397,12 @@ namespace WaterskiScoringSystem.Tournament {
             //CheckForIncompleteSkiers();
             
             String mySanctionNum = Properties.Settings.Default.AppSanctionNum.Trim();
-            ExportPerfData myExportData = new ExportPerfData();
-            myExportData.exportTourPerfData( mySanctionNum );
-        }
+            //ExportPerfData myExportData = new ExportPerfData();
+			ExportPerfDataV2 myExportData = new ExportPerfDataV2();
+			myExportData.exportTourPerfData( mySanctionNum );
+		}
 
-        private void ScoreBookButton_Click( object sender, EventArgs e ) {
+		private void ScoreBookButton_Click( object sender, EventArgs e ) {
             //CheckForIncompleteSkiers();
 
             if (myTourRules.ToLower().Equals("iwwfx") ) {

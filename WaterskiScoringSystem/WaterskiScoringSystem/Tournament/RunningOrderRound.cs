@@ -1165,7 +1165,17 @@ namespace WaterskiScoringSystem.Tournament {
 			}
         }
 
-        private void navPublish_Click( object sender, EventArgs e ) {
+		private void navPublishRunorder_Click( object sender, EventArgs e ) {
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) LiveWebHandler.connectLiveWebHandler( mySanctionNum );
+			if ( !( LiveWebHandler.LiveWebMessageHandlerActive ) ) {
+				MessageBox.Show( "Request to publish running order but live web not successfully connected." );
+				return;
+			}
+			
+            LiveWebHandler.sendRunOrder( myEvent, mySanctionNum, "All", 0 );
+		}
+
+		private void navPublish_Click( object sender, EventArgs e ) {
             Timer curTimerObj = new Timer();
             curTimerObj.Interval = 5;
             curTimerObj.Tick += new EventHandler( publishReportTimer );
@@ -1218,8 +1228,8 @@ namespace WaterskiScoringSystem.Tournament {
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
-            Font fontPrintTitle = new Font("Arial Narrow", 12, FontStyle.Bold);
-            Font fontPrintFooter = new Font("Times New Roman", 10);
+            Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
+            Font fontPrintFooter = new Font("Times New Roman", 12);
 
             PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
             if ( curPrintDialog == null ) return false;

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -20,8 +15,6 @@ namespace WaterskiScoringSystem.Tournament {
         private String myWindowTitle;
         private String mySanctionNum;
         private String myOrigItemValue = "";
-        private String mySkierClass;
-        private String myTourRules = "";
 
         private DataRow myTourRow;
         private DataTable myTourDivDataTable;
@@ -47,58 +40,62 @@ namespace WaterskiScoringSystem.Tournament {
                 this.Location = Properties.Settings.Default.DivOrder_Location;
             }
 
-            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			bool isSanctionAvailable = false;
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			if ( mySanctionNum == null ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				isSanctionAvailable = true;
 
-            if ( mySanctionNum == null ) {
-                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                //this.Close();
-            } else {
-                if ( mySanctionNum.Length < 6 ) {
-                    MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                    //this.Close();
-                } else {
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData();
-                    if ( curTourDataTable.Rows.Count > 0 ) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        myTourRules = (String)myTourRow["Rules"];
-                        mySkierClass = myTourRow["Class"].ToString();
-                        mySkierClassList = new ListSkierClass();
-                        mySkierClassList.ListSkierClassLoad();
+			} else if ( mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				isSanctionAvailable = true;
+			} else {
+				//Retrieve selected tournament attributes
+				myTourRow = getTourData();
+				if ( myTourRow == null ) {
+					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+					isSanctionAvailable = true;
+				}
+			}
+			if ( !isSanctionAvailable ) {
+				Timer curTimerObj = new Timer();
+				curTimerObj.Interval = 15;
+				curTimerObj.Tick += new EventHandler( CloseWindowTimer );
+				curTimerObj.Start();
+				return;
+			}
 
-                        if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
-                        if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
-                        if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
-                        if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) {
-                            slalomButton.Visible = false;
-                        }
-                        if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) {
-                            trickButton.Visible = false;
-                        }
-                        if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) {
-                            jumpButton.Visible = false;
-                        }
+			mySkierClassList = new ListSkierClass();
+			mySkierClassList.ListSkierClassLoad();
 
-                        if ( slalomButton.Visible ) {
-                            slalomButton.Checked = true;
-                        } else if ( trickButton.Visible ) {
-                            trickButton.Checked = true;
-                        } else if ( jumpButton.Visible ) {
-                            jumpButton.Checked = true;
-                        }
+			if ( myTourRow["SlalomRounds"] == DBNull.Value ) { myTourRow["SlalomRounds"] = 0; }
+			if ( myTourRow["TrickRounds"] == DBNull.Value ) { myTourRow["TrickRounds"] = 0; }
+			if ( myTourRow["JumpRounds"] == DBNull.Value ) { myTourRow["JumpRounds"] = 0; }
+			if ( Convert.ToInt16( myTourRow["SlalomRounds"] ) == 0 ) slalomButton.Visible = false;
+			if ( Convert.ToInt16( myTourRow["TrickRounds"] ) == 0 ) trickButton.Visible = false;
+			if ( Convert.ToInt16( myTourRow["JumpRounds"] ) == 0 ) jumpButton.Visible = false;
 
-                        myTourDivDataTable = getTourDivData();
-                        loadDataView();
-                    } else {
-                        MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                    }
-                }
-            }
-            isDataModified = false;
+			if ( slalomButton.Visible ) {
+				slalomButton.Checked = true;
+			} else if ( trickButton.Visible ) {
+				trickButton.Checked = true;
+			} else if ( jumpButton.Visible ) {
+				jumpButton.Checked = true;
+			}
 
-        }
+			myTourDivDataTable = getTourDivData();
+			loadDataView();
+			isDataModified = false;
+		}
 
-        private void TourDivOrder_FormClosed( object sender, FormClosedEventArgs e ) {
+		private void CloseWindowTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( CloseWindowTimer );
+			this.Close();
+		}
+
+		private void TourDivOrder_FormClosed( object sender, FormClosedEventArgs e ) {
             if ( this.WindowState == FormWindowState.Normal ) {
                 Properties.Settings.Default.DivOrder_Width = this.Size.Width;
                 Properties.Settings.Default.DivOrder_Height = this.Size.Height;
@@ -421,7 +418,7 @@ namespace WaterskiScoringSystem.Tournament {
                 DataGridViewRow curViewRow = TourDivDataGridView.Rows[myViewIdx];
                 if ( curColName.Equals( "RunOrder" ) ) {
                     if ( myOrigItemValue == null ) myOrigItemValue = "0";
-                    if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
+                    if ( HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
                         if ( Convert.ToInt16( myOrigItemValue ) != 0 ) {
                             isDataModified = true;
                             curViewRow.Cells["Updated"].Value = "Y";
@@ -526,22 +523,6 @@ namespace WaterskiScoringSystem.Tournament {
                 curEvent = "Jump";
             }
 
-            //'AWSAAgeGroup', 'IwwfAgeGroup', 'NcwsaAgeGroup'
-            /*
-            String curListNames = "";
-            if ( myTourRules.ToLower().Equals( "awsa" ) ) {
-                if ( mySkierClassList.compareClassChange( mySkierClass, "c" ) > 0 ) {
-                    curListNames = "'AWSAAgeGroup', 'IwwfAgeGroup'";
-                } else {
-                    curListNames = "'AWSAAgeGroup'";
-                }
-            } else if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
-                    curListNames = "'IwwfAgeGroup'";
-            } else if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
-                curListNames = "'NcwsaAgeGroup', 'AWSAAgeGroup'";
-            }
-             */
-            
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT Distinct E.PK, E.SanctionId, E.Event, E.AgeGroup, E.RunOrder, L.CodeValue " );
             curSqlStmt.Append( "FROM DivOrder E " );
@@ -549,40 +530,23 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "        AND L.ListCode = E.AgeGroup " );
             curSqlStmt.Append( "WHERE E.SanctionId = '" + mySanctionNum + "' AND E.Event = '" + curEvent + "' " );
             curSqlStmt.Append( "Order by E.RunOrder " );
-
-            return getData( curSqlStmt.ToString() );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
-        private DataTable getTourData() {
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
-            curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
-            curSqlStmt.Append( ", ContactPhone, ContactEmail, M.LastName + ', ' + M.FirstName AS ContactName " );
-            curSqlStmt.Append( "FROM Tournament T " );
-            curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
-            curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
-            curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
-
-        private bool isObjectEmpty( object inObject ) {
-            bool curReturnValue = false;
-            if ( inObject == null ) {
-                curReturnValue = true;
-            } else if ( inObject == System.DBNull.Value ) {
-                curReturnValue = true;
-            } else if ( inObject.ToString().Length > 0 ) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
-        }
-
+		private DataRow getTourData() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
+			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation, TourDataLoc" );
+			curSqlStmt.Append( ", ContactPhone, ContactEmail, M.LastName + ', ' + M.FirstName AS ContactName " );
+			curSqlStmt.Append( "FROM Tournament T " );
+			curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
+			curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
+			curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+			if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return curDataTable.Rows[0];
+			return null;
+		}
+		
         private void TourDivDataGridView_Leave( object sender, EventArgs e ) {
             TourDivDataGridView.EndEdit();
 

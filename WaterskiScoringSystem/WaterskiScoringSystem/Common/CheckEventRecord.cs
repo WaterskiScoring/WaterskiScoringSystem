@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlServerCe;
-using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using WaterskiScoringSystem.Common;
 
 namespace WaterskiScoringSystem.Common {
     class CheckEventRecord {
@@ -76,10 +71,11 @@ namespace WaterskiScoringSystem.Common {
                 curSqlStmt = new StringBuilder("");
                 curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
                 curSqlStmt.Append(" FROM CodeValueList");
-                curSqlStmt.Append(" WHERE ListName = 'IWWFSlalomMin' AND ListCode = '" + inDiv + "'");
+                curSqlStmt.Append(" WHERE ListName = 'IwwfSlalomMin' AND ListCode = '" + inDiv + "'");
                 curSqlStmt.Append(" ORDER BY SortSeq");
                 DataTable curMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if ( curMinSpeedDataTable.Rows.Count > 0 ) {
+                    //Reduce pass count adjust by 1 additional pass to account for international rope length is 18.25
                     curOrigPassNumMinSpeed = Convert.ToInt16((Decimal) curMinSpeedDataTable.Rows[0]["MinValue"]);
                     curOrigPassNumMinSpeed--;
                 }
@@ -97,91 +93,89 @@ namespace WaterskiScoringSystem.Common {
                 string curEntry = (String)myList.Current;
                 string curAgeDiv = curEntry.Substring(0, curEntry.IndexOf(" "));
 
-                if ( curAgeDiv.Equals(inDiv) ) {
-                    //Divisions already checked
-                } else {
-                    Decimal curPassNumMinSpeed = 0;
-                    if ( myAgeGroupList.isDivisionIntl(curAgeDiv) ) {
-                        curSqlStmt = new StringBuilder("");
-                        curSqlStmt.Append("SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue");
-                        curSqlStmt.Append(" FROM CodeValueList");
-                        curSqlStmt.Append(" WHERE ListName = 'IWWFSlalomMin' AND ListCode = '" + curAgeDiv + "'");
-                        curSqlStmt.Append(" ORDER BY SortSeq");
-                        DataTable curMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                        if ( curMinSpeedDataTable.Rows.Count > 0 ) {
-                            curPassNumMinSpeed = Convert.ToInt16((Decimal) curMinSpeedDataTable.Rows[0]["MinValue"]);
-                            curPassNumMinSpeed--;
-                        }
-                    }
-                    curSqlStmt = new StringBuilder("");
-                    curSqlStmt.Append("SELECT ListName, ListCode, CodeValue, MaxValue, CodeDesc ");
-                    curSqlStmt.Append("FROM CodeValueList ");
-                    curSqlStmt.Append("WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')");
-                    curSqlStmt.Append("  AND ListCode = '" + curAgeDiv + "-S' ");
-                    curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                    if ( curRecordDataTable.Rows.Count > 0 ) {
-                        if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
-                            Decimal curRecordScore = (Decimal) curRecordDataTable.Rows[0]["MaxValue"];
-                            Decimal curScore = 0;
-                            try {
-                                curScore = Convert.ToDecimal(inScore);
-                            } catch {
-                                curScore = 0;
-                            }
-                            /*
-                             * Adjust score for comparision purposes if the comparable division has a minimum speed 
-                             */
-                            if ( curPassNumMinSpeed < 0 ) {
-                                if ( curScore > ( curPassNumMinSpeed * 6 ) ) {
-                                    curScore += curPassNumMinSpeed * 6;
-                                }
-                            }
-                            if ( curOrigPassNumMinSpeed < 0 ) {
-                                curScore += curOrigPassNumMinSpeed * -6;
-                            }
-                            if ( curScore >= curRecordScore ) {
-								try {
-									if ( curReturnMsg.Length > 5 ) {
-										curReturnMsg.Append( "\n\n" );
-									}
-									curReturnMsg.Append( "\n\nCurrent skier score of " + curScore.ToString( "##0.00" ) );
-									curReturnMsg.Append( "\nMatches or exceeds the record for division " + (String) curRecordDataTable.Rows[0]["CodeValue"]
-										+ ", which the skier is eligible for, current record " );
-									String curRecordInfo = "";
-									try {
-										curRecordInfo = (String) curRecordDataTable.Rows[0]["CodeDesc"];
-									} catch {
-										curRecordInfo = "No previous record information available";
-									}
-									int curDelim = curRecordInfo.IndexOf( '/' );
-									if ( curDelim > 5 ) {
-										if ( curRecordInfo.Substring( curDelim - 1 ).Equals( " " ) ) {
-											curDelim--;
-										} else {
-											curDelim--;
-											curDelim--;
-										}
-										int curDelim2 = curRecordInfo.IndexOf( ' ', curDelim + 1 );
-										curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys, " );
-										curReturnMsg.Append( " " + curRecordInfo.Substring( 0, curDelim ) );
-										curReturnMsg.Append( "\nRecord set on " + curRecordInfo.Substring( curDelim + 1, curDelim2 - curDelim - 1 ) );
-										curReturnMsg.Append( "\nRecord holder(s) " + curRecordInfo.Substring( curDelim2 + 1 ) );
-									} else {
-										curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys" );
-										curReturnMsg.Append( "\nRecord information " + curRecordInfo );
-									}
+                if ( curAgeDiv.Equals( inDiv ) ) continue;
 
-								} catch ( Exception ex ) {
-									curReturnMsg = new StringBuilder( "An exception was encountered while formating a message indicating a record has been matched or exceeded." );
+				Decimal curPassNumMinSpeed = 0;
+				if ( myAgeGroupList.isDivisionIntl( curAgeDiv ) ) {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue" );
+					curSqlStmt.Append( " FROM CodeValueList" );
+					curSqlStmt.Append( " WHERE ListName = 'IwwfSlalomMin' AND ListCode = '" + curAgeDiv + "'" );
+					curSqlStmt.Append( " ORDER BY SortSeq" );
+					DataTable curMinSpeedDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					if ( curMinSpeedDataTable.Rows.Count > 0 ) {
+						curPassNumMinSpeed = Convert.ToInt16( (Decimal)curMinSpeedDataTable.Rows[0]["MinValue"] );
+						curPassNumMinSpeed--;
+					}
+				}
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT ListName, ListCode, CodeValue, MaxValue, CodeDesc " );
+				curSqlStmt.Append( "FROM CodeValueList " );
+				curSqlStmt.Append( "WHERE ListName in ('AWSARecords', 'IwwfRecords', 'NCWSARecords')" );
+				curSqlStmt.Append( "  AND ListCode = '" + curAgeDiv + "-S' " );
+				curRecordDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+				if ( curRecordDataTable.Rows.Count > 0 ) {
+					if ( curRecordDataTable.Rows[0]["MaxValue"] != System.DBNull.Value ) {
+						Decimal curRecordScore = (Decimal)curRecordDataTable.Rows[0]["MaxValue"];
+						Decimal curScore = 0;
+						try {
+							curScore = Convert.ToDecimal( inScore );
+						} catch {
+							curScore = 0;
+						}
+						/*
+						 * Adjust score for comparision purposes if the comparable division has a minimum speed 
+						 */
+						if ( curPassNumMinSpeed < 0 ) {
+							if ( curScore > ( curPassNumMinSpeed * 6 ) ) {
+								curScore += curPassNumMinSpeed * 6;
+							}
+						}
+						if ( curOrigPassNumMinSpeed < 0 ) {
+							curScore += curOrigPassNumMinSpeed * -6;
+						}
+						if ( curScore >= curRecordScore ) {
+							try {
+								if ( curReturnMsg.Length > 5 ) {
+									curReturnMsg.Append( "\n\n" );
 								}
-                            }
-                        }
-                    }
-                }
-            }
-            #endregion
+								curReturnMsg.Append( "\n\nCurrent skier score of " + curScore.ToString( "##0.00" ) );
+								curReturnMsg.Append( "\nMatches or exceeds the record for division " + (String)curRecordDataTable.Rows[0]["CodeValue"]
+									+ ", which the skier is eligible for, current record " );
+								String curRecordInfo = "";
+								try {
+									curRecordInfo = (String)curRecordDataTable.Rows[0]["CodeDesc"];
+								} catch {
+									curRecordInfo = "No previous record information available";
+								}
+								int curDelim = curRecordInfo.IndexOf( '/' );
+								if ( curDelim > 5 ) {
+									if ( curRecordInfo.Substring( curDelim - 1 ).Equals( " " ) ) {
+										curDelim--;
+									} else {
+										curDelim--;
+										curDelim--;
+									}
+									int curDelim2 = curRecordInfo.IndexOf( ' ', curDelim + 1 );
+									curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys, " );
+									curReturnMsg.Append( " " + curRecordInfo.Substring( 0, curDelim ) );
+									curReturnMsg.Append( "\nRecord set on " + curRecordInfo.Substring( curDelim + 1, curDelim2 - curDelim - 1 ) );
+									curReturnMsg.Append( "\nRecord holder(s) " + curRecordInfo.Substring( curDelim2 + 1 ) );
+								} else {
+									curReturnMsg.Append( "\n" + curRecordScore.ToString( "##0.00" ) + " buoys" );
+									curReturnMsg.Append( "\nRecord information " + curRecordInfo );
+								}
 
-            return curReturnMsg.ToString();
+							} catch ( Exception ex ) {
+								curReturnMsg = new StringBuilder( "An exception was encountered while formating a message indicating a record has been matched or exceeded." );
+							}
+						}
+					}
+				}
+			}
+			#endregion
+
+			return curReturnMsg.ToString();
         }
 
         public String checkRecordTrick( String inDiv, String inScore, short inSkiYearAge, String inGender ) {

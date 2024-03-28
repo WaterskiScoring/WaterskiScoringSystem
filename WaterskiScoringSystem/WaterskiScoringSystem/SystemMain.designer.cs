@@ -97,6 +97,7 @@
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
 			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.navExportIwwfScores = new System.Windows.Forms.ToolStripMenuItem();
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
 			this.regionalJuniorExtractsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +113,6 @@
 			this.navHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.mdiStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.navExportIwwfScores = new System.Windows.Forms.ToolStripMenuItem();
 			this.appMainMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -701,6 +701,15 @@
 			this.boatPathDriverUpdateToolStripMenuItem.Text = "Boat Path Driver Update";
 			this.boatPathDriverUpdateToolStripMenuItem.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
 			// 
+			// navExportIwwfScores
+			// 
+			this.navExportIwwfScores.Enabled = false;
+			this.navExportIwwfScores.Name = "navExportIwwfScores";
+			this.navExportIwwfScores.Size = new System.Drawing.Size(265, 22);
+			this.navExportIwwfScores.Text = "Iwwf Score Export";
+			this.navExportIwwfScores.Visible = false;
+			this.navExportIwwfScores.Click += new System.EventHandler(this.navExportIwwfScores_Click);
+			// 
 			// navViewRankingList
 			// 
 			this.navViewRankingList.Name = "navViewRankingList";
@@ -731,16 +740,20 @@
 			// 
 			// shrinkDatabaseToolStripMenuItem
 			// 
+			this.shrinkDatabaseToolStripMenuItem.Enabled = false;
 			this.shrinkDatabaseToolStripMenuItem.Name = "shrinkDatabaseToolStripMenuItem";
 			this.shrinkDatabaseToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
 			this.shrinkDatabaseToolStripMenuItem.Text = "Compress Database";
+			this.shrinkDatabaseToolStripMenuItem.Visible = false;
 			this.shrinkDatabaseToolStripMenuItem.Click += new System.EventHandler(this.shrinkDatabaseToolStripMenuItem_Click);
 			// 
 			// navDatabaseBackup
 			// 
+			this.navDatabaseBackup.Enabled = false;
 			this.navDatabaseBackup.Name = "navDatabaseBackup";
 			this.navDatabaseBackup.Size = new System.Drawing.Size(265, 22);
 			this.navDatabaseBackup.Text = "Backup Database";
+			this.navDatabaseBackup.Visible = false;
 			this.navDatabaseBackup.Click += new System.EventHandler(this.navDatabaseBackup_Click);
 			// 
 			// databaseToolToolStripMenuItem
@@ -805,13 +818,6 @@
 			this.mdiStatusMsg.Name = "mdiStatusMsg";
 			this.mdiStatusMsg.Size = new System.Drawing.Size(168, 17);
 			this.mdiStatusMsg.Text = "Opening Waterski Scoring System";
-			// 
-			// navExportIwwfScores
-			// 
-			this.navExportIwwfScores.Name = "navExportIwwfScores";
-			this.navExportIwwfScores.Size = new System.Drawing.Size(265, 22);
-			this.navExportIwwfScores.Text = "Iwwf Score Export";
-			this.navExportIwwfScores.Click += new System.EventHandler(this.navExportIwwfScores_Click);
 			// 
 			// SystemMain
 			// 

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
-using WaterskiScoringSystem.Tools;
 
 namespace WaterskiScoringSystem.Externalnterface {
     class ExportLiveWeb {
@@ -17,27 +15,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 		public ExportLiveWeb() {
         }
-
-        public static Boolean exportMessage(String inXmlMessage) {
-            String curMethodName = "ExportLiveWeb: exportMessage: ";
-
-            try {
-                bool sendComplete = SendMessageHttp.sendMessagePostXml( LiveWebScoreboardApi, inXmlMessage );
-				if ( sendComplete ) {
-                    Log.WriteFile( curMethodName + ":" + inXmlMessage );
-					return true;
-
-				} else {
-					MessageBox.Show( curMethodName + "failed" );
-					return false;
-				}
-
-			} catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-				return false;
-			}
-
-		}
 
 		public static Boolean uploadReportFile( String inReportType, String inEvent, String inSanctionId ) {
 			String curFileFormName = "PublishFile";
@@ -160,109 +137,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			return false;
 		}
-
-		public static String exportData(String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd) {
-            String curMethodName = "ExportLiveWeb: exportData: ";
-            char[] singleQuoteDelim = new char[] { '\'' };
-            String curMsg = "";
-            String curValue;
-            DataTable curDataTable = new DataTable();
-            StringBuilder curXml = new StringBuilder( "" );
-
-            try {
-                curDataTable = DataAccess.getDataTable( inSqlStmt );
-                if (curDataTable == null) {
-                    //curMsg = "No data found";
-                } else {
-                    curXml.Append( "<Table name=\"" + inTableName + "\" command=\"" + inCmd + "\" >" );
-                    curXml.Append( "<Columns count=\"" + curDataTable.Columns.Count + "\">" );
-                    foreach (DataColumn curColumn in curDataTable.Columns) {
-                        if ( !(curColumn.ColumnName.ToUpper().Equals( "PK" )) ) {
-                            curXml.Append( "<Column>" + curColumn.ColumnName + "</Column>" );
-                        }
-                    }
-                    curXml.Append( "</Columns>" );
-
-                    curXml.Append( "<Keys count=\"" + inKeyColumns.Length + "\">" );
-                    foreach (String curColumn in inKeyColumns) {
-                        curXml.Append( "<Key>" + curColumn + "</Key>" );
-                    }
-                    curXml.Append( "</Keys>" );
-
-                    if (curDataTable.Rows.Count == 0 && inCmd.ToLower().Equals( "delete" )) {
-                        //curSqlStmt.Append( "Where SanctionId = '" + inSanctionId + "' And MemberId = '" + inMemberId + "' And AgeGroup = '" + inAgeGroup + "' " );
-                        String[] curDelimValue = {" And " };
-                        int curDelimPos = inSqlStmt.ToLower().IndexOf( "where" );
-                        String curData = inSqlStmt.Substring( curDelimPos + 6 );
-                        String[] curDataList = curData.Split( curDelimValue, StringSplitOptions.RemoveEmptyEntries );
-                        curXml.Append( "<Rows count=\"1\">" );
-                        curXml.Append( "<Row colCount=\"" + curDataList.Length + "\">" );
-                        for (int curIdx = 0; curIdx < curDataList.Length; curIdx++) {
-                            String[] curDataDef = curDataList[curIdx].Split( '=' );
-                            curXml.Append( "<" + curDataDef[0].Trim() + ">");
-                            curValue = curDataDef[1].Trim();
-                            if (curValue.Substring( 0, 1 ).Equals( "'" )) {
-                                curXml.Append( curValue.Substring( 1, curValue.Length - 2 ) );
-                            } else {
-                                curXml.Append( curValue );
-                            }
-                            curXml.Append( "</" + curDataDef[0].Trim() + ">" );
-                        }
-                        curXml.Append( "</Row>" );
-                        curXml.Append( "</Rows>" );
-
-					} else {
-						if ( curDataTable.Rows.Count == 0 ) return "";
-
-						curXml.Append( "<Rows count=\"" + curDataTable.Rows.Count + "\">" );
-                        foreach (DataRow curRow in curDataTable.Rows) {
-                            curXml.Append( "<Row colCount=\"" + curDataTable.Columns.Count + "\">" );
-                            foreach (DataColumn curColumn in curDataTable.Columns) {
-                                if (!( curColumn.ColumnName.ToUpper().Equals( "PK" ) )) {
-                                    if ( curColumn.ColumnName.ToLower().Equals( "lastupdatedate" ) || curColumn.ColumnName.ToLower().Equals( "insertdate" ) ) {
-                                        curValue = ( (DateTime)curRow[curColumn.ColumnName] ).ToString( "yyyy-MM-dd HH:mm:ss" );
-                                        curValue = encodeXmlValue( curValue );
-                                        curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
-                                    } else {
-                                        curValue = stripLineFeedChar( HelperFunctions.getDataRowColValue( curRow, curColumn.ColumnName, "" ) );
-                                        curValue = HelperFunctions.stringReplace( curValue, singleQuoteDelim, "''" );
-                                        curValue = encodeXmlValue( curValue );
-                                        curXml.Append( "<" + curColumn.ColumnName + ">" + curValue + "</" + curColumn.ColumnName + ">" );
-                                    }
-                                }
-                            }
-                            curXml.Append( "</Row>" );
-                        }
-                        curXml.Append( "</Rows>" );
-                    }
-                    curXml.Append( "</Table>" );
-                    Log.WriteFile( curMethodName + ":" + curXml.ToString() );
-                }
-                if (curMsg.Length > 1) {
-                    MessageBox.Show( curMsg );
-                }
-                Log.WriteFile( curMethodName + ":conplete:" + curMsg );
-
-			} catch (Exception ex) {
-				Log.WriteFile( String.Format( "{0}Exception encountered {1}", curMethodName, ex.Message ) );
-			}
-
-			return curXml.ToString();
-        }
-
-        public static String encodeXmlValue(String inValue) {
-            //String curEncodedXml = inValue.Replace( "&", "&amp;" ).Replace( "<", "&lt;" ).Replace( ">", "&gt;" ).Replace( "\"", "&quot;" ).Replace( "'", "&apos;" );
-            String curEncodedXml = System.Security.SecurityElement.Escape( inValue );
-            return curEncodedXml;
-        }
-        
-        public static String stripLineFeedChar(String inValue) {
-            String curValue = inValue;
-            curValue = curValue.Replace( '\n', ' ' );
-            curValue = curValue.Replace( '\r', ' ' );
-            curValue = curValue.Replace( '\t', ' ' );
-            return curValue;
-        }
 
 		private static String getImportFile() {
 			OpenFileDialog myFileDialog = new OpenFileDialog();

@@ -1552,8 +1552,6 @@ namespace WaterskiScoringSystem.Tournament {
 					LiveWebHandler.sendRunOrder( getCurrentEvent(), mySanctionNum, curCheckBox.Text, 0 );
 				}
 			}
-
-
 		}
 
 		private void navPublish_Click( object sender, EventArgs e ) {
@@ -1595,8 +1593,8 @@ namespace WaterskiScoringSystem.Tournament {
             bool CenterOnPage = true;
             bool WithTitle = true;
             bool WithPaging = true;
-            Font fontPrintTitle = new Font("Arial Narrow", 12, FontStyle.Bold);
-            Font fontPrintFooter = new Font( "Times New Roman", 10 );
+            Font fontPrintTitle = new Font("Arial Narrow", 14, FontStyle.Bold);
+            Font fontPrintFooter = new Font( "Times New Roman", 12 );
 
             PrintDialog curPrintDialog = HelperPrintFunctions.getPrintSettings();
             if ( curPrintDialog == null ) return false;

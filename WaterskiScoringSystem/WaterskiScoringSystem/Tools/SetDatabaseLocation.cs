@@ -52,68 +52,6 @@ namespace WaterskiScoringSystem.Tools {
             return curReturn;
         }
 
-		public bool copyDatabaseFile( String inSourDir, String inDestDir, RegistryKey inAppRegKey ) {
-            bool curReturn = false;
-            String curDataDirectory = "", curSourDir = "";
-			String curDestDatabaseRef = "", curDestFileName = "";
-
-            OpenFileDialog curFileDialog = new OpenFileDialog();
-            curFileDialog.InitialDirectory = inDestDir;
-            curFileDialog.FileName = DataAccess.getDatabaseFilename();
-			curFileDialog.Filter = "database files (*.sdf)|*.sdf|All files (*.*)|*.*";
-            curFileDialog.FilterIndex = 0;
-            curFileDialog.CheckPathExists = false;
-            curFileDialog.CheckFileExists = false;
-
-            try {
-                if ( curFileDialog.ShowDialog() == DialogResult.OK ) {
-                    curDestDatabaseRef = curFileDialog.FileName;
-
-                    if ( curDestDatabaseRef == null ) { curDestDatabaseRef = ""; }
-                    if ( curDestDatabaseRef.Length > 1 ) {
-                        int posDelim = curDestDatabaseRef.LastIndexOf( "\\" );
-                        curDataDirectory = curDestDatabaseRef.Substring( 0, posDelim );
-                        curDestFileName = curDestDatabaseRef.Substring( posDelim + 1 );
-
-                        if ( inSourDir.Substring( inSourDir.Length - 1 ).Equals( "\\" ) ) {
-                            curSourDir = inSourDir;
-                        } else {
-                            curSourDir = inSourDir + "\\";
-                        }
-
-                        //Declare and instantiate a new process component.
-                        System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                        //Do not receive an event when the process exits.
-                        curOSProcess.EnableRaisingEvents = true;
-
-                        String curDestCopyFileName = "";
-                        string curCmdLine;
-                        if (File.Exists( curDestDatabaseRef )) {
-                            curDestCopyFileName = curDestDatabaseRef + "." + DateTime.Now.ToString( "MMddyyHHmm" ) + ".bak";
-                            curCmdLine = "/C copy \"" + curDestDatabaseRef + "\" \"" + curDestCopyFileName + "\" \n";
-                            System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                        }
-
-                        //The "/C" Tells Windows to Run The Command then Terminate 
-                        curCmdLine = "/C copy \"" + curSourDir + "waterski.sdf\" \"" + curDestDatabaseRef + "\" \n";
-                        System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                        curOSProcess.Close();
-                        MessageBox.Show( "copyDatabase command \n" + curCmdLine
-                            + "\n\nCheck the destination location for a waterski.sdf"
-                            + "\nDestination folder = " + curDestDatabaseRef
-                            + "\n\nIf the file is not found then use the following URL to download the database"
-                            + "\nhttp://awsaeast.com/scoring/waterski.sdf"
-                            );
-                        curReturn = setConnectionString( curDataDirectory, curDestFileName, inAppRegKey );
-                    }
-                }
-            } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Could not get database file " + "\n\nError: " + ex.Message );
-            }
-            return curReturn;
-        }
-
         public bool setConnectionString( String inDataDirectory, String inDatabaseFileName, RegistryKey inAppRegKey ) {
             bool curReturn = false;
             String curAttrName, curAttrValue, newConnectionString = "";
@@ -177,55 +115,19 @@ namespace WaterskiScoringSystem.Tools {
         }
 
 		public bool backupDatabaseFile( RegistryKey inAppRegKey ) {
-			bool curReturn = false;
-			String curBackupDirectory = "";
-
-			String curDataDirectory = "";
-			if ( inAppRegKey.GetValue( "DataDirectory" ) == null ) {
-				try {
-					curDataDirectory = ApplicationDeployment.CurrentDeployment.DataDirectory;
-				} catch ( Exception ex ) {
-					curDataDirectory = Application.UserAppDataPath;
-				}
-			} else {
-				curDataDirectory = inAppRegKey.GetValue( "DataDirectory" ).ToString();
-			}
-
-			String curDatabaseFilename = DataAccess.getDatabaseFilename();
-            FolderBrowserDialog curFolderBrowserDialog = new FolderBrowserDialog();
-			curFolderBrowserDialog.SelectedPath = curDataDirectory;
-			curFolderBrowserDialog.ShowNewFolderButton = true;
 
 			try {
-				if ( curFolderBrowserDialog.ShowDialog() == DialogResult.OK ) {
-					curBackupDirectory = curFolderBrowserDialog.SelectedPath;
-
-					//Declare and instantiate a new process component
-					System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-					//Do not receive an event when the process exits.
-					curOSProcess.EnableRaisingEvents = true;
-
-					String curCmdLine;
-					String curDestCopyFileName = "";
-					String curDatabaseLocation = curDataDirectory + "\\" + curDatabaseFilename;
-
-					curDestCopyFileName = curBackupDirectory + "\\" + curDatabaseFilename + "." + DateTime.Now.ToString( "MMddyyHHmm" ) + ".bak";
-					curCmdLine = "/C copy \"" + curDatabaseLocation + "\" \"" + curDestCopyFileName + "\" \n";
-					System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-					curOSProcess.Close();
-
-					MessageBox.Show( "Current database " + curDatabaseLocation
-						+ "\nBacked up to " + curDestCopyFileName
-						);
-					curReturn = true;
-                }
+				String curDatabaseFilename = DataAccess.getDatabaseFilename();
+				String curDestFileName = curDatabaseFilename + "." + DateTime.Now.ToString( "yyyyMMddHHmm" ) + ".bak";
+				File.Copy( curDatabaseFilename, curDestFileName );
+				MessageBox.Show( "Current database " + curDatabaseFilename + "\nBacked up to " + curDestFileName );
+				return true;
 
 			} catch ( Exception ex ) {
 				MessageBox.Show( "Error: Could not get database file " + "\n\nError: " + ex.Message );
 			}
 
-			return curReturn;
+			return false;
 		}
 
 	}

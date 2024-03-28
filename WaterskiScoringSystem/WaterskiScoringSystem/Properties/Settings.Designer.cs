@@ -12,7 +12,7 @@ namespace WaterskiScoringSystem.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -763,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.3")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1553,7 +1553,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.2 2/7/2024")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.3 3/28/2024")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2673,6 +2673,42 @@ namespace WaterskiScoringSystem.Properties {
         public string UriWaterskiResultsApiTest {
             get {
                 return ((string)(this["UriWaterskiResultsApiTest"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SafetyIncident_Width {
+            get {
+                return ((int)(this["SafetyIncident_Width"]));
+            }
+            set {
+                this["SafetyIncident_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SafetyIncident_Height {
+            get {
+                return ((int)(this["SafetyIncident_Height"]));
+            }
+            set {
+                this["SafetyIncident_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point SafetyIncident_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["SafetyIncident_Location"]));
+            }
+            set {
+                this["SafetyIncident_Location"] = value;
             }
         }
     }

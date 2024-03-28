@@ -925,10 +925,12 @@ namespace WaterskiScoringSystem.Admin {
                 
                 } else if (exportCommand.ToLower().Equals("perf")) {
                     winStatusMsg.Text = "Export performance data for tournament " + TourName;
-                    ExportPerfData myExportData = new ExportPerfData();
-                    myExportData.exportTourPerfData(editSanctionId.Text);
-                }
-            }
+                    //ExportPerfData myExportData = new ExportPerfData();
+                    //myExportData.exportTourPerfData(editSanctionId.Text);
+					ExportPerfDataV2 myExportData = new ExportPerfDataV2();
+					myExportData.exportTourPerfData( editSanctionId.Text );
+				}
+			}
         }
 
         private void navCopyItem_Click(object sender, EventArgs e) {

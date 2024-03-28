@@ -303,9 +303,8 @@ namespace WaterskiScoringSystem.Slalom {
 
 		public Decimal SlalomScoreCalc( Decimal inScore, Int16 inDivMaxSpeedKph ) {
 			String curMethodName = "SlalomScoreCalc";
-			Int16 curPassNumMinSpeed = 0;
+			Int16 curPassNumMinSpeed = myPassNumMinSpeed;
 			myDivMaxSpeedKph = inDivMaxSpeedKph;
-			//mySkierPassMsg = "";
 
 			try {
 				myRecapViewRow.Cells["ScoreRecap"].Value = inScore.ToString( "#.00" );
@@ -320,29 +319,19 @@ namespace WaterskiScoringSystem.Slalom {
 				 * It is no longer required that the skier be scored at long line when at less than max speed
                  */
 				Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapViewRow.Cells["PassSpeedKphRecap"].Value );
+				bool isSpeedBelowMax = ( curPassSpeedKph < curMaxSpeedKphDiv );
 				Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapViewRow.Cells["PassLineLengthRecap"].Value );
 				myPassRow = SlalomEventData.getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 
 				bool isZbsAllowed = SlalomEventData.isQualifiedAltScoreMethod( myAgeGroup, (String)myClassRowSkier["ListCode"] );
-				if ( isZbsAllowed 
-					&& ( curPassSpeedKph > curMaxSpeedKphDiv )
-					&& (Decimal)myClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"]
-					) {
+				if ( isZbsAllowed && curPassSpeedKph > curMaxSpeedKphDiv && (Decimal)myClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"] ) {
+					// For E/L/R skiers can't score above division maximum speed
 					myPassRow = SlalomEventData.getPassRow( curMaxSpeedKphDiv, curPassLineLengthMeters );
 				}
 
-				// Check for adjustment for division or class with a minimum speed
-				curPassNumMinSpeed = myPassNumMinSpeed;
-				if ( myPassNumMinSpeed > 0 ) {
-					if ( isZbsAllowed && curPassSpeedKph >= myDivMaxSpeedKph && SlalomEventData.isDivisionIntl( myAgeGroup ) ) {
-						//Reduce pass number for IWWF reduce by an additional 6 bouys for minimum rope length is 18.25M
-						curPassNumMinSpeed--;
-					}
-				}
-
-				if ( curSkierPassNum == 1 ) return calcSkierScorePassFirst( inScore, curPassNumMinSpeed );
+				if ( curSkierPassNum == 1 ) return calcSkierScorePassFirst( inScore, curPassNumMinSpeed, isZbsAllowed, SlalomEventData.isDivisionIntl( myAgeGroup ), isSpeedBelowMax );
 				
-				return calcSkierScorePass2Plus( inScore, curPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScorePass2Plus( inScore, curPassNumMinSpeed, isZbsAllowed, SlalomEventData.isDivisionIntl( myAgeGroup ), isSpeedBelowMax );
 
 			} catch ( Exception ex ) {
 				MessageBox.Show( curMethodName + ": \n" + ex.Message );
@@ -353,9 +342,11 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Calculate skier score for first pass
 		 */
-		private Decimal calcSkierScorePassFirst( Decimal inScore, Int16 inPassNumMinSpeed ) {
+		private Decimal calcSkierScorePassFirst( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl, bool isSpeedBelowMax ) {
 			int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)myPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 
 			bool curScoreProtCkd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "ScoreProtRecap", "Y" ) );
 			bool curTimeGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "TimeInTolRecap", "N" ) );
@@ -406,7 +397,7 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Calculate skier score for all passes after the first
 		 */
-		private Decimal calcSkierScorePass2Plus( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScorePass2Plus( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl, bool isSpeedBelowMax ) {
 			bool curRerideInd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "RerideRecap", "Y" ) );
 			bool curTimeGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "TimeInTolRecap", "N" ) );
 			bool curBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "BoatPathGoodRecap", "Y" ) );
@@ -414,27 +405,29 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( curTimeGood && curBoatPathGood ) {
 
 				if ( curRerideInd ) {
-					return calcSkierScoreGeneralReride( inScore, inPassNumMinSpeed, isZbsAllowed );
+					return calcSkierScoreGeneralReride( inScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 
 				} else if ( inScore == 6 && isExitGatesGood() ) {
-					return calcSkierScoreFullPassTimeGood( inScore, inPassNumMinSpeed );
+					return calcSkierScoreFullPassTimeGood( inScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl, isSpeedBelowMax );
 				}
-				return calcSkierScoreNotFullPassTimeGood( inScore, inPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScoreNotFullPassTimeGood( inScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 
 			} else if ( curTimeGood ) {
-				return calcSkierScorePathNotGood( inScore, inPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScorePathNotGood( inScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 
 			} else {
-				return calcSkierScoreTimeNotGood( inScore, inPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScoreTimeNotGood( inScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 			}
 		}
 
 		/*
 		 * Calculate skier score for a full pass after the first when time is good and boat path is good
 		 */
-		private Decimal calcSkierScoreFullPassTimeGood( Decimal inScore, Int16 inPassNumMinSpeed ) {
+		private Decimal calcSkierScoreFullPassTimeGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl, bool isSpeedBelowMax ) {
 			int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)myPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 
 			setEventRegRowStatus( "2-InProg" );
 			Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
@@ -492,6 +485,9 @@ namespace WaterskiScoringSystem.Slalom {
 
 			if ( prevRecapRow == null ) return curPassScore;
 
+			/*
+			 * Complete pass with good time but pass is a reride pass so must review previous pass
+			 */
 			Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "PassSpeedKphRecap", "0" ) );
 			decimal curPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "PassLineLengthRecap", "0" );
 			DataRow tempPassRow = null;
@@ -504,13 +500,15 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 			curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
 			curPassLineNum = (int)tempPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 			return curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 		}
 
 		/*
 		 * Calculate skier score when not a full pass after the first when time is good and boat path is good
 		 */
-		private Decimal calcSkierScoreNotFullPassTimeGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreNotFullPassTimeGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			Decimal curPassScore = inScore;
 			int prevRowIdx = myRecapViewRow.Index - 1;
 			DataGridViewRow prevRecapRow = myRecapViewRows[prevRowIdx];
@@ -543,27 +541,27 @@ namespace WaterskiScoringSystem.Slalom {
 
 			if ( !(prevRerideInd) ) {
 				 // Calculate score when current pass is not a full pass and previous pass was not a reride
-				return calcSkierScoreNotFullPassTimeGoodNoRerides( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScoreNotFullPassTimeGoodNoRerides( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 			}
 
 			/*
 			 * Calculate score when current pass is not a full pass but previous pass(s) required a reride
 			 */
 			if ( prevTimeGood && prevBoatPathGood ) {
-				return calcSkierScoreNotFullPassTimeGoodPrevRerides( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed );
+				return calcSkierScoreNotFullPassTimeGoodPrevRerides( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 			}
 
 			/*
 			 * Calculate score when current pass is not a full pass and previous pass time or boat path required a reride
 			 */
-			return calcSkierScoreNotFullPassTimeGoodPrevTimeReride( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed );
+			return calcSkierScoreNotFullPassTimeGoodPrevTimeReride( prevRecapRow, curPassScore, inPassNumMinSpeed, isZbsAllowed, isDivisionIntl );
 
 		}
 
 		/*
 		 * Calculate score when current pass is not a full pass and previous pass was not a reride
 		 */
-		private Decimal calcSkierScoreNotFullPassTimeGoodNoRerides( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreNotFullPassTimeGoodNoRerides( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
 			Int16 curPassSpeedKphOrig = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassSpeedKphRecap", "0" ) );
 
@@ -571,6 +569,8 @@ namespace WaterskiScoringSystem.Slalom {
 			decimal curPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "PassLineLengthRecap", "0" );
 
 			DataRow tempPassRow = null;
+			bool isSpeedBelowMax = ( curPassSpeedKphOrig < myDivMaxSpeedKph );
+
 			if ( curPassSpeedKph > curMaxSpeedKphDiv
 				&& (Decimal)myClassRowSkier["ListCodeNum"] >= (Decimal)SlalomEventData.myClassERow["ListCodeNum"]
 				) {
@@ -580,7 +580,8 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 			int curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)tempPassRow["SlalomLineNum"];
-			if ( !( isZbsAllowed ) && curPassSpeedKphOrig < myDivMaxSpeedKph ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 			if ( !( isZbsAllowed ) && curPassSpeedKphOrig >= myDivMaxSpeedKph && curPassSpeedKph < myDivMaxSpeedKph ) curPassLineNum = 1;
 
 			setEventRegRowStatus( "4-Done" );
@@ -590,7 +591,7 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Calculate score when current pass is not a full pass but previous pass(s) required a reride
 		 */
-		private Decimal calcSkierScoreNotFullPassTimeGoodPrevRerides( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreNotFullPassTimeGoodPrevRerides( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			Int16 curPassSpeedKph;
 			int curPassSpeedNum, curPassLineNum;
 			decimal skierScore, curPassScore, prevPassScore;
@@ -662,8 +663,11 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 					curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
 					curPassLineNum = (int)tempPassRow["SlalomLineNum"];
-					if ( !( isZbsAllowed ) && ( curPassSpeedKphOrig < myDivMaxSpeedKph
-									|| ( curPassSpeedKphOrig >= myDivMaxSpeedKph && curPassSpeedKph < myDivMaxSpeedKph ) ) ) curPassLineNum = 0;
+
+					bool isSpeedBelowMax = ( (curPassSpeedKph < myDivMaxSpeedKph ) || ( curPassSpeedKphOrig < myDivMaxSpeedKph ) );
+					if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+					if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
+
 					skierScore = curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 				}
 			}
@@ -678,7 +682,7 @@ namespace WaterskiScoringSystem.Slalom {
 		 * 
 		 * First step is to determine the current pass score depending on the reride reason for the previous pass 
 		 */
-		private Decimal calcSkierScoreNotFullPassTimeGoodPrevTimeReride( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreNotFullPassTimeGoodPrevTimeReride( DataGridViewRow prevRecapRow, Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			decimal skierScore, curPassScore, prevPassScore;
 			decimal curPassLineLengthMeters;
 			Int16 curPassSpeedKph;
@@ -751,10 +755,9 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 			curPassSpeedNum = (int)tempPassRow["SlalomSpeedNum"];
 			curPassLineNum = (int)tempPassRow["SlalomLineNum"];
-			if ( !( isZbsAllowed )
-				&& ( curPassSpeedKphOrig < myDivMaxSpeedKph || ( curPassSpeedKphOrig >= myDivMaxSpeedKph
-				&& curPassSpeedKph < myDivMaxSpeedKph ) )
-				) curPassLineNum = 0;
+			bool isSpeedBelowMax = ( ( curPassSpeedKphOrig < myDivMaxSpeedKph) || ( curPassSpeedKphOrig >= myDivMaxSpeedKph && curPassSpeedKph < myDivMaxSpeedKph ) );
+			if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 
 			skierScore = curPassScore + ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 			return skierScore;
@@ -763,11 +766,12 @@ namespace WaterskiScoringSystem.Slalom {
 		/*
 		 * Calculate skier score when not a full pass after the first when time is good and boat path is good
 		 */
-		private Decimal calcSkierScoreTimeNotGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreTimeNotGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
 
 			int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)myPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 			decimal curPassProtScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "ProtectedScoreRecap", "0" );
 
 			bool curScoreProtCkd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "ScoreProtRecap", "Y" ) );
@@ -801,23 +805,24 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 
 				setEventRegRowStatus( "2-InProg" );
-				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 			}
 
 			setEventRegRowStatus( "2-InProg" );
-			return findScoreLastNonReride( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+			return findScoreLastNonReride( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 		}
 
 		/*
 		 * Calculate skier score when not a full pass after the first when time is good and boat path is good
 		 */
-		private Decimal calcSkierScorePathNotGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScorePathNotGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			int prevRowIdx = myRecapViewRow.Index - 1;
 
 			Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
 
 			int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)myPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 			decimal curPassProtScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "ProtectedScoreRecap", "0" );
 
 			bool curScoreProtCkd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "ScoreProtRecap", "Y" ) );
@@ -835,7 +840,7 @@ namespace WaterskiScoringSystem.Slalom {
 				if ( countReride >= 2 ) {
 					myRecapViewRow.Cells["RerideRecap"].Value = "N";
 					setEventRegRowStatus( "4-Done" );
-					return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+					return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 				}
 
 				DataGridViewRow prevRecapRow = myRecapViewRows[prevRowIdx];
@@ -856,17 +861,17 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 
 				setEventRegRowStatus( "2-InProg" );
-				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 			}
 
 			setEventRegRowStatus( "2-InProg" );
-			return findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+			return findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 		}
 
 		/*
 		 * Calculate skier score when reride is indicated with no issue with time or path
 		 */
-		private Decimal calcSkierScoreGeneralReride( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed ) {
+		private Decimal calcSkierScoreGeneralReride( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			int prevRowIdx = myRecapViewRow.Index - 1;
 
 			Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
@@ -875,6 +880,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			int curPassSpeedNum = (int)myPassRow["SlalomSpeedNum"];
 			int curPassLineNum = (int)myPassRow["SlalomLineNum"];
+			if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 
 			if ( curScoreProtCkd ) {
 				if ( curPassProtScore == 0 && inScore == 6 && isExitGatesGood() ) {
@@ -886,15 +892,15 @@ namespace WaterskiScoringSystem.Slalom {
 				if ( curPassProtScore > 0 ) curPassScore = curPassProtScore;
 
 				setEventRegRowStatus( "2-InProg" );
-				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+				return curPassScore + findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 
 			} else {
 				setEventRegRowStatus( "2-InProg" );
-				return findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv );
+				return findScoreLastGoodPass( myRecapViewRow, myClassRowSkier, inPassNumMinSpeed, curMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 			}
 		}
 
-		private decimal findScoreLastGoodPass( DataGridViewRow inRecapRow, DataRow inClassRow, int inPassNumMinSpeed, Int16 inMaxSpeedKphDiv ) {
+		private decimal findScoreLastGoodPass( DataGridViewRow inRecapRow, DataRow inClassRow, int inPassNumMinSpeed, Int16 inMaxSpeedKphDiv, bool isZbsAllowed, bool isDivisionIntl ) {
 			DataGridViewRow prevRecapRow;
 			decimal prevPassProtScore = 0;
 
@@ -921,19 +927,16 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 				int curPassSpeedNum = (int)curPassRow["SlalomSpeedNum"];
 				int curPassLineNum = (int)curPassRow["SlalomLineNum"];
-				/*
-				if ( prevPassScore == 6 ) {
-					setEventRegRowStatus( "2-InProg" );
-					return ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
-				}
-				 */
+				bool isSpeedBelowMax = ( curPassSpeedKph < inMaxSpeedKphDiv );
+				if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+				if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 				if ( prevPassScore == 6 ) return ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 			}
 
 			return prevPassProtScore;
 		}
 
-		private decimal findScoreLastNonReride( DataGridViewRow inRecapRow, DataRow inClassRow, int inPassNumMinSpeed, Int16 inMaxSpeedKphDiv ) {
+		private decimal findScoreLastNonReride( DataGridViewRow inRecapRow, DataRow inClassRow, int inPassNumMinSpeed, Int16 inMaxSpeedKphDiv, bool isZbsAllowed, bool isDivisionIntl ) {
 			DataGridViewRow prevRecapRow;
 
 			for ( int prevRowIdx = inRecapRow.Index - 1; prevRowIdx >= 0; prevRowIdx-- ) {
@@ -956,10 +959,13 @@ namespace WaterskiScoringSystem.Slalom {
 					}
 					int curPassSpeedNum = (int)curPassRow["SlalomSpeedNum"];
 					int curPassLineNum = (int)curPassRow["SlalomLineNum"];
+					bool isSpeedBelowMax = ( curPassSpeedKph < inMaxSpeedKphDiv );
+					if ( !( isZbsAllowed ) && isSpeedBelowMax ) curPassLineNum = 0;
+					if ( !( isZbsAllowed ) && isDivisionIntl && curPassLineNum > 0 ) curPassLineNum--;
 					return ( 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) );
 
 				} else {
-					return findScoreLastGoodPass( myRecapViewRow, inClassRow, inPassNumMinSpeed, inMaxSpeedKphDiv );
+					return findScoreLastGoodPass( myRecapViewRow, inClassRow, inPassNumMinSpeed, inMaxSpeedKphDiv, isZbsAllowed, isDivisionIntl );
 				}
 			}
 

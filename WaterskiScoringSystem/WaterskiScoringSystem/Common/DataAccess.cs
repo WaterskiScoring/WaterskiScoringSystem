@@ -214,7 +214,6 @@ namespace WaterskiScoringSystem.Common {
             return curReturn;
         }
 
-
         public static Boolean BeginTransaction(String inSelectStmt) {
             String curMethodName = "DataAccess:BeginTransaction";
             Stopwatch stopwatch = null;
@@ -397,11 +396,11 @@ namespace WaterskiScoringSystem.Common {
             return curAppConnectString;
         }
 
-        private static String getDatabaseFilename( String curAppConnectString ) {
+        public static String getDatabaseFilename( String curAppConnectString ) {
             String curDataDirectory = "";
             int curIndex1 = curAppConnectString.IndexOf( "\\" );
             int curIndex2 = curAppConnectString.IndexOf( ";" );
-            String cuFilename = curAppConnectString.Substring( curIndex1 + 1, curIndex2 - curIndex1 );
+            String curFilename = curAppConnectString.Substring( curIndex1 + 1, curIndex2 - curIndex1 - 1 );
 
             String curAppRegName = Properties.Settings.Default.AppRegistryName;
             RegistryKey curAppRegKey = Registry.CurrentUser.OpenSubKey( curAppRegName, true );
@@ -416,7 +415,7 @@ namespace WaterskiScoringSystem.Common {
             }
             AppDomain.CurrentDomain.SetData( "DataDirectory", curDataDirectory );
 
-            return Path.Combine( curDataDirectory, cuFilename );
+            return Path.Combine( curDataDirectory, curFilename );
         }
     }
 }

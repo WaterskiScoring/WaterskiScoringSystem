@@ -232,14 +232,14 @@ namespace WaterskiScoringSystem.Common {
 			curViewRow.Cells["PassSpeedKph"].Value = HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "" );
 			curViewRow.Cells["PassLineLength"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PassLineLength", "", 2 );
 
-			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
-			curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 2 );
-			curViewRow.Cells["PathDevZone0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone0", "", 2 );
+			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 0 );
+			curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 0 );
+			curViewRow.Cells["PathDevZone0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone0", "", 0 );
 
 			for ( int curIdx = 1; curIdx <= 6; curIdx++ ) {
-				curViewRow.Cells["PathDevBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy" + curIdx, "", 2 );
-				curViewRow.Cells["PathDevCum" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum" + curIdx, "", 2 );
-				curViewRow.Cells["PathDevZone" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone" + curIdx, "", 2 );
+				curViewRow.Cells["PathDevBuoy" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy" + curIdx, "", 0 );
+				curViewRow.Cells["PathDevCum" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum" + curIdx, "", 0 );
+				curViewRow.Cells["PathDevZone" + curIdx].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevZone" + curIdx, "", 0 );
 			}
 		}
 
@@ -247,23 +247,23 @@ namespace WaterskiScoringSystem.Common {
 			curViewRow.Cells["SkierBoatPath"].Value = HelperFunctions.getDataRowColValue( curRow, "SkierBoatPath", "" );
 			curViewRow.Cells["PassSpeedKph"].Value = HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "" );
 			
-			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 2 );
-			curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 2 );
+			curViewRow.Cells["PathDevBuoy0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy0", "", 0 );
+			curViewRow.Cells["PathDevCum0"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum0", "", 0 );
 
-			curViewRow.Cells["PathDevBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy1", "", 2 );
-			curViewRow.Cells["PathDevCum1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum1", "", 2 );
+			curViewRow.Cells["PathDevBuoy1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy1", "", 0 );
+			curViewRow.Cells["PathDevCum1"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum1", "", 0 );
 
-			curViewRow.Cells["PathDevBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", "", 2 );
-			curViewRow.Cells["PathDevCum2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum2", "", 2 );
+			curViewRow.Cells["PathDevBuoy2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy2", "", 0 );
+			curViewRow.Cells["PathDevCum2"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum2", "", 0 );
 
-			curViewRow.Cells["PathDevBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", "", 2 );
-			curViewRow.Cells["PathDevCum3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum3", "", 2 );
+			curViewRow.Cells["PathDevBuoy3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy3", "", 0 );
+			curViewRow.Cells["PathDevCum3"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum3", "", 0 );
 
-			curViewRow.Cells["PathDevBuoy4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", "", 2 );
-			curViewRow.Cells["PathDevCum4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum4", "", 2 );
+			curViewRow.Cells["PathDevBuoy4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy4", "", 0 );
+			curViewRow.Cells["PathDevCum4"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum4", "", 0 );
 
-			curViewRow.Cells["PathDevBuoy5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy5", "", 2 );
-			curViewRow.Cells["PathDevCum5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum5", "", 2 );
+			curViewRow.Cells["PathDevBuoy5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevBuoy5", "", 0 );
+			curViewRow.Cells["PathDevCum5"].Value = HelperFunctions.getDataRowColValueDecimal( curRow, "PathDevCum5", "", 0 );
 		}
 
 		private void navSave_Click( object sender, EventArgs e ) {

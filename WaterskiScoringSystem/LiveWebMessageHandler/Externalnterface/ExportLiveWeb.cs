@@ -93,24 +93,56 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
 			curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event" }, curSqlStmt.ToString(), "Update" ) );
 
-			if ( inRound > 0 ) {
-				curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "SELECT O.* FROM EventRunOrder O " );
-				curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = O.SanctionId AND ER.MemberId = O.MemberId AND ER.AgeGroup = O.AgeGroup " );
-				curSqlStmt.Append( String.Format( "Where O.SanctionId = '{0}' AND O.Event = '{1}' AND O.Round = {2} ", inSanctionId, inEvent, inRound ) );
-				curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
-				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event" }, curSqlStmt.ToString(), "Update" ) );
-			}
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT O.* FROM EventRunOrder O " );
+			curSqlStmt.Append( String.Format( "Where O.SanctionId = '{0}' AND O.Event = '{1}' ", inSanctionId, inEvent ) );
+			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
+			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event", "Round" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM TourProperties " );
-			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey = 'RunningOrderSort{1}' ", inSanctionId, inEvent ) );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey like '%{1}%' ", inSanctionId, inEvent ) );
 			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM EventRunOrderFilters " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' ", inSanctionId, inEvent ) );
+			curTableList.Add( exportTableWithData( "EventRunOrderFilters", new String[] { "SanctionId", "Event", "FilterName" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM DivOrder " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND Event = '{1}' ", inSanctionId, inEvent ) );
 			curTableList.Add( exportTableWithData( "DivOrder", new String[] { "SanctionId", "AgeGroup", "Event" }, curSqlStmt.ToString(), "Update" ) );
+
+			curTables = new Dictionary<string, object> { { "Tables", curTableList } };
+			curLiveWebRequest = new Dictionary<string, object> { { "LiveWebRequest", curTables } };
+
+			String curMsgResp = SendMessageHttp.sendMessagePostJson( LiveWebScoreboardUri, JsonConvert.SerializeObject( curLiveWebRequest ) );
+			if ( curMsgResp.Length > 0 ) {
+				String curMsg = String.Format( "{0}{1}", curMethodName, curMsgResp );
+				Log.WriteFile( curMsg );
+
+			} else {
+				String curMsg = String.Format( "{0}Request failed: likely connection issue", curMethodName );
+				throw new Exception( curMsg );
+			}
+		}
+
+		public static void exportTeamScores( String inSanctionId ) {
+			String curMethodName = "ExportLiveWeb: exportTeamScores: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			ArrayList curTableList = new ArrayList();
+			Dictionary<string, dynamic> curLiveWebRequest = null;
+			Dictionary<string, dynamic> curTables = null;
+
+			curSqlStmt.Append( "SELECT TR.* FROM TeamScore TR " );
+			curSqlStmt.Append( String.Format( "Where TR.SanctionId = '{0}' ", inSanctionId ) );
+			curTableList.Add( exportTableWithData( "TeamScore", new String[] { "SanctionId", "TeamCode", "AgeGroup" }, curSqlStmt.ToString(), "Update" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT TR.* FROM TeamScoreDetail TR " );
+			curSqlStmt.Append( String.Format( "Where TR.SanctionId = '{0}' ", inSanctionId ) );
+			curTableList.Add( exportTableWithData( "TeamScoreDetail", new String[] { "SanctionId", "TeamCode", "AgeGroup", "LineNum" }, curSqlStmt.ToString(), "Update" ) );
 
 			curTables = new Dictionary<string, object> { { "Tables", curTableList } };
 			curLiveWebRequest = new Dictionary<string, object> { { "LiveWebRequest", curTables } };

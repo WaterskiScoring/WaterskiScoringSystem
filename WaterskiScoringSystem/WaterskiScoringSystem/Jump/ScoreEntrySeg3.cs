@@ -2456,7 +2456,13 @@ namespace WaterskiScoringSystem.Jump {
 
 				Font curFontBold = new Font( "Arial Narrow", 9, FontStyle.Bold );
 				Font curFont = new Font( "Arial Narrow", 9, FontStyle.Regular );
+				decimal curDevNT = 0, curDevMT = 0, curDevET = 0;
 
+				/*
+				 * CUT = mt – nt
+				 * FLIGHT = et-mt
+				 * CUMULATIVE = CUT + FLIGHT
+				 */
 				int curViewIdx = -1;
 				while ( curViewIdx < 5 ) {
 					curViewIdx = boatPathDataGridView.Rows.Add();
@@ -2470,6 +2476,11 @@ namespace WaterskiScoringSystem.Jump {
 					curViewRow.Cells["boatPathZone"].Style.ForeColor = Color.DarkGreen;
 					curViewRow.Cells["boatPathZoneTol"].Style.Font = curFont;
 					curViewRow.Cells["boatPathZoneTol"].Style.ForeColor = Color.DarkGray;
+					curViewRow.Cells["boatPathNote"].Style.Font = curFontBold;
+					curViewRow.Cells["boatPathNote"].Style.ForeColor = Color.Black;
+					curViewRow.Cells["boatPathCutFlightCum"].Style.Font = curFont;
+					curViewRow.Cells["boatPathCutFlightCum"].Style.ForeColor = Color.DarkGreen;
+					
 
 					//180,ST,NT,MT,ET and EC is good for me as points
 					if ( curViewIdx == 0 ) {
@@ -2480,20 +2491,29 @@ namespace WaterskiScoringSystem.Jump {
 
 					} else if ( curViewIdx == 2 ) {
 						curViewRow.Cells["boatPathBuoy"].Value = "52M";
+						curDevNT = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevBuoy" + curViewIdx, 0 );
 
 					} else if ( curViewIdx == 3 ) {
 						curViewRow.Cells["boatPathBuoy"].Value = "82M";
+						curDevMT = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevBuoy" + curViewIdx, 0 ); 
+						curViewRow.Cells["boatPathNote"].Value = "Cut";
+						curViewRow.Cells["boatPathCutFlightCum"].Value = (curDevMT - curDevNT);
 
 					} else if ( curViewIdx == 4 ) {
 						curViewRow.Cells["boatPathBuoy"].Value = "41M";
+						curDevET = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevBuoy" + curViewIdx, 0 );
+						curViewRow.Cells["boatPathNote"].Value = "Flight";
+						curViewRow.Cells["boatPathCutFlightCum"].Value = ( curDevET - curDevMT );
 
 					} else if ( curViewIdx == 5 ) {
 						curViewRow.Cells["boatPathBuoy"].Value = "EC";
+						curViewRow.Cells["boatPathNote"].Value = "Cumul";
+						curViewRow.Cells["boatPathCutFlightCum"].Value = ( curDevET - curDevNT );
 					}
 
-					curViewRow.Cells["boatPathDev"].Value = (Decimal)myBoatPathDataRow["PathDevBuoy" + curViewIdx];
+					curViewRow.Cells["boatPathDev"].Value = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevBuoy" + curViewIdx, 0 );
 					if ( curViewIdx > 1 && curViewIdx < 5 && ( myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx - 1 )] != System.DBNull.Value ) ) {
-						curViewRow.Cells["boatTimeBuoy"].Value = (Decimal)myBoatPathDataRow["boatTimeBuoy" + ( curViewIdx - 1 )];
+						curViewRow.Cells["boatTimeBuoy"].Value = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "boatTimeBuoy" + ( curViewIdx - 1 ), 0 );
 					}
 				}
 

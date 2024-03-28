@@ -244,9 +244,11 @@ namespace WaterskiScoringSystem.Jump {
 
             if ( curResults.ToLower().Equals( "fall" ) || curResults.ToLower().Equals( "pass" ) ) return;
 
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                // Skier speed matches division max speed
-
+			/*
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
+             */
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
                 // 52M NT segment only required for specific divisions and jump exceeds specified distance for the division
                 if ( myJump3TimesDiv.Length == 0 || curScoreMeters < (Decimal)myJump3TimesDiv[0]["MaxValue"] ) return;
 
@@ -339,11 +341,12 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                // Skier speed matches division max speed allowed
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
                 myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "N";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
@@ -509,12 +512,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                // Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "N";
@@ -617,15 +621,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                /*
-                 * Skier speed matches division max speed allowed
-                 */
-                #region Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "N";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "Y";
@@ -656,7 +658,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -764,14 +765,12 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-				/*
-                 * Skier speed matches division max speed allowed
-                 */
-				#region Skier speed matches division max speed allowed
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
 				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "N";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
@@ -803,7 +802,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -991,15 +989,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                /*
-                 * Skier speed matches division max speed allowed
-                 */
-                #region Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "N";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "Y";
@@ -1030,7 +1026,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -1142,15 +1137,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                /*
-                 * Skier speed matches division max speed allowed
-                 */
-                #region Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "N";
@@ -1181,7 +1174,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -1252,15 +1244,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                /*
-                 * Skier speed matches division max speed allowed
-                 */
-                #region Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "N";
@@ -1290,7 +1280,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -1399,15 +1388,13 @@ namespace WaterskiScoringSystem.Jump {
                 return;
             }
 
-            /*
+			/*
              * Successful jump
+             * Skier speed matches division max speed
+             * For L/R skier as of 2024 there is no longer any differences for speed being below max allowed by division
              */
-            if ( curBoatSpeed >= myMaxSpeedDiv ) {
-                /*
-                 * Skier speed matches division max speed allowed
-                 */
-                #region Skier speed matches division max speed allowed
-                myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
+			if ( curBoatSpeed >= myMaxSpeedDiv || myJump3TimesDiv.Length > 0 ) {
+				myRecapViewRow.Cells["TimeInTolRecap"].Value = "N";
                 myRecapViewRow.Cells["ScoreProtRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideRecap"].Value = "Y";
                 myRecapViewRow.Cells["RerideIfBestRecap"].Value = "N";
@@ -1438,7 +1425,6 @@ namespace WaterskiScoringSystem.Jump {
                 }
 
                 return;
-                #endregion
             }
 
             /*
@@ -1515,7 +1501,7 @@ namespace WaterskiScoringSystem.Jump {
                 } else if ( inBoatSplit82Time < curMinTime ) {
                     curTolSplit82Time = 1; //Fast split time
 
-                    if ( inBoatSpeed < myMaxSpeedDiv ) {
+                    if ( inBoatSpeed < myMaxSpeedDiv && myJump3TimesDiv.Length == 0 ) {
                         curTimeRow = getTimeEntry( curTimeKey82Max );
                         curMinTime = (Decimal)curTimeRow["MinValue"];
                         if ( inBoatSplit82Time < curMinTime ) {
@@ -1555,8 +1541,8 @@ namespace WaterskiScoringSystem.Jump {
                 } else if ( inBoatSplit52Time < curMinTime ) {
                     curTolSplit52Time = 1; //Fast split time
 
-                    if ( inBoatSpeed < myMaxSpeedDiv ) {
-                        curTimeRow = getTimeEntry( curTimeKey52Max );
+					if ( inBoatSpeed < myMaxSpeedDiv && myJump3TimesDiv.Length == 0 ) {
+						curTimeRow = getTimeEntry( curTimeKey52Max );
                         curMinTime = (Decimal)curTimeRow["MinValue"];
                         if ( inBoatSplit52Time < curMinTime ) {
                             curTolSplit52TimeMax = 1; //Fast split for max speed
@@ -1602,15 +1588,15 @@ namespace WaterskiScoringSystem.Jump {
                 curTimeKey41 = inBoatSpeed.ToString() + "-" + inEventClass + "-41M";
                 if ( inRtb.Equals( "Y" ) ) {
                     curTimeKey41 = curTimeKey41 + "-RTB";
-                    if ( inBoatSpeed < myMaxSpeedDiv ) {
-                        curTimeKey41Max = myMaxSpeedDiv.ToString() + "-" + inEventClass + "-41M-RTB";
+					if ( inBoatSpeed < myMaxSpeedDiv && myJump3TimesDiv.Length == 0 ) {
+						curTimeKey41Max = myMaxSpeedDiv.ToString() + "-" + inEventClass + "-41M-RTB";
                     } else {
                         curTimeKey41Max = myMaxSpeedDiv.ToString() + "-" + inEventClass + "-41M";
                     }
 
                 } else {
-                    if ( inBoatSpeed < myMaxSpeedDiv ) {
-                        curTimeKey41Max = myMaxSpeedDiv.ToString() + "-" + inEventClass + "-41M";
+					if ( inBoatSpeed < myMaxSpeedDiv && myJump3TimesDiv.Length == 0 ) {
+						curTimeKey41Max = myMaxSpeedDiv.ToString() + "-" + inEventClass + "-41M";
                     }
                 }
 
@@ -1624,8 +1610,8 @@ namespace WaterskiScoringSystem.Jump {
 
                     } else if ( inBoatEndTime < curMinTime ) {
                         curTolEndTime = 1; //Fast end course time
-                        if ( inBoatSpeed < myMaxSpeedDiv ) {
-                            curTimeRow = getTimeEntry( curTimeKey41Max );
+						if ( inBoatSpeed < myMaxSpeedDiv && myJump3TimesDiv.Length == 0 ) {
+							curTimeRow = getTimeEntry( curTimeKey41Max );
                             curMinTime = (Decimal)curTimeRow["MinValue"];
                             if ( inBoatEndTime < curMinTime ) {
                                 curTolEndTimeMax = 1; //Fast end course time for max speed

@@ -91,6 +91,15 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AnnouncerRating	R	3	3	Regional			
 0	AnnouncerRating	N	4	4	National			
 0	AnnouncerRating	E	5	5	Emeritus			
+0	ApprovedBoats	MATXI-53-24	240001	1240001	Malibu Response Txi 5.3L			2024 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MATXI-62-24	240002	1240002	Malibu Response Txi 6.2L			2024 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MCPro-60-24	240003	1240003	MasterCraft ProStar 6.0L			2024 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
+0	ApprovedBoats	MCPro-62-24	240004	1240004	MasterCraft ProStar 6.2L			2024 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ 867-MF 3 14 x 13.5 Nibral | ZO-S
+0	ApprovedBoats	CC001-24	240005	1240005	Nautique			2024 | PCM H5 (5.3L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 654* 4 12.5 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC002-24	240006	1240006	Nautique			2024 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC003-24	240007	1240007	Nautique			2024 | PCM ZZ6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC201-24	240008	1240008	Nautique 200			2024 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC202-24	240009	1240009	Nautique 200			2024 | PCM ZZ6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
 0	ApprovedBoats	MATXI-53-23	230001	1230001	Malibu Response Txi 5.3L			2023 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
 0	ApprovedBoats	MATXI-62-23	230002	1230002	Malibu Response Txi 6.2L			2023 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
 0	ApprovedBoats	MCPro-60-23	230003	1230003	MasterCraft ProStar 6.0L			2023 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
@@ -712,84 +721,144 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22505	IwwfJumpMax	L6		86	45kph, 28.2mph	28.0	45	
 22505	IwwfJumpMax	L7		87	45kph, 28.2mph	28.0	45	
 22505	IwwfJumpMax	L8		88	45kph, 28.2mph	28.0	45	
-0	IwwfOverallAdj	YB-S		11	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	YB-T		12	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	YB-J		13	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	YG-S		21	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	YG-T		22	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	YG-J		23	10	10	10	Overall Adjustment for Jump
-0	IwwfOverallAdj	JB-S		14	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	JB-T		15	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JB-J		16	-10	-10	-10	Overall Adjustment for Jump
-0	IwwfOverallAdj	JG-S		24	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	JG-T		25	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JG-J		26	-7	-7	-7	Overall Adjustment for Jump
-0	IwwfOverallAdj	IB-S		31	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	IB-T		32	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	IB-J		33	-20	-20	-20	Overall Adjustment for Jump
-0	IwwfOverallAdj	IG-S		41	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	IG-T		42	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	IG-J		43	-13	-13	-13	Overall Adjustment for Jump
-0	IwwfOverallAdj	IM-S		51	24	24	24	Overall Adjustment for Slalom
-0	IwwfOverallAdj	IM-T		52	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	IM-J		53	-25	-25	-25	Overall Adjustment for Jump
-0	IwwfOverallAdj	IW-S		61	24	24	24	Overall Adjustment for Slalom
-0	IwwfOverallAdj	IW-T		62	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	IW-J		63	-17	-17	-17	Overall Adjustment for Jump
-0	IwwfOverallAdj	JM-S		71	-6	-6	-6	Overall Adjustment for Slalom
-0	IwwfOverallAdj	JM-T		72	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JM-J		73	-20	-20	-20	Overall Adjustment for Jump
-0	IwwfOverallAdj	JW-S		81	-6	-6	-6	Overall Adjustment for Slalom
-0	IwwfOverallAdj	JW-T		82	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	JW-J		83	-13	-13	-13	Overall Adjustment for Jump
-0	IwwfOverallAdj	S1-S		91	12	12	12	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S1-T		92	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S1-J		93	-20	-20	-20	Overall Adjustment for Jump
-0	IwwfOverallAdj	S2-S		101	6	6	6	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S2-T		102	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S2-J		103	-15	-15	-15	Overall Adjustment for Jump
-0	IwwfOverallAdj	S3-S		111	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S3-T		112	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S3-J		113	-10	-10	-10	Overall Adjustment for Jump
-0	IwwfOverallAdj	S4-S		114	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S4-T		115	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S4-J		116	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	S5-S		117	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S5-T		118	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S5-J		119	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	S6-S		121	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S6-T		122	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S6-J		123	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	S7-S		124	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S7-T		125	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S7-J		126	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	S8-S		127	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	S8-T		128	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	S8-J		129	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	L1-S		131	6	6	6	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L1-T		132	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L1-J		133	-7	-7	-7	Overall Adjustment for Jump
-0	IwwfOverallAdj	L2-S		141	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L2-T		142	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L2-J		143	0	0	0	Overall Adjustment for Jump
-0	IwwfOverallAdj	L3-S		151	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L3-T		152	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L3-J		153	5	5	5	Overall Adjustment for Jump
-0	IwwfOverallAdj	L4-S		154	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L4-T		155	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L4-J		156	10	10	10	Overall Adjustment for Jump
-0	IwwfOverallAdj	L5-S		157	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L5-T		158	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L5-J		159	10	10	10	Overall Adjustment for Jump
-0	IwwfOverallAdj	L6-S		161	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L6-T		162	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L6-J		163	10	10	10	Overall Adjustment for Jump
-0	IwwfOverallAdj	L7-S		164	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L7-T		165	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L7-J		166	10	10	10	Overall Adjustment for Jump
-0	IwwfOverallAdj	L8-S		167	0	0	0	Overall Adjustment for Slalom
-0	IwwfOverallAdj	L8-T		168	0	0	0	Overall Adjustment for Trick
-0	IwwfOverallAdj	L8-J		169	10	10	10	Overall Adjustment for Jump
+0	IwwfOverallAdj	YB-S		11	0	0	0	Overall Adjustment for Slalom Under 10 Boys
+0	IwwfOverallAdj	YB-T		12	0	0	0	Overall Adjustment for Trick Under 10 Boys
+0	IwwfOverallAdj	YB-J		13	0	0	0	Overall Adjustment for Jump Under 10 Boys
+0	IwwfOverallAdj	YG-S		21	0	0	0	Overall Adjustment for Slalom Under 10 Girls
+0	IwwfOverallAdj	YG-T		22	0	0	0	Overall Adjustment for Trick Under 10 Girls
+0	IwwfOverallAdj	YG-J		23	10	10	10	Overall Adjustment for Jump Under 10 Girls
+0	IwwfOverallAdj	JB-S		14	0	0	0	Overall Adjustment for Slalom Under 14 Boys
+0	IwwfOverallAdj	JB-T		15	0	0	0	Overall Adjustment for Trick Under 14 Boys
+0	IwwfOverallAdj	JB-J		16	-10	-10	-10	Overall Adjustment for Jump Under 14 Boys
+0	IwwfOverallAdj	JG-S		24	0	0	0	Overall Adjustment for Slalom Under 14 Girls
+0	IwwfOverallAdj	JG-T		25	0	0	0	Overall Adjustment for Trick Under 14 Girls
+0	IwwfOverallAdj	JG-J		26	-7	-7	-7	Overall Adjustment for Jump Under 14 Girls
+0	IwwfOverallAdj	IB-S		31	-6	-6	-6	Overall Adjustment for Slalom U-17 Boys
+0	IwwfOverallAdj	IB-T		32	0	0	0	Overall Adjustment for Trick U-17 Boys
+0	IwwfOverallAdj	IB-J		33	-20	-20	-20	Overall Adjustment for Jump U-17 Boys
+0	IwwfOverallAdj	IG-S		41	-6	-6	-6	Overall Adjustment for Slalom U-17 Girls
+0	IwwfOverallAdj	IG-T		42	0	0	0	Overall Adjustment for Trick U-17 Girls
+0	IwwfOverallAdj	IG-J		43	-13	-13	-13	Overall Adjustment for Jump U-17 Girls
+0	IwwfOverallAdj	IM-S		51	-6	-6	-6	Overall Adjustment for Slalom International Men
+0	IwwfOverallAdj	IM-T		52	0	0	0	Overall Adjustment for Trick International Men
+0	IwwfOverallAdj	IM-J		53	-25	-25	-25	Overall Adjustment for Jump International Men
+0	IwwfOverallAdj	IW-S		61	-6	-6	-6	Overall Adjustment for Slalom International Women
+0	IwwfOverallAdj	IW-T		62	0	0	0	Overall Adjustment for Trick International Women
+0	IwwfOverallAdj	IW-J		63	-17	-17	-17	Overall Adjustment for Jump International Women
+0	IwwfOverallAdj	JM-S		71	-6	-6	-6	Overall Adjustment for Slalom U-21 Men
+0	IwwfOverallAdj	JM-T		72	0	0	0	Overall Adjustment for Trick U-21 Men
+0	IwwfOverallAdj	JM-J		73	-25	-25	-25	Overall Adjustment for Jump U-21 Men
+0	IwwfOverallAdj	JW-S		81	-6	-6	-6	Overall Adjustment for Slalom U-21 Women
+0	IwwfOverallAdj	JW-T		82	0	0	0	Overall Adjustment for Trick U-21 Women
+0	IwwfOverallAdj	JW-J		83	-17	-17	-17	Overall Adjustment for Jump U-21 Women
+0	IwwfOverallAdj	S1-S		91	-18	-18	-18	Overall Adjustment for Slalom 35+ Men
+0	IwwfOverallAdj	S1-T		92	0	0	0	Overall Adjustment for Trick 35+ Men
+0	IwwfOverallAdj	S1-J		93	-20	-20	-20	Overall Adjustment for Jump 35+ Men
+0	IwwfOverallAdj	S2-S		101	-12	-12	-12	Overall Adjustment for Slalom 45+ Men
+0	IwwfOverallAdj	S2-T		102	0	0	0	Overall Adjustment for Trick 45+ Men
+0	IwwfOverallAdj	S2-J		103	-15	-15	-15	Overall Adjustment for Jump 45+ Men
+0	IwwfOverallAdj	S3-S		111	0	0	0	Overall Adjustment for Slalom 55+ Men
+0	IwwfOverallAdj	S3-T		112	0	0	0	Overall Adjustment for Trick 55+ Men
+0	IwwfOverallAdj	S3-J		113	-10	-10	-10	Overall Adjustment for Jump 55+ Men
+0	IwwfOverallAdj	S4-S		114	0	0	0	Overall Adjustment for Slalom 65+ Men
+0	IwwfOverallAdj	S4-T		115	0	0	0	Overall Adjustment for Trick 65+ Men
+0	IwwfOverallAdj	S4-J		116	0	0	0	Overall Adjustment for Jump 65+ Men
+0	IwwfOverallAdj	S5-S		117	0	0	0	Overall Adjustment for Slalom 70+ Men
+0	IwwfOverallAdj	S5-T		118	0	0	0	Overall Adjustment for Trick 70+ Men
+0	IwwfOverallAdj	S5-J		119	0	0	0	Overall Adjustment for Jump 70+ Men
+0	IwwfOverallAdj	S6-S		121	0	0	0	Overall Adjustment for Slalom 75+ Men
+0	IwwfOverallAdj	S6-T		122	0	0	0	Overall Adjustment for Trick 75+ Men
+0	IwwfOverallAdj	S6-J		123	0	0	0	Overall Adjustment for Jump 75+ Men
+0	IwwfOverallAdj	S7-S		124	0	0	0	Overall Adjustment for Slalom 80+ Men
+0	IwwfOverallAdj	S7-T		125	0	0	0	Overall Adjustment for Trick 80+ Men
+0	IwwfOverallAdj	S7-J		126	0	0	0	Overall Adjustment for Jump 80+ Men
+0	IwwfOverallAdj	S8-S		127	0	0	0	Overall Adjustment for Slalom 85+ Men
+0	IwwfOverallAdj	S8-T		128	0	0	0	Overall Adjustment for Trick 85+ Men
+0	IwwfOverallAdj	S8-J		129	0	0	0	Overall Adjustment for Jump 85+ Men
+0	IwwfOverallAdj	L1-S		131	-12	-12	-12	Overall Adjustment for Slalom 35+ Women
+0	IwwfOverallAdj	L1-T		132	0	0	0	Overall Adjustment for Trick 35+ Women
+0	IwwfOverallAdj	L1-J		133	-7	-7	-7	Overall Adjustment for Jump 35+ Women
+0	IwwfOverallAdj	L2-S		141	-12	-12	-12	Overall Adjustment for Slalom 45+ Women
+0	IwwfOverallAdj	L2-T		142	0	0	0	Overall Adjustment for Trick 45+ Women
+0	IwwfOverallAdj	L2-J		143	0	0	0	Overall Adjustment for Jump 45+ Women
+0	IwwfOverallAdj	L3-S		151	0	0	0	Overall Adjustment for Slalom 55+ Women
+0	IwwfOverallAdj	L3-T		152	0	0	0	Overall Adjustment for Trick 55+ Women
+0	IwwfOverallAdj	L3-J		153	5	5	5	Overall Adjustment for Jump 55+ Women
+0	IwwfOverallAdj	L4-S		154	0	0	0	Overall Adjustment for Slalom 65+ Women
+0	IwwfOverallAdj	L4-T		155	0	0	0	Overall Adjustment for Trick 65+ Women
+0	IwwfOverallAdj	L4-J		156	10	10	10	Overall Adjustment for Jump 65+ Women
+0	IwwfOverallAdj	L5-S		157	0	0	0	Overall Adjustment for Slalom 70+ Women
+0	IwwfOverallAdj	L5-T		158	0	0	0	Overall Adjustment for Trick 70+ Women
+0	IwwfOverallAdj	L5-J		159	10	10	10	Overall Adjustment for Jump 70+ Women
+0	IwwfOverallAdj	L6-S		161	0	0	0	Overall Adjustment for Slalom 75+ Women
+0	IwwfOverallAdj	L6-T		162	0	0	0	Overall Adjustment for Trick 75+ Women
+0	IwwfOverallAdj	L6-J		163	10	10	10	Overall Adjustment for Jump 75+ Women
+0	IwwfOverallAdj	L7-S		164	0	0	0	Overall Adjustment for Slalom 80+ Women
+0	IwwfOverallAdj	L7-T		165	0	0	0	Overall Adjustment for Trick 80+ Women
+0	IwwfOverallAdj	L7-J		166	10	10	10	Overall Adjustment for Jump 80+ Women
+0	IwwfOverallAdj	L8-S		167	0	0	0	Overall Adjustment for Slalom 85+ Women
+0	IwwfOverallAdj	L8-T		168	0	0	0	Overall Adjustment for Trick 85+ Women
+0	IwwfOverallAdj	L8-J		169	10	10	10	Overall Adjustment for Jump 85+ Women
+0	IwwfOverallWrlBasis	IM-S		71	68.5	68.5	68.5	Overall Score Basis World Rankign List - Slalom - International Men Note: basis 50.5 plus adj of 12 + 6 = 68.5
+0	IwwfOverallWrlBasis	IW-S		76	64.5	64.5	64.5	Overall Score Basis World Rankign List - Slalom - International Women  Note: basis 46.5 plus adj of 12 + 6 = 64.5
+0	IwwfOverallWrlBasis	JM-S		81	68.5	68.5	68.5	Overall Score Basis World Rankign List - Slalom - U-21 Men  Note: basis 50.5 plus adj of 12 + 6= 68.5
+0	IwwfOverallWrlBasis	JW-S		86	64.5	64.5	64.5	Overall Score Basis World Rankign List - Slalom - U-21 Women Note: basis 46.5 plus adj of 12 + 6 = 64.5
+0	IwwfOverallWrlBasis	YB-S		11	67 	67 	67 	Overall Score Basis World Rankign List - Slalom - Under 10 Boys
+0	IwwfOverallWrlBasis	YG-S		21	61 	61 	61 	Overall Score Basis World Rankign List - Slalom - Under 10 Girls
+0	IwwfOverallWrlBasis	JB-S		31	56 	56 	56 	Overall Score Basis World Rankign List - Slalom - Under 14 Boys
+0	IwwfOverallWrlBasis	JG-S		41	56 	56 	56 	Overall Score Basis World Rankign List - Slalom - Under 14 Girls
+0	IwwfOverallWrlBasis	IB-S		51	61	61	61	Overall Score Basis World Rankign List - Slalom - U-17 Boys Note: basis 55 plus adj of 6 = 61
+0	IwwfOverallWrlBasis	IG-S		61	56	56	56	Overall Score Basis World Rankign List - Slalom - U-17 Girls Note: basis 50 plus adj of 6 = 56
+0	IwwfOverallWrlBasis	S1-S		91	61	61	61	Overall Score Basis World Rankign List - Slalom - 35+ Men Note: basis 43 plus adj of 18 = 61
+0	IwwfOverallWrlBasis	S2-S		101	57	57	57	Overall Score Basis World Rankign List - Slalom - 45+ Men Note: basis 45 plus adj of 12 = 57
+0	IwwfOverallWrlBasis	S3-S		111	53 	53 	53 	Overall Score Basis World Rankign List - Slalom - 55+ Men
+0	IwwfOverallWrlBasis	S4-S		121	50 	50 	50 	Overall Score Basis World Rankign List - Slalom - 65+ Men
+0	IwwfOverallWrlBasis	S5-S		131	50 	50 	50 	Overall Score Basis World Rankign List - Slalom - 70+ Men
+0	IwwfOverallWrlBasis	L1-S		171	38 	38 	38 	Overall Score Basis World Rankign List - Slalom - 35+ Women Note: basis 38 plus adj of 12 = 50
+0	IwwfOverallWrlBasis	L2-S		181	38 	38 	38 	Overall Score Basis World Rankign List - Slalom - 45+ Women Note: basis 38 plus adj of 12 = 50
+0	IwwfOverallWrlBasis	L3-S		191	50 	50 	50 	Overall Score Basis World Rankign List - Slalom - 55+ Women
+0	IwwfOverallWrlBasis	L4-S		201	34 	34 	34 	Overall Score Basis World Rankign List - Slalom - 65+ Women
+0	IwwfOverallWrlBasis	L5-S		211	34 	34 	34 	Overall Score Basis World Rankign List - Slalom - 70+ Women
+0	IwwfOverallWrlBasis	IM-T		72	12570	12570	12570	Overall Score Basis World Rankign List - Trick - International Men
+0	IwwfOverallWrlBasis	IW-T		77	11260	11260	11260	Overall Score Basis World Rankign List - Trick - International Women
+0	IwwfOverallWrlBasis	JM-T		82	12570	12570	12570	Overall Score Basis World Rankign List - Trick - U-21 Men
+0	IwwfOverallWrlBasis	JW-T		86	11260	11260	11260	Overall Score Basis World Rankign List - Trick - U-21 Women
+0	IwwfOverallWrlBasis	YB-T		12	4000	4000	4000	Overall Score Basis World Rankign List - Trick - Under 10 Boys
+0	IwwfOverallWrlBasis	YG-T		22	2720	2720	2720	Overall Score Basis World Rankign List - Trick - Under 10 Girls
+0	IwwfOverallWrlBasis	JB-T		32	6630	6630	6630	Overall Score Basis World Rankign List - Trick - Under 14 Boys
+0	IwwfOverallWrlBasis	JG-T		42	5300	5300	5300	Overall Score Basis World Rankign List - Trick - Under 14 Girls
+0	IwwfOverallWrlBasis	IB-T		52	12050	12050	12050	Overall Score Basis World Rankign List - Trick - U-17 Boys
+0	IwwfOverallWrlBasis	IG-T		62	10440	10440	10440	Overall Score Basis World Rankign List - Trick - U-17 Girls
+0	IwwfOverallWrlBasis	S1-T		92	11100	11100	11100	Overall Score Basis World Rankign List - Trick - 35+ Men
+0	IwwfOverallWrlBasis	S2-T		102	5400	5400	5400	Overall Score Basis World Rankign List - Trick - 45+ Men
+0	IwwfOverallWrlBasis	S3-T		112	3200	3200	3200	Overall Score Basis World Rankign List - Trick - 55+ Men
+0	IwwfOverallWrlBasis	S4-T		122	3000	3000	3000	Overall Score Basis World Rankign List - Trick - 65+ Men
+0	IwwfOverallWrlBasis	S5-T		132	2400	2400	2400	Overall Score Basis World Rankign List - Trick - 70+ Men
+0	IwwfOverallWrlBasis	L1-T		172	6000	6000	6000	Overall Score Basis World Rankign List - Trick - 35+ Women
+0	IwwfOverallWrlBasis	L2-T		182	4200	4200	4200	Overall Score Basis World Rankign List - Trick - 45+ Women
+0	IwwfOverallWrlBasis	L3-T		192	3700	3700	3700	Overall Score Basis World Rankign List - Trick - 55+ Women
+0	IwwfOverallWrlBasis	L4-T		202	2100	2100	2100	Overall Score Basis World Rankign List - Trick - 65+ Women
+0	IwwfOverallWrlBasis	L5-T		212	1575	1575	1575	Overall Score Basis World Rankign List - Trick - 70+ Women
+0	IwwfOverallWrlBasis	IM-J		73	77.4	77.4	77.4	Overall Score Basis World Rankign List - Jump - International Men
+0	IwwfOverallWrlBasis	IW-J		78	60.3	60.3	60.3	Overall Score Basis World Rankign List - Jump - International Women
+0	IwwfOverallWrlBasis	JM-J		83	77.4	77.4	77.4	Overall Score Basis World Rankign List - Jump - U-21 Men
+0	IwwfOverallWrlBasis	JW-J		86	60.3	60.3	60.3	Overall Score Basis World Rankign List - Jump - U-21 Women
+0	IwwfOverallWrlBasis	YB-J		13	21.9	21.9	21.9	Overall Score Basis World Rankign List - Jump - Under 10 Boys
+0	IwwfOverallWrlBasis	YG-J		23	11.4	11.4	11.4	Overall Score Basis World Rankign List - Jump - Under 10 Girls
+0	IwwfOverallWrlBasis	JB-J		33	35.3	35.3	35.3	Overall Score Basis World Rankign List - Jump - Under 14 Boys
+0	IwwfOverallWrlBasis	JG-J		43	27	27	27	Overall Score Basis World Rankign List - Jump - Under 14 Girls
+0	IwwfOverallWrlBasis	IB-J		53	59.1	59.1	59.1	Overall Score Basis World Rankign List - Jump - U-17 Boys
+0	IwwfOverallWrlBasis	IG-J		63	46	46	46	Overall Score Basis World Rankign List - Jump - U-17 Girls
+0	IwwfOverallWrlBasis	S1-J		93	60.7	60.7	60.7	Overall Score Basis World Rankign List - Jump - 35+ Men
+0	IwwfOverallWrlBasis	S2-J		103	53	53	53	Overall Score Basis World Rankign List - Jump - 45+ Men
+0	IwwfOverallWrlBasis	S3-J		113	46	46	46	Overall Score Basis World Rankign List - Jump - 55+ Men
+0	IwwfOverallWrlBasis	S4-J		123	33	33	33	Overall Score Basis World Rankign List - Jump - 65+ Men
+0	IwwfOverallWrlBasis	S5-J		133	24	24	24	Overall Score Basis World Rankign List - Jump - 70+ Men
+0	IwwfOverallWrlBasis	L1-J		173	41.7	41.7	41.7	Overall Score Basis World Rankign List - Jump - 35+ Women
+0	IwwfOverallWrlBasis	L2-J		183	38	38	38	Overall Score Basis World Rankign List - Jump - 45+ Women
+0	IwwfOverallWrlBasis	L3-J		193	34.4	34.4	34.4	Overall Score Basis World Rankign List - Jump - 55+ Women
+0	IwwfOverallWrlBasis	L4-J		203	18.3	18.3	18.3	Overall Score Basis World Rankign List - Jump - 65+ Women
+0	IwwfOverallWrlBasis	L5-J		213	13	13	13	Overall Score Basis World Rankign List - Jump - 70+ Women
 22548	IwwfRampMax	YB		51	5 Foot	0.235	5	
 22549	IwwfRampMax	YG		52	5 Foot	0.235	5	
 22548	IwwfRampMax	JB		53	5 Foot	0.235	5	
@@ -827,7 +896,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
-0	IwwfRecords	IM-O		394	Intl Men Overall		2660.12	10/14/2022 Joel Poland
+0	IwwfRecords	IM-O		394	Intl Men Overall		2670.62	12/20/2023 2@10.25/58k, 11680, 69.3m Joel Poland
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		71.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
 0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
 0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
@@ -840,58 +909,58 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	JW-T		422	Intl Junior Women - Trick		10790	9/26/2021 Neilly Ross
 0	IwwfRecords	JW-J		423	Intl Junior Women - Jump		54.6	5.5ft (1.65m) at 51 kph max 9/4/2011 Jacinta Carroll
 0	IwwfRecords	JW-O		424	Intl Junior Women Overall		2304.03	8/28/2021 Brooke Baldwin
-22600	IwwfSlalomMax	YB		51	49kph, 30mph	30	49	
-22601	IwwfSlalomMax	YG		52	49kph, 30mph	30	49	
-22600	IwwfSlalomMax	JB		53	55kph, 34mph	34	55	
-22601	IwwfSlalomMax	JG		54	52kph, 32mph	32	52	
-22602	IwwfSlalomMax	IB		55	58kph, 36mph	36	58	
-22603	IwwfSlalomMax	IG		56	55kph, 34mph	34	55	
-22604	IwwfSlalomMax	IM		61	58kph, 36mph	36	58	
-22605	IwwfSlalomMax	IW		62	55kph, 34mph	34	55	
-22606	IwwfSlalomMax	JM		63	58kph, 36mph	36	58	
-22607	IwwfSlalomMax	JW		64	55kph, 34mph	34	55	
-22608	IwwfSlalomMax	S1		71	55kph, 34mph	34	55	
-22609	IwwfSlalomMax	S2		72	55kph, 34mph	34	55	
-22610	IwwfSlalomMax	S3		73	55kph, 34mph	34	55	
-22610	IwwfSlalomMax	S4		74	52kph, 32mph	32	52	
-22610	IwwfSlalomMax	S5		75	52kph, 32mph	32	52	
-22610	IwwfSlalomMax	S6		76	49kph, 30mph	30	49	
-22610	IwwfSlalomMax	S7		77	49kph, 30mph	30	49	
-22610	IwwfSlalomMax	S8		78	46kph, 28mph	28	46	
-22611	IwwfSlalomMax	L1		81	55kph, 34mph	34	55	
-22612	IwwfSlalomMax	L2		82	52kph, 32mph	32	52	
-22613	IwwfSlalomMax	L3		83	52kph, 32mph	32	52	
-22613	IwwfSlalomMax	L4		84	49kph, 30mph	30	49	
-22613	IwwfSlalomMax	L5		85	49kph, 30mph	30	49	
-22613	IwwfSlalomMax	L6		86	46kph, 28mph	28	46	
-22613	IwwfSlalomMax	L7		87	46kph, 28mph	28	46	
-22613	IwwfSlalomMax	L8		88	46kph, 28mph	28	46	
-23409	IWWFSlalomMin	YB		11	25kph, 15mph	0	25	
-23410	IWWFSlalomMin	YG		12	25kph, 15mph	0	25	
-23409	IWWFSlalomMin	JB		13	46kph, 28mph	-7	46	
-23410	IWWFSlalomMin	JG		14	43kph, 26mph	-6	43	
-23411	IWWFSlalomMin	IB		15	49kph, 30mph	-8	49	
-23412	IWWFSlalomMin	IG		16	46kph, 28mph	-7	46	
-23413	IWWFSlalomMin	IM		21	49kph, 30mph	-8	49	
-23414	IWWFSlalomMin	IW		22	46kph, 28mph	-7	46	
-23415	IWWFSlalomMin	JM		23	49kph, 30mph	-8	49	
-23416	IWWFSlalomMin	JW		24	46kph, 28mph	-7	46	
-23417	IWWFSlalomMin	S1		31	46kph, 28mph	-7	46	
-23418	IWWFSlalomMin	S2		32	46kph, 28mph	-7	46	
-23419	IWWFSlalomMin	S3		33	46kph, 28mph	-7	46	
-23419	IWWFSlalomMin	S4		34	43kph, 26mph	-6	43	
-23419	IWWFSlalomMin	S5		34	43kph, 26mph	-6	43	
-23419	IWWFSlalomMin	S6		35	40kph, 24mph	-5	40	
-23419	IWWFSlalomMin	S7		36	40kph, 24mph	-5	40	
-23419	IWWFSlalomMin	S8		38	37kph, 22mph	-4	37	
-23420	IWWFSlalomMin	L1		41	46kph, 28mph	-7	46	
-23421	IWWFSlalomMin	L2		42	43kph, 26mph	-6	43	
-23422	IWWFSlalomMin	L3		43	43kph, 26mph	-6	43	
-23422	IWWFSlalomMin	L4		44	40kph, 24mph	-5	40	
-23422	IWWFSlalomMin	L5		45	40kph, 24mph	-5	40	
-23422	IWWFSlalomMin	L6		46	37kph, 22mph	-4	37	
-23422	IWWFSlalomMin	L7		47	37kph, 22mph	-4	37	
-23422	IWWFSlalomMin	L8		48	37kph, 22mph	-4	37	
+0	IwwfSlalomMax	YB		51	49kph, 30mph	30	49	
+0	IwwfSlalomMax	YG		52	49kph, 30mph	30	49	
+0	IwwfSlalomMax	JB		53	55kph, 34mph	34	55	
+0	IwwfSlalomMax	JG		54	52kph, 32mph	32	52	
+0	IwwfSlalomMax	IB		55	58kph, 36mph	36	58	
+0	IwwfSlalomMax	IG		56	55kph, 34mph	34	55	
+0	IwwfSlalomMax	IM		61	58kph, 36mph	36	58	
+0	IwwfSlalomMax	IW		62	55kph, 34mph	34	55	
+0	IwwfSlalomMax	JM		63	58kph, 36mph	36	58	
+0	IwwfSlalomMax	JW		64	55kph, 34mph	34	55	
+0	IwwfSlalomMax	S1		71	55kph, 34mph	34	55	
+0	IwwfSlalomMax	S2		72	55kph, 34mph	34	55	
+0	IwwfSlalomMax	S3		73	55kph, 34mph	34	55	
+0	IwwfSlalomMax	S4		74	52kph, 32mph	32	52	
+0	IwwfSlalomMax	S5		75	52kph, 32mph	32	52	
+0	IwwfSlalomMax	S6		76	49kph, 30mph	30	49	
+0	IwwfSlalomMax	S7		77	49kph, 30mph	30	49	
+0	IwwfSlalomMax	S8		78	46kph, 28mph	28	46	
+0	IwwfSlalomMax	L1		81	55kph, 34mph	34	55	
+0	IwwfSlalomMax	L2		82	52kph, 32mph	32	52	
+0	IwwfSlalomMax	L3		83	52kph, 32mph	32	52	
+0	IwwfSlalomMax	L4		84	49kph, 30mph	30	49	
+0	IwwfSlalomMax	L5		85	49kph, 30mph	30	49	
+0	IwwfSlalomMax	L6		86	46kph, 28mph	28	46	
+0	IwwfSlalomMax	L7		87	46kph, 28mph	28	46	
+0	IwwfSlalomMax	L8		88	46kph, 28mph	28	46	
+0	IwwfSlalomMin	YB		11	25kph, 15mph	0	25	
+0	IwwfSlalomMin	YG		12	25kph, 15mph	0	25	
+0	IwwfSlalomMin	JB		13	43kph, 28mph	-6	46	
+0	IwwfSlalomMin	JG		14	40kph, 26mph	-5	43	
+0	IwwfSlalomMin	IB		15	49kph, 30mph	-8	49	
+0	IwwfSlalomMin	IG		16	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	IM		21	49kph, 30mph	-8	49	
+0	IwwfSlalomMin	IW		22	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	JM		23	49kph, 30mph	-8	49	
+0	IwwfSlalomMin	JW		24	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	S1		31	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	S2		32	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	S3		33	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	S4		34	43kph, 26mph	-6	43	
+0	IwwfSlalomMin	S5		34	43kph, 26mph	-6	43	
+0	IwwfSlalomMin	S6		35	40kph, 24mph	-5	40	
+0	IwwfSlalomMin	S7		36	40kph, 24mph	-5	40	
+0	IwwfSlalomMin	S8		38	37kph, 22mph	-4	37	
+0	IwwfSlalomMin	L1		41	46kph, 28mph	-7	46	
+0	IwwfSlalomMin	L2		42	43kph, 26mph	-6	43	
+0	IwwfSlalomMin	L3		43	43kph, 26mph	-6	43	
+0	IwwfSlalomMin	L4		44	40kph, 24mph	-5	40	
+0	IwwfSlalomMin	L5		45	40kph, 24mph	-5	40	
+0	IwwfSlalomMin	L6		46	37kph, 22mph	-4	37	
+0	IwwfSlalomMin	L7		47	37kph, 22mph	-4	37	
+0	IwwfSlalomMin	L8		48	37kph, 22mph	-4	37	
 22718	JudgeRating	  		1	Unrated			
 22719	JudgeRating	Assistant		2	Assistant			
 22720	JudgeRating	Regular		3	Regular			

@@ -29,6 +29,30 @@ namespace WaterskiScoringSystem.Common {
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.winNavStrip = new System.Windows.Forms.ToolStrip();
 			this.navRefresh = new System.Windows.Forms.ToolStripButton();
 			this.navExport = new System.Windows.Forms.ToolStripButton();
@@ -266,9 +290,11 @@ namespace WaterskiScoringSystem.Common {
 			// 
 			this.Event.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.Event.HeaderText = "Event";
+			this.Event.MaxInputLength = 16;
 			this.Event.Name = "Event";
 			this.Event.ReadOnly = true;
 			this.Event.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Event.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.Event.Width = 45;
 			// 
 			// EventClass
@@ -291,6 +317,7 @@ namespace WaterskiScoringSystem.Common {
 			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 			this.Round.DefaultCellStyle = dataGridViewCellStyle3;
 			this.Round.HeaderText = "Rd";
+			this.Round.MaxInputLength = 2;
 			this.Round.Name = "Round";
 			this.Round.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.Round.Width = 30;
@@ -302,13 +329,19 @@ namespace WaterskiScoringSystem.Common {
 			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.PassNumber.DefaultCellStyle = dataGridViewCellStyle4;
 			this.PassNumber.HeaderText = "Pass";
+			this.PassNumber.MaxInputLength = 2;
 			this.PassNumber.Name = "PassNumber";
 			this.PassNumber.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PassNumber.Width = 35;
 			// 
 			// SkierBoatPath
 			// 
 			this.SkierBoatPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierBoatPath.DefaultCellStyle = dataGridViewCellStyle5;
 			this.SkierBoatPath.HeaderText = "Path";
 			this.SkierBoatPath.MaxInputLength = 8;
 			this.SkierBoatPath.Name = "SkierBoatPath";
@@ -319,26 +352,40 @@ namespace WaterskiScoringSystem.Common {
 			// PassSpeedKph
 			// 
 			this.PassSpeedKph.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassSpeedKph.DefaultCellStyle = dataGridViewCellStyle6;
 			this.PassSpeedKph.HeaderText = "Speed Kph";
+			this.PassSpeedKph.MaxInputLength = 2;
 			this.PassSpeedKph.Name = "PassSpeedKph";
+			this.PassSpeedKph.ReadOnly = true;
 			this.PassSpeedKph.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassSpeedKph.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PassSpeedKph.Width = 50;
 			// 
 			// PassLineLength
 			// 
 			this.PassLineLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.PassLineLength.HeaderText = "Line Length";
+			this.PassLineLength.MaxInputLength = 32;
 			this.PassLineLength.Name = "PassLineLength";
 			this.PassLineLength.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PassLineLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PassLineLength.Width = 50;
 			// 
 			// SkierRunNum
 			// 
 			this.SkierRunNum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierRunNum.DefaultCellStyle = dataGridViewCellStyle7;
 			this.SkierRunNum.HeaderText = "Match To Pass";
+			this.SkierRunNum.MaxInputLength = 12;
 			this.SkierRunNum.Name = "SkierRunNum";
 			this.SkierRunNum.ReadOnly = true;
 			this.SkierRunNum.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.SkierRunNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.SkierRunNum.Width = 60;
 			// 
 			// Boat
@@ -367,61 +414,116 @@ namespace WaterskiScoringSystem.Common {
 			// PathDevBuoy0
 			// 
 			this.PathDevBuoy0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle8.Format = "N0";
+			dataGridViewCellStyle8.NullValue = null;
+			dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy0.DefaultCellStyle = dataGridViewCellStyle8;
 			this.PathDevBuoy0.HeaderText = "Dev Gate";
+			this.PathDevBuoy0.MaxInputLength = 8;
 			this.PathDevBuoy0.Name = "PathDevBuoy0";
 			this.PathDevBuoy0.ReadOnly = true;
 			this.PathDevBuoy0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy0.Width = 50;
 			// 
 			// PathDevCum0
 			// 
 			this.PathDevCum0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle9.Format = "N0";
+			dataGridViewCellStyle9.NullValue = null;
+			dataGridViewCellStyle9.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum0.DefaultCellStyle = dataGridViewCellStyle9;
 			this.PathDevCum0.HeaderText = "Cum Gate";
+			this.PathDevCum0.MaxInputLength = 8;
 			this.PathDevCum0.Name = "PathDevCum0";
 			this.PathDevCum0.ReadOnly = true;
 			this.PathDevCum0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum0.Width = 50;
 			// 
 			// PathDevZone0
 			// 
 			this.PathDevZone0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle10.Format = "N0";
+			dataGridViewCellStyle10.NullValue = null;
+			dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone0.DefaultCellStyle = dataGridViewCellStyle10;
 			this.PathDevZone0.HeaderText = "Zone Gate";
+			this.PathDevZone0.MaxInputLength = 8;
 			this.PathDevZone0.Name = "PathDevZone0";
 			this.PathDevZone0.ReadOnly = true;
 			this.PathDevZone0.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone0.Width = 50;
 			// 
 			// PathDevBuoy1
 			// 
 			this.PathDevBuoy1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle11.Format = "N0";
+			dataGridViewCellStyle11.NullValue = null;
+			dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy1.DefaultCellStyle = dataGridViewCellStyle11;
 			this.PathDevBuoy1.HeaderText = "Dev B1";
+			this.PathDevBuoy1.MaxInputLength = 8;
 			this.PathDevBuoy1.Name = "PathDevBuoy1";
 			this.PathDevBuoy1.ReadOnly = true;
 			this.PathDevBuoy1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy1.Width = 50;
 			// 
 			// PathDevCum1
 			// 
 			this.PathDevCum1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle12.Format = "N0";
+			dataGridViewCellStyle12.NullValue = null;
+			dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum1.DefaultCellStyle = dataGridViewCellStyle12;
 			this.PathDevCum1.HeaderText = "Cum B1";
+			this.PathDevCum1.MaxInputLength = 8;
 			this.PathDevCum1.Name = "PathDevCum1";
 			this.PathDevCum1.ReadOnly = true;
 			this.PathDevCum1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum1.Width = 50;
 			// 
 			// PathDevZone1
 			// 
 			this.PathDevZone1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle13.Format = "N0";
+			dataGridViewCellStyle13.NullValue = null;
+			dataGridViewCellStyle13.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone1.DefaultCellStyle = dataGridViewCellStyle13;
 			this.PathDevZone1.HeaderText = "Zone B1";
+			this.PathDevZone1.MaxInputLength = 8;
 			this.PathDevZone1.Name = "PathDevZone1";
 			this.PathDevZone1.ReadOnly = true;
 			this.PathDevZone1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone1.Width = 50;
 			// 
 			// PathDevBuoy2
 			// 
 			this.PathDevBuoy2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle14.Format = "N0";
+			dataGridViewCellStyle14.NullValue = null;
+			dataGridViewCellStyle14.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy2.DefaultCellStyle = dataGridViewCellStyle14;
 			this.PathDevBuoy2.HeaderText = "Dev B2";
+			this.PathDevBuoy2.MaxInputLength = 8;
 			this.PathDevBuoy2.Name = "PathDevBuoy2";
 			this.PathDevBuoy2.ReadOnly = true;
 			this.PathDevBuoy2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -430,7 +532,14 @@ namespace WaterskiScoringSystem.Common {
 			// PathDevCum2
 			// 
 			this.PathDevCum2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle15.Format = "N0";
+			dataGridViewCellStyle15.NullValue = null;
+			dataGridViewCellStyle15.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum2.DefaultCellStyle = dataGridViewCellStyle15;
 			this.PathDevCum2.HeaderText = "Cum B2";
+			this.PathDevCum2.MaxInputLength = 8;
 			this.PathDevCum2.Name = "PathDevCum2";
 			this.PathDevCum2.ReadOnly = true;
 			this.PathDevCum2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -439,118 +548,222 @@ namespace WaterskiScoringSystem.Common {
 			// PathDevZone2
 			// 
 			this.PathDevZone2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle16.Format = "N0";
+			dataGridViewCellStyle16.NullValue = null;
+			dataGridViewCellStyle16.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone2.DefaultCellStyle = dataGridViewCellStyle16;
 			this.PathDevZone2.HeaderText = "Zone B2";
+			this.PathDevZone2.MaxInputLength = 8;
 			this.PathDevZone2.Name = "PathDevZone2";
 			this.PathDevZone2.ReadOnly = true;
 			this.PathDevZone2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone2.Width = 50;
 			// 
 			// PathDevBuoy3
 			// 
 			this.PathDevBuoy3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle17.Format = "N0";
+			dataGridViewCellStyle17.NullValue = null;
+			dataGridViewCellStyle17.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy3.DefaultCellStyle = dataGridViewCellStyle17;
 			this.PathDevBuoy3.HeaderText = "Dev B3";
+			this.PathDevBuoy3.MaxInputLength = 8;
 			this.PathDevBuoy3.Name = "PathDevBuoy3";
 			this.PathDevBuoy3.ReadOnly = true;
 			this.PathDevBuoy3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy3.Width = 50;
 			// 
 			// PathDevCum3
 			// 
 			this.PathDevCum3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle18.Format = "N0";
+			dataGridViewCellStyle18.NullValue = null;
+			dataGridViewCellStyle18.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum3.DefaultCellStyle = dataGridViewCellStyle18;
 			this.PathDevCum3.HeaderText = "Cum B3";
+			this.PathDevCum3.MaxInputLength = 8;
 			this.PathDevCum3.Name = "PathDevCum3";
 			this.PathDevCum3.ReadOnly = true;
 			this.PathDevCum3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum3.Width = 50;
 			// 
 			// PathDevZone3
 			// 
 			this.PathDevZone3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle19.Format = "N0";
+			dataGridViewCellStyle19.NullValue = null;
+			dataGridViewCellStyle19.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone3.DefaultCellStyle = dataGridViewCellStyle19;
 			this.PathDevZone3.HeaderText = "Zone B3";
+			this.PathDevZone3.MaxInputLength = 8;
 			this.PathDevZone3.Name = "PathDevZone3";
 			this.PathDevZone3.ReadOnly = true;
 			this.PathDevZone3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone3.Width = 50;
 			// 
 			// PathDevBuoy4
 			// 
 			this.PathDevBuoy4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle20.Format = "N0";
+			dataGridViewCellStyle20.NullValue = null;
+			dataGridViewCellStyle20.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy4.DefaultCellStyle = dataGridViewCellStyle20;
 			this.PathDevBuoy4.HeaderText = "Dev B4";
+			this.PathDevBuoy4.MaxInputLength = 8;
 			this.PathDevBuoy4.Name = "PathDevBuoy4";
 			this.PathDevBuoy4.ReadOnly = true;
 			this.PathDevBuoy4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy4.Width = 50;
 			// 
 			// PathDevCum4
 			// 
 			this.PathDevCum4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle21.Format = "N0";
+			dataGridViewCellStyle21.NullValue = null;
+			dataGridViewCellStyle21.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum4.DefaultCellStyle = dataGridViewCellStyle21;
 			this.PathDevCum4.HeaderText = "Cum B4";
+			this.PathDevCum4.MaxInputLength = 8;
 			this.PathDevCum4.Name = "PathDevCum4";
 			this.PathDevCum4.ReadOnly = true;
 			this.PathDevCum4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum4.Width = 50;
 			// 
 			// PathDevZone4
 			// 
 			this.PathDevZone4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle22.Format = "N0";
+			dataGridViewCellStyle22.NullValue = null;
+			dataGridViewCellStyle22.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone4.DefaultCellStyle = dataGridViewCellStyle22;
 			this.PathDevZone4.HeaderText = "Zone B4";
+			this.PathDevZone4.MaxInputLength = 8;
 			this.PathDevZone4.Name = "PathDevZone4";
 			this.PathDevZone4.ReadOnly = true;
 			this.PathDevZone4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone4.Width = 50;
 			// 
 			// PathDevBuoy5
 			// 
 			this.PathDevBuoy5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle23.Format = "N0";
+			dataGridViewCellStyle23.NullValue = null;
+			dataGridViewCellStyle23.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy5.DefaultCellStyle = dataGridViewCellStyle23;
 			this.PathDevBuoy5.HeaderText = "Dev B5";
+			this.PathDevBuoy5.MaxInputLength = 8;
 			this.PathDevBuoy5.Name = "PathDevBuoy5";
 			this.PathDevBuoy5.ReadOnly = true;
 			this.PathDevBuoy5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy5.Width = 50;
 			// 
 			// PathDevCum5
 			// 
 			this.PathDevCum5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle24.Format = "N0";
+			dataGridViewCellStyle24.NullValue = null;
+			dataGridViewCellStyle24.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum5.DefaultCellStyle = dataGridViewCellStyle24;
 			this.PathDevCum5.HeaderText = "Cum B5";
+			this.PathDevCum5.MaxInputLength = 8;
 			this.PathDevCum5.Name = "PathDevCum5";
 			this.PathDevCum5.ReadOnly = true;
 			this.PathDevCum5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum5.Width = 50;
 			// 
 			// PathDevZone5
 			// 
 			this.PathDevZone5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle25.Format = "N0";
+			dataGridViewCellStyle25.NullValue = null;
+			dataGridViewCellStyle25.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone5.DefaultCellStyle = dataGridViewCellStyle25;
 			this.PathDevZone5.HeaderText = "Zone B5";
+			this.PathDevZone5.MaxInputLength = 8;
 			this.PathDevZone5.Name = "PathDevZone5";
 			this.PathDevZone5.ReadOnly = true;
 			this.PathDevZone5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone5.Width = 50;
 			// 
 			// PathDevBuoy6
 			// 
 			this.PathDevBuoy6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle26.Format = "N0";
+			dataGridViewCellStyle26.NullValue = null;
+			dataGridViewCellStyle26.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy6.DefaultCellStyle = dataGridViewCellStyle26;
 			this.PathDevBuoy6.HeaderText = "Dev B6";
+			this.PathDevBuoy6.MaxInputLength = 8;
 			this.PathDevBuoy6.Name = "PathDevBuoy6";
 			this.PathDevBuoy6.ReadOnly = true;
 			this.PathDevBuoy6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevBuoy6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevBuoy6.Width = 50;
 			// 
 			// PathDevCum6
 			// 
 			this.PathDevCum6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle27.Format = "N0";
+			dataGridViewCellStyle27.NullValue = null;
+			dataGridViewCellStyle27.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum6.DefaultCellStyle = dataGridViewCellStyle27;
 			this.PathDevCum6.HeaderText = "Cum B6";
+			this.PathDevCum6.MaxInputLength = 8;
 			this.PathDevCum6.Name = "PathDevCum6";
 			this.PathDevCum6.ReadOnly = true;
 			this.PathDevCum6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevCum6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevCum6.Width = 50;
 			// 
 			// PathDevZone6
 			// 
 			this.PathDevZone6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle28.Format = "N0";
+			dataGridViewCellStyle28.NullValue = null;
+			dataGridViewCellStyle28.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
+			dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone6.DefaultCellStyle = dataGridViewCellStyle28;
 			this.PathDevZone6.HeaderText = "Zone B6";
+			this.PathDevZone6.MaxInputLength = 8;
 			this.PathDevZone6.Name = "PathDevZone6";
 			this.PathDevZone6.ReadOnly = true;
 			this.PathDevZone6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.PathDevZone6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.PathDevZone6.Width = 50;
 			// 
 			// InsertDate

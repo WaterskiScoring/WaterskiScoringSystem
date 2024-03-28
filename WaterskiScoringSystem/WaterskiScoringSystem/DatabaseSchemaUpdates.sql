@@ -1150,4 +1150,46 @@ ALTER TABLE TourReg ADD COLUMN ForeignFederationID nvarchar(12);
 ALTER TABLE [TourBoatUse] ALTER COLUMN HullId nvarchar(16) NOT NULL;
 
 
+//------------------------------------------------------------
+## v24.10
+CREATE TABLE TeamScore (
+    SanctionId nchar(6) NOT NULL
+    , TeamCode nvarchar(12) NOT NULL
+    , AgeGroup nvarchar(12) NOT NULL
+    , Name nvarchar(64) NOT NULL
+    , ReportFormat nvarchar(16) NOT NULL
+    , OverallPlcmt nvarchar(8) DEFAULT NULL
+    , SlalomPlcmt nvarchar(8) DEFAULT NULL
+    , TrickPlcmt nvarchar(8) DEFAULT NULL
+    , JumpPlcmt nvarchar(8) DEFAULT NULL
+    , OverallScore numeric(7,2) DEFAULT NULL
+    , SlalomScore numeric(7,2) DEFAULT NULL
+    , TrickScore numeric(7,2) DEFAULT NULL
+    , JumpScore numeric(7,2) DEFAULT NULL
+    , LastUpdateDate datetime NULL
+);
+ALTER TABLE TeamScore ADD PRIMARY KEY (SanctionId, TeamCode, AgeGroup) ;
 
+CREATE TABLE TeamScoreDetail (
+    SanctionId nchar(6) NOT NULL
+    , TeamCode nvarchar(12) NOT NULL
+    , AgeGroup nvarchar(12) NOT NULL
+    , LineNum smallint NOT NULL
+    , SkierCategory nvarchar(12) DEFAULT NULL
+    , SlalomSkierName nvarchar(64) DEFAULT NULL
+    , SlalomPlcmt nvarchar(8) DEFAULT NULL
+    , SlalomScore numeric(7,2) DEFAULT NULL
+    , SlalomNops numeric(7,2) DEFAULT NULL
+    , SlalomPoints numeric(7,2) DEFAULT NULL
+    , TrickSkierName nvarchar(64) DEFAULT NULL
+    , TrickPlcmt nvarchar(8) DEFAULT NULL
+    , TrickScore int DEFAULT NULL
+    , TrickNops numeric(7,2) DEFAULT NULL
+    , TrickPoints numeric(7,2) DEFAULT NULL
+    , JumpSkierName nvarchar(64) DEFAULT NULL
+    , JumpPlcmt nvarchar(8) DEFAULT NULL
+    , JumpScore numeric(7,2) DEFAULT NULL
+    , JumpNops numeric(7,2) DEFAULT NULL
+    , JumpPoints numeric(7,2) DEFAULT NULL
+);
+ALTER TABLE TeamScoreDetail ADD PRIMARY KEY (SanctionId, TeamCode, AgeGroup, LineNum) ;

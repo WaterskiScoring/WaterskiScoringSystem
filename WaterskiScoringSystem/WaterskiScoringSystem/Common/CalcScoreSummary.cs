@@ -3264,10 +3264,20 @@ namespace WaterskiScoringSystem.Common {
 			return curSummaryDataTable;
 		}
 
+		/*
+		 * IWWF Overall calculations.
+		 * There are several variations of this depending on the tournament or the purpose
+		 * Rule 24: Ranking List Overall Score Basis
+		 *		11.01: Rules for U-10 and U-14 Individual Overall
+		 * Overall for World Open Championships Rule 15.04
+		 * Overall for World Under 17 Championships Rules
+		 * Overall for World 35+ Championships Rules Rule 18.04 
+		 * Overall for World Under 17 Championships Rules Rule 16.04 
+		 * Overall for World Under 21 Championships Rules Rule 17.04 
+		 * 
+		 * This calculation essentially applies the various world tournament rules to any particular tournament
+		 */
 		public void calcIwwfOverallPoints( DataTable inSummaryDataTable, String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, String inEventGroup ) {
-			//Retrieve overall adjustment factors
-			DataTable curOverallAdjDataTable = getIwwfOverallAdj();
-
 			//Determine maximum scores per event and division
 			Boolean curTeamPlcmt = false;
 			if ( inEventGroup != null ) {
@@ -3275,7 +3285,15 @@ namespace WaterskiScoringSystem.Common {
 					curTeamPlcmt = true;
 				}
 			}
+			/*
+			 * Retrieve scores to be used as the overall score basis 
+			 * The scorer can use either the World Ranking Basis scores
+			 * or the best overall score achieved at the event
+			 */
 			DataTable curMaxDataTable = buildMaxScoresPerGroup( inSanctionId, inPlcmtOrg, inRules, inEvent, curTeamPlcmt );
+			
+			//Retrieve overall adjustment factors
+			DataTable curOverallAdjDataTable = getIwwfOverallAdj();
 
 			#region Calculate points based on IWWF 1000 point formula including adjustments
 			String curGroup = "", curFilterCommand = "", curAgeGroup = "";
@@ -3299,7 +3317,6 @@ namespace WaterskiScoringSystem.Common {
 
 				curFilterCommand = "Group = '" + curGroup + "'";
 				curAdjFactor = 0m;
-				curOverallAdjDataTable = getIwwfOverallAdj();
 
 				curFindRows = curMaxDataTable.Select( curFilterCommand );
 				if ( curFindRows.Length > 0 ) {
@@ -4277,13 +4294,6 @@ namespace WaterskiScoringSystem.Common {
 			return buildMaxScoresPerGroup( inSanctionId, inPlcmtOrg, inRules, inEvent, false );
 		}
 		private DataTable buildMaxScoresPerGroup( String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, Boolean inTeamPlcmt ) {
-			String curGroup = "", curFilterCommand = "", curAgeGroup = "", curMemberId = "";
-			Decimal curScore;
-			DataRowView newMaxRow;
-			DataRow curMaxRow;
-			DataRow[] curFindRows = null, curFindRowsOverallElig = null;
-			DataTable curDataTable = null;
-
 			#region Build data table to maintain max scores per event group
 			DataTable curMaxDataTable = new DataTable();
 			DataColumn curCol = new DataColumn();
@@ -4343,215 +4353,290 @@ namespace WaterskiScoringSystem.Common {
 			curMaxDataTable.Columns.Add( curCol );
 			#endregion
 
-			DataTable curEligSkiersDataTable = null;
-			if ( inTeamPlcmt ) {
-				curEligSkiersDataTable = getTeamSkierList( inSanctionId, inEvent );
+			bool useWrlOverallScoreBasis = false;
+			if ( inRules.Equals("iwwf")) {
+				DialogResult curDialogResult = MessageBox.Show( "Do you want to use World Ranking List overall basis scores (Yes)"
+					+ "\nOr\nUse the best score by an overall skier achieved at this event(No) "
+					, "IWwf Overall", MessageBoxButtons.YesNoCancel );
+				if ( curDialogResult == DialogResult.Yes ) useWrlOverallScoreBasis = true;
+			}
+			if ( useWrlOverallScoreBasis ) {
+				//String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, Boolean inTeamPlcmt
+				buildWrlOverallScoreBasis( curMaxDataTable, inSanctionId, inEvent );
+
 			} else {
-				curEligSkiersDataTable = getOverallSkierList( inSanctionId );
-			}
-
-			#region Determine maximum slalom scores per event per division
-			if ( inEvent.ToLower().Equals( "slalom" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
-				curDataTable = getSlalomSummaryData( inSanctionId, "Round", inRules, "all", "all" );
-				foreach ( DataRow curRow in curDataTable.Rows ) {
-					curGroup = (String)curRow["EventGroup"];
-					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-						curGroup = (String)curRow["AgeGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-						curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-						curGroup = (String)curRow["EventGroup"];
-					} else {
-						curGroup = "";
-					}
-
-					curMemberId = (String)curRow["MemberId"];
-					curAgeGroup = (String)curRow["AgeGroup"];
-					try {
-						curScore = (Decimal)curRow["Score"];
-					} catch {
-						curScore = 0;
-					}
-					if ( curEligSkiersDataTable != null ) {
-						curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-					}
-
-					curFilterCommand = "Group = '" + curGroup + "'";
-					curFindRows = curMaxDataTable.Select( curFilterCommand );
-					if ( curFindRows.Length > 0 ) {
-						curMaxRow = curFindRows[0];
-					} else {
-						newMaxRow = curMaxDataTable.DefaultView.AddNew();
-						newMaxRow["Group"] = curGroup;
-						newMaxRow["ScoreSlalom"] = 0M;
-						newMaxRow["ScoreTrick"] = 0;
-						newMaxRow["ScoreJump"] = 0M;
-						newMaxRow["ScoreSlalomMax"] = 0M;
-						newMaxRow["ScoreTrickMax"] = 0;
-						newMaxRow["ScoreJumpMax"] = 0M;
-						newMaxRow.EndEdit();
-						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
-					}
-
-					if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreSlalomMax"] ) {
-						curMaxRow["ScoreSlalomMax"] = curScore;
-					}
-					if ( inRules.ToLower().Equals( "iwwf" ) ) {
-						if ( inTeamPlcmt ) {
-							if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
-								if ( curScore > (Decimal)curMaxRow["ScoreSlalom"] ) {
-									curMaxRow["ScoreSlalom"] = curScore;
-								}
-							}
-						} else {
-							if ( curFindRowsOverallElig.Length > 0 ) {
-								if ( curScore > (Decimal)curMaxRow["ScoreSlalom"] ) {
-									curMaxRow["ScoreSlalom"] = curScore;
-								}
-							}
-						}
-					}
+				DataTable curEligSkiersDataTable = null;
+				if ( inTeamPlcmt ) {
+					curEligSkiersDataTable = getTeamSkierList( inSanctionId, inEvent );
+				} else {
+					curEligSkiersDataTable = getOverallSkierList( inSanctionId );
+				}
+				if ( inEvent.ToLower().Equals( "slalom" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
+					buildSlalomMaxScoresPerGroup( curMaxDataTable, curEligSkiersDataTable, inSanctionId, inPlcmtOrg, inRules, inEvent, inTeamPlcmt );
+				}
+				if ( inEvent.ToLower().Equals( "trick" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
+					buildTrickMaxScoresPerGroup( curMaxDataTable, curEligSkiersDataTable, inSanctionId, inPlcmtOrg, inRules, inEvent, inTeamPlcmt );
+				}
+				if ( inEvent.ToLower().Equals( "jump" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
+					buildJumpMaxScoresPerGroup( curMaxDataTable, curEligSkiersDataTable, inSanctionId, inPlcmtOrg, inRules, inEvent, inTeamPlcmt );
 				}
 			}
-			#endregion
-
-			#region Determine maximum trick scores per event per division
-			if ( inEvent.ToLower().Equals( "trick" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
-				curDataTable = getTrickSummaryData( inSanctionId, "Round", inRules, "all", "all" );
-				foreach ( DataRow curRow in curDataTable.Rows ) {
-					curGroup = (String)curRow["EventGroup"];
-					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-						curGroup = (String)curRow["AgeGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-						curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-						curGroup = (String)curRow["EventGroup"];
-					} else {
-						curGroup = "";
-					}
-
-					curMemberId = (String)curRow["MemberId"];
-					curAgeGroup = (String)curRow["AgeGroup"];
-					try {
-						curScore = Convert.ToDecimal( (Int16)curRow["Score"] );
-					} catch {
-						curScore = 0;
-					}
-					if ( curEligSkiersDataTable != null ) {
-						curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-					}
-
-					curFilterCommand = "Group = '" + curGroup + "'";
-					curFindRows = curMaxDataTable.Select( curFilterCommand );
-					if ( curFindRows.Length > 0 ) {
-						curMaxRow = curFindRows[0];
-					} else {
-						newMaxRow = curMaxDataTable.DefaultView.AddNew();
-						newMaxRow["Group"] = curGroup;
-						newMaxRow["ScoreSlalom"] = 0M;
-						newMaxRow["ScoreTrick"] = 0;
-						newMaxRow["ScoreJump"] = 0M;
-						newMaxRow["ScoreSlalomMax"] = 0M;
-						newMaxRow["ScoreTrickMax"] = 0;
-						newMaxRow["ScoreJumpMax"] = 0M;
-						newMaxRow.EndEdit();
-						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
-					}
-
-					if ( curFindRowsOverallElig.Length > 0 
-						&& curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] ) 
-						) {
-						curMaxRow["ScoreTrickMax"] = curScore;
-					}
-					if ( inRules.ToLower().Equals( "iwwf" ) ) {
-						if ( inTeamPlcmt ) {
-							if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
-								if ( curScore > (Int16)curMaxRow["ScoreTrick"] ) {
-									curMaxRow["ScoreTrick"] = curScore;
-								}
-							}
-						} else {
-							if ( curFindRowsOverallElig.Length > 0 ) {
-								if ( curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrick"] ) ) {
-									curMaxRow["ScoreTrick"] = curScore;
-								}
-							}
-						}
-					}
-				}
-			}
-			#endregion
-
-			#region Determine maximum Jump scores per event per division
-			if ( inEvent.ToLower().Equals( "jump" ) || inEvent.ToLower().Equals( "overall" ) || inEvent.ToLower().Equals( "scorebook" ) ) {
-				curDataTable = getJumpSummaryData( inSanctionId, "Round", inRules, "all", "all" );
-				foreach ( DataRow curRow in curDataTable.Rows ) {
-					curGroup = (String)curRow["EventGroup"];
-					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-						curGroup = (String)curRow["AgeGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-						curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-					} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-						curGroup = (String)curRow["EventGroup"];
-					} else {
-						curGroup = "";
-					}
-
-					curMemberId = (String)curRow["MemberId"];
-					curAgeGroup = (String)curRow["AgeGroup"];
-					try {
-						if ( inRules.ToLower().Equals( "iwwf" ) ) {
-							curScore = (Decimal)curRow["ScoreMeters"];
-						} else {
-							curScore = (Decimal)curRow["ScoreFeet"];
-						}
-					} catch {
-						curScore = 0;
-					}
-					if ( curEligSkiersDataTable != null ) {
-						curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-					}
-
-					curFilterCommand = "Group = '" + curGroup + "'";
-					curFindRows = curMaxDataTable.Select( curFilterCommand );
-					if ( curFindRows.Length > 0 ) {
-						curMaxRow = curFindRows[0];
-					} else {
-						newMaxRow = curMaxDataTable.DefaultView.AddNew();
-						newMaxRow["Group"] = curGroup;
-						newMaxRow["ScoreSlalom"] = 0M;
-						newMaxRow["ScoreTrick"] = 0;
-						newMaxRow["ScoreJump"] = 0M;
-						newMaxRow["ScoreSlalomMax"] = 0M;
-						newMaxRow["ScoreTrickMax"] = 0;
-						newMaxRow["ScoreJumpMax"] = 0M;
-						newMaxRow.EndEdit();
-						curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
-					}
-
-					if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreJumpMax"] ) {
-						curMaxRow["ScoreJumpMax"] = curScore;
-					}
-					if ( inRules.ToLower().Equals( "iwwf" ) ) {
-						if ( inTeamPlcmt ) {
-							if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
-								if ( curScore > (Decimal)curMaxRow["ScoreJump"] ) {
-									curMaxRow["ScoreJump"] = curScore;
-								}
-							}
-						} else {
-							if ( curFindRowsOverallElig.Length > 0 ) {
-								if ( curScore > (Decimal)curMaxRow["ScoreJump"] ) {
-									curMaxRow["ScoreJump"] = curScore;
-								}
-							}
-						}
-					}
-				}
-			}
-			#endregion
 
 			return curMaxDataTable;
+		}
+
+		/*
+		 * Determine maximum slalom scores per event per division
+		 */
+		private void buildSlalomMaxScoresPerGroup( DataTable curMaxDataTable, DataTable curEligSkiersDataTable, String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, Boolean inTeamPlcmt ) {
+			String curGroup = "", curFilterCommand = "", curAgeGroup = "", curMemberId = "";
+			Decimal curScore;
+			DataRowView newMaxRow;
+			DataRow curMaxRow;
+			DataRow[] curFindRows = null, curFindRowsOverallElig = null;
+
+			DataTable curDataTable = getSlalomSummaryData( inSanctionId, "Round", inRules, "all", "all" );
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				curGroup = (String)curRow["EventGroup"];
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+				} else {
+					curGroup = "";
+				}
+
+				curMemberId = (String)curRow["MemberId"];
+				curAgeGroup = (String)curRow["AgeGroup"];
+				try {
+					curScore = (Decimal)curRow["Score"];
+				} catch {
+					curScore = 0;
+				}
+				if ( curEligSkiersDataTable != null ) {
+					curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				}
+
+				curFilterCommand = "Group = '" + curGroup + "'";
+				curFindRows = curMaxDataTable.Select( curFilterCommand );
+				if ( curFindRows.Length > 0 ) {
+					curMaxRow = curFindRows[0];
+				} else {
+					newMaxRow = curMaxDataTable.DefaultView.AddNew();
+					newMaxRow["Group"] = curGroup;
+					newMaxRow["ScoreSlalom"] = 0M;
+					newMaxRow["ScoreTrick"] = 0;
+					newMaxRow["ScoreJump"] = 0M;
+					newMaxRow["ScoreSlalomMax"] = 0M;
+					newMaxRow["ScoreTrickMax"] = 0;
+					newMaxRow["ScoreJumpMax"] = 0M;
+					newMaxRow.EndEdit();
+					curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
+				}
+
+				if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreSlalomMax"] ) {
+					curMaxRow["ScoreSlalomMax"] = curScore;
+				}
+				if ( inRules.ToLower().Equals( "iwwf" ) ) {
+					if ( inTeamPlcmt ) {
+						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+							if ( curScore > (Decimal)curMaxRow["ScoreSlalom"] ) {
+								curMaxRow["ScoreSlalom"] = curScore;
+							}
+						}
+					} else {
+						if ( curFindRowsOverallElig.Length > 0 ) {
+							if ( curScore > (Decimal)curMaxRow["ScoreSlalom"] ) {
+								curMaxRow["ScoreSlalom"] = curScore;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/*
+		 * Determine maximum slalom scores per event per division
+		 */
+		private void buildTrickMaxScoresPerGroup( DataTable curMaxDataTable, DataTable curEligSkiersDataTable, String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, Boolean inTeamPlcmt ) {
+			String curGroup = "", curFilterCommand = "", curAgeGroup = "", curMemberId = "";
+			Decimal curScore;
+			DataRowView newMaxRow;
+			DataRow curMaxRow;
+			DataRow[] curFindRows = null, curFindRowsOverallElig = null;
+			
+			DataTable curDataTable = getTrickSummaryData( inSanctionId, "Round", inRules, "all", "all" );
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				curGroup = (String)curRow["EventGroup"];
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+				} else {
+					curGroup = "";
+				}
+
+				curMemberId = (String)curRow["MemberId"];
+				curAgeGroup = (String)curRow["AgeGroup"];
+				try {
+					curScore = Convert.ToDecimal( (Int16)curRow["Score"] );
+				} catch {
+					curScore = 0;
+				}
+				if ( curEligSkiersDataTable != null ) {
+					curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				}
+
+				curFilterCommand = "Group = '" + curGroup + "'";
+				curFindRows = curMaxDataTable.Select( curFilterCommand );
+				if ( curFindRows.Length > 0 ) {
+					curMaxRow = curFindRows[0];
+				} else {
+					newMaxRow = curMaxDataTable.DefaultView.AddNew();
+					newMaxRow["Group"] = curGroup;
+					newMaxRow["ScoreSlalom"] = 0M;
+					newMaxRow["ScoreTrick"] = 0;
+					newMaxRow["ScoreJump"] = 0M;
+					newMaxRow["ScoreSlalomMax"] = 0M;
+					newMaxRow["ScoreTrickMax"] = 0;
+					newMaxRow["ScoreJumpMax"] = 0M;
+					newMaxRow.EndEdit();
+					curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
+				}
+
+				if ( curFindRowsOverallElig.Length > 0
+					&& curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrickMax"] )
+					) {
+					curMaxRow["ScoreTrickMax"] = curScore;
+				}
+				if ( inRules.ToLower().Equals( "iwwf" ) ) {
+					if ( inTeamPlcmt ) {
+						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+							if ( curScore > (Int16)curMaxRow["ScoreTrick"] ) {
+								curMaxRow["ScoreTrick"] = curScore;
+							}
+						}
+					} else {
+						if ( curFindRowsOverallElig.Length > 0 ) {
+							if ( curScore > Convert.ToDecimal( (Int16)curMaxRow["ScoreTrick"] ) ) {
+								curMaxRow["ScoreTrick"] = curScore;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/*
+		 * Determine maximum slalom scores per event per division
+		 */
+		private void buildJumpMaxScoresPerGroup( DataTable curMaxDataTable, DataTable curEligSkiersDataTable, String inSanctionId, String inPlcmtOrg, String inRules, String inEvent, Boolean inTeamPlcmt ) {
+			String curGroup = "", curFilterCommand = "", curAgeGroup = "", curMemberId = "";
+			Decimal curScore;
+			DataRowView newMaxRow;
+			DataRow curMaxRow;
+			DataRow[] curFindRows = null, curFindRowsOverallElig = null;
+			
+			DataTable curDataTable = getJumpSummaryData( inSanctionId, "Round", inRules, "all", "all" );
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				curGroup = (String)curRow["EventGroup"];
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+				} else {
+					curGroup = "";
+				}
+
+				curMemberId = (String)curRow["MemberId"];
+				curAgeGroup = (String)curRow["AgeGroup"];
+				try {
+					if ( inRules.ToLower().Equals( "iwwf" ) ) {
+						curScore = (Decimal)curRow["ScoreMeters"];
+					} else {
+						curScore = (Decimal)curRow["ScoreFeet"];
+					}
+				} catch {
+					curScore = 0;
+				}
+				if ( curEligSkiersDataTable != null ) {
+					curFindRowsOverallElig = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				}
+
+				curFilterCommand = "Group = '" + curGroup + "'";
+				curFindRows = curMaxDataTable.Select( curFilterCommand );
+				if ( curFindRows.Length > 0 ) {
+					curMaxRow = curFindRows[0];
+				} else {
+					newMaxRow = curMaxDataTable.DefaultView.AddNew();
+					newMaxRow["Group"] = curGroup;
+					newMaxRow["ScoreSlalom"] = 0M;
+					newMaxRow["ScoreTrick"] = 0;
+					newMaxRow["ScoreJump"] = 0M;
+					newMaxRow["ScoreSlalomMax"] = 0M;
+					newMaxRow["ScoreTrickMax"] = 0;
+					newMaxRow["ScoreJumpMax"] = 0M;
+					newMaxRow.EndEdit();
+					curMaxRow = curMaxDataTable.Rows[curMaxDataTable.Rows.Count - 1];
+				}
+
+				if ( curFindRowsOverallElig.Length > 0 && curScore > (Decimal)curMaxRow["ScoreJumpMax"] ) {
+					curMaxRow["ScoreJumpMax"] = curScore;
+				}
+				if ( inRules.ToLower().Equals( "iwwf" ) ) {
+					if ( inTeamPlcmt ) {
+						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+							if ( curScore > (Decimal)curMaxRow["ScoreJump"] ) {
+								curMaxRow["ScoreJump"] = curScore;
+							}
+						}
+					} else {
+						if ( curFindRowsOverallElig.Length > 0 ) {
+							if ( curScore > (Decimal)curMaxRow["ScoreJump"] ) {
+								curMaxRow["ScoreJump"] = curScore;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/*
+		 * Retrieve ranking list overall score basis data
+		 */
+		private void buildWrlOverallScoreBasis( DataTable curMaxDataTable, String inSanctionId, String inEvent ) {
+			DataTable curDataTable = getWrlOverallScoreBasis();
+			foreach ( DataRow curRow in curDataTable.Rows ) {
+				DataRowView newMaxRow = curMaxDataTable.DefaultView.AddNew();
+				newMaxRow["Group"] = curRow["Div"];
+				newMaxRow["ScoreSlalom"] = curRow["SlalomScoreBasis"];
+				newMaxRow["ScoreTrick"] = curRow["TrickScoreBasis"];
+				newMaxRow["ScoreJump"] = curRow["JumpScoreBasis"];
+				newMaxRow["ScoreSlalomMax"] = curRow["SlalomScoreBasis"]; ;
+				newMaxRow["ScoreTrickMax"] = curRow["TrickScoreBasis"]; ;
+				newMaxRow["ScoreJumpMax"] = curRow["JumpScoreBasis"]; ;
+				newMaxRow.EndEdit();
+			}
+		}
+
+		private DataTable getWrlOverallScoreBasis() {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select S.Div, SlalomScoreBasis, TrickScoreBasis, JumpScoreBasis " );
+			curSqlStmt.Append( "From ( Select SUBSTRING( ListCode, 1, 2 ) as Div, MaxValue as SlalomScoreBasis" );
+			curSqlStmt.Append( "       From CodeValueList Where ListName = 'IwwfOverallWrlBasis' AND ListCode like '%-S' ) as S " );
+			curSqlStmt.Append( "INNER JOIN ( Select SUBSTRING(ListCode, 1, 2) as Div, MaxValue as TrickScoreBasis" );
+			curSqlStmt.Append( "             From CodeValueList Where ListName = 'IwwfOverallWrlBasis' AND ListCode like '%-T') as T" );
+			curSqlStmt.Append( "             ON T.Div = S.Div " );
+			curSqlStmt.Append( "INNER JOIN ( Select SUBSTRING(ListCode, 1, 2) as Div, MaxValue as JumpScoreBasis" );
+			curSqlStmt.Append( "             From CodeValueList Where ListName = 'IwwfOverallWrlBasis' AND ListCode like '%-J') as J" );
+			curSqlStmt.Append( "             ON J.Div = S.Div" );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
 		private DataTable buildTeamScoreDataTable() {
@@ -5910,7 +5995,7 @@ namespace WaterskiScoringSystem.Common {
 			}
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT T.SanctionId, Federation, T.MemberId, SkierName" );
-			curSqlStmt.Append( ", Gender, SkiYearAge, State, COALESCE(ReadyToSki, 'N') as ReadyToSki, COALESCE(T.ReadyForPlcmt, 'N') as ReadyForPlcmt, L.CodeValue AS Region" );
+			curSqlStmt.Append( ", Gender, SkiYearAge, City, State, COALESCE(ReadyToSki, 'N') as ReadyToSki, COALESCE(T.ReadyForPlcmt, 'N') as ReadyForPlcmt, L.CodeValue AS Region" );
 			curSqlStmt.Append( ", RS.TeamCode AS SlalomTeam, RT.TeamCode AS TrickTeam, RJ.TeamCode AS JumpTeam" );
 			curSqlStmt.Append( ", RS.EventGroup AS SlalomGroup, RT.EventGroup AS TrickGroup, RJ.EventGroup AS JumpGroup" );
 			curSqlStmt.Append( ", RS.EventClass AS SlalomClass, RT.EventClass AS TrickClass, RJ.EventClass AS JumpClass" );

@@ -160,22 +160,11 @@ namespace WaterskiScoringSystem.Tools {
 
         private bool deleteTempFile( String inFileName ) {
             try {
-                //Declare and instantiate a new process component.
-                System.Diagnostics.Process curOSProcess = new System.Diagnostics.Process();
-
-                //Do not receive an event when the process exits.
-                curOSProcess.EnableRaisingEvents = true;
-
-                //The "/C" Tells Windows to Run The Command then Terminate 
-                string curCmdLine;
-                curCmdLine = "/C DEL \"" + inFileName + "\" \n";
-                System.Diagnostics.Process.Start( "CMD.exe", curCmdLine );
-                curOSProcess.Close();
+                File.Delete( inFileName );
                 return true;
+            
             } catch ( Exception ex ) {
-                MessageBox.Show( "Error: Deleting temp file " + inFileName
-                    + "\n\nException: " + ex.Message
-                 );
+                MessageBox.Show( "Error: Deleting temp file " + inFileName + "\n\nException: " + ex.Message );
                 return false;
             }
         }
