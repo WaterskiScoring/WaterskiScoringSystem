@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,144 +12,84 @@ namespace WaterskiScoringSystem.Common {
         }
 
         public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults ) {
-            return setSlalomPlcmt( inTourRow, inEventResults, "score", "div", "" );
+            return setSlalomPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
         }
         public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtOrg ) {
-            return setSlalomPlcmt( inTourRow, inEventResults, "score", inPlcmtOrg, "" );
+            return setSlalomPlcmt( inTourRow, inEventResults, "score", inPlcmtOrg, "", 0 );
         }
         public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
-            return setSlalomPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "" );
+            return setSlalomPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
-        public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
+        public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, Int16 inNumPrelimRounds ) {
             /* **********************************************************
-             * Use results from slalom event to determine skier placment 
-             * within age division
+             * Use results from slalom event to determine skier placment within age division
+             * Analzye and assign placements by age group and / or event groups as specifeid by request
              * ******************************************************* */
             mySanctionNum = (String)inTourRow["SanctionId"];
             String curRules = (String)inTourRow["Rules"];
             String curFilterCmd = "";
             int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
+            int.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "SlalomRounds", "1" ), out curEventRounds );
 
             String curPlcmt, curGroup, curGroupName, curSelectCmd;
             DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
+            DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
             String curPlcmtName = "PlcmtSlalom";
-            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Slalom" );
+            if ( HelperFunctions.isIwwfEvent( curRules ) ) {
+                curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Slalom", inNumPrelimRounds );
+            } else {
+                curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Slalom", inNumPrelimRounds );
+            }
 
-            //Analzye and assign placements by age group and / or event groups as specifeid by request
-            if (curRules.ToLower().Equals( "awsa" )) {
-                if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                    #region AWSA placement calculations - placements for ties for the total tournament
-                    //Calculate placements for ties for the total tournament
-                    curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
-                    foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curFilterCmd = curPlcmtName + " = '" + curPlcmt + "'";
-                        curSkierList = curPlcmtResults.Select( curFilterCmd );
+            // Tiebreaker functioniality not used for collegiate events
+            if ( HelperFunctions.isCollegiateEvent( curRules ) ) return curPlcmtResults;
 
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+            if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+                /*
+				 * Analysis when placement specifications doesn't use divisions or groups.
+				 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+				 */
+                curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
+                foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+                    curPlcmt = (String)curRow[curPlcmtName];
+                    curFilterCmd = curPlcmtName + " = '" + curPlcmt + "'";
+                    curSkierList = curPlcmtResults.Select( curFilterCmd );
 
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+                    //Analyze tied placments and gather all data needed for tie breakers
+                    curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
 
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                } else {
-                    #region AWSA placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
-                    curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-                    foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curGroup = "";
-                        if (inPlcmtOrg.ToLower().Equals( "div" )) {
-                            curGroupName = "AgeGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                            curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                            curGroupName = "AgeGroup,EventGroup";
-                            curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                            curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                                + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                        } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                            curGroupName = "EventGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else {
-                            curGroupName = "";
-                            curGroup = "";
-                            curSelectCmd = "";
-                        }
+                    //Analyze data for tied placments utilizing tie breakers to determine placments
+                    setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
-                        //Get results for the skiers that are tied for the placement by age group and position
-                        curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
-                        curSkierList = curPlcmtResults.Select( curFilterCmd );
-
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
-
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
+                    //Analyze results of tie breakers and update event skier placments
+                    setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
                 }
+
+                return curPlcmtResults;
             }
 
-            return curPlcmtResults;
-        }
-        
-        public DataTable setSlalomPlcmtIwwf(DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType) {
-            /* **********************************************************
-             * Use results from slalom event to determine skier placment 
-             * within age division
-             * ******************************************************* */
-            mySanctionNum = (String)inTourRow["SanctionId"];
-            String curRules = (String)inTourRow["Rules"];
-            String curFilterCmd = "";
-            int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
-
-            String curPlcmt, curGroup, curGroupName, curSelectCmd, curPlcmtName;
-            DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
-
-            DataTable curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Slalom" );
-
-            //Analzye and assign placements by age group and / or event groups as specifeid by request
-            curPlcmtName = "PlcmtSlalom";
+            /*
+			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+			 */
             curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-            foreach (DataRow curRow in curTiePlcmtList.Rows) {
+            foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
                 curPlcmt = (String)curRow[curPlcmtName];
                 curGroup = "";
-                if (inPlcmtOrg.ToLower().Equals( "div" )) {
+                if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
                     curGroupName = "AgeGroup";
                     curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND " + curPlcmtName + " = '" + curPlcmt + "' AND ";
-                } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
+                    curSelectCmd = curGroupName + " = '" + curGroup + "'";
+                } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
                     curSelectCmd = "AgeGroup ASC, EventGroup ASC";
                     curGroupName = "AgeGroup,EventGroup";
                     curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
                     curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                        + "AND EventGroup = '" + (String)curRow["EventGroup"] + "' AND " + curPlcmtName + " = '" + curPlcmt + "' AND ";
-                } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
+                        + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
+                } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
                     curGroupName = "EventGroup";
                     curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND " + curPlcmtName + " = '" + curPlcmt + "' AND ";
+                    curSelectCmd = curGroupName + " = '" + curGroup + "'";
                 } else {
                     curGroupName = "";
                     curGroup = "";
@@ -156,11 +97,10 @@ namespace WaterskiScoringSystem.Common {
                 }
 
                 //Get results for the skiers that are tied for the placement by age group and position
-                curFilterCmd = curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'";
+                curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
                 curSkierList = curPlcmtResults.Select( curFilterCmd );
 
                 //Analyze tied placments and gather all data needed for tie breakers
-                //curSkierScoreList = getSlalomTieBreakerData( curSkierList, inEventResults, curEventRounds, curRules, curPlcmtName );
                 curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
 
                 //Analyze data for tied placments utilizing tie breakers to determine placments
@@ -173,379 +113,244 @@ namespace WaterskiScoringSystem.Common {
             return curPlcmtResults;
         }
 
-        public DataTable setTrickPlcmt(DataRow inTourRow, DataTable inEventResults) {
-            return setTrickPlcmt( inTourRow, inEventResults, "score", "div", "" );
+        public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults ) {
+            return setTrickPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
         }
         public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
-            return setTrickPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "" );
+            return setTrickPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
-        public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
+        public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, Int16 inNumPrelimRounds ) {
             /* **********************************************************
              * Use results from trick event to determine skier placment 
              * within age division
              * ******************************************************* */
             mySanctionNum = (String)inTourRow["SanctionId"];
             String curRules = (String)inTourRow["Rules"];
-            int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["TrickRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
+			String curFilterCmd = "";
+			int curEventRounds = 0;
+			int.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "TrickRounds", "1" ), out curEventRounds );
 
-            String curPlcmt, curGroup, curGroupName, curSelectCmd, curPlcmtName;
+			String curPlcmt, curGroup, curGroupName, curSelectCmd;
             DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
+			DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
-            curPlcmtName = "PlcmtTrick";
-            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Trick" );
+			String curPlcmtName = "PlcmtTrick";
+			if ( HelperFunctions.isIwwfEvent( curRules ) ) {
+				curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Trick", inNumPrelimRounds );
+			} else {
+				curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Trick", inNumPrelimRounds );
+			}
 
-            if (curRules.ToLower().Equals( "awsa" )) {
-                if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                    #region AWSA placement calculations - placements for ties for the total tournament
-                    curPlcmtName = "PlcmtTrick";
-                    curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
-                    foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curSkierList = curPlcmtResults.Select( curPlcmtName + " = '" + curPlcmt + "'" );
+			// Tiebreaker functioniality not used for collegiate events
+			if ( HelperFunctions.isCollegiateEvent( curRules ) ) return curPlcmtResults;
 
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getTrickTieBreakerData( curSkierList, curEventRounds, curRules );
+			if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+				/*
+				 * Analysis when placement specifications doesn't use divisions or groups.
+				 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+				 */
+				curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
+				foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+					curPlcmt = (String)curRow[curPlcmtName];
+					curFilterCmd = curPlcmtName + " = '" + curPlcmt + "'";
+					curSkierList = curPlcmtResults.Select( curFilterCmd );
 
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+					//Analyze tied placments and gather all data needed for tie breakers
+					curSkierScoreList = getTrickTieBreakerData( curSkierList, curEventRounds, curRules, inDataType );
 
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                } else {
-                    #region AWSA placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
-                    curPlcmtName = "PlcmtTrick";
-                    curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-                    foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curGroup = "";
-                        if (inPlcmtOrg.ToLower().Equals( "div" )) {
-                            curGroupName = "AgeGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                            curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                            curGroupName = "AgeGroup,EventGroup";
-                            curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                            curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                                + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                        } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                            curGroupName = "EventGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else {
-                            curGroupName = "";
-                            curGroup = "";
-                            curSelectCmd = "";
-                        }
+					//Analyze data for tied placments utilizing tie breakers to determine placments
+					setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
-                        //Get results for the skiers that are tied for the placement by age group and position
-                        curSkierList = curPlcmtResults.Select( curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'" );
+					//Analyze results of tie breakers and update event skier placments
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+				}
+				return curPlcmtResults;
+			}
 
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getTrickTieBreakerData( curSkierList, curEventRounds, curRules );
+			/*
+			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+			 */
+			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+			foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+				curPlcmt = (String)curRow[curPlcmtName];
+				curGroup = "";
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroupName = "AgeGroup";
+					curGroup = (String)curRow[curGroupName];
+					curSelectCmd = curGroupName + " = '" + curGroup + "'";
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curSelectCmd = "AgeGroup ASC, EventGroup ASC";
+					curGroupName = "AgeGroup,EventGroup";
+					curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
+					curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
+						+ "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroupName = "EventGroup";
+					curGroup = (String)curRow[curGroupName];
+					curSelectCmd = curGroupName + " = '" + curGroup + "'";
+				} else {
+					curGroupName = "";
+					curGroup = "";
+					curSelectCmd = "";
+				}
 
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+				//Get results for the skiers that are tied for the placement by age group and position
+				curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
+				curSkierList = curPlcmtResults.Select( curFilterCmd );
 
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                }
-            }
+				//Analyze tied placments and gather all data needed for tie breakers
+				curSkierScoreList = getTrickTieBreakerData( curSkierList, curEventRounds, curRules, inDataType );
 
-            return curPlcmtResults;
+				//Analyze data for tied placments utilizing tie breakers to determine placments
+				setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+
+				//Analyze results of tie breakers and update event skier placments
+				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+			}
+
+			return curPlcmtResults;
         }
 
-        public DataTable setTrickPlcmtIwwf(DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType) {
-            /* **********************************************************
-             * Use results from Trick event to determine skier placment 
-             * within age division
-             * ******************************************************* */
-            mySanctionNum = (String)inTourRow["SanctionId"];
-            String curRules = (String)inTourRow["Rules"];
-            String curFilterCmd = "";
-            int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["TrickRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
-
-            String curPlcmt, curGroup, curGroupName, curSelectCmd, curPlcmtName;
-            DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
-
-            DataTable curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Trick" );
-
-            //Analzye and assign placements by age group and / or event groups as specifeid by request
-            curPlcmtName = "PlcmtTrick";
-            curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-            foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                curPlcmt = (String)curRow[curPlcmtName];
-                curGroup = "";
-                if (inPlcmtOrg.ToLower().Equals( "div" )) {
-                    curGroupName = "AgeGroup";
-                    curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
-                } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                    curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                    curGroupName = "AgeGroup,EventGroup";
-                    curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                    curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                        + "AND EventGroup = '" + (String)curRow["EventGroup"] + "' AND ";
-                } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                    curGroupName = "EventGroup";
-                    curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
-                } else {
-                    curGroupName = "";
-                    curGroup = "";
-                    curSelectCmd = "";
-                }
-
-                //Get results for the skiers that are tied for the placement by age group and position
-                curSkierList = curPlcmtResults.Select( curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'" );
-
-                //Analyze tied placments and gather all data needed for tie breakers
-                curSkierScoreList = getTrickTieBreakerData( curSkierList, curEventRounds, curRules );
-
-                //Analyze data for tied placments utilizing tie breakers to determine placments
-                setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                //Analyze results of tie breakers and update event skier placments
-                setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-            }
-
-            return curPlcmtResults;
-        }
-
-        public DataTable setJumpPlcmt(DataRow inTourRow, DataTable inEventResults) {
-            return setJumpPlcmt( inTourRow, inEventResults, "score", "div", "" );
+        public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults ) {
+            return setJumpPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
         }
         public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
-            return setJumpPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "" );
+            return setJumpPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
-        public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
+        public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, Int16 inNumPrelimRounds ) {
             /* **********************************************************
              * Use results from jump event to determine skier placment 
              * within age division
              * ******************************************************* */
             mySanctionNum = (String)inTourRow["SanctionId"];
             String curRules = (String)inTourRow["Rules"];
-            int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["JumpRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
-
-            String curPlcmt, curGroup, curGroupName, curSelectCmd, curPlcmtName;
-            DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
-
-            curPlcmtName = "PlcmtJump";
-            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Jump" );
-
-            if ( curRules.ToLower().Equals( "awsa" ) ) {
-                if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                    #region AWSA placement calculations - placements for ties for the total tournament
-                    curPlcmtName = "PlcmtJump";
-                    curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
-                    foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curSkierList = curPlcmtResults.Select( curPlcmtName + " = '" + curPlcmt + "'" );
-
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName );
-
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                } else {
-                    #region AWSA placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
-                    curPlcmtName = "PlcmtJump";
-                    curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-                    foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curGroup = "";
-                        if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                            curGroupName = "AgeGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                            curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                            curGroupName = "AgeGroup,EventGroup";
-                            curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                            curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                                + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                        } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                            curGroupName = "EventGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else {
-                            curGroupName = "";
-                            curGroup = "";
-                            curSelectCmd = "";
-                        }
-
-                        //Get results for the skiers that are tied for the placement by age group and position
-                        curSkierList = curPlcmtResults.Select( curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'" );
-
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName );
-
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                }
-            } else if (HelperFunctions.isCollegiateEvent(curRules)) {
-                if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                    #region Collegiate placement calculations - placements for ties for the total tournament
-                    if (curPlcmtResults.Columns.Contains( "PlcmtTour" )) {
-                        curPlcmtName = "PlcmtJump";
-                        curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
-                        foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
-                            curPlcmt = (String)curRow[curPlcmtName];
-                            curSkierList = curPlcmtResults.Select( curPlcmtName + " = '" + curPlcmt + "'" );
-
-                            //Analyze tied placments and gather all data needed for tie breakers
-                            curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName );
-
-                            //Analyze data for tied placments utilizing tie breakers to determine placments
-                            setJumpTieBreakerNcwsaPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                            //Analyze results of tie breakers and update event skier placments
-                            setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                        }
-                    }
-                    #endregion
-                } else {
-                    #region Collegiate placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
-                    curPlcmtName = "PlcmtJump";
-                    curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-                    foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
-                        curPlcmt = (String)curRow[curPlcmtName];
-                        curGroup = "";
-                        if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                            curGroupName = "AgeGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                            curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                            curGroupName = "AgeGroup,EventGroup";
-                            curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                            curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
-                                + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                        } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                            curGroupName = "EventGroup";
-                            curGroup = (String)curRow[curGroupName];
-                            curSelectCmd = curGroupName + " = '" + curGroup + "'";
-                        } else {
-                            curGroupName = "";
-                            curGroup = "";
-                            curSelectCmd = "";
-                        }
-
-                        //Get results for the skiers that are tied for the placement by age group and position
-                        curSkierList = curPlcmtResults.Select( curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'" );
-
-                        //Analyze tied placments and gather all data needed for tie breakers
-                        curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName );
-
-                        //Analyze data for tied placments utilizing tie breakers to determine placments
-                        setJumpTieBreakerNcwsaPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                        //Analyze results of tie breakers and update event skier placments
-                        setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
-                    }
-                    #endregion
-                }
-            }
-
-            return curPlcmtResults;
-        }
-
-        public DataTable setJumpPlcmtIwwf(DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType) {
-            /* **********************************************************
-             * Use results from Jump event to determine skier placment 
-             * within age division
-             * ******************************************************* */
-            mySanctionNum = (String)inTourRow["SanctionId"];
-            String curRules = (String)inTourRow["Rules"];
             String curFilterCmd = "";
             int curEventRounds = 0;
-            try {
-                curEventRounds = Convert.ToInt16( inTourRow["JumpRounds"].ToString() );
-            } catch {
-                curEventRounds = 0;
-            }
+            int.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "JumpRounds", "1" ), out curEventRounds );
 
-            String curPlcmt, curGroup, curGroupName, curSelectCmd, curPlcmtName;
+            String curPlcmt, curGroup, curGroupName, curSelectCmd;
             DataRow[] curSkierList;
-            DataTable curSkierScoreList, curTiePlcmtList;
+            DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
-            DataTable curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Jump" );
-
-            //Analzye and assign placements by age group and / or event groups as specifeid by request
-            curPlcmtName = "PlcmtJump";
-            curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-            foreach (DataRow curRow in curTiePlcmtList.Rows) {
-                curPlcmt = (String)curRow[curPlcmtName];
-                curGroup = "";
-                if (inPlcmtOrg.ToLower().Equals( "div" )) {
-                    curGroupName = "AgeGroup";
-                    curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
-                } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                    curSelectCmd = "AgeGroup ASC, EventGroup ASC";
-                    curGroupName = "AgeGroup,EventGroup";
-                    curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
-                    curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' AND "
-                        + "AND EventGroup = '" + (String)curRow["EventGroup"] + "'";
-                } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                    curGroupName = "EventGroup";
-                    curGroup = (String)curRow[curGroupName];
-                    curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
-                } else {
-                    curGroupName = "";
-                    curGroup = "";
-                    curSelectCmd = "";
-                }
-
-                //Get results for the skiers that are tied for the placement by age group and position
-                curSkierList = curPlcmtResults.Select( curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'" );
-
-                //Analyze tied placments and gather all data needed for tie breakers
-                curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName );
-
-                //Analyze data for tied placments utilizing tie breakers to determine placments
-                setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
-
-                //Analyze results of tie breakers and update event skier placments
-                setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+            String curPlcmtName = "PlcmtJump";
+            if ( HelperFunctions.isIwwfEvent( curRules ) ) {
+                curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Jump", inNumPrelimRounds );
+            } else {
+                curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Jump", inNumPrelimRounds );
             }
 
-            return curPlcmtResults;
+			if ( HelperFunctions.isCollegiateEvent( curRules ) ) {
+				/*
+				 * Collegiate placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
+				 */
+				curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+				foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+					curPlcmt = (String)curRow[curPlcmtName];
+					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+						curGroupName = "AgeGroup";
+						curGroup = (String)curRow[curGroupName];
+						curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
+					} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+						curSelectCmd = "AgeGroup ASC, EventGroup ASC";
+						curGroupName = "AgeGroup,EventGroup";
+						curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
+						curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
+							+ "AND EventGroup = '" + (String)curRow["EventGroup"] + "' AND ";
+					} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+						curGroupName = "EventGroup";
+						curGroup = (String)curRow[curGroupName];
+						curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
+					} else {
+						curGroupName = "";
+						curGroup = "";
+						curSelectCmd = "";
+					}
+
+					//Get results for the skiers that are tied for the placement by age group and position
+					curFilterCmd = curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'";
+					curSkierList = curPlcmtResults.Select( curFilterCmd );
+
+					//Analyze tied placments and gather all data needed for tie breakers
+					curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+
+					//Analyze data for tied placments utilizing tie breakers to determine placments
+					setJumpTieBreakerNcwsaPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+
+					//Analyze results of tie breakers and update event skier placments
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+				}
+				
+                return curPlcmtResults;
+			}
+
+			if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+				/*
+				 * Analysis when placement specifications doesn't use divisions or groups.
+				 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+				 */
+				curTiePlcmtList = findEventPlcmtTiesTour( curPlcmtName, curPlcmtResults );
+				foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+					curPlcmt = (String)curRow[curPlcmtName];
+					curFilterCmd = curPlcmtName + " = '" + curPlcmt + "'";
+					curSkierList = curPlcmtResults.Select( curFilterCmd );
+
+					//Analyze tied placments and gather all data needed for tie breakers
+					curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+
+					//Analyze data for tied placments utilizing tie breakers to determine placments
+					setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+
+					//Analyze results of tie breakers and update event skier placments
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+				}
+				
+                return curPlcmtResults;
+            }
+
+			/*
+			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
+			 */
+			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+			foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
+				curPlcmt = (String)curRow[curPlcmtName];
+				curGroup = "";
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
+					curGroupName = "AgeGroup";
+					curGroup = (String)curRow[curGroupName];
+					curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curSelectCmd = "AgeGroup ASC, EventGroup ASC";
+					curGroupName = "AgeGroup,EventGroup";
+					curGroup = (String)curRow["AgeGroup"] + "," + (String)curRow["EventGroup"];
+					curSelectCmd = "AgeGroup = '" + (String)curRow["AgeGroup"] + "' "
+						+ "AND EventGroup = '" + (String)curRow["EventGroup"] + "' AND ";
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroupName = "EventGroup";
+					curGroup = (String)curRow[curGroupName];
+					curSelectCmd = curGroupName + " = '" + curGroup + "' AND ";
+				} else {
+					curGroupName = "";
+					curGroup = "";
+					curSelectCmd = "";
+				}
+
+				//Get results for the skiers that are tied for the placement by age group and position
+				curSkierList = curPlcmtResults.Select( curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'" );
+
+				//Analyze tied placments and gather all data needed for tie breakers
+				curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+
+				//Analyze data for tied placments utilizing tie breakers to determine placments
+				setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
+
+				//Analyze results of tie breakers and update event skier placments
+				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+			}
+
+			return curPlcmtResults;
         }
 
-        public DataTable setOverallPlcmt(DataRow inTourRow, DataTable inEventResults, DataTable inEventResultsAll) {
+        public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, DataTable inEventResultsAll ) {
             return setOverallPlcmt( inTourRow, inEventResults, inEventResultsAll, "score", "div", "" );
         }
         public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
@@ -586,7 +391,7 @@ namespace WaterskiScoringSystem.Common {
 
             //DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType );
             String curPlcmtName = "PlcmtOverall";
-            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Overall" );
+            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Overall", 0 );
             //String curPlcmtName = "PlcmtGroup";
             DataTable curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
 
@@ -616,46 +421,43 @@ namespace WaterskiScoringSystem.Common {
             return curPlcmtResults;
         }
 
-        public DataTable setOverallPlcmtIwwf(DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType) {
+        public DataTable setOverallPlcmtIwwf( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
             /* **********************************************************
              * Use results from Overall event to determine skier placment 
              * within age division
              * ******************************************************* */
-            DataTable curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Overall" );
+            DataTable curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Overall", 0 );
 
             return curPlcmtResults;
         }
 
-        private DataTable getSlalomTieBreakerData(DataRow[] inSkierList, int inRounds, String inRules, String inPlcmtName, String inDataType) {
+        private DataTable getSlalomTieBreakerData( DataRow[] inSkierList, int inEventRounds, String inRules, String inPlcmtName, String inDataType ) {
             /* **********************************************************
              * Retrieve all data required for a slalom tie breaker
              * ******************************************************* */
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            DataRowView newSkierScoreRow;
-            DataRow[] curSkierDetailRow;
-            DataTable curSkierScoreList = buildSkierSlalomScoreList();
             String curScoreName = "ScoreSlalom";
             String curRoundName = "RoundSlalom";
             String curPointsName = "PointsSlalom";
+            String curFilter;
+            byte curRound, curFinalSpeedKph;
+            decimal curScore, curScoreTemp, curRunoffScore, curRankingScore, curFirstScore, curBackupScore, curPassScore, curFinalLineLength;
+
+            DataRowView newSkierScoreRow;
+            DataRow[] curSkierScoreRow;
+            DataTable curSkierResultsAll;
+            DataTable curSkierScoreList = buildSkierSlalomScoreList();
 
             foreach ( DataRow curSkierRow in inSkierList ) {
                 newSkierScoreRow = curSkierScoreList.DefaultView.AddNew();
                 newSkierScoreRow["MemberId"] = (String)curSkierRow["MemberId"];
                 newSkierScoreRow["AgeGroup"] = (String)curSkierRow["AgeGroup"];
-                try {
-                    if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                        newSkierScoreRow["Round"] = (Byte)curSkierRow[curRoundName];
-                    } else if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int16" ) ) {
-                        newSkierScoreRow["Round"] = (Int16)curSkierRow[curRoundName];
-                    } else if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-                        newSkierScoreRow["Round"] = (int)curSkierRow[curRoundName];
-                    } else {
-                        newSkierScoreRow["Round"] = 1;
-                    }
-                } catch {
-                    newSkierScoreRow["Round"] = 1;
+                if ( inDataType.ToLower().Equals( "final" ) ) {
+                    byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, "Round", "1" ), out curRound );
+                } else {
+                    byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curRoundName, "1" ), out curRound );
                 }
-
+                newSkierScoreRow["Round"] = curRound;
                 newSkierScoreRow["Score"] = 0;
                 newSkierScoreRow["Speed"] = 0;
                 newSkierScoreRow["PassScore"] = 0;
@@ -664,7 +466,7 @@ namespace WaterskiScoringSystem.Common {
                 newSkierScoreRow["BackupScore"] = 0;
                 newSkierScoreRow["RankingScore"] = 0;
 
-                if ( inRules.ToLower().Equals( "iwwf" )) {
+                if ( inRules.ToLower().Equals( "iwwf" ) ) {
                     newSkierScoreRow["LineLength"] = 18.25M;
                 } else {
                     newSkierScoreRow["LineLength"] = 23M;
@@ -672,101 +474,106 @@ namespace WaterskiScoringSystem.Common {
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
-                curSqlStmt.Append(", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
+                curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore" );
                 curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
-                curSqlStmt.Append( ", MaxSpeed, StartSpeed, StartLen, Status, FinalSpeedMph, FinalSpeedKph, FinalLen, FinalLenOff, FinalPassScore " );
+                curSqlStmt.Append( ", SS.MaxSpeed, SS.StartSpeed, SS.StartLen, SS.Status, SS.FinalSpeedMph, SS.FinalSpeedKph, SS.FinalLen, SS.FinalLenOff, SS.FinalPassScore" );
+                curSqlStmt.Append( ", COALESCE( RO.Score , 0) as ScoreRunoff " );
                 curSqlStmt.Append( "FROM SlalomScore SS " );
                 curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
                 curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN SlalomScore RO ON RO.SanctionId = TR.SanctionId AND RO.MemberId = TR.MemberId AND RO.AgeGroup = TR.AgeGroup AND RO.Round >= 25 " );
                 curSqlStmt.Append( "WHERE SS.SanctionId = '" + (String)curSkierRow["SanctionId"] + "' AND ER.Event = 'Slalom'" );
                 curSqlStmt.Append( "  And SS.MemberId = '" + (String)curSkierRow["Memberid"] + "' " );
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' " );
                 curSqlStmt.Append( "  And SS.Round < 25 " );
                 curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, SS.MemberId, SS.Round" );
-                DataTable curSkierResultsAll = getData( curSqlStmt.ToString() );
+                curSkierResultsAll = DataAccess.getDataTable( curSqlStmt.ToString() );
+
+                if ( curSkierResultsAll.Rows.Count <= 0 ) {
+                    newSkierScoreRow.EndEdit();
+                    continue;
+                }
+
+                //Retrieve tie score details, related final pass score, line length, final pass speed
+                curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curRound );
+                curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+                if ( curSkierScoreRow.Length <= 0 ) {
+                    newSkierScoreRow.EndEdit();
+                    continue;
+                }
+
+                decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScore );
+                decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "FinalPassScore", "0" ), out curPassScore );
+                decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "RankingScore", "0" ), out curRankingScore );
+                decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreRunoff", "0" ), out curRunoffScore );
+                byte.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "FinalSpeedKph", "0" ), out curFinalSpeedKph );
+                decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "FinalLen", "0" ), out curFinalLineLength );
+
+                newSkierScoreRow["Score"] = curScore;
+                newSkierScoreRow["PassScore"] = curPassScore;
+                newSkierScoreRow["RankingScore"] = curRankingScore;
+                newSkierScoreRow["RunoffScore"] = curRunoffScore;
+
+                newSkierScoreRow["Speed"] = curFinalSpeedKph;
+                newSkierScoreRow["LineLength"] = curFinalLineLength;
+                if ( inRules.ToLower().Equals( "iwwf" ) && curFinalLineLength == 23M ) newSkierScoreRow["LineLength"] = 18.25M;
 
                 /*
-                Only utilize backup score when data type is best
-                Otherwise bypass using the backup score
-                */
-                if ( curSkierResultsAll.Rows.Count > 0 ) {
-                    try {
-                        //Retrieve runoff socre
-                        newSkierScoreRow["RunoffScore"] = getSlalomRunoffScore((String) curSkierRow["MemberId"], (String) curSkierRow["AgeGroup"]);
+				Only utilize backup score when runoff score is not available
+				*/
+                curBackupScore = 0;
+				if ( curRunoffScore == 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
+				if ( inDataType.ToLower().Equals( "best" ) ) {
+					if ( inEventRounds == 1 ) {
+						newSkierScoreRow.EndEdit();
+						continue;
+					}
 
-                        //Retrieve tie score details, related final pass score, line length, final pass speed
-                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "' "
-                            + "AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"]);
-                        try {
-                            newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
-                        } catch {
-                            newSkierScoreRow["RankingScore"] = 0;
-                        }
-                        try {
-                            newSkierScoreRow["Score"] = (Decimal) curSkierDetailRow[0][curScoreName];
-                        } catch {
-                            newSkierScoreRow["Score"] = 0;
-                        }
-                        try {
-                            newSkierScoreRow["PassScore"] = (Decimal) curSkierDetailRow[0]["FinalPassScore"];
-                        } catch {
-                            newSkierScoreRow["PassScore"] = 0;
-                        }
-                        try {
-                            newSkierScoreRow["Speed"] = (byte) curSkierDetailRow[0]["FinalSpeedKph"];
-                            Decimal curFinalLineLength = Convert.ToDecimal(( (String) curSkierDetailRow[0]["FinalLen"] ).Substring(0, ( (String) curSkierDetailRow[0]["FinalLen"] ).Length - 1));
-                            if ( inRules.ToLower().Equals("iwwf") && curFinalLineLength == 23M ) {
-                                newSkierScoreRow["LineLength"] = 23M - 18.25M;
-                            } else {
-                                newSkierScoreRow["LineLength"] = 23M - curFinalLineLength;
-                            }
-                        } catch {
-                            newSkierScoreRow["Speed"] = 0;
-                            if ( inRules.ToLower().Equals("iwwf") ) {
-                                newSkierScoreRow["LineLength"] = 23M - 18.25M;
-                            }
-                        }
-                    } catch {
-                    }
-                } else {
-                    //No skier detail so set values to defaults
-                }
+					//Retrieve tie score details, related final pass score, line length, final pass speed
+					curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = 1", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
+					curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+					if ( curSkierScoreRow.Length <= 0 ) continue;
 
-                if ( inDataType.ToLower().Equals("best") ) {
-                    if ( inRounds > 1 ) {
-                        curSkierDetailRow = curSkierResultsAll.Select("MemberId = '" + (String) curSkierRow["MemberId"] + "'"
-                            + " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = 1 ");
-                        if ( curSkierDetailRow.Length > 0 ) {
-                            newSkierScoreRow["FirstScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-							//newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-							for ( Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++ ) {
-								curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String) curSkierRow["MemberId"] + "'"
-									+ " AND AgeGroup = '" + (String) curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString() );
-								if ( curSkierDetailRow.Length > 0 ) {
-									if ( (Byte) newSkierScoreRow["Round"] != curSkierRound ) {
-										if ( (Decimal) curSkierDetailRow[0][curScoreName] > (Decimal) newSkierScoreRow["BackupScore"] ) {
-											newSkierScoreRow["BackupScore"] = (Decimal) curSkierDetailRow[0][curScoreName];
-										}
-									}
-								}
+					for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
+						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
+						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+						if ( curSkierScoreRow.Length <= 0 ) continue;
+
+						if ( curSkierRound == 1 ) {
+							decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curFirstScore );
+							newSkierScoreRow["FirstScore"] = curFirstScore;
+						}
+
+						if ( curRound != curSkierRound ) {
+							decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+							if ( curScoreTemp > curBackupScore ) {
+								curBackupScore = curScoreTemp;
+								newSkierScoreRow["BackupScore"] = curBackupScore;
 							}
+						}
+					}
 
-						} else {
-                            newSkierScoreRow["FirstScore"] = 0;
-                            newSkierScoreRow["BackupScore"] = 0;
-                        }
 
-					} else {
-                        newSkierScoreRow["FirstScore"] = (Decimal) curSkierRow[curScoreName];
-                        newSkierScoreRow["BackupScore"] = 0;
-                    }
+				} else if ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+					decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curScoreName, "0" ), out curScore );
+					for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
+						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
+						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+						if ( curSkierScoreRow.Length <= 0 ) continue;
+						if ( curRound == curSkierRound ) continue;
 
-				} else {
-                    newSkierScoreRow["FirstScore"] = 0;
-                    newSkierScoreRow["BackupScore"] = 0;
-                }
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+						if ( curScoreTemp > curBackupScore ) {
+							curBackupScore = curScoreTemp;
+							newSkierScoreRow["BackupScore"] = curBackupScore;
+						}
+					}
+				}
 
-                newSkierScoreRow.EndEdit();
+				newSkierScoreRow.EndEdit();
             }
 
             return curSkierScoreList;
@@ -785,22 +592,27 @@ namespace WaterskiScoringSystem.Common {
                 nextPlcmtPos = inSkierScoreList.Rows.Count;
                 nextPlctAdj = 0;
                 foreach ( DataRow curCheckScoreRow in inSkierScoreList.Rows ) {
-                    if ( (String)curSkierScoreRow["MemberId"] != (String)curCheckScoreRow["MemberId"] ) {
-						if ( (Decimal)curSkierScoreRow["BackupScore"] == (Decimal)curCheckScoreRow["BackupScore"] ) {
-							if ( (Decimal)curSkierScoreRow["FirstScore"] == (Decimal)curCheckScoreRow["FirstScore"] ) {
-								if ( (Decimal)curSkierScoreRow["RunoffScore"] == (Decimal)curCheckScoreRow["RunoffScore"] ) {
-									nextPlctAdj--;
-								} else if ( (Decimal)curSkierScoreRow["RunoffScore"] > (Decimal)curCheckScoreRow["RunoffScore"] ) {
-									nextPlctAdj--;
-								}
-							} else if ( (Decimal)curSkierScoreRow["FirstScore"] > (Decimal)curCheckScoreRow["FirstScore"] ) {
-								nextPlctAdj--;
-							}
-						} else if ( (Decimal)curSkierScoreRow["BackupScore"] > (Decimal)curCheckScoreRow["BackupScore"] ) {
-							nextPlctAdj--;
-						}
-					}
-				}
+                    if ( (String)curSkierScoreRow["MemberId"] == (String)curCheckScoreRow["MemberId"] ) continue;
+
+                    if ( (Decimal)curSkierScoreRow["RunoffScore"] == (Decimal)curCheckScoreRow["RunoffScore"] ) {
+                        if ( (Decimal)curSkierScoreRow["RunoffScore"] > 0 ) {
+                            nextPlctAdj--;
+                        } else {
+                            if ( (Decimal)curSkierScoreRow["BackupScore"] == (Decimal)curCheckScoreRow["BackupScore"] ) {
+                                if ( (Decimal)curSkierScoreRow["FirstScore"] == (Decimal)curCheckScoreRow["FirstScore"] ) {
+                                    nextPlctAdj--;
+                                } else if ( (Decimal)curSkierScoreRow["FirstScore"] > (Decimal)curCheckScoreRow["FirstScore"] ) {
+                                    nextPlctAdj--;
+                                }
+                            } else if ( (Decimal)curSkierScoreRow["BackupScore"] > (Decimal)curCheckScoreRow["BackupScore"] ) {
+                                nextPlctAdj--;
+                            }
+                        }
+                    } else if ( (Decimal)curSkierScoreRow["RunoffScore"] > (Decimal)curCheckScoreRow["RunoffScore"] ) {
+                        nextPlctAdj--;
+                    }
+                }
+
                 curPlcmtNum = curOrigPlcmtPos + nextPlcmtPos + nextPlctAdj - 1;
                 if ( curPlcmt.Contains( "T" ) ) {
                     curSkierScoreRow[inPlcmtName] = curPlcmt;
@@ -809,156 +621,204 @@ namespace WaterskiScoringSystem.Common {
                     if ( curPlcmt.Length > 3 ) {
                         curSkierScoreRow[inPlcmtName] = curPlcmt.Substring( 0, 3 ) + " ";
                     } else {
-                        curSkierScoreRow[inPlcmtName] = curPlcmt.PadLeft(3, ' ') + " ";
+                        curSkierScoreRow[inPlcmtName] = curPlcmt.PadLeft( 3, ' ' ) + " ";
                     }
                 }
             }
         }
 
-        private DataTable getTrickTieBreakerData(DataRow[] inSkierList, int inRounds, String inRules) {
-            /* **********************************************************
-             * Analyze results and determine skier placment within age division
+        private DataTable getTrickTieBreakerData( DataRow[] inSkierList, int inEventRounds, String inRules, String inDataType ) {
+			/* **********************************************************
+             * Retrieve all data required for a trick tie breaker
              * ******************************************************* */
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            DataTable curSkierScoreList = buildSkierTrickScoreList();
-            DataRowView newSkierScoreRow;
-            DataRow[] curSkierDetailRow;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
             String curScoreName = "ScoreTrick";
             String curRoundName = "RoundTrick";
             String curPointsName = "PointsTrick";
+			String curFilter;
+            byte curRound, curRoundTemp;
+            Int16 curScore, curScoreTemp, curRunoffScore, curBackupScore, curPass1Score, curPass2Score, curPass1ScoreTemp, curPass2ScoreTemp;
+			decimal curRankingScore;
 
-            foreach ( DataRow curSkierRow in inSkierList ) {
+			DataRowView newSkierScoreRow;
+			DataRow[] curSkierScoreRow;
+			DataTable curSkierResultsAll;
+			DataTable curSkierScoreList = buildSkierTrickScoreList();
+			foreach ( DataRow curSkierRow in inSkierList ) {
                 newSkierScoreRow = curSkierScoreList.DefaultView.AddNew();
                 newSkierScoreRow["MemberId"] = (String)curSkierRow["MemberId"];
                 newSkierScoreRow["AgeGroup"] = (String)curSkierRow["AgeGroup"];
-                try {
-                    if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                        newSkierScoreRow["Round"] = (Byte)curSkierRow[curRoundName];
-                    } else if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int16" ) ) {
-                        newSkierScoreRow["Round"] = (Int16)curSkierRow[curRoundName];
-                    } else if ( curSkierRow[curRoundName].GetType() == System.Type.GetType( "System.Int32" ) ) {
-                        newSkierScoreRow["Round"] = (int)curSkierRow[curRoundName];
-                    } else {
-                        newSkierScoreRow["Round"] = 0;
-                    }
-                } catch {
-                    newSkierScoreRow["Round"] = 0;
-                }
-
-                newSkierScoreRow["Score"] = 0;
+				if ( inDataType.ToLower().Equals( "final" ) ) {
+					byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, "Round", "1" ), out curRound );
+				} else {
+					byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curRoundName, "1" ), out curRound );
+				}
+				newSkierScoreRow["Round"] = curRound;
+				newSkierScoreRow["Score"] = 0;
                 newSkierScoreRow["PassScore1"] = 0;
                 newSkierScoreRow["PassScore2"] = 0;
                 newSkierScoreRow["PassScore3"] = 0;
                 newSkierScoreRow["PassScore4"] = 0;
                 newSkierScoreRow["RunoffScore"] = 0;
                 newSkierScoreRow["RankingScore"] = 0;
-                newSkierScoreRow["RunoffScore"] = getTrickRunoffScore( (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
 
-                if (inRules.ToLower().Equals( "iwwf" )) {
-                } else {
-                    curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
-                    curSqlStmt.Append(", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
-                    curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
-                    curSqlStmt.Append( ", SS.ScorePass1, SS.ScorePass2 " );
-                    curSqlStmt.Append( "FROM TrickScore SS " );
-                    curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
-                    curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
-                    curSqlStmt.Append( "WHERE SS.SanctionId = '" + (String)curSkierRow["SanctionId"] + "' AND ER.Event = 'Trick'" );
-                    curSqlStmt.Append( "  And SS.MemberId = '" + (String)curSkierRow["Memberid"] + "' " );
-                    curSqlStmt.Append( "  And ER.AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' " );
-                    curSqlStmt.Append( "  And SS.Round < 25 " );
-                    curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, SS.MemberId, SS.Round" );
-                    DataTable curSkierResultsAll = getData( curSqlStmt.ToString() );
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, ER.AgeGroup, ER.EventGroup, ER.TeamCode" );
+				curSqlStmt.Append( ", COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore" );
+				curSqlStmt.Append( ", SS.Round as " + curRoundName + ", SS.Score as " + curScoreName + ", SS.NopsScore as " + curPointsName );
+				curSqlStmt.Append( ", SS.ScorePass1, SS.ScorePass2, COALESCE( RO.Score, 0) as ScoreRunoff " );
+				curSqlStmt.Append( "FROM TrickScore SS " );
+				curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
+				curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
+				curSqlStmt.Append( "  LEFT OUTER JOIN TrickScore RO ON RO.SanctionId = TR.SanctionId AND RO.MemberId = TR.MemberId AND RO.AgeGroup = TR.AgeGroup AND RO.Round >= 25 " );
+				curSqlStmt.Append( "WHERE SS.SanctionId = '" + (String)curSkierRow["SanctionId"] + "' AND ER.Event = 'Trick'" );
+				curSqlStmt.Append( "  And SS.MemberId = '" + (String)curSkierRow["Memberid"] + "' " );
+				curSqlStmt.Append( "  And ER.AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' " );
+				curSqlStmt.Append( "  And SS.Round < 25 " );
+				curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, SS.MemberId, SS.Round" );
+				curSkierResultsAll = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-                    if (curSkierResultsAll.Rows.Count > 0) {
-                        curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
-                            + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"].ToString() );
-                        try {
-                            newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
-                        } catch {
-                            newSkierScoreRow["RankingScore"] = 0;
-                        }
-                        try {
-                            newSkierScoreRow["Score"] = (Int16)curSkierDetailRow[0][curScoreName];
-                        } catch {
-                            newSkierScoreRow["Score"] = 0;
-                        }
-                        try {
-                            newSkierScoreRow["PassScore1"] = (Int16)curSkierDetailRow[0]["ScorePass1"];
-                        } catch {
-                            newSkierScoreRow["PassScore1"] = 0;
-                        }
-                        try {
-                            if ((Int16)curSkierDetailRow[0]["ScorePass2"] > (Int16)newSkierScoreRow["PassScore1"]) {
-                                newSkierScoreRow["PassScore2"] = newSkierScoreRow["PassScore1"];
-                                newSkierScoreRow["PassScore1"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                            } else {
-                                newSkierScoreRow["PassScore2"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                            }
-                        } catch {
-                            newSkierScoreRow["PassScore2"] = 0;
-                        }
-                        newSkierScoreRow["PassScore3"] = 0;
-                        newSkierScoreRow["PassScore4"] = 0;
+				if ( curSkierResultsAll.Rows.Count <= 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
 
-                        if (inRounds > 1) {
-                            curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
-                                + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = 1" );
-                            if (curSkierDetailRow.Length > 0) {
-                                newSkierScoreRow["FirstScore"] = (Int16)curSkierDetailRow[0][curScoreName];
-                                if ((Byte)newSkierScoreRow["Round"] > 1) {
-                                    newSkierScoreRow["BackupScore"] = (Int16)curSkierDetailRow[0][curScoreName];
-                                }
-                            }
-                            for (Byte curSkierRound = 1; curSkierRound <= inRounds; curSkierRound++) {
-                                curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
-                                    + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString() );
-                                if (curSkierDetailRow.Length > 0) {
-                                    if ((Byte)newSkierScoreRow["Round"] != curSkierRound) {
-                                        if ((Int16)curSkierDetailRow[0][curScoreName] > (Int16)newSkierScoreRow["BackupScore"]) {
-                                            newSkierScoreRow["BackupScore"] = (Int16)curSkierDetailRow[0][curScoreName];
-                                        }
-                                        //Save individual pass scores in score order
-                                        if ((Int16)curSkierDetailRow[0]["ScorePass1"] > (Int16)newSkierScoreRow["PassScore1"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
-                                            newSkierScoreRow["PassScore2"] = newSkierScoreRow["PassScore1"];
-                                            newSkierScoreRow["PassScore1"] = (Int16)curSkierDetailRow[0]["ScorePass1"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass1"] > (Int16)newSkierScoreRow["PassScore2"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
-                                            newSkierScoreRow["PassScore2"] = (Int16)curSkierDetailRow[0]["ScorePass1"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass1"] > (Int16)newSkierScoreRow["PassScore3"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = (Int16)curSkierDetailRow[0]["ScorePass1"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass1"] > (Int16)newSkierScoreRow["PassScore4"]) {
-                                            newSkierScoreRow["PassScore4"] = (Int16)curSkierDetailRow[0]["ScorePass1"];
-                                        }
+				//Retrieve tie score details, related final pass score, line length, final pass speed
+				curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curRound );
+				curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+				if ( curSkierScoreRow.Length <= 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
 
-                                        if ((Int16)curSkierDetailRow[0]["ScorePass2"] > (Int16)newSkierScoreRow["PassScore1"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
-                                            newSkierScoreRow["PassScore2"] = newSkierScoreRow["PassScore1"];
-                                            newSkierScoreRow["PassScore1"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass2"] > (Int16)newSkierScoreRow["PassScore2"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
-                                            newSkierScoreRow["PassScore2"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass2"] > (Int16)newSkierScoreRow["PassScore3"]) {
-                                            newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
-                                            newSkierScoreRow["PassScore3"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                                        } else if ((Int16)curSkierDetailRow[0]["ScorePass2"] > (Int16)newSkierScoreRow["PassScore4"]) {
-                                            newSkierScoreRow["PassScore4"] = (Int16)curSkierDetailRow[0]["ScorePass2"];
-                                        }
-                                    }
-                                }
-                            }
-                        }
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScore );
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreRunoff", "0" ), out curRunoffScore );
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "RankingScore", "0" ), out curRankingScore );
+
+				newSkierScoreRow["Score"] = curScore;
+				newSkierScoreRow["RunoffScore"] = curRunoffScore;
+				newSkierScoreRow["RankingScore"] = curRankingScore;
+
+				if ( inRules.ToLower().Equals( "iwwf" ) ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
+
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScorePass1", "0" ), out curPass1Score );
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScorePass2", "0" ), out curPass2Score );
+                if ( curPass2Score > curPass1Score ) {
+					newSkierScoreRow["PassScore1"] = curPass2Score;
+					newSkierScoreRow["PassScore2"] = curPass1Score;
+				} else {
+					newSkierScoreRow["PassScore1"] = curPass1Score;
+					newSkierScoreRow["PassScore2"] = curPass2Score;
+				}
+
+				curBackupScore = 0;
+				if ( curRunoffScore == 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
+                
+                /*
+                 * Identify backup scores that can be used for tie breaking scenerios 
+                 * Different criteria are used when placements are based on a skier's best score of all rounds 
+                 * versus when placement is based on a skiers final round score
+                 */
+                if ( inDataType.ToLower().Equals( "best" ) ) {
+					#region Tie breaker data based on criteria used when placements are based on the skier's best score of all rounds 
+					if ( inEventRounds == 1 ) {
+                        newSkierScoreRow.EndEdit();
+                        continue;
                     }
-                }
 
-                newSkierScoreRow.EndEdit();
+                    if ( curRound == 1 ) {
+						newSkierScoreRow["FirstScore"] = curScore;
+					
+                    } else {
+						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = 1", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
+						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+						if ( curSkierScoreRow.Length > 0 ) {
+							Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+							newSkierScoreRow["FirstScore"] = curScoreTemp;
+							
+                            if ( curScoreTemp > curBackupScore  ) {
+								curBackupScore = curScoreTemp;
+								newSkierScoreRow["BackupScore"] = curBackupScore;
+							}
+						}
+					}
+
+					// Check all passes and determine the best individual passes that should be used for tie breaking purposes
+                    for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
+						curSkierScoreRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
+							+ " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + curSkierRound.ToString() );
+                        if ( curSkierScoreRow.Length <= 0 ) continue;
+
+						Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+						byte.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "Round", "0" ), out curRoundTemp );
+                        if ( curRoundTemp == curSkierRound || curRoundTemp == 0 ) continue;
+
+						if ( curScoreTemp > curBackupScore ) {
+							curBackupScore = curScoreTemp;
+							newSkierScoreRow["BackupScore"] = curBackupScore;
+						}
+
+						//Save individual pass scores in score order
+						Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScorePass1", "0" ), out curPass1ScoreTemp );
+						Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScorePass2", "0" ), out curPass2ScoreTemp );
+						
+                        if ( curPass1ScoreTemp > (Int16)newSkierScoreRow["PassScore1"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
+							newSkierScoreRow["PassScore2"] = newSkierScoreRow["PassScore1"];
+							newSkierScoreRow["PassScore1"] = curPass1ScoreTemp;
+                        } else if ( curPass1ScoreTemp > (Int16)newSkierScoreRow["PassScore2"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
+							newSkierScoreRow["PassScore2"] = curPass1ScoreTemp;
+						} else if ( curPass1ScoreTemp > (Int16)newSkierScoreRow["PassScore3"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = curPass1ScoreTemp;
+						} else if ( curPass1ScoreTemp > (Int16)newSkierScoreRow["PassScore4"] ) {
+							newSkierScoreRow["PassScore4"] = curPass1ScoreTemp;
+						}
+
+						if ( curPass2ScoreTemp > (Int16)newSkierScoreRow["PassScore1"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
+							newSkierScoreRow["PassScore2"] = newSkierScoreRow["PassScore1"];
+							newSkierScoreRow["PassScore1"] = curPass2ScoreTemp;
+						} else if ( curPass2ScoreTemp > (Int16)newSkierScoreRow["PassScore2"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = newSkierScoreRow["PassScore2"];
+							newSkierScoreRow["PassScore2"] = curPass2ScoreTemp;
+						} else if ( curPass2ScoreTemp > (Int16)newSkierScoreRow["PassScore3"] ) {
+							newSkierScoreRow["PassScore4"] = newSkierScoreRow["PassScore3"];
+							newSkierScoreRow["PassScore3"] = curPass2ScoreTemp;
+						} else if ( curPass2ScoreTemp > (Int16)newSkierScoreRow["PassScore4"] ) {
+							newSkierScoreRow["PassScore4"] = curPass2ScoreTemp;
+						}
+					}
+					#endregion
+
+				} else if ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+					for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
+						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
+						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+						if ( curSkierScoreRow.Length <= 0 ) continue;
+						if ( curRound == curSkierRound ) continue;
+
+						Int16.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+						if ( curScoreTemp > curBackupScore ) {
+							curBackupScore = curScoreTemp;
+							newSkierScoreRow["BackupScore"] = curBackupScore;
+						}
+					}
+
+				}
+
+				newSkierScoreRow.EndEdit();
             }
 
             return curSkierScoreList;
@@ -1018,38 +878,36 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        private DataTable getJumpTieBreakerData( DataRow[] inSkierList, int inRounds, String inRules, String inPlcmtName ) {
+        private DataTable getJumpTieBreakerData( DataRow[] inSkierList, int inEventRounds, String inRules, String inPlcmtName, String inDataType ) {
             /* **********************************************************
              * Analyze results and determine skier placment within age division
              * ******************************************************* */
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            DataTable curSkierScoreList = buildSkierJumpScoreList();
-            DataRowView newSkierScoreRow;
-            DataRow[] curSkierDetailRow;
-            Decimal[] curRunoffScores;
-            String curScoreName = "ScoreJump";
             String curRoundName = "RoundJump";
             String curPointsName = "PointsJump";
+			String curFilter;
 
-            foreach ( DataRow curSkierRow in inSkierList ) {
+            byte curRound, curRoundTemp;
+			decimal curScoreFeet, curScoreMeters, curScoreFeetTemp, curScoreMetersTemp, curRunoffScoreFeet, curRunoffScoreMeters, curBackupScoreFeet, curBackupScoreMeters, curRankingScore;
+			//Decimal[] curRunoffScores;
+
+			DataRowView newSkierScoreRow;
+			DataRow[] curSkierScoreRow;
+			DataTable curSkierResultsAll;
+			DataTable curSkierScoreList = buildSkierJumpScoreList();
+
+
+			foreach ( DataRow curSkierRow in inSkierList ) {
                 newSkierScoreRow = curSkierScoreList.DefaultView.AddNew();
                 newSkierScoreRow["MemberId"] = (String)curSkierRow["MemberId"];
                 newSkierScoreRow["AgeGroup"] = (String)curSkierRow["AgeGroup"];
-                try {
-                    if ( curSkierRow["RoundJump"].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                        newSkierScoreRow["Round"] = (Byte)curSkierRow["RoundJump"];
-                    } else if (curSkierRow["RoundJump"].GetType() == System.Type.GetType( "System.Int16" )) {
-                        newSkierScoreRow["Round"] = (Int16)curSkierRow["RoundJump"];
-                    } else if (curSkierRow["RoundJump"].GetType() == System.Type.GetType( "System.Int32" )) {
-                        newSkierScoreRow["Round"] = (int)curSkierRow["RoundJump"];
-                    } else {
-                        newSkierScoreRow["Round"] = 0;
-                    }
-                } catch {
-                    newSkierScoreRow["Round"] = 0;
-                }
-
-                newSkierScoreRow["ScoreFeet"] = 0;
+				if ( inDataType.ToLower().Equals( "final" ) ) {
+					byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, "Round", "1" ), out curRound );
+				} else {
+					byte.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curRoundName, "1" ), out curRound );
+				}
+				newSkierScoreRow["Round"] = curRound;
+				newSkierScoreRow["ScoreFeet"] = 0;
                 newSkierScoreRow["ScoreMeters"] = 0;
                 newSkierScoreRow["RunoffScoreFeet"] = 0;
                 newSkierScoreRow["RunoffScoreMeters"] = 0;
@@ -1059,63 +917,91 @@ namespace WaterskiScoringSystem.Common {
 
                 curSqlStmt = new StringBuilder( "" );
                 curSqlStmt.Append( "SELECT SS.MemberId, SS.SanctionId, TR.SkierName, ER.Event, SS.BoatSpeed, SS.RampHeight, ER.TeamCode, '' as BoatCode " );
-                curSqlStmt.Append(", ER.AgeGroup,  ER.EventGroup, COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore");
-                curSqlStmt.Append( ", SS.ScoreFeet, SS.ScoreMeters, SS.Round as " + curRoundName + ", SS.NopsScore as " + curPointsName + " " );
-                curSqlStmt.Append( "FROM JumpScore AS SS " );
+                curSqlStmt.Append( ", ER.AgeGroup,  ER.EventGroup, COALESCE(SS.EventClass, ER.EventClass) as EventClass, ER.RankingScore" );
+                curSqlStmt.Append( ", SS.ScoreFeet, SS.ScoreMeters, SS.Round as " + curRoundName + ", SS.NopsScore as " + curPointsName );
+                curSqlStmt.Append( ", RO.ScoreFeet as RunoffScoreFeet, RO.ScoreMeters as RunoffScoreMeters " );
+				curSqlStmt.Append( "FROM JumpScore AS SS " );
                 curSqlStmt.Append( "  INNER JOIN TourReg TR ON SS.MemberId = TR.MemberId AND SS.SanctionId = TR.SanctionId AND SS.AgeGroup = TR.AgeGroup " );
                 curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
-                curSqlStmt.Append( "WHERE SS.SanctionId = '" + (String)curSkierRow["SanctionId"] + "' AND ER.Event = 'Jump'" );
+				curSqlStmt.Append( "  LEFT OUTER JOIN JumpScore RO ON RO.SanctionId = TR.SanctionId AND RO.MemberId = TR.MemberId AND RO.AgeGroup = TR.AgeGroup AND RO.Round >= 25 " );
+				curSqlStmt.Append( "WHERE SS.SanctionId = '" + (String)curSkierRow["SanctionId"] + "' AND ER.Event = 'Jump'" );
                 curSqlStmt.Append( "  And SS.MemberId = '" + (String)curSkierRow["Memberid"] + "' " );
                 curSqlStmt.Append( "  And ER.AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' " );
                 curSqlStmt.Append( "ORDER BY SS.SanctionId, ER.AgeGroup, SS.MemberId, SS.Round" );
-                DataTable curSkierResultsAll = getData( curSqlStmt.ToString() );
+                curSkierResultsAll = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-                if (curSkierResultsAll.Rows.Count > 0) {
-                    curSkierDetailRow = curSkierResultsAll.Select( "MemberId = '" + (String)curSkierRow["MemberId"] + "'"
-                        + " AND AgeGroup = '" + (String)curSkierRow["AgeGroup"] + "' AND " + curRoundName + " = " + newSkierScoreRow["Round"].ToString() );
-                    try {
-                        newSkierScoreRow["RankingScore"] = (Decimal) curSkierDetailRow[0]["RankingScore"];
-                    } catch {
-                        newSkierScoreRow["RankingScore"] = 0;
-                    }
-                    try {
-                        if (inRules.ToLower().Equals( "iwwf" )) {
-                            newSkierScoreRow["ScoreFeet"] = 0;
-                        } else {
-                            newSkierScoreRow["ScoreFeet"] = (Decimal)curSkierDetailRow[0]["ScoreFeet"];
-                        }
-                    } catch {
-                        newSkierScoreRow["ScoreFeet"] = 0;
-                    }
-                    try {
-                        newSkierScoreRow["ScoreMeters"] = (Decimal)curSkierDetailRow[0]["ScoreMeters"];
-                    } catch {
-                        newSkierScoreRow["ScoreMeters"] = 0;
-                    }
-                    curRunoffScores = getJumpRunoffScore( (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
-                    if (inRules.ToLower().Equals( "iwwf" )) {
-                        newSkierScoreRow["RunoffScoreFeet"] = 0;
-                    } else {
-                        newSkierScoreRow["RunoffScoreFeet"] = curRunoffScores[0];
-                    }
-                    newSkierScoreRow["RunoffScoreMeters"] = curRunoffScores[1];
+				if ( curSkierResultsAll.Rows.Count <= 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
 
-                    if (inRounds > 1) {
-                        if (inRules.ToLower().Equals( "iwwf" )) {
-                        } else {
-                            foreach (DataRow curRow in curSkierResultsAll.Rows) {
-                                if ((Decimal)curRow["ScoreFeet"] > (Decimal)newSkierScoreRow["BackupScoreFeet"]
-                                    || ( (Decimal)curRow["ScoreFeet"] == (Decimal)newSkierScoreRow["BackupScoreFeet"]
-                                        && (Decimal)curRow["ScoreMeters"] > (Decimal)newSkierScoreRow["BackupScoreMeters"] )) {
-                                    newSkierScoreRow["BackupScoreFeet"] = (Decimal)curRow["ScoreFeet"];
-                                    newSkierScoreRow["BackupScoreMeters"] = (Decimal)curRow["ScoreMeters"];
-                                }
-                            }
-                        }
-                    }
-                }
+				//Retrieve tie score details, related final pass score, line length, final pass speed
+				curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curRound );
+				curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+				if ( curSkierScoreRow.Length <= 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
 
-                newSkierScoreRow.EndEdit();
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreFeet", "0" ), out curScoreFeet );
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreMeters", "0" ), out curScoreMeters );
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "RankingScore", "0" ), out curRankingScore );
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "RunoffScoreFeet", "0" ), out curRunoffScoreFeet );
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "RunoffScoreMeters", "0" ), out curRunoffScoreMeters );
+
+				newSkierScoreRow["ScoreFeet"] = curScoreFeet;
+				newSkierScoreRow["ScoreMeters"] = curScoreMeters;
+				newSkierScoreRow["RankingScore"] = curRankingScore;
+				newSkierScoreRow["RunoffScoreFeet"] = curRunoffScoreFeet;
+				newSkierScoreRow["RunoffScoreMeters"] = curRunoffScoreMeters;
+
+				/*
+				 * Only utilize backup score when runoff score is not available
+				*/
+                curBackupScoreFeet = 0;
+                curBackupScoreMeters = 0;
+				if ( curBackupScoreFeet == 0 || curBackupScoreMeters == 0 ) {
+					newSkierScoreRow.EndEdit();
+					continue;
+				}
+                
+                if ( inDataType.ToLower().Equals( "best" ) ) {
+                    if ( inEventRounds == 1 || !(HelperFunctions.isIwwfEvent(inRules)) ) {
+                        newSkierScoreRow.EndEdit();
+                        continue;
+                    }
+
+                    foreach ( DataRow curRow in curSkierResultsAll.Rows ) {
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreFeet", "0" ), out curScoreFeetTemp );
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, "ScoreMeters", "0" ), out curScoreMetersTemp );
+
+                        if ( curScoreFeetTemp > (Decimal)newSkierScoreRow["BackupScoreFeet"] 
+                            || ( curScoreFeetTemp == (Decimal)newSkierScoreRow["BackupScoreFeet"] && curScoreMetersTemp > (Decimal)newSkierScoreRow["BackupScoreMeters"] )
+							) {
+							newSkierScoreRow["BackupScoreFeet"] = curScoreFeetTemp;
+							newSkierScoreRow["BackupScoreMeters"] = curScoreMetersTemp;
+						}
+					}
+				} else if ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+					for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
+						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
+						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+						if ( curSkierScoreRow.Length <= 0 ) continue;
+						if ( curRound == curSkierRound ) continue;
+
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreFeet", "0" ), out curScoreFeetTemp );
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreMeters", "0" ), out curScoreMetersTemp );
+
+						if ( curScoreFeetTemp > curBackupScoreFeet || ( curScoreFeetTemp == curBackupScoreFeet && curScoreMetersTemp > curBackupScoreMeters ) ) {
+							curBackupScoreFeet = curScoreFeetTemp;
+							curBackupScoreMeters = curScoreMetersTemp;
+							newSkierScoreRow["BackupScoreFeet"] = curBackupScoreFeet;
+							newSkierScoreRow["BackupScoreMeters"] = curBackupScoreMeters;
+						}
+					}
+				}
+
+				newSkierScoreRow.EndEdit();
             }
 
             return curSkierScoreList;
@@ -1284,7 +1170,7 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        private void setEventFinalPlcmt(DataTable inSkierScoreList, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inPlcmtName, String inPlcmtNameSmry) {
+        private void setEventFinalPlcmt( DataTable inSkierScoreList, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inPlcmtName, String inPlcmtNameSmry ) {
             /* **********************************************************
              * Analyze results of tie breakers and update event skier placments
              * ******************************************************* */
@@ -1297,14 +1183,14 @@ namespace WaterskiScoringSystem.Common {
             foreach ( DataRow curSkierScoreRow in curSkierScoreList.Rows ) {
                 if ( curIdx > 0 ) {
                     prevSkierScoreRow = curSkierScoreList.Rows[prevIdx];
-                    if (curSkierScoreRow[inPlcmtNameSmry].Equals( prevSkierScoreRow[inPlcmtNameSmry] )) {
+                    if ( curSkierScoreRow[inPlcmtNameSmry].Equals( prevSkierScoreRow[inPlcmtNameSmry] ) ) {
                         curSkierList = inEventResults.Select( "MemberId = '" + prevSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + prevSkierScoreRow["AgeGroup"] + "'" );
                         if ( curSkierList.Length > 0 ) {
                             curPlcmt = ( (String)prevSkierScoreRow[inPlcmtNameSmry] );
                             if ( curPlcmt.Length > 3 ) {
-                                curSkierList[0][inPlcmtName] = curPlcmt.Substring(0, 3) + "T";
+                                curSkierList[0][inPlcmtName] = curPlcmt.Substring( 0, 3 ) + "T";
                             } else {
-                                curSkierList[0][inPlcmtName] = curPlcmt.PadLeft(3, ' ') + "T";
+                                curSkierList[0][inPlcmtName] = curPlcmt.PadLeft( 3, ' ' ) + "T";
                             }
                         }
                         curSkierList = inEventResults.Select( "MemberId = '" + curSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + curSkierScoreRow["AgeGroup"] + "'" );
@@ -1344,561 +1230,395 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        private DataTable setInitEventPlcmt(DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inPlcmtName, String inEvent) {
-            /* **********************************************************
-             * Analyze results and determine skier placment within age division
-             * ******************************************************* */
-            DataTable curPlcmtResults = inResults;
-            String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", prevRound = "", curReadyForPlcmt = "";
-            int curIdx = 0, curPlcmtPos = 1;
-            Decimal curScore = 0, prevScore = -1;
-
+		/* **********************************************************
+		 * Analyze results and determine skier placment within age division
+		 * ******************************************************* */
+		private DataTable setInitEventPlcmt( DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inPlcmtName, String inEvent, Int16 inNumPrelimRounds ) {
             if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                #region Calculate placement for all tournament participants
-                if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-                    curSortCmd = "Round" + inEvent + " ASC, ReadyForPlcmt" + inEvent + " DESC, ";
-                } else if (inDataType.ToLower().Equals( "final" )) {
-                    curSortCmd = "Round" + inEvent + " DESC, ReadyForPlcmt" + inEvent + " DESC, ";
-                } else {
-                    curSortCmd = "";
-                }
-                if (inEvent.ToLower().Equals( "jump" )) {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "ScoreFeet DESC, ScoreMeters DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                    }
-                } else {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                    }
-                }
+                return setInitEventPlcmtNoGroups( inResults, inPlcmtMethod, inPlcmtOrg, inDataType, inPlcmtName, inEvent, inNumPrelimRounds );
+			}
 
-                curPlcmtResults.DefaultView.Sort = curSortCmd;
-                curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
-                foreach (DataRow curRow in curPlcmtResults.Rows) {
-                    curPlcmt = "";
-                    prevGroup = curGroup;
-                    prevScore = curScore;
-                    prevRound = curRound;
+			/*
+             * Calculate placement based on requested attributes and organization (divisions and groups
+             */
+			DataTable curPlcmtResults = inResults;
+			String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", curReadyForPlcmt = "";
+			int curIdx = 0, curPlcmtPos = 1, curRoundInt = 0, prevRoundInt = 0;
+			Decimal curScore = 0, prevScore = -1;
 
-                    try {
-                        if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
-                            curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                            curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                            curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-                        } else {
-                            curRound = "0";
-                        }
-                    } catch {
-                        curRound = "0";
-                    }
-                    if ( inDataType.ToLower().Equals("round") || inDataType.ToLower().Equals("h2h") ) {
-                        curGroup = curRound;
-                    } else {
-                        curGroup = "";
-                    }
-                    if (!( curGroup.Equals( prevGroup ) )) {
-                        curPlcmtPos = 1;
-                        prevScore = -1;
-                    }
-                    if ( inDataType.ToLower().Equals("final") && !( curRound.Equals(prevRound) ) ) {
-                        prevScore = -1;
-                    }
+			String curRoundName = "Round" + inEvent;
+			String curScoreName = "Score" + inEvent;
+			if ( inEvent.ToLower().Equals( "jump" ) ) curScoreName = "ScoreFeet";
+			if ( !( inPlcmtMethod.ToLower().Equals( "score" ) ) ) curScoreName = "Points" + inEvent;
 
-                    curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
-                    if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
-					if ( inDataType.ToLower().Equals( "first" ) && !( curRound.Equals( "1" ) ) ) curReadyForPlcmt = "N";
+			if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+				curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
+			} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+				curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
+			} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+				curSortCmd = "EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
+			} else {
+				curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
+			}
+			if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+				curSortCmd += curRoundName + " ASC, ";
+			} else if ( inDataType.ToLower().Equals( "final" ) ) {
+				curSortCmd += curRoundName + " DESC, ";
+			} else if ( inDataType.ToLower().Equals( "first" ) ) {
+				curSortCmd += curRoundName + " DESC, ";
+			}
+			
+            if ( inPlcmtMethod.ToLower().Equals( "score" ) && inEvent.ToLower().Equals( "jump" ) ) {
+				curSortCmd += "ScoreFeet DESC, ScoreMeters DESC, SkierName ASC ";
+			} else {
+				curSortCmd += curScoreName + " DESC, SkierName ASC ";
+			}
 
-					if ( curReadyForPlcmt.Equals("Y") ) {
-                        if ( Convert.ToInt32(curRound) > 0 ) {
-                            if ( inPlcmtMethod.ToLower().Equals("score") ) {
-                                try {
-                                    if ( inEvent.ToLower().Equals("jump") ) {
-                                        curScore = (Decimal) ( curRow["ScoreFeet"] );
-                                    } else {
-                                        if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Decimal") ) {
-                                            curScore = (Decimal) ( curRow["Score" + inEvent] );
-                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int16") ) {
-                                            curScore = (Int16) ( curRow["Score" + inEvent] );
-                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int32") ) {
-                                            curScore = (int) ( curRow["Score" + inEvent] );
-                                        } else {
-                                            curScore = 0;
-                                        }
-                                    }
-                                } catch {
-                                    curScore = 0;
-                                }
-                            } else {
-                                try {
-                                    curScore = (Decimal) ( curRow["Points" + inEvent] );
-                                } catch {
-                                    curScore = 0;
-                                }
-                            }
+			curPlcmtResults.DefaultView.Sort = curSortCmd;
+			DataTable tempPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+			curPlcmtResults = tempPlcmtResults;
 
-                            if ( curScore == prevScore && curIdx > 0 ) {
-                                curPlcmt = (String) curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
-                                if ( curPlcmt.Contains("T") ) {
-                                } else {
-                                    curPlcmt = curPlcmt.Substring(0, 3) + "T";
-                                    curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
-                                }
-                            } else {
-                                curPlcmt = curPlcmtPos.ToString("##0").PadLeft(3, ' ');
-                                curPlcmt += " ";
-                            }
-                            curRow[inPlcmtName] = curPlcmt;
-                            curPlcmtPos++;
-                        } else {
-                            curPlcmt = "";
-                            curScore = -1;
-                        }
-                        curRow[inPlcmtName] = curPlcmt;
-                        curIdx++;
+			foreach ( DataRow curRow in curPlcmtResults.Rows ) {
+				curPlcmt = "";
+				prevGroup = curGroup;
+				prevScore = curScore;
+				prevRoundInt = curRoundInt;
 
-                    } else {
-                        curRow[inPlcmtName] = "  999 ";
-                        curPlcmt = "";
-                        curScore = -1;
-                    }
-                }
-                #endregion
+				curRound = HelperFunctions.getDataRowColValue( curRow, curRoundName, "1" );
+				curRoundInt = Convert.ToInt32( curRound );
 
-            } else {
-                #region Calculate placement based on requested organization
-                curPlcmtPos = 1;
-                curIdx = 0;
-                curScore = 0;
-                prevScore = -1;
-                prevGroup = "";
-                curGroup = "";
-                if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
-                    curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                    curSortCmd = "AgeGroup ASC, EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
-                } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                    curSortCmd = "EventGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
-                } else {
-                    curSortCmd = "AgeGroup ASC, ReadyForPlcmt" + inEvent + " DESC, ";
-                }
-                if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                    curSortCmd += "Round" + inEvent + " ASC, ";
-                } else if (inDataType.ToLower().Equals( "final" )) {
-                    curSortCmd += "Round" + inEvent + " DESC, ";
-                } else if (inDataType.ToLower().Equals( "first" )) {
-                    curSortCmd += "Round" + inEvent + " DESC, ";
-                } else {
-                }
-                if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                    if ( inEvent.ToLower().Equals("jump") ) {
-                        curSortCmd += "ScoreFeet DESC, ScoreMeters DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                    }
-                } else {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                    }
-                }
-                curPlcmtResults.DefaultView.Sort = curSortCmd;
-                DataTable tempPlcmtResults = curPlcmtResults.DefaultView.ToTable();
-                curPlcmtResults = tempPlcmtResults;
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+				} else {
+					curGroup = (String)curRow["AgeGroup"];
+				}
+				if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) curGroup += "-" + curRound;
+				if ( !( curGroup.Equals( prevGroup ) ) ) {
+					curPlcmtPos = 1;
+					prevScore = -1;
+				}
+				if ( inDataType.ToLower().Equals( "final" ) && curRoundInt <= inNumPrelimRounds && !( curRoundInt.Equals( prevRoundInt ) ) ) prevScore = -1;
 
-                foreach ( DataRow curRow in curPlcmtResults.Rows ) {
-                    curPlcmt = "";
-                    prevGroup = curGroup;
-                    prevScore = curScore;
-                    prevRound = curRound;
+				curReadyForPlcmt = (String)curRow["ReadyForPlcmt" + inEvent];
+				if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
+				if ( inDataType.ToLower().Equals( "first" ) && !( curRound.Equals( "1" ) ) ) curReadyForPlcmt = "N";
 
-                    try {
-                        if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
-                            curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                            curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                            curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-                        } else {
-                            curRound = "0";
-                        }
-                    } catch {
-                        curRound = "0";
-                    }
+				if ( curReadyForPlcmt.Equals( "Y" ) ) {
+					if ( curRoundInt > 0 ) {
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
+						if ( curScore == prevScore && curIdx > 0 ) {
+							curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
+							if ( curPlcmt.Contains( "T" ) ) {
+							} else {
+								curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+								curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+							}
+						} else {
+							curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+							curPlcmt += " ";
+						}
+						curPlcmtPos++;
+					} else {
+						curPlcmt = "";
+						curScore = -1;
+					}
+					curRow[inPlcmtName] = curPlcmt;
 
-                    if (inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" )) {
-                        curGroup = (String)curRow["AgeGroup"];
-                    } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                        curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-                    } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                        curGroup = (String)curRow["EventGroup"];
-                    } else {
-                        curGroup = (String)curRow["AgeGroup"];
-                    }
-                    if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h") ) {
-                        curGroup += "-" + curRound; 
-                    }
-                    if ( !( curGroup.Equals( prevGroup ) ) ) {
-                        curPlcmtPos = 1;
-                        prevScore = -1;
-                    }
-                    if ( inDataType.ToLower().Equals("final") && !(curRound.Equals(prevRound)) ) {
-                        prevScore = -1;
-                    }
+				} else {
+					curRow[inPlcmtName] = "  999 ";
+					curPlcmt = "";
+					curScore = -1;
+				}
+				curIdx++;
+			}
 
-                    curReadyForPlcmt = (String) curRow["ReadyForPlcmt" + inEvent];
-                    if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
-					if ( inDataType.ToLower().Equals( "first" ) && !(curRound.Equals("1")) ) curReadyForPlcmt = "N";
-
-					if ( curReadyForPlcmt.Equals("Y") ) {
-                        if ( Convert.ToInt32(curRound) > 0 ) {
-                            if ( inPlcmtMethod.ToLower().Equals("score") ) {
-                                try {
-                                    if ( inEvent.ToLower().Equals("jump") ) {
-                                        curScore = (Decimal) ( curRow["ScoreFeet"] );
-                                    } else {
-                                        if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Decimal") ) {
-                                            curScore = (Decimal) ( curRow["Score" + inEvent] );
-                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int16") ) {
-                                            curScore = (Int16) ( curRow["Score" + inEvent] );
-                                        } else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType("System.Int32") ) {
-                                            curScore = (int) ( curRow["Score" + inEvent] );
-                                        } else {
-                                            curScore = 0;
-                                        }
-                                    }
-                                } catch {
-                                    curScore = 0;
-                                }
-                            } else {
-                                try {
-                                    curScore = (Decimal) ( curRow["Points" + inEvent] );
-                                } catch {
-                                    curScore = 0;
-                                }
-                            }
-
-                            if ( curScore == prevScore && curIdx > 0 ) {
-                                curPlcmt = (String) curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
-                                if ( curPlcmt.Contains("T") ) {
-                                } else {
-                                    curPlcmt = curPlcmt.Substring(0, 3) + "T";
-                                    curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
-                                }
-                            } else {
-                                curPlcmt = curPlcmtPos.ToString("##0").PadLeft(3, ' ');
-                                curPlcmt += " ";
-                            }
-                            curPlcmtPos++;
-                        } else {
-                            curPlcmt = "";
-                            curScore = -1;
-                        }
-                        curRow[inPlcmtName] = curPlcmt;
-
-                    } else {
-                        curRow[inPlcmtName] = "  999 ";
-                        curPlcmt = "";
-                        curScore = -1;
-                    }
-                    curIdx++;
-
-                }
-                #endregion
-            }
-
-            return curPlcmtResults;
+			return curPlcmtResults;
         }
 
-        private DataTable setInitEventPlcmtIwwf(DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inEvent) {
-            /* **********************************************************
+		/*
+		 * Calculate placement for all tournament participants ignoring all divisions and groups
+         */
+		private DataTable setInitEventPlcmtNoGroups( DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inPlcmtName, String inEvent, Int16 inNumPrelimRounds ) {
+			/* **********************************************************
              * Analyze results and determine skier placment within age division
              * ******************************************************* */
+			DataTable curPlcmtResults = inResults;
+			String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "", curReadyForPlcmt = "";
+			int curIdx = 0, curPlcmtPos = 1, curRoundInt = 0, prevRoundInt = 0;
+			Decimal curScore = 0, prevScore = -1;
+			
+            String curRoundName = "Round" + inEvent;
+			String curScoreName = "Score" + inEvent;
+            if ( inEvent.ToLower().Equals( "jump" ) ) curScoreName = "ScoreFeet";
+			if ( !( inPlcmtMethod.ToLower().Equals( "score" ) ) ) curScoreName = "Points" + inEvent;
+
+			if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+				curSortCmd = curRoundName + " ASC, ReadyForPlcmt" + inEvent + " DESC, ";
+			} else if ( inDataType.ToLower().Equals( "final" ) ) {
+				curSortCmd = curRoundName + " DESC, ReadyForPlcmt" + inEvent + " DESC, ";
+			} else {
+				curSortCmd = "";
+			}
+			if ( inPlcmtMethod.ToLower().Equals( "score" ) && inEvent.ToLower().Equals( "jump" ) ) {
+				curSortCmd += "ScoreFeet DESC, ScoreMeters DESC, SkierName ASC ";
+			} else {
+				curSortCmd += curScoreName + " DESC, SkierName ASC ";
+			}
+			
+            curPlcmtResults.DefaultView.Sort = curSortCmd;
+			curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+			foreach ( DataRow curRow in curPlcmtResults.Rows ) {
+				curPlcmt = "";
+				prevGroup = curGroup;
+				prevScore = curScore;
+				prevRoundInt = curRoundInt;
+
+				curRound = HelperFunctions.getDataRowColValue( curRow, curRoundName, "1" );
+				curRoundInt = Convert.ToInt32( curRound );
+
+				if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) curGroup += "-" + curRound;
+				if ( !( curGroup.Equals( prevGroup ) ) ) {
+					curPlcmtPos = 1;
+					prevScore = -1;
+				}
+				if ( inDataType.ToLower().Equals( "final" ) && curRoundInt <= inNumPrelimRounds && !( curRoundInt.Equals( prevRoundInt ) ) ) prevScore = -1;
+
+				curReadyForPlcmt = (String)curRow["ReadyForPlcmt" + inEvent];
+				if ( curReadyForPlcmt == null ) curReadyForPlcmt = "N";
+				if ( inDataType.ToLower().Equals( "first" ) && !( curRound.Equals( "1" ) ) ) curReadyForPlcmt = "N";
+
+				if ( curReadyForPlcmt.Equals( "Y" ) ) {
+					if ( curRoundInt > 0 ) {
+						decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
+						if ( curScore == prevScore && curIdx > 0 ) {
+							curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1][inPlcmtName];
+							if ( curPlcmt.Contains( "T" ) ) {
+							} else {
+								curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+								curPlcmtResults.Rows[curIdx - 1][inPlcmtName] = curPlcmt;
+							}
+						} else {
+							curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+							curPlcmt += " ";
+						}
+						curRow[inPlcmtName] = curPlcmt;
+						curPlcmtPos++;
+					} else {
+						curPlcmt = "";
+						curScore = -1;
+					}
+					curRow[inPlcmtName] = curPlcmt;
+					curIdx++;
+
+				} else {
+					curRow[inPlcmtName] = "  999 ";
+					curPlcmt = "";
+					curScore = -1;
+				}
+			}
+			
+            return curPlcmtResults;
+
+		}
+
+		/* **********************************************************
+		 * Analyze results and calculate placement based on requested organization
+		 * ******************************************************* */
+		private DataTable setInitEventPlcmtIwwf(DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inEvent, Int16 inNumPrelimRounds ) {
+			if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
+				return setInitEventPlcmtNoGroupsIwwf( inResults, inPlcmtMethod, inPlcmtOrg, inDataType, inEvent, inNumPrelimRounds );
+			}
+			
             DataTable curPlcmtResults = inResults;
             String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "";
-            int curIdx = 0, curPlcmtPos = 1, curRoundInt = 0, prevRoundInt = 0;
+			int curIdx = 0, curPlcmtPos = 1, curRoundInt = 0, prevRoundInt = 0;
             Decimal curScore = 0, prevScore = 0;
 
-            if (inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                #region Calculate placement for all tournament participants
-                if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                    curSortCmd += "Round" + inEvent + " ASC, ";
-                } else if (inDataType.ToLower().Equals( "final" )) {
-                    curSortCmd += "Round" + inEvent + " DESC, ";
-                } else {
-                    curSortCmd = "";
-                }
-                if (inEvent.Equals( "Jump" )) {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "ScoreMeters DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                    }
-                } else {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                    } else {
-                        if (( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) )) {
-                            curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                        } else {
-                            curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                        }
-                    }
-                }
-                curPlcmtResults.DefaultView.Sort = curSortCmd;
-                curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
-                foreach (DataRow curRow in curPlcmtResults.Rows) {
-                    curPlcmt = "";
-                    prevGroup = curGroup;
-                    prevScore = curScore;
+			String curRoundName = "Round" + inEvent;
+			String curScoreName = "Score" + inEvent;
+			if ( inEvent.ToLower().Equals( "jump" ) ) curScoreName = "ScoreMeters";
+			if ( !( inPlcmtMethod.ToLower().Equals( "score" ) ) ) curScoreName = "Points" + inEvent;
 
-                    if (inDataType.ToLower().Equals( "round" )) {
-                        try {
-                            if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
-                                curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-                            } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                                curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-                            } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                                curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-                            } else {
-                                curRound = "1";
-                            }
-                        } catch {
-                            curRound = "1";
-                        }
-                        curGroup = curRound;
-                    } else {
-                        curGroup = "";
-                    }
-                    if (!( curGroup.Equals( prevGroup ) )) {
-                        curPlcmtPos = 1;
-                        prevScore = -1;
-                    }
+			if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+				curSortCmd = "AgeGroup ASC, ";
+			} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+				curSortCmd = "AgeGroup ASC, EventGroup ASC, ";
+			} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+				curSortCmd = "EventGroup ASC, ";
+			} else {
+				curSortCmd = "AgeGroup ASC, ";
+			}
+			if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+				curSortCmd += curRoundName + " ASC, ";
+			} else if ( inDataType.ToLower().Equals( "final" ) ) {
+				curSortCmd += curRoundName + " DESC, ";
+			}
+			curSortCmd += curScoreName + " DESC, SkierName ASC ";
+			curPlcmtResults.DefaultView.Sort = curSortCmd;
+			curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
 
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        try {
-                            if (inEvent.Equals( "Jump" )) {
-                                curScore = (Decimal)( curRow["ScoreMeters"] );
-                            } else {
-                                if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" )) {
-                                    curScore = (Decimal)( curRow["Score" + inEvent] );
-                                } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                                    curScore = (Int16)( curRow["Score" + inEvent] );
-                                } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                                    curScore = (int)( curRow["Score" + inEvent] );
-                                } else {
-                                    curScore = 0;
-                                }
-                            }
-                        } catch {
-                            curScore = 0;
-                        }
-                    } else {
-                        try {
-                            curScore = (Decimal)( curRow["Points" + inEvent] );
-                        } catch {
-                            curScore = 0;
-                        }
-                    }
+			foreach ( DataRow curRow in curPlcmtResults.Rows) {
+				curPlcmt = "";
+				prevGroup = curGroup;
+				prevScore = curScore;
+				prevRoundInt = curRoundInt;
 
-                    if (( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) ) ) {
-                        if ( ((String)( curRow["QualifyOverall"] ) ).ToLower().Equals( "yes" ) ) {
-                            if (curScore == prevScore && curIdx > 0) {
-                                curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
-                                if (curPlcmt.Contains( "T" )) {
-                                } else {
-                                    curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                    curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
-                                }
-                            } else {
-                                curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                                curPlcmt += " ";
-                            }
-                            curRow["Plcmt" + inEvent] = curPlcmt;
-                            curPlcmtPos++;
-                        } else {
-                            curRow["Plcmt" + inEvent] = "";
-                        }
-                    } else {
-                        if (curScore == prevScore && curIdx > 0) {
-                            curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
-                            if (curPlcmt.Contains( "T" )) {
-                            } else {
-                                curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
-                            }
-                        } else {
-                            curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                            curPlcmt += " ";
-                        }
-                        curRow["Plcmt" + inEvent] = curPlcmt;
-                        curPlcmtPos++;
-                    }
-                    curIdx++;
-                }
-                #endregion
+				curRound = HelperFunctions.getDataRowColValue( curRow, curRoundName, "1" );
+				curRoundInt = Convert.ToInt32( curRound );
 
-            } else {
-                #region Calculate placement based on requested organization
-                curPlcmtPos = 1;
-                curIdx = 0;
-                curScore = 0;
-                prevScore = 0;
-                prevGroup = "";
-                curGroup = "";
-                if (inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" )) {
-                    curSortCmd = "AgeGroup ASC, ";
-                } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                    curSortCmd = "AgeGroup ASC, EventGroup ASC, ";
-                } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                    curSortCmd = "EventGroup ASC, ";
-                } else {
-                    curSortCmd = "AgeGroup ASC, ";
-                }
-                if (inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" )) {
-                    curSortCmd += "Round" + inEvent + " ASC, ";
-                } else if (inDataType.ToLower().Equals( "final" )) {
-                    curSortCmd += "Round" + inEvent + " DESC, ";
-                }
-                if (inEvent.Equals( "Jump" )) {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "ScoreMeters DESC, SkierName ASC ";
-                    } else {
-                        curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                    }
-                } else {
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                    } else {
-                        if (( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) )) {
-                            curSortCmd += "Score" + inEvent + " DESC, SkierName ASC ";
-                        } else {
-                            curSortCmd += "Points" + inEvent + " DESC, SkierName ASC ";
-                        }
-                    }
-                }
-                curPlcmtResults.DefaultView.Sort = curSortCmd;
-                curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+				if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
+					curGroup = (String)curRow["AgeGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+					curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
+				} else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
+					curGroup = (String)curRow["EventGroup"];
+				} else {
+					curGroup = (String)curRow["AgeGroup"];
+				}
 
-                foreach (DataRow curRow in curPlcmtResults.Rows) {
-                    curPlcmt = "";
-                    prevGroup = curGroup;
-                    prevScore = curScore;
-                    prevRoundInt = curRoundInt;
+				if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) curGroup += "-" + curRound;
+				if ( !( curGroup.Equals( prevGroup ) ) ) {
+					curPlcmtPos = 1;
+					prevScore = -1;
+				}
+				if ( inDataType.ToLower().Equals( "final" ) && curRoundInt <= inNumPrelimRounds && !( curRoundInt.Equals( prevRoundInt ) ) ) prevScore = -1;
 
-                    if (inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" )) {
-                        curGroup = (String)curRow["AgeGroup"];
-                    } else if (inPlcmtOrg.ToLower().Equals( "divgr" )) {
-                        curGroup = (String)curRow["AgeGroup"] + "-" + (String)curRow["EventGroup"];
-                    } else if (inPlcmtOrg.ToLower().Equals( "group" )) {
-                        curGroup = (String)curRow["EventGroup"];
-                    } else {
-                        curGroup = (String)curRow["AgeGroup"];
-                    }
-                    try {
-                        if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" )) {
-                            curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                            curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-                        } else if (curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                            curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-                        } else {
-                            curRound = "1";
-                        }
-                    } catch {
-                        curRound = "1";
-                    }
-                    curRoundInt = Convert.ToInt32( curRound );
-                    if (inDataType.ToLower().Equals( "round" )) {
-                        curGroup += "-" + curRound;
-                    }
-                    if (!( curGroup.Equals( prevGroup ) )) {
-                        curPlcmtPos = 1;
-                        prevScore = -1;
-                    }
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
 
-                    if (inPlcmtMethod.ToLower().Equals( "score" )) {
-                        try {
-                            if (inEvent.Equals( "Jump" )) {
-                                curScore = (Decimal)( curRow["ScoreMeters"] );
-                            } else {
-                                if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" )) {
-                                    curScore = (Decimal)( curRow["Score" + inEvent] );
-                                } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" )) {
-                                    curScore = (Int16)( curRow["Score" + inEvent] );
-                                } else if (curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" )) {
-                                    curScore = (int)( curRow["Score" + inEvent] );
-                                } else {
-                                    curScore = 0;
-                                }
-                            }
-                        } catch {
-                            curScore = 0;
-                        }
-                    } else {
-                        try {
-                            curScore = (Decimal)( curRow["Points" + inEvent] );
-                        } catch {
-                            curScore = 0;
-                        }
-                    }
+				if ( ( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) ) ) {
+					if ( ( (String)( curRow["QualifyOverall"] ) ).ToLower().Equals( "yes" ) ) {
+						if ( curScore == prevScore && curRoundInt == prevRoundInt && curIdx > 0 ) {
+							curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
+							if ( curPlcmt.Length > 0 ) {
+								if ( curPlcmt.Contains( "T" ) ) {
+								} else {
+									curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+									curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+								}
+							} else {
+								curPlcmt = "   ";
+							}
+						} else {
+							curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+							curPlcmt += " ";
+						}
+						curRow["Plcmt" + inEvent] = curPlcmt;
+						curPlcmtPos++;
+					} else {
+						curRow["Plcmt" + inEvent] = "";
+					}
+				} else {
+					if ( curScore == prevScore && curRoundInt == prevRoundInt && curIdx > 0 ) {
+						curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
+						if ( curPlcmt.Length > 0 ) {
+							if ( curPlcmt.Contains( "T" ) ) {
+							} else {
+								curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+								curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+							}
+						} else {
+							curPlcmt = "   ";
+						}
+					} else {
+						curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+						curPlcmt += " ";
+					}
+					curRow["Plcmt" + inEvent] = curPlcmt;
+					curPlcmtPos++;
+				}
+				curIdx++;
+			}
 
-                    if (( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) ) ) {
-                        if ( ((String)( curRow["QualifyOverall"] ) ).ToLower().Equals( "yes" ) ) {
-                            if (curScore == prevScore && curRoundInt == prevRoundInt && curIdx > 0) {
-                                curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
-                                if (curPlcmt.Length > 0) {
-                                    if (curPlcmt.Contains( "T" )) {
-                                    } else {
-                                        curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                        curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
-                                    }
-                                } else {
-                                    curPlcmt = "   ";
-                                }
-                            } else {
-                                curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                                curPlcmt += " ";
-                            }
-                            curRow["Plcmt" + inEvent] = curPlcmt;
-                            curPlcmtPos++;
-                        } else {
-                            curRow["Plcmt" + inEvent] = "";
-                        }
-                    } else {
-                        if (curScore == prevScore && curRoundInt == prevRoundInt && curIdx > 0) {
-                            curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
-                            if (curPlcmt.Length > 0) {
-                                if (curPlcmt.Contains( "T" )) {
-                                } else {
-                                    curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                                    curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
-                                }
-                            } else {
-                                curPlcmt = "   ";
-                            }
-                        } else {
-                            curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                            curPlcmt += " ";
-                        }
-                        curRow["Plcmt" + inEvent] = curPlcmt;
-                        curPlcmtPos++;
-                    }
-                    curIdx++;
-                }
-                #endregion
-            }
-
-            return curPlcmtResults;
+			return curPlcmtResults;
         }
 
-        private DataTable findEventPlcmtTiesGroup(String inPlcmtName, String inPlcmtOrg, DataTable inResults) {
+		/* **********************************************************
+		 * Analyze results and determine skier placment ignoring all divisions and groups
+		 * ******************************************************* */
+		private DataTable setInitEventPlcmtNoGroupsIwwf( DataTable inResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType, String inEvent, Int16 inNumPrelimRounds ) {
+			DataTable curPlcmtResults = inResults;
+			String curPlcmt = "", prevGroup = "", curGroup = "", curSortCmd = "", curRound = "";
+			int curIdx = 0, curPlcmtPos = 1, curRoundInt = 0, prevRoundInt = 0;
+			Decimal curScore = 0, prevScore = 0;
+
+			String curRoundName = "Round" + inEvent;
+			String curScoreName = "Score" + inEvent;
+			if ( inEvent.ToLower().Equals( "jump" ) ) curScoreName = "ScoreMeters";
+			if ( !( inPlcmtMethod.ToLower().Equals( "score" ) ) ) curScoreName = "Points" + inEvent;
+
+			if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+				curSortCmd += curRoundName + " ASC, ";
+			} else if ( inDataType.ToLower().Equals( "final" ) ) {
+				curSortCmd += curRoundName + " DESC, ";
+			} else {
+				curSortCmd = "";
+			}
+			curSortCmd += curScoreName + " DESC, SkierName ASC ";
+			curPlcmtResults.DefaultView.Sort = curSortCmd;
+			curPlcmtResults = curPlcmtResults.DefaultView.ToTable();
+
+			foreach ( DataRow curRow in curPlcmtResults.Rows ) {
+				curPlcmt = "";
+				prevGroup = curGroup;
+				prevScore = curScore;
+				prevRoundInt = curRoundInt;
+
+				curRound = HelperFunctions.getDataRowColValue( curRow, curRoundName, "1" );
+				curRoundInt = Convert.ToInt32( curRound );
+
+				if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) curGroup += "-" + curRound;
+				if ( !( curGroup.Equals( prevGroup ) ) ) {
+					curPlcmtPos = 1;
+					prevScore = -1;
+				}
+				if ( inDataType.ToLower().Equals( "final" ) && curRoundInt <= inNumPrelimRounds && !( curRoundInt.Equals( prevRoundInt ) ) ) prevScore = -1;
+
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
+
+				if ( ( inEvent.Equals( "Overall" ) || inEvent.Equals( "Scoreboard" ) ) ) {
+					if ( ( (String)( curRow["QualifyOverall"] ) ).ToLower().Equals( "yes" ) ) {
+						if ( curScore == prevScore && curIdx > 0 ) {
+							curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
+							if ( curPlcmt.Contains( "T" ) ) {
+							} else {
+								curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+								curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+							}
+						} else {
+							curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+							curPlcmt += " ";
+						}
+						curRow["Plcmt" + inEvent] = curPlcmt;
+						curPlcmtPos++;
+					} else {
+						curRow["Plcmt" + inEvent] = "";
+					}
+				} else {
+					if ( curScore == prevScore && curIdx > 0 ) {
+						curPlcmt = (String)curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent];
+						if ( curPlcmt.Contains( "T" ) ) {
+						} else {
+							curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
+							curPlcmtResults.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+						}
+					} else {
+						curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
+						curPlcmt += " ";
+					}
+					curRow["Plcmt" + inEvent] = curPlcmt;
+					curPlcmtPos++;
+				}
+				curIdx++;
+			}
+
+			return curPlcmtResults;
+		}
+
+		private DataTable findEventPlcmtTiesGroup(String inPlcmtName, String inPlcmtOrg, DataTable inResults) {
             /* **********************************************************
              * Analyze event results to identify ties
              * ******************************************************* */
@@ -2434,71 +2154,12 @@ namespace WaterskiScoringSystem.Common {
             return curDataTable;
         }
 
-        private Decimal getSlalomRunoffScore( String inMemberId, String inAgeGroup ) {
-            Decimal curReturnScore = 0;
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SS.Score FROM SlalomScore SS " );
-            curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
-            curSqlStmt.Append( "WHERE SS.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Slalom' AND SS.Round >= 25 " );
-            curSqlStmt.Append( "AND SS.MemberId = '" + inMemberId + "' AND SS.AgeGroup = '" + inAgeGroup + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            try {
-                if (curDataTable.Rows.Count > 0) {
-                    curReturnScore = (Decimal)curDataTable.Rows[0]["Score"];
-                } else {
-                    curReturnScore = 0;
-                }
-            } catch {
-                curReturnScore = 0;
-            }
-
-            return curReturnScore;
-        }
-
-        private Int16 getTrickRunoffScore( String inMemberId, String inAgeGroup ) {
-            Int16 curReturnScore = 0;
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SS.Score FROM TrickScore SS " );
-            curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
-            curSqlStmt.Append( "WHERE SS.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Trick' AND SS.Round >= 25 " );
-            curSqlStmt.Append( "AND SS.MemberId = '" + inMemberId + "' AND SS.AgeGroup = '" + inAgeGroup + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            try {
-                if ( curDataTable.Rows.Count > 0 ) {
-                    curReturnScore = (Int16)curDataTable.Rows[0]["Score"];
-                }
-            } catch {
-                curReturnScore = 0;
-            }
-
-            return curReturnScore;
-        }
-
-        private Decimal[] getJumpRunoffScore( String inMemberId, String inAgeGroup ) {
-            Decimal[] curReturnScore = new Decimal[] {0, 0};
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SS.ScoreFeet, SS.ScoreMeters FROM JumpScore SS " );
-            curSqlStmt.Append( "  INNER JOIN EventReg ER ON SS.MemberId = ER.MemberId AND SS.SanctionId = ER.SanctionId AND SS.AgeGroup = ER.AgeGroup " );
-            curSqlStmt.Append( "WHERE SS.SanctionId = '" + mySanctionNum + "' AND ER.Event = 'Jump' AND SS.Round >= 25 " );
-            curSqlStmt.Append( "AND SS.MemberId = '" + inMemberId + "' AND SS.AgeGroup = '" + inAgeGroup + "' " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
-            try {
-                if ( curDataTable.Rows.Count > 0 ) {
-                    curReturnScore[0] = (Decimal)curDataTable.Rows[0]["ScoreFeet"];
-                    curReturnScore[1] = (Decimal)curDataTable.Rows[0]["ScoreMeters"];
-                }
-            } catch {
-                curReturnScore = new Decimal[] { 0, 0 };
-            }
-            return curReturnScore;
-        }
-
         private Decimal getOverallRunoffScore( String inMemberId, String inAgeGroup, DataTable inResultsAll ) {
             Decimal curReturnScore = 0;
             DataRow[] curFindRows = inResultsAll.Select(
                 "MemberId = '" + inMemberId + "'"
                     + " AND AgeGroup = '" + inAgeGroup + "'"
-                    + " AND Round = 25 "
+                    + " AND Round >= 25 "
                 );
             if ( curFindRows.Length > 0 ) {
                 curReturnScore = (Decimal)curFindRows[0]["Score"];
@@ -2506,8 +2167,5 @@ namespace WaterskiScoringSystem.Common {
             return curReturnScore;
         }
 
-        private DataTable getData( String inSelectStmt ) {
-            return DataAccess.getDataTable( inSelectStmt );
-        }
     }
 }

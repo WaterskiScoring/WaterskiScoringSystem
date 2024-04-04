@@ -274,7 +274,7 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
                 if (mySummaryDataTable.Rows.Count > 0) {
-                    if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
+                    if ( h2hScoreButton.Checked && curNumPrelimRounds > 0 ) {
                         mySummaryDataTable = curCalcSummary.buildHeadToHeadSummary( mySummaryDataTable, myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, curNumPrelimRounds, "Trick" );
                     } else {
                         if (mySortCommand.Length > 1) {

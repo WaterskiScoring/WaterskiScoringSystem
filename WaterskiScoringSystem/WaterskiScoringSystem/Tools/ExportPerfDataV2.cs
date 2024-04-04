@@ -55,7 +55,7 @@ namespace WaterskiScoringSystem.Tools {
 			//Retrieve output report file
 			String curSkierName = "", curMemberId = "", curReadyToSki = "", curAgeGroup = "";
 			String curFilename = inSanctionId.Trim() + myTourClass + ".wsp";
-			outBuffer = HelperFunctions.getExportFile( "wsp files (*.wsp)|*.txt|All files (*.*)|*.*", curFilename );
+			outBuffer = HelperFunctions.getExportFile( "wsp files (*.wsp)|*.wsp|All files (*.*)|*.*", curFilename );
 			if ( outBuffer == null ) {
 				MessageBox.Show( "Failed to open report file, terminating report processing" );
 				return false;

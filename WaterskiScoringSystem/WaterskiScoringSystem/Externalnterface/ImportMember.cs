@@ -143,47 +143,41 @@ namespace WaterskiScoringSystem.Externalnterface {
 			List<object> curResponseDataList = null;
 
 			Cursor.Current = Cursors.WaitCursor;
-			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
-			if ( curResponseDataList == null || curResponseDataList.Count == 0 ) {
-				displayMemberProcessCounts();
-				return;
-			}
-
-			myProgressInfo = new ProgressWindow();
-			myProgressInfo.setProgressMin( 1 );
-			myProgressInfo.setProgressMax( curResponseDataList.Count );
-
 			IwwfMembership.warnMessageActive = false;
+			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
+			if ( curResponseDataList != null && curResponseDataList.Count == 0 ) {
+				myProgressInfo = new ProgressWindow();
+				myProgressInfo.setProgressMin( 1 );
+				myProgressInfo.setProgressMax( curResponseDataList.Count );
 
-			if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) ) {
-				Dictionary<String, object> curTeamHeaderList = new Dictionary<String, object>();
+				if ( HelperFunctions.isCollegiateSanction( mySanctionNum ) ) {
+					Dictionary<String, object> curTeamHeaderList = new Dictionary<String, object>();
+					foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+						myCountMemberInput++;
+						myProgressInfo.setProgressValue( myCountMemberInput );
 
-				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
-					myCountMemberInput++;
-					myProgressInfo.setProgressValue( myCountMemberInput );
+						importMemberFromAwsa( curEntry, true, true );
 
-					importMemberFromAwsa( curEntry, true, true );
+						buildNcwsaTeamHeader( curEntry, curTeamHeaderList );
+					}
 
-					buildNcwsaTeamHeader( curEntry, curTeamHeaderList );
+					foreach ( Dictionary<string, object> curEntry in curTeamHeaderList.Values ) {
+						procTeamHeaderInput( curEntry, true );
+					}
+
+				} else {
+					foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
+						myCountMemberInput++;
+						myProgressInfo.setProgressValue( myCountMemberInput );
+						importMemberFromAwsa( curEntry, true, false );
+					}
 				}
 
-				foreach ( Dictionary<string, object> curEntry in curTeamHeaderList.Values ) {
-					procTeamHeaderInput( curEntry, true );
-				}
-
-			} else {
-				foreach ( Dictionary<string, object> curEntry in curResponseDataList ) {
-					myCountMemberInput++;
-					myProgressInfo.setProgressValue( myCountMemberInput );
-
-					importMemberFromAwsa( curEntry, true, false );
-				}
+				Cursor.Current = Cursors.Default;
+				myProgressInfo.Close();
 			}
 
-			Cursor.Current = Cursors.Default;
-			myProgressInfo.Close();
-
-			importTourAssignedOfficials();
+			 importTourAssignedOfficials();
 
 			IwwfMembership.showBulkWarnMessage();
 			IwwfMembership.warnMessageActive = false;

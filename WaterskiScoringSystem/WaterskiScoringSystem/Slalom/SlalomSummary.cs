@@ -265,7 +265,7 @@ namespace WaterskiScoringSystem.Slalom {
 				}
 
 				if ( mySummaryDataTable.Rows.Count > 0 ) {
-					if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
+					if ( h2hScoreButton.Checked && curNumPrelimRounds > 0 ) {
 						mySummaryDataTable = curCalcSummary.buildHeadToHeadSummary( mySummaryDataTable, myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, curNumPrelimRounds, "Slalom" );
 					} else {
 						if ( mySortCommand.Length > 1 ) {

@@ -195,6 +195,10 @@ namespace WaterskiScoringSystem.Common {
 			if ( inTourRules.ToLower().Equals( "iwwf" ) ) return true;
 			return false;
 		}
+		public static bool isAwsaEvent( String inTourRules ) {
+			if ( inTourRules.ToLower().Equals( "awsa" ) ) return true;
+			return false;
+		}
 
 		public static String stringReplace( String inValue, char[] inCurValue, String inReplValue ) {
 			StringBuilder curNewValue = new StringBuilder( "" );

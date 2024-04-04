@@ -40,21 +40,21 @@ namespace WaterskiScoringSystem.Tournament {
                 this.Location = Properties.Settings.Default.DivOrder_Location;
             }
 
-			bool isSanctionAvailable = false;
+			bool isSanctionAvailable = true;
 			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
 			if ( mySanctionNum == null ) {
 				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				isSanctionAvailable = true;
+				isSanctionAvailable = false;
 
 			} else if ( mySanctionNum.Length < 6 ) {
 				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-				isSanctionAvailable = true;
+				isSanctionAvailable = false;
 			} else {
 				//Retrieve selected tournament attributes
 				myTourRow = getTourData();
 				if ( myTourRow == null ) {
 					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-					isSanctionAvailable = true;
+					isSanctionAvailable = false;
 				}
 			}
 			if ( !isSanctionAvailable ) {
