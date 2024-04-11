@@ -145,7 +145,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			Cursor.Current = Cursors.WaitCursor;
 			IwwfMembership.warnMessageActive = false;
 			curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );
-			if ( curResponseDataList != null && curResponseDataList.Count == 0 ) {
+			if ( curResponseDataList != null && curResponseDataList.Count > 0 ) {
 				myProgressInfo = new ProgressWindow();
 				myProgressInfo.setProgressMin( 1 );
 				myProgressInfo.setProgressMax( curResponseDataList.Count );

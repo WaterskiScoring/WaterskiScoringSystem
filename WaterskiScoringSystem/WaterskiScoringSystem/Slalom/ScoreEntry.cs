@@ -2327,9 +2327,9 @@ namespace WaterskiScoringSystem.Slalom {
 			String[] curSelectCommand;
 			if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
 				curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
-				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, true );
+				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
 			} else {
-				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, false );
+				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, false );
 			}
 			myExportData.exportData( curTableName, curSelectCommand );
 		}

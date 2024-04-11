@@ -37,10 +37,31 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static String getEventGroupValueNcwsa( String inGroupValue ) {
-			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "CM ";
-			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "CW ";
-			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "BM ";
+			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "CM";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "CW";
+			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "BM";
 			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "BW";
+			return inGroupValue;
+		}
+
+		/*
+			if ( HelperFunctions.isCollegiateSanction( inSanctionNum ) ) {
+				if ( inAgeGroup.Equals( "CM" ) ) {
+					curEventGroup = "MEN A";
+				} else if ( inAgeGroup.Equals( "CW" ) ) {
+					curEventGroup = "WOMEN A";
+				} else if ( inAgeGroup.Equals( "BW" ) ) {
+					curEventGroup = "WOMEN B";
+				} else if ( inAgeGroup.Equals( "BW" ) ) {
+					curEventGroup = "WOMEN B";
+				}
+			}
+		 */
+		public static String getEventGroupOfficialAsgmtNcwsa( String inGroupValue ) {
+			if ( inGroupValue.ToUpper().Equals( "CM" ) ) return "MEN A";
+			if ( inGroupValue.ToUpper().Equals( "CW" ) ) return "WOMEN A";
+			if ( inGroupValue.ToUpper().Equals( "BM" ) ) return "MEN B";
+			if ( inGroupValue.ToUpper().Equals( "BW" ) ) return "WOMEN B";
 			return inGroupValue;
 		}
 

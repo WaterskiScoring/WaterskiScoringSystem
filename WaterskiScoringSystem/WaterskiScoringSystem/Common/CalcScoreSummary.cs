@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -79,7 +78,7 @@ namespace WaterskiScoringSystem.Common {
 					curSortCmd = "AgeGroup ASC, ReadyForPlcmtSlalom DESC, PlcmtSlalom ASC, SkierName ASC, RoundSlalom ASC";
 				}
 
-			} else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
+			} else if ( inPlcmtOrg.ToLower().Equals( "dihttps://duckduckgo.com/vgr" ) ) {
 				if ( inDataType.ToLower().Equals( "round" ) || inDataType.ToLower().Equals( "h2h" ) ) {
 					curSortCmd = "AgeGroup ASC, RoundSlalom ASC, EventGroup ASC, ReadyForPlcmtSlalom DESC, RunOrderGroup ASC, PlcmtSlalom ASC, SkierName ASC";
 				} else {
@@ -1146,7 +1145,7 @@ namespace WaterskiScoringSystem.Common {
 
 				curReadyToSki = HelperFunctions.getDataRowColValue( curRow, "ReadyToSki", "" );
 				curReadyForPlcmt = HelperFunctions.getDataRowColValue( curRow, "ReadyForPlcmt", "" );
-				curReadyForPlcmtJump = HelperFunctions.getDataRowColValue( curRow, "ReadyForPlcmtTrick", "" );
+				curReadyForPlcmtJump = HelperFunctions.getDataRowColValue( curRow, "ReadyForPlcmtJump", "" );
 
 				byte.TryParse( HelperFunctions.getDataRowColValue( curRow, "SkiYearAge", "0" ), out curSkiYearAge );
 				curEventGroup = HelperFunctions.getDataRowColValue( curRow, "EventGroupRound", "" );
@@ -1320,7 +1319,7 @@ namespace WaterskiScoringSystem.Common {
 				curFindRows = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
 				if ( curFindRows.Length > 0 ) {
 					curRow["EligOverall"] = "Yes";
-					curEventsReqd = (Byte)curFindRows[0]["EventsReqd"];
+					Int16.TryParse( HelperFunctions.getDataRowColValue( curFindRows[0], "EventsReqd", "3" ), out curEventsReqd );
 				} else {
 					curEventsReqd = 3;
 				}
@@ -1524,32 +1523,20 @@ namespace WaterskiScoringSystem.Common {
 		public DataTable buildTourScorebook( String inSanctionId, DataRow inTourRow, DataTable inMemberData, DataTable inSummaryDataTable, DataTable inSlalomDetail, DataTable inTrickDetail, DataTable inJumpDetail ) {
 			String curMemberId, curAgeGroup, curReadyToSki, curReadyForPlcmt;
 			Int16 curTourRounds = 0, curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0, curEventCount = 0;
+			Int16 curRoundSlalom, curRoundTrick, curRoundJump;
 			Decimal curOverallScore = 0;
-			DataRow curSummaryRow = null, curSlalomDetailRow = null, curTrickDetailRow = null, curJumpDetailRow = null;
+			DataRow curSummaryRow = null, curSlalomDetailRow = null, curTrickDetailRow = null, curJumpDetailRow = null, curOverallRow = null;
 			DataRowView newDataRow = null;
 			DataRow[] curFindRows;
-			DataRow curOverallRow;
 			Int16 curEventsReqd = 0;
 			String curRules = (String)inTourRow["Rules"];
 
 			DataTable curEligSkiersDataTable = getOverallSkierList( inSanctionId );
 			DataTable curSummaryDataTable = buildOverallSummaryDataTable();
 
-			try {
-				curSlalomRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
-			} catch {
-				curSlalomRounds = 0;
-			}
-			try {
-				curTrickRounds = Convert.ToInt16( inTourRow["TrickRounds"].ToString() );
-			} catch {
-				curTrickRounds = 0;
-			}
-			try {
-				curJumpRounds = Convert.ToInt16( inTourRow["JumpRounds"].ToString() );
-			} catch {
-				curJumpRounds = 0;
-			}
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "SlalomRounds", "0" ), out curSlalomRounds);
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "TrickRounds", "0" ), out curTrickRounds);
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "JumpRounds", "0" ), out curJumpRounds);
 			if ( curSlalomRounds > curTourRounds ) { curTourRounds = curSlalomRounds; }
 			if ( curTrickRounds > curTourRounds ) { curTourRounds = curTrickRounds; }
 			if ( curJumpRounds > curTourRounds ) { curTourRounds = curJumpRounds; }
@@ -1560,219 +1547,172 @@ namespace WaterskiScoringSystem.Common {
 				checkForEliteOverallDragdown( inTourRow, curEliteSummaryDataTable, "points", "round" );
 			}
 
-
-
+			byte curMaxSpeed, curStartSpeed;
+			decimal curPoints;
 
 			foreach ( DataRow curRow in inMemberData.Rows ) {
 				//Initialize output buffer
 
 				curMemberId = curRow["MemberId"].ToString();
 				curAgeGroup = curRow["AgeGroup"].ToString();
-				curReadyToSki = curRow["ReadyToSki"].ToString();
-				curReadyForPlcmt = curRow["ReadyForPlcmt"].ToString();
-				if ( curReadyToSki.ToUpper().Equals( "Y" ) ) {
-					curFindRows = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-					if ( curFindRows.Length > 0 ) {
-						curOverallRow = curFindRows[0];
-						curEventsReqd = (Byte)curOverallRow["EventsReqd"];
+
+				curReadyForPlcmt = HelperFunctions.getDataRowColValue( curRow, "ReadyForPlcmt", "N" );
+				curReadyToSki = HelperFunctions.getDataRowColValue( curRow, "ReadyToSki", "N" );
+				if ( !curReadyToSki.ToUpper().Equals( "Y" ) ) continue;
+
+				curFindRows = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				if ( curFindRows.Length > 0 ) {
+					curOverallRow = curFindRows[0];
+					Int16.TryParse( HelperFunctions.getDataRowColValue( curOverallRow, "EventsReqd", "3.0" ), out curEventsReqd );
+				} else {
+					curOverallRow = null;
+					curEventsReqd = 3;
+				}
+				curSummaryRow = getEventMemberEntry( inSummaryDataTable, curMemberId, curAgeGroup );
+				if ( curSummaryRow == null ) continue;
+
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSummaryRow, "RoundSlalom", "0" ), out curRoundSlalom );
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSummaryRow, "RoundTrick", "0" ), out curRoundTrick );
+				Int16.TryParse( HelperFunctions.getDataRowColValue( curSummaryRow, "RoundJump", "0" ), out curRoundJump );
+				if ( curRoundSlalom == 0 && curRoundTrick == 0 && curRoundJump == 0 ) continue; // If no rounds are found then skier has no detail data so will be excluded from scorebook
+
+				for ( int curRound = 1; curRound <= curTourRounds; curRound++ ) {
+					curOverallScore = 0M;
+					curEventCount = 0;
+
+					newDataRow = curSummaryDataTable.DefaultView.AddNew();
+					newDataRow["SanctionId"] = inSanctionId;
+					newDataRow["MemberId"] = curMemberId;
+					newDataRow["ReadyToSki"] = curReadyToSki;
+					newDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
+					newDataRow["SkierName"] = (String)curRow["SkierName"];
+					newDataRow["AgeGroup"] = curAgeGroup;
+
+					#region Process slalom information
+					curSlalomDetailRow = getEventMemberEntry( inSlalomDetail, curMemberId, curAgeGroup, curRound );
+					if ( curSlalomDetailRow == null && curEliteSummaryDataTable != null ) curSlalomDetailRow = getEventMemberEntry( curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+					if ( curSlalomDetailRow != null && ( ( (String)curSlalomDetailRow["EventClassSlalom"] ).Length > 0 ) ) {
+						curEventCount++;
+						newDataRow["EventClassSlalom"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "EventClassSlalom", "" );
+						newDataRow["EventGroupSlalom"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "EventGroupSlalom", "" );
+						newDataRow["ReadyForPlcmtSlalom"] = HelperFunctions.getDataRowColValue( curSummaryRow, "ReadyForPlcmtSlalom", "" );
+						newDataRow["TeamSlalom"] = HelperFunctions.getDataRowColValue( curSummaryRow, "TeamSlalom", "" );
+
+						newDataRow["RoundSlalom"] = curRound;
+						newDataRow["PlcmtSlalom"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtSlalom", "" );
+						newDataRow["FinalLen"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalLen", "" );
+						newDataRow["FinalLenOff"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalLenOff", "" );
+						newDataRow["StartLen"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "StartLen", "" );
+
+						byte.TryParse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "MaxSpeed", "0" ), out curMaxSpeed );
+						byte.TryParse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "StartSpeed", "0" ), out curStartSpeed );
+						newDataRow["MaxSpeed"] = curMaxSpeed;
+						newDataRow["StartSpeed"] = curStartSpeed;
+
+						if ( curStartSpeed > curMaxSpeed ) {
+							newDataRow["FinalSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalSpeedKph", "0" ) );
+							newDataRow["FinalSpeedMph"] = getSlalomSpeedMph( curStartSpeed );
+						} else {
+							newDataRow["FinalSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalSpeedKph", "0" ) );
+							newDataRow["FinalSpeedMph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalSpeedMph", "0" ) );
+						}
+
+						newDataRow["CompletedSpeedMph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "CompletedSpeedMph", "0" ) );
+						newDataRow["CompletedSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "CompletedSpeedKph", "0" ) );
+						newDataRow["FinalPassScore"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "FinalPassScore", "0" ) );
+
+						newDataRow["ScoreSlalom"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "ScoreSlalom", "0" ) );
+						curPoints = decimal.Parse( HelperFunctions.getDataRowColValue( curSlalomDetailRow, "PointsSlalom", "0" ) );
+						newDataRow["PointsSlalom"] = curPoints;
+						curOverallScore += curPoints;
+					}
+					#endregion
+
+					#region Process trick information
+					curTrickDetailRow = getEventMemberEntry( inTrickDetail, curMemberId, curAgeGroup, curRound );
+					if ( curTrickDetailRow == null && curEliteSummaryDataTable != null ) curTrickDetailRow = getEventMemberEntry( curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+					if ( curTrickDetailRow != null && ( ( (String)curTrickDetailRow["EventClassTrick"] ).Length > 0 ) ) {
+						curEventCount++;
+						newDataRow["EventClassTrick"] = HelperFunctions.getDataRowColValue( curTrickDetailRow, "EventClassTrick", "" );
+						newDataRow["EventGroupTrick"] = HelperFunctions.getDataRowColValue( curTrickDetailRow, "EventGroupTrick", "" );
+						newDataRow["ReadyForPlcmtTrick"] = HelperFunctions.getDataRowColValue( curSummaryRow, "ReadyForPlcmtTrick", "" );
+						newDataRow["TeamTrick"] = HelperFunctions.getDataRowColValue( curSummaryRow, "TeamTrick", "" );
+
+						newDataRow["RoundTrick"] = curRound;
+						newDataRow["PlcmtTrick"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtTrick", "" );
+
+						newDataRow["ScoreTrick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curTrickDetailRow, "ScoreTrick", "0" ) );
+						newDataRow["Pass1Trick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curTrickDetailRow, "Pass1Trick", "0" ) );
+						newDataRow["Pass2Trick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curTrickDetailRow, "Pass2Trick", "0" ) );
+
+						curPoints = decimal.Parse( HelperFunctions.getDataRowColValue( curTrickDetailRow, "PointsTrick", "0" ) );
+						newDataRow["PointsTrick"] = curPoints;
+						curOverallScore += curPoints;
+					}
+					#endregion
+
+					#region Process Jump information
+					curJumpDetailRow = getEventMemberEntry( inJumpDetail, curMemberId, curAgeGroup, curRound );
+					if ( curJumpDetailRow == null && curEliteSummaryDataTable != null ) curJumpDetailRow = getEventMemberEntry( curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
+					if ( curJumpDetailRow != null && ( ( (String)curJumpDetailRow["EventClassJump"] ).Length > 0 ) ) {
+						curEventCount++;
+						newDataRow["EventClassJump"] = HelperFunctions.getDataRowColValue( curJumpDetailRow, "EventClassJump", "" );
+						newDataRow["EventGroupJump"] = HelperFunctions.getDataRowColValue( curJumpDetailRow, "EventGroupJump", "" );
+						newDataRow["ReadyForPlcmtJump"] = HelperFunctions.getDataRowColValue( curSummaryRow, "ReadyForPlcmtJump", "" );
+						newDataRow["TeamJump"] = HelperFunctions.getDataRowColValue( curSummaryRow, "TeamJump", "" );
+
+						newDataRow["RoundJump"] = curRound;
+						newDataRow["PlcmtJump"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtJump", "" );
+
+						newDataRow["ScoreMeters"] = decimal.Parse( HelperFunctions.getDataRowColValue( curJumpDetailRow, "ScoreMeters", "0" ) );
+						newDataRow["ScoreFeet"] = decimal.Parse( HelperFunctions.getDataRowColValue( curJumpDetailRow, "ScoreFeet", "0" ) );
+						newDataRow["SpeedKphJump"] = byte.Parse( HelperFunctions.getDataRowColValue( curJumpDetailRow, "SpeedKphJump", "0" ) );
+						newDataRow["RampHeight"] = decimal.Parse( HelperFunctions.getDataRowColValue( curJumpDetailRow, "RampHeight", "0" ) );
+
+						curPoints = decimal.Parse( HelperFunctions.getDataRowColValue( curJumpDetailRow, "PointsJump", "0" ) );
+						newDataRow["PointsJump"] = curPoints;
+						curOverallScore += curPoints;
+					}
+					#endregion
+
+					#region Process overall information
+					newDataRow["RoundOverall"] = curRound;
+					newDataRow["Round"] = curRound;
+
+					newDataRow["QualifyOverall"] = "No";
+					newDataRow["EligOverall"] = "No";
+					if ( curOverallRow != null ) newDataRow["EligOverall"] = "Yes";
+
+					if ( curEventsReqd == 3 && curEventCount == 3 ) {
+						newDataRow["QualifyOverall"] = "Yes";
+						if ( curOverallScore > 0 ) {
+							newDataRow["ScoreOverall"] = curOverallScore.ToString( "###0.0" );
+						}
+					} else if ( curEventsReqd == 2 && curEventCount > 1 ) {
+						newDataRow["QualifyOverall"] = "Yes";
+						if ( curOverallScore > 0 ) {
+							newDataRow["ScoreOverall"] = curOverallScore.ToString( "###0.0" );
+						}
+					}
+					if ( curSlalomDetailRow != null ) {
+						newDataRow["EventGroupOverall"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "EventGroupSlalom", "" );
+						newDataRow["EventGroup"] = HelperFunctions.getDataRowColValue( curSlalomDetailRow, "EventGroupSlalom", "" );
+
+					} else if ( curTrickDetailRow != null ) {
+						newDataRow["EventGroupOverall"] = HelperFunctions.getDataRowColValue( curTrickDetailRow, "EventGroupTrick", "" );
+						newDataRow["EventGroup"] = HelperFunctions.getDataRowColValue( curTrickDetailRow, "EventGroupTrick", "" );
+
+					} else if ( curJumpDetailRow != null ) {
+						newDataRow["EventGroupOverall"] = HelperFunctions.getDataRowColValue( curJumpDetailRow, "EventGroupJump", "" );
+						newDataRow["EventGroup"] = HelperFunctions.getDataRowColValue( curJumpDetailRow, "EventGroupJump", "" );
+
 					} else {
-						curOverallRow = null;
-						curEventsReqd = 3;
+						newDataRow["EventGroupOverall"] = HelperFunctions.getDataRowColValue( curSummaryRow, "EventGroupOverall", "" );
+						newDataRow["EventGroup"] = HelperFunctions.getDataRowColValue( curSummaryRow, "EventGroupOverall", "" );
 					}
-					curSummaryRow = getEventMemberEntry( inSummaryDataTable, curMemberId, curAgeGroup );
-					if ( curSummaryRow != null ) {
-						if ( (Int16)curSummaryRow["RoundSlalom"] == 0
-							&& (Int16)curSummaryRow["RoundTrick"] == 0
-							&& (Int16)curSummaryRow["RoundJump"] == 0
-							) {
-							//Skier has no detail data so will be excluded from scorebook
-							continue;
-						}
 
-						for ( int curRound = 1; curRound <= curTourRounds; curRound++ ) {
-							curOverallScore = 0M;
-							curEventCount = 0;
-
-							newDataRow = curSummaryDataTable.DefaultView.AddNew();
-							newDataRow["SanctionId"] = inSanctionId;
-							newDataRow["MemberId"] = curMemberId;
-							newDataRow["ReadyToSki"] = curReadyToSki;
-							newDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
-							newDataRow["SkierName"] = (String)curRow["SkierName"];
-							newDataRow["AgeGroup"] = curAgeGroup;
-
-							#region Process slalom information
-							curSlalomDetailRow = getEventMemberEntry( inSlalomDetail, curMemberId, curAgeGroup, curRound );
-							if ( curSlalomDetailRow == null && curEliteSummaryDataTable != null ) curSlalomDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curSlalomDetailRow != null && ( ( (String)curSlalomDetailRow["EventClassSlalom"] ).Length > 0 ) ) {
-								curEventCount++;
-								newDataRow["EventClassSlalom"] = (String)curSlalomDetailRow["EventClassSlalom"];
-								newDataRow["ReadyForPlcmtSlalom"] = (String)curSummaryRow["ReadyForPlcmtSlalom"];
-
-								try {
-									newDataRow["TeamSlalom"] = (String)curSummaryRow["TeamSlalom"];
-								} catch {
-									newDataRow["TeamSlalom"] = "";
-								}
-								newDataRow["EventGroupSlalom"] = (String)curSlalomDetailRow["EventGroupSlalom"];
-								newDataRow["RoundSlalom"] = curRound;
-								newDataRow["PlcmtSlalom"] = (String)curSummaryRow["PlcmtSlalom"];
-
-								newDataRow["ScoreSlalom"] = (Decimal)curSlalomDetailRow["ScoreSlalom"];
-								newDataRow["PointsSlalom"] = (Decimal)curSlalomDetailRow["PointsSlalom"];
-
-								try {
-									newDataRow["FinalLen"] = (String)curSlalomDetailRow["FinalLen"];
-								} catch {
-									newDataRow["FinalLen"] = "";
-								}
-								try {
-									newDataRow["FinalLenOff"] = (String)curSlalomDetailRow["FinalLenOff"];
-								} catch {
-									newDataRow["FinalLenOff"] = "";
-								}
-
-								try {
-									newDataRow["MaxSpeed"] = (Byte)curSlalomDetailRow["MaxSpeed"];
-									newDataRow["StartSpeed"] = (Byte)curSlalomDetailRow["StartSpeed"];
-									newDataRow["StartLen"] = (String)curSlalomDetailRow["StartLen"];
-									if ( (Byte)curSummaryRow["StartSpeed"] > (Byte)curSlalomDetailRow["MaxSpeed"] ) {
-										newDataRow["FinalSpeedKph"] = (Byte)curSlalomDetailRow["StartSpeed"];
-										newDataRow["FinalSpeedMph"] = getSlalomSpeedMph( (Byte)curSlalomDetailRow["StartSpeed"] );
-									} else {
-										newDataRow["FinalSpeedMph"] = (Byte)curSlalomDetailRow["FinalSpeedMph"];
-										newDataRow["FinalSpeedKph"] = (Byte)curSlalomDetailRow["FinalSpeedKph"];
-									}
-								} catch {
-									newDataRow["FinalSpeedMph"] = 0;
-									newDataRow["FinalSpeedKph"] = 0;
-									newDataRow["MaxSpeed"] = 0;
-									newDataRow["StartSpeed"] = 0;
-									newDataRow["StartLen"] = "";
-								}
-
-								try {
-									if ( curSlalomDetailRow["CompletedSpeedKph"].GetType() == System.Type.GetType( "System.Byte" ) ) {
-										newDataRow["CompletedSpeedMph"] = (Byte)curSlalomDetailRow["CompletedSpeedMph"];
-										newDataRow["CompletedSpeedKph"] = (Byte)curSlalomDetailRow["CompletedSpeedKph"];
-									} else {
-										newDataRow["CompletedSpeedMph"] = (Byte)( (int)curSlalomDetailRow["CompletedSpeedMph"] );
-										newDataRow["CompletedSpeedKph"] = (Byte)( (int)curSlalomDetailRow["CompletedSpeedKph"] );
-									}
-								} catch ( Exception ex ) {
-									newDataRow["CompletedSpeedMph"] = 0;
-									newDataRow["CompletedSpeedKph"] = 0;
-								}
-
-								try {
-									newDataRow["FinalPassScore"] = (Decimal)curSlalomDetailRow["FinalPassScore"];
-								} catch {
-									newDataRow["FinalPassScore"] = 0M;
-								}
-
-								curOverallScore += (Decimal)curSlalomDetailRow["PointsSlalom"];
-							}
-							#endregion
-
-							#region Process trick information
-							curTrickDetailRow = getEventMemberEntry( inTrickDetail, curMemberId, curAgeGroup, curRound );
-							if ( curTrickDetailRow == null && curEliteSummaryDataTable != null ) curTrickDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curTrickDetailRow != null && (((String)curTrickDetailRow["EventClassTrick"]).Length > 0 ) ) {
-								curEventCount++;
-								newDataRow["EventClassTrick"] = (String)curTrickDetailRow["EventClassTrick"];
-								newDataRow["ReadyForPlcmtTrick"] = (String)curSummaryRow["ReadyForPlcmtTrick"];
-								try {
-									newDataRow["TeamTrick"] = (String)curSummaryRow["TeamTrick"];
-								} catch {
-									newDataRow["TeamTrick"] = "";
-								}
-								newDataRow["EventGroupTrick"] = (String)curTrickDetailRow["EventGroupTrick"];
-								newDataRow["RoundTrick"] = curRound;
-								newDataRow["PlcmtTrick"] = (String)curSummaryRow["PlcmtTrick"];
-
-								newDataRow["ScoreTrick"] = (Int16)curTrickDetailRow["ScoreTrick"];
-								newDataRow["Pass1Trick"] = (Int16)curTrickDetailRow["Pass1Trick"];
-								newDataRow["Pass2Trick"] = (Int16)curTrickDetailRow["Pass2Trick"];
-								newDataRow["PointsTrick"] = (Decimal)curTrickDetailRow["PointsTrick"];
-
-								curOverallScore += (Decimal)curTrickDetailRow["PointsTrick"];
-							}
-							#endregion
-
-							#region Process Jump information
-							curJumpDetailRow = getEventMemberEntry( inJumpDetail, curMemberId, curAgeGroup, curRound );
-							if ( curJumpDetailRow == null && curEliteSummaryDataTable != null ) curJumpDetailRow = getEventMemberEntry(curEliteSummaryDataTable, curMemberId, curAgeGroup, curRound );
-							if ( curJumpDetailRow != null && ( ( (String)curJumpDetailRow["EventClassJump"] ).Length > 0 ) ) {
-								curEventCount++;
-								newDataRow["EventClassJump"] = (String)curJumpDetailRow["EventClassJump"]; ;
-								newDataRow["ReadyForPlcmtJump"] = (String)curSummaryRow["ReadyForPlcmtJump"];
-								try {
-									newDataRow["TeamJump"] = (String)curSummaryRow["TeamJump"];
-								} catch {
-									newDataRow["TeamJump"] = "";
-								}
-								newDataRow["EventGroupJump"] = (String)curJumpDetailRow["EventGroupJump"];
-								newDataRow["RoundJump"] = curRound;
-								newDataRow["PlcmtJump"] = (String)curSummaryRow["PlcmtJump"];
-
-								newDataRow["ScoreMeters"] = (Decimal)curJumpDetailRow["ScoreMeters"];
-								newDataRow["ScoreFeet"] = (Decimal)curJumpDetailRow["ScoreFeet"];
-								newDataRow["PointsJump"] = (Decimal)curJumpDetailRow["PointsJump"];
-								try {
-									newDataRow["SpeedKphJump"] = (Byte)curJumpDetailRow["SpeedKphJump"];
-								} catch {
-									newDataRow["SpeedKphJump"] = 0;
-								}
-								try {
-									newDataRow["RampHeight"] = (Decimal)curJumpDetailRow["RampHeight"];
-								} catch {
-									newDataRow["RampHeight"] = 0M;
-								}
-
-								curOverallScore += (Decimal)curJumpDetailRow["PointsJump"];
-							}
-							#endregion
-
-							newDataRow["RoundOverall"] = curRound;
-							newDataRow["Round"] = curRound;
-
-							#region Process overall information
-							newDataRow["QualifyOverall"] = "No";
-							if ( curOverallRow == null ) {
-								newDataRow["EligOverall"] = "No";
-							} else {
-								newDataRow["EligOverall"] = "Yes";
-							}
-							if ( curEventsReqd == 3 && curEventCount == 3 ) {
-								newDataRow["QualifyOverall"] = "Yes";
-								if ( curOverallScore > 0 ) {
-									newDataRow["ScoreOverall"] = curOverallScore.ToString( "###0.0" );
-								}
-							} else if ( curEventsReqd == 2 && curEventCount > 1 ) {
-								newDataRow["QualifyOverall"] = "Yes";
-								if ( curOverallScore > 0 ) {
-									newDataRow["ScoreOverall"] = curOverallScore.ToString( "###0.0" );
-								}
-							}
-							if ( curSlalomDetailRow != null ) {
-								newDataRow["EventGroupOverall"] = (String)curSlalomDetailRow["EventGroupSlalom"];
-								newDataRow["EventGroup"] = (String)curSlalomDetailRow["EventGroupSlalom"];
-							} else if ( curTrickDetailRow != null ) {
-								newDataRow["EventGroupOverall"] = (String)curTrickDetailRow["EventGroupTrick"];
-								newDataRow["EventGroup"] = (String)curTrickDetailRow["EventGroupTrick"];
-							} else if ( curJumpDetailRow != null ) {
-								newDataRow["EventGroupOverall"] = (String)curJumpDetailRow["EventGroupJump"];
-								newDataRow["EventGroup"] = (String)curJumpDetailRow["EventGroupJump"];
-							} else {
-								newDataRow["EventGroupOverall"] = (String)curSummaryRow["EventGroupOverall"];
-								newDataRow["EventGroup"] = (String)curSummaryRow["EventGroupOverall"];
-							}
-
-							newDataRow.EndEdit();
-							#endregion
-
-						}
-					}
+					newDataRow.EndEdit();
+					#endregion
 				}
 			}
 
@@ -1782,189 +1722,129 @@ namespace WaterskiScoringSystem.Common {
 		public DataTable buildTourScorebookIwwf( String inSanctionId, DataRow inTourRow, DataTable inMemberData, DataTable inSlalomDetail, DataTable inTrickDetail, DataTable inJumpDetail, DataTable inSummaryDataTable ) {
 			String curMemberId, curAgeGroup, curReadyToSki, curEventClassSlalom, curEventClassTrick, curEventClassJump;
 			Int16 curTourRounds = 0, curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
-			DataRow curSlalomRow = null;
-			DataRow curTrickRow = null;
-			DataRow curJumpRow = null;
-			DataRow curSummaryRow = null;
+			DataRow curSlalomRow = null, curTrickRow = null, curJumpRow = null, curSummaryRow = null, curOverallRow = null;
 			DataRowView newDataRow = null;
 			DataRow[] curFindRows;
-			DataRow curOverallRow;
 			Int16 curEventsReqd = 0;
+			byte curMaxSpeed, curStartSpeed;
 
 			DataTable curEligSkiersDataTable = getOverallSkierList( inSanctionId );
 			DataTable curSummaryDataTable = buildOverallSummaryDataTable();
 
-			try {
-				curSlalomRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
-			} catch {
-				curSlalomRounds = 0;
-			}
-			try {
-				curTrickRounds = Convert.ToInt16( inTourRow["TrickRounds"].ToString() );
-			} catch {
-				curTrickRounds = 0;
-			}
-			try {
-				curJumpRounds = Convert.ToInt16( inTourRow["JumpRounds"].ToString() );
-			} catch {
-				curJumpRounds = 0;
-			}
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "SlalomRounds", "0" ), out curSlalomRounds );
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "TrickRounds", "0" ), out curTrickRounds );
+			Int16.TryParse( HelperFunctions.getDataRowColValue( inTourRow, "JumpRounds", "0" ), out curJumpRounds );
 			if ( curSlalomRounds > curTourRounds ) { curTourRounds = curSlalomRounds; }
 			if ( curTrickRounds > curTourRounds ) { curTourRounds = curTrickRounds; }
 			if ( curJumpRounds > curTourRounds ) { curTourRounds = curJumpRounds; }
 
 			foreach ( DataRow curRow in inMemberData.Rows ) {
-				//Initialize output buffer
-
 				curMemberId = curRow["MemberId"].ToString();
 				curAgeGroup = curRow["AgeGroup"].ToString();
-				curReadyToSki = curRow["ReadyToSki"].ToString();
-				if ( curReadyToSki.ToUpper().Equals( "Y" ) ) {
-					curFindRows = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
-					if ( curFindRows.Length > 0 ) {
-						curOverallRow = curFindRows[0];
-						curEventsReqd = (Byte)curOverallRow["EventsReqd"];
-					} else {
-						curOverallRow = null;
-						curEventsReqd = 3;
-					}
+				
+				curReadyToSki = HelperFunctions.getDataRowColValue( curRow, "ReadyToSki", "N" );
+				if ( !curReadyToSki.ToUpper().Equals( "Y" ) ) continue;
 
-					for ( int curRound = 1; curRound <= curTourRounds; curRound++ ) {
-						curSummaryRow = getEventMemberEntry( inSummaryDataTable, curMemberId, curAgeGroup, curRound );
-						curSlalomRow = getEventMemberEntry( inSlalomDetail, curMemberId, curAgeGroup, curRound );
-						curTrickRow = getEventMemberEntry( inTrickDetail, curMemberId, curAgeGroup, curRound );
-						curJumpRow = getEventMemberEntry( inJumpDetail, curMemberId, curAgeGroup, curRound );
+				curFindRows = curEligSkiersDataTable.Select( "MemberId = '" + curMemberId + "' AND AgeGroup = '" + curAgeGroup + "'" );
+				if ( curFindRows.Length > 0 ) {
+					curOverallRow = curFindRows[0];
+					Int16.TryParse( HelperFunctions.getDataRowColValue( curOverallRow, "EventsReqd", "3" ), out curEventsReqd );
+				} else {
+					curOverallRow = null;
+					curEventsReqd = 3;
+				}
 
-						if ( curSummaryRow != null ) {
-							curEventClassSlalom = (String)curSummaryRow["EventClassSlalom"];
-							curEventClassTrick = (String)curSummaryRow["EventClassTrick"];
-							curEventClassJump = (String)curSummaryRow["EventClassJump"];
+				for ( int curRound = 1; curRound <= curTourRounds; curRound++ ) {
+					curSummaryRow = getEventMemberEntry( inSummaryDataTable, curMemberId, curAgeGroup, curRound );
+					if ( curSummaryRow == null ) continue;
 
-							newDataRow = curSummaryDataTable.DefaultView.AddNew();
-							newDataRow["SanctionId"] = inSanctionId;
-							newDataRow["MemberId"] = curMemberId;
-							newDataRow["ReadyToSki"] = curReadyToSki;
-							newDataRow["SkierName"] = (String)curRow["SkierName"];
-							newDataRow["AgeGroup"] = curAgeGroup;
+					curSlalomRow = getEventMemberEntry( inSlalomDetail, curMemberId, curAgeGroup, curRound );
+					curTrickRow = getEventMemberEntry( inTrickDetail, curMemberId, curAgeGroup, curRound );
+					curJumpRow = getEventMemberEntry( inJumpDetail, curMemberId, curAgeGroup, curRound );
 
-							if ( curEventClassSlalom.Length > 0 ) {
-								newDataRow["EventClassSlalom"] = (String)curSlalomRow["EventClass"];
-								try {
-									newDataRow["TeamSlalom"] = (String)curSlalomRow["TeamCode"];
-								} catch {
-									newDataRow["TeamSlalom"] = "";
-								}
-								newDataRow["EventGroupSlalom"] = (String)curSlalomRow["EventGroup"];
-								newDataRow["RoundSlalom"] = curRound;
-								newDataRow["PlcmtSlalom"] = (String)curSummaryRow["PlcmtSlalom"];
+					newDataRow = curSummaryDataTable.DefaultView.AddNew();
+					newDataRow["SanctionId"] = inSanctionId;
+					newDataRow["MemberId"] = curMemberId;
+					newDataRow["ReadyToSki"] = curReadyToSki;
+					newDataRow["SkierName"] = (String)curRow["SkierName"];
+					newDataRow["AgeGroup"] = curAgeGroup;
 
-								newDataRow["ScoreSlalom"] = (Decimal)curSummaryRow["ScoreSlalom"];
-								newDataRow["PointsSlalom"] = (Decimal)curSummaryRow["PointsSlalom"];
+					curEventClassSlalom = HelperFunctions.getDataRowColValue( curSummaryRow, "EventClassSlalom", "" );
+					curEventClassTrick = HelperFunctions.getDataRowColValue( curSummaryRow, "EventClassTrick", "" );
+					curEventClassJump = HelperFunctions.getDataRowColValue( curSummaryRow, "EventClassJump", "" );
 
-								try {
-									newDataRow["FinalLen"] = (String)curSlalomRow["FinalLen"];
-								} catch {
-									newDataRow["FinalLen"] = "";
-								}
-								try {
-									newDataRow["FinalLenOff"] = (String)curSlalomRow["FinalLenOff"];
-								} catch {
-									newDataRow["FinalLenOff"] = "";
-								}
+					if ( curSlalomRow != null && HelperFunctions.isObjectPopulated( curEventClassSlalom ) ) {
+						newDataRow["EventClassSlalom"] = HelperFunctions.getDataRowColValue( curSlalomRow, "EventClass", "" );
+						newDataRow["TeamSlalom"] = HelperFunctions.getDataRowColValue( curSlalomRow, "TeamCode", "" );
+						newDataRow["EventGroupSlalom"] = HelperFunctions.getDataRowColValue( curSlalomRow, "EventGroup", "" );
 
-								try {
-									newDataRow["MaxSpeed"] = (Byte)curSummaryRow["MaxSpeed"];
-									newDataRow["StartSpeed"] = (Byte)curSummaryRow["StartSpeed"];
-									newDataRow["StartLen"] = (String)curSummaryRow["StartLen"];
-									if ( (Byte)curSlalomRow["StartSpeed"] > (Byte)curSlalomRow["MaxSpeed"] ) {
-										newDataRow["FinalSpeedKph"] = (Byte)curSlalomRow["StartSpeed"];
-										newDataRow["FinalSpeedMph"] = getSlalomSpeedMph( (Byte)curSlalomRow["StartSpeed"] );
-									} else {
-										newDataRow["FinalSpeedMph"] = (Byte)curSlalomRow["FinalSpeedMph"];
-										newDataRow["FinalSpeedKph"] = (Byte)curSlalomRow["FinalSpeedKph"];
-									}
-								} catch {
-									newDataRow["FinalSpeedMph"] = 0;
-									newDataRow["FinalSpeedKph"] = 0;
-									newDataRow["MaxSpeed"] = 0;
-									newDataRow["StartSpeed"] = 0;
-									newDataRow["StartLen"] = "";
-								}
+						newDataRow["RoundSlalom"] = curRound;
+						newDataRow["PlcmtSlalom"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtSlalom", "" );
 
-								try {
-									if ( curSlalomRow["CompletedSpeedKph"].GetType() == System.Type.GetType( "System.Byte" ) ) {
-										newDataRow["CompletedSpeedMph"] = (Byte)curSlalomRow["CompletedSpeedMph"];
-										newDataRow["CompletedSpeedKph"] = (Byte)curSlalomRow["CompletedSpeedKph"];
-									} else {
-										newDataRow["CompletedSpeedMph"] = (Byte)( (int)curSlalomRow["CompletedSpeedMph"] );
-										newDataRow["CompletedSpeedKph"] = (Byte)( (int)curSlalomRow["CompletedSpeedKph"] );
-									}
-								} catch ( Exception ex ) {
-									newDataRow["CompletedSpeedMph"] = 0;
-									newDataRow["CompletedSpeedKph"] = 0;
-								}
+						newDataRow["ScoreSlalom"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "ScoreSlalom", "0" ) );
+						newDataRow["PointsSlalom"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "PointsSlalom", "0" ) );
 
-								try {
-									newDataRow["FinalPassScore"] = (Decimal)curSlalomRow["FinalPassScore"];
-								} catch {
-									newDataRow["FinalPassScore"] = 0M;
-								}
-							}
+						newDataRow["FinalLen"] = HelperFunctions.getDataRowColValue( curSlalomRow, "FinalLen", "" );
+						newDataRow["FinalLenOff"] = HelperFunctions.getDataRowColValue( curSlalomRow, "FinalLenOff", "" );
+						newDataRow["StartLen"] = HelperFunctions.getDataRowColValue( curSlalomRow, "StartLen", "" );
 
-							if ( curEventClassTrick.Length > 0 ) {
-								newDataRow["EventClassTrick"] = (String)curTrickRow["EventClass"];
-								try {
-									newDataRow["TeamTrick"] = (String)curTrickRow["TeamCode"];
-								} catch {
-									newDataRow["TeamTrick"] = "";
-								}
-								newDataRow["EventGroupTrick"] = (String)curTrickRow["EventGroup"];
-								newDataRow["RoundTrick"] = curRound;
-								newDataRow["PlcmtTrick"] = (String)curSummaryRow["PlcmtTrick"];
+						byte.TryParse( HelperFunctions.getDataRowColValue( curSummaryRow, "MaxSpeed", "0" ), out curMaxSpeed );
+						byte.TryParse( HelperFunctions.getDataRowColValue( curSummaryRow, "StartSpeed", "0" ), out curStartSpeed );
+						newDataRow["MaxSpeed"] = curMaxSpeed;
+						newDataRow["StartSpeed"] = curStartSpeed;
 
-								newDataRow["ScoreTrick"] = (Int16)curSummaryRow["ScoreTrick"];
-								newDataRow["Pass1Trick"] = (Int16)curSummaryRow["Pass1Trick"];
-								newDataRow["Pass2Trick"] = (Int16)curSummaryRow["Pass2Trick"];
-								newDataRow["PointsTrick"] = (Decimal)curSummaryRow["PointsTrick"];
-							}
-
-							if ( curEventClassJump.Length > 0 ) {
-								newDataRow["EventClassJump"] = (String)curJumpRow["EventClass"]; ;
-								try {
-									newDataRow["TeamJump"] = (String)curJumpRow["TeamCode"];
-								} catch {
-									newDataRow["TeamJump"] = "";
-								}
-								newDataRow["EventGroupJump"] = (String)curJumpRow["EventGroup"];
-								newDataRow["RoundJump"] = curRound;
-								newDataRow["PlcmtJump"] = (String)curSummaryRow["PlcmtJump"];
-
-								newDataRow["ScoreMeters"] = (Decimal)curSummaryRow["ScoreMeters"];
-								newDataRow["ScoreFeet"] = (Decimal)curSummaryRow["ScoreFeet"];
-								newDataRow["PointsJump"] = (Decimal)curSummaryRow["PointsJump"];
-								try {
-									newDataRow["SpeedKphJump"] = (Byte)curJumpRow["SpeedKphJump"];
-								} catch {
-									newDataRow["SpeedKphJump"] = 0;
-								}
-								try {
-									newDataRow["RampHeight"] = (Decimal)curJumpRow["RampHeight"];
-								} catch {
-									newDataRow["RampHeight"] = 0M;
-								}
-							}
-
-							newDataRow["RoundOverall"] = curRound;
-							newDataRow["Round"] = curRound;
-							newDataRow["QualifyOverall"] = (String)curSummaryRow["QualifyOverall"];
-							newDataRow["EligOverall"] = (String)curSummaryRow["EligOverall"];
-							newDataRow["ScoreOverall"] = (Decimal)curSummaryRow["ScoreOverall"];
-							newDataRow["EventGroupOverall"] = (String)curSummaryRow["EventGroupOverall"];
-							newDataRow["EventGroup"] = (String)curSummaryRow["EventGroup"];
-
-							newDataRow.EndEdit();
+						if ( curStartSpeed > curMaxSpeed ) {
+							newDataRow["FinalSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "FinalSpeedKph", "0" ) );
+							newDataRow["FinalSpeedMph"] = getSlalomSpeedMph( curStartSpeed );
+						} else {
+							newDataRow["FinalSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "FinalSpeedKph", "0" ) );
+							newDataRow["FinalSpeedMph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "FinalSpeedMph", "0" ) );
 						}
+
+						newDataRow["CompletedSpeedMph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomRow, "CompletedSpeedMph", "0" ) );
+						newDataRow["CompletedSpeedKph"] = byte.Parse( HelperFunctions.getDataRowColValue( curSlalomRow, "CompletedSpeedKph", "0" ) );
+						newDataRow["FinalPassScore"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSlalomRow, "FinalPassScore", "0" ) );
 					}
+
+					if ( curTrickRow != null && HelperFunctions.isObjectPopulated( curEventClassTrick ) ) {
+						newDataRow["EventClassTrick"] = HelperFunctions.getDataRowColValue( curTrickRow, "EventClass", "" );
+						newDataRow["EventGroupTrick"] = HelperFunctions.getDataRowColValue( curTrickRow, "EventGroup", "" );
+						newDataRow["TeamTrick"] = HelperFunctions.getDataRowColValue( curTrickRow, "TeamCode", "" );
+
+						newDataRow["RoundTrick"] = curRound;
+						newDataRow["PlcmtTrick"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtTrick", "" );
+
+						newDataRow["ScoreTrick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "ScoreTrick", "0" ) );
+						newDataRow["Pass1Trick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "Pass1Trick", "0" ) );
+						newDataRow["Pass2Trick"] = Int16.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "Pass2Trick", "0" ) );
+						newDataRow["PointsTrick"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "PointsTrick", "0" ) );
+					}
+
+					if ( curJumpRow != null && HelperFunctions.isObjectPopulated( curEventClassJump ) ) {
+						newDataRow["EventClassJump"] = HelperFunctions.getDataRowColValue( curJumpRow, "EventClass", "" );
+						newDataRow["EventGroupJump"] = HelperFunctions.getDataRowColValue( curJumpRow, "EventGroup", "" );
+						newDataRow["TeamJump"] = HelperFunctions.getDataRowColValue( curJumpRow, "TeamCode", "" );
+
+						newDataRow["RoundJump"] = curRound;
+						newDataRow["PlcmtJump"] = HelperFunctions.getDataRowColValue( curSummaryRow, "PlcmtJump", "" );
+
+						newDataRow["ScoreMeters"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "ScoreMeters", "0" ) );
+						newDataRow["ScoreFeet"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "ScoreFeet", "0" ) );
+						newDataRow["SpeedKphJump"] = byte.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "SpeedKphJump", "0" ) );
+						newDataRow["RampHeight"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "RampHeight", "0" ) );
+						newDataRow["PointsJump"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "PointsJump", "0" ) );
+					}
+
+					newDataRow["RoundOverall"] = curRound;
+					newDataRow["Round"] = curRound;
+
+					newDataRow["QualifyOverall"] = HelperFunctions.getDataRowColValue( curSummaryRow, "QualifyOverall", "" );
+					newDataRow["EligOverall"] = HelperFunctions.getDataRowColValue( curSummaryRow, "EligOverall", "" );
+					newDataRow["EventGroupOverall"] = HelperFunctions.getDataRowColValue( curSummaryRow, "EventGroupOverall", "" );
+					newDataRow["EventGroup"] = HelperFunctions.getDataRowColValue( curSummaryRow, "EventGroup", "" );
+					newDataRow["ScoreOverall"] = decimal.Parse( HelperFunctions.getDataRowColValue( curSummaryRow, "ScoreOverall", "0" ) );
+
+					newDataRow.EndEdit();
 				}
 			}
 
@@ -4320,7 +4200,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 				if ( HelperFunctions.isIwwfEvent(inRules) ) {
 					if ( inTeamPlcmt ) {
-						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+						if ( HelperFunctions.isObjectPopulated( HelperFunctions.getDataRowColValue( curRow, "TeamCode", "" ) ) ) {
 							if ( curScore > (Decimal)curMaxRow["ScoreSlalom"] ) {
 								curMaxRow["ScoreSlalom"] = curScore;
 							}
@@ -4394,7 +4274,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 				if ( HelperFunctions.isIwwfEvent(inRules) ) {
 					if ( inTeamPlcmt ) {
-						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+						if ( HelperFunctions.isObjectPopulated( HelperFunctions.getDataRowColValue( curRow, "TeamCode", "" ) ) ) {
 							if ( curScore > (Int16)curMaxRow["ScoreTrick"] ) {
 								curMaxRow["ScoreTrick"] = curScore;
 							}
@@ -4470,7 +4350,7 @@ namespace WaterskiScoringSystem.Common {
 				}
 				if ( HelperFunctions.isIwwfEvent(inRules) ) {
 					if ( inTeamPlcmt ) {
-						if ( ( (String)curRow["TeamCode"] ).Length > 0 ) {
+						if ( HelperFunctions.isObjectPopulated( HelperFunctions.getDataRowColValue( curRow, "TeamCode", "" ) ) ) {
 							if ( curScore > (Decimal)curMaxRow["ScoreJump"] ) {
 								curMaxRow["ScoreJump"] = curScore;
 							}
@@ -5763,30 +5643,15 @@ namespace WaterskiScoringSystem.Common {
 		public DataTable getOverallSkierList( String inSanctionId ) {
 			int curSkiYear = Convert.ToInt32( inSanctionId.Substring( 0, 2 ) );
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT R.AgeGroup, R.MemberId, N.EventsReqd, COUNT(*) AS NumSkierEvents " );
+			curSqlStmt.Append( "SELECT R.AgeGroup, R.MemberId, CAST(L.MinValue AS INT) AS EventsReqd, COUNT(*) AS NumSkierEvents " );
 			curSqlStmt.Append( "FROM TourReg AS R " );
-			curSqlStmt.Append( "  INNER JOIN EventReg AS E ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup " );
-			curSqlStmt.Append( "  LEFT OUTER JOIN NopsData AS N ON R.AgeGroup = N.AgeGroup AND N.Event = 'Slalom' AND N.SkiYear = " + curSkiYear + " " );
-			curSqlStmt.Append( "WHERE E.SanctionId = '" + inSanctionId + "' And R.ReadyForPlcmt = 'Y' " );
-			curSqlStmt.Append( "GROUP BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-			curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
-			curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count == 0 ) {
-				curSkiYear--;
-				curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "SELECT R.AgeGroup, R.MemberId, N.EventsReqd, COUNT(*) AS NumSkierEvents " );
-				curSqlStmt.Append( "FROM TourReg AS R " );
-				curSqlStmt.Append( "  INNER JOIN EventReg AS E ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup " );
-				curSqlStmt.Append( "  LEFT OUTER JOIN NopsData AS N ON R.AgeGroup = N.AgeGroup AND N.Event = 'Slalom' AND N.SkiYear = " + curSkiYear + " " );
-				curSqlStmt.Append( "WHERE E.SanctionId = '" + inSanctionId + "' And R.ReadyForPlcmt = 'Y' " );
-				curSqlStmt.Append( "GROUP BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-				curSqlStmt.Append( "HAVING COUNT(*) >= N.EventsReqd " );
-				curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId, N.EventsReqd " );
-				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			}
-
-			return curDataTable;
+			curSqlStmt.Append( "INNER JOIN EventReg AS E ON E.SanctionId = R.SanctionId AND E.MemberId = R.MemberId AND E.AgeGroup = R.AgeGroup " );
+			curSqlStmt.Append( "INNER JOIN CodeValueList AS L ON L.ListCode = E.AgeGroup AND ListName = 'OverallEventsReqd' " );
+			curSqlStmt.Append( String.Format("WHERE E.SanctionId = '{0}' And R.ReadyForPlcmt = 'Y' ", inSanctionId) );
+			curSqlStmt.Append( "GROUP BY R.AgeGroup, R.MemberId, L.MinValue " );
+			curSqlStmt.Append( "HAVING COUNT(*) >= L.MinValue " );
+			curSqlStmt.Append( "ORDER BY R.AgeGroup, R.MemberId, L.MinValue" );
+			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
 
 		public DataTable getTeamSkierList( String inSanctionId, String inEvent ) {
@@ -6011,39 +5876,6 @@ namespace WaterskiScoringSystem.Common {
 
 			return null;
 		}
-		private DataRow getEventMemberEntry( DataTable inDataTable, String inMemberId, String inDiv, int inRound, String inEvent ) {
-			if ( inDataTable == null ) return null;
-			if ( inDataTable.Rows.Count > 0 ) {
-				DataRow[] curRowList = inDataTable.Select( "MemberId = '" + inMemberId + "' AND SUBSTRING(AgeGroup, 1, 2) = '" + inDiv
-					+ "' AND Round = " + inRound.ToString() + " AND Event = '" + inEvent + "'" );
-				if ( curRowList.Length > 0 ) {
-					DataRow curRow = curRowList[0];
-					if ( ( (String)curRow["EventClass"] ).Length > 0 ) return curRow;
-				}
-			}
-
-			return null;
-		}
-
-		private String getSkierBackupJump( String inSanctionId, String inMemberId, int inRound, String inDiv ) {
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, MemberId, Round, PassNum, Reride, BoatSpeed, RampHeight, ScoreFeet, ScoreMeters, " );
-            curSqlStmt.Append( " BoatSplitTime, BoatSplitTime2, BoatEndTime, TimeInTol, ScoreProt, ReturnToBase, Results " );
-            curSqlStmt.Append( " FROM JumpRecap" );
-            curSqlStmt.Append( " WHERE SanctionId = '" + inSanctionId + "' " );
-            curSqlStmt.Append( " AND MemberId = '" + inMemberId + "' " );
-            curSqlStmt.Append( " AND AgeGroup = '" + inDiv + "' " );
-            curSqlStmt.Append( " AND Round = " + inRound + " " );
-            curSqlStmt.Append( " AND ( (Results = 'Jump' AND Reride = 'N') " );
-            curSqlStmt.Append( "        OR ( Results = 'Jump' AND Reride = 'Y' AND ScoreProt = 'Y') ) " );
-            curSqlStmt.Append( " ORDER BY SanctionId, MemberId, AgeGroup, Round, ScoreMeters DESC" );
-            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-            if ( curDataTable.Rows.Count > 1 ) {
-                return ( (Decimal)curDataTable.Rows[1]["ScoreMeters"] ).ToString( "##.0" );
-            } else {
-                return "";
-            }
-        }
 
 		private Boolean isSkierEligNcwsaJumpScore( String inSanctionId, String inMemberId, String inDiv, Int16 inRound ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -6081,57 +5913,12 @@ namespace WaterskiScoringSystem.Common {
 
         private DataTable getIwwfOverallAdj() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT ListCode, ListCode, MinValue, CodeDesc" );
+            curSqlStmt.Append( "SELECT ListCode, MinValue, CodeDesc" );
             curSqlStmt.Append( " FROM CodeValueList" );
             curSqlStmt.Append( " WHERE ListName = 'IwwfOverallAdj'" );
             curSqlStmt.Append( " ORDER BY SortSeq" );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
-
-		private byte getAgeGroupSlalomMaxSpeedKph( String inAgeGroup ) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
-			curSqlStmt.Append( "FROM CodeValueList " );
-			curSqlStmt.Append( "WHERE ListName LIKE 'AwsaSlalomMax' " );
-			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
-			curSqlStmt.Append( "ORDER BY SortSeq " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return Convert.ToByte( (Decimal) curDataTable.Rows[0]["MaxValue"] );
-			} else {
-				return 0;
-			}
-		}
-
-		private byte getAgeGroupJumpMaxSpeedKph(String inAgeGroup) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
-			curSqlStmt.Append( "FROM CodeValueList " );
-			curSqlStmt.Append( "WHERE ListName LIKE 'AwsaJumpMax' " );
-			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
-			curSqlStmt.Append( "ORDER BY SortSeq " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return Convert.ToByte( (Decimal) curDataTable.Rows[0]["MaxValue"]);
-			} else {
-				return 0;
-			}
-		}
-
-		private Decimal getAgeGroupMaxRampHeight( String inAgeGroup) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT ListCode, ListCodeNum, CodeValue, MinValue, MaxValue " );
-			curSqlStmt.Append( "FROM CodeValueList " );
-			curSqlStmt.Append( "WHERE ListName = 'AwsaRampMax' " );
-			curSqlStmt.Append( "  And ListCode = '" + inAgeGroup + "' " );
-			curSqlStmt.Append( "ORDER BY SortSeq " );
-			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			if ( curDataTable.Rows.Count > 0 ) {
-				return (Decimal) curDataTable.Rows[0]["MaxValue"];
-			} else {
-				return 0;
-			}
-		}
 
     }
 }

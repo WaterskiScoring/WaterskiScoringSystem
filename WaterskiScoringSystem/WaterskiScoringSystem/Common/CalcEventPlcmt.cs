@@ -11,12 +11,6 @@ namespace WaterskiScoringSystem.Common {
         public CalcEventPlcmt() {
         }
 
-        public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults ) {
-            return setSlalomPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
-        }
-        public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtOrg ) {
-            return setSlalomPlcmt( inTourRow, inEventResults, "score", inPlcmtOrg, "", 0 );
-        }
         public DataTable setSlalomPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
             return setSlalomPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
@@ -113,9 +107,6 @@ namespace WaterskiScoringSystem.Common {
             return curPlcmtResults;
         }
 
-        public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults ) {
-            return setTrickPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
-        }
         public DataTable setTrickPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
             return setTrickPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
@@ -211,9 +202,6 @@ namespace WaterskiScoringSystem.Common {
 			return curPlcmtResults;
         }
 
-        public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults ) {
-            return setJumpPlcmt( inTourRow, inEventResults, "score", "div", "", 0 );
-        }
         public DataTable setJumpPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
             return setJumpPlcmt( inTourRow, inEventResults, inPlcmtMethod, inPlcmtOrg, "", 0 );
         }
@@ -348,77 +336,6 @@ namespace WaterskiScoringSystem.Common {
 			}
 
 			return curPlcmtResults;
-        }
-
-        public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, DataTable inEventResultsAll ) {
-            return setOverallPlcmt( inTourRow, inEventResults, inEventResultsAll, "score", "div", "" );
-        }
-        public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg ) {
-            return setOverallPlcmt( inTourRow, inEventResults, null, inPlcmtMethod, inPlcmtOrg, "" );
-        }
-        public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, DataTable inEventResultsAll, String inPlcmtMethod, String inPlcmtOrg ) {
-            return setOverallPlcmt( inTourRow, inEventResults, inEventResultsAll, inPlcmtMethod, inPlcmtOrg, "" );
-        }
-        public DataTable setOverallPlcmt( DataRow inTourRow, DataTable inEventResults, DataTable inEventResultsAll, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
-            /* **********************************************************
-             * Use results from Overall event to determine skier placment 
-             * within age division
-             * ******************************************************* */
-            String curRules = (String)inTourRow["Rules"];
-            int curEventRounds = 0, curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
-            try {
-                curSlalomRounds = Convert.ToInt16( inTourRow["SlalomRounds"].ToString() );
-            } catch {
-                curSlalomRounds = 0;
-            }
-            try {
-                curTrickRounds = Convert.ToInt16( inTourRow["TrickRounds"].ToString() );
-            } catch {
-                curTrickRounds = 0;
-            }
-            try {
-                curJumpRounds = Convert.ToInt16( inTourRow["JumpRounds"].ToString() );
-            } catch {
-                curJumpRounds = 0;
-            }
-            if ( curSlalomRounds >= curTrickRounds && curSlalomRounds >= curJumpRounds ) {
-                curEventRounds = curSlalomRounds;
-            } else if ( curTrickRounds >= curSlalomRounds && curTrickRounds >= curSlalomRounds ) {
-                curEventRounds = curSlalomRounds;
-            } else if ( curJumpRounds >= curSlalomRounds && curJumpRounds >= curTrickRounds ) {
-                curEventRounds = curJumpRounds;
-            }
-
-            //DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType );
-            String curPlcmtName = "PlcmtOverall";
-            DataTable curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Overall", 0 );
-            //String curPlcmtName = "PlcmtGroup";
-            DataTable curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
-
-            //Analzye and assign placements by age group and / or event groups as specifeid by request
-            if ( curRules.ToLower().Equals( "awsa" ) ) {
-                String curPlcmt, curGroup;
-                DataRow[] curSkierList;
-
-                foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
-                    curPlcmt = (String)curRow["PlcmtGroup"];
-                    curGroup = (String)curRow["AgeGroup"];
-
-                    //Get results for the skiers that are tied for the placement by age group and position
-                    curSkierList = curPlcmtResults.Select( "AgeGroup = '" + curGroup + "' AND PlcmtGroup = '" + curPlcmt + "'" );
-
-                    //Analyze tied placments and gather all data needed for tie breakers
-                    DataTable curSkierScoreList = getOverallTieBreakerData( curSkierList, inEventResultsAll, curEventRounds );
-
-                    //Analyze data for tied placments utilizing tie breakers to determine placments
-                    setOverallTieBreakerPlcmt( curSkierScoreList, curPlcmt, curGroup );
-
-                    //Analyze results of tie breakers and update event skier placments
-                    setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, "PlcmtOverall" );
-                }
-            }
-
-            return curPlcmtResults;
         }
 
         public DataTable setOverallPlcmtIwwf( DataRow inTourRow, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inDataType ) {
@@ -1442,6 +1359,7 @@ namespace WaterskiScoringSystem.Common {
 			String curScoreName = "Score" + inEvent;
 			if ( inEvent.ToLower().Equals( "jump" ) ) curScoreName = "ScoreMeters";
 			if ( !( inPlcmtMethod.ToLower().Equals( "score" ) ) ) curScoreName = "Points" + inEvent;
+            if ( inEvent.ToLower().Equals( "overall" ) ) curScoreName = "ScoreOverall";
 
 			if ( inPlcmtOrg.ToLower().Equals( "div" ) || inPlcmtOrg.ToLower().Equals( "agegroup" ) ) {
 				curSortCmd = "AgeGroup ASC, ";

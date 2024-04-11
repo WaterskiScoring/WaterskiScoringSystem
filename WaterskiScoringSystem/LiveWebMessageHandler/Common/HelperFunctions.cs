@@ -92,10 +92,10 @@ namespace LiveWebMessageHandler.Common {
 		}
 		public static String getEventGroupFilterSql( String inGroupValue, bool isTrickVideo, bool isOrderByRound ) {
 			if ( isObjectEmpty( inGroupValue ) ) return "";
-			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "And E.AgeGroup = 'CM' ";
-			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "And E.AgeGroup = 'CW' ";
-			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "And E.AgeGroup = 'BM' ";
-			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "And E.AgeGroup = 'BW' ";
+			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "And ER.AgeGroup = 'CM' ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "And ER.AgeGroup = 'CW' ";
+			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "And ER.AgeGroup = 'BM' ";
+			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "And ER.AgeGroup = 'BW' ";
 			if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
 			if ( inGroupValue.ToUpper().Equals( "NON TEAM" ) ) return "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
 			if ( isTrickVideo ) return "And ER.AgeGroup = '" + inGroupValue + "' ";

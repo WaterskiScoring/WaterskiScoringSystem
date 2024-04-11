@@ -1205,9 +1205,9 @@ namespace WaterskiScoringSystem.Trick {
             String curEventGroup = EventGroupList.SelectedItem.ToString();
             if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
                 curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
-                curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, true );
+                curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
             } else {
-                curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, myFilterCmd, false );
+                curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, false );
             }
 
             myExportData.exportData( curTableName, curSelectCommand );

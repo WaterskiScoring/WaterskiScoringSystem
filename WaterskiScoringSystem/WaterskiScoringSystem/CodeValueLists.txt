@@ -1,5 +1,69 @@
 Table:	CodeValueList							
 PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
+0	OverallEventsReqd	B1		11	2	2	2	Events required to qualify for overall for Boys 1 (U10)
+0	OverallEventsReqd	B2		12	3	3	3	Events required to qualify for overall for Boys 2 (U12)
+0	OverallEventsReqd	B3		13	3	3	3	Events required to qualify for overall for Boys 3 (U14)
+0	OverallEventsReqd	B4		14	3	3	3	Events required to qualify for overall for Boys 4 (U16)
+0	OverallEventsReqd	B5		15	3	3	3	Events required to qualify for overall for Boys 5 (U18)
+0	OverallEventsReqd	G1		21	2	2	2	Events required to qualify for overall for Girls 1 (U10)
+0	OverallEventsReqd	G2		22	3	3	3	Events required to qualify for overall for Girls 2 (U12)
+0	OverallEventsReqd	G3		23	3	3	3	Events required to qualify for overall for Girls 3 (U14)
+0	OverallEventsReqd	G4		24	3	3	3	Events required to qualify for overall for Girls 4 (U16)
+0	OverallEventsReqd	G5		25	3	3	3	Events required to qualify for overall for Girls 5 (U18)
+0	OverallEventsReqd	M1		31	3	3	3	Events required to qualify for overall for Mens 1
+0	OverallEventsReqd	M2		32	3	3	3	Events required to qualify for overall for Mens 2
+0	OverallEventsReqd	M3		33	3	3	3	Events required to qualify for overall for Mens 3 35+
+0	OverallEventsReqd	M4		34	3	3	3	Events required to qualify for overall for Mens 4 45+
+0	OverallEventsReqd	M5		35	3	3	3	Events required to qualify for overall for Mens 5 55+
+0	OverallEventsReqd	M6		36	3	3	3	Events required to qualify for overall for Mens 6 60+
+0	OverallEventsReqd	M7		37	3	3	3	Events required to qualify for overall for Mens 7 65+
+0	OverallEventsReqd	M8		38	2	2	2	Events required to qualify for overall for Mens 8 70+
+0	OverallEventsReqd	M9		39	2	2	2	Events required to qualify for overall for Mens 9 75+
+0	OverallEventsReqd	MA		40	2	2	2	Events required to qualify for overall for Mens 10 80+
+0	OverallEventsReqd	MB		41	2	2	2	Events required to qualify for overall for Mens 11 85+
+0	OverallEventsReqd	W1		51	3	3	3	Events required to qualify for overall for Womens 1
+0	OverallEventsReqd	W2		52	3	3	3	Events required to qualify for overall for Womens 2
+0	OverallEventsReqd	W3		53	3	3	3	Events required to qualify for overall for Womens 3 35+
+0	OverallEventsReqd	W4		54	3	3	3	Events required to qualify for overall for Womens 4 45+
+0	OverallEventsReqd	W5		55	3	3	3	Events required to qualify for overall for Womens 5 55+
+0	OverallEventsReqd	W6		56	3	3	3	Events required to qualify for overall for Womens 6 60+
+0	OverallEventsReqd	W7		57	3	3	3	Events required to qualify for overall for Womens 7 65+
+0	OverallEventsReqd	W8		58	2	2	2	Events required to qualify for overall for Womens 8 70+
+0	OverallEventsReqd	W9		59	2	2	2	Events required to qualify for overall for Womens 9 75+
+0	OverallEventsReqd	WA		60	2	2	2	Events required to qualify for overall for Womens 10 80+
+0	OverallEventsReqd	YB		61	2	2	2	Events required to qualify for overall for Intl Boys U10
+0	OverallEventsReqd	WB		61	2	2	2	Events required to qualify for overall for Womens 11 85+
+0	OverallEventsReqd	YG		62	2	2	2	Events required to qualify for overall for Intl Girls U10
+0	OverallEventsReqd	JB		63	3	3	3	Events required to qualify for overall for Intl Junior Boys U14
+0	OverallEventsReqd	JG		64	3	3	3	Events required to qualify for overall for Intl Junior Girls U14
+0	OverallEventsReqd	IB		65	3	3	3	Events required to qualify for overall for Intl Boys U17
+0	OverallEventsReqd	IG		66	3	3	3	Events required to qualify for overall for Intl Girls U17
+0	OverallEventsReqd	IM		71	3	3	3	Events required to qualify for overall for Intl Men
+0	OverallEventsReqd	OM		71	3	3	3	Events required to qualify for overall for Open Men
+0	OverallEventsReqd	IW		72	3	3	3	Events required to qualify for overall for Intl Women
+0	OverallEventsReqd	OW		72	3	3	3	Events required to qualify for overall for Open Women
+0	OverallEventsReqd	JM		73	3	3	3	Events required to qualify for overall for Intl Junior Men
+0	OverallEventsReqd	MM		73	3	3	3	Events required to qualify for overall for Master Men
+0	OverallEventsReqd	JW		74	3	3	3	Events required to qualify for overall for Intl Junior Women
+0	OverallEventsReqd	MW		74	3	3	3	Events required to qualify for overall for Master Women
+0	OverallEventsReqd	NM		75	2	2	2	Events required to qualify for overall for Novice Mens
+0	OverallEventsReqd	NW		76	2	2	2	Events required to qualify for overall for Novice Womens
+0	OverallEventsReqd	S1		81	3	3	3	Events required to qualify for overall for Intl Senior Men 35+
+0	OverallEventsReqd	S2		82	3	3	3	Events required to qualify for overall for Intl Senior Men 45+
+0	OverallEventsReqd	S3		83	3	3	3	Events required to qualify for overall for Intl Senior Men 55+
+0	OverallEventsReqd	S4		84	3	3	3	Events required to qualify for overall for Intl Senior Men 65+
+0	OverallEventsReqd	S5		85	2	2	2	Events required to qualify for overall for Intl Senior Men 70+
+0	OverallEventsReqd	S6		86	2	2	2	Events required to qualify for overall for Intl Senior Men 75+
+0	OverallEventsReqd	S7		87	2	2	2	Events required to qualify for overall for Intl Senior Men 80+
+0	OverallEventsReqd	S8		88	2	2	2	Events required to qualify for overall for Intl Senior Men 85+
+0	OverallEventsReqd	L1		91	3	3	3	Events required to qualify for overall for Intl Senior Women 35+
+0	OverallEventsReqd	L2		92	3	3	3	Events required to qualify for overall for Intl Senior Women 45+
+0	OverallEventsReqd	L3		93	3	3	3	Events required to qualify for overall for Intl Senior Women 55+
+0	OverallEventsReqd	L4		94	3	3	3	Events required to qualify for overall for Intl Senior Women 65+
+0	OverallEventsReqd	L5		95	2	2	2	Events required to qualify for overall for Intl Senior Women 70+
+0	OverallEventsReqd	L6		96	2	2	2	Events required to qualify for overall for Intl Senior Women 75+
+0	OverallEventsReqd	L7		97	2	2	2	Events required to qualify for overall for Intl Senior Women 80+
+0	OverallEventsReqd	L8		98	2	2	2	Events required to qualify for overall for Intl Senior Women 85+
 0	SlalomBoatPathRerideRopeMin	R	1	1	11.25M / 38 OFF	11.25	11.25	Class R Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathRerideRopeMin	L	2	2	11.25M / 38 OFF	11.25	11.25	Class L Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathRerideRopeMin	E	3	3	11.25M / 38 OFF	11.25	11.25	Class E Reride minimum rope length 11.25M or -38

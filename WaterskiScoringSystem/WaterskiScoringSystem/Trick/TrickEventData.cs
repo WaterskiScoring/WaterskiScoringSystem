@@ -74,88 +74,64 @@ namespace WaterskiScoringSystem.Trick {
 			return null;
 		}
 
-		public static String[] buildScoreExport( String curRound, String curEventGroup, String inFilterCmd, bool isNcwsa ) {
+		public static String[] buildScoreExport( String curRound, String curEventGroup, bool isNcwsa ) {
 			String[] curSelectCommand = new String[8];
-			String curFilterCmd = inFilterCmd;
-			if ( curFilterCmd.Contains( "Div =" ) ) {
-				curFilterCmd = curFilterCmd.Replace( "Div =", "XT.AgeGroup =" );
-
-			} else if ( curFilterCmd.Contains( "AgeGroup not in" ) ) {
-				curFilterCmd = curFilterCmd.Replace( "AgeGroup not in", "XT.AgeGroup not in" );
-
-			} else if ( curFilterCmd.Contains( "AgeGroup =" ) ) {
-				curFilterCmd = curFilterCmd.Replace( "AgeGroup =", "XT.AgeGroup =" );
-			}
-
-			String tmpFilterCmd = "";
+			String tmpFilterCmd = "", tmpFilterCmd2 = "";
 			if ( isNcwsa ) {
-				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) {
+					tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
+					tmpFilterCmd2 = "And XT.EventGroup = '" + HelperFunctions.getEventGroupOfficialAsgmtNcwsa( curEventGroup ) + "' ";
+
+				}
 			} else {
-				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) {
+					tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
+					tmpFilterCmd2 = tmpFilterCmd;
+				}
 			}
 
 			int curIdx = 0;
-			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
+			curSelectCommand[curIdx] = String.Format( "SELECT XT.* FROM TourReg XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+				+ "Where XT.SanctionId = '{0}' {1} ", TrickEventData.mySanctionNum, tmpFilterCmd );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "Select * from EventReg XT "
-				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
-				+ " And Event = 'Trick'";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = String.Format( "Select * from EventReg XT Where SanctionId = '{0}' And Event = 'Trick' {1} ", TrickEventData.mySanctionNum, tmpFilterCmd );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "Select * from EventRunOrder XT "
-				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "'"
-				+ " And Event = 'Trick' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = String.Format( "Select * from EventRunOrder XT Where SanctionId = '{0}' And Event = 'Trick' And Round in ({1}, 25) {2} ", TrickEventData.mySanctionNum, curRound, tmpFilterCmd );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "SELECT XT.* FROM TrickScore XT "
+			curSelectCommand[curIdx] = String.Format( "SELECT XT.* FROM TrickScore XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+				+ "Where XT.SanctionId = '{0}' And Round in ({1}, 25) {2} ", TrickEventData.mySanctionNum, curRound, tmpFilterCmd );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "SELECT XT.* FROM TrickPass XT "
+			curSelectCommand[curIdx] = String.Format( "SELECT XT.* FROM TrickPass XT "
 				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND XT.AgeGroup = ER.AgeGroup AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+				+ "Where XT.SanctionId = '{0}' And Round in ({1}, 25) {2} ", TrickEventData.mySanctionNum, curRound, tmpFilterCmd );
 
 			//----------------------------------------
 			//Export data related to officials
 			//----------------------------------------
 			curIdx++;
-			curSelectCommand[curIdx] = "SELECT XT.* FROM TourReg XT "
-				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round in (" + curRound + ", 25) "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = String.Format( "SELECT TR.* FROM TourReg TR "
+				+ "INNER JOIN OfficialWorkAsgmt XT on XT.SanctionId = TR.SanctionId AND XT.MemberId = TR.MemberId AND XT.Event = 'Trick' "
+				+ "Where TR.SanctionId = '{0}' And Round in ({1}, 25) {2} ", TrickEventData.mySanctionNum, curRound, tmpFilterCmd2 );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "SELECT XT.* FROM OfficialWork XT "
-				+ "INNER JOIN EventReg ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
-			curSelectCommand[curIdx] = curSelectCommand[curIdx] + "Union "
-				+ "SELECT XT.* FROM OfficialWork XT "
-				+ "INNER JOIN OfficialWorkAsgmt ER on XT.SanctionId = ER.SanctionId AND XT.MemberId = ER.MemberId AND ER.Event = 'Trick' AND ER.Round in (" + curRound + ", 25) "
-				+ "Where XT.SanctionId = '" + TrickEventData.mySanctionNum + "' And XT.LastUpdateDate is not null ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
-			if ( HelperFunctions.isObjectPopulated( curFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + "And " + curFilterCmd + " ";
+			curSelectCommand[curIdx] = String.Format( "SELECT OW.* FROM OfficialWork OW "
+				+ "INNER JOIN EventReg XT on XT.SanctionId = OW.SanctionId AND XT.MemberId = OW.MemberId AND XT.Event = 'Trick' "
+				+ "Where OW.SanctionId = '{0}' And OW.LastUpdateDate is not null {1}", TrickEventData.mySanctionNum, tmpFilterCmd )
+				+ String.Format( " Union "
+				+ "SELECT OW.* FROM OfficialWork OW "
+				+ "INNER JOIN OfficialWorkAsgmt XT on XT.SanctionId = OW.SanctionId AND XT.MemberId = OW.MemberId AND XT.Event = 'Trick' "
+				+ "Where OW.SanctionId = '{0}' And OW.LastUpdateDate is not null And Round in ({1}, 25) {2} ", TrickEventData.mySanctionNum, curRound, tmpFilterCmd2 );
 
 			curIdx++;
-			curSelectCommand[curIdx] = "Select * from OfficialWorkAsgmt "
-				+ " Where SanctionId = '" + TrickEventData.mySanctionNum + "' And Event = 'Trick' And Round in (" + curRound + ", 25) ";
-			if ( HelperFunctions.isObjectPopulated( tmpFilterCmd ) ) curSelectCommand[curIdx] = curSelectCommand[curIdx] + tmpFilterCmd + " ";
+			curSelectCommand[curIdx] = String.Format( "Select * FROM OfficialWorkAsgmt XT Where XT.SanctionId = '{0}' And Event = 'Trick' And Round in ({1}, 25) {2} "
+				, TrickEventData.mySanctionNum, curRound, tmpFilterCmd2 );
+
 			return curSelectCommand;
 		}
 
