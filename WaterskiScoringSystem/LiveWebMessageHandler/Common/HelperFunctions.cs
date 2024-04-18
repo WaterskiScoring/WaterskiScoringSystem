@@ -99,7 +99,7 @@ namespace LiveWebMessageHandler.Common {
 			if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
 			if ( inGroupValue.ToUpper().Equals( "NON TEAM" ) ) return "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
 			if ( isTrickVideo ) return "And ER.AgeGroup = '" + inGroupValue + "' ";
-			if ( isOrderByRound ) return "And COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";
+			if ( isOrderByRound ) return "And COALESCE( ER.EventGroup +'-' + ER.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";
 			return "And ER.EventGroup = '" + inGroupValue + "' ";
 			
 		}

@@ -132,7 +132,6 @@ namespace LiveWebMessageHandler.Externalnterface {
 		}
 		
 		public static String sendMessagePostJson( String inUrl, String inMessage ) {
-			Log.WriteFile( String.Format( "SendMessageHttp: sendMessagePostJson: URL={0}, Message={1}", inUrl, inMessage ) );
 			return sendMessagePost( inUrl, inMessage, "application/json;charset=\"utf-8\"", null, null );
 		}
 

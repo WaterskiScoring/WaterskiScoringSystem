@@ -136,7 +136,16 @@ namespace WaterskiScoringSystem.Tournament {
 			IndividualTypeCombobox.Text = "Athlete";
 
 			String curSafetyDirector = HelperFunctions.getDataRowColValue( myTourRow, "ChiefSafetyName", "" );
-			if ( HelperFunctions.isObjectPopulated( curSafetyDirector ) ) SaveNoteLabel.Text += curSafetyDirector;
+			String curSafetyDirPhone = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" );
+			String curSafetyDirEmail = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirEmail", "" );
+			if ( HelperFunctions.isObjectPopulated( curSafetyDirector ) ) {
+				String[] curSafetyDirInfo = new string[4];
+				curSafetyDirInfo[0] = "Click on save button to write this information to a text file that should be sent to";
+				curSafetyDirInfo[1] = "Chief Safety Director: " + curSafetyDirector;
+				curSafetyDirInfo[2] = "Phone: " + curSafetyDirPhone;
+				curSafetyDirInfo[3] = "Email: " + curSafetyDirEmail;
+				ChiefSafetyTextBox.Lines = curSafetyDirInfo;
+			}
 		}
 
 		/*
@@ -260,8 +269,15 @@ namespace WaterskiScoringSystem.Tournament {
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outBuffer.WriteLine( "" );
+				outLine = new StringBuilder( "" );
 				outLine.Append( "SafetyProgramHref: " + SafetyProgramHref.Text );
 				outBuffer.WriteLine( outLine.ToString() );
+
+				outBuffer.WriteLine( "" );
+				outLine = new StringBuilder( "" );
+				outBuffer.WriteLine( "SafetyDirector: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefSafetyName", "" ) );
+				outBuffer.WriteLine( "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" ) );
+				outBuffer.WriteLine( "Email: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirEmail", "" ) );
 
 				outBuffer.Flush();
 				outBuffer.Close();
@@ -278,7 +294,7 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( "SELECT T.SanctionId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation, SanctionEditCode" );
 			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation, TourDataLoc" );
 			curSqlStmt.Append( ", T.ContactMemberId, TourRegCO.SkierName AS ContactName" );
-			curSqlStmt.Append( ", T.SafetyDirMemberId, TourRegCS.SkierName AS ChiefSafetyName " );
+			curSqlStmt.Append( ", T.SafetyDirMemberId, TourRegCS.SkierName AS ChiefSafetyName, SafetyDirPhone, SafetyDirEmail " );
 			curSqlStmt.Append( "FROM Tournament T " );
 			curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCS ON TourRegCS.SanctionId = T.SanctionId AND TourRegCS.MemberId = T.SafetyDirMemberId" );
 			curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCO ON TourRegCO.SanctionId = T.SanctionId AND TourRegCO.MemberId = T.ContactMemberId" );

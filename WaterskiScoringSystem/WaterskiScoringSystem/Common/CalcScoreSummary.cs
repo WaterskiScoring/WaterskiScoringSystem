@@ -1985,19 +1985,22 @@ namespace WaterskiScoringSystem.Common {
          * Calculate placements for final rounds for head to head format
          */
 		private DataTable calcElimRoundPlcmts( DataTable inFinalScoreDataTable, String inRules, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEvent ) {
-
-			String curSortCmd = "", curScoreAttr = "";
+			String curSortCmd, curScoreAttr, curScoreName;
+			String curPlcmtName = "Plcmt" + inEvent;
 			if ( inPlcmtMethod.ToLower().Equals( "score" ) ) {
 				if ( inEvent.Equals( "Jump" ) ) {
+					curScoreName = "ScoreFeet";
 					if ( HelperFunctions.isIwwfEvent(inRules) ) {
 						curScoreAttr = "ScoreMeters";
 					} else {
 						curScoreAttr = "ScoreFeet DESC, ScoreMeters";
 					}
 				} else {
+					curScoreName = "Score" + inEvent;
 					curScoreAttr = "Score" + inEvent;
 				}
 			} else {
+				curScoreName = "Points" + inEvent;
 				curScoreAttr = "Points" + inEvent;
 			}
 
@@ -2055,19 +2058,8 @@ namespace WaterskiScoringSystem.Common {
 						curGroup = (String)curRow["EventGroup" + inEvent];
 					}
 				}
-				try {
-					if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" ) ) {
-						curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-					} else if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-						curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-					} else if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-						curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-					} else {
-						curRound = "1";
-					}
-				} catch {
-					curRound = "1";
-				}
+
+				curRound = HelperFunctions.getDataRowColValue( curRow, "Round", "1" );
 				if ( curRound != prevRound ) {
 					curPlcmtPos = 1;
 					prevScore = -1;
@@ -2077,43 +2069,20 @@ namespace WaterskiScoringSystem.Common {
 					prevScore = -1;
 				}
 
-				if ( inPlcmtMethod.ToLower().Equals( "score" ) ) {
-					try {
-						if ( inEvent.Equals( "Jump" ) ) {
-							curScore = (Decimal)( curRow["ScoreFeet"] );
-						} else {
-							if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-								curScore = (Decimal)( curRow["Score" + inEvent] );
-							} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-								curScore = (Int16)( curRow["Score" + inEvent] );
-							} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-								curScore = (int)( curRow["Score" + inEvent] );
-							} else {
-								curScore = 0;
-							}
-						}
-					} catch {
-						curScore = 0;
-					}
-				} else {
-					try {
-						curScore = (Decimal)( curRow["Points" + inEvent] );
-					} catch {
-						curScore = 0;
-					}
-				}
+				// curScoreName
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
 				if ( curScore == prevScore && curIdx > 0 ) {
-					curPlcmt = (String)curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent];
+					curPlcmt = HelperFunctions.getDataRowColValue( curFinalsDataTable.Rows[curIdx - 1], curPlcmtName, "" );
 					if ( curPlcmt.Contains( "T" ) ) {
 					} else {
 						curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-						curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+						curFinalsDataTable.Rows[curIdx - 1][curPlcmtName] = curPlcmt;
 					}
 				} else {
 					curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
 					curPlcmt += " ";
 				}
-				curRow["Plcmt" + inEvent] = curPlcmt;
+				curRow[curPlcmtName] = curPlcmt;
 				curPlcmtPos++;
 				curIdx++;
 			}
@@ -2141,90 +2110,6 @@ namespace WaterskiScoringSystem.Common {
 			curFinalsDataTable.DefaultView.Sort = curSortCmd;
 			curFinalsDataTable = curFinalsDataTable.DefaultView.ToTable();
 
-			/*
-            int curLastRound = 0, curSkierRound = 0;
-
-            curGroup = "";
-            prevGroup = "";
-            curPlcmt = "";
-            curIdx = 0;
-            curPlcmtPos = 1;
-            curScore = 0;
-            prevScore = -1;
-            DataRow curDataRow = null;
-            while ( curIdx < curFinalsDataTable.Rows.Count ) {
-                curDataRow = curFinalsDataTable.Rows[curIdx];
-                curPlcmt = "";
-                prevGroup = curGroup;
-                prevScore = curScore;
-
-                try {
-                    if ( curDataRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" ) ) {
-                        curSkierRound = ( ( Byte ) curDataRow["Round" + inEvent] );
-                    } else if ( curDataRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-                        curSkierRound = ( ( Int16 ) curDataRow["Round" + inEvent] );
-                    } else if ( curDataRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-                        curSkierRound = ( ( int ) curDataRow["Round" + inEvent] );
-                    } else {
-                        curSkierRound = 1;
-                    }
-                } catch {
-                    curSkierRound = 1;
-                }
-                if ( curIdx == 0 ) curLastRound = curSkierRound;
-                if ( curSkierRound < curLastRound) {
-                    if ( ((String)curDataRow["Plcmt" + inEvent]).Trim() == "1") {
-                        curFinalsDataTable.Rows.Remove( curDataRow );
-                        continue;
-                    }
-                }
-
-                if ( inPlcmtOrg.ToLower().Equals( "tour" ) || inPlcmtOrg.ToLower().Equals( "awsa" ) ) {
-                } else {
-                    curGroup = ( String ) curDataRow["AgeGroup"] + "-" + ( String ) curDataRow["EventGroup" + inEvent];
-                }
-                if ( inPlcmtMethod.ToLower().Equals( "score" ) ) {
-                    try {
-                        if ( inEvent.Equals( "Jump" ) ) {
-                            curScore = ( Decimal ) ( curDataRow["ScoreFeet"] );
-                        } else {
-                            if ( curDataRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-                                curScore = ( Decimal ) ( curDataRow["Score" + inEvent] );
-                            } else if ( curDataRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-                                curScore = ( Int16 ) ( curDataRow["Score" + inEvent] );
-                            } else if ( curDataRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-                                curScore = ( int ) ( curDataRow["Score" + inEvent] );
-                            } else {
-                                curScore = 0;
-                            }
-                        }
-                    } catch {
-                        curScore = 0;
-                    }
-                } else {
-                    try {
-                        curScore = ( Decimal ) ( curDataRow["Points" + inEvent] );
-                    } catch {
-                        curScore = 0;
-                    }
-                }
-                if ( curScore == prevScore && curIdx > 0 ) {
-                    curPlcmt = ( String ) curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent];
-                    if ( curPlcmt.Contains( "T" ) ) {
-                    } else {
-                        curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-                        curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
-                    }
-                } else {
-                    curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
-                    curPlcmt += " ";
-                }
-                curDataRow["Plcmt" + inEvent] = curPlcmt;
-                curPlcmtPos++;
-                curIdx++;
-            }
-            */
-
 			return curFinalsDataTable;
 		}
 
@@ -2232,19 +2117,22 @@ namespace WaterskiScoringSystem.Common {
          * Calculate placements for final rounds for head to head format
          */
 		private DataTable calcElimRoundFinalPlcmts( DataTable inFinalScoreDataTable, String inRules, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEvent ) {
-
-			String curSortCmd = "", curScoreAttr = "";
+			String curSortCmd, curScoreAttr, curScoreName;
+			String curPlcmtName = "Plcmt" + inEvent;
 			if ( inPlcmtMethod.ToLower().Equals( "score" ) ) {
 				if ( inEvent.Equals( "Jump" ) ) {
-					if ( HelperFunctions.isIwwfEvent(inRules) ) {
+					curScoreName = "ScoreFeet";
+					if ( HelperFunctions.isIwwfEvent( inRules ) ) {
 						curScoreAttr = "ScoreMeters";
 					} else {
 						curScoreAttr = "ScoreFeet DESC, ScoreMeters";
 					}
 				} else {
+					curScoreName = "Score" + inEvent;
 					curScoreAttr = "Score" + inEvent;
 				}
 			} else {
+				curScoreName = "Points" + inEvent;
 				curScoreAttr = "Points" + inEvent;
 			}
 
@@ -2284,19 +2172,8 @@ namespace WaterskiScoringSystem.Common {
 				} else {
 					curGroup = "";
 				}
-				try {
-					if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Byte" ) ) {
-						curRound = ( (Byte)curRow["Round" + inEvent] ).ToString();
-					} else if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-						curRound = ( (Int16)curRow["Round" + inEvent] ).ToString();
-					} else if ( curRow["Round" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-						curRound = ( (int)curRow["Round" + inEvent] ).ToString();
-					} else {
-						curRound = "1";
-					}
-				} catch {
-					curRound = "1";
-				}
+
+				curRound = HelperFunctions.getDataRowColValue( curRow, "Round", "1" );
 				if ( curRound != prevRound ) {
 					curPlcmtPos = 1;
 					prevScore = -1;
@@ -2306,43 +2183,19 @@ namespace WaterskiScoringSystem.Common {
 					prevScore = -1;
 				}
 
-				if ( inPlcmtMethod.ToLower().Equals( "score" ) ) {
-					try {
-						if ( inEvent.Equals( "Jump" ) ) {
-							curScore = (Decimal)( curRow["ScoreFeet"] );
-						} else {
-							if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Decimal" ) ) {
-								curScore = (Decimal)( curRow["Score" + inEvent] );
-							} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int16" ) ) {
-								curScore = (Int16)( curRow["Score" + inEvent] );
-							} else if ( curRow["Score" + inEvent].GetType() == System.Type.GetType( "System.Int32" ) ) {
-								curScore = (int)( curRow["Score" + inEvent] );
-							} else {
-								curScore = 0;
-							}
-						}
-					} catch {
-						curScore = 0;
-					}
-				} else {
-					try {
-						curScore = (Decimal)( curRow["Points" + inEvent] );
-					} catch {
-						curScore = 0;
-					}
-				}
+				decimal.TryParse( HelperFunctions.getDataRowColValue( curRow, curScoreName, "0" ), out curScore );
 				if ( curScore == prevScore && curIdx > 0 ) {
-					curPlcmt = (String)curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent];
+					curPlcmt = (String)curFinalsDataTable.Rows[curIdx - 1][curPlcmtName];
 					if ( curPlcmt.Contains( "T" ) ) {
 					} else {
 						curPlcmt = curPlcmt.Substring( 0, 3 ) + "T";
-						curFinalsDataTable.Rows[curIdx - 1]["Plcmt" + inEvent] = curPlcmt;
+						curFinalsDataTable.Rows[curIdx - 1][curPlcmtName] = curPlcmt;
 					}
 				} else {
 					curPlcmt = curPlcmtPos.ToString( "##0" ).PadLeft( 3, ' ' );
 					curPlcmt += " ";
 				}
-				curRow["Plcmt" + inEvent] = curPlcmt;
+				curRow[curPlcmtName] = curPlcmt;
 				curPlcmtPos++;
 				curIdx++;
 			}

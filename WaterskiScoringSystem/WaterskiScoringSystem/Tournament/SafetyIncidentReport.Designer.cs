@@ -69,7 +69,7 @@
 			this.MemberStatusTextbox = new System.Windows.Forms.TextBox();
 			this.SafetyProgramHref = new System.Windows.Forms.LinkLabel();
 			this.SaveButton = new System.Windows.Forms.Button();
-			this.SaveNoteLabel = new System.Windows.Forms.Label();
+			this.ChiefSafetyTextBox = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// ClubNameLabel
@@ -559,7 +559,7 @@
 			// 
 			this.SaveButton.AutoSize = true;
 			this.SaveButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SaveButton.Location = new System.Drawing.Point(10, 855);
+			this.SaveButton.Location = new System.Drawing.Point(10, 885);
 			this.SaveButton.Name = "SaveButton";
 			this.SaveButton.Size = new System.Drawing.Size(75, 29);
 			this.SaveButton.TabIndex = 23;
@@ -567,26 +567,30 @@
 			this.SaveButton.UseVisualStyleBackColor = true;
 			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
 			// 
-			// SaveNoteLabel
+			// ChiefSafetyTextBox
 			// 
-			this.SaveNoteLabel.AutoSize = true;
-			this.SaveNoteLabel.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SaveNoteLabel.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-			this.SaveNoteLabel.Location = new System.Drawing.Point(10, 813);
-			this.SaveNoteLabel.MaximumSize = new System.Drawing.Size(600, 0);
-			this.SaveNoteLabel.Name = "SaveNoteLabel";
-			this.SaveNoteLabel.Size = new System.Drawing.Size(584, 38);
-			this.SaveNoteLabel.TabIndex = 0;
-			this.SaveNoteLabel.Text = "Click on save to save this information to a text file that should be sent to the " +
-    "Chief Safety Director ";
+			this.ChiefSafetyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.ChiefSafetyTextBox.BackColor = System.Drawing.SystemColors.Control;
+			this.ChiefSafetyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.ChiefSafetyTextBox.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ChiefSafetyTextBox.ForeColor = System.Drawing.SystemColors.Highlight;
+			this.ChiefSafetyTextBox.Location = new System.Drawing.Point(10, 800);
+			this.ChiefSafetyTextBox.Multiline = true;
+			this.ChiefSafetyTextBox.Name = "ChiefSafetyTextBox";
+			this.ChiefSafetyTextBox.ReadOnly = true;
+			this.ChiefSafetyTextBox.Size = new System.Drawing.Size(922, 76);
+			this.ChiefSafetyTextBox.TabIndex = 24;
+			this.ChiefSafetyTextBox.Text = "Click on save button to write this information to a text file that should be sent" +
+    " to\r\nChief Safety Director: lastname, firstname\r\nphone\r\nemail";
 			// 
 			// SafetyIncidentReport
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(993, 902);
-			this.Controls.Add(this.SaveNoteLabel);
+			this.ClientSize = new System.Drawing.Size(993, 928);
+			this.Controls.Add(this.ChiefSafetyTextBox);
 			this.Controls.Add(this.SaveButton);
 			this.Controls.Add(this.SafetyProgramHref);
 			this.Controls.Add(this.MemberStatusTextbox);
@@ -687,6 +691,6 @@
 		private System.Windows.Forms.TextBox MemberStatusTextbox;
 		private System.Windows.Forms.LinkLabel SafetyProgramHref;
 		private System.Windows.Forms.Button SaveButton;
-		private System.Windows.Forms.Label SaveNoteLabel;
+		private System.Windows.Forms.TextBox ChiefSafetyTextBox;
 	}
 }

@@ -94,8 +94,8 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT O.* FROM EventRunOrder O " );
-			curSqlStmt.Append( String.Format( "Where O.SanctionId = '{0}' AND O.Event = '{1}' ", inSanctionId, inEvent ) );
+			curSqlStmt.Append( "SELECT * FROM EventRunOrder ER " );
+			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
 			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
 			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event", "Round" }, curSqlStmt.ToString(), "Update" ) );
 
@@ -176,7 +176,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1) " );
 					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true ) );
 					curSqlStmt.Append( " Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
-					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 
 				} else {
 					curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round " );
@@ -189,7 +189,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "AND S.Round = " + inRound + " " );
 					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false ) );
 					curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
-					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 				}
 
 				String curMemberId = "", curAgeGroup = "", curSkierName = "";
@@ -586,7 +586,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1) " );
 					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true ) );
 					curSqlStmt.Append( " Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
-					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 
 				} else {
 					curSqlStmt.Append( "Select S.SanctionId, S.MemberId, TR.SkierName, S.AgeGroup, S.Round " );
@@ -597,8 +597,9 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( String.Format( "Where S.SanctionId = '{0}' And ER.Event = '{1}' And Round = {2} ", inSanctionId, inEvent, inRound ) );
 					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false ) );
 					curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
-					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 				}
+				if ( curDataTable == null ) return;
 
 				String curMemberId = "", curAgeGroup = "", curSkierName = "";
 				byte curRound = 0;
@@ -795,7 +796,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			ArrayList curListColumns = new ArrayList();
 			ArrayList curListRows = new ArrayList();
 
-			curDataTable = DataAccess.getDataTable( inSqlStmt );
+			curDataTable = DataAccess.getDataTable( inSqlStmt, false );
 			if ( curDataTable == null ) return null;
 
 			foreach ( String curKey in inKeyColumns ) {

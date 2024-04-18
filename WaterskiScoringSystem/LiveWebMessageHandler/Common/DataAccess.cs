@@ -8,6 +8,8 @@ namespace LiveWebMessageHandler.Common {
 		private static int DataAccessOpenCount = 0;
 		private static int DataAccessEmbeddedTransactionCount = 0;
 
+		private static String myDataAccessLastExcpMsg = "";
+
 		private static SqlCeConnection DataAccessConnection = null;
 		private static SqlCeTransaction DataAccessTransaction = null;
 		private static SqlCeDataAdapter DataAccessDataAdapter = null;
@@ -15,6 +17,8 @@ namespace LiveWebMessageHandler.Common {
 
 		public DataAccess() {
 		}
+
+		public static string DataAccessLastExcpMsg { get => myDataAccessLastExcpMsg; set => myDataAccessLastExcpMsg = value; }
 
 		public static bool DataAccessOpen() {
 			String curMethodName = "DataAccess:DataAccessOpen: ";
@@ -93,12 +97,12 @@ namespace LiveWebMessageHandler.Common {
 		public static DataTable getDataTable( String inSelectStmt, bool inShowMsg ) {
 			String curMethodName = "DataAccess:getDataTable";
 			DataTable curDataTable = new DataTable();
+			DataAccessLastExcpMsg = "";
 
 			try {
 				// Open connection if needed
-				if ( DataAccessConnection == null ) {
-					DataAccessOpen();
-				}
+				if ( DataAccessConnection == null ) DataAccessOpen();
+				
 				// Create data adapter
 				DataAccessDataAdapter = new SqlCeDataAdapter( inSelectStmt, DataAccessConnection );
 				DataAccessDataAdapter.Fill( curDataTable );
@@ -106,10 +110,9 @@ namespace LiveWebMessageHandler.Common {
 			} catch ( Exception ex ) {
 				String ExcpMsg = ex.Message;
 				if ( inSelectStmt != null ) { ExcpMsg += "\nSQL=" + inSelectStmt; }
-				Log.WriteFile( curMethodName + ":Exception Performing SQL operation:" + ExcpMsg );
-				if ( inShowMsg ) {
-					MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
-				}
+				DataAccessLastExcpMsg = ":Exception Performing SQL operation:" + ExcpMsg;
+				Log.WriteFile( curMethodName + DataAccessLastExcpMsg );
+				if ( inShowMsg ) MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
 				return null;
 			}
 
@@ -117,27 +120,30 @@ namespace LiveWebMessageHandler.Common {
 		}
 
 		public static int ExecuteCommand( String inSelectStmt ) {
+			return ExecuteCommand( inSelectStmt, true );
+		}
+		public static int ExecuteCommand( String inSelectStmt, bool inShowMsg ) {
 			String curMethodName = "DataAccess:ExecuteCommand";
-			int curReturnValue = 0;
+			DataAccessLastExcpMsg = "";
 
 			try {
 				// Open connection if needed
-				if ( DataAccessConnection == null ) {
-					DataAccessOpen();
-				}
+				if ( DataAccessConnection == null ) DataAccessOpen();
+
 				// Create data adapter
 				DataAccessCommand = new SqlCeCommand( inSelectStmt, DataAccessConnection );
-				curReturnValue = DataAccessCommand.ExecuteNonQuery();
+				return DataAccessCommand.ExecuteNonQuery();
 
 			} catch ( Exception ex ) {
 				String ExcpMsg = ex.Message;
 				if ( inSelectStmt != null ) { ExcpMsg += "\nSQL=" + inSelectStmt; }
-				Log.WriteFile( curMethodName + ":Exception Performing SQL operation:" + ExcpMsg );
-				MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
-				curReturnValue = -1;
-			}
 
-			return curReturnValue;
+				DataAccessLastExcpMsg = ":Exception Performing SQL operation:" + ExcpMsg;
+				Log.WriteFile( curMethodName + DataAccessLastExcpMsg );
+				if ( inShowMsg ) MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
+
+				return -1;
+			}
 		}
 
 		public static Object ExecuteScalarCommand( String inSelectStmt ) {

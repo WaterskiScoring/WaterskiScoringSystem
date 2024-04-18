@@ -85,13 +85,11 @@ namespace LiveWebMessageHandler.Message {
 			try {
 				ActivateTournament();
 
-				curMsg = String.Format( "{0}Connecting to LiveWeb for tournament {1}"
-					, curMethodName, ConnectMgmtData.sanctionNum );
+				curMsg = String.Format( "{0}Connecting to LiveWeb for tournament {1}", curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
 				startTransmitter();
-				curMsg = String.Format( "{0}starting Transmitter for {1}"
-					, curMethodName, ConnectMgmtData.sanctionNum );
+				curMsg = String.Format( "{0}starting Transmitter for {1}", curMethodName, ConnectMgmtData.sanctionNum );
 				addViewMessage( curMsg, true, errorMsg );
 
 				ConnectButton.Enabled = false;
@@ -440,12 +438,12 @@ namespace LiveWebMessageHandler.Message {
 			curSqlStmt.Append( "FROM LiveWebMsgSend " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + ConnectMgmtData.sanctionNum + "' " );
 			curSqlStmt.Append( "Order by CreateDate " );
-			return DataAccess.getDataTable( curSqlStmt.ToString() );
+			return DataAccess.getDataTable( curSqlStmt.ToString(), false );
 		}
 
 		private void removeLiveWebMsgSent( int pkid ) {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete FROM LiveWebMsgSend Where PK = " + pkid );
-			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString(), false );
 		}
 
 		private void DisconnectButton_Click( object sender, EventArgs e ) {
@@ -479,6 +477,7 @@ namespace LiveWebMessageHandler.Message {
 			QueueView.Focus();
 
 			DataTable curDataTable = getLiveWebMsgSend();
+			if ( curDataTable == null ) return;
 			foreach (DataRow curRow in curDataTable.Rows ) {
 				int curViewIdx = QueueView.Rows.Add();
 				DataGridViewRow curViewRow = QueueView.Rows[curViewIdx];

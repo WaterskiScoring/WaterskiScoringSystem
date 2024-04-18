@@ -91,9 +91,9 @@ namespace WaterskiScoringSystem.Tools {
                 try {
                     String[] curEventLocation = ((String)myTourRow["EventLocation"]).Split( ',' );
                     if (curEventLocation.Length == 3) {
-                        curSiteName = curEventLocation[0];
-                        curCity = curEventLocation[1];
-                        curState = curEventLocation[2];
+                        curSiteName = curEventLocation[0].Trim();
+                        curCity = curEventLocation[1].Trim();
+                        curState = curEventLocation[2].Trim();
                         if ( curState.Length != 2 ) {
 							MessageBox.Show( "State value must the valid 2 character abbreviation"
 								+ "\nPlease enter this information on the tournament window in the following format:\n"
