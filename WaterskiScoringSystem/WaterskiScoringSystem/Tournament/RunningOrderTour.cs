@@ -1629,7 +1629,8 @@ namespace WaterskiScoringSystem.Tournament {
 
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             curPreviewDialog.Document = myPrintDoc;
-            curPreviewDialog.Focus();
+			curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
+			curPreviewDialog.Focus();
             curPreviewDialog.ShowDialog();
             RankingScore.HeaderText = "Ranking Score";
 

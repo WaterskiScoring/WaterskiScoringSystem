@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
@@ -115,7 +110,8 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navRefresh_Click( object sender, EventArgs e ) {
-            try {
+			String curMethodName = "OfficialWorkAsgmt: navRefresh_Click: ";
+			try {
                 if ( isDataModified ) {
                     checkModifyPrompt();
                     isDataModified = false;
@@ -130,14 +126,19 @@ namespace WaterskiScoringSystem.Tournament {
 				myViewRowIdx = 0;
 
 			} catch ( Exception ex ) {
-                MessageBox.Show( "Error attempting to retrieve tournament official assignments\n" + ex.Message );
-            }
-        }
+				String curExcptMsg = "Error attempting to retrieve tournament official assignments: Exception: " + ex.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
 
-        private void loadTourMemberView() {
-            //Retrieve data for current tournament
-            //Used for initial load and to refresh data after updates
-            winStatusMsg.Text = "Retrieving tournament entries";
+		/*
+		 * Retrieve data for current tournament
+		 * Used for initial load and to refresh data after updates
+		 */
+		private void loadTourMemberView() {
+			String curMethodName = "OfficialWorkAsgmt: loadTourMemberView: ";
+			winStatusMsg.Text = "Retrieving tournament entries";
             Cursor.Current = Cursors.WaitCursor;
             isLoadActive = true;
 			DataTable curDataTable = myListTourMemberDataTable;
@@ -197,13 +198,16 @@ namespace WaterskiScoringSystem.Tournament {
 				Cursor.Current = Cursors.Default;
 
 			} catch ( Exception ex ) {
-                MessageBox.Show( "Error attempting to retrieve available tournament officials \n" + ex.Message );
-            }
-            isLoadActive = false;
+				String curExcptMsg = "Error attempting to retrieve available tournament officials: Exception: " + ex.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+			isLoadActive = false;
         }
 		
 		private void navRefreshByEvent(  ) {
-            try {
+			String curMethodName = "OfficialWorkAsgmt: navRefreshByEvent: ";
+			try {
                 if ( isDataModified ) {
                     checkModifyPrompt();
                     isDataModified = false;
@@ -231,14 +235,19 @@ namespace WaterskiScoringSystem.Tournament {
                 loadOfficialWorkAsgmtView();
             
             } catch ( Exception ex ) {
-                MessageBox.Show( "Error attempting to retrieve tournament official assignments\n" + ex.Message );
-            }
-        }
+				String curExcptMsg = "Error attempting to retrieve tournament official assignments: Exception: " + ex.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
 
-        private void loadOfficialWorkAsgmtView() {
-            //Retrieve data for current tournament
-            //Used for initial load and to refresh data after updates
-            winStatusMsg.Text = "Retrieving tournament entries";
+		/*
+		 * Retrieve data for current tournament
+		 * Used for initial load and to refresh data after updates
+		 */
+		private void loadOfficialWorkAsgmtView() {
+			String curMethodName = "OfficialWorkAsgmt: loadOfficialWorkAsgmtView: ";
+			winStatusMsg.Text = "Retrieving tournament entries";
             Cursor.Current = Cursors.WaitCursor;
 
             try {
@@ -287,9 +296,11 @@ namespace WaterskiScoringSystem.Tournament {
                 }
                 Cursor.Current = Cursors.Default;
             } catch ( Exception ex ) {
-                MessageBox.Show( "Error retrieving tournament official assignments \n" + ex.Message );
-            }
-        }
+				String curExcptMsg = "Error retrieving tournament official assignments : Exception: " + ex.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
 
         private void checkModifyPrompt() {
             if ( isDataModified ) {
@@ -304,7 +315,7 @@ namespace WaterskiScoringSystem.Tournament {
                     try {
                         navSave_Click( null, null );
                     } catch ( Exception excp ) {
-                        MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+                        MessageBox.Show( "Error attempting to save changes : Exception: " + excp.Message );
                     }
                 } else if ( msgResp == DialogResult.No ) {
                     isDataModified = false;
@@ -330,7 +341,8 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navSave_Click( object sender, EventArgs e ) {
-            try {
+			String curMethodName = "OfficialWorkAsgmt: navSave_Click: ";
+			try {
                 this.Validate();
 
                 if ( saveOfficialWorkAsgmt( myViewRowIdx ) ) {
@@ -350,11 +362,14 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} catch ( Exception excp ) {
-                MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
-            }
-        }
+				String curExcptMsg = "Error attempting to save changes : Exception: " + excp.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
 
         private bool saveOfficialWorkAsgmt( int inRowIdx ) {
+            String curMethodName = "OfficialWorkAsgmt: saveOfficialWorkAsgmt: ";
 			bool curReturn = true;
             int rowsProc;
             Int64 curPK = 0;
@@ -380,12 +395,6 @@ namespace WaterskiScoringSystem.Tournament {
                             String curStartTime = curViewRow.Cells["StartTime"].Value.ToString();
                             String curEndTime = "";
                             String curWorkAsgmt = curViewRow.Cells["WorkAsgmt"].Value.ToString();
-                            /*
-                            DataRow[] curFindRows = myWorkAsgmtListDataTable.Select( "CodeValue = '" + curWorkAsgmt + "'" );
-                            if ( curFindRows.Length > 0 ) {
-                                curWorkAsgmt = (String)curFindRows[0]["ListCode"];
-                            }
-                             */
                             try {
                                 curEndTime = curViewRow.Cells["EndTime"].Value.ToString();
                                 if (curEndTime.Length > 1) {
@@ -417,9 +426,8 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( ", Notes = '" + curNotes + "'" );
                                 curSqlStmt.Append( " Where PK = " + curPK.ToString() );
 								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                if (rowsProc > 0) {
-                                    curViewRow.Cells["Updated"].Value = "N";
-                                }
+                                if (rowsProc > 0) curViewRow.Cells["Updated"].Value = "N";
+								Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
 
 							} else {
                                 curSqlStmt.Append( "Insert OfficialWorkAsgmt ( " );
@@ -436,7 +444,8 @@ namespace WaterskiScoringSystem.Tournament {
                                 curSqlStmt.Append( ", '" + curNotes + "'" );
                                 curSqlStmt.Append( ")" );
 								rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                if (rowsProc > 0) {
+								Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+								if ( rowsProc > 0) {
                                     curViewRow.Cells["Updated"].Value = "N";
                                     curSqlStmt = new StringBuilder( "" );
                                     curSqlStmt.Append( "Select max(PK) as MaxPK From OfficialWorkAsgmt" );
@@ -453,18 +462,22 @@ namespace WaterskiScoringSystem.Tournament {
 
 						} catch (Exception excp) {
                             curReturn = false;
-                            MessageBox.Show( "Error attempting to update skier information \n" + excp.Message );
-                        }
-                    } else {
+							String curExcptMsg = "Error attempting to update skier information : Exception: " + excp.Message;
+							Log.WriteFile( curMethodName + curExcptMsg );
+							MessageBox.Show( curExcptMsg );
+						}
+					} else {
                         curReturn = false;
                     }
                 }
             } catch ( Exception excp ) {
                 curReturn = false;
-                MessageBox.Show( "Error attempting to update skier information \n" + excp.Message );
-            }
+				String curExcptMsg = "Error attempting to update skier information : Exception: " + excp.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
 
-            return curReturn;
+			return curReturn;
         }
 
         private void roundActiveSelect_Click( object sender, EventArgs e ) {
@@ -473,7 +486,7 @@ namespace WaterskiScoringSystem.Tournament {
                 try {
                     navSave_Click( null, null );
                 } catch ( Exception excp ) {
-                    MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+                    MessageBox.Show( "Error attempting to save changes : Exception: " + excp.Message );
                 }
             }
 
@@ -523,21 +536,9 @@ namespace WaterskiScoringSystem.Tournament {
             //Load round selection list based on number of rounds specified for the tournament
             Int16 curSlalomRounds = 0, curTrickRounds = 0, curJumpRounds = 0;
             myTourRounds = 0;
-            try {
-                curSlalomRounds = Convert.ToInt16( myTourRow["SlalomRounds"].ToString() );
-            } catch {
-                curSlalomRounds = 0;
-            }
-            try {
-                curTrickRounds = Convert.ToInt16( myTourRow["TrickRounds"].ToString() );
-            } catch {
-                curTrickRounds = 0;
-            }
-            try {
-                curJumpRounds = Convert.ToInt16( myTourRow["JumpRounds"].ToString() );
-            } catch {
-                curJumpRounds = 0;
-            }
+            Int16.TryParse( HelperFunctions.getDataRowColValue( myTourRow, "SlalomRounds", "0" ), out curSlalomRounds );
+			Int16.TryParse( HelperFunctions.getDataRowColValue( myTourRow, "TrickRounds", "0" ), out curTrickRounds );
+			Int16.TryParse( HelperFunctions.getDataRowColValue( myTourRow, "JumpRounds", "0" ), out curJumpRounds );
             if ( curSlalomRounds > myTourRounds ) { myTourRounds = curSlalomRounds; }
             if ( curTrickRounds > myTourRounds ) { myTourRounds = curTrickRounds; }
             if ( curJumpRounds > myTourRounds ) { myTourRounds = curJumpRounds; }
@@ -586,7 +587,7 @@ namespace WaterskiScoringSystem.Tournament {
                     navSave_Click( null, null );
                     winStatusMsg.Text = "Previous row saved.";
                 } catch ( Exception excp ) {
-                    MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+                    MessageBox.Show( "Error attempting to save changes : Exception: " + excp.Message );
                 }
             }
             if ( !( isDataModified ) ) {
@@ -599,6 +600,7 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
 		private DataGridViewRow addWorkAsgmtRow() {
+			String curMethodName = "OfficialWorkAsgmt: addWorkAsgmtRow: ";
 			string DateString = DateTime.Now.ToString( "MM/dd/yy hh:mm:ss" );
 			DataGridViewRow curViewRow = null;
             try {
@@ -612,7 +614,9 @@ namespace WaterskiScoringSystem.Tournament {
 					officialWorkAsgmtDataGridView.Rows.Insert( myViewRowIdx );
 					curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
 				} catch ( Exception excp ) {
-					MessageBox.Show( "Error attempting to add new official row \n" + excp.Message );
+					String curExcptMsg = "Error attempting to add new official row : Exception: " + excp.Message;
+					Log.WriteFile( curMethodName + curExcptMsg );
+					MessageBox.Show( curExcptMsg );
 				}
 			}
 
@@ -641,19 +645,25 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void navDeleteItem_Click( object sender, EventArgs e ) {
+			String curMethodName = "OfficialWorkAsgmt: navDeleteItem_Click: ";
 			if ( myViewRowIdx < 0 ) return;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+            Int64 curPK = 0;
+			int rowsProc;
 
-            try {
-                int rowsProc;
+			try {
                 DataGridViewRow curViewRow = officialWorkAsgmtDataGridView.Rows[myViewRowIdx];
-                Int64 curPK = Convert.ToInt32( curViewRow.Cells["PK"].Value );
-
-				StringBuilder curSqlStmt = new StringBuilder( "" );
-                if (curPK > 0) {
-					curSqlStmt.Append( "Delete OfficialWorkAsgmt " );
-                    curSqlStmt.Append( " Where PK = " + curPK.ToString() );
+				Int64.TryParse( HelperFunctions.getViewRowColValue( curViewRow, "PK", "0" ), out curPK);
+				if ( curPK > 0) {
+					curSqlStmt.Append( "Delete OfficialWorkAsgmt Where PK = " + curPK.ToString() );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                }
+                    String curLogMsg = String.Format( "Member {0} removed from assignment {1} for event {2} group {3}"
+                        , HelperFunctions.getViewRowColValue( curViewRow, "MemberName", "" )
+                        , HelperFunctions.getViewRowColValue( curViewRow, "WorkAsgmt", "" )
+                        , HelperFunctions.getViewRowColValue( curViewRow, "EventGroup", "" )
+                        , HelperFunctions.getViewRowColValue( curViewRow, "Event", "" ) );
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + curLogMsg );
+				}
 
 				officialWorkAsgmtDataGridView.Rows.Remove( curViewRow );
 				winStatusMsg.Text = "Current row deleted";
@@ -667,11 +677,14 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} catch ( Exception excp ) {
-                MessageBox.Show( "Error attempting to delete current official assignment \n" + excp.Message );
-            }
-        }
+				String curExcptMsg = "Error attempting to delete current official assignment: Exception: " + excp.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
 
         private void officialWorkAsgmtDataGridView_KeyUp( object sender, KeyEventArgs e ) {
+			String curMethodName = "OfficialWorkAsgmt: officialWorkAsgmtDataGridView_KeyUp: ";
 			DataGridView curView = (DataGridView) sender;
 			String curColName = "";
             try {
@@ -710,9 +723,11 @@ namespace WaterskiScoringSystem.Tournament {
 				}
 
 			} catch (Exception exp) {
-				MessageBox.Show( "Exception in slalomRecapDataGridView_KeyUp \n" + exp.Message );
-            }
-        }
+				String curExcptMsg = "Exception: " + exp.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curMethodName + curExcptMsg );
+			}
+		}
 
 		private void officialWorkAsgmtDataGridView_CellEnter( object sender, DataGridViewCellEventArgs e ) {
 			DataGridView curView = (DataGridView)sender;
@@ -890,7 +905,7 @@ namespace WaterskiScoringSystem.Tournament {
 						return;
 
 					} catch ( Exception excp ) {
-						MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
+						MessageBox.Show( "Error attempting to save changes : Exception: " + excp.Message );
 					}
 				} else {
 					myViewRowIdx = e.RowIndex;
@@ -1078,84 +1093,90 @@ namespace WaterskiScoringSystem.Tournament {
 		}
 
 		private void navCopyItem_Click(object sender, EventArgs e) {
-            StringBuilder curSqlStmt = new StringBuilder( "" );
+			String curMethodName = "OfficialWorkAsgmt: navCopyItem_Click: ";
+			StringBuilder curSqlStmt = new StringBuilder( "" );
             String curFromGroup = "";
 
             if (myEvent.Equals( "All" )) {
                 MessageBox.Show( "You must select an event to be copied" );
-            } else {
-                if (HelperFunctions.isObjectEmpty( EventGroupList.SelectedItem )) {
-                    MessageBox.Show( "You must select an event group to be copied" );
-                } else {
-					curFromGroup = EventGroupList.SelectedItem.ToString();
-                    if (curFromGroup.ToLower().Equals( "all" )) {
-                        MessageBox.Show( "You must select an event group to be copied" );
-                    } else {
-                        if (officialWorkAsgmtDataGridView.Rows.Count > 1) {
-                            String curFromRound = roundActiveSelect.RoundValue;
-                            Int16 curRounds = Convert.ToInt16( myTourRow[myEvent + "Rounds"].ToString() );
-                            OfficialWorkAsgmtCopy curDialog = new OfficialWorkAsgmtCopy();
-							curDialog.CopyFromGroup = curFromGroup;
-							curDialog.CopyFromRound = curFromRound;
-
-							curDialog.showAvailable( mySanctionNum, myTourRules, myEvent, curRounds );
-                            curDialog.ShowDialog( this );
-                            if (curDialog.DialogResult == DialogResult.OK) {
-                                String curCopyToRound = curDialog.CopyToRound;
-                                String curCopyToGroup = curDialog.CopyToGroup;
-
-                                if (curCopyToRound.Length > 0 && curCopyToGroup.Length > 0) {
-                                    curSqlStmt = new StringBuilder( "" );
-                                    curSqlStmt.Append( "Select count(*) as OfficialCount " );
-                                    curSqlStmt.Append( "From OfficialWorkAsgmt " );
-                                    curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                                    curSqlStmt.Append( "And Round = " + curCopyToRound + " " );
-                                    curSqlStmt.Append( "And EventGroup = '" + curCopyToGroup + "' " );
-                                    curSqlStmt.Append( "And Event = '" + myEvent + "' " );
-
-                                    DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                                    if (curDataTable.Rows.Count > 0) {
-                                        if ((int)curDataTable.Rows[0]["OfficialCount"] > 0) {
-                                            MessageBox.Show( "Officials already assigned to " + curCopyToGroup + " round " + curCopyToRound );
-                                        } else {
-                                            try {
-                                                curSqlStmt = new StringBuilder( "" );
-                                                curSqlStmt.Append( "Insert OfficialWorkAsgmt ( " );
-                                                curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, Round, WorkAsgmt, StartTime, EndTime, Notes " );
-                                                curSqlStmt.Append( ") Select SanctionId, MemberId, Event, '" + curCopyToGroup + "', " + curCopyToRound + ", WorkAsgmt, getdate(), null, null  " );
-                                                curSqlStmt.Append( "From OfficialWorkAsgmt " );
-                                                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
-                                                curSqlStmt.Append( "And Round = " + curFromRound + " " );
-                                                curSqlStmt.Append( "And EventGroup = '" + curFromGroup + "' " );
-                                                curSqlStmt.Append( "And Event = '" + myEvent + "' " );
-												int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                                                if (rowsProc > 0) {
-                                                    MessageBox.Show( "Rows copied = " + rowsProc );
-                                                    winStatusMsg.Text = "Changes successfully saved";
-
-                                                    roundActiveSelect.RoundValue = curCopyToRound;
-                                                    EventGroupList.SelectedItem = curCopyToGroup;
-                                                    navRefreshByEvent();
-                                                }
-                                                isDataModified = false;
-
-											} catch (Exception excp) {
-                                                MessageBox.Show( "Error attempting to copy officials information \n" + excp.Message );
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            MessageBox.Show( "No rows available to be copied" );
-                        }
-                    }
-                }
+                return;
             }
-        }
+			if ( HelperFunctions.isObjectEmpty( EventGroupList.SelectedItem ) ) {
+				MessageBox.Show( "You must select an event group to be copied" );
+				return;
+			}
 
-        private void navSort_Click(object sender, EventArgs e) {
+			curFromGroup = EventGroupList.SelectedItem.ToString();
+			if ( curFromGroup.ToLower().Equals( "all" ) ) {
+				MessageBox.Show( "You must select an event group to be copied" );
+				return;
+			}
+
+			if ( officialWorkAsgmtDataGridView.Rows.Count <= 0 ) {
+				MessageBox.Show( "No rows available to be copied" );
+				return;
+			}
+
+			String curFromRound = roundActiveSelect.RoundValue;
+			Int16 curRounds = Convert.ToInt16( myTourRow[myEvent + "Rounds"].ToString() );
+			OfficialWorkAsgmtCopy curDialog = new OfficialWorkAsgmtCopy();
+			curDialog.CopyFromGroup = curFromGroup;
+			curDialog.CopyFromRound = curFromRound;
+
+			curDialog.showAvailable( mySanctionNum, myTourRules, myEvent, curRounds );
+			curDialog.ShowDialog( this );
+            if ( curDialog.DialogResult != DialogResult.OK ) return;
+
+			String curCopyToRound = curDialog.CopyToRound;
+			String curCopyToGroup = curDialog.CopyToGroup;
+			if ( curCopyToRound.Length <= 0 || curCopyToGroup.Length <= 0 ) return;
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "Select count(*) as OfficialCount " );
+			curSqlStmt.Append( "From OfficialWorkAsgmt " );
+			curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+			curSqlStmt.Append( "And Round = " + curCopyToRound + " " );
+			curSqlStmt.Append( "And EventGroup = '" + curCopyToGroup + "' " );
+			curSqlStmt.Append( "And Event = '" + myEvent + "' " );
+
+			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable.Rows.Count <= 0 ) return;
+
+			if ( (int)curDataTable.Rows[0]["OfficialCount"] > 0 ) {
+				MessageBox.Show( "Officials already assigned to " + curCopyToGroup + " round " + curCopyToRound );
+				return;
+			}
+
+			try {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Insert OfficialWorkAsgmt ( " );
+				curSqlStmt.Append( "SanctionId, MemberId, Event, EventGroup, Round, WorkAsgmt, StartTime, EndTime, Notes " );
+				curSqlStmt.Append( ") Select SanctionId, MemberId, Event, '" + curCopyToGroup + "', " + curCopyToRound + ", WorkAsgmt, getdate(), null, null  " );
+				curSqlStmt.Append( "From OfficialWorkAsgmt " );
+				curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
+				curSqlStmt.Append( "And Round = " + curFromRound + " " );
+				curSqlStmt.Append( "And EventGroup = '" + curFromGroup + "' " );
+				curSqlStmt.Append( "And Event = '" + myEvent + "' " );
+				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				if ( rowsProc > 0 ) {
+					MessageBox.Show( "Rows copied = " + rowsProc );
+					winStatusMsg.Text = "Changes successfully saved";
+
+					roundActiveSelect.RoundValue = curCopyToRound;
+					EventGroupList.SelectedItem = curCopyToGroup;
+					navRefreshByEvent();
+				}
+				isDataModified = false;
+
+			} catch ( Exception excp ) {
+				String curExcptMsg = "Error attempting to copy officials information : Exception: " + excp.Message;
+				Log.WriteFile( curMethodName + curExcptMsg );
+				MessageBox.Show( curExcptMsg );
+			}
+		}
+
+		private void navSort_Click(object sender, EventArgs e) {
             // Display the form as a modal dialog box.
             sortDialogForm.SortCommand = mySortCommand;
             sortDialogForm.ShowDialog( this );
@@ -1265,7 +1286,9 @@ namespace WaterskiScoringSystem.Tournament {
                 myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
 
                 curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
+				curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
+                curPreviewDialog.Focus();
+				curPreviewDialog.ShowDialog();
             }
         }
 

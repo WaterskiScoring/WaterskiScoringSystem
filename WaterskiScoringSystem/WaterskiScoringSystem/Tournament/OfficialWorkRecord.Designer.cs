@@ -24,35 +24,35 @@ namespace WaterskiScoringSystem.Tournament {
         /// </summary>
         private void InitializeComponent() {
 			System.Windows.Forms.Label noteLabel;
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OfficialWorkRecord));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle83 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle84 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle79 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle80 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle81 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle82 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.listTourMemberDataGridView = new System.Windows.Forms.DataGridView();
 			this.MemberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.SanctionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -73,7 +73,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ReadyToSki = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.winStatus = new System.Windows.Forms.StatusStrip();
 			this.winStatusMsg = new System.Windows.Forms.ToolStripStatusLabel();
-			this.editPK = new System.Windows.Forms.TextBox();
 			this.editSanctionId = new System.Windows.Forms.TextBox();
 			this.editMemberId = new System.Windows.Forms.TextBox();
 			this.editJudgeSlalomRating = new System.Windows.Forms.TextBox();
@@ -189,14 +188,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.listTourMemberDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle57.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle57.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle57.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle57.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle57.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listTourMemberDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle57;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listTourMemberDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.listTourMemberDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.listTourMemberDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.MemberId,
@@ -216,24 +215,24 @@ namespace WaterskiScoringSystem.Tournament {
             this.TechOfficialRating,
             this.AnncrOfficialRating,
             this.ReadyToSki});
-			dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle59.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle59.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle59.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle59.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle59.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle59.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.listTourMemberDataGridView.DefaultCellStyle = dataGridViewCellStyle59;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.listTourMemberDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
 			this.listTourMemberDataGridView.Location = new System.Drawing.Point(5, 62);
 			this.listTourMemberDataGridView.Name = "listTourMemberDataGridView";
-			dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle60.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle60.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle60.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle60.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle60.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.listTourMemberDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle60;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.listTourMemberDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
 			this.listTourMemberDataGridView.RowHeadersVisible = false;
 			this.listTourMemberDataGridView.Size = new System.Drawing.Size(473, 491);
 			this.listTourMemberDataGridView.StandardTab = true;
@@ -388,9 +387,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// ReadyToSki
 			// 
 			this.ReadyToSki.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle58.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.ReadyToSki.DefaultCellStyle = dataGridViewCellStyle58;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.ReadyToSki.DefaultCellStyle = dataGridViewCellStyle2;
 			this.ReadyToSki.HeaderText = "Ready To Ski";
 			this.ReadyToSki.MaxInputLength = 1;
 			this.ReadyToSki.Name = "ReadyToSki";
@@ -411,17 +410,6 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			this.winStatusMsg.Name = "winStatusMsg";
 			this.winStatusMsg.Size = new System.Drawing.Size(0, 17);
-			// 
-			// editPK
-			// 
-			this.editPK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.editPK.Enabled = false;
-			this.editPK.Location = new System.Drawing.Point(484, 40);
-			this.editPK.Margin = new System.Windows.Forms.Padding(1);
-			this.editPK.Name = "editPK";
-			this.editPK.ReadOnly = true;
-			this.editPK.Size = new System.Drawing.Size(85, 20);
-			this.editPK.TabIndex = 4;
 			// 
 			// editSanctionId
 			// 
@@ -968,7 +956,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.JudgeLabel.Location = new System.Drawing.Point(484, 62);
 			this.JudgeLabel.Name = "JudgeLabel";
 			this.JudgeLabel.Padding = new System.Windows.Forms.Padding(81, 1, 81, 1);
-			this.JudgeLabel.Size = new System.Drawing.Size(267, 20);
+			this.JudgeLabel.Size = new System.Drawing.Size(266, 20);
 			this.JudgeLabel.TabIndex = 0;
 			this.JudgeLabel.Text = "3 Event Judges";
 			// 
@@ -981,7 +969,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.DriverLabel.Location = new System.Drawing.Point(484, 143);
 			this.DriverLabel.Name = "DriverLabel";
 			this.DriverLabel.Padding = new System.Windows.Forms.Padding(107, 1, 106, 1);
-			this.DriverLabel.Size = new System.Drawing.Size(267, 20);
+			this.DriverLabel.Size = new System.Drawing.Size(266, 20);
 			this.DriverLabel.TabIndex = 0;
 			this.DriverLabel.Text = "Drivers";
 			// 
@@ -994,7 +982,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ScorerLabel.Location = new System.Drawing.Point(484, 223);
 			this.ScorerLabel.Name = "ScorerLabel";
 			this.ScorerLabel.Padding = new System.Windows.Forms.Padding(105, 1, 104, 1);
-			this.ScorerLabel.Size = new System.Drawing.Size(267, 20);
+			this.ScorerLabel.Size = new System.Drawing.Size(266, 20);
 			this.ScorerLabel.TabIndex = 0;
 			this.ScorerLabel.Text = "Scorers";
 			// 
@@ -1007,7 +995,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.SafetyLabel.Location = new System.Drawing.Point(484, 303);
 			this.SafetyLabel.Name = "SafetyLabel";
 			this.SafetyLabel.Padding = new System.Windows.Forms.Padding(79, 1, 78, 1);
-			this.SafetyLabel.Size = new System.Drawing.Size(267, 20);
+			this.SafetyLabel.Size = new System.Drawing.Size(266, 20);
 			this.SafetyLabel.TabIndex = 0;
 			this.SafetyLabel.Text = "Safety Directors";
 			// 
@@ -1020,7 +1008,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.TechnicalLabel.Location = new System.Drawing.Point(484, 382);
 			this.TechnicalLabel.Name = "TechnicalLabel";
 			this.TechnicalLabel.Padding = new System.Windows.Forms.Padding(62, 1, 61, 1);
-			this.TechnicalLabel.Size = new System.Drawing.Size(267, 20);
+			this.TechnicalLabel.Size = new System.Drawing.Size(266, 20);
 			this.TechnicalLabel.TabIndex = 0;
 			this.TechnicalLabel.Text = "Technical Controllers";
 			// 
@@ -1033,7 +1021,7 @@ namespace WaterskiScoringSystem.Tournament {
 			this.AnncrLabel.Location = new System.Drawing.Point(484, 457);
 			this.AnncrLabel.Name = "AnncrLabel";
 			this.AnncrLabel.Padding = new System.Windows.Forms.Padding(91, 1, 91, 1);
-			this.AnncrLabel.Size = new System.Drawing.Size(267, 20);
+			this.AnncrLabel.Size = new System.Drawing.Size(266, 20);
 			this.AnncrLabel.TabIndex = 0;
 			this.AnncrLabel.Text = "Announcers";
 			this.AnncrLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1345,14 +1333,14 @@ namespace WaterskiScoringSystem.Tournament {
 			this.PrintDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
-			dataGridViewCellStyle61.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle61.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle61.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle61.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle61.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle61.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.PrintDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle61;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.PrintDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
 			this.PrintDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.PrintDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.PrintMemberId,
@@ -1376,24 +1364,24 @@ namespace WaterskiScoringSystem.Tournament {
             this.PrintTechOfficialRating,
             this.PrintAnncrOfficialRating,
             this.PrintReadyToSki});
-			dataGridViewCellStyle83.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle83.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle83.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle83.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle83.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle83.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle83.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintDataGridView.DefaultCellStyle = dataGridViewCellStyle83;
+			dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle27.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintDataGridView.DefaultCellStyle = dataGridViewCellStyle27;
 			this.PrintDataGridView.Location = new System.Drawing.Point(231, 62);
 			this.PrintDataGridView.Name = "PrintDataGridView";
-			dataGridViewCellStyle84.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle84.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle84.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle84.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle84.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle84.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle84.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.PrintDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle84;
+			dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.PrintDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle28;
 			this.PrintDataGridView.RowHeadersVisible = false;
 			this.PrintDataGridView.Size = new System.Drawing.Size(498, 493);
 			this.PrintDataGridView.StandardTab = true;
@@ -1403,9 +1391,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintMemberId
 			// 
 			this.PrintMemberId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle62.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle62.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintMemberId.DefaultCellStyle = dataGridViewCellStyle62;
+			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintMemberId.DefaultCellStyle = dataGridViewCellStyle6;
 			this.PrintMemberId.HeaderText = "MemberId";
 			this.PrintMemberId.MaxInputLength = 9;
 			this.PrintMemberId.Name = "PrintMemberId";
@@ -1417,9 +1405,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintSanctionId
 			// 
 			this.PrintSanctionId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle63.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintSanctionId.DefaultCellStyle = dataGridViewCellStyle63;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintSanctionId.DefaultCellStyle = dataGridViewCellStyle7;
 			this.PrintSanctionId.HeaderText = "SanctionId";
 			this.PrintSanctionId.MaxInputLength = 7;
 			this.PrintSanctionId.Name = "PrintSanctionId";
@@ -1430,10 +1418,10 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// PrintSkierName
 			// 
-			dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle64.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-			dataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintSkierName.DefaultCellStyle = dataGridViewCellStyle64;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintSkierName.DefaultCellStyle = dataGridViewCellStyle8;
 			this.PrintSkierName.HeaderText = "SkierName";
 			this.PrintSkierName.MaxInputLength = 256;
 			this.PrintSkierName.Name = "PrintSkierName";
@@ -1443,9 +1431,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintFederation
 			// 
 			this.PrintFederation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle65.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle65.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintFederation.DefaultCellStyle = dataGridViewCellStyle65;
+			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintFederation.DefaultCellStyle = dataGridViewCellStyle9;
 			this.PrintFederation.HeaderText = "Fed";
 			this.PrintFederation.Name = "PrintFederation";
 			this.PrintFederation.ReadOnly = true;
@@ -1455,10 +1443,10 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// PrintAgeGroup
 			// 
-			dataGridViewCellStyle66.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle66.Padding = new System.Windows.Forms.Padding(1);
-			dataGridViewCellStyle66.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintAgeGroup.DefaultCellStyle = dataGridViewCellStyle66;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(1);
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintAgeGroup.DefaultCellStyle = dataGridViewCellStyle10;
 			this.PrintAgeGroup.HeaderText = "Div";
 			this.PrintAgeGroup.MaxInputLength = 64;
 			this.PrintAgeGroup.Name = "PrintAgeGroup";
@@ -1468,10 +1456,10 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// PrintSlalomEventGroup
 			// 
-			dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle67.Padding = new System.Windows.Forms.Padding(1);
-			dataGridViewCellStyle67.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintSlalomEventGroup.DefaultCellStyle = dataGridViewCellStyle67;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(1);
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintSlalomEventGroup.DefaultCellStyle = dataGridViewCellStyle11;
 			this.PrintSlalomEventGroup.HeaderText = "Sl Grp";
 			this.PrintSlalomEventGroup.MaxInputLength = 12;
 			this.PrintSlalomEventGroup.Name = "PrintSlalomEventGroup";
@@ -1481,10 +1469,10 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// PrintTrickEventGroup
 			// 
-			dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle68.Padding = new System.Windows.Forms.Padding(1);
-			dataGridViewCellStyle68.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintTrickEventGroup.DefaultCellStyle = dataGridViewCellStyle68;
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(1);
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintTrickEventGroup.DefaultCellStyle = dataGridViewCellStyle12;
 			this.PrintTrickEventGroup.HeaderText = "Tk Gp";
 			this.PrintTrickEventGroup.MaxInputLength = 12;
 			this.PrintTrickEventGroup.Name = "PrintTrickEventGroup";
@@ -1494,10 +1482,10 @@ namespace WaterskiScoringSystem.Tournament {
 			// 
 			// PrintJumpEventGroup
 			// 
-			dataGridViewCellStyle69.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle69.Padding = new System.Windows.Forms.Padding(1);
-			dataGridViewCellStyle69.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJumpEventGroup.DefaultCellStyle = dataGridViewCellStyle69;
+			dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle13.Padding = new System.Windows.Forms.Padding(1);
+			dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintJumpEventGroup.DefaultCellStyle = dataGridViewCellStyle13;
 			this.PrintJumpEventGroup.HeaderText = "Jp Grp";
 			this.PrintJumpEventGroup.MaxInputLength = 12;
 			this.PrintJumpEventGroup.Name = "PrintJumpEventGroup";
@@ -1508,9 +1496,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintJudgeSlalomRating
 			// 
 			this.PrintJudgeSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle70.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJudgeSlalomRating.DefaultCellStyle = dataGridViewCellStyle70;
+			dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintJudgeSlalomRating.DefaultCellStyle = dataGridViewCellStyle14;
 			this.PrintJudgeSlalomRating.HeaderText = "Judge Sl";
 			this.PrintJudgeSlalomRating.MaxInputLength = 16;
 			this.PrintJudgeSlalomRating.Name = "PrintJudgeSlalomRating";
@@ -1521,9 +1509,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintJudgeTrickRating
 			// 
 			this.PrintJudgeTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle71.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle71.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJudgeTrickRating.DefaultCellStyle = dataGridViewCellStyle71;
+			dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintJudgeTrickRating.DefaultCellStyle = dataGridViewCellStyle15;
 			this.PrintJudgeTrickRating.HeaderText = "Judge Tk";
 			this.PrintJudgeTrickRating.MaxInputLength = 16;
 			this.PrintJudgeTrickRating.Name = "PrintJudgeTrickRating";
@@ -1534,9 +1522,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintJudgeJumpRating
 			// 
 			this.PrintJudgeJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle72.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle72.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintJudgeJumpRating.DefaultCellStyle = dataGridViewCellStyle72;
+			dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintJudgeJumpRating.DefaultCellStyle = dataGridViewCellStyle16;
 			this.PrintJudgeJumpRating.HeaderText = "Judge Jp";
 			this.PrintJudgeJumpRating.MaxInputLength = 16;
 			this.PrintJudgeJumpRating.Name = "PrintJudgeJumpRating";
@@ -1547,9 +1535,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintDriverSlalomRating
 			// 
 			this.PrintDriverSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle73.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle73.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintDriverSlalomRating.DefaultCellStyle = dataGridViewCellStyle73;
+			dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintDriverSlalomRating.DefaultCellStyle = dataGridViewCellStyle17;
 			this.PrintDriverSlalomRating.HeaderText = "Driver Sl";
 			this.PrintDriverSlalomRating.MaxInputLength = 16;
 			this.PrintDriverSlalomRating.Name = "PrintDriverSlalomRating";
@@ -1560,9 +1548,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintDriverTrickRating
 			// 
 			this.PrintDriverTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle74.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle74.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintDriverTrickRating.DefaultCellStyle = dataGridViewCellStyle74;
+			dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintDriverTrickRating.DefaultCellStyle = dataGridViewCellStyle18;
 			this.PrintDriverTrickRating.HeaderText = "Driver Tk";
 			this.PrintDriverTrickRating.MaxInputLength = 16;
 			this.PrintDriverTrickRating.Name = "PrintDriverTrickRating";
@@ -1573,9 +1561,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintDriverJumpRating
 			// 
 			this.PrintDriverJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle75.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintDriverJumpRating.DefaultCellStyle = dataGridViewCellStyle75;
+			dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintDriverJumpRating.DefaultCellStyle = dataGridViewCellStyle19;
 			this.PrintDriverJumpRating.HeaderText = "Driver Jp";
 			this.PrintDriverJumpRating.MaxInputLength = 16;
 			this.PrintDriverJumpRating.Name = "PrintDriverJumpRating";
@@ -1586,9 +1574,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintScorerSlalomRating
 			// 
 			this.PrintScorerSlalomRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle76.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle76.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintScorerSlalomRating.DefaultCellStyle = dataGridViewCellStyle76;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintScorerSlalomRating.DefaultCellStyle = dataGridViewCellStyle20;
 			this.PrintScorerSlalomRating.HeaderText = "Scorer Sl";
 			this.PrintScorerSlalomRating.MaxInputLength = 16;
 			this.PrintScorerSlalomRating.Name = "PrintScorerSlalomRating";
@@ -1599,9 +1587,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintScorerTrickRating
 			// 
 			this.PrintScorerTrickRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintScorerTrickRating.DefaultCellStyle = dataGridViewCellStyle77;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintScorerTrickRating.DefaultCellStyle = dataGridViewCellStyle21;
 			this.PrintScorerTrickRating.HeaderText = "Scorer Tk";
 			this.PrintScorerTrickRating.MaxInputLength = 16;
 			this.PrintScorerTrickRating.Name = "PrintScorerTrickRating";
@@ -1612,9 +1600,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintScorerJumpRating
 			// 
 			this.PrintScorerJumpRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle78.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintScorerJumpRating.DefaultCellStyle = dataGridViewCellStyle78;
+			dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintScorerJumpRating.DefaultCellStyle = dataGridViewCellStyle22;
 			this.PrintScorerJumpRating.HeaderText = "Scorer Jp";
 			this.PrintScorerJumpRating.MaxInputLength = 16;
 			this.PrintScorerJumpRating.Name = "PrintScorerJumpRating";
@@ -1625,9 +1613,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintSafetyOfficialRating
 			// 
 			this.PrintSafetyOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle79.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle79.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintSafetyOfficialRating.DefaultCellStyle = dataGridViewCellStyle79;
+			dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintSafetyOfficialRating.DefaultCellStyle = dataGridViewCellStyle23;
 			this.PrintSafetyOfficialRating.HeaderText = "Safety";
 			this.PrintSafetyOfficialRating.MaxInputLength = 16;
 			this.PrintSafetyOfficialRating.Name = "PrintSafetyOfficialRating";
@@ -1638,9 +1626,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintTechOfficialRating
 			// 
 			this.PrintTechOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle80.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle80.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintTechOfficialRating.DefaultCellStyle = dataGridViewCellStyle80;
+			dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintTechOfficialRating.DefaultCellStyle = dataGridViewCellStyle24;
 			this.PrintTechOfficialRating.HeaderText = "Tech";
 			this.PrintTechOfficialRating.MaxInputLength = 16;
 			this.PrintTechOfficialRating.Name = "PrintTechOfficialRating";
@@ -1651,9 +1639,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintAnncrOfficialRating
 			// 
 			this.PrintAnncrOfficialRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle81.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle81.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintAnncrOfficialRating.DefaultCellStyle = dataGridViewCellStyle81;
+			dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintAnncrOfficialRating.DefaultCellStyle = dataGridViewCellStyle25;
 			this.PrintAnncrOfficialRating.HeaderText = "Announcer";
 			this.PrintAnncrOfficialRating.MaxInputLength = 16;
 			this.PrintAnncrOfficialRating.Name = "PrintAnncrOfficialRating";
@@ -1664,9 +1652,9 @@ namespace WaterskiScoringSystem.Tournament {
 			// PrintReadyToSki
 			// 
 			this.PrintReadyToSki.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			dataGridViewCellStyle82.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle82.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.PrintReadyToSki.DefaultCellStyle = dataGridViewCellStyle82;
+			dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.PrintReadyToSki.DefaultCellStyle = dataGridViewCellStyle26;
 			this.PrintReadyToSki.HeaderText = "Ready";
 			this.PrintReadyToSki.MaxInputLength = 1;
 			this.PrintReadyToSki.Name = "PrintReadyToSki";
@@ -1726,7 +1714,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.Controls.Add(this.DriverChiefCB);
 			this.Controls.Add(this.TechSlalomCreditCB);
 			this.Controls.Add(this.JudgeChiefCB);
-			this.Controls.Add(this.editPK);
 			this.Controls.Add(this.editSanctionId);
 			this.Controls.Add(this.editMemberId);
 			this.Controls.Add(this.editJudgeSlalomRating);
@@ -1762,7 +1749,6 @@ namespace WaterskiScoringSystem.Tournament {
         private System.Windows.Forms.DataGridView listTourMemberDataGridView;
         private System.Windows.Forms.StatusStrip winStatus;
         private System.Windows.Forms.ToolStripStatusLabel winStatusMsg;
-        private System.Windows.Forms.TextBox editPK;
         private System.Windows.Forms.TextBox editSanctionId;
         private System.Windows.Forms.TextBox editMemberId;
         private System.Windows.Forms.TextBox editJudgeSlalomRating;

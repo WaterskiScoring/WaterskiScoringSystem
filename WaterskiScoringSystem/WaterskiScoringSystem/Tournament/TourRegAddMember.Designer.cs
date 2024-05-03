@@ -53,11 +53,15 @@ namespace WaterskiScoringSystem.Tournament {
 			this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Federation = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ForeignFederationID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.EffTo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Waiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.MemberStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.membershipStatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.membershipStatusText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MembershipExpiration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.membershipStatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SafeSportStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.SafeSportExpiration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.WaiverStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.WaiverExpiration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Waiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.CanSki = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.CanSkiGR = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.Memtype = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -188,11 +192,15 @@ namespace WaterskiScoringSystem.Tournament {
             this.State,
             this.Federation,
             this.ForeignFederationID,
-            this.EffTo,
-            this.Waiver,
             this.MemberStatus,
-            this.membershipStatusCode,
             this.membershipStatusText,
+            this.MembershipExpiration,
+            this.membershipStatusCode,
+            this.SafeSportStatus,
+            this.SafeSportExpiration,
+            this.WaiverStatus,
+            this.WaiverExpiration,
+            this.Waiver,
             this.CanSki,
             this.CanSkiGR,
             this.Memtype,
@@ -419,23 +427,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.ForeignFederationID.ReadOnly = true;
 			this.ForeignFederationID.Width = 70;
 			// 
-			// EffTo
-			// 
-			this.EffTo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.EffTo.HeaderText = "Eff Date";
-			this.EffTo.Name = "EffTo";
-			this.EffTo.ReadOnly = true;
-			this.EffTo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.EffTo.Width = 60;
-			// 
-			// Waiver
-			// 
-			this.Waiver.HeaderText = "Waiver";
-			this.Waiver.Name = "Waiver";
-			this.Waiver.ReadOnly = true;
-			this.Waiver.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Waiver.Width = 50;
-			// 
 			// MemberStatus
 			// 
 			this.MemberStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -445,14 +436,6 @@ namespace WaterskiScoringSystem.Tournament {
 			this.MemberStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
 			this.MemberStatus.Width = 125;
 			// 
-			// membershipStatusCode
-			// 
-			this.membershipStatusCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-			this.membershipStatusCode.HeaderText = "membership Status Code";
-			this.membershipStatusCode.Name = "membershipStatusCode";
-			this.membershipStatusCode.ReadOnly = true;
-			this.membershipStatusCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-			// 
 			// membershipStatusText
 			// 
 			this.membershipStatusText.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -461,6 +444,53 @@ namespace WaterskiScoringSystem.Tournament {
 			this.membershipStatusText.ReadOnly = true;
 			this.membershipStatusText.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
 			this.membershipStatusText.Width = 125;
+			// 
+			// MembershipExpiration
+			// 
+			this.MembershipExpiration.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.MembershipExpiration.HeaderText = "Member Expiration";
+			this.MembershipExpiration.Name = "MembershipExpiration";
+			this.MembershipExpiration.ReadOnly = true;
+			this.MembershipExpiration.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.MembershipExpiration.Width = 60;
+			// 
+			// membershipStatusCode
+			// 
+			this.membershipStatusCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.membershipStatusCode.HeaderText = "membership Status Code";
+			this.membershipStatusCode.Name = "membershipStatusCode";
+			this.membershipStatusCode.ReadOnly = true;
+			this.membershipStatusCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+			this.membershipStatusCode.Visible = false;
+			// 
+			// SafeSportStatus
+			// 
+			this.SafeSportStatus.HeaderText = "Safe Sport Status";
+			this.SafeSportStatus.Name = "SafeSportStatus";
+			// 
+			// SafeSportExpiration
+			// 
+			this.SafeSportExpiration.HeaderText = "Safe Sport Expire";
+			this.SafeSportExpiration.Name = "SafeSportExpiration";
+			// 
+			// WaiverStatus
+			// 
+			this.WaiverStatus.HeaderText = "Waiver Status";
+			this.WaiverStatus.Name = "WaiverStatus";
+			// 
+			// WaiverExpiration
+			// 
+			this.WaiverExpiration.HeaderText = "Waiver Expire";
+			this.WaiverExpiration.Name = "WaiverExpiration";
+			// 
+			// Waiver
+			// 
+			this.Waiver.HeaderText = "Waiver";
+			this.Waiver.Name = "Waiver";
+			this.Waiver.ReadOnly = true;
+			this.Waiver.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Waiver.Visible = false;
+			this.Waiver.Width = 50;
 			// 
 			// CanSki
 			// 
@@ -728,11 +758,15 @@ namespace WaterskiScoringSystem.Tournament {
 		private System.Windows.Forms.DataGridViewTextBoxColumn State;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Federation;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ForeignFederationID;
-		private System.Windows.Forms.DataGridViewTextBoxColumn EffTo;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn Waiver;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MemberStatus;
-		private System.Windows.Forms.DataGridViewTextBoxColumn membershipStatusCode;
 		private System.Windows.Forms.DataGridViewTextBoxColumn membershipStatusText;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MembershipExpiration;
+		private System.Windows.Forms.DataGridViewTextBoxColumn membershipStatusCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SafeSportStatus;
+		private System.Windows.Forms.DataGridViewTextBoxColumn SafeSportExpiration;
+		private System.Windows.Forms.DataGridViewTextBoxColumn WaiverStatus;
+		private System.Windows.Forms.DataGridViewTextBoxColumn WaiverExpiration;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn Waiver;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn CanSki;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn CanSkiGR;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Memtype;

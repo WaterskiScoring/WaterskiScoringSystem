@@ -125,8 +125,7 @@ namespace LiveWebMessageHandler.Message {
 				DisconnectButton.Enabled = true;
 
 			} else {
-				curMsg = String.Format( "{0}Unable to access tournament data for sanction {1}"
-					, curMethodName, ConnectMgmtData.sanctionNum );
+				curMsg = String.Format( "{0}Errors encountered during connection for sanction {1}, Errors: {2}", curMethodName, ConnectMgmtData.sanctionNum, ExportLiveWeb.LastErrorMsg );
 				addViewMessage( curMsg, true, true );
 
 				ConnectButton.Enabled = true;
@@ -256,6 +255,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -288,6 +288,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -316,6 +317,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -341,6 +343,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -374,6 +377,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -403,6 +407,7 @@ namespace LiveWebMessageHandler.Message {
 				String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
 				addViewMessage( curMsg, false, false );
 				Log.WriteFile( curMsg );
+				if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
 
 				removeLiveWebMsgSent( (int)curDataRow["PK"] );
 				return true;
@@ -492,6 +497,18 @@ namespace LiveWebMessageHandler.Message {
 			QueueView.Visible = false;
 			QueueView.Enabled = false;
 			QueueView.Rows.Clear();
+		}
+
+		private void MessageView_CellContentDoubleClick( object sender, DataGridViewCellEventArgs e ) {
+			DataGridView curView = (DataGridView)sender;
+
+			if ( e.RowIndex >= 0 ) {
+				String curMsg = HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "Message", "" );
+				if ( HelperFunctions.isObjectEmpty( curMsg ) ) return;
+
+				MessageBox.Show( HelperFunctions.getViewRowColValue( curView.Rows[e.RowIndex], "CreationDatetime", "" ) + "\n\n" + curMsg );
+			}
+
 		}
 	}
 }

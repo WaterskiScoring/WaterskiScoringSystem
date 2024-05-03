@@ -958,11 +958,11 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IG-J		483	Intl Girls U17 - Jump		46.0	1/5/2017 Dominique Grondin-Allard
 0	IwwfRecords	IG-O		484	Intl Girls U17 Overall		2754.70	1/8/2017 Brooke Baldwin
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
-0	IwwfRecords	IM-T		392	Intl Men - Trick		12570	4/29/2011 Alexi Zharnasek
+0	IwwfRecords	IM-T		392	Intl Men - Trick		12690	5/12/2023 Joel Poland
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
 0	IwwfRecords	IM-O		394	Intl Men Overall		2670.62	12/20/2023 2@10.25/58k, 11680, 69.3m Joel Poland
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		71.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
-0	IwwfRecords	IW-T		402	Intl Women - Trick		11260	10/5/2019 Erika Lang
+0	IwwfRecords	IW-T		402	Intl Women - Trick		11360	5/19/2023 Erika Lang
 0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
 0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26	5/19/2012 Natallia Berdnikava
 0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		64	4 at 10.25 @ 58kph 11/14/2022 Charlie Ross

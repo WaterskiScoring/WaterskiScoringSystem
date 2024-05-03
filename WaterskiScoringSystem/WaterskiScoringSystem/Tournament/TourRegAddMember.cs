@@ -214,7 +214,7 @@ namespace WaterskiScoringSystem.Tournament {
             Cursor.Current = Cursors.WaitCursor;
 			String curDataValue = "";
 			int curRowIdx;
-            DateTime curEffTo, curTourDate;
+            DateTime curMembershipExpiration, curTourDate;
 			DataGridView.Rows.Clear();
 
 			if ( myTourRow != null ) {
@@ -259,10 +259,10 @@ namespace WaterskiScoringSystem.Tournament {
 						curViewRow.Cells["MemberId"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MemberId", "" );
 
 						try {
-							curEffTo = (DateTime) curDataRow["MemberExpireDate"];
-							curViewRow.Cells["EffTo"].Value = curEffTo.ToString( "MM/dd/yy" );
+							curMembershipExpiration = (DateTime) curDataRow["MembershipExpiration"];
+							curViewRow.Cells["MembershipExpiration"].Value = curMembershipExpiration.ToString( "MM/dd/yy" );
 
-							if ( curEffTo < curTourDate ) {
+							if ( curMembershipExpiration < curTourDate ) {
 								curViewRow.Cells["MemberStatus"].Value = "Needs Upgrade";
 								curViewRow.Cells["SkiYearAge"].Value = "";
 								curViewRow.Cells["CanSki"].Value = "false";
@@ -276,7 +276,7 @@ namespace WaterskiScoringSystem.Tournament {
 								}
 							}
 						} catch {
-							curViewRow.Cells["EffTo"].Value = "";
+							curViewRow.Cells["MembershipExpiration"].Value = "";
 							curViewRow.Cells["MemberStatus"].Value = "";
 							curViewRow.Cells["SkiYearAge"].Value = "";
 						}
@@ -327,26 +327,27 @@ namespace WaterskiScoringSystem.Tournament {
 						DateTime curMemExpireDate = new DateTime();
 						try {
 							curMemExpireDate = Convert.ToDateTime( HelperFunctions.getDataRowColValue( curDataRow, "MembershipExpiration", "" ) );
-                            curViewRow.Cells["EffTo"].Value = curMemExpireDate.ToString( "MM/dd/yy" );
+                            curViewRow.Cells["MembershipExpiration"].Value = curMemExpireDate.ToString( "MM/dd/yy" );
 						} catch ( Exception ex ) {
-							Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
-								, HelperFunctions.getDataRowColValue( curDataRow, "EffTo", "" ), ex.Message ) );
+							Log.WriteFile( String.Format( "Invalid MembershipExpiration date {0} attribute on import record: Exceptioin: {1}"
+								, HelperFunctions.getDataRowColValue( curDataRow, "MembershipExpiration", "" ), ex.Message ) );
 						}
+						DateTime curSafeSportExpireDate = new DateTime();
+						DateTime.TryParse( HelperFunctions.getDataRowColValue( curDataRow, "SafeSportExpiration", (new DateTime()).ToString( "MM/dd/yy" ) ), out curSafeSportExpireDate );
+						curViewRow.Cells["SafeSportExpiration"].Value = curSafeSportExpireDate.ToString( "MM/dd/yy" );
+
+						DateTime curWaiverSportExpireDate = new DateTime();
+						DateTime.TryParse( HelperFunctions.getDataRowColValue( curDataRow, "WaiverExpiration", ( new DateTime() ).ToString( "MM/dd/yy" ) ), out curWaiverSportExpireDate );
+						curViewRow.Cells["WaiverExpiration"].Value = curWaiverSportExpireDate.ToString( "MM/dd/yy" );
 
 						curViewRow.Cells["MembershipRate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MembershipRate", "" );
 						curViewRow.Cells["CostToUpgrade"].Value = HelperFunctions.getDataRowColValue( curDataRow, "CostToUpgrade", "" );
 						curViewRow.Cells["membershipStatusCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusCode", "" );
 						curViewRow.Cells["membershipStatusText"].Value = HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusText", "" );
+						curViewRow.Cells["SafeSportStatus"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SafeSportStatus", "" );
+						curViewRow.Cells["WaiverStatus"].Value = HelperFunctions.getDataRowColValue( curDataRow, "WaiverStatus", "" );
 
-						curViewRow.Cells["MemberStatus"].Value = ImportMember.calcMemberStatus(
-							HelperFunctions.getDataRowColValue( curDataRow, "MemTypeDesc", "" )
-							, curMemExpireDate
-							, HelperFunctions.getDataRowColValue( curDataRow, "membershipStatusCode", "" )
-							, curCanSki
-							, curCanSkiGR
-							, curWaiver
-							, Convert.ToDateTime( myTourRow["EventDates"] ) );
-						
+						curViewRow.Cells["MemberStatus"].Value = ImportMember.calcMemberStatus( curDataRow );
 						#endregion
 					}
 				}
@@ -393,7 +394,7 @@ namespace WaterskiScoringSystem.Tournament {
         private DataTable searchMemberList( String inMemberId, String inLastName, String inFirstName, String inState ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT MemberId, LastName, FirstName, State, City" );
-			curSqlStmt.Append( ", Country, SkiYearAge, Federation, ForeignFederationID, Gender, MemberStatus, MemberExpireDate" );
+			curSqlStmt.Append( ", Country, SkiYearAge, Federation, ForeignFederationID, Gender, MemberStatus, MemberExpireDate AS MembershipExpiration" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeSlalomRating, '' ) as JudgeSlalom" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeTrickRating, '' ) as JudgeTrick" );
 			curSqlStmt.Append( ", Coalesce( MemberList.JudgeJumpRating, '' ) as JudgeJump" );

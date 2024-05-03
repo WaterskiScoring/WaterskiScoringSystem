@@ -258,7 +258,13 @@ namespace WaterskiScoringSystem.Trick {
             if ( checkPassError() ) {
                 setEventRegRowStatus( "3-Error" );
 
-            } else if ( Pass1DataGridView.Rows.Count > 0 ) {
+			} else if ( Pass1DataGridView.Rows.Count == 1 
+                && HelperFunctions.isObjectEmpty( Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value )
+                && TrickEventData.isCollegiateEvent()
+				) {
+				setEventRegRowStatus( "1-TBD" );
+
+			} else if ( Pass1DataGridView.Rows.Count > 0 ) {
                 // Process entries in first pass
                 if ( HelperFunctions.isObjectEmpty( Pass1DataGridView.Rows[0].Cells["Pass1Code"].Value ) ) {
                     if ( Pass2DataGridView.Rows.Count > 0 ) {
@@ -268,10 +274,10 @@ namespace WaterskiScoringSystem.Trick {
                             setEventRegRowStatus( "2-InProg" );
                         }
                     } else {
-                        setEventRegRowStatus( "2-InProg" );
-                    }
+						setEventRegRowStatus( "1-TBD" );
+					}
 
-                } else {
+				} else {
                     if ( TrickEventData.isCollegiateEvent() ) {
                         setEventRegRowStatus( "4-Done" );
                     } else if ( Pass2DataGridView.Rows.Count > 0 ) {
@@ -2787,7 +2793,7 @@ namespace WaterskiScoringSystem.Trick {
 
             Int16 returnPoints = myTrickValidation.calcPoints( curPass1DataTable, curPass2DataTable, curDataRow, inPassRow.Index, inColPrefix, curSkierEventClass );
             if ( returnPoints < 0 ) {
-                MessageBox.Show(myTrickValidation.ValidationMessage);
+                if ( HelperFunctions.isObjectPopulated( myTrickValidation.ValidationMessage ) ) MessageBox.Show(myTrickValidation.ValidationMessage);
 				return 0;
 			}
 

@@ -3541,6 +3541,7 @@ namespace WaterskiScoringSystem.Jump {
 			myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;
 			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
 			curPreviewDialog.Document = myPrintDoc;
+			curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
 			curPreviewDialog.Focus();
 			curPreviewDialog.ShowDialog();
 		}

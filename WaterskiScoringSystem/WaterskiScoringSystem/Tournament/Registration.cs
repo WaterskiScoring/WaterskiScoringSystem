@@ -944,17 +944,29 @@ namespace WaterskiScoringSystem.Tournament {
 						+ " And SanctionId = '" + mySanctionNum + "'"
 						+ " And AgeGroup = '" + curAgeGroup + "'" );
 					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+					if ( rowsProc > 0 ) {
+						curMsg = String.Format( "Delete skier {0} ({1} {2}) from TourReg: ", curSkierName, curMemberId, curAgeGroup );
+						Log.WriteFile( curMethodName + "" + curSqlStmt.ToString() );
+					}
 
 					if ( !( isMemberInTour( curMemberId ) ) ) {
 						curSqlStmt = new StringBuilder( "Delete OfficialWork "
 							+ " Where MemberId = '" + curMemberId + "'"
 							+ " And SanctionId = '" + mySanctionNum + "'" );
 						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						if ( rowsProc > 0 ) {
+							curMsg = String.Format( "Delete skier {0} ({1} {2}) from OfficialWork: ", curSkierName, curMemberId, curAgeGroup );
+							Log.WriteFile( curMethodName + "" + curSqlStmt.ToString() );
+						}
 
 						curSqlStmt = new StringBuilder( "Delete OfficialWorkAsgmt "
 							+ " Where MemberId = '" + curMemberId + "'"
 							+ " And SanctionId = '" + mySanctionNum + "'" );
 						rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+						if ( rowsProc > 0 ) {
+							curMsg = String.Format( "Delete skier {0} ({1} {2}) from OfficialWorkAsgmt: ", curSkierName, curMemberId, curAgeGroup );
+							Log.WriteFile( curMethodName + "" + curSqlStmt.ToString() );
+						}
 					}
 					return true;
 
@@ -1269,26 +1281,25 @@ namespace WaterskiScoringSystem.Tournament {
                     MessageBox.Show( "Error attempting to save changes \n" + excp.Message );
                 }
             }
-            if ( !( isDataModified ) ) {
-                //Sent current tournament registration row
-                if ( !( isObjectEmpty( curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value ) ) ) {
-                    isDataModified = false;
+			if ( isDataModified ) return;
 
-                    // Display the form as a modal dialog box.
-                    String curMemberId = (String)curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value;
-                    String curAgeGroup = (String)curView.Rows[myTourRegRowIdx].Cells["AgeGroup"].Value;
-                    myEditRegMemberDialog.editMember( curMemberId, curAgeGroup, null );
-                    myEditRegMemberDialog.ShowDialog( this );
+			//Sent current tournament registration row
+			if ( isObjectEmpty( curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value ) ) return;
 
-                    // Determine if the OK button was clicked on the dialog box.
-                    if ( myEditRegMemberDialog.DialogResult == DialogResult.OK ) {
-                        loadTourRegView();
-                    }
-                }
-            }
-        }
+			// Display the form as a modal dialog box.
+			isDataModified = false;
+			String curMemberId = (String)curView.Rows[myTourRegRowIdx].Cells["MemberId"].Value;
+			String curAgeGroup = (String)curView.Rows[myTourRegRowIdx].Cells["AgeGroup"].Value;
+			myEditRegMemberDialog.editMember( curMemberId, curAgeGroup, null );
+			myEditRegMemberDialog.ShowDialog( this );
 
-        private DataTable getTourRegData() {
+			// Determine if the OK button was clicked on the dialog box.
+			if ( myEditRegMemberDialog.DialogResult == DialogResult.OK ) {
+				loadTourRegView();
+			}
+		}
+
+		private DataTable getTourRegData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT R.PK, R.MemberId, R.SanctionId, R.SkierName, R.AgeGroup, R.State, R.Team" );
             curSqlStmt.Append( ", R.EntryDue, R.EntryPaid, R.PaymentMethod, R.ReadyToSki, R.Withdrawn, R.ReadyForPlcmt, R.IwwfLicense, R.AwsaMbrshpPaymt" );

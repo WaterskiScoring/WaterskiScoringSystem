@@ -14,8 +14,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 	class ImportMember {
 		private bool myTourTypePickAndChoose = false;
 
-		private String mySanctionNum;
-
 		private int myCountMemberInput = 0;
 		private int myCountMemberAdded = 0;
 		private int myCountMemberUpdate = 0;
@@ -24,15 +22,17 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private int myCountTrickAdded = 0;
 		private int myCountJumpAdded = 0;
 
-        private int myCountMemberUpdated = 0;
-        private int myCountMemberTourUpdated = 0;
-        private int myCountMemberTourOfficialUpdated = 0;
+		private int myCountMemberUpdated = 0;
+		private int myCountMemberTourUpdated = 0;
+		private int myCountMemberTourOfficialUpdated = 0;
 
-        private DataRow myTourRow;
-        private ProgressWindow myProgressInfo = null;
-        private MemberIdValidate myMemberIdValidate;
+		private ProgressWindow myProgressInfo = null;
+		private MemberIdValidate myMemberIdValidate;
 		private TourEventReg myTourEventReg;
 
+		private static DataRow myTourRow = null;
+		private static String mySanctionNum;
+		private static DateTime myTourEventDate = new DateTime();
 		public static int MembershipStatusCodeActive = 1;
 		public static string MembershipStatusTextActive = "Active";
 		public static string MembershipStatusNone = "No Membership Status";
@@ -49,14 +49,14 @@ namespace WaterskiScoringSystem.Externalnterface {
 			, { 8, "Deceased" }
 		};
 
-		public static string getMembershipStatus(int inStatusCode ) {
-			if ( myMembershipStatus.ContainsKey(inStatusCode)) return myMembershipStatus[inStatusCode];
+		public static string getMembershipStatus( int inStatusCode ) {
+			if ( myMembershipStatus.ContainsKey( inStatusCode ) ) return myMembershipStatus[inStatusCode];
 			return MembershipStatusNone;
 		}
 
 		public ImportMember( DataRow inTourRow ) {
 			initImportMember( inTourRow, null );
-        }
+		}
 		public ImportMember( DataRow inTourRow, String tourType ) {
 			initImportMember( inTourRow, tourType );
 		}
@@ -73,7 +73,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					MessageBoxDefaultButton.Button1 );
 				if ( msgResp == DialogResult.Yes ) {
 					myTourTypePickAndChoose = true;
-				
+
 				} else {
 					return;
 				}
@@ -81,20 +81,12 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			if ( inTourRow == null ) {
 				mySanctionNum = Properties.Settings.Default.AppSanctionNum;
-				if ( mySanctionNum == null ) {
-					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-					return;
-				}
-				if ( mySanctionNum.Length < 6 ) {
-					MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-					return;
-				}
-				
 				myTourRow = getTourData();
 
 			} else {
 				myTourRow = inTourRow;
-				mySanctionNum = (String) inTourRow["SanctionId"];
+				mySanctionNum = (String)inTourRow["SanctionId"];
+				DateTime.TryParse( HelperFunctions.getDataRowColValue( myTourRow, "EventDates", "" ), out myTourEventDate );
 			}
 
 			myProgressInfo = null;
@@ -133,7 +125,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			String curContentType = "application/json; charset=UTF-8";
 			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curRegExportListUrl;
-			String curSanctionEditCode = (String) myTourRow["SanctionEditCode"];
+			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
 				MessageBox.Show( "Sanction edit code is required to retrieve skier registrations and member information.  Enter required value on Tournament Form" );
 				return;
@@ -177,13 +169,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 				myProgressInfo.Close();
 			}
 
-			 importTourAssignedOfficials();
+			importTourAssignedOfficials();
 
 			IwwfMembership.showBulkWarnMessage();
 			IwwfMembership.warnMessageActive = false;
 
 			displayMemberProcessCounts();
-        }
+		}
 
 		private void importTourAssignedOfficials() {
 			/* -----------------------------------------------------------------------
@@ -232,7 +224,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			* https://global.api.worldwaterskiers.com/wstims/getParticipantsBySanctionID?apiToken=wstims&sanctionID=22S085R
 			* ----------------------------------------------------------------------- 
 			*/
-			if ( !(mySanctionNum.Equals( "22S085" )) ) {
+			if ( !( mySanctionNum.Equals( "22S085" ) ) ) {
 				MessageBox.Show( "This test can only be done using sanction 22S085" );
 				return;
 			}
@@ -329,7 +321,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 				curMemberEntry.FirstName = (String)curImportMemberEntry["FirstName"];
 				curMemberEntry.LastName = (String)curImportMemberEntry["LastName"];
-				
+
 				if ( curImportMemberEntry.ContainsKey( "Gender" ) ) {
 					curMemberEntry.Gender = (String)curImportMemberEntry["Gender"];
 				} else if ( curMemberEntry.AgeGroup.Length > 1 ) {
@@ -375,7 +367,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				return false;
 			}
 		}
-		
+
 		public bool importMemberEntryNcwsa( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry ) {
 			String curTeamSlalom = "", curTeamTrick = "", curTeamJump = "";
 			bool curDataValid = true;
@@ -537,7 +529,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 */
 		private bool importMemberEntry( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry, bool inTourReg, bool inNcwsa ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-			
+
 			try {
 				if ( myProgressInfo != null ) {
 					myProgressInfo.setProgessMsg( "Processing " + curMemberEntry.FirstName + " " + curMemberEntry.LastName );
@@ -607,7 +599,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupSlalom ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Slalom", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountSlalomAdded++;
-						
+
 					} else {
 						curSaveAgeGroup = curMemberEntry.AgeGroup;
 						curMemberEntry.AgeGroup = curMemberEntry.EventGroupSlalom;
@@ -622,7 +614,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Trick", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountTrickAdded++;
-						
+
 					} else {
 						curSaveAgeGroup = curMemberEntry.AgeGroup;
 						curMemberEntry.AgeGroup = curMemberEntry.EventGroupTrick;
@@ -637,7 +629,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountJumpAdded++;
-						
+
 					} else {
 						curSaveAgeGroup = curMemberEntry.AgeGroup;
 						curMemberEntry.AgeGroup = curMemberEntry.EventGroupJump;
@@ -660,7 +652,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.Team )
-					&& !(curMemberEntry.AgeGroup.Equals( "OF" ))
+					&& !( curMemberEntry.AgeGroup.Equals( "OF" ) )
 					) {
 					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
 					if ( curReqstStatus ) myCountTourRegAdded++;
@@ -767,7 +759,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 			if ( curImportMemberEntry.ContainsKey( "EventClass" + curEvent ) ) {
 				curEventClass = (String)curImportMemberEntry["EventClass" + curEvent];
-			
+
 			} else if ( curImportMemberEntry.ContainsKey( curEvent + "Paid" ) ) {
 				curEventClass = (String)curImportMemberEntry[curEvent + "Paid"];
 			}
@@ -823,9 +815,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public void importMemberWithRatings( Dictionary<string, object> curImportMemberEntry, MemberEntry curMemberEntry ) {
-            bool newMember = false;
+			bool newMember = false;
 			DateTime lastRecModDate = new DateTime();
-			StringBuilder curSqlStmt = new StringBuilder("");
+			StringBuilder curSqlStmt = new StringBuilder( "" );
 			String curEvent = "";
 			Decimal curSlalom = 0, curTrick = 0, curJump = 0, curOverall = 0;
 			DataTable curDataTable;
@@ -834,26 +826,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#region Retrieve all member attributes and prepare for processing
 			curMemberEntry.CanSki = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "CanSki" ) );
 			curMemberEntry.CanSkiGR = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "CanSkiGR" ) );
-			curMemberEntry.WaiverSigned = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( curImportMemberEntry, "Waiver" ) );
-			
-			DateTime curMemExpireDate = new DateTime(); 
-			try {
-				String curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "MembershipExpiration");
-				if ( HelperFunctions.isObjectEmpty( curimportEffDateValue ) ) curimportEffDateValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "EffDate" );
-				curMemExpireDate = Convert.ToDateTime( curimportEffDateValue );
-			} catch (Exception ex ) {
-				Log.WriteFile( String.Format( "Invalid EffTo date {0} attribute on import record: Exceptioin: {1}"
-					, HelperFunctions.getAttributeValue( curImportMemberEntry, "EffTo" ), ex.Message ) );
-			}
-
-			curMemberEntry.MemberStatus = calcMemberStatus(
-				HelperFunctions.getAttributeValue( curImportMemberEntry, "MemTypeDesc" )
-				, curMemExpireDate
-				, HelperFunctions.getAttributeValue( curImportMemberEntry, "membershipStatusCode" )
-				, curMemberEntry.CanSki
-				, curMemberEntry.CanSkiGR
-				, curMemberEntry.WaiverSigned
-				, Convert.ToDateTime( myTourRow["EventDates"] ) );
+			curMemberEntry.WaiverSigned = calcWaiverStatus( curImportMemberEntry );
+			curMemberEntry.MemberStatus = calcMemberStatus( curImportMemberEntry, curMemberEntry );
 
 			curMemberEntry.JudgeSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgeSlalom" );
 			//String curPanAmValue = HelperFunctions.getAttributeValue( curImportMemberEntry, "JudgePanAmSlalom" );
@@ -878,85 +852,85 @@ namespace WaterskiScoringSystem.Externalnterface {
 			curMemberEntry.SafetyOfficialRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "Safety" );
 			curMemberEntry.TechControllerRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechController" );
 
-			curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberEntry.MemberId + "'");
-            DataTable curMemberDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
+			curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberEntry.MemberId + "'" );
+			DataTable curMemberDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curMemberDataTable.Rows.Count > 0 ) {
-				lastRecModDate = (DateTime) curMemberDataTable.Rows[0]["UpdateDate"];
+				lastRecModDate = (DateTime)curMemberDataTable.Rows[0]["UpdateDate"];
 				newMember = false;
-			} else { 
-                newMember = true;
-            }
+			} else {
+				newMember = true;
+			}
 			#endregion
 
 			#region Insert or update member information
 			if ( newMember ) {
-                curSqlStmt = new StringBuilder("");
-                curSqlStmt.Append("Insert MemberList (");
-                curSqlStmt.Append( "MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, Federation, ForeignFederationID, MemberStatus" );
-                curSqlStmt.Append(", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating");
-                curSqlStmt.Append(", DriverSlalomRating, DriverTrickRating, DriverJumpRating");
-                curSqlStmt.Append(", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating");
-                curSqlStmt.Append(", SafetyOfficialRating, TechOfficialRating");
-                curSqlStmt.Append(", Note, MemberExpireDate, InsertDate, UpdateDate");
-                curSqlStmt.Append(") Values (");
-                curSqlStmt.Append("'" + curMemberEntry.MemberId + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.getLastNameForDB() + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.getFirstNameForDB() + "'");
-                curSqlStmt.Append(", " + curMemberEntry.SkiYearAge );
-                curSqlStmt.Append(", '" + curMemberEntry.Gender + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.getCityForDB() + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.State + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.Federation + "'");
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Insert MemberList (" );
+				curSqlStmt.Append( "MemberId, LastName, FirstName, SkiYearAge, Gender, City, State, Federation, ForeignFederationID, MemberStatus" );
+				curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
+				curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
+				curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
+				curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating" );
+				curSqlStmt.Append( ", Note, MemberExpireDate, InsertDate, UpdateDate" );
+				curSqlStmt.Append( ") Values (" );
+				curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.getLastNameForDB() + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.getFirstNameForDB() + "'" );
+				curSqlStmt.Append( ", " + curMemberEntry.SkiYearAge );
+				curSqlStmt.Append( ", '" + curMemberEntry.Gender + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.getCityForDB() + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.State + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.Federation + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.ForeignFederationID + "'" );
-				curSqlStmt.Append(", '" + curMemberEntry.MemberStatus + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.JudgeSlalomRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.JudgeTrickRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.JudgeJumpRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.DriverSlalomRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.DriverTrickRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.DriverJumpRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.ScorerSlalomRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.ScorerTrickRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.ScorerJumpRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.SafetyOfficialRating + "'");
-                curSqlStmt.Append(", '" + curMemberEntry.TechControllerRating + "'");
+				curSqlStmt.Append( ", '" + curMemberEntry.MemberStatus + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.JudgeSlalomRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.JudgeTrickRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.JudgeJumpRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.DriverSlalomRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.DriverTrickRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.DriverJumpRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.ScorerSlalomRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.ScorerTrickRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.ScorerJumpRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.SafetyOfficialRating + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.TechControllerRating + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
-                curSqlStmt.Append(", '" + curMemExpireDate.ToString( "MM/dd/yy") + "'");
-                curSqlStmt.Append(", getdate(), getdate() )");
+				curSqlStmt.Append( ", '" + curMemberEntry.MemberExpireDate.ToString( "MM/dd/yy" ) + "'" );
+				curSqlStmt.Append( ", getdate(), getdate() )" );
 
-                rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                if ( rowsProc > 0 ) myCountMemberAdded++;
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				if ( rowsProc > 0 ) myCountMemberAdded++;
 
-            } else {
-                curSqlStmt = new StringBuilder("");
-                curSqlStmt.Append("Update MemberList ");
-                curSqlStmt.Append(" Set LastName = '" + curMemberEntry.getLastNameForDB() + "'");
-                curSqlStmt.Append(", FirstName = '" + curMemberEntry.getFirstNameForDB() + "'");
-                curSqlStmt.Append(", SkiYearAge = " + curMemberEntry.SkiYearAge );
-                curSqlStmt.Append(", Gender = '" + curMemberEntry.Gender + "'");
-                curSqlStmt.Append(", City = '" + curMemberEntry.getCityForDB() + "'");
-                curSqlStmt.Append(", State = '" + curMemberEntry.State + "'");
-                curSqlStmt.Append(", Federation = '" + curMemberEntry.Federation + "'");
+			} else {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Update MemberList " );
+				curSqlStmt.Append( " Set LastName = '" + curMemberEntry.getLastNameForDB() + "'" );
+				curSqlStmt.Append( ", FirstName = '" + curMemberEntry.getFirstNameForDB() + "'" );
+				curSqlStmt.Append( ", SkiYearAge = " + curMemberEntry.SkiYearAge );
+				curSqlStmt.Append( ", Gender = '" + curMemberEntry.Gender + "'" );
+				curSqlStmt.Append( ", City = '" + curMemberEntry.getCityForDB() + "'" );
+				curSqlStmt.Append( ", State = '" + curMemberEntry.State + "'" );
+				curSqlStmt.Append( ", Federation = '" + curMemberEntry.Federation + "'" );
 				curSqlStmt.Append( ", ForeignFederationID = '" + curMemberEntry.ForeignFederationID + "'" );
-				curSqlStmt.Append(", MemberStatus = '" + curMemberEntry.MemberStatus + "'");
-                curSqlStmt.Append(", Note = '" + curMemberEntry.Note +"'");
-                curSqlStmt.Append(", MemberExpireDate = '" + Convert.ToDateTime( curMemExpireDate ).ToString( "MM/dd/yy" ) + "'");
-                curSqlStmt.Append(", UpdateDate = getdate()");
-                curSqlStmt.Append(", JudgeSlalomRating = '" + curMemberEntry.JudgeSlalomRating + "'");
-                curSqlStmt.Append(", JudgeTrickRating = '" + curMemberEntry.JudgeTrickRating + "'");
-                curSqlStmt.Append(", JudgeJumpRating = '" + curMemberEntry.JudgeJumpRating + "'");
-                curSqlStmt.Append(", DriverSlalomRating = '" + curMemberEntry.DriverSlalomRating + "'");
-                curSqlStmt.Append(", DriverTrickRating = '" + curMemberEntry.DriverTrickRating + "'");
-                curSqlStmt.Append(", DriverJumpRating = '" + curMemberEntry.DriverJumpRating + "'");
-                curSqlStmt.Append(", ScorerSlalomRating = '" + curMemberEntry.ScorerSlalomRating + "'");
-                curSqlStmt.Append(", ScorerTrickRating = '" + curMemberEntry.ScorerTrickRating + "'");
-                curSqlStmt.Append(", ScorerJumpRating = '" + curMemberEntry.ScorerJumpRating + "'");
-                curSqlStmt.Append(", SafetyOfficialRating = '" + curMemberEntry.SafetyOfficialRating + "'");
-                curSqlStmt.Append(", TechOfficialRating = '" + curMemberEntry.TechControllerRating + "'");
-                curSqlStmt.Append(" Where MemberId = '" + curMemberEntry.MemberId + "'");
-                rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
-                if ( rowsProc > 0 ) myCountMemberUpdated++;
-            }
+				curSqlStmt.Append( ", MemberStatus = '" + curMemberEntry.MemberStatus + "'" );
+				curSqlStmt.Append( ", Note = '" + curMemberEntry.Note + "'" );
+				curSqlStmt.Append( ", MemberExpireDate = '" + curMemberEntry.MemberExpireDate.ToString( "MM/dd/yy" ) + "'" );
+				curSqlStmt.Append( ", UpdateDate = getdate()" );
+				curSqlStmt.Append( ", JudgeSlalomRating = '" + curMemberEntry.JudgeSlalomRating + "'" );
+				curSqlStmt.Append( ", JudgeTrickRating = '" + curMemberEntry.JudgeTrickRating + "'" );
+				curSqlStmt.Append( ", JudgeJumpRating = '" + curMemberEntry.JudgeJumpRating + "'" );
+				curSqlStmt.Append( ", DriverSlalomRating = '" + curMemberEntry.DriverSlalomRating + "'" );
+				curSqlStmt.Append( ", DriverTrickRating = '" + curMemberEntry.DriverTrickRating + "'" );
+				curSqlStmt.Append( ", DriverJumpRating = '" + curMemberEntry.DriverJumpRating + "'" );
+				curSqlStmt.Append( ", ScorerSlalomRating = '" + curMemberEntry.ScorerSlalomRating + "'" );
+				curSqlStmt.Append( ", ScorerTrickRating = '" + curMemberEntry.ScorerTrickRating + "'" );
+				curSqlStmt.Append( ", ScorerJumpRating = '" + curMemberEntry.ScorerJumpRating + "'" );
+				curSqlStmt.Append( ", SafetyOfficialRating = '" + curMemberEntry.SafetyOfficialRating + "'" );
+				curSqlStmt.Append( ", TechOfficialRating = '" + curMemberEntry.TechControllerRating + "'" );
+				curSqlStmt.Append( " Where MemberId = '" + curMemberEntry.MemberId + "'" );
+				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				if ( rowsProc > 0 ) myCountMemberUpdated++;
+			}
 			#endregion
 
 			#region Insert or update skier slalom ranking data
@@ -977,7 +951,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt.Append( " Set Score = " + curSlalom.ToString() );
 					curSqlStmt.Append( ", Rating = '" + HelperFunctions.getAttributeValue( curImportMemberEntry, "SlalomRating" ) + "' " );
 					curSqlStmt.Append( String.Format( "Where MemberId = '{0}' And AgeGroup = '{1}' And Event = '{2}'"
-						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ));
+						, curMemberEntry.MemberId, curMemberEntry.AgeGroup, curEvent ) );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				} else {
@@ -1114,7 +1088,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			#endregion
 
 			#region Update tournament registration entry if one exists in current tournament for this member
-			String curSanctionId = (String) myTourRow["SanctionId"];
+			String curSanctionId = (String)myTourRow["SanctionId"];
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select TR.MemberId as TourMemberId, OW.MemberId as OfficialMemberId " );
 			curSqlStmt.Append( "FROM TourReg TR " );
@@ -1217,7 +1191,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", '" + curTeamName + "'" );
 				curSqlStmt.Append( ", '" + curTeamCode + "'" );
 				curSqlStmt.Append( ", getdate()" );
-                curSqlStmt.Append( ")");
+				curSqlStmt.Append( ")" );
 
 			}
 			int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
@@ -1281,40 +1255,96 @@ namespace WaterskiScoringSystem.Externalnterface {
 			return true;
 		}
 
-		public static String calcMemberStatus( String inMemTypeDesc, DateTime inMemExpireDate
-			, String membershipStatusCode
-			, bool inCanSki, bool inCanSkiGR, bool inWaiverSigned
-			, DateTime inTourDate ) {
+		public static String calcMemberStatus( Dictionary<string, object> inImportMemberEntry, MemberEntry inMemberEntry ) {
+			return calcMemberStatus( inImportMemberEntry, null, inMemberEntry );
+		}
+		public static String calcMemberStatus( DataRow inImportMemberRow ) {
+			return calcMemberStatus( null, inImportMemberRow, null );
+		}
+		public static String calcMemberStatus( Dictionary<string, object> inImportMemberEntry, DataRow inImportMemberRow, MemberEntry inMemberEntry ) {
+			String returnMembershipStatus = "";
+			int curSkiYearAge = 0, curMembershipStatusCodeNum = 0;
+			bool curCanSki = false, curCanSkiGR = false;
+			String curMemTypeDesc, curSafeSportStatus, curWaiverStatus;
+			DateTime curMemExpireDate = new DateTime();
+			DateTime curWaiverExpireDate = new DateTime();
+			DateTime curSafeSportExpireDate = new DateTime();
+			if ( myTourRow == null ) myTourRow = getTourData();
+			DateTime curTourEventDatePlus5 = myTourEventDate.AddDays( 5 );
 
-			string returnMembershipStatus = "";
-			int curMembershipStatusCode = 0;
-			try {
-				curMembershipStatusCode = Convert.ToInt32( membershipStatusCode );
-				returnMembershipStatus = getMembershipStatus( curMembershipStatusCode );
-			} catch {
-				return getMembershipStatus( 0 );
-			}
-
-			if ( inMemExpireDate >= inTourDate ) {
-				if ( curMembershipStatusCode == MembershipStatusCodeActive ) return returnMembershipStatus;
-
-				if ( returnMembershipStatus.Equals(MembershipStatusNone) ) {
-					returnMembershipStatus += " ** " + inMemTypeDesc;
-					if ( inWaiverSigned ) returnMembershipStatus += " ** Needs Annual Waiver";
-					if ( inCanSki ) returnMembershipStatus += " ** Needs Upgrade";
-					if ( !(inCanSki) && inCanSkiGR ) returnMembershipStatus += " ** Grass Roots Only";
-				}
+			if ( inImportMemberRow == null ) {
+				curMemTypeDesc = HelperFunctions.getAttributeValue( inImportMemberEntry, "MemTypeDesc" );
+				curSafeSportStatus = HelperFunctions.getAttributeValue( inImportMemberEntry, "SafeSportStatus" );
+				curWaiverStatus = HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverStatus" );
+				int.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "membershipStatusCode" ), out curMembershipStatusCodeNum );
+				DateTime.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverExpiration" ), out curWaiverExpireDate );
+				DateTime.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "SafeSportExpiration" ), out curSafeSportExpireDate );
+				DateTime.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "MembershipExpiration" ), out curMemExpireDate );
+				curSkiYearAge = inMemberEntry.SkiYearAge;
+				curCanSki = inMemberEntry.CanSki;
+				curCanSkiGR = inMemberEntry.CanSkiGR;
+				inMemberEntry.MemberExpireDate = curMemExpireDate;
 
 			} else {
-				if ( returnMembershipStatus.Equals( MembershipStatusNone ) ) {
-					returnMembershipStatus += " ** Needs Renew/Upgrade";
-				} else if ( inCanSki ) {
+				curMemTypeDesc = HelperFunctions.getDataRowColValue( inImportMemberRow, "MemTypeDesc", "" );
+				curSafeSportStatus = HelperFunctions.getDataRowColValue( inImportMemberRow, "SafeSportStatus", "" );
+				curWaiverStatus = HelperFunctions.getDataRowColValue( inImportMemberRow, "WaiverStatus", "" );
+				int.TryParse( HelperFunctions.getDataRowColValue( inImportMemberRow, "membershipStatusCode", "0" ), out curMembershipStatusCodeNum );
+				DateTime.TryParse( HelperFunctions.getDataRowColValue( inImportMemberRow, "WaiverExpiration", "" ), out curWaiverExpireDate );
+				DateTime.TryParse( HelperFunctions.getDataRowColValue( inImportMemberRow, "SafeSportExpiration", "" ), out curSafeSportExpireDate );
+				DateTime.TryParse( HelperFunctions.getDataRowColValue( inImportMemberRow, "MembershipExpiration", "" ), out curMemExpireDate );
+				int.TryParse( HelperFunctions.getDataRowColValue( inImportMemberRow, "SkiYearAge", "0" ), out curSkiYearAge );
+
+				curCanSki = HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inImportMemberRow, "CanSki", "0" ) );
+				curCanSkiGR = HelperFunctions.isValueTrue( HelperFunctions.getDataRowColValue( inImportMemberRow, "CanSkiGR", "0" ) );
+			}
+			returnMembershipStatus = getMembershipStatus( curMembershipStatusCodeNum );
+
+
+			if ( curMembershipStatusCodeNum == MembershipStatusCodeActive ) {
+				if ( curMemExpireDate < curTourEventDatePlus5 ) {
 					returnMembershipStatus += " ** Needs Renew";
+					curMembershipStatusCodeNum = 0;
+
+				} else if ( curWaiverExpireDate < curTourEventDatePlus5 || curWaiverStatus != "Signed" ) {
+					returnMembershipStatus += " ** Needs Annual Waiver Signed";
+					curMembershipStatusCodeNum = 0;
+
+				} else if ( curSkiYearAge >= 18 && (curSafeSportExpireDate < curTourEventDatePlus5 || curSafeSportStatus != "Complete") ) {
+					returnMembershipStatus += " ** Needs Safe Sport Renewed";
+					curMembershipStatusCodeNum = 0;
+
+				} else if ( !( curCanSki ) ) {
+					returnMembershipStatus += " ** Needs Upgrade";
+					curMembershipStatusCodeNum = 0;
+
+				} else if ( !( curCanSki ) && curCanSkiGR ) {
+					returnMembershipStatus += " ** Grass Roots Only";
+					curMembershipStatusCodeNum = 0;
+
+				} else {
+					return returnMembershipStatus;
 				}
+
+			} else if ( returnMembershipStatus.Equals( MembershipStatusNone ) ) {
+				returnMembershipStatus += " ** Needs Renew/Upgrade";
+
+			} else if ( curCanSki ) {
+				returnMembershipStatus += " ** Needs Renew";
 			}
 
 			return returnMembershipStatus;
 		}
+
+		public static bool calcWaiverStatus( Dictionary<string, object> inImportMemberEntry ) {
+			DateTime curTourEventDatePlus5 = myTourEventDate.AddDays( 5 );
+			String curWaiverStatus = HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverStatus" );
+			DateTime curWaiverExpireDate = new DateTime();
+			DateTime.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverExpiration" ), out curWaiverExpireDate );
+			if ( curWaiverExpireDate >= curTourEventDatePlus5 && curWaiverStatus == "Signed" ) return true;
+			return false;
+		}
+
 
 		/*
 		 * Check for rotations for collegiate divisions
@@ -1446,7 +1476,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 			importMemberEntry( curImportMemberEntryTeamB, curMemberEntryTeamB, true, true );
 		}
 
-		private DataRow getTourData() {
+		private static DataRow getTourData() {
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			if ( mySanctionNum == null || mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
+				return null;
+			}
+
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation" );
 			curSqlStmt.Append( ", SanctionEditCode, Rules, EventDates, EventLocation, TourDataLoc " );
@@ -1454,10 +1490,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 			curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
 			DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curDataTable.Rows.Count > 0 ) {
+				DateTime.TryParse( HelperFunctions.getDataRowColValue( curDataTable.Rows[0], "EventDates", "" ), out myTourEventDate );
 				return curDataTable.Rows[0];
-			} else {
-				return null;
 			}
+			return null;
 		}
 
 	}

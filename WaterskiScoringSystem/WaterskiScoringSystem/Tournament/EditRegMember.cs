@@ -494,51 +494,36 @@ namespace WaterskiScoringSystem.Tournament {
 
             AgeGroupSelect.CurrentValue = curAgeGroup;
 
-            bool curMemberCanSki = true;
-            bool curMemberCanSkiGR = true;
-            bool curMemberWaiver = true;
-            if ( myImportMemberEntry.ContainsKey( "CanSki" ) ) {
+			MemberEntry curMemberEntry = new MemberEntry();
+			curMemberEntry.MemberId = editMemberId.Text;
+			curMemberEntry.AgeGroup = curAgeGroup;
+            curMemberEntry.SkiYearAge = curSkiYearValue;
+			curMemberEntry.CanSki = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( myImportMemberEntry, "CanSki" ) );
+			curMemberEntry.CanSkiGR = HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( myImportMemberEntry, "CanSkiGR" ) );
+
+			/*
+			if ( myImportMemberEntry.ContainsKey( "CanSki" ) ) {
                 if ( myImportMemberEntry["CanSki"] != null ) {
                     if ( myImportMemberEntry["CanSki"].GetType() == System.Type.GetType( "System.String" ) ) {
-                        if ( ( (String)myImportMemberEntry["CanSki"] ).ToLower().Equals( "true" ) ) curMemberCanSki = true;
+                        if ( ( (String)myImportMemberEntry["CanSki"] ).ToLower().Equals( "true" ) ) curMemberEntry.CanSki = true;
                     } else {
-                        curMemberCanSki = (Boolean)myImportMemberEntry["CanSki"];
+						curMemberEntry.CanSki = (Boolean)myImportMemberEntry["CanSki"];
                     }
                 }
             }
             if ( myImportMemberEntry.ContainsKey( "CanSkiGR" ) ) {
                 if ( myImportMemberEntry["CanSkiGR"] != null ) {
                     if ( myImportMemberEntry["CanSkiGR"].GetType() == System.Type.GetType( "System.String" ) ) {
-                        if ( ( (String)myImportMemberEntry["CanSkiGR"] ).ToLower().Equals( "true" ) ) curMemberCanSkiGR = true;
+                        if ( ( (String)myImportMemberEntry["CanSkiGR"] ).ToLower().Equals( "true" ) ) curMemberEntry.CanSkiGR = true;
                     } else {
-                        curMemberCanSkiGR = (Boolean)myImportMemberEntry["CanSkiGR"];
+						curMemberEntry.CanSkiGR = (Boolean)myImportMemberEntry["CanSkiGR"];
                     }
                 }
             }
-            if ( myImportMemberEntry.ContainsKey( "Waiver" ) ) {
-                if ( myImportMemberEntry["Waiver"].GetType() == System.Type.GetType( "System.String" ) ) {
-                    curMemberWaiver = HelperFunctions.isValueTrue( (String)myImportMemberEntry["Waiver"] );
-                } else {
-                    curMemberWaiver = HelperFunctions.isValueTrue( ( (int)myImportMemberEntry["Waiver"] ).ToString() );
-                }
-            }
+             */
 
-            DateTime curMemberExpireDate = new DateTime();
-            if (myImportMemberEntry.ContainsKey("MembershipExpiration")) {
-                curMemberExpireDate = Convert.ToDateTime(HelperFunctions.getAttributeValue(myImportMemberEntry, "MembershipExpiration"));
+			showMemberStatus.Text = ImportMember.calcMemberStatus( myImportMemberEntry, curMemberEntry );
             
-            } else if (myImportMemberEntry.ContainsKey("EffTo")) {
-                curMemberExpireDate = Convert.ToDateTime(HelperFunctions.getAttributeValue(myImportMemberEntry, "EffTo"));
-            }
-            showMemberStatus.Text = ImportMember.calcMemberStatus(
-                HelperFunctions.getAttributeValue( myImportMemberEntry, "MemTypeDesc" )
-                , curMemberExpireDate
-                , HelperFunctions.getAttributeValue( myImportMemberEntry, "membershipStatusCode" )
-                , curMemberCanSki
-                , curMemberCanSkiGR
-                , curMemberWaiver
-                , Convert.ToDateTime( myTourRow["EventDates"] ) );
-
             AddButton.Visible = false;
             AddButton.Enabled = false;
         }

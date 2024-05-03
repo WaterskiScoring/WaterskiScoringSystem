@@ -119,6 +119,8 @@ namespace WaterskiScoringSystem.Trick {
 					if ( inShowPreview ) {
 						curPreviewDialog.Document = myPrintDoc;
 						curPreviewDialog.WindowState = FormWindowState.Normal;
+						curPreviewDialog.Size = new System.Drawing.Size( 750,750 );
+						curPreviewDialog.Focus();
 						curPreviewDialog.ShowDialog();
 
 					} else {

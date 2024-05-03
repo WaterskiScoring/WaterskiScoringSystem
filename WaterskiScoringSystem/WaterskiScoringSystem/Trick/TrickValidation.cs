@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data;
+using System.Text.RegularExpressions;
 namespace WaterskiScoringSystem.Trick {
 	class TrickValidation {
 		private String myTourRules = "";
@@ -144,10 +145,16 @@ namespace WaterskiScoringSystem.Trick {
 			String prevCode;
 			int prevTrickIdx = 0;
 			DataRow curTrickRow;
+			Regex curRegexAlphaNumeric = new Regex( @"^[a-zA-Z0-9\s,]*$" );
 			myUpdatedTrickCode = "";
 
 			if ( inCode == null || inCode.Length == 0 ) {
 				myValidationMessage = "Trick code is required";
+				return false;
+			}
+
+			if ( !(curRegexAlphaNumeric.IsMatch( inCode )) ) {
+				myValidationMessage = "Trick code contains invalid characters";
 				return false;
 			}
 

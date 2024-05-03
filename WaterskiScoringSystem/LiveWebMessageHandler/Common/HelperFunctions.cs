@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Windows.Forms;
 
 namespace LiveWebMessageHandler.Common {
 	public class HelperFunctions {
@@ -38,6 +39,43 @@ namespace LiveWebMessageHandler.Common {
 				if ( dataRow[colName].GetType().Equals( typeof( DateTime ) ) ) return ( (DateTime)dataRow[colName] ).ToString( "yyyy/MM/dd HH:mm:ss" );
 
 				return ( (String)dataRow[colName] ).ToString();
+
+			} catch {
+				return defaultValue;
+			}
+		}
+
+		public static String getViewRowColValue( DataGridViewRow viewRow, String colName, String defaultValue ) {
+			String curColValue = "";
+			try {
+				if ( viewRow == null ) return defaultValue;
+				if ( !( viewRow.DataGridView.Columns.Contains( colName ) ) ) return defaultValue;
+				if ( viewRow.Cells[colName].Value == null ) return defaultValue;
+
+				if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( String ) ) ) {
+					curColValue = ( (String)viewRow.Cells[colName].Value ).Trim();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( int ) ) ) {
+					curColValue = ( (int)viewRow.Cells[colName].Value ).ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int16 ) ) ) {
+					curColValue = ( (Int16)viewRow.Cells[colName].Value ).ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( Int64 ) ) ) {
+					curColValue = ( (Int64)viewRow.Cells[colName].Value ).ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( byte ) ) ) {
+					curColValue = ( (byte)viewRow.Cells[colName].Value ).ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( decimal ) ) ) {
+					curColValue = viewRow.Cells[colName].FormattedValue.ToString();
+
+				} else if ( viewRow.Cells[colName].Value.GetType().Equals( typeof( bool ) ) ) {
+					curColValue = ( (bool)viewRow.Cells[colName].Value ).ToString();
+				}
+
+				if ( curColValue.Length <= 0 ) return defaultValue;
+				return curColValue;
 
 			} catch {
 				return defaultValue;
@@ -87,9 +125,6 @@ namespace LiveWebMessageHandler.Common {
 			return "";
 		}
 
-		public static String getEventGroupFilterSql( String inGroupValue, bool isTrickVideo ) {
-			return getEventGroupFilterSql( inGroupValue, isTrickVideo, true );
-		}
 		public static String getEventGroupFilterSql( String inGroupValue, bool isTrickVideo, bool isOrderByRound ) {
 			if ( isObjectEmpty( inGroupValue ) ) return "";
 			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "And ER.AgeGroup = 'CM' ";
@@ -99,7 +134,7 @@ namespace LiveWebMessageHandler.Common {
 			if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
 			if ( inGroupValue.ToUpper().Equals( "NON TEAM" ) ) return "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
 			if ( isTrickVideo ) return "And ER.AgeGroup = '" + inGroupValue + "' ";
-			if ( isOrderByRound ) return "And COALESCE( ER.EventGroup +'-' + ER.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";
+			if ( isOrderByRound ) return "And COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";
 			return "And ER.EventGroup = '" + inGroupValue + "' ";
 			
 		}

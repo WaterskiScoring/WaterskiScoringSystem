@@ -838,7 +838,8 @@ namespace WaterskiScoringSystem.Trick {
 			myPrintDoc.PrintPage += new PrintPageEventHandler( printDoc_PrintPage );
 			
             curPreviewDialog.Document = myPrintDoc;
-            curPreviewDialog.Focus();
+			curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
+			curPreviewDialog.Focus();
             curPreviewDialog.ShowDialog();
 
 			return true;

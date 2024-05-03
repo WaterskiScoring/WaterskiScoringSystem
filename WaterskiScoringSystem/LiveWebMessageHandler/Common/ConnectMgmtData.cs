@@ -24,29 +24,26 @@ namespace LiveWebMessageHandler.Common {
 			mySanctionNum = Properties.Settings.Default.SanctionNum;
 			bool curDbOpen = DataAccess.DataAccessOpen();
 			if ( !( curDbOpen ) ) {
-				String curMsg = String.Format( "{0}Unable to connect to database {1}"
-					, curMethodName, Properties.Settings.Default.DatabaseConnectionString );
-				MessageBox.Show( curMsg );
+				ExportLiveWeb.LastErrorMsg = String.Format( "{0}Unable to connect to database {1}", curMethodName, Properties.Settings.Default.DatabaseConnectionString );
 				return false;
 			}
 			
 			tourRow = HelperFunctions.getTourData();
 			if ( tourRow == null ) {
-				String curMsg = String.Format( "{0}Tournament data for {1} was not found"
-					, curMethodName, mySanctionNum );
-				Log.WriteFile( curMsg );
-				MessageBox.Show( curMsg );
+				ExportLiveWeb.LastErrorMsg = String.Format( "{0}Tournament data for {1} was not found", curMethodName, mySanctionNum );
+				Log.WriteFile( ExportLiveWeb.LastErrorMsg );
 				return false;
 			}
 			Properties.Settings.Default.DataDirectory = (String)tourRow["TourDataLoc"];
 			if ( !( Log.OpenFile( mySanctionNum ) ) ) return false;
 
 			ExportLiveWeb.exportTourData( mySanctionNum );
+			if ( HelperFunctions.isObjectEmpty( ExportLiveWeb.LastErrorMsg ) ) {
+				Log.WriteFile( String.Format( "{0}Connected to database {1}", curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
+				return true;
+			}
 
-			Log.WriteFile( String.Format( "{0}Connected to database {1}"
-				, curMethodName, Properties.Settings.Default.DatabaseConnectionString ) );
-
-			return true;
+			return false;
 		}
 
 	}

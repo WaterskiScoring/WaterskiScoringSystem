@@ -8,7 +8,7 @@ namespace LiveWebMessageHandler.Common {
 		private static int DataAccessOpenCount = 0;
 		private static int DataAccessEmbeddedTransactionCount = 0;
 
-		private static String myDataAccessLastExcpMsg = "";
+		private static String myLastDataAccessErrorMsg = "";
 
 		private static SqlCeConnection DataAccessConnection = null;
 		private static SqlCeTransaction DataAccessTransaction = null;
@@ -18,7 +18,7 @@ namespace LiveWebMessageHandler.Common {
 		public DataAccess() {
 		}
 
-		public static string DataAccessLastExcpMsg { get => myDataAccessLastExcpMsg; set => myDataAccessLastExcpMsg = value; }
+		public static string LastDataAccessErrorMsg { get => myLastDataAccessErrorMsg; set => myLastDataAccessErrorMsg = value; }
 
 		public static bool DataAccessOpen() {
 			String curMethodName = "DataAccess:DataAccessOpen: ";
@@ -97,7 +97,7 @@ namespace LiveWebMessageHandler.Common {
 		public static DataTable getDataTable( String inSelectStmt, bool inShowMsg ) {
 			String curMethodName = "DataAccess:getDataTable";
 			DataTable curDataTable = new DataTable();
-			DataAccessLastExcpMsg = "";
+			LastDataAccessErrorMsg = "";
 
 			try {
 				// Open connection if needed
@@ -110,8 +110,8 @@ namespace LiveWebMessageHandler.Common {
 			} catch ( Exception ex ) {
 				String ExcpMsg = ex.Message;
 				if ( inSelectStmt != null ) { ExcpMsg += "\nSQL=" + inSelectStmt; }
-				DataAccessLastExcpMsg = ":Exception Performing SQL operation:" + ExcpMsg;
-				Log.WriteFile( curMethodName + DataAccessLastExcpMsg );
+				LastDataAccessErrorMsg = ":Exception Performing SQL operation:" + ExcpMsg;
+				Log.WriteFile( curMethodName + LastDataAccessErrorMsg );
 				if ( inShowMsg ) MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
 				return null;
 			}
@@ -124,7 +124,7 @@ namespace LiveWebMessageHandler.Common {
 		}
 		public static int ExecuteCommand( String inSelectStmt, bool inShowMsg ) {
 			String curMethodName = "DataAccess:ExecuteCommand";
-			DataAccessLastExcpMsg = "";
+			LastDataAccessErrorMsg = "";
 
 			try {
 				// Open connection if needed
@@ -138,8 +138,8 @@ namespace LiveWebMessageHandler.Common {
 				String ExcpMsg = ex.Message;
 				if ( inSelectStmt != null ) { ExcpMsg += "\nSQL=" + inSelectStmt; }
 
-				DataAccessLastExcpMsg = ":Exception Performing SQL operation:" + ExcpMsg;
-				Log.WriteFile( curMethodName + DataAccessLastExcpMsg );
+				LastDataAccessErrorMsg = ":Exception Performing SQL operation:" + ExcpMsg;
+				Log.WriteFile( curMethodName + LastDataAccessErrorMsg );
 				if ( inShowMsg ) MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
 
 				return -1;

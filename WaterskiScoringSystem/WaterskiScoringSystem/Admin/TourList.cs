@@ -1564,7 +1564,9 @@ namespace WaterskiScoringSystem.Admin {
                 myPrintDoc.DefaultPageSettings.Margins = new Margins(10, 10, 10, 10);
 
                 curPreviewDialog.Document = myPrintDoc;
-                curPreviewDialog.ShowDialog();
+				curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
+                curPreviewDialog.Focus();
+				curPreviewDialog.ShowDialog();
             }
         }
 

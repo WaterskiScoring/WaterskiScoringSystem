@@ -98,7 +98,8 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navRefresh_Click( object sender, EventArgs e ) {
-            try {
+			String curMethodName = "OfficialWorkRecord: navRefresh_Click: ";
+			try {
                 winStatusMsg.Text = "Retrieving tournament member list";
                 Cursor.Current = Cursors.WaitCursor;
 
@@ -110,9 +111,11 @@ namespace WaterskiScoringSystem.Tournament {
                 Cursor.Current = Cursors.Default;
 
             } catch ( Exception ex ) {
-                MessageBox.Show( "Error attempting to retrieve tournament members\n" + ex.Message );
-            }
-        }
+				String curExcptMsg = "Error attempting to retrieve tournament members\n" + ex.Message;
+				MessageBox.Show( curExcptMsg );
+				Log.WriteFile( curMethodName + curExcptMsg );
+			}
+		}
 
         private void loadDataGridView() {
             //Retrieve data for current tournament
@@ -167,19 +170,14 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private bool saveOfficialData() {
-            bool curReturnValue = false;
-            Int64 curPK = 0;
+			String curMethodName = "OfficialWorkRecord: saveOfficialData: ";
+			bool curReturnValue = false;
             int rowsProc = 0;
 
             try {
-                try {
-                    curPK = Convert.ToInt64( editPK.Text );
-                } catch {
-                    curPK = -1;
-                }
-
                 StringBuilder curSqlStmt = new StringBuilder( "" );
-                if ( curPK > 0 ) {
+                DataTable curDataTable = DataAccess.getDataTable( "Select MemberID From OfficialWork Where MemberId = '" + editMemberId.Text + "'" );
+				if ( curDataTable.Rows.Count > 0 ) {
                     curSqlStmt.Append( "Update OfficialWork Set " );
                     curSqlStmt.Append( "JudgeChief = '" + getValueCheckBox(JudgeChiefCB) + "'" );
                     curSqlStmt.Append( ", JudgeAsstChief = '" + getValueCheckBox(JudgeAsstChiefCB) + "'" );
@@ -237,13 +235,16 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", AnncrOfficialRating = '" + editAnncrOfficialRating.Text + "'" );
                     curSqlStmt.Append( ", LastUpdateDate = getdate()" );
                     curSqlStmt.Append( ", Note = '" + editNote.Text + "'" );
-                    curSqlStmt.Append( " Where PK = " + curPK.ToString() );
+					curSqlStmt.Append( " Where MemberId = '" + editMemberId.Text + "'" );
+
 
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    if ( rowsProc > 0 ) {
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+					if ( rowsProc > 0 ) {
                         isDataModified = false;
                         curReturnValue = true;
                     }
+                
                 } else {
                     curSqlStmt.Append( "Insert OfficialWork ( " );
 					curSqlStmt.Append( "SanctionId, MemberId" );
@@ -316,19 +317,10 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", '" + editNote.Text + "'" );
                     curSqlStmt.Append( ")" );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    if ( rowsProc > 0 ) {
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+					if ( rowsProc > 0 ) {
                         isDataModified = false;
                         curReturnValue = true;
-
-                        curSqlStmt = new StringBuilder( "" );
-                        curSqlStmt.Append( "Select PK From OfficialWork " );
-                        curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
-                        curSqlStmt.Append( "  And MemberId = '" + editMemberId.Text + "'" );
-                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-                        if ( curDataTable.Rows.Count > 0 ) {
-                            curPK = (Int64)curDataTable.Rows[0]["PK"];
-                            editPK.Text = curPK.ToString();
-                        }
                     }
                 }
 
@@ -401,10 +393,12 @@ namespace WaterskiScoringSystem.Tournament {
 
 			} catch ( Exception excp ) {
                 curReturnValue = false;
-                MessageBox.Show( "Error attempting to update skier official credits \n" + excp.Message );
-            }
+                String curExcptMsg = "Error attempting to update skier official credits \n" + excp.Message;
+				MessageBox.Show( curExcptMsg );
+				Log.WriteFile( curMethodName + curExcptMsg );
+			}
 
-            return curReturnValue;
+			return curReturnValue;
         }
 
         private void navEditOfficials_Click(object sender, EventArgs e) {
@@ -653,7 +647,6 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			//Show existing data
-			editPK.Text = ( (Int64) myOfficialWorkRow["PK"] ).ToString();
 			editMemberId.Text = (String) myOfficialWorkRow["MemberId"];
 			editSanctionId.Text = (String) myOfficialWorkRow["SanctionId"];
 			try {
@@ -1062,7 +1055,8 @@ namespace WaterskiScoringSystem.Tournament {
 
             PrintPreviewDialog curPreviewDialog = new PrintPreviewDialog();
             curPreviewDialog.Document = myPrintDoc;
-            curPreviewDialog.Focus();
+			curPreviewDialog.Size = new System.Drawing.Size( this.Width, this.Height );
+			curPreviewDialog.Focus();
             curPreviewDialog.ShowDialog();
 
             //PrintDataGridView.Visible = false;
@@ -1078,7 +1072,7 @@ namespace WaterskiScoringSystem.Tournament {
 
         private bool checkForOfficial( String inOfficial, String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Select PK FROM OfficialWork " );
+            curSqlStmt.Append( "Select MemberId FROM OfficialWork " );
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  AND MemberId <> '" + inMemberId + "' " );
             curSqlStmt.Append( "  AND " + inOfficial + " = 'Y' " );
@@ -1092,7 +1086,7 @@ namespace WaterskiScoringSystem.Tournament {
         
         private DataRow getOfficialWorkData( String inMemberId ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT distinct O.PK, O.SanctionId, O.MemberId, T.SkierName, T.ReadyToSki" );
+            curSqlStmt.Append( "SELECT distinct O.SanctionId, O.MemberId, T.SkierName, T.ReadyToSki" );
             curSqlStmt.Append( ", O.JudgeChief, O.JudgeAsstChief, O.JudgeAppointed" );
             curSqlStmt.Append( ", O.DriverChief, O.DriverAsstChief, O.DriverAppointed" );
             curSqlStmt.Append( ", O.ScoreChief, O.ScoreAsstChief, O.ScoreAppointed" );
@@ -1317,7 +1311,8 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private Boolean checkAndRemoveChiefOfficial( String inChiefType ) {
-            StringBuilder curSqlStmt = new StringBuilder("");
+			String curMethodName = "OfficialWorkRecord: checkAndRemoveChiefOfficial: ";
+			StringBuilder curSqlStmt = new StringBuilder("");
             String curChiefOfficalAttrName = "Chief" + inChiefType + "MemberId";
             if ( inChiefType.Equals("Safety") ) {
                 curChiefOfficalAttrName = "SafetyDirMemberId";
@@ -1330,16 +1325,21 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "'");
                 curSqlStmt.Append(" AND " + curChiefOfficalAttrName + " = '" + editMemberId.Text + "' ");
 				int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                winStatusMsg.Text = "Removal of chief judge successfully saved";
+				Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+				winStatusMsg.Text = "Removal of chief judge successfully saved";
                 return true;
+            
             } catch ( Exception excp ) {
-                MessageBox.Show("Error removing chief judge \n" + excp.Message);
-                return false;
+				String curExcptMsg = "Error removing chief judge \n" + excp.Message;
+				MessageBox.Show( curExcptMsg );
+				Log.WriteFile( curMethodName + curExcptMsg );
+				return false;
             }
         }
 
         private Boolean checkAndUpdateChiefOfficial(String inChiefType) {
-            StringBuilder curSqlStmt = new StringBuilder("");
+			String curMethodName = "OfficialWorkRecord: checkAndUpdateChiefOfficial: ";
+			StringBuilder curSqlStmt = new StringBuilder("");
             String curChiefOfficalAttrName = "Chief" + inChiefType + "MemberId";
             if ( inChiefType.Equals("Safety" ) ) {
                 curChiefOfficalAttrName = "SafetyDirMemberId";
@@ -1382,7 +1382,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append(", LastUpdateDate = getdate() ");
                     curSqlStmt.Append("Where SanctionId = '" + mySanctionNum + "' ");
 					int rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    if ( rowsProc > 0 ) {
+					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+					if ( rowsProc > 0 ) {
                         MessageBox.Show("Remember to update the contact information for this new chief official");
                         return true;
                     } else {
@@ -1393,8 +1394,10 @@ namespace WaterskiScoringSystem.Tournament {
                 }
 
             } catch ( Exception excp ) {
-                MessageBox.Show("Error updating " + inChiefType + "\n" + excp.Message);
-                return false;
+				String curExcptMsg = "Error updating " + inChiefType + "\n" + excp.Message;
+				MessageBox.Show( curExcptMsg );
+				Log.WriteFile( curMethodName + curExcptMsg );
+				return false;
             }
         }
 

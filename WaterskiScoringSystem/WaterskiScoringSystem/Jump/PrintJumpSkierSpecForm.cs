@@ -119,6 +119,7 @@ namespace WaterskiScoringSystem.Jump {
 
 					if ( inShowPreview ) {
 						curPreviewDialog.Document = myPrintDoc;
+						curPreviewDialog.Size = new System.Drawing.Size( 750, 750 );
 						curPreviewDialog.WindowState = FormWindowState.Normal;
 						curPreviewDialog.ShowDialog();
 

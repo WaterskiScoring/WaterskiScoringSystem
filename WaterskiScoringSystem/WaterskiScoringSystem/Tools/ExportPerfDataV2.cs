@@ -307,6 +307,10 @@ namespace WaterskiScoringSystem.Tools {
 				, { "ContactName", HelperFunctions.getDataRowColValue(myTourRow, "ContactName", "NotAvailable") }
 				, { "ContactEmail", HelperFunctions.getDataRowColValue(myTourRow, "ContactEmail", "NotAvailable")}
 				, { "ContactPhone", HelperFunctions.getDataRowColValue(myTourRow, "ContactPhone", "NotAvailable")}
+				, { "ChiefJudgeName", HelperFunctions.getDataRowColValue(myTourRow, "ChiefJudgeName", "NotAvailable") }
+				, { "ChiefJudgeEmail", HelperFunctions.getDataRowColValue(myTourRow, "ChiefJudgeEmail", "NotAvailable")}
+				, { "ChiefScorerName", HelperFunctions.getDataRowColValue(myTourRow, "ChiefScorerName", "NotAvailable") }
+				, { "ChiefScorerEmail", HelperFunctions.getDataRowColValue(myTourRow, "ChiefScorerEmail", "NotAvailable")}
 				, { "FileCreateDate", curFileCreateDate }
 				, { "FileCreateTime", curFileCreateTime }
 				, { "AppTitle", Properties.Settings.Default.AppTitle}
@@ -594,7 +598,8 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "SELECT T.SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
 			curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
 			curSqlStmt.Append( ", ContactMemberId, ContactAddress, ContactPhone, ContactEmail, CP.SkierName AS ContactName " );
-			curSqlStmt.Append( ", ChiefJudgeMemberId, ChiefJudgeAddress, ChiefJudgePhone, ChiefJudgeEmail, CJ.SkierName AS ChiefJudgeName" );
+			curSqlStmt.Append( ", ChiefJudgeMemberId, ChiefJudgeEmail, CJ.SkierName AS ChiefJudgeName" );
+			curSqlStmt.Append( ", ChiefScorerMemberId, ChiefScorerEmail, CC.SkierName AS ChiefScorerName" );
 			curSqlStmt.Append( ", ChiefDriverMemberId, ChiefDriverAddress, ChiefDriverPhone, ChiefDriverEmail, CD.SkierName AS ChiefDriverName " );
 			curSqlStmt.Append( ", SafetyDirMemberId, SafetyDirAddress, SafetyDirPhone, SafetyDirEmail, SD.SkierName AS SafetyDirName " );
 			curSqlStmt.Append( "FROM Tournament T " );
@@ -603,6 +608,8 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "    ON CP.SanctionId = T.SanctionId AND CP.MemberId = T.ContactMemberId " );
 			curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) CJ " );
 			curSqlStmt.Append( "    ON CJ.SanctionId = T.SanctionId AND CJ.MemberId = T.ChiefJudgeMemberId " );
+			curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) CC " );
+			curSqlStmt.Append( "    ON CC.SanctionId = T.SanctionId AND CC.MemberId = T.ChiefScorerMemberId " );
 			curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) CD " );
 			curSqlStmt.Append( "    ON CD.SanctionId = T.SanctionId AND CD.MemberId = T.ChiefDriverMemberId " );
 			curSqlStmt.Append( "  LEFT OUTER JOIN (Select Distinct SanctionId, MemberId, SkierName From TourReg ) SD " );

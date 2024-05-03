@@ -135,7 +135,9 @@ namespace WaterskiScoringSystem.Tools {
 
                     if (inShowPreview) {
                         curPreviewDialog.Document = myPrintDoc;
-                        curPreviewDialog.WindowState = FormWindowState.Normal;
+						curPreviewDialog.Size = new System.Drawing.Size( 750, 750 );
+						curPreviewDialog.WindowState = FormWindowState.Normal;
+                        curPreviewDialog.Focus();
                         curPreviewDialog.ShowDialog();
                     } else {
                         myPrintDoc.Print();

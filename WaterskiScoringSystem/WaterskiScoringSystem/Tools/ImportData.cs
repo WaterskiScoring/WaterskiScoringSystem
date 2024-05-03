@@ -75,7 +75,6 @@ namespace WaterskiScoringSystem.Tools {
         }
 
         public void importData(String inFileName) {
-            bool curImportConfirmMsg = false;
             ArrayList curFileList = new ArrayList();
 			myMatchCommand = "";
 
@@ -87,19 +86,12 @@ namespace WaterskiScoringSystem.Tools {
 
 			if ( curFileList.Count == 0 ) return;
 		
-			DialogResult msgResp =
-				MessageBox.Show( "Do you want a confirmation dialog for each successful data type imported?", "Confirmation",
-					MessageBoxButtons.YesNo,
-					MessageBoxIcon.Warning,
-					MessageBoxDefaultButton.Button1 );
-			if ( msgResp == DialogResult.Yes ) curImportConfirmMsg = true;
-
 			foreach ( String curFileName in curFileList ) {
-				importDataFile( curFileName, curImportConfirmMsg );
+				importDataFile( curFileName );
 			}
 		}
 
-		public void importDataFile( String curFileName, bool curImportConfirmMsg ) {
+		public void importDataFile( String curFileName ) {
 			string inputBuffer, curSanctionId = "";
 			string[] inputCols = null, inputColNames = null, inputKeys = null;
 			int curInputLineCount = 0;
@@ -122,12 +114,6 @@ namespace WaterskiScoringSystem.Tools {
 					//Display statistics when another table entry is found
 					if ( myTableName != null ) {
 						handleEndOfTable( curSanctionId );
-
-						if ( curImportConfirmMsg ) {
-							showImportStats( myTableName );
-							myImportCounts = new int[] { 0, 0, 0, 0, 0 };
-						}
-
 						curSanctionId = "";
 					}
 
@@ -180,11 +166,7 @@ namespace WaterskiScoringSystem.Tools {
 			}
 			
 			handleEndOfTable( curSanctionId );
-			if ( curImportConfirmMsg ) {
-				showImportStats( myTableName );
-			} else {
-				showImportStats( null );
-			}
+			showImportStats();
 			
 			myImportCounts = new int[] { 0, 0, 0, 0, 0 };
 			myProgressInfo.Close();
@@ -433,13 +415,9 @@ namespace WaterskiScoringSystem.Tools {
 			}
 		}
 
-		private void showImportStats( String inTableName ) {
+		private void showImportStats() {
 			String curInfoMsg = "";
-			if ( inTableName == null ) {
-				curInfoMsg = "Total import data processed";
-			} else {
-				curInfoMsg = "Import data processed for " + inTableName;
-			}
+			curInfoMsg = "Total import data processed";
 			MessageBox.Show( String.Format("Info: {0}"
 				+ "\nRows Read: {1}"
 				+ "\nRows Added: {2}"

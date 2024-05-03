@@ -33,12 +33,12 @@ namespace LiveWebMessageHandler.Message {
 			this.CreationDatetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.QueueView = new System.Windows.Forms.DataGridView();
-			this.QueueButton = new System.Windows.Forms.Button();
-			this.RowStatusLabel = new System.Windows.Forms.Label();
 			this.QueueCreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.QueueMsgType = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.MsgDataHash = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.QueueMsgData = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.QueueButton = new System.Windows.Forms.Button();
+			this.RowStatusLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.MessageView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.QueueView)).BeginInit();
 			this.SuspendLayout();
@@ -81,6 +81,7 @@ namespace LiveWebMessageHandler.Message {
 			this.MessageView.ReadOnly = true;
 			this.MessageView.Size = new System.Drawing.Size(805, 412);
 			this.MessageView.TabIndex = 4;
+			this.MessageView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MessageView_CellContentDoubleClick);
 			// 
 			// CreationDatetime
 			// 
@@ -126,31 +127,6 @@ namespace LiveWebMessageHandler.Message {
 			this.QueueView.Visible = false;
 			this.QueueView.Leave += new System.EventHandler(this.QueueView_Leave);
 			// 
-			// QueueButton
-			// 
-			this.QueueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.QueueButton.Location = new System.Drawing.Point(450, 4);
-			this.QueueButton.Name = "QueueButton";
-			this.QueueButton.Size = new System.Drawing.Size(145, 23);
-			this.QueueButton.TabIndex = 3;
-			this.QueueButton.Text = "Queue";
-			this.QueueButton.UseVisualStyleBackColor = true;
-			this.QueueButton.Click += new System.EventHandler(this.QueueButton_Click);
-			// 
-			// RowStatusLabel
-			// 
-			this.RowStatusLabel.AutoSize = true;
-			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.Info;
-			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RowStatusLabel.Location = new System.Drawing.Point(9, 4);
-			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
-			this.RowStatusLabel.Name = "RowStatusLabel";
-			this.RowStatusLabel.Padding = new System.Windows.Forms.Padding(5);
-			this.RowStatusLabel.Size = new System.Drawing.Size(108, 23);
-			this.RowStatusLabel.TabIndex = 5;
-			this.RowStatusLabel.Text = "Row 1 of 9999";
-			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// QueueCreateDate
 			// 
 			this.QueueCreateDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -189,6 +165,31 @@ namespace LiveWebMessageHandler.Message {
 			this.QueueMsgData.Name = "QueueMsgData";
 			this.QueueMsgData.ReadOnly = true;
 			this.QueueMsgData.Width = 75;
+			// 
+			// QueueButton
+			// 
+			this.QueueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.QueueButton.Location = new System.Drawing.Point(450, 4);
+			this.QueueButton.Name = "QueueButton";
+			this.QueueButton.Size = new System.Drawing.Size(145, 23);
+			this.QueueButton.TabIndex = 3;
+			this.QueueButton.Text = "Queue";
+			this.QueueButton.UseVisualStyleBackColor = true;
+			this.QueueButton.Click += new System.EventHandler(this.QueueButton_Click);
+			// 
+			// RowStatusLabel
+			// 
+			this.RowStatusLabel.AutoSize = true;
+			this.RowStatusLabel.BackColor = System.Drawing.SystemColors.Info;
+			this.RowStatusLabel.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.RowStatusLabel.Location = new System.Drawing.Point(9, 4);
+			this.RowStatusLabel.Margin = new System.Windows.Forms.Padding(0);
+			this.RowStatusLabel.Name = "RowStatusLabel";
+			this.RowStatusLabel.Padding = new System.Windows.Forms.Padding(5);
+			this.RowStatusLabel.Size = new System.Drawing.Size(108, 23);
+			this.RowStatusLabel.TabIndex = 5;
+			this.RowStatusLabel.Text = "Row 1 of 9999";
+			this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// Controller
 			// 

@@ -11,10 +11,14 @@ namespace LiveWebMessageHandler.Externalnterface {
     class ExportLiveWeb {
 		//public static String LiveWebScoreboardUri = "/import/api/ImportScores";
 		public static String LiveWebScoreboardUri = Properties.Settings.Default.UriWaterskiResultsApi + "/ImportScores";
+		private static StringBuilder myLastErrorMsg = new StringBuilder( "" );
 		private static String myModuleName = "ExportLiveWeb: ";
+
+		public static string LastErrorMsg { get => myLastErrorMsg.ToString(); set => myLastErrorMsg.Append( value ); }
 
 		public static void exportTourData( String inSanctionId ) {
 			String curMethodName = myModuleName + "exportTourData: ";
+			myLastErrorMsg = new StringBuilder( "" );
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
 			Dictionary<string, dynamic> curLiveWebRequest = null;
@@ -26,18 +30,28 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curTableList.Add( exportTableWithData( "Tournament", new String[] { "SanctionId" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( String.Format( "SELECT Distinct SanctionId FROM TourProperties Where SanctionId = '{0}'", inSanctionId ) );
+			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId" }, curSqlStmt.ToString(), "Delete" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( String.Format( "SELECT Distinct SanctionId FROM OfficialWork Where SanctionId = '{0}'", inSanctionId ) );
+			curTableList.Add( exportTableWithData( "OfficialWork", new String[] { "SanctionId" }, curSqlStmt.ToString(), "Delete" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( String.Format( "SELECT Distinct SanctionId FROM DivOrder Where SanctionId = '{0}'", inSanctionId ) );
+			curTableList.Add( exportTableWithData( "DivOrder", new String[] { "SanctionId" }, curSqlStmt.ToString(), "Delete" ) );
+
+			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM TourProperties " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' ", inSanctionId ) );
 			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT * FROM DivOrder " );
-			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' ", inSanctionId ) );
+			curSqlStmt.Append( String.Format( "SELECT * FROM DivOrder Where SanctionId = '{0}' ", inSanctionId ) );
 			curTableList.Add( exportTableWithData( "DivOrder", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT * FROM OfficialWork " );
-			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' ", inSanctionId ) );
+			curSqlStmt.Append( String.Format( "SELECT * FROM OfficialWork Where SanctionId = '{0}' ", inSanctionId ) );
 			curSqlStmt.Append( "AND (" );
 			curSqlStmt.Append( "JudgeChief = 'Y' OR JudgeAsstChief = 'Y' OR JudgeAppointed = 'Y' " );
 			curSqlStmt.Append( "OR DriverChief = 'Y' OR DriverAsstChief = 'Y' OR DriverAppointed = 'Y' " );
@@ -77,6 +91,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 		public static void exportRunningOrder( String inSanctionId, String inEvent, String inEventGroup, int inRound ) {
 			String curMethodName = "ExportLiveWeb: exportRunningOrder: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
+			myLastErrorMsg = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
 			Dictionary<string, dynamic> curLiveWebRequest = null;
 			Dictionary<string, dynamic> curTables = null;
@@ -88,6 +103,23 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curTableList.Add( exportTableWithData( "TourReg", new String[] { "SanctionId", "MemberId", "AgeGroup" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
+			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
+			if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
+				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
+			} else {
+				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+			}
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM EventRunOrder ER " );
+			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+			String curGroupFilter = HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true );
+			curSqlStmt.Append( curGroupFilter.Replace( "O.", "ER." ) );
+			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+
+			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM EventReg ER " );
 			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
 			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
@@ -96,7 +128,8 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM EventRunOrder ER " );
 			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
-			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
+			curGroupFilter = HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true );
+			curSqlStmt.Append( curGroupFilter.Replace( "O.", "ER." ) );
 			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event", "Round" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
@@ -131,6 +164,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 		public static void exportTeamScores( String inSanctionId ) {
 			String curMethodName = "ExportLiveWeb: exportTeamScores: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
+			myLastErrorMsg = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
 			Dictionary<string, dynamic> curLiveWebRequest = null;
 			Dictionary<string, dynamic> curTables = null;
@@ -161,7 +195,9 @@ namespace LiveWebMessageHandler.Externalnterface {
 		public static void exportCurrentSkiers( String inEvent, String inSanctionId, byte inRound, String inEventGroup ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkiers: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
+			myLastErrorMsg = new StringBuilder( "" );
 			int curLineCount = 0;
+			myLastErrorMsg = new StringBuilder( "" );
 			DataTable curDataTable = new DataTable();
 
 			try {
@@ -174,7 +210,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
 					if ( inRound > 0 ) curSqlStmt.Append( "AND S.Round = " + inRound + " " );
 					curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1) " );
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true ) );
+					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true, false ) );
 					curSqlStmt.Append( " Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
 					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 
@@ -187,9 +223,14 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
 					curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
 					curSqlStmt.Append( "AND S.Round = " + inRound + " " );
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false ) );
+					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
 					curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
 					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
+				}
+
+				if ( curDataTable == null ) {
+					if ( HelperFunctions.isObjectPopulated( DataAccess.LastDataAccessErrorMsg ) ) LastErrorMsg = DataAccess.LastDataAccessErrorMsg;
+					return;
 				}
 
 				String curMemberId = "", curAgeGroup = "", curSkierName = "";
@@ -239,6 +280,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 
 		public static void exportCurrentSkier( String inSanctionId, String inEvent, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierSlalom: ";
+			myLastErrorMsg = new StringBuilder( "" );
 
 			if ( inEvent.Equals( "Slalom" ) ) {
 				exportCurrentSkierSlalom( inSanctionId, inMemberId, inAgeGroup, inRound, inSkierRunNum );
@@ -258,7 +300,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			throw new Exception( curErrMsg );
 		}
 
-		public static void exportCurrentSkierSlalom( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
+		private static void exportCurrentSkierSlalom( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierSlalom: ";
 			if ( inSkierRunNum <= 1 ) {
 				exportCurrentSkierSlalomFirst( inSanctionId, inMemberId, inAgeGroup, inRound, inSkierRunNum );
@@ -295,7 +337,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierSlalomFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
+		private static void exportCurrentSkierSlalomFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierSlalomFirst: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -353,7 +395,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierTrick( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
+		private static void exportCurrentSkierTrick( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierTrick: ";
 			if ( inSkierRunNum <= 1 ) {
 				exportCurrentSkierTrickFirst( inSanctionId, inMemberId, inAgeGroup, inRound, inSkierRunNum );
@@ -392,7 +434,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierTrickFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
+		private static void exportCurrentSkierTrickFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inSkierRunNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierTrickFirst: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -450,7 +492,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierTrickVideo( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
+		private static void exportCurrentSkierTrickVideo( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierTrickVideo: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -476,7 +518,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierJump( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum ) {
+		private static void exportCurrentSkierJump( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierJump: ";
 			if ( inPassNum <= 1 ) {
 				exportCurrentSkierJumpFirst( inSanctionId, inMemberId, inAgeGroup, inRound, inPassNum );
@@ -513,7 +555,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkierJumpFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum ) {
+		private static void exportCurrentSkierJumpFirst( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound, int inPassNum ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkierJumpFirst: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -573,6 +615,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 		public static void disableSkiers( String inEvent, String inSanctionId, byte inRound, String inEventGroup ) {
 			String curMethodName = "ExportLiveWeb: disableSkiers: ";
 			int curLineCount = 0;
+			myLastErrorMsg = new StringBuilder( "" );
 			DataTable curDataTable = new DataTable();
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 
@@ -582,9 +625,9 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "From TrickVideo S " );
 					curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
 					curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
-					curSqlStmt.Append( String.Format( "Where S.SanctionId = '{0}' And ER.Event = '{1}' And Round = {2} ", inSanctionId, inEvent, inRound ) );
+					curSqlStmt.Append( String.Format( "Where S.SanctionId = '{0}' And ER.Event = '{1}' And S.Round = {2} ", inSanctionId, inEvent, inRound ) );
 					curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1) " );
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true ) );
+					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true, false ) );
 					curSqlStmt.Append( " Order by S.SanctionId, S.Round, S.AgeGroup, S.MemberId" );
 					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 
@@ -594,12 +637,15 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
 					curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
 					curSqlStmt.Append( "LEFT OUTER JOIN EventRunOrder O ON ER.SanctionId = O.SanctionId AND ER.MemberId = O.MemberId AND ER.AgeGroup = O.AgeGroup AND ER.Event = O.Event AND S.Round = O.Round " );
-					curSqlStmt.Append( String.Format( "Where S.SanctionId = '{0}' And ER.Event = '{1}' And Round = {2} ", inSanctionId, inEvent, inRound ) );
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false ) );
+					curSqlStmt.Append( String.Format( "Where S.SanctionId = '{0}' And ER.Event = '{1}' And S.Round = {2} ", inSanctionId, inEvent, inRound ) );
+					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true ) );
 					curSqlStmt.Append( "Order by S.SanctionId, S.Round, ER.EventGroup, S.MemberId, S.AgeGroup" );
 					curDataTable = DataAccess.getDataTable( curSqlStmt.ToString(), false );
 				}
-				if ( curDataTable == null ) return;
+				if ( curDataTable == null ) {
+					if ( HelperFunctions.isObjectPopulated( DataAccess.LastDataAccessErrorMsg ) ) LastErrorMsg = DataAccess.LastDataAccessErrorMsg;
+					return;
+				}
 
 				String curMemberId = "", curAgeGroup = "", curSkierName = "";
 				byte curRound = 0;
@@ -648,6 +694,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 
 		public static void disableCurrentSkier( String inSanctionId, String inEvent, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: disableCurrentSkier: ";
+			myLastErrorMsg = new StringBuilder( "" );
 
 			if ( inEvent.Equals( "Slalom" ) ) {
 				disableCurrentSkierSlalom( inSanctionId, inMemberId, inAgeGroup, inRound );
@@ -667,7 +714,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			throw new Exception( curErrMsg );
 		}
 
-		public static void disableCurrentSkierSlalom( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
+		private static void disableCurrentSkierSlalom( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: disableCurrentSkierSlalom: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -698,7 +745,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void disableCurrentSkierTrick( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
+		private static void disableCurrentSkierTrick( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: disableCurrentSkierTrick: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -729,7 +776,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void disableCurrentSkierTrickVideo( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
+		private static void disableCurrentSkierTrickVideo( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: disableCurrentSkierTrickVideo: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -755,7 +802,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void disableCurrentSkierJump( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
+		private static void disableCurrentSkierJump( String inSanctionId, String inMemberId, String inAgeGroup, byte inRound ) {
 			String curMethodName = "ExportLiveWeb: disableCurrentSkierJump: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
@@ -786,7 +833,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static Dictionary<string, dynamic> exportTableWithData( String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd ) {
+		private static Dictionary<string, dynamic> exportTableWithData( String inTableName, String[] inKeyColumns, String inSqlStmt, String inCmd ) {
 			String curMethodName = myModuleName + "exportData: ";
 			char[] singleQuoteDelim = new char[] { '\'' };
 			String curValue;
@@ -797,7 +844,10 @@ namespace LiveWebMessageHandler.Externalnterface {
 			ArrayList curListRows = new ArrayList();
 
 			curDataTable = DataAccess.getDataTable( inSqlStmt, false );
-			if ( curDataTable == null ) return null;
+			if ( curDataTable == null ) {
+				if ( HelperFunctions.isObjectPopulated( DataAccess.LastDataAccessErrorMsg ) ) LastErrorMsg = DataAccess.LastDataAccessErrorMsg;
+				return null;
+			}
 
 			foreach ( String curKey in inKeyColumns ) {
 				curListKyes.Add( curKey );
