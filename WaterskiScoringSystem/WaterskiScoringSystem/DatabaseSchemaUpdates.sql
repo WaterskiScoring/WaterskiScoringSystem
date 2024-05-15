@@ -1193,3 +1193,9 @@ CREATE TABLE TeamScoreDetail (
     , JumpPoints numeric(7,2) DEFAULT NULL
 );
 ALTER TABLE TeamScoreDetail ADD PRIMARY KEY (SanctionId, TeamCode, AgeGroup, LineNum) ;
+
+
+//------------------------------------------------------------
+## v24.14
+ALTER TABLE TrickVideo ALTER COLUMN Pass1VideoUrl nvarchar(512) NULL;
+ALTER TABLE TrickVideo ALTER COLUMN Pass2VideoUrl nvarchar(512) NULL;

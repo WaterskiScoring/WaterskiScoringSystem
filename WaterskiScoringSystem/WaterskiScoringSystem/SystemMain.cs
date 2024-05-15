@@ -851,10 +851,19 @@ namespace WaterskiScoringSystem {
             curForm.MdiParent = this;
             curForm.Show();
             mdiStatusMsg.Text = curForm.Name + " open";
+		}
 
-        }
+		private void navVideoManagement_Click( object sender, EventArgs e ) {
+			TrickVideoManagement curForm = new TrickVideoManagement();
+			mdiStatusMsg.Text = curForm.Name + " opening";
 
-        private DataTable getTourData(String inSanctionNum) {
+			// Set the Parent Form and display requested form
+			curForm.MdiParent = this;
+			curForm.Show();
+			mdiStatusMsg.Text = curForm.Name + " open";
+		}
+
+		private DataTable getTourData(String inSanctionNum) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
@@ -865,10 +874,6 @@ namespace WaterskiScoringSystem {
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionNum + "' " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
-
-		private void importMemberFileToolStripMenuItem1_Click( object sender, EventArgs e ) {
-
-		}
 
 	}
 }

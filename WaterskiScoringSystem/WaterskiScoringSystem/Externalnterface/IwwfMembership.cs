@@ -276,7 +276,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				String bulkLicenseAvailable =  HelperFunctions.getAttributeValue( respMsg, "FedBulkAgreement" );
 				if ( bulkLicenseAvailable.ToLower().Equals( "true" ) ) return true;
 
-				Log.WriteFile( String.Format( "validateIwwfMembership:Skier found but no IWWF license found for skier {0} {1} {2}" +
+				Log.WriteFile( String.Format( "validateIwwfMembership: EMS unlimited license not available for skier {0} {1} {2}" +
 					"\nSkier can purchase a license at the following address {3}"
 					, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
 
@@ -290,7 +290,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 			}
 			
-			Log.WriteFile( String.Format( "validateIwwfMembership:Skier found but no IWWF license found for skier {0} {1} {2}" +
+			Log.WriteFile( String.Format( "validateIwwfMembership: EMS unlimited license not available for skier {0} {1} {2}" +
 				"\nSkier can purchase a license at the following address {3}"
 				, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
 			return false;
@@ -299,20 +299,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private static Boolean readLicenseEntry( Dictionary<string, object> licenseEntry ) {
 			String licenseType =  HelperFunctions.getAttributeValue( licenseEntry, "LicenseDescription" );
 			String licenseAvailable =  HelperFunctions.getAttributeValue( licenseEntry, "Available" );
+			String IsUnlimited = HelperFunctions.getAttributeValue( licenseEntry, "IsUnlimited" );
 			String licenseEvent =  HelperFunctions.getAttributeValue( licenseEntry, "UsedInCompetition" );
 
-			if ( licenseAvailable.Equals( "True" ) ) {
+			if ( licenseAvailable.Equals( "True" ) && IsUnlimited.Equals( "True" ) ) {
 				Cursor.Current = Cursors.Default;
 				return true;
 			}
-
-			/*
-			if ( licenseType.Equals( "Single Competition" ) && licenseEvent.Equals( Properties.Settings.Default.AppSanctionNum ) ) {
-				Cursor.Current = Cursors.Default;
-				return true;
-			}
-			 */
-
 			return false;
 		}
 

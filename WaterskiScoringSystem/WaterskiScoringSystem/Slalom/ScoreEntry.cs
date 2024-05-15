@@ -1392,7 +1392,7 @@ namespace WaterskiScoringSystem.Slalom {
 
 			} else {
 				StringBuilder curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( String.Format("Delete From BoatPath Where SanctionId = '{0}' AND MemberId = '{1}'", SlalomEventData.mySanctionNum, curSimMemberId ) );
+				curSqlStmt.Append( String.Format( "Delete From BoatPath Where SanctionId = '{0}' AND MemberId = '{1}' AND Event = 'Slalom'", SlalomEventData.mySanctionNum, curSimMemberId ) );
 				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 
 				SimulationPassButton.Text = "Check BPMS";
@@ -2396,7 +2396,6 @@ namespace WaterskiScoringSystem.Slalom {
 					String curTeamCode = (String)TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["TeamCode"].Value;
 					byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
 					LiveWebHandler.sendDisableCurrentSkier( "Slalom", SlalomEventData.mySanctionNum, curMemberId, curAgeGroup, curRound );
-					//ExportLiveWeb.exportCurrentSkierSlalom( SlalomEventData.mySanctionNum, curMemberId, curAgeGroup, curRound, 0, curEventGroup
 				}
 
 			} else if ( LiveWebHandler.LiveWebDialog.ActionCmd.Equals( "DiableAllSkier" ) ) {
@@ -2404,7 +2403,6 @@ namespace WaterskiScoringSystem.Slalom {
 					String curEventGroup = EventGroupList.SelectedItem.ToString();
 					byte curRound = Convert.ToByte( roundActiveSelect.RoundValue );
 					LiveWebHandler.sendDisableSkiers( "Slalom", SlalomEventData.mySanctionNum, curRound, curEventGroup );
-					//ExportLiveWeb.exportCurrentSkiers( "Slalom", SlalomEventData.mySanctionNum, curRound, curEventGroup )
 				}
 			}
 		}
@@ -3140,7 +3138,6 @@ namespace WaterskiScoringSystem.Slalom {
 				} else {
 					curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
 					curPassSpeedKph = Convert.ToInt16( (String)myRecapRow.Cells["PassSpeedKphRecap"].Value );
-
 				}
 				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum, curPassLineLength, curPassSpeedKph );
 				if ( myBoatPathDataRow == null ) {

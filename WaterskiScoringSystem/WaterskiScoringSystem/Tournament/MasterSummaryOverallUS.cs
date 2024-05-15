@@ -339,7 +339,8 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["EligOverall"].Value = (String) curRow["EligOverall"];
 
                         curViewRow.Cells["SepSlalom"].Value = " ";
-                        if ( ( (String) curRow["EventClassSlalom"] ).Length > 0 && ( (String) curRow["PlcmtSlalom"] ).Length > 0 ) {
+						//if ( ( (String) curRow["EventClassSlalom"] ).Length > 0 && ( (String) curRow["PlcmtSlalom"] ).Length > 0 ) {
+						if ( ( (String) curRow["EventClassSlalom"] ).Length > 0 ) {
                             curViewRow.Cells["EventClassSlalom"].Value = (String) curRow["EventClassSlalom"];
                             curViewRow.Cells["RoundSlalom"].Value = (Int16) curRow["RoundSlalom"];
                             curViewRow.Cells["ScoreSlalom"].Value = (Decimal) curRow["ScoreSlalom"];
@@ -356,7 +357,8 @@ namespace WaterskiScoringSystem.Tournament {
                         }
 
                         curViewRow.Cells["SepTrick"].Value = " ";
-                        if ( ( (String) curRow["EventClassTrick"] ).Length > 0 && ( (String) curRow["PlcmtTrick"] ).Length > 0 ) {
+						//if ( ( (String) curRow["EventClassTrick"] ).Length > 0 && ( (String) curRow["PlcmtTrick"] ).Length > 0 ) {
+						if ( ( (String) curRow["EventClassTrick"] ).Length > 0 ) {
                             curViewRow.Cells["EventClassTrick"].Value = (String) curRow["EventClassTrick"];
                             curViewRow.Cells["RoundTrick"].Value = (Int16) curRow["RoundTrick"];
                             curViewRow.Cells["ScorePass1Trick"].Value = (Int16) curRow["Pass1Trick"];
@@ -371,7 +373,8 @@ namespace WaterskiScoringSystem.Tournament {
                         }
 
                         curViewRow.Cells["SepJump"].Value = " ";
-                        if ( ( (String) curRow["EventClassJump"] ).Length > 0 && ( (String) curRow["PlcmtJump"] ).Length > 0 ) {
+						//if ( ( (String) curRow["EventClassJump"] ).Length > 0 && ( (String) curRow["PlcmtJump"] ).Length > 0 ) {
+						if ( ( (String) curRow["EventClassJump"] ).Length > 0 ) {
                             curViewRow.Cells["EventClassJump"].Value = (String) curRow["EventClassJump"];
                             curViewRow.Cells["RoundJump"].Value = (Int16) curRow["RoundJump"];
                             curViewRow.Cells["ScoreMeters"].Value = (Decimal) curRow["ScoreMeters"];

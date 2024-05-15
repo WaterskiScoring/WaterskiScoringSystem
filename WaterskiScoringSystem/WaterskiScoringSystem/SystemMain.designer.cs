@@ -96,7 +96,8 @@
 			this.navPublishPDF = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportData = new System.Windows.Forms.ToolStripMenuItem();
 			this.navImportLwData = new System.Windows.Forms.ToolStripMenuItem();
-			this.boatPathDriverUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.navVideoManagement = new System.Windows.Forms.ToolStripMenuItem();
+			this.navBoatPathDriverUpdate = new System.Windows.Forms.ToolStripMenuItem();
 			this.navExportIwwfScores = new System.Windows.Forms.ToolStripMenuItem();
 			this.navViewRankingList = new System.Windows.Forms.ToolStripMenuItem();
 			this.navTrickListMaint = new System.Windows.Forms.ToolStripMenuItem();
@@ -630,7 +631,8 @@
             this.navPublishPDF,
             this.navImportData,
             this.navImportLwData,
-            this.boatPathDriverUpdateToolStripMenuItem,
+            this.navVideoManagement,
+            this.navBoatPathDriverUpdate,
             this.navExportIwwfScores,
             this.navViewRankingList,
             this.navTrickListMaint,
@@ -694,12 +696,19 @@
 			this.navImportLwData.Text = "Import WSTIMS Data From Live Web";
 			this.navImportLwData.Click += new System.EventHandler(this.navImportLwData_Click);
 			// 
-			// boatPathDriverUpdateToolStripMenuItem
+			// navVideoManagement
 			// 
-			this.boatPathDriverUpdateToolStripMenuItem.Name = "boatPathDriverUpdateToolStripMenuItem";
-			this.boatPathDriverUpdateToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-			this.boatPathDriverUpdateToolStripMenuItem.Text = "Boat Path Driver Update";
-			this.boatPathDriverUpdateToolStripMenuItem.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
+			this.navVideoManagement.Name = "navVideoManagement";
+			this.navVideoManagement.Size = new System.Drawing.Size(265, 22);
+			this.navVideoManagement.Text = "Video Management";
+			this.navVideoManagement.Click += new System.EventHandler(this.navVideoManagement_Click);
+			// 
+			// navBoatPathDriverUpdate
+			// 
+			this.navBoatPathDriverUpdate.Name = "navBoatPathDriverUpdate";
+			this.navBoatPathDriverUpdate.Size = new System.Drawing.Size(265, 22);
+			this.navBoatPathDriverUpdate.Text = "Boat Path Driver Update";
+			this.navBoatPathDriverUpdate.Click += new System.EventHandler(this.boatPathDriverUpdateToolStripMenuItem_Click);
 			// 
 			// navExportIwwfScores
 			// 
@@ -749,11 +758,9 @@
 			// 
 			// navDatabaseBackup
 			// 
-			this.navDatabaseBackup.Enabled = false;
 			this.navDatabaseBackup.Name = "navDatabaseBackup";
 			this.navDatabaseBackup.Size = new System.Drawing.Size(265, 22);
 			this.navDatabaseBackup.Text = "Backup Database";
-			this.navDatabaseBackup.Visible = false;
 			this.navDatabaseBackup.Click += new System.EventHandler(this.navDatabaseBackup_Click);
 			// 
 			// databaseToolToolStripMenuItem
@@ -930,9 +937,10 @@
 		private System.Windows.Forms.ToolStripMenuItem importRegistrationsForWorldWaterSkiersToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem publishReportDeleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem navImportLwData;
-		private System.Windows.Forms.ToolStripMenuItem boatPathDriverUpdateToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem navBoatPathDriverUpdate;
 		private System.Windows.Forms.ToolStripMenuItem navPublishPDF;
 		private System.Windows.Forms.ToolStripMenuItem navExportIwwfScores;
+		private System.Windows.Forms.ToolStripMenuItem navVideoManagement;
 	}
 }
 

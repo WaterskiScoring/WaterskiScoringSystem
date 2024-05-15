@@ -44,13 +44,14 @@
 			this.TagsListBox = new System.Windows.Forms.CheckedListBox();
 			this.AddTagButton = new System.Windows.Forms.Button();
 			this.NewTagTextbox = new System.Windows.Forms.TextBox();
-			this.ViewButton = new System.Windows.Forms.Button();
 			this.loadedVideoDataGridView = new System.Windows.Forms.DataGridView();
+			this.SelectVideo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.VideoTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoState = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoPlays = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoSizeSD = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoSizeHD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.CreatedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.VideoId = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.selectedFileDataGridView = new System.Windows.Forms.DataGridView();
@@ -96,7 +97,7 @@
 			// 
 			this.CancelButton.AutoSize = true;
 			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CancelButton.Location = new System.Drawing.Point(180, 253);
+			this.CancelButton.Location = new System.Drawing.Point(167, 255);
 			this.CancelButton.Name = "CancelButton";
 			this.CancelButton.Size = new System.Drawing.Size(75, 23);
 			this.CancelButton.TabIndex = 9;
@@ -108,11 +109,11 @@
 			// 
 			this.OkButton.AutoSize = true;
 			this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OkButton.Location = new System.Drawing.Point(91, 253);
+			this.OkButton.Location = new System.Drawing.Point(91, 255);
 			this.OkButton.Name = "OkButton";
-			this.OkButton.Size = new System.Drawing.Size(75, 23);
+			this.OkButton.Size = new System.Drawing.Size(76, 23);
 			this.OkButton.TabIndex = 8;
-			this.OkButton.Text = "Load";
+			this.OkButton.Text = "Load Videos";
 			this.OkButton.UseVisualStyleBackColor = true;
 			this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
@@ -147,18 +148,6 @@
 			this.NewTagTextbox.Size = new System.Drawing.Size(709, 20);
 			this.NewTagTextbox.TabIndex = 6;
 			// 
-			// ViewButton
-			// 
-			this.ViewButton.AutoSize = true;
-			this.ViewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ViewButton.Location = new System.Drawing.Point(530, 253);
-			this.ViewButton.Name = "ViewButton";
-			this.ViewButton.Size = new System.Drawing.Size(79, 23);
-			this.ViewButton.TabIndex = 11;
-			this.ViewButton.Text = "View Loaded";
-			this.ViewButton.UseVisualStyleBackColor = true;
-			this.ViewButton.Click += new System.EventHandler(this.ViewButton_Click);
-			// 
 			// loadedVideoDataGridView
 			// 
 			this.loadedVideoDataGridView.AllowUserToAddRows = false;
@@ -177,11 +166,13 @@
 			this.loadedVideoDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.loadedVideoDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.loadedVideoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SelectVideo,
             this.VideoTitle,
             this.VideoState,
             this.VideoPlays,
             this.VideoSizeSD,
             this.VideoSizeHD,
+            this.CreatedDate,
             this.VideoURL,
             this.VideoId});
 			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -198,6 +189,17 @@
 			this.loadedVideoDataGridView.Size = new System.Drawing.Size(795, 201);
 			this.loadedVideoDataGridView.TabIndex = 0;
 			this.loadedVideoDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
+			// 
+			// SelectVideo
+			// 
+			this.SelectVideo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.SelectVideo.FalseValue = "False";
+			this.SelectVideo.HeaderText = "Select";
+			this.SelectVideo.IndeterminateValue = "False";
+			this.SelectVideo.Name = "SelectVideo";
+			this.SelectVideo.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.SelectVideo.TrueValue = "True";
+			this.SelectVideo.Width = 35;
 			// 
 			// VideoTitle
 			// 
@@ -251,11 +253,21 @@
 			this.VideoSizeHD.ReadOnly = true;
 			this.VideoSizeHD.Width = 60;
 			// 
+			// CreatedDate
+			// 
+			this.CreatedDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.CreatedDate.HeaderText = "Created Date";
+			this.CreatedDate.Name = "CreatedDate";
+			this.CreatedDate.ReadOnly = true;
+			this.CreatedDate.Width = 75;
+			// 
 			// VideoURL
 			// 
+			this.VideoURL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.VideoURL.HeaderText = "URL";
 			this.VideoURL.Name = "VideoURL";
 			this.VideoURL.ReadOnly = true;
+			this.VideoURL.Width = 150;
 			// 
 			// VideoId
 			// 
@@ -263,8 +275,7 @@
 			this.VideoId.HeaderText = "ID";
 			this.VideoId.Name = "VideoId";
 			this.VideoId.ReadOnly = true;
-			this.VideoId.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.VideoId.Visible = false;
+			this.VideoId.Width = 75;
 			// 
 			// selectedFileDataGridView
 			// 
@@ -404,7 +415,7 @@
 			// 
 			// ExportLoadedButton
 			// 
-			this.ExportLoadedButton.Location = new System.Drawing.Point(623, 253);
+			this.ExportLoadedButton.Location = new System.Drawing.Point(480, 255);
 			this.ExportLoadedButton.Name = "ExportLoadedButton";
 			this.ExportLoadedButton.Size = new System.Drawing.Size(89, 23);
 			this.ExportLoadedButton.TabIndex = 12;
@@ -416,7 +427,7 @@
 			// 
 			this.ReviewButton.AutoSize = true;
 			this.ReviewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ReviewButton.Location = new System.Drawing.Point(269, 253);
+			this.ReviewButton.Location = new System.Drawing.Point(242, 255);
 			this.ReviewButton.Name = "ReviewButton";
 			this.ReviewButton.Size = new System.Drawing.Size(116, 23);
 			this.ReviewButton.TabIndex = 10;
@@ -459,7 +470,7 @@
 			// 
 			this.ResendButton.AutoSize = true;
 			this.ResendButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.ResendButton.Location = new System.Drawing.Point(400, 253);
+			this.ResendButton.Location = new System.Drawing.Point(358, 255);
 			this.ResendButton.Name = "ResendButton";
 			this.ResendButton.Size = new System.Drawing.Size(117, 23);
 			this.ResendButton.TabIndex = 14;
@@ -479,7 +490,6 @@
 			this.Controls.Add(this.LiveWebButton);
 			this.Controls.Add(this.RowStatusLabel);
 			this.Controls.Add(this.selectedFileDataGridView);
-			this.Controls.Add(this.ViewButton);
 			this.Controls.Add(this.NewTagTextbox);
 			this.Controls.Add(this.AddTagButton);
 			this.Controls.Add(this.TagsListBox);
@@ -511,20 +521,12 @@
         private System.Windows.Forms.CheckedListBox TagsListBox;
         private System.Windows.Forms.Button AddTagButton;
         private System.Windows.Forms.TextBox NewTagTextbox;
-        private System.Windows.Forms.Button ViewButton;
         private System.Windows.Forms.DataGridView loadedVideoDataGridView;
         private System.Windows.Forms.DataGridView selectedFileDataGridView;
         private System.Windows.Forms.Label RowStatusLabel;
         private System.Windows.Forms.Button LiveWebButton;
         private System.Windows.Forms.Button ExportButton;
         private System.Windows.Forms.Button ExportLoadedButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoTitle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoState;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoPlays;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoSizeSD;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoSizeHD;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoURL;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VideoId;
         private System.Windows.Forms.Button ReviewButton;
         private System.Windows.Forms.DataGridView ReviewVideoMatchDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedFileName;
@@ -535,5 +537,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedLoadStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn SelectedMemberId;
 		private System.Windows.Forms.Button ResendButton;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn SelectVideo;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoTitle;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoState;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoPlays;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoSizeSD;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoSizeHD;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CreatedDate;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoURL;
+		private System.Windows.Forms.DataGridViewTextBoxColumn VideoId;
 	}
 }

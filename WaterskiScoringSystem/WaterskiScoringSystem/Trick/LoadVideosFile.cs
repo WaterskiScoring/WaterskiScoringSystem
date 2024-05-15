@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
@@ -17,12 +16,15 @@ namespace WaterskiScoringSystem.Trick {
         private String mySanctionNum = null;
         private Int16 myTrickRounds;
 
-		private String myVideoLoadUrl = "https://api.sproutvideo.com/v1/videos";
-		private String myApiKey = "36924f60689e082b2626ae7da73d0404";
-		private String myApiKeyName = "SproutVideo-Api-Key";
+		private String myVideoLoadUrl = Properties.Settings.Default.UriVideoLoadApi;
+		private String myApiKey = Properties.Settings.Default.UriVideoLoadApiKey;
+		private String myApiKeyName = Properties.Settings.Default.UriVideoLoadApiKeyname;
 		private String myContentType = "application/x-www-form-urlencoded;charset=UTF-8";
-		private String myVideoListUrl = "https://api.sproutvideo.com/v1/videos";
-		private String myVideoDeleteUrl = "https://api.sproutvideo.com/v1/videos/";
+		//private String myVideoLoadUrl = "https://api.sproutvideo.com/v1/videos";
+		//private String myVideoListUrl = "https://api.sproutvideo.com/v1/videos";
+		//private String myVideoDeleteUrl = "https://api.sproutvideo.com/v1/videos/";
+		//private String myApiKey = "36924f60689e082b2626ae7da73d0404";
+		//private String myApiKeyName = "SproutVideo-Api-Key";
 
 		private char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
 
@@ -48,7 +50,7 @@ namespace WaterskiScoringSystem.Trick {
             ExportLoadedButton.Visible = false;
             ExportLoadedButton.Enabled = false;
 
-            selectedFileDataGridView.Location = loadedVideoDataGridView.Location;
+			selectedFileDataGridView.Location = loadedVideoDataGridView.Location;
             selectedFileDataGridView.Width = this.Width - 25;
             //selectedFileDataGridView.Height = this.Height - loadedVideoDataGridView.Location.X - 25;
 
@@ -68,26 +70,37 @@ namespace WaterskiScoringSystem.Trick {
             }
 
             // Retrieve data from database
-            mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			mySanctionNum = Properties.Settings.Default.AppSanctionNum;
+			if ( mySanctionNum == null || mySanctionNum.Length < 6 ) {
+				MessageBox.Show( "An active tournament must be selected from the Administration > Tournament List" );
+				closeWindow();
+				return;
+			}
 
-            if (mySanctionNum == null) {
-                MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-            } else {
-                if (mySanctionNum.Length < 6) {
-                    MessageBox.Show( "An active tournament must be selected from the Administration menu Tournament List option" );
-                } else {
-                    //Retrieve selected tournament attributes
-                    DataTable curTourDataTable = getTourData();
-                    if (curTourDataTable.Rows.Count > 0) {
-                        myTourRow = curTourDataTable.Rows[0];
-                        myTrickRounds = Convert.ToInt16( (byte)myTourRow["TrickRounds"] );
-                        getTagProperty();
+            //Retrieve selected tournament attributes
+            DataTable curTourDataTable = getTourData();
+            if (curTourDataTable.Rows.Count > 0) {
+                myTourRow = curTourDataTable.Rows[0];
+                myTrickRounds = Convert.ToInt16( (byte)myTourRow["TrickRounds"] );
+                getTagProperty();
                     }
-                }
-            }
         }
+		
+        private void closeWindow() {
+			Timer curTimerObj = new Timer();
+			curTimerObj.Interval = 15;
+			curTimerObj.Tick += new EventHandler( CloseWindowTimer );
+			curTimerObj.Start();
+			return;
+		}
+		private void CloseWindowTimer( object sender, EventArgs e ) {
+			Timer curTimerObj = (Timer)sender;
+			curTimerObj.Stop();
+			curTimerObj.Tick -= new EventHandler( CloseWindowTimer );
+			this.Close();
+		}
 
-        private void LoadVideosFile_FormClosed(object sender, FormClosedEventArgs e) {
+		private void LoadVideosFile_FormClosed(object sender, FormClosedEventArgs e) {
             StringBuilder curPropValue = new StringBuilder( "" );
             foreach (String curEntry in TagsListBox.Items) {
                 if (curPropValue.Length > 0) {
@@ -157,7 +170,7 @@ namespace WaterskiScoringSystem.Trick {
                         curSqlStmt.Append("INNER JOIN TrickScore S ON T.SanctionId = S.SanctionId AND T.MemberId = S.MemberId AND T.AgeGroup = S.AgeGroup ");
                         curSqlStmt.Append("WHERE T.SanctionId = '" + mySanctionNum + "' AND R.Event = 'Trick' ");
                         curSqlStmt.Append("Order by T.SkierName, T.AgeGroup ");
-                        myFullSkierDataTable = getData(curSqlStmt.ToString());
+                        myFullSkierDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
                         mySkierSelectDialog.FullSkierDataTable = myFullSkierDataTable;
 
                         foreach ( String curVideoFileName in mySelectedFileList) {
@@ -213,7 +226,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append("AND V.AgeGroup = S.AgeGroup AND V.Round = S.Round ");
             curSqlStmt.Append("where S.sanctionid = '" + mySanctionNum + "' ");
             curSqlStmt.Append("Order by S.AgeGroup, R.SkierName, S.Round ");
-            DataTable curDataTable = getData(curSqlStmt.ToString());
+            DataTable curDataTable = DataAccess.getDataTable(curSqlStmt.ToString());
 
             ReviewVideoMatchDataGridView.DataSource = curDataTable;
 
@@ -221,179 +234,57 @@ namespace WaterskiScoringSystem.Trick {
 
 		private void ResendButton_Click( object sender, EventArgs e ) {
 			String curMethodName = "ResendButton_Click";
-			String curMemberId, curAgeGroup;
+			String curMemberId, curAgeGroup,  curPass1VideoUrl, curPass2VideoUrl;
 			byte curRound;
+
+            if ( ReviewVideoMatchDataGridView.Visible == false || ReviewVideoMatchDataGridView.Rows.Count == 0 ) {
+                MessageBox.Show( "Data grid not active, no action performed" );
+                return;
+            }
+            if ( LiveWebHandler.LiveWebMessageHandlerActive == false ) {
+				MessageBox.Show( "Live Web interface not active therefore video URLs not uploaded" );
+				return;
+			}
 
 			myProgressInfo = new ProgressWindow();
             try {
-                if ( ReviewVideoMatchDataGridView.Rows.Count > 0 ) {
-                    myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
-                    myProgressInfo.setProgressMax( ReviewVideoMatchDataGridView.Rows.Count );
-                    myProgressInfo.Show();
-                    int curProcessCount = 0;
-                    foreach ( DataGridViewRow curViewRow in ReviewVideoMatchDataGridView.Rows ) {
-                        curProcessCount++;
-                        myProgressInfo.setProgressValue( curProcessCount );
-                        myProgressInfo.setProgessMsg( "Processing match for skier " + (String)curViewRow.Cells["SkierName"].Value );
-                        myProgressInfo.Refresh();
-                        myProgressInfo.Show();
+				Cursor.Current = Cursors.WaitCursor;
+				myProgressInfo.setProgessMsg( "Uploading " + ReviewVideoMatchDataGridView.Rows.Count + " trick matches" );
+				myProgressInfo.setProgressMax( ReviewVideoMatchDataGridView.Rows.Count );
+				myProgressInfo.Show();
+				int curProcessCount = 0;
+				foreach ( DataGridViewRow curViewRow in ReviewVideoMatchDataGridView.Rows ) {
+					curProcessCount++;
+					myProgressInfo.setProgressValue( curProcessCount );
+					myProgressInfo.setProgessMsg( "Processing match for skier " + (String)curViewRow.Cells["SkierName"].Value );
+					myProgressInfo.Refresh();
+					myProgressInfo.Show();
 
-                        if ( curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value && curViewRow.Cells["Pass1VideoUrl"].Value == System.DBNull.Value ) {
-                            curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
+					curPass1VideoUrl = HelperFunctions.getViewRowColValue( curViewRow, "Pass1VideoUrl", "" );
+					curPass2VideoUrl = HelperFunctions.getViewRowColValue( curViewRow, "Pass2VideoUrl", "" );
+					if ( HelperFunctions.isObjectPopulated( curPass1VideoUrl ) || HelperFunctions.isObjectPopulated( curPass2VideoUrl ) ) {
+						curMemberId = HelperFunctions.getViewRowColValue( curViewRow, "MemberId", "" );
+						curAgeGroup = HelperFunctions.getViewRowColValue( curViewRow, "AgeGroup", "" );
+						curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( curViewRow, "Round", "0" ) );
+						LiveWebHandler.sendCurrentSkier( "TrickVideo", mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
+						curViewRow.Cells["ResendStatus"].Value = "Video URL attached to Live Web skier";
 
-                        } else {
-                            if ( ( (String)curViewRow.Cells["Pass1VideoUrl"].Value ).Length > 1 || ( (String)curViewRow.Cells["Pass2VideoUrl"].Value ).Length > 1 ) {
-								if ( LiveWebHandler.LiveWebMessageHandlerActive ) {
-									curMemberId = HelperFunctions.getViewRowColValue( curViewRow, "MemberId", "" );
-									curAgeGroup = HelperFunctions.getViewRowColValue( curViewRow, "AgeGroup", "" );
-									curRound = Convert.ToByte( HelperFunctions.getViewRowColValue( curViewRow, "Round", "0" ) );
-									LiveWebHandler.sendCurrentSkier( "TrickVideo", mySanctionNum, curMemberId, curAgeGroup, curRound, 0 );
-									curViewRow.Cells["ResendStatus"].Value = "Video URL attached to Live Web skier";
+					} else {
+						curViewRow.Cells["ResendStatus"].Value = "No video URL attached";
+					}
+				}
+				myProgressInfo.Close();
 
-								} else {
-									curViewRow.Cells["ResendStatus"].Value = "Live Web interface therefore video URL not attached";
-								}
-
-							} else {
-                                curViewRow.Cells["ResendStatus"].Value = "Video URLs not available for skier";
-                            }
-                        }
-                    }
-                    myProgressInfo.Close();
-
-                } else {
-                    myProgressInfo.Close();
-                }
-
-            } catch ( Exception ex ) {
+			} catch ( Exception ex ) {
                 String curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 MessageBox.Show( curMsg );
                 myProgressInfo.Close();
-            }
-        }
-
-        private void ViewButton_Click(object sender, EventArgs e) {
-            String curMethodName = "ViewButton_Click";
-            String curQueryString = "?tag_name=";
-            String curReqstUrl = myVideoListUrl + curQueryString + mySanctionNum;
-            Dictionary<string, object> curResponseDataList = null;
-            NameValueCollection curHeaderParams = null;
-
-            ReviewVideoMatchDataGridView.Visible = false;
-            selectedFileDataGridView.Visible = false;
-            loadedVideoDataGridView.Visible = true;
-
-            curHeaderParams = new NameValueCollection();
-            curHeaderParams.Add( myApiKeyName, myApiKey );
-
-            try {
-                loadedVideoDataGridView.Rows.Clear();
-                DataGridViewRow curViewRow;
-                int curViewIdx = 0;
-                String curFileSize = "";
-
-                while (curReqstUrl.Length > 0) {
-                    //MessageBox.Show( "curReqstUrl: " + curReqstUrl );
-                    curResponseDataList = SendMessageHttp.getMessageResponseJson( curReqstUrl, curHeaderParams, myContentType );
-                    if (curResponseDataList != null && curResponseDataList.Count > 0) {
-                        if (curResponseDataList.ContainsKey( "videos" )) {
-                            if (curResponseDataList.ContainsKey( "next_page" )) {
-                                curReqstUrl = (String)curResponseDataList["next_page"];
-                            } else {
-                                curReqstUrl = "";
-                            }
-                            ArrayList curList = (ArrayList)curResponseDataList["videos"];
-                            if (curList.Count > 0) {
-
-                                foreach (Dictionary<string, object> curVideoEntry in curList) {
-                                    curViewIdx = loadedVideoDataGridView.Rows.Add();
-                                    curViewRow = loadedVideoDataGridView.Rows[curViewIdx];
-                                    foreach (KeyValuePair<String, object> curVideoAttr in curVideoEntry) {
-                                        if (curVideoAttr.Key.Equals( "id" )) curViewRow.Cells["VideoId"].Value = (String)curVideoAttr.Value;
-                                        if (curVideoAttr.Key.Equals( "title" )) curViewRow.Cells["VideoTitle"].Value = (String)curVideoAttr.Value;
-                                        if (curVideoAttr.Key.Equals( "state" )) curViewRow.Cells["VideoState"].Value = (String)curVideoAttr.Value;
-                                        if (curVideoAttr.Key.Equals( "plays" )) curViewRow.Cells["VideoPlays"].Value = (int)curVideoAttr.Value;
-                                        if (curVideoAttr.Key.Equals( "hd_video_file_size" )) {
-                                            curFileSize = ( (int)curVideoAttr.Value ).ToString();
-                                            if (curFileSize.Length > 6) {
-                                                try {
-                                                    curViewRow.Cells["VideoSizeHD"].Value = ( double.Parse( curFileSize ) / 1048576 ).ToString( "N2" ) + "M";
-                                                } catch {
-                                                    curViewRow.Cells["VideoSizeHD"].Value = "";
-                                                }
-                                            } else {
-                                                try {
-                                                    curViewRow.Cells["VideoSizeHD"].Value = ( double.Parse( curFileSize ) / 1024 ).ToString( "N2" ) + "K";
-                                                } catch {
-                                                    curViewRow.Cells["VideoSizeHD"].Value = "";
-                                                }
-                                            }
-                                        }
-
-                                        if (curVideoAttr.Key.Equals( "embed_code" )) {
-                                            curViewRow.Cells["VideoURL"].Value = (String)curVideoAttr.Value;
-                                        }
-                                        if (curVideoAttr.Key.Equals( "sd_video_file_size" )) {
-                                            curFileSize = ( (int)curVideoAttr.Value ).ToString();
-                                            if (curFileSize.Length > 6) {
-                                                try {
-                                                    curViewRow.Cells["VideoSizeSD"].Value = ( double.Parse( curFileSize ) / 1048576 ).ToString( "N2" ) + "M";
-                                                } catch {
-                                                    curViewRow.Cells["VideoSizeSD"].Value = "";
-                                                }
-                                            } else {
-                                                try {
-                                                    curViewRow.Cells["VideoSizeSD"].Value = ( double.Parse( curFileSize ) / 1024 ).ToString( "N2" ) + "K";
-                                                } catch {
-                                                    curViewRow.Cells["VideoSizeSD"].Value = "";
-                                                }
-                                            }
-                                        }
-                                        /*
-                                        if (curVideoAttr.Key.Equals( "assets" )) {
-                                            foreach (KeyValuePair<String, object> curAssetAttr in (Dictionary<string, object>)curVideoAttr.Value) {
-                                                if (curAssetAttr.Key.Equals( "videos" )) {
-                                                    foreach (KeyValuePair<String, object> curAssetVideoAttr in (Dictionary<string, object>)curAssetAttr.Value) {
-                                                        if (curAssetVideoAttr.Key.Equals( "sd_video_url" )) {
-                                                            curViewRow.Cells["VideoURLSD"].Value = (String)curAssetVideoAttr.Value;
-                                                        }
-                                                        if (curAssetVideoAttr.Key.Equals( "hd_video_url" )) {
-                                                            curViewRow.Cells["VideoURLHD"].Value = (String)curAssetVideoAttr.Value;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        */
-                                    }
-                                }
-                            }
-                        } else {
-                            curReqstUrl = "";
-                        }
-                    }
-                    try {
-                        if (loadedVideoDataGridView.Rows.Count > 0) {
-                            loadedVideoDataGridView.CurrentCell = loadedVideoDataGridView.Rows[0].Cells["VideoTitle"];
-                            int curRowPos = 1;
-                            RowStatusLabel.Text = "Row " + curRowPos.ToString() + " of " + loadedVideoDataGridView.Rows.Count.ToString();
-                        } else {
-                            RowStatusLabel.Text = "";
-                        }
-                    } catch {
-                        RowStatusLabel.Text = "";
-                    }
-                }
-                MessageBox.Show( ( curViewIdx + 1 ) + " videos returned " );
-                ExportLoadedButton.Visible = true;
-                ExportLoadedButton.Enabled = true;
-            } catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
-        }
+			
+            } finally {
+				Cursor.Current = Cursors.Default;
+			}
+		}
 
         private void OkButton_Click(object sender, EventArgs e) {
             String curMethodName = "OkButton_Click";
@@ -402,9 +293,10 @@ namespace WaterskiScoringSystem.Trick {
             NameValueCollection curFormData = null;
             NameValueCollection curHeaderParams = null;
 
-            myProgressInfo = new ProgressWindow();
+			myProgressInfo = new ProgressWindow();
             try {
-                if ( mySkierVideoList != null && mySkierVideoList.Count > 0 ) {
+				Cursor.Current = Cursors.WaitCursor;
+				if ( mySkierVideoList != null && mySkierVideoList.Count > 0 ) {
                     myProgressInfo.setProgessMsg( "Uploading " + mySkierVideoList.Count + " trick video files" );
                     myProgressInfo.setProgressMax( mySkierVideoList.Count );
                     myProgressInfo.Show();
@@ -481,13 +373,17 @@ namespace WaterskiScoringSystem.Trick {
                 } else {
                     myProgressInfo.Close();
                 }
+            
             } catch ( Exception ex ) {
                 //MessageBox.Show( curMethodName + ":Error encountered\n\nError: " + ex.Message );
                 String curMsg = curMethodName + ":Exception=" + ex.Message;
                 Log.WriteFile( curMsg );
                 myProgressInfo.Close();
-            }
-        }
+
+			} finally {
+				Cursor.Current = Cursors.Default;
+			}
+		}
 
         private void AddTagButton_Click(object sender, EventArgs e) {
             if (NewTagTextbox.Text.Length > 0) {
@@ -512,6 +408,7 @@ namespace WaterskiScoringSystem.Trick {
 			//char[] myCharDelimLimit = new char[] { ' ', '_', '-', ',' };
 			String[] curFileNameNodes = curFileNameMod.Split( myCharDelimLimit, StringSplitOptions.RemoveEmptyEntries );
 
+			Cursor.Current = Cursors.WaitCursor;
 			if ( curFileNameNodes.Length > 1) {
 				/*
                  * Search list of all skiers to determine if the parsed file name can be matched to a skier
@@ -630,17 +527,20 @@ namespace WaterskiScoringSystem.Trick {
                 curSqlStmt.Append( " AND MemberId = '" + inSkierVideoEntry.MemberId + "' " );
                 curSqlStmt.Append( " AND AgeGroup = '" + inSkierVideoEntry.AgeGroup + "' " );
                 curSqlStmt.Append( " AND Round = " + inSkierVideoEntry.Round + " " );
-                DataTable curDataTable = getData( curSqlStmt.ToString() );
+                DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
                 if (curDataTable.Rows.Count == 1) {
                     inSkierVideoEntry.SkierScorePK = (Int64)curDataTable.Rows[0]["PK"];
-                    return true;
+					Cursor.Current = Cursors.Default;
+					return true;
                 } else {
-                    MessageBox.Show( "A matching skier, round and pass could not be identified for this video \n\n" + Path.GetFileName( inSkierVideoEntry.VideoFileName ) );
+					Cursor.Current = Cursors.Default;
+					MessageBox.Show( "A matching skier, round and pass could not be identified for this video \n\n" + Path.GetFileName( inSkierVideoEntry.VideoFileName ) );
                     return false;
                 }
             } else {
-                //MessageBox.Show( "Skier, round and pass have not been selected for this video " + Path.GetFileName(inSkierVideoEntry.VideoFileName) );
-                return false;
+				//MessageBox.Show( "Skier, round and pass have not been selected for this video " + Path.GetFileName(inSkierVideoEntry.VideoFileName) );
+				Cursor.Current = Cursors.Default;
+				return false;
             }
         }
 
@@ -668,7 +568,6 @@ namespace WaterskiScoringSystem.Trick {
                 if (inSkierVideoEntry.SkierScorePK > 0 && inSkierVideoEntry.Pass > 0 ) {
                     String curVideoUrl = inVideoUrl.Replace( "630", "410" );
                     curVideoUrl = curVideoUrl.Replace( "420", "273" );
-                    //curVideoUrl = curVideoUrl.Replace( "354", "273" );
 
                     StringBuilder curSqlStmt = new StringBuilder( "Select count(*) From TrickVideo " );
                     curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "' " );
@@ -722,47 +621,6 @@ namespace WaterskiScoringSystem.Trick {
             return true;
         }
 
-        private void deleteVideosStatusInspecting() {
-            String curMethodName = "deleteVideosStatusInspecting";
-            Dictionary<string, object> curResponseDataList = null;
-            Dictionary<string, object> curResponseDeleteDataList = null;
-            NameValueCollection curHeaderParams = null;
-
-            curHeaderParams = new NameValueCollection();
-            curHeaderParams.Add( myApiKeyName, myApiKey );
-
-            try {
-                //Get list of all videos
-                curResponseDataList = SendMessageHttp.getMessageResponseJson( myVideoListUrl, curHeaderParams, myContentType );
-                if (curResponseDataList != null && curResponseDataList.Count > 0) {
-                    if (curResponseDataList.ContainsKey( "videos" )) {
-                        ArrayList curList = (ArrayList)curResponseDataList["videos"];
-                        if (curList.Count > 0) {
-                            //Search list of returned videos and check the status
-                            String curVideoId = "", curVideoTitle = "", curVideoState = "";
-                            foreach (Dictionary<string, object> curVideoEntry in curList) {
-                                foreach (KeyValuePair<String, object> curVideoAttr in curVideoEntry) {
-                                    if (curVideoAttr.Key.Equals( "id" )) curVideoId = (String)curVideoAttr.Value;
-                                    if (curVideoAttr.Key.Equals( "title" )) curVideoTitle = (String)curVideoAttr.Value;
-                                    if (curVideoAttr.Key.Equals( "state" )) curVideoState = (String)curVideoAttr.Value;
-                                }
-                                MessageBox.Show( "Video: Id:" + curVideoId + " Title:" + curVideoTitle + " State:" + curVideoState );
-                                if (curVideoState.ToLower().Equals( "inspecting" )) {
-                                    //Delete any video with a status of "inspecting"
-                                    curResponseDeleteDataList = SendMessageHttp.deleteMessagePostJsonResp( myVideoDeleteUrl + curVideoId, curHeaderParams, "application/json; charset=UTF-8", null );
-                                    SendMessageHttp.showServerRespJson( curResponseDeleteDataList );
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                MessageBox.Show( "Error encountered trying to send data to web location \n\nError: " + ex.Message );
-                String curMsg = curMethodName + ":Exception=" + ex.Message;
-                Log.WriteFile( curMsg );
-            }
-        }
-
         private void updateProperty(String inKey, String inValue, Int16 inOrder) {
             try {
                 StringBuilder curSqlStmt = new StringBuilder( "" );
@@ -791,7 +649,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "WHERE SanctionId = '" + mySanctionNum + "' " );
             curSqlStmt.Append( "  AND PropKey = 'VideoTags' " );
             curSqlStmt.Append( "Order by PropOrder, PropKey, PropValue " );
-            DataTable curDataTable = getData( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             if (curDataTable.Rows.Count > 0) {
                 String[] curTagList = ( (String)curDataTable.Rows[0]["PropValue"] ).Split( ',' );
                 foreach (String curEntry in curTagList) {
@@ -816,11 +674,7 @@ namespace WaterskiScoringSystem.Trick {
             curSqlStmt.Append( "LEFT OUTER JOIN MemberList M ON ContactMemberId = MemberId " );
             curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
-            return getData( curSqlStmt.ToString() );
-        }
-
-        private DataTable getData(String inSelectStmt) {
-            return DataAccess.getDataTable( inSelectStmt );
+            return DataAccess.getDataTable( curSqlStmt.ToString() );
         }
 
         private void DataGridView_RowEnter(object sender, DataGridViewCellEventArgs e) {
@@ -842,7 +696,11 @@ namespace WaterskiScoringSystem.Trick {
         public Int16 Round;
         public Int16 Pass;
         public Int64 SkierScorePK;
-        public SkierVideoEntry(String inFileName, String inMemberId, String inSkierName, String inAgeGroup, Int16 inRound, Int16 inPass, Int64 inPK) {
+
+        private String myFirstName;
+		private String myLastName;
+
+		public SkierVideoEntry(String inFileName, String inMemberId, String inSkierName, String inAgeGroup, Int16 inRound, Int16 inPass, Int64 inPK) {
             VideoFileName = inFileName;
             MemberId = inMemberId;
             SkierName = inSkierName;
@@ -857,9 +715,9 @@ namespace WaterskiScoringSystem.Trick {
                 if (value.Length > 0) {
                     int curDelimIdx = value.IndexOf( ',' );
                     if (curDelimIdx > 0) {
-                        String curLastName = value.Substring( 0, curDelimIdx );
-                        String curFirstName = value.Substring( curDelimIdx + 1 ).Trim();
-                        mySkierName = curFirstName + " " + curLastName;
+                        myLastName = value.Substring( 0, curDelimIdx );
+                        myFirstName = value.Substring( curDelimIdx + 1 ).Trim();
+                        mySkierName = myFirstName + " " + myLastName;
                     } else {
                         mySkierName = value;
                     }
@@ -868,6 +726,14 @@ namespace WaterskiScoringSystem.Trick {
                 }
             }
         }
-    }
+        public String LastName {
+            get { return myLastName; } set { myLastName = value; }
+        }
+		public String FirstName {
+			get { return myFirstName; }
+			set { myFirstName = value; }
+
+		}
+	}
 
 }

@@ -763,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.2.0")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1553,7 +1553,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.1.9 5/3/2024")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9.1.2.0 5/15/2024")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2709,6 +2709,69 @@ namespace WaterskiScoringSystem.Properties {
             }
             set {
                 this["SafetyIncident_Location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.sproutvideo.com/v1/videos")]
+        public string UriVideoLoadApi {
+            get {
+                return ((string)(this["UriVideoLoadApi"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("36924f60689e082b2626ae7da73d0404")]
+        public string UriVideoLoadApiKey {
+            get {
+                return ((string)(this["UriVideoLoadApiKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SproutVideo-Api-Key")]
+        public string UriVideoLoadApiKeyname {
+            get {
+                return ((string)(this["UriVideoLoadApiKeyname"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int VideoManagement_Width {
+            get {
+                return ((int)(this["VideoManagement_Width"]));
+            }
+            set {
+                this["VideoManagement_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int VideoManagement_Height {
+            get {
+                return ((int)(this["VideoManagement_Height"]));
+            }
+            set {
+                this["VideoManagement_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point VideoManagement_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["VideoManagement_Location"]));
+            }
+            set {
+                this["VideoManagement_Location"] = value;
             }
         }
     }

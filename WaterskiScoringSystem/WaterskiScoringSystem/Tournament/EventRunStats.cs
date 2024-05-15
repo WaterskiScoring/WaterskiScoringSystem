@@ -173,8 +173,8 @@ namespace WaterskiScoringSystem.Tournament {
                 curViewRow.Cells["EventGroup"].Value = (String)curRow["EventGroup"];
                 curViewRow.Cells["NumSkiers"].Value = ( (int)curRow["NumSkiers"] ).ToString();
                 curViewRow.Cells["NumPasses"].Value = ( (int)curRow["NumPasses"] ).ToString();
-                curViewRow.Cells["StartTime"].Value = ( (DateTime)curRow["StartTime"] ).ToString( "MM/dd/yy hh:mm" );
-                curViewRow.Cells["EndTime"].Value = ( (DateTime)curRow["EndTime"] ).ToString( "MM/dd/yy hh:mm" );
+                curViewRow.Cells["StartTime"].Value = ( (DateTime)curRow["StartTime"] ).ToString( "MM/dd/yy HH:mm" );
+                curViewRow.Cells["EndTime"].Value = ( (DateTime)curRow["EndTime"] ).ToString( "MM/dd/yy HH:mm" );
 
                 curStartTime = (DateTime)curRow["StartTime"];
                 curEndTime = (DateTime)curRow["EndTime"];

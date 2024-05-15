@@ -1112,6 +1112,9 @@ namespace WaterskiScoringSystem.Jump {
 
 			if ( isDataModified ) saveScore();
 
+			SimulationPassButton.Enabled = false;
+			SimulationPassButton.Visible = false;
+
 			if ( jumpRecapDataGridView.Rows.Count > 0 ) {
 				int rowIndex = jumpRecapDataGridView.Rows.Count - 1;
 				jumpRecapDataGridView.CurrentCell = jumpRecapDataGridView.Rows[rowIndex].Cells[myStartCellIndex];
@@ -1996,6 +1999,9 @@ namespace WaterskiScoringSystem.Jump {
 			Int16 curBoatSpeed = JumpSpeedSelect.CurrentValue;
 
 			skierPassMsg.Text = "";
+			SimulationPassButton.Enabled = false;
+			SimulationPassButton.Visible = false;
+			SimulationPassButton.Text = "Simulation Pass";
 			DataGridViewRow curEventRegRow = TourEventRegDataGridView.Rows[myEventRegViewIdx];
 			String curMemberId = (String)curEventRegRow.Cells["MemberId"].Value;
 			String curAgeGroup = (String)curEventRegRow.Cells["AgeGroup"].Value;
@@ -2006,6 +2012,12 @@ namespace WaterskiScoringSystem.Jump {
 				skierPassMsg.Text = "";
 				myRecapRow = null;
 				scoreEntryBegin();
+				
+				if ( WscHandler.isConnectActive ) {
+					SimulationPassButton.Enabled = true;
+					SimulationPassButton.Visible = true;
+					SimulationPassButton.Text = "Simulation Pass";
+				}
 			}
 
 			Cursor.Current = Cursors.WaitCursor;
@@ -2433,15 +2445,22 @@ namespace WaterskiScoringSystem.Jump {
 			BpmsDriver.Text = "";
 			Cursor.Current = Cursors.WaitCursor;
 
+			/*
+			 */
+
 			try {
 				boatPathDataGridView.Rows.Clear();
-				if ( jumpRecapDataGridView.CurrentRow == null ) {
+				if ( jumpRecapDataGridView.CurrentRow == null && !( curMemberId.Equals( "000000000" ) ) ) {
 					boatPathDataGridView.Visible = false;
 					return;
 				}
-				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum
-					  , Convert.ToDecimal( "0.0" ), Convert.ToInt16( jumpRecapDataGridView.CurrentRow.Cells["BoatSpeedRecap"].Value.ToString() ) );
-
+				Int16 curPassSpeedKph;
+				if ( curMemberId.Equals( "000000000" ) ) {
+					curPassSpeedKph = (Int16)57;
+				} else {
+					curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValue( myRecapRow, "BoatSpeedRecap", "57" ) );
+				}
+				myBoatPathDataRow = WscHandler.getBoatPath( curEvent, curMemberId, curRound, curPassNum, Convert.ToDecimal( "0.0" ), curPassSpeedKph );
 				if ( myBoatPathDataRow == null ) {
 					boatPathDataGridView.Visible = false;
 					InvalidateBoatPathButton.Visible = false;
@@ -3200,6 +3219,45 @@ namespace WaterskiScoringSystem.Jump {
 			} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 		}
 
+		private void SimulationPassButton_Click( object sender, EventArgs e ) {
+			String curSimMemberId = "000000000";
+			Int16 curPassSpeedKph = 57;
+
+			if ( SimulationPassButton.Text.ToLower().Equals( "check bpms" ) ) {
+				loadBoatPathDataGridView( "Jump", curSimMemberId, "1", "1" );
+				if ( InvalidateBoatPathButton.Visible ) {
+					SimulationPassButton.Text = "Simulation Pass";
+				} else {
+					DialogResult dialogResult = MessageBox.Show( "No deviations found.  Do you want to reset the dialog?", "Simulation Reset", MessageBoxButtons.YesNo );
+					if ( dialogResult == DialogResult.Yes ) SimulationPassButton.Text = "Simulation Pass";
+				}
+
+			} else {
+				StringBuilder curSqlStmt = new StringBuilder( String.Format( "Delete From BoatPath Where SanctionId = '{0}' AND MemberId = '{1}' AND Event = 'Jump'", JumpEventData.mySanctionNum, curSimMemberId ) );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+				curSqlStmt = new StringBuilder( String.Format( "Delete From BoatTime Where SanctionId = '{0}' AND MemberId = '{1}' AND Event = 'Jump'", JumpEventData.mySanctionNum, curSimMemberId ) );
+				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+
+				SimulationPassButton.Text = "Check BPMS";
+				WscHandler.sendPassData( curSimMemberId
+					, "Simulation Pass"
+					, "Jump"
+					, "USA"
+					, ""
+					, ""
+					, ""
+					, "n"
+					, ""
+					, "1"
+					, 1
+					, curPassSpeedKph
+					, ""
+					, "S"
+					, (String)driverDropdown.SelectedValue );
+			}
+
+		}
+
 		private String CalcDistValidate( Decimal inScoreFeet, Decimal inScoreMeters ) {
             String returnMsg = "";
             if ( ( inScoreFeet > 0 ) && ( inScoreMeters > 0 ) ) {
@@ -3796,5 +3854,6 @@ namespace WaterskiScoringSystem.Jump {
 			}
 			return curSortCommand;
 		}
+
 	}
 }

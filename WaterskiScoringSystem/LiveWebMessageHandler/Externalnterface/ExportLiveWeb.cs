@@ -6,6 +6,7 @@ using System.Text;
 
 using LiveWebMessageHandler.Common;
 using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace LiveWebMessageHandler.Externalnterface {
     class ExportLiveWeb {
@@ -106,7 +107,9 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
 			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
 			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
-			if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
+			if ( inEvent.ToLower().Equals( "all" ) ) {
+				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+			} else if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
 				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
 			} else {
 				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
@@ -117,7 +120,11 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
 			String curGroupFilter = HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true );
 			curSqlStmt.Append( curGroupFilter.Replace( "O.", "ER." ) );
-			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+			if ( inEvent.ToLower().Equals( "all" ) ) {
+				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+			} else {
+				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+			}
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT * FROM EventReg ER " );
@@ -207,7 +214,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 					curSqlStmt.Append( "Inner Join TourReg TR on TR.SanctionId = S.SanctionId AND TR.MemberId = S.MemberId AND TR.AgeGroup = S.AgeGroup " );
 					curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = S.SanctionId AND ER.MemberId = S.MemberId AND ER.AgeGroup = S.AgeGroup " );
 					curSqlStmt.Append( "Where S.SanctionId = '" + inSanctionId + "' " );
-					curSqlStmt.Append( "AND ER.Event = '" + inEvent + "' " );
+					curSqlStmt.Append( "AND ER.Event = 'Trick' " );
 					if ( inRound > 0 ) curSqlStmt.Append( "AND S.Round = " + inRound + " " );
 					curSqlStmt.Append( "AND (LEN(Pass1VideoUrl) > 1 or LEN(Pass2VideoUrl) > 1) " );
 					curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, true, false ) );
@@ -293,6 +300,10 @@ namespace LiveWebMessageHandler.Externalnterface {
 			} else if ( inEvent.Equals( "Jump" ) ) {
 				exportCurrentSkierJump( inSanctionId, inMemberId, inAgeGroup, inRound, inSkierRunNum );
 				return;
+			
+			} else if ( inEvent.Equals( "TrickVideo" ) ) {
+				exportCurrentSkierTrickVideo( inSanctionId, inMemberId, inAgeGroup, inRound );
+				return;
 			}
 
 			String curErrMsg = String.Format( "{0}Invalid event {1} encountered", curMethodName, inEvent );
@@ -362,6 +373,11 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round FROM SlalomScore " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Round = {3} ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
 			curTableList.Add( exportTableWithData( "SlalomScore", new String[] { "SanctionId", "MemberId", "AgeGroup", "Round" }, curSqlStmt.ToString(), "Delete" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM TourProperties " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey like '%{1}%' ", inSanctionId, "Slalom" ) );
+			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT Distinct SanctionId, MemberId, AgeGroup, Round FROM SlalomRecap " );
@@ -455,6 +471,11 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( "Select * from EventRunOrder " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Round = {3} And Event = 'Trick' ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
 			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event", "Round" }, curSqlStmt.ToString(), "Update" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM TourProperties " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey like '%{1}%' ", inSanctionId, "Trick" ) );
+			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round FROM TrickScore " );
@@ -575,6 +596,11 @@ namespace LiveWebMessageHandler.Externalnterface {
 			curSqlStmt.Append( "Select * from EventRunOrder " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' And MemberId = '{1}' And AgeGroup = '{2}' And Round = {3} And Event = 'Jump' ", inSanctionId, inMemberId, inAgeGroup, inRound ) );
 			curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "MemberId", "AgeGroup", "Event", "Round" }, curSqlStmt.ToString(), "Update" ) );
+
+			curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "SELECT * FROM TourProperties " );
+			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND PropKey like '%{1}%' ", inSanctionId, "Jump" ) );
+			curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
 
 			curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "SELECT SanctionId, MemberId, AgeGroup, Round FROM JumpScore " );
@@ -894,7 +920,7 @@ namespace LiveWebMessageHandler.Externalnterface {
 						} else {
 							curValue = HelperFunctions.stripLineFeedChar( HelperFunctions.getDataRowColValue( curRow, curColumn.ColumnName, "" ) );
 							curValue = HelperFunctions.stringReplace( curValue, singleQuoteDelim, "''" );
-							curValue = System.Security.SecurityElement.Escape( curValue );
+							//curValue = System.Security.SecurityElement.Escape( curValue );
 							curTableRow.Add( curColumn.ColumnName, curValue );
 						}
 					}

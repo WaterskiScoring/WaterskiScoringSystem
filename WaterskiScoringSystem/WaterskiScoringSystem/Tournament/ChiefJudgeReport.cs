@@ -765,7 +765,7 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine.Append( "  " + ChiefJudgeRatingLabel.Text + " " + ChiefJudgeRatingTextBox.Text );
 				outLine.Append( Environment.NewLine + ChiefJudgeAddressLabel.Text + " " + ChiefJudgeAddressTextBox.Text );
 				outLine.Append( Environment.NewLine + ChiefJudgeDayPhoneLabel.Text + " " + ChiefJudgeDayPhoneTextBox.Text );
-				outLine.Append( "  Email: " + (String)myTourRow["ChiefJudgeEmail"] );
+				outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeEmail", "" ) );
 				outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
@@ -782,14 +782,7 @@ namespace WaterskiScoringSystem.Tournament {
 				String curValue = (String)myTourRow["ChiefDriverMemberId"];
 				DataRow curMemberRow = getTourMemberRating( curValue );
                 curValue = "";
-                if ( curMemberRow != null ) {
-					if ( curMemberRow["DriverSlalomRating"] == System.DBNull.Value ) {
-						curValue = "";
-					} else if ( ( (String)curMemberRow["DriverSlalomRating"] ).Equals( "Unrated" ) ) {
-					} else {
-						curValue = (String)curMemberRow["DriverSlalomRating"];
-					}
-				}
+                if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "DriverSlalomRating", "Unrated" );
 				outLine.Append( "  Rating: " + curValue );
 				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverPhone", "") );
 				outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverEmail", "" ) );
@@ -802,14 +795,8 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine.Append( Environment.NewLine + "Chief Scorer: " + (String)myTourRow["ChiefScorerName"] );
 				curValue = (String)myTourRow["ChiefScorerMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
-				if ( curMemberRow != null ) {
-					if ( curMemberRow["ScorerSlalomRating"] == System.DBNull.Value ) {
-						curValue = "";
-					} else if ( ( (String)curMemberRow["ScorerSlalomRating"] ).Equals( "Unrated" ) ) {
-					} else {
-						curValue = (String)curMemberRow["ScorerSlalomRating"];
-					}
-				}
+				curValue = "";
+				if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "ScorerSlalomRating", "Unrated" );
 				outLine.Append( "  Rating: " + curValue );
                 outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerPhone", "" ) );
                 outLine.Append( "  Email: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerEmail", "" ) );
@@ -821,14 +808,8 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine.Append( Environment.NewLine + "Chief Safety: " + SafetyDirNameTextBox.Text );
 				curValue = (String)myTourRow["SafetyDirMemberId"];
 				curMemberRow = getTourMemberRating( curValue );
-				if ( curMemberRow != null ) {
-					if ( curMemberRow["SafetyOfficialRating"] == System.DBNull.Value ) {
-						curValue = "";
-					} else if ( ( (String)curMemberRow["SafetyOfficialRating"] ).Equals( "Unrated" ) ) {
-					} else {
-						curValue = (String)curMemberRow["SafetyOfficialRating"];
-					}
-				}
+				curValue = "";
+				if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "SafetyOfficialRating", "Unrated" );
 				outLine.Append( "  Rating: " + curValue );
 				outLine.Append( Environment.NewLine + "Phone: " + HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPhone", "" ) );
                 outLine.Append("  Email: " + HelperFunctions.getDataRowColValue(myTourRow, "SafetyDirEmail", ""));
@@ -994,27 +975,19 @@ namespace WaterskiScoringSystem.Tournament {
             myDataValid = true;
             StringBuilder curDataValidMsg = new StringBuilder( "" );
 
-            if ( myTourRow["ChiefJudgeName"] == System.DBNull.Value ) {
+            String curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeName", "" );
+            if ( curValue.Length < 5 ) {
                 myDataValid = false;
                 curDataValidMsg.Append( "\n" + "Missing chief judge name" );
-            } else {
-                if ( ( (String)myTourRow["ChiefJudgeName"] ).Length < 5 ) {
-                    myDataValid = false;
-                    curDataValidMsg.Append( "\n" + "Missing chief judge name" );
-                }
             }
 
-            if ( myTourRow["ChiefSafetyName"] == System.DBNull.Value ) {
-                myDataValid = false;
-                curDataValidMsg.Append( "\n" + "Missing chief safety name" );
-            } else {
-                if ( ( (String)myTourRow["ChiefSafetyName"] ).Length < 5 ) {
-                    myDataValid = false;
-                    curDataValidMsg.Append( "\n" + "Missing chief safety name" );
-                }
-            }
+			curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefSafetyName", "" );
+			if ( curValue.Length < 5 ) {
+				myDataValid = false;
+				curDataValidMsg.Append( "\n" + "Missing chief safety name" );
+			}
 
-            if ( !(isTourClassELR) ) {
+			if ( !(isTourClassELR) ) {
                 try {
                     mySlalomRounds = Convert.ToInt16( myTourRow["SlalomRounds"].ToString() );
                 } catch {
@@ -1032,74 +1005,50 @@ namespace WaterskiScoringSystem.Tournament {
                 }
 
                 if ( mySlalomRounds > 0 ) {
-                    if ( myTourRow["SlalomRopesSpecs"] == System.DBNull.Value ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Missing data for slalom rope specs" );
-                    } else {
-                        if ( ( (String)myTourRow["SlalomRopesSpecs"] ).Length < 5 ) {
-                            myDataValid = false;
-                            curDataValidMsg.Append( "\n" + "Missing data for slalom rope specs" );
-                        }
-                    }
+					curValue = HelperFunctions.getDataRowColValue( myTourRow, "SlalomRopesSpecs", "" );
+					if ( curValue.Length < 5 ) {
+						myDataValid = false;
+						curDataValidMsg.Append( "\n" + "Missing data for slalom rope specs" );
+					}
                 }
 
                 if ( myJumpRounds > 0 ) {
-                    if ( myTourRow["JumpRopesSpecs"] == System.DBNull.Value ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Missing data for jump rope specs" );
-                    } else {
-                        if ( ( (String)myTourRow["JumpRopesSpecs"] ).Length < 5 ) {
-                            myDataValid = false;
-                            curDataValidMsg.Append( "\n" + "Missing data for jump rope specs" );
-                        }
-                    }
+					curValue = HelperFunctions.getDataRowColValue( myTourRow, "JumpRopesSpecs", "" );
+					if ( curValue.Length < 5 ) {
+						myDataValid = false;
+						curDataValidMsg.Append( "\n" + "Missing data for jump rope specs" );
+					}
                 }
 
                 if ( mySlalomRounds > 0 ) {
-                    if ( myTourRow["SlalomCourseSpecs"] == System.DBNull.Value ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Slalom course specifications must be provided" );
-                    } else {
-                        if ( ( (String)myTourRow["SlalomCourseSpecs"] ).Length < 2 ) {
-                            myDataValid = false;
-                            curDataValidMsg.Append( "\n" + "Slalom course specifications must be provided" );
-                        }
-                    }
+					curValue = HelperFunctions.getDataRowColValue( myTourRow, "SlalomCourseSpecs", "" );
+					if ( curValue.Length < 2 ) {
+						myDataValid = false;
+						curDataValidMsg.Append( "\n" + "Slalom course specifications must be provided" );
+					}
                 }
 
                 if ( myTrickRounds > 0 ) {
-                    if ( myTourRow["TrickCourseSpecs"] == System.DBNull.Value ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Trick course specifications must be provided" );
-                    } else {
-                        if ( ( (String)myTourRow["TrickCourseSpecs"] ).Length < 2 ) {
-                            myDataValid = false;
-                            curDataValidMsg.Append( "\n" + "Trick course specifications must be provided" );
-                        }
-                    }
+					curValue = HelperFunctions.getDataRowColValue( myTourRow, "TrickCourseSpecs", "" );
+					if ( curValue.Length < 2 ) {
+						myDataValid = false;
+						curDataValidMsg.Append( "\n" + "Trick course specifications must be provided" );
+					}
                 }
 
                 if ( myJumpRounds > 0 ) {
-                    if ( myTourRow["JumpCourseSpecs"] == System.DBNull.Value ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Jump course specifications must be provided" );
-                    } else {
-                        if ( ( (String)myTourRow["JumpCourseSpecs"] ).Length < 2 ) {
-                            myDataValid = false;
-                            curDataValidMsg.Append( "\n" + "Jump course specifications must be provided" );
-                        }
-                    }
+					curValue = HelperFunctions.getDataRowColValue( myTourRow, "JumpCourseSpecs", "" );
+					if ( curValue.Length < 2 ) {
+						myDataValid = false;
+						curDataValidMsg.Append( "\n" + "Jump course specifications must be provided" );
+					}
                 }
 
-                if ( myTourRow["BuoySpecs"] == System.DBNull.Value ) {
-                    myDataValid = false;
-                    curDataValidMsg.Append( "\n" + "Buoy specifications must be provided" );
-                } else {
-                    if ( ( (String)myTourRow["BuoySpecs"] ).Length < 2 ) {
-                        myDataValid = false;
-                        curDataValidMsg.Append( "\n" + "Buoy specifications must be provided" );
-                    }
-                }
+				curValue = HelperFunctions.getDataRowColValue( myTourRow, "BuoySpecs", "" );
+				if ( curValue.Length < 2 ) {
+					myDataValid = false;
+					curDataValidMsg.Append( "\n" + "Buoy specifications must be provided" );
+				}
             }
 
             if ( !( myDataValid ) ) {
