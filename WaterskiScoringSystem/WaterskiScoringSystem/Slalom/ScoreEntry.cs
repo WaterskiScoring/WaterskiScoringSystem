@@ -3233,11 +3233,12 @@ namespace WaterskiScoringSystem.Slalom {
 					String curProtectMsg = "Cannot improve score";
 					Decimal curScoreProtected = curRerideMandatory - 1;
 					if ( curScoreProtected < curPassScore ) {
-						curProtectMsg = String.Format( "score {0} protected", curScoreProtected );
+						curPassScore = curScoreProtected;
+                        curProtectMsg = String.Format( "score {0} protected if no reride taken ", curScoreProtected );
 						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
 						myRecapRow.Cells["ProtectedScoreRecap"].Value = curScoreProtected.ToString( "#.00" );
 					}
-					if ( curPassScore < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScore );
+                    if ( curPassScore < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScore );
 					String errMsg = String.Format( "Mandatory reride based on boat path deviation at buoy {0}, {1}"
 						, curRerideMandatory, curProtectMsg );
 					myRecapRow.Cells["RerideReasonRecap"].Value = errMsg;

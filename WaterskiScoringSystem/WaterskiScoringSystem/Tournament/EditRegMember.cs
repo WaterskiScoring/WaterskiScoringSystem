@@ -150,8 +150,13 @@ namespace WaterskiScoringSystem.Tournament {
                     updateMemberKey( curMemberEntry );
                     if ( myImportMemberEntry != null ) {
                         ImportMember importMember = new ImportMember( myTourRow );
-                        myImportMemberEntry.Add( "AgeGroup", AgeGroupSelect.CurrentValue );
-                        importMember.importMemberFromAwsa( myImportMemberEntry, true, false );
+                        if ( myImportMemberEntry.ContainsKey( "AgeGroup" ) ) {
+                            myImportMemberEntry["AgeGroup"] = AgeGroupSelect.CurrentValue;
+                        } else {
+							myImportMemberEntry.Add( "AgeGroup", AgeGroupSelect.CurrentValue );
+						}
+
+						importMember.importMemberFromAwsa( myImportMemberEntry, true, false );
                     }
                 
                 } else {

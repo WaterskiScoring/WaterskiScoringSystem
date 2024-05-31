@@ -132,8 +132,11 @@ namespace WaterskiScoringSystem.Common {
 				ScoreFeet.Visible = true;
 				ScoreMeters.Visible = true;
 				SkierBoatPath.Visible = true;
+                PathDevJumpCut.Visible = true;
+                PathDevJumpFlight.Visible = true;
+                PathDevJumpCumul.Visible = true;
 
-				BoatSplitTime.Visible = showBoatTimes;
+                BoatSplitTime.Visible = showBoatTimes;
 				BoatSplitTime2.Visible = showBoatTimes;
 				BoatEndTime.Visible = showBoatTimes;
 				

@@ -172,7 +172,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			importTourAssignedOfficials();
 
 			IwwfMembership.showBulkWarnMessage();
-			IwwfMembership.warnMessageActive = false;
+			IwwfMembership.warnMessageActive = true;
 
 			displayMemberProcessCounts();
 		}
@@ -285,7 +285,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			Cursor.Current = Cursors.Default;
 			myProgressInfo.Close();
 			IwwfMembership.showBulkWarnMessage();
-			IwwfMembership.warnMessageActive = false;
+			IwwfMembership.warnMessageActive = true;
 
 			displayMemberProcessCounts();
 		}
@@ -646,7 +646,6 @@ namespace WaterskiScoringSystem.Externalnterface {
 					}
 				}
 
-				if ( HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom ) ) { }
 				if ( inTourReg
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom )
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )

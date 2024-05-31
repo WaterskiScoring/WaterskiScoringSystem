@@ -109,7 +109,9 @@ namespace WaterskiScoringSystem.Trick {
 								}
 							}
 						}
-					}
+
+						curViewRow.Cells["SortColumn"].Value = curViewRow.Cells["VideoTitle"].Value + "--" + curViewRow.Cells["CreatedDate"].Value;
+                    }
 
 					if ( curResponseDataList.ContainsKey( "next_page" ) ) {
 						curReqstUrl = (String)curResponseDataList["next_page"];
@@ -147,29 +149,75 @@ namespace WaterskiScoringSystem.Trick {
 
 		private void DeleteButton_Click( object sender, EventArgs e ) {
 			if ( loadedVideoDataGridView.Rows.Count == 0 ) return;
+            String curMatchCommand = "", curMatchCommandPrev;
+            ImportMatchDialogForm curMatchDialog = new ImportMatchDialogForm();
 
-			try {
+            try {
 				Cursor.Current = Cursors.WaitCursor;
-				String curSelectValue, curVideoId;
+				String curSelectValue, curVideoId, curVideoUrl;
 				foreach ( DataGridViewRow curViewRow in loadedVideoDataGridView.Rows ) {
 					curSelectValue = HelperFunctions.getViewRowColValue( curViewRow, "SelectVideo", "False" );
 					if ( HelperFunctions.isValueTrue( curSelectValue ) ) {
 						curVideoId = HelperFunctions.getViewRowColValue( curViewRow, "VideoId", "" );
 						if ( HelperFunctions.isObjectPopulated( curVideoId ) ) {
-							if ( deleteVideo( curVideoId ) ) {
-								curViewRow.Cells["VideoState"].Value = "Deleted";
-								curViewRow.Cells["SelectVideo"].Value = "False";
-							}
-						}
-					}
-				}
-			
-			} finally {
+							curVideoUrl = extractVideoUrl( curViewRow );
+							if ( HelperFunctions.isObjectEmpty( curVideoUrl ) ) continue;
+                            StringBuilder curSqlStmt = new StringBuilder( "Select count(*) From TrickVideo " );
+                            curSqlStmt.Append( String.Format("Where SanctionId = '{0}' AND (Pass1VideoUrl like '%{1}%' OR Pass2VideoUrl like '%{1}%')"
+								, SanctionTextbox.Text, curVideoUrl ) );
+                            int curReadCount = (Int32)DataAccess.ExecuteScalarCommand( curSqlStmt.ToString() );
+							if ( curReadCount > 0 ) continue;
+
+							if ( HelperFunctions.isObjectEmpty( curMatchCommand ) ) {
+                                String[] curMessage = new String[6];
+                                curMessage[0] = "Trick Video doesn't appear to be in use";
+                                curMessage[1] = "Do you want to delete it from the video server?";
+                                curMessage[2] = "";
+                                curMessage[3] = curVideoUrl;
+                                curMessage[4] = "";
+                                curMatchDialog.ImportKeyDataMultiLine = curMessage;
+
+                                curMatchDialog.MatchCommand = curMatchCommand;
+                                if ( curMatchDialog.ShowDialog() == DialogResult.OK ) {
+                                    curMatchCommand = curMatchDialog.MatchCommand;
+                                    curMatchCommandPrev = curMatchCommand;
+                                }
+                            }
+
+                            if ( curMatchCommand.ToLower().Equals( "update" )
+								|| curMatchCommand.ToLower().Equals( "updateall" ) ) {
+                                if ( deleteVideo( curVideoId ) ) {
+                                    curViewRow.Cells["VideoState"].Value = "Deleted";
+                                    curViewRow.Cells["SelectVideo"].Value = "False";
+                                }
+								if ( curMatchCommand.ToLower().Equals( "update" )) curMatchCommand = "";
+                            
+							} else {
+                                //Re-initialize dialog response unless specified to process rows
+                                if ( curMatchCommand.ToLower().Equals( "skip" ) ) curMatchCommand = "";
+                            }
+                        }
+                    }
+                }
+
+            } finally {
 				Cursor.Current = Cursors.Default;
 			}
 		}
 
-		private void MatchButton_Click( object sender, EventArgs e ) {
+		private String extractVideoUrl( DataGridViewRow curViewRow ) {
+            //curVideoUrl
+            String curVideoRef = HelperFunctions.getViewRowColValue( curViewRow, "VideoURL", "" );
+			if ( HelperFunctions.isObjectEmpty( curVideoRef ) ) return "";
+
+			int curDelimStart = curVideoRef.IndexOf( "src=" );
+			if ( curDelimStart < 0 ) return "";
+            int curDelimEnd = curVideoRef.IndexOf( "' ", curDelimStart + 5 );
+            if ( curDelimEnd < 0 ) return "";
+			return curVideoRef.Substring( curDelimStart + 5, curDelimEnd - curDelimStart - 5);
+        }
+
+        private void MatchButton_Click( object sender, EventArgs e ) {
 			if ( loadedVideoDataGridView.Rows.Count == 0 ) return;
 
 			try {
@@ -211,25 +259,30 @@ namespace WaterskiScoringSystem.Trick {
 			try {
 				Cursor.Current = Cursors.WaitCursor;
 				String curVideoTitle, prevVideoTitle = "";
-				int curViewIdx;
+				DataGridViewRow prevViewRow = null;
 
-				loadedVideoDataGridView.Sort( loadedVideoDataGridView.Columns["VideoTitle"], System.ComponentModel.ListSortDirection.Ascending );
+                int curViewIdx;
+
+				loadedVideoDataGridView.Sort( loadedVideoDataGridView.Columns["SortColumn"], System.ComponentModel.ListSortDirection.Ascending );
 				foreach ( DataGridViewRow curViewRow in loadedVideoDataGridView.Rows ) {
 					curViewIdx = curViewRow.Index;
 					curVideoTitle = HelperFunctions.getViewRowColValue( curViewRow, "VideoTitle", "" );
 
 					if ( curViewIdx == 0 ) {
 						prevVideoTitle = curVideoTitle;
-						continue;
+                        prevViewRow = curViewRow;
+                        continue;
 					}
 
 					if ( prevVideoTitle == curVideoTitle ) {
-						curViewRow.Cells["VideoState"].Value = "Duplicate";
-						curViewRow.Cells["SelectVideo"].Value = "True";
+                        prevViewRow.Cells["VideoState"].Value = "Duplicate";
+                        prevViewRow.Cells["SelectVideo"].Value = "True";
 					}
-				}
+                    prevVideoTitle = curVideoTitle;
+                    prevViewRow = curViewRow;
+                }
 
-			} finally {
+            } finally {
 				Cursor.Current = Cursors.Default;
 			}
 		}
@@ -238,7 +291,7 @@ namespace WaterskiScoringSystem.Trick {
 			String curMethodName = "deleteVideo";
 			Dictionary<string, object> curResponseDeleteDataList = null;
 			NameValueCollection curHeaderParams = null;
-			String curReqstUrl = myVideoLoadUrl + inVideoId;
+			String curReqstUrl = myVideoLoadUrl + "/" + inVideoId;
 
 			curHeaderParams = new NameValueCollection();
 			curHeaderParams.Add( myApiKeyName, myApiKey );

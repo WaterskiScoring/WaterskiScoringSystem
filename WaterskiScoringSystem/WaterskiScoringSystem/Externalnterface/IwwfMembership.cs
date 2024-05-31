@@ -219,7 +219,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 					+ "{4}Event class changed to E"
 					+ "{5}Skier can purchase a license at"
 					+ "{6}{7}"
-					, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
+					, HelperFunctions.getAttributeValue( athleteAttrList, "LastName" ) + ", " + HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" ), inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
 					, System.Environment.NewLine, System.Environment.NewLine, iwwfLicensePurchaseLink );
 				Log.WriteFile( msg );
 				Cursor.Current = Cursors.Default;
@@ -232,7 +232,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				+ "{4}Event class changed to E"
 				+ "{5}Skier can purchase a license at"
 				+ "{6}{7}"
-				, athleteAttrList["LastName"] + ", " + athleteAttrList["FirstName"], inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
+				, HelperFunctions.getAttributeValue( athleteAttrList, "LastName" ) + ", " + HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" ), inMemberIdAwsa, inMemberIdForeign, System.Environment.NewLine, System.Environment.NewLine
 				, System.Environment.NewLine, System.Environment.NewLine, iwwfLicensePurchaseLink );
 			Log.WriteFile( msg  );
 			Cursor.Current = Cursors.Default;
@@ -273,38 +273,44 @@ namespace WaterskiScoringSystem.Externalnterface {
 			String iwwfLicensePurchaseLink =  HelperFunctions.getAttributeValue( respMsg, "PurchaseLink" );
 			ArrayList licenseList =  HelperFunctions.getAttributeList( respMsg, "Licenses" );
 			if ( licenseList == null || licenseList.Count == 0 ) {
-				String bulkLicenseAvailable =  HelperFunctions.getAttributeValue( respMsg, "FedBulkAgreement" );
-				if ( bulkLicenseAvailable.ToLower().Equals( "true" ) ) return true;
+				if ( HelperFunctions.isValueTrue( HelperFunctions.getAttributeValue( respMsg, "FedBulkAgreement" ) ) ) {
+                    Log.WriteFile( String.Format( "validateIwwfMembership:{0}:License validated for skier {0} {1} {2} with FedBulkAgreement", HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" ), HelperFunctions.getAttributeValue( athleteAttrList, "LastName" ), inIWWFAthleteId) );
+                    return true;
+				}
 
 				Log.WriteFile( String.Format( "validateIwwfMembership: EMS unlimited license not available for skier {0} {1} {2}" +
 					"\nSkier can purchase a license at the following address {3}"
-					, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
+					, HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" ), HelperFunctions.getAttributeValue( athleteAttrList, "LastName" ), athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
 
 				Cursor.Current = Cursors.Default;
 				return false;
 
 			} else {
 				foreach ( Dictionary<string, object> licenseEntry in licenseList ) {
-					Boolean licenseAvailable = readLicenseEntry( licenseEntry );
+					Boolean licenseAvailable = readLicenseEntry( licenseEntry, athleteAttrList );
 					if ( licenseAvailable ) return true;
 				}
 			}
 			
 			Log.WriteFile( String.Format( "validateIwwfMembership: EMS unlimited license not available for skier {0} {1} {2}" +
 				"\nSkier can purchase a license at the following address {3}"
-				, athleteAttrList["FirstName"], athleteAttrList["LastName"], athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
+				, HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" ), HelperFunctions.getAttributeValue( athleteAttrList, "LastName" ), athleteAttrList["IWWFAthleteId"], iwwfLicensePurchaseLink ) );
 			return false;
 		}
 		
-		private static Boolean readLicenseEntry( Dictionary<string, object> licenseEntry ) {
+		private static Boolean readLicenseEntry( Dictionary<string, object> licenseEntry, Dictionary<string, object> athleteAttrList ) {
 			String licenseType =  HelperFunctions.getAttributeValue( licenseEntry, "LicenseDescription" );
 			String licenseAvailable =  HelperFunctions.getAttributeValue( licenseEntry, "Available" );
 			String IsUnlimited = HelperFunctions.getAttributeValue( licenseEntry, "IsUnlimited" );
 			String licenseEvent =  HelperFunctions.getAttributeValue( licenseEntry, "UsedInCompetition" );
 
 			if ( licenseAvailable.Equals( "True" ) && IsUnlimited.Equals( "True" ) ) {
-				Cursor.Current = Cursors.Default;
-				return true;
+				Log.WriteFile( String.Format( "validateIwwfMembership:{0}:License validated for skier {0} {1} {2} "
+					, HelperFunctions.getAttributeValue( athleteAttrList, "FirstName" )
+					, HelperFunctions.getAttributeValue( athleteAttrList, "LastName" )
+					, HelperFunctions.getAttributeValue( athleteAttrList, "IWWFAthleteId" ) ) );
+                Cursor.Current = Cursors.Default;
+                return true;
 			}
 			return false;
 		}

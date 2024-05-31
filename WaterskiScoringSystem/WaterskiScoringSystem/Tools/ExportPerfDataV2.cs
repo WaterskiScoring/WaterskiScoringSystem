@@ -449,21 +449,6 @@ namespace WaterskiScoringSystem.Tools {
 				}
 			}
 
-			if ( curSlalomScore < 6 ) {
-				if ( HelperFunctions.isIwwfEvent( myTourRules ) ) {
-					curFinalSpeedKph = getIwwfSlalomMin( curAgeGroup );
-					curFinalLenMeters = 18.25m;
-
-				} else if ( ( mySkierClassList.compareClassChange( HelperFunctions.getDataRowColValue( curScoreRow, "EventClassSlalom", "C" ), "L" ) <= 0 ) ) {
-					curFinalSpeedKph = 25;
-					curFinalLenMeters = 18.25m;
-				
-				} else {
-					curFinalSpeedKph = 25;
-					curFinalLenMeters = 23.00m;
-				}
-			}
-
 			return new Dictionary<string, dynamic> {
 				{ "MemberId", HelperFunctions.getDataRowColValue(curScoreRow, "MemberId", "") }
 				, { "AgeGroup", curAgeGroup }

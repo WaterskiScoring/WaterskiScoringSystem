@@ -813,7 +813,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		/*
-		 * Calculate skier score when not a full pass after the first when time is good and boat path is good
+		 * Calculate skier score when not a full pass after the first when time is good and boat path is not good
 		 */
 		private Decimal calcSkierScorePathNotGood( Decimal inScore, Int16 inPassNumMinSpeed, bool isZbsAllowed, bool isDivisionIntl ) {
 			int prevRowIdx = myRecapViewRow.Index - 1;
@@ -979,8 +979,13 @@ namespace WaterskiScoringSystem.Slalom {
 			//decimal curPassScore = inScore;
 			decimal prevPassScore = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ScoreRecap", "0" );
 			decimal prevPassProtScore = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ProtectedScoreRecap", "0" );
-			if ( prevPassScore > inScore ) {
-				if ( prevPassProtScore > 0 && prevPassProtScore > inScore ) return prevPassProtScore;
+            bool prevBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( prevRecapRow, "BoatPathGoodRecap", "Y" ) );
+
+            if ( prevPassScore > inScore ) {
+				if ( prevPassProtScore > 0 && prevPassProtScore > inScore ) {
+					if ( prevBoatPathGood ) return prevPassProtScore; 
+					return inScore;
+				}
 				
 				return inScore;
 			}
