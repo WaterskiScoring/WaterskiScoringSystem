@@ -91,39 +91,51 @@ namespace LiveWebMessageHandler.Externalnterface {
 
 		public static void exportRunningOrder( String inSanctionId, String inEvent, String inEventGroup, int inRound ) {
 			String curMethodName = "ExportLiveWeb: exportRunningOrder: ";
-			StringBuilder curSqlStmt = new StringBuilder( "" );
+			String curGroupFilter;
+            StringBuilder curSqlStmt = new StringBuilder( "" );
 			myLastErrorMsg = new StringBuilder( "" );
 			ArrayList curTableList = new ArrayList();
 			Dictionary<string, dynamic> curLiveWebRequest = null;
 			Dictionary<string, dynamic> curTables = null;
 
-			curSqlStmt.Append( "SELECT TR.* FROM TourReg TR " );
+            curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT TR.* FROM TourReg TR " );
 			curSqlStmt.Append( "Inner Join EventReg ER on ER.SanctionId = TR.SanctionId AND ER.MemberId = TR.MemberId AND TR.AgeGroup = ER.AgeGroup " );
 			curSqlStmt.Append( String.Format( "Where TR.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
 			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
 			curTableList.Add( exportTableWithData( "TourReg", new String[] { "SanctionId", "MemberId", "AgeGroup" }, curSqlStmt.ToString(), "Update" ) );
 
-			curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
-			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
-			curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
-			if ( inEvent.ToLower().Equals( "all" ) ) {
-				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+            curSqlStmt = new StringBuilder( "" );
+			if (inEventGroup.ToLower().Equals( "all" ) ) {
+                curSqlStmt.Append( "SELECT Distinct SanctionId, ER.Event FROM EventReg ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+			
 			} else if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
-				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
+                curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
+                curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
+			
 			} else {
-				curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+                curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
+                curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
 			}
 
 			curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT * FROM EventRunOrder ER " );
-			curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
-			String curGroupFilter = HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true );
-			curSqlStmt.Append( curGroupFilter.Replace( "O.", "ER." ) );
 			if ( inEvent.ToLower().Equals( "all" ) ) {
-				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+                curSqlStmt.Append( "SELECT Distinct SanctionId, ER.Event FROM EventRunOrder ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
+			
 			} else {
-				curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+                curSqlStmt.Append( "SELECT Distinct SanctionId, ER.Event, ER.EventGroup FROM EventRunOrder ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curGroupFilter = HelperFunctions.getEventGroupFilterSql( inEventGroup, false, true );
+                curSqlStmt.Append( curGroupFilter.Replace( "O.", "ER." ) );
+                curTableList.Add( exportTableWithData( "EventRunOrder", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
 			}
 
 			curSqlStmt = new StringBuilder( "" );

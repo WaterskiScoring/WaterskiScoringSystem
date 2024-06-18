@@ -33,7 +33,7 @@ namespace WscMessageHandler.Message {
 			try {
 				curDeployVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
 			} catch {
-				curDeployVersion = "Not available";
+				curDeployVersion = "Development";
 			}
 			this.Text += " - " + curDeployVersion;
 			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;

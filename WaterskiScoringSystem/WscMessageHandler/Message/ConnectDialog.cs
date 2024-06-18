@@ -46,8 +46,8 @@ namespace WscMessageHandler.Message {
 			isDataLoading = true;
 			myWscWebLocation = ConnectMgmtData.wscWebLocationDefault;
 			serverUriTextBox.Text = myWscWebLocation;
-			
-			EventSubIdDropdown.SelectedItem = ConnectMgmtData.eventSubId;
+
+            EventSubIdList.SelectedItem = ConnectMgmtData.eventSubId;
 
 			if ( isWscConnected ) {
 				MessageLabel.Text = "Listener is connected and active";
@@ -67,12 +67,12 @@ namespace WscMessageHandler.Message {
 		private void execWscConnect_Click( object sender, EventArgs e ) {
 			Properties.Settings.Default.SanctionNum = sanctionNumTextbox.Text;
 			ConnectMgmtData.sanctionNum = sanctionNumTextbox.Text;
-			if ( EventSubIdDropdown.SelectedItem == null ) {
+			if ( EventSubIdList.SelectedItem == null ) {
 				ConnectMgmtData.eventSubId = "";
-			} else if ( EventSubIdDropdown.SelectedIndex == 0 ) {
+			} else if ( EventSubIdList.SelectedIndex == 0 ) {
 				ConnectMgmtData.eventSubId = "";
 			} else {
-				ConnectMgmtData.eventSubId = EventSubIdDropdown.SelectedItem.ToString();
+				ConnectMgmtData.eventSubId = EventSubIdList.SelectedItem.ToString();
 			}
 			ConnectMgmtData.useJumpTimes = false;
 			myDialogCommand = "Connected";

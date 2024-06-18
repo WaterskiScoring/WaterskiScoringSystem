@@ -3208,7 +3208,9 @@ namespace WaterskiScoringSystem.Slalom {
 		 */
 		private decimal checkBoatPathReride( String curSkierClass, Decimal curPassScore ) {
 			Int16 curViewIdx  = 0, curRerideFlag = 0, curRerideOptional = 0, curRerideMandatory = 0;
-			decimal curMinRopeLength = 14.25M;
+            Decimal curPassScoreOrig = curPassScore;
+
+            decimal curMinRopeLength = 14.25M;
 			DataRow curMinRopeLengthRow = SlalomEventData.getSlalomBoatPathRerideRopeMin( curSkierClass );
 			if ( curMinRopeLengthRow == null ) return curPassScore;
 			curMinRopeLength = HelperFunctions.getDataRowColValueDecimal( curMinRopeLengthRow, "MinRopeLength", 14.25M );
@@ -3238,7 +3240,7 @@ namespace WaterskiScoringSystem.Slalom {
 						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
 						myRecapRow.Cells["ProtectedScoreRecap"].Value = curScoreProtected.ToString( "#.00" );
 					}
-                    if ( curPassScore < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScore );
+                    if ( curPassScore < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScoreOrig );
 					String errMsg = String.Format( "Mandatory reride based on boat path deviation at buoy {0}, {1}"
 						, curRerideMandatory, curProtectMsg );
 					myRecapRow.Cells["RerideReasonRecap"].Value = errMsg;

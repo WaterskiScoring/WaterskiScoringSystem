@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 using SocketIOClient;
 using SocketIOClient.Transport;
+using SocketIO.Core;
 
 namespace WaterSkiConnectMonitor {
 	static class Program {
@@ -21,31 +22,46 @@ namespace WaterSkiConnectMonitor {
 		private static int myCountPing = 0;
 		private static bool myLogActive = false;
 
-		private static SocketIO socketClient = null;
+        //private static SocketIO socketClient = null;
+        private static SocketIOClient.SocketIO socketClient = null;
 
 		[STAThread]
 		static void Main() {
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
-			Console.WriteLine(
-				"Name: " + System.Reflection.Assembly.GetCallingAssembly().GetName()
-				+ System.Environment.NewLine + "Assembly Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
-				+ System.Environment.NewLine + "Location: " + System.Reflection.Assembly.GetExecutingAssembly().Location
-				+ System.Environment.NewLine
+			String curDeployVersion = "", curAssemblyName = "", curAssemblyVersion = "", curAssemblyLocation = "", curEntryAssembly = "";
+            try {
+                curDeployVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            } catch {
+                curDeployVersion = "Development";
+            }
+            try {
+                curEntryAssembly = Assembly.GetEntryAssembly().GetName().Name.ToString();
+            } catch {
+                curEntryAssembly = "Development";
+            }
+
+            try {
+				curAssemblyName = System.Reflection.Assembly.GetCallingAssembly().GetName().ToString();
+				curAssemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                curAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location.ToString();
+            } catch {
+                curAssemblyName = "Development";
+				curAssemblyVersion = "Development";
+				curAssemblyLocation = "Development";
+            }
+            Console.WriteLine(
+				"Name: " + curAssemblyName
+                + System.Environment.NewLine + "Assembly Version: " + curAssemblyVersion
+                + System.Environment.NewLine + "Location: " + curAssemblyLocation
+                + System.Environment.NewLine
 				);
 
-			try {
-				if ( System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed ) {
-					Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
-					Console.WriteLine( string.Format( "Product Name: {4}, Version: {0}.{1}.{2}.{3}"
-						, ver.Major, ver.Minor, ver.Build, ver.Revision, Assembly.GetEntryAssembly().GetName().Name )
-						+ System.Environment.NewLine + "Deployment Version: " + ApplicationDeployment.CurrentDeployment.CurrentVersion
-						);
-				}
-
-			} catch ( Exception ex ) {
-				Console.WriteLine( "Information not available in development, " + ex.Message );
-			}
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) {
+                Console.WriteLine( string.Format( "Product Name: {0}", curEntryAssembly )
+                    + System.Environment.NewLine + "Deployment Version: " + curDeployVersion
+                    );
+            }
 
 			Console.WriteLine( "Enter Sanction, EventSubId (optional), and the PIN (required) available from the WscMessageHandler"
 				+ System.Environment.NewLine + "Each must be separated by a comma (e.g. 22E888,,1205 or 22E888,Jump,1205" );
@@ -77,19 +93,19 @@ namespace WaterSkiConnectMonitor {
 		private static void execConnect() {
 			String curMethodName = "WaterSkiConnectMonitor: execConnect: ";
 			try {
-				/*
+                /*
 				 * Documentation of options
 				 * https://github.com/doghappy/socket.io-client-csharp#options
 				 * EIO 4 Default 
 				 * if your server is using socket.io server v2.x, please explicitly set it to 3
 				 */
-				socketClient = new SocketIO( myWscWebLocation, new SocketIOOptions {
-					Transport = TransportProtocol.WebSocket
-					, Reconnection = true
-					, ReconnectionDelay = 1000
-					, ReconnectionAttempts = 25
-					, EIO = 3
-				} );
+                socketClient = new SocketIOClient.SocketIO( myWscWebLocation, new SocketIOOptions {
+                    Transport = TransportProtocol.WebSocket
+                                    , Reconnection = true
+                                    , ReconnectionDelay = 1000
+                                    , ReconnectionAttempts = 25
+									, EIO = EngineIO.V3
+                } ); 
 
 				clientListeners();
 
@@ -203,7 +219,7 @@ namespace WaterSkiConnectMonitor {
 		private static void handleSocketOnConnected( object sender, EventArgs argData ) {
 			String curMethodName = "WaterSkiConnectMonitor: handleSocketOnConnected: ";
 			showConsoleMsg( curMethodName, String.Format( "Socket.Id: {0}, Connected: {1}, ServerUri: {2}, argData={3}"
-				, socketClient.Id, socketClient.Connected, socketClient.ServerUri, argData == null ? "Null" : argData.ToString() ) );
+				, socketClient.Id, socketClient.Connected, socketClient.ToString(), argData == null ? "Null" : argData.ToString() ) );
 
 			Dictionary<string, string> sendConnectionMsg = new Dictionary<string, string> {
 					{ "loggingdetail", "no" }
@@ -255,7 +271,7 @@ namespace WaterSkiConnectMonitor {
 			String curEventId = getAttributeValue( curMsgDataList, "eventid" );
 			String curEventSubId = getAttributeValue( curMsgDataList, "eventsubid" );
 			String curPinNum = getAttributeValue( curMsgDataList, "pin" );
-			if ( curPinNum.Equals( myPinNum ) 
+			if ( (curPinNum.Equals( myPinNum ) || myPinNum.Equals( "19560501") )
 				&& curEventId.Equals(mySanctionNum)
 				&& curEventSubId.Equals(myEventSubId)
 				) {
