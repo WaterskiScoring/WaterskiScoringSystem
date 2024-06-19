@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
-using WaterskiScoringSystem.Trick;
 using WaterskiScoringSystem.Externalnterface;
 
 namespace WaterskiScoringSystem.Tournament {
@@ -182,21 +181,9 @@ namespace WaterskiScoringSystem.Tournament {
                             Int16 curRunOrder;
                             Int64 curPK = Convert.ToInt64((String)curViewRow.Cells["PK"].Value);
 
-                            try {
-                                curEventGroup = (String)curViewRow.Cells["EventGroup"].Value;
-                            } catch {
-                                curEventGroup = "";
-                            }
-							try {
-								curROGroup = (String) curViewRow.Cells["RunOrderGroup"].Value;
-							} catch {
-								curROGroup = "";
-							}
-							try {
-                                curRunOrder = Convert.ToInt16((String)curViewRow.Cells["RunOrder"].Value);
-                            } catch {
-                                curRunOrder = 0;
-                            }
+							curEventGroup = HelperFunctions.getViewRowColValue( curViewRow, "EventGroup", "" );
+							curROGroup = HelperFunctions.getViewRowColValue( curViewRow, "RunOrderGroup", "" );
+							curRunOrder = Convert.ToInt16( HelperFunctions.getViewRowColValue( curViewRow, "RunOrder", "1" ));
 
                             StringBuilder curSqlStmt = new StringBuilder("");
                             curSqlStmt.Append("Update EventRunOrder Set ");
@@ -816,7 +803,7 @@ namespace WaterskiScoringSystem.Tournament {
         }
 
         private void navSort_Click( object sender, EventArgs e ) {
-            HelperFunctions.replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
+			mySortCmd = HelperFunctions.replaceAttr( mySortCmd, "AgeGroup", "DivOrder" );
             sortDialogForm.SortCommand = mySortCmd;
             sortDialogForm.ShowDialog( this );
 
@@ -864,27 +851,18 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["Event"].Value = (String)curDataRow["Event"];
                         curViewRow.Cells["AgeGroup"].Value = (String)curDataRow["AgeGroup"];
 
-                        try {
-                            curViewRow.Cells["Round"].Value = ( (Byte)curDataRow["Round"] ).ToString("0");
-                        } catch {
-                            curViewRow.Cells["Round"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["EventGroup"].Value = (String)curDataRow["EventGroup"];
-                        } catch {
-                            curViewRow.Cells["EventGroup"].Value = "";
-                        }
+						curViewRow.Cells["Round"].Value = Convert.ToByte(HelperFunctions.getDataRowColValue( curDataRow, "Round", "0" ));
+                        curViewRow.Cells["EventGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventGroup", "" );
+						curViewRow.Cells["RunOrderGroup"].Value = HelperFunctions.getDataRowColValue( curDataRow, "RunOrderGroup", "" );
+						curViewRow.Cells["RunOrder"].Value =HelperFunctions.getDataRowColValue( curDataRow, "RunOrder", "0" );
+
+						curViewRow.Cells["EventClass"].Value = HelperFunctions.getDataRowColValue( curDataRow, "EventClass", "" );
+						curViewRow.Cells["State"].Value = HelperFunctions.getDataRowColValue( curDataRow, "State", "" );
+						curViewRow.Cells["TeamCode"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TeamCode", "" );
+						curViewRow.Cells["TrickBoat"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TrickBoat", "" );
+						curViewRow.Cells["JumpHeight"].Value = HelperFunctions.getDataRowColValue( curDataRow, "JumpHeight", "" );
+
 						try {
-							curViewRow.Cells["RunOrderGroup"].Value = (String) curDataRow["RunOrderGroup"];
-						} catch {
-							curViewRow.Cells["RunOrderGroup"].Value = "";
-						}
-						try {
-                            curViewRow.Cells["RunOrder"].Value = ((Int16)curDataRow["RunOrder"]).ToString("##0");
-                        } catch {
-                            curViewRow.Cells["RunOrder"].Value = "0";
-                        }
-                        try {
                             if (( (String)curDataRow["Event"] ).Equals( "Slalom" )) {
                                 curViewRow.Cells["RankingScore"].Value = ( (Decimal)curDataRow["RankingScore"] ).ToString( "##0.00" );
                             } else if (( (String)curDataRow["Event"] ).Equals( "Trick" )) {
@@ -894,31 +872,6 @@ namespace WaterskiScoringSystem.Tournament {
                             }
                         } catch {
                             curViewRow.Cells["RankingScore"].Value = "0";
-                        }
-                        try {
-                            curViewRow.Cells["EventClass"].Value = (String)curDataRow["EventClass"];
-                        } catch {
-                            curViewRow.Cells["EventClass"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["State"].Value = (String)curDataRow["State"];
-                        } catch {
-                            curViewRow.Cells["State"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TeamCode"].Value = (String)curDataRow["TeamCode"];
-                        } catch {
-                            curViewRow.Cells["TeamCode"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["TrickBoat"].Value = (String)curDataRow["TrickBoat"];
-                        } catch {
-                            curViewRow.Cells["TrickBoat"].Value = "";
-                        }
-                        try {
-                            curViewRow.Cells["JumpHeight"].Value = (String)curDataRow["JumpHeight"];
-                        } catch {
-                            curViewRow.Cells["JumpHeight"].Value = "";
                         }
                     }
                     myViewIdx = 0;
@@ -1121,7 +1074,7 @@ namespace WaterskiScoringSystem.Tournament {
                 if ( curColName.Equals("RunOrder") ) {
                     if ( myOrigItemValue == null )
                         myOrigItemValue = "0";
-                    if ( isObjectEmpty(curViewRow.Cells[e.ColumnIndex].Value) ) {
+                    if ( HelperFunctions.isObjectEmpty(curViewRow.Cells[e.ColumnIndex].Value) ) {
                         if ( Convert.ToInt16(myOrigItemValue) != 0 ) {
                             isDataModified = true;
                             curViewRow.Cells["Updated"].Value = "Y";
@@ -1135,8 +1088,8 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
 				} else if ( curColName.Equals("EventGroup") ) {
-                    if ( isObjectEmpty(curViewRow.Cells[e.ColumnIndex].Value) ) {
-                        if ( !( isObjectEmpty(myOrigItemValue) ) ) {
+                    if (HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value) ) {
+                        if ( !(HelperFunctions.isObjectEmpty( myOrigItemValue) ) ) {
                             isDataModified = true;
                             curViewRow.Cells["Updated"].Value = "Y";
                         }
@@ -1149,8 +1102,8 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
 				} else if ( curColName.Equals( "RunOrderGroup" ) ) {
-					if ( isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
-						if ( !( isObjectEmpty( myOrigItemValue ) ) ) {
+					if (HelperFunctions.isObjectEmpty( curViewRow.Cells[e.ColumnIndex].Value ) ) {
+						if ( !(HelperFunctions.isObjectEmpty( myOrigItemValue ) ) ) {
 							isDataModified = true;
 							curViewRow.Cells["Updated"].Value = "Y";
 						}
@@ -1429,11 +1382,10 @@ namespace WaterskiScoringSystem.Tournament {
 				if (mySortCmd.Length > 0) {
 					curSqlStmt.Append("ORDER BY " + mySortCmd);
 				} else {
-					//curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
 					curSqlStmt.Append("Order by O.EventGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC ");
 				}
 
-			} else if (inPlcmtOrg.ToLower().Equals( "tour" )) {
+			} else if (curPlcmtOrg.ToLower().Equals( "tour" )) {
                 if ( inCommandType.Equals("H2H")) {
                     curSqlStmt.Append( "Order by O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC " );
                 } else {
@@ -1441,7 +1393,7 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             
 			} else {
-                if (inCommandType.Equals( "H2H" )) {
+                if (curPlcmtOrg.Equals( "H2H" )) {
 					if (inPlcmtOrg.ToLower().Equals("div")) {
 						curSqlStmt.Append("Order by O.AgeGroup ASC, COALESCE(D.RunOrder, 999) ASC, O.EventGroup ASC, O.RunOrderGroup ASC, O.RunOrder ASC, E.RankingScore DESC, T.SkierName ASC ");
 					
@@ -1453,8 +1405,12 @@ namespace WaterskiScoringSystem.Tournament {
                     }
                 
 				} else {
-                    curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC " );
-                }
+					if (mySortCmd.Length > 0) {
+						curSqlStmt.Append( "ORDER BY " + mySortCmd );
+					} else {
+						curSqlStmt.Append( "Order by COALESCE(D.RunOrder, 999) ASC, O.AgeGroup ASC, O.RunOrderGroup, O.RunOrder ASC, E.RankingScore ASC, T.SkierName ASC " );
+					}
+				}
             }
 
             return DataAccess.getDataTable( curSqlStmt.ToString() );
@@ -1519,20 +1475,6 @@ namespace WaterskiScoringSystem.Tournament {
             }
 
             return outBuffer;
-        }
-
-        private bool isObjectEmpty(object inObject) {
-            bool curReturnValue = false;
-            if (inObject == null) {
-                curReturnValue = true;
-            } else if (inObject == System.DBNull.Value) {
-                curReturnValue = true;
-            } else if (inObject.ToString().Length > 0) {
-                curReturnValue = false;
-            } else {
-                curReturnValue = true;
-            }
-            return curReturnValue;
         }
 
 	}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -133,7 +134,7 @@ namespace WaterskiScoringSystem.Tools {
 
         public void getElimEntries(String inEvent, Int16 inRound) {
             myCommand = "Elim";
-            myEvent = inEvent;
+			myEvent = inEvent;
             myRound = inRound;
             this.Text = myWindowTitle + " " + myRound.ToString() + " - " + myEvent + " - Elimination";
             setDataSelectOptions();
@@ -1246,168 +1247,133 @@ namespace WaterskiScoringSystem.Tools {
 		}
 
         private void insertHeadToHeadOrder() {
-            String curMethodName = "Tournament:RunningOrderRound:insertHeadToHeadOrder";
+			DataTable curOrigEventRunOrder = cleanEventRunOrder();
+			if (curOrigEventRunOrder == null) return;
+
+			loadEventRunOrder( curOrigEventRunOrder );
+		}
+
+		private void insertElimSelect() {
+			DataTable curOrigEventRunOrder = cleanEventRunOrder();
+			if (curOrigEventRunOrder == null) return;
+
+			loadEventRunOrder( curOrigEventRunOrder );
+		}
+
+		private void insertPickAndChooseSelect() {
+            DataTable curOrigEventRunOrder = cleanEventRunOrder();
+            if (curOrigEventRunOrder == null) return;
+
+            loadEventRunOrder( curOrigEventRunOrder );
+        }
+
+        private DataTable cleanEventRunOrder() {
+            String curMethodName = "Tournament:RunningOrderRound:cleanEventRunOrder";
             String curMsg = "";
             int rowsProc = 0;
+            DataTable curDataTable = null;
             StringBuilder curSqlStmt = new StringBuilder( "" );
 
             try {
-                try {
-                    curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "Delete EventRunOrder " );
-                    curSqlStmt.Append( "WHERE SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND Event = '" + myEvent + "' AND Round = " + myRound.ToString() );
-					if ( myDivFilter != null ) {
-						if ( myDivFilter.Length > 0 && !( myDivFilter.ToLower().Equals( "all" ) ) ) {
+				curSqlStmt = new StringBuilder( "" );
+				curSqlStmt.Append( "Select SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RunOrderGroup, RankingScore From EventRunOrder " );
+				curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND Event = '{1}' AND Round = {2}"
+					, (String)myTourRow["SanctionId"], myEvent, myRound.ToString() ) );
+				if (myDivFilter != null) {
+					if (myDivFilter.Length > 0 && !(myDivFilter.ToLower().Equals( "all" ))) {
+						curSqlStmt.Append( " AND AgeGroup = '" + myDivFilter + "' " );
+					}
+				}
+				if (myGroupFilter != null) {
+					if (myGroupFilter.Length > 0 && !(myGroupFilter.ToLower().Equals( "all" ))) {
+						curSqlStmt.Append( " AND EventGroup = '" + myGroupFilter + "' " );
+					}
+				}
+				curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+
+				if (curDataTable.Rows.Count > 0) {
+					curSqlStmt = new StringBuilder( "" );
+					curSqlStmt.Append( "Delete EventRunOrder " );
+					curSqlStmt.Append( String.Format( "WHERE SanctionId = '{0}' AND Event = '{1}' AND Round = {2}"
+						, (String)myTourRow["SanctionId"], myEvent, myRound.ToString() ) );
+					if (myDivFilter != null) {
+						if (myDivFilter.Length > 0 && !(myDivFilter.ToLower().Equals( "all" ))) {
 							curSqlStmt.Append( " AND AgeGroup = '" + myDivFilter + "' " );
 						}
 					}
-					if ( myGroupFilter != null ) {
-						if ( myGroupFilter.Length > 0 && !( myGroupFilter.ToLower().Equals( "all" ) ) ) {
-							curSqlStmt.Append( " AND EventGroup = '" + myDivFilter + "' " );
+					if (myGroupFilter != null) {
+						if (myGroupFilter.Length > 0 && !(myGroupFilter.ToLower().Equals( "all" ))) {
+							curSqlStmt.Append( " AND EventGroup = '" + myGroupFilter + "' " );
 						}
 					}
-					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                } catch (Exception excp) {
-                    curMsg = "Error attempting to remove existing head to head running order entries before re-adding  \n" + excp.Message;
-                    MessageBox.Show( curMsg );
-                    Log.WriteFile( curMethodName + curMsg );
-                }
-
-                foreach (DataGridViewRow curViewRow in previewDataGridView.Rows) {
-                    if (curViewRow.Cells["previewSanctionId"].Value != null) {
-                        if ((bool)curViewRow.Cells["previewSelected"].Value) {
-                            curSqlStmt = new StringBuilder( "" );
-                            curSqlStmt.Append( "Insert EventRunOrder ( " );
-                            curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, RunOrderGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
-                            curSqlStmt.Append( ") Values ( " );
-                            curSqlStmt.Append( "'" + (String)curViewRow.Cells["previewSanctionId"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewMemberId"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewAgeGroup"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEventGroup"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewRunOrderGroup"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewRound"].Value );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewSeed"].Value );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["PreviewScore"].Value );
-                            curSqlStmt.Append( ", GETDATE(), '' " );
-                            curSqlStmt.Append( ")" );
-                            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                            Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                        }
-                    }
-                }
-            } catch (Exception excp) {
-                curMsg = "Error attempting to generate head to head running order \n" + excp.Message;
-                MessageBox.Show( curMsg );
-                Log.WriteFile( curMethodName + curMsg );
-            }
-        }
-
-        private void insertElimSelect() {
-            String curMethodName = "Tournament:RunningOrderRound:insertElimSelect";
-            String curMsg = "";
-            int rowsProc = 0;
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-
-            try {
-                try {
-                    curSqlStmt = new StringBuilder( "" );
-                    curSqlStmt.Append( "Delete EventRunOrder " );
-                    curSqlStmt.Append( "WHERE SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND Event = '" + myEvent + "' AND Round = " + myRound.ToString() );
-                    if (myDivFilter != null) {
-                        if (myDivFilter.Length > 0 && !(myDivFilter.ToLower().Equals("all")) ) {
-                            curSqlStmt.Append( " AND AgeGroup = '" + myDivFilter + "' " );
-                        }
-                    }
-                    rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                    Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                } catch (Exception excp) {
-                    curMsg = "Error attempting to remove existing running order entries before re-adding  \n" + excp.Message;
-                    MessageBox.Show( curMsg );
-                    Log.WriteFile( curMethodName + curMsg );
-                }
-
-                foreach (DataGridViewRow curViewRow in previewDataGridView.Rows) {
-                    if (curViewRow.Cells["previewSanctionId"].Value != null) {
-                        if ((bool)curViewRow.Cells["previewSelected"].Value) {
-                            curSqlStmt = new StringBuilder( "" );
-                            curSqlStmt.Append( "Insert EventRunOrder ( " );
-                            curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
-                            curSqlStmt.Append( ") Values ( " );
-                            curSqlStmt.Append( "'" + (String)curViewRow.Cells["previewSanctionId"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewMemberId"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewAgeGroup"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEventGroup"].Value + "'" );
-                            curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewRound"].Value );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewOrder"].Value );
-                            curSqlStmt.Append( ", " + (String)curViewRow.Cells["PreviewScore"].Value );
-                            curSqlStmt.Append( ", GETDATE(), '' " );
-                            curSqlStmt.Append( ")" );
-                            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-                            Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-                        }
-                    }
-
-                }
-            } catch (Exception excp) {
-                curMsg = "Error attempting to generate head to head running order \n" + excp.Message;
-                MessageBox.Show( curMsg );
-                Log.WriteFile( curMethodName + curMsg );
-            }
-        }
-
-		private void insertPickAndChooseSelect() {
-			String curMethodName = "Tournament:RunningOrderRound:insertPickAndChooseSelect";
-			String curMsg = "";
-			int rowsProc = 0;
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-
-			try {
-				try {
-					curSqlStmt = new StringBuilder( "" );
-					curSqlStmt.Append( "Delete EventRunOrder " );
-					curSqlStmt.Append( "WHERE SanctionId = '" + (String) myTourRow["SanctionId"] + "' AND Event = '" + myEvent + "' AND Round = " + myRound.ToString() );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 					Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-				} catch ( Exception excp ) {
-					curMsg = "Error attempting to remove existing running order entries before re-adding  \n" + excp.Message;
-					MessageBox.Show( curMsg );
-					Log.WriteFile( curMethodName + curMsg );
 				}
 
-				foreach ( DataGridViewRow curViewRow in previewDataGridView.Rows ) {
-					if ( curViewRow.Cells["previewSanctionId"].Value != null ) {
-						if ( (bool) curViewRow.Cells["previewSelected"].Value ) {
-							curSqlStmt = new StringBuilder( "" );
-							curSqlStmt.Append( "Insert EventRunOrder ( " );
-							curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RankingScore, LastUpdateDate, Notes " );
-							curSqlStmt.Append( ") Values ( " );
-							curSqlStmt.Append( "'" + (String) curViewRow.Cells["previewSanctionId"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewMemberId"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewAgeGroup"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewEventGroup"].Value + "'" );
-							curSqlStmt.Append( ", '" + (String) curViewRow.Cells["previewEvent"].Value + "'" );
-							curSqlStmt.Append( ", " + (String) curViewRow.Cells["previewRound"].Value );
-							curSqlStmt.Append( ", " + (String) curViewRow.Cells["previewOrder"].Value );
-							curSqlStmt.Append( ", " + (String) curViewRow.Cells["PreviewScore"].Value );
-							curSqlStmt.Append( ", GETDATE(), '' " );
-							curSqlStmt.Append( ")" );
-							rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-							Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
-						}
-					}
+				return curDataTable;
 
-				}
-			} catch ( Exception excp ) {
-				curMsg = "Error attempting to generate head to head running order \n" + excp.Message;
-				MessageBox.Show( curMsg );
-				Log.WriteFile( curMethodName + curMsg );
-			}
-		}
+			} catch (Exception excp) {
+                curMsg = "Error attempting to remove existing running order entries before re-adding  \n" + excp.Message;
+                MessageBox.Show( curMsg );
+                Log.WriteFile( curMethodName + curMsg );
+                return null;
+            }
 
-		private DataTable getEventRegData(String inDivFilter, String inGroupFilter ) {
+        }
+
+        private void loadEventRunOrder( DataTable inOrigEventRunOrder) {
+            String curMethodName = "Tournament:RunningOrderRound:insertPickAndChooseSelect";
+            String curMsg = "";
+            int rowsProc = 0;
+            String curEventGroup, curRunOrder, curRunOrderGroup;
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+
+			foreach (DataGridViewRow curViewRow in previewDataGridView.Rows) {
+                if (!(HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( curViewRow, "previewSelected", "False" ) ))) continue;
+
+                try {
+                    curRunOrderGroup = "";
+                    curRunOrder = "1";
+                    curEventGroup = HelperFunctions.getViewRowColValue( curViewRow, "previewEventGroup", "??" );
+                    if (inOrigEventRunOrder.Rows.Count > 0) {
+                        DataRow[] curDataRow = inOrigEventRunOrder.Select( String.Format( "SanctionId = '{0}' AND Event = '{1}' AND Round = {2} AND MemberId = {3} AND AgeGroup = '{4}'"
+                            , (String)myTourRow["SanctionId"], myEvent, myRound.ToString()
+                            , HelperFunctions.getViewRowColValue( curViewRow, "previewMemberId", "" )
+                            , HelperFunctions.getViewRowColValue( curViewRow, "previewAgeGroup", "" ) ) );
+                        if (curDataRow.Length > 0) {
+                            curEventGroup = HelperFunctions.getDataRowColValue( curDataRow[0], "EventGroup", "??" );
+                            curRunOrder = HelperFunctions.getDataRowColValue( curDataRow[0], "RunOrder", "99" );
+                            curRunOrderGroup = HelperFunctions.getDataRowColValue( curDataRow[0], "RunOrderGroup", "" );
+                        }
+                    }
+
+                    curSqlStmt = new StringBuilder( "" );
+                    curSqlStmt.Append( "Insert EventRunOrder ( " );
+                    curSqlStmt.Append( "SanctionId, MemberId, AgeGroup, EventGroup, Event, Round, RunOrder, RunOrderGroup, RankingScore, LastUpdateDate, Notes " );
+                    curSqlStmt.Append( ") Values ( " );
+                    curSqlStmt.Append( "'" + (String)curViewRow.Cells["previewSanctionId"].Value + "'" );
+                    curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewMemberId"].Value + "'" );
+                    curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewAgeGroup"].Value + "'" );
+                    curSqlStmt.Append( ", '" + curEventGroup + "'" );
+                    curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
+                    curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewRound"].Value );
+                    curSqlStmt.Append( ", " + curRunOrder );
+                    curSqlStmt.Append( ", '" + curRunOrderGroup + "'" );
+                    curSqlStmt.Append( ", " + (String)curViewRow.Cells["PreviewScore"].Value );
+                    curSqlStmt.Append( ", GETDATE(), '' " );
+                    curSqlStmt.Append( ")" );
+                    rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                    Log.WriteFile( curMethodName + ":Rows=" + rowsProc.ToString() + " " + curSqlStmt.ToString() );
+
+                } catch (Exception excp) {
+                    curMsg = "Error attempting to insert records to custom running order for round \n" + excp.Message;
+                    MessageBox.Show( curMsg );
+                    Log.WriteFile( curMethodName + curMsg );
+                }
+            }
+        }
+
+        private DataTable getEventRegData(String inDivFilter, String inGroupFilter ) {
             String curPlcmtName = "Plcmt" + myEvent;
             String curRoundName = "Round" + myEvent;
             String curGroupName = "EventGroup" + myEvent;
