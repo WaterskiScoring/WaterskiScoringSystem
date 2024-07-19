@@ -246,7 +246,7 @@ namespace WaterskiScoringSystem.Jump {
                 if ( curGroupValue.ToLower().Equals( "all" ) ) {
                     if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
                         curPointsMethod = "kbase";
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curNumPrelimRounds );
                     } else if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
                         mySummaryDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, curNumPrelimRounds );
                     } else {
@@ -255,7 +255,7 @@ namespace WaterskiScoringSystem.Jump {
                 } else {
                     if ( myTourRules.ToLower().Equals( "iwwf" ) ) {
                         curPointsMethod = "kbase";
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue, curNumPrelimRounds );
                     } else if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
                         mySummaryDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue, curNumPrelimRounds );
                     } else {

@@ -90,8 +90,12 @@ namespace WaterskiScoringSystem.Tools {
                     curMsg = "Output file not available";
                 } else {
                     String curPlcmtMethod = "score", curPlcmtOverallOrg = "agegroup";
+                    short curSlalomSummaryNumPrelim = 0, curTrickSummaryNumPrelim = 0, curJumpSummaryNumPrelim = 0;
+                    short.TryParse(myTourProperties.SlalomSummaryNumPrelim, out curSlalomSummaryNumPrelim);
+                    short.TryParse( myTourProperties.TrickSummaryNumPrelim, out curTrickSummaryNumPrelim );
+                    short.TryParse( myTourProperties.JumpSummaryNumPrelim, out curJumpSummaryNumPrelim );
+
                     String curDataType = myTourProperties.MasterSummaryDataType;
-                    //String curDataType = Properties.Settings.Default.MasterSummaryV2DataType;
                     if ( curDataType.ToLower().Equals( "total" )
                         || curDataType.ToLower().Equals( "best" )
                         || curDataType.ToLower().Equals( "final" )
@@ -100,7 +104,6 @@ namespace WaterskiScoringSystem.Tools {
                         curDataType = "best";
                     }
                     String curPointsMethod = myTourProperties.MasterSummaryPointsMethod;
-                    //String curPointsMethod = Properties.Settings.Default.MasterSummaryV2PointsMethod;
                     if ( curPointsMethod.ToLower().Equals( "nops" )
                         || curPointsMethod.ToLower().Equals( "plcmt" )
                         || curPointsMethod.ToLower().Equals( "kbase" )
@@ -109,7 +112,6 @@ namespace WaterskiScoringSystem.Tools {
                         curPointsMethod = "nops";
                     }
                     String curPlcmtOrg = myTourProperties.MasterSummaryPlcmtOrg;
-                    //String curPlcmtOrg = Properties.Settings.Default.MasterSummaryV2PlcmtOrg;
                     if ( curPlcmtOrg.ToLower().Equals( "div" ) ) {
                         curPlcmtOverallOrg = "agegroup";
                     } else if ( curPlcmtOrg.ToLower().Equals( "divgr" ) ) {
@@ -133,7 +135,7 @@ namespace WaterskiScoringSystem.Tools {
                     myProgressInfo.Refresh();
 
                     if (myTourRules.ToLower().Equals( "iwwf" )) {
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSlalomSummaryNumPrelim );
                         myProgressInfo.setProgressValue( 2 );
                         myProgressInfo.Refresh();
 

@@ -1028,7 +1028,7 @@ namespace WaterskiScoringSystem.Common {
 				curFindRows = curSummaryDataTable.Select( curFilterCommand );
 				if ( curFindRows.Length > 0 ) {
 					if ( ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) )
-						&& curRound <= inNumPrelimRounds && (Int16)curFindRows[0]["RoundTrick"] <= inNumPrelimRounds && (decimal)curFindRows[0]["ScoreTrick"] >= curScoreTrick ) continue;
+						&& curRound <= inNumPrelimRounds && (Int16)curFindRows[0]["RoundTrick"] <= inNumPrelimRounds && (Int16)curFindRows[0]["ScoreTrick"] >= curScoreTrick ) continue;
 
 					curDataRow = curFindRows[0];
 					curDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
@@ -1183,7 +1183,7 @@ namespace WaterskiScoringSystem.Common {
 				curFindRows = curSummaryDataTable.Select( curFilterCommand );
 				if ( curFindRows.Length > 0 ) {
 					if ( ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) )
-						&& curRound <= inNumPrelimRounds && (Int16)curFindRows[0]["RoundJump"] <= inNumPrelimRounds && (decimal)curFindRows[0]["ScoreJump"] >= curFeet ) continue;
+						&& curRound <= inNumPrelimRounds && (Int16)curFindRows[0]["RoundJump"] <= inNumPrelimRounds && (decimal)curFindRows[0]["ScoreFeet"] >= curFeet ) continue;
 
 					curDataRow = curFindRows[0];
 					curDataRow["ReadyForPlcmt"] = curReadyForPlcmt;
@@ -2747,6 +2747,10 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public DataTable CalcIwwfEventPlcmts( DataRow inTourRow, String inSanctionId, String inEvent, String inRules, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEventGroup, String inDiv ) {
+			return CalcIwwfEventPlcmts( inTourRow, inSanctionId, inEvent, inRules, inDataType, inPlcmtMethod, inPlcmtOrg, inPointsMethod, inEventGroup, inDiv, 0 );
+        }
+
+        public DataTable CalcIwwfEventPlcmts( DataRow inTourRow, String inSanctionId, String inEvent, String inRules, String inDataType, String inPlcmtMethod, String inPlcmtOrg, String inPointsMethod, String inEventGroup, String inDiv, Int16 inNumPrelimRounds ) {
 			DataTable curSlalomSummary = null;
 			DataTable curTrickSummary = null;
 			DataTable curJumpSummary = null;
@@ -2778,22 +2782,22 @@ namespace WaterskiScoringSystem.Common {
 
 			#region Determine placements by event
 			if ( inEvent.Equals( "Slalom" ) ) {
-				curSummaryDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curSummaryDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 			} else if ( inEvent.Equals( "Trick" ) ) {
-				curSummaryDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curSummaryDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 			} else if ( inEvent.Equals( "Jump" ) ) {
-				curSummaryDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curSummaryDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 			} else {
 				DataTable curSlalomPlcmtDataTable = buildOverallSummary( inTourRow, curSlalomSummary, null, null, inDataType, inPlcmtMethod );
-				curSlalomPlcmtDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curSlalomPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curSlalomPlcmtDataTable = myCalcEventPlcmt.setSlalomPlcmt( inTourRow, curSlalomPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 				updateIwwfEventPlcmts( "Slalom", curSlalomPlcmtDataTable, curSummaryDataTable );
 
 				DataTable curTrickPlcmtDataTable = buildOverallSummary( inTourRow, null, curTrickSummary, null, inDataType, inPlcmtMethod );
-				curTrickPlcmtDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curTrickPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curTrickPlcmtDataTable = myCalcEventPlcmt.setTrickPlcmt( inTourRow, curTrickPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 				updateIwwfEventPlcmts( "Trick", curTrickPlcmtDataTable, curSummaryDataTable );
 
 				DataTable curJumpPlcmtDataTable = buildOverallSummary( inTourRow, null, null, curJumpSummary, inDataType, inPlcmtMethod );
-				curJumpPlcmtDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curJumpPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, 0 );
+				curJumpPlcmtDataTable = myCalcEventPlcmt.setJumpPlcmt( inTourRow, curJumpPlcmtDataTable, inPlcmtMethod, inPlcmtOrg, inDataType, inNumPrelimRounds );
 				updateIwwfEventPlcmts( "Jump", curJumpPlcmtDataTable, curSummaryDataTable );
 
 				curSummaryDataTable = myCalcEventPlcmt.setOverallPlcmtIwwf( inTourRow, curSummaryDataTable, inPlcmtMethod, inPlcmtOrg, inDataType );

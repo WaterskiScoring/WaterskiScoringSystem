@@ -100,7 +100,7 @@ namespace WaterskiScoringSystem.Tools {
 			myProgressInfo.Refresh();
 
 			if ( curRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" ) ) {
-				mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", curRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", curRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, 0 );
 				myProgressInfo.setProgressValue( 5 );
 				myProgressInfo.Refresh();
 

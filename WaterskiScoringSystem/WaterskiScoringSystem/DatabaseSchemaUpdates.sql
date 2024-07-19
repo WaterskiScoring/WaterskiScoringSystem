@@ -1199,3 +1199,43 @@ ALTER TABLE TeamScoreDetail ADD PRIMARY KEY (SanctionId, TeamCode, AgeGroup, Lin
 ## v24.14
 ALTER TABLE TrickVideo ALTER COLUMN Pass1VideoUrl nvarchar(512) NULL;
 ALTER TABLE TrickVideo ALTER COLUMN Pass2VideoUrl nvarchar(512) NULL;
+
+//------------------------------------------------------------
+## v24.15
+CREATE TABLE LiveWebStatus (
+    SanctionId  nchar(6) NOT NULL,
+    StatusActive byte NOT NULL,
+    LastUpdateDate datetime
+);
+
+ALTER TABLE LiveWebStatus ADD PRIMARY KEY (SanctionId);
+
+CREATE TABLE ChiefJudgeReport (
+SanctionId nchar(6) NOT NULL  
+, Rules nvarchar(16) NULL  
+, RuleExceptions nvarchar(1024) NULL  
+, RuleInterpretations nvarchar(1024) NULL  
+, SafetyDirPerfReport nvarchar(1024) NULL  
+, RopeHandlesSpecs nvarchar(1024) NULL  
+, SlalomRopesSpecs nvarchar(1024) NULL  
+, JumpRopesSpecs nvarchar(1024) NULL  
+, SlalomCourseSpecs nvarchar(1024) NULL  
+, JumpCourseSpecs nvarchar(1024) NULL  
+, TrickCourseSpecs nvarchar(1024) NULL  
+, BuoySpecs nvarchar(1024) NULL  
+, RuleExceptQ1 nvarchar(128) NULL  
+, RuleExceptQ2 nvarchar(128) NULL  
+, RuleExceptQ3 nchar(1) NULL  
+, RuleExceptQ4 nchar(1) NULL  
+, RuleInterQ1 nvarchar(128) NULL  
+, RuleInterQ2 nvarchar(128) NULL  
+, RuleInterQ3 nchar(1) NULL  
+, RuleInterQ4 nchar(1) NULL  
+, LastUpdateDate datetime
+);
+
+ALTER TABLE ChiefJudgeReport ADD PRIMARY KEY (SanctionId);
+
+ALTER TABLE Tournament DROP COLUMN PlcmtMethod;
+ALTER TABLE Tournament DROP COLUMN OverallMethod;
+

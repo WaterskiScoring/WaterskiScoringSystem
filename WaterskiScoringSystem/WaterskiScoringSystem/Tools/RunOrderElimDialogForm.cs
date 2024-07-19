@@ -568,10 +568,12 @@ namespace WaterskiScoringSystem.Tools {
 
             try {
 				Cursor.Current = Cursors.WaitCursor;
-				if ( myEvent.ToLower().Equals( "trick" ) ) {
+
+
+                if ( myEvent.ToLower().Equals( "trick" ) ) {
 					if ( myRound > 1 ) {
 						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
-							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter, 0 );
 						} else {
 							curSummaryDataTable = myCalcSummary.getTrickSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
 						}
@@ -586,7 +588,7 @@ namespace WaterskiScoringSystem.Tools {
 				} else if ( myEvent.ToLower().Equals( "jump" ) ) {
 					if ( myRound > 1 ) {
 						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
-							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter, 0 );
 						} else {
 							curSummaryDataTable = myCalcSummary.getJumpSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
 						}
@@ -601,7 +603,7 @@ namespace WaterskiScoringSystem.Tools {
 				} else {
 					if ( myRound > 1 ) {
 						if ( myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" ) ) {
-							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
+							curSummaryDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String) myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter, 0 );
 						} else {
 							curSummaryDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
 						}
@@ -794,7 +796,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     if (myRound > 1) {
                         if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
+                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Trick", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter, 0 );
                         } else {
                             curDataTable = myCalcSummary.getTrickSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
                         }
@@ -814,7 +816,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     if (myRound > 1) {
                         if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
+                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Jump", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter, 0 );
                         } else {
                             curDataTable = myCalcSummary.getJumpSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
                         }
@@ -834,7 +836,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                     if (myRound > 1) {
                         if (myTourRules.ToLower().Equals( "iwwf" ) && myPointsMethod.ToLower().Equals( "kbase" )) {
-                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter );
+                            curDataTable = myCalcSummary.CalcIwwfEventPlcmts( myTourRow, (String)myTourRow["SanctionId"], "Slalom", myTourRules, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, null, myDivFilter, 0 );
                         } else {
                             curDataTable = myCalcSummary.getSlalomSummary( myTourRow, myDataType, myPlcmtMethod, myPlcmtOrg, myPointsMethod, myGroupFilter, myDivFilter );
                         }

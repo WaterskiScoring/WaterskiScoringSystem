@@ -244,7 +244,7 @@ namespace WaterskiScoringSystem.Slalom {
                 if (curGroupValue.ToLower().Equals( "all" )) {
                     if (myTourRules.ToLower().Equals( "iwwf" )) {
                         curPointsMethod = "kbase";
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curNumPrelimRounds );
                     } else if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
                         mySummaryDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, curNumPrelimRounds );
                     } else {
@@ -253,7 +253,7 @@ namespace WaterskiScoringSystem.Slalom {
                 } else {
                     if (myTourRules.ToLower().Equals( "iwwf" )) {
                         curPointsMethod = "kbase";
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue, curNumPrelimRounds );
                     } else if ( h2hScoreButton.Checked || ( finalScoreButton.Checked && curNumPrelimRounds > 0 ) ) {
                         mySummaryDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue, curNumPrelimRounds );
                     } else {

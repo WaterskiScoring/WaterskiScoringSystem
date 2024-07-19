@@ -191,7 +191,7 @@ namespace WaterskiScoringSystem.Tools {
 				curProgessMsg = curProgessMsgPrefix + "Iwwf event placements";
 				myProgressInfo.setProgessMsg( curProgessMsg );
 				myProgressInfo.Refresh();
-				curPerfSummaryDataTable = myCalcScoreSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+				curPerfSummaryDataTable = myCalcScoreSummary.CalcIwwfEventPlcmts( myTourRow, inSanctionId, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, 0 );
 
 				myProgressInfo.setProgressValue( 6 );
 				curProgessMsg = curProgessMsgPrefix + "slalom detail";

@@ -31,11 +31,20 @@ namespace LiveWebMessageHandler.Message {
 			if ( Properties.Settings.Default.AppTitle.Length > 0 ) this.Text = Properties.Settings.Default.AppTitle;
 			if ( Properties.Settings.Default.MessageController_Width > 0 ) this.Width = Properties.Settings.Default.MessageController_Width;
 			if ( Properties.Settings.Default.MessageController_Height > 0 ) this.Height = Properties.Settings.Default.MessageController_Height;
-			if ( Properties.Settings.Default.MessageController_Location.X > 0
-				&& Properties.Settings.Default.MessageController_Location.Y > 0 ) {
-				this.Location = Properties.Settings.Default.MessageController_Location;
-			}
+			if ( Properties.Settings.Default.MessageController_Width > 0
+				&& Properties.Settings.Default.MessageController_Height > 0 ) this.Location = Properties.Settings.Default.MessageController_Location;
 
+            System.Drawing.Rectangle curWindowRec = new System.Drawing.Rectangle( this.Location, this.Size );
+            //Check to be sure window is opening in a visiable monitor location
+            bool curWindowOnScreen = false;
+            foreach (Screen curScreen in Screen.AllScreens) {
+                if (curScreen.WorkingArea.Contains( curWindowRec )) {
+                    curWindowOnScreen = true;
+                    break;
+                }
+            }
+            if (!curWindowOnScreen) this.Location = new System.Drawing.Point( 10, 10 );
+            
 			ConnectButton.Enabled = true;
 			DisconnectButton.Enabled = false;
 			QueueView.Visible = false;

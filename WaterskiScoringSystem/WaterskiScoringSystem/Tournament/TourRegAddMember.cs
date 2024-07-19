@@ -262,7 +262,7 @@ namespace WaterskiScoringSystem.Tournament {
 							curMembershipExpiration = (DateTime) curDataRow["MembershipExpiration"];
 							curViewRow.Cells["MembershipExpiration"].Value = curMembershipExpiration.ToString( "MM/dd/yy" );
 
-							if ( curMembershipExpiration < curTourDate ) {
+							if ( curMembershipExpiration <= curTourDate ) {
 								curViewRow.Cells["MemberStatus"].Value = "Needs Upgrade";
 								curViewRow.Cells["SkiYearAge"].Value = "";
 								curViewRow.Cells["CanSki"].Value = "false";

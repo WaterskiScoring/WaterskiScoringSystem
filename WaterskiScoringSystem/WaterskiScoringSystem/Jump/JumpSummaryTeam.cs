@@ -216,7 +216,7 @@ namespace WaterskiScoringSystem.Jump {
 
                 if (myTourRules.ToLower().Equals( "iwwf" )) {
                     curPointsMethod = "kbase";
-                    myScoreDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue );
+                    myScoreDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "Team", curGroupValue, 0 );
                     loadScoreDataGrid( myScoreDataTable );
                     myTeamDataTable = curCalcSummary.getJumpSummaryTeam( myTeamDataTable, myScoreDataTable, myTourRow, myNumPerTeam, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
                     if (plcmtTourButton.Checked) {

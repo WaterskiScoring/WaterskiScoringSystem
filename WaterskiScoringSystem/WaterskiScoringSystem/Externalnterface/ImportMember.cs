@@ -626,7 +626,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				if ( HelperFunctions.isObjectPopulated( curMemberEntry.EventGroupJump ) ) {
 					curSaveAgeGroup = "";
-					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupTrick ) ) {
+					if ( inNcwsa || curMemberEntry.AgeGroup.Equals( curMemberEntry.EventGroupJump ) ) {
 						curReqstStatus = regSkierForEvent( curImportMemberEntry, curMemberEntry, "Jump", curTrickBoat, curJumpHeight );
 						if ( curReqstStatus ) myCountJumpAdded++;
 
@@ -649,13 +649,13 @@ namespace WaterskiScoringSystem.Externalnterface {
 				if ( inTourReg
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupSlalom )
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
-					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupTrick )
+					&& HelperFunctions.isObjectEmpty( curMemberEntry.EventGroupJump )
 					&& HelperFunctions.isObjectEmpty( curMemberEntry.Team )
 					&& !( curMemberEntry.AgeGroup.Equals( "OF" ) )
 					) {
 					curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, "", "" );
 					if ( curReqstStatus ) myCountTourRegAdded++;
-				}
+                }
 				#endregion
 
 				#region Analyze and process official ratings for member
@@ -789,7 +789,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				}
 				if ( curEventGroup.Trim().Length == 0 ) return false;
 
-				bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
+                bool curReqstStatus = myTourEventReg.addTourReg( curMemberEntry, curTrickBoat, curJumpHeight );
 				if ( curReqstStatus ) myCountTourRegAdded++;
 
 				if ( curEventGroup.ToLower().Equals( "of" ) ) return false;
@@ -797,9 +797,21 @@ namespace WaterskiScoringSystem.Externalnterface {
 				bool returnStatus = false;
 				if ( curEvent.Equals( "Slalom" ) ) returnStatus = myTourEventReg.addEventSlalom( curMemberEntry.MemberId, curEventGroup, curEventClass, curMemberEntry.AgeGroup, curMemberEntry.Team );
 				if ( curEvent.Equals( "Trick" ) ) returnStatus = myTourEventReg.addEventTrick( curMemberEntry.MemberId, curEventGroup, curEventClass, curMemberEntry.AgeGroup, curMemberEntry.Team );
-				if ( curEvent.Equals( "Jump" ) ) returnStatus = myTourEventReg.addEventJump( curMemberEntry.MemberId, curEventGroup, curEventClass, curMemberEntry.AgeGroup, curMemberEntry.Team );
+				if (curEvent.Equals( "Jump" )) {
+                    String curSaveAgeGroup = "";
+                    if (curMemberEntry.AgeGroup.ToUpper().Equals( "B1" )) {
+                        curSaveAgeGroup = curMemberEntry.AgeGroup;
+                        curMemberEntry.AgeGroup = "B2";
 
-				if ( returnStatus && curEventRoundsPaid > 0 && myTourTypePickAndChoose ) {
+                    } else if (curMemberEntry.AgeGroup.ToUpper().Equals( "G1" )) {
+                        curSaveAgeGroup = curMemberEntry.AgeGroup;
+                        curMemberEntry.AgeGroup = "G2";
+                    }
+                    returnStatus = myTourEventReg.addEventJump( curMemberEntry.MemberId, curEventGroup, curEventClass, curMemberEntry.AgeGroup, curMemberEntry.Team );
+                    if (HelperFunctions.isObjectPopulated( curSaveAgeGroup )) curMemberEntry.AgeGroup = curSaveAgeGroup;
+                }
+
+                if ( returnStatus && curEventRoundsPaid > 0 && myTourTypePickAndChoose ) {
 					returnStatus = myTourEventReg.addEventRunorder( curEvent, curMemberEntry.MemberId, curEventGroup, curEventClass, curEventRoundsPaid, curMemberEntry.AgeGroup );
 				}
 				return returnStatus;
@@ -1269,7 +1281,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			DateTime curWaiverExpireDate = new DateTime();
 			DateTime curSafeSportExpireDate = new DateTime();
 			if ( myTourRow == null ) myTourRow = getTourData();
-			DateTime curTourEventDatePlus5 = myTourEventDate.AddDays( 5 );
+			DateTime curTourEventDatePlus1 = myTourEventDate.AddDays( 1 );
 
 			if ( inImportMemberRow == null ) {
 				curMemTypeDesc = HelperFunctions.getAttributeValue( inImportMemberEntry, "MemTypeDesc" );
@@ -1301,15 +1313,15 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 
 			if ( curMembershipStatusCodeNum == MembershipStatusCodeActive ) {
-				if ( curMemExpireDate < curTourEventDatePlus5 ) {
+				if ( curMemExpireDate < curTourEventDatePlus1 ) {
 					returnMembershipStatus += " ** Needs Renew";
 					curMembershipStatusCodeNum = 0;
 
-				} else if ( curWaiverExpireDate < curTourEventDatePlus5 || curWaiverStatus != "Signed" ) {
+				} else if ( curWaiverExpireDate < curTourEventDatePlus1 || curWaiverStatus != "Signed" ) {
 					returnMembershipStatus += " ** Needs Annual Waiver Signed";
 					curMembershipStatusCodeNum = 0;
 
-				} else if ( curSkiYearAge >= 18 && (curSafeSportExpireDate < curTourEventDatePlus5 || curSafeSportStatus != "Complete") ) {
+				} else if ( curSkiYearAge >= 18 && (curSafeSportExpireDate < curTourEventDatePlus1 || curSafeSportStatus != "Complete") ) {
 					returnMembershipStatus += " ** Needs Safe Sport Renewed";
 					curMembershipStatusCodeNum = 0;
 
@@ -1336,11 +1348,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static bool calcWaiverStatus( Dictionary<string, object> inImportMemberEntry ) {
-			DateTime curTourEventDatePlus5 = myTourEventDate.AddDays( 5 );
+			DateTime curTourEventDatePlus1 = myTourEventDate.AddDays( 5 );
 			String curWaiverStatus = HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverStatus" );
 			DateTime curWaiverExpireDate = new DateTime();
 			DateTime.TryParse( HelperFunctions.getAttributeValue( inImportMemberEntry, "WaiverExpiration" ), out curWaiverExpireDate );
-			if ( curWaiverExpireDate >= curTourEventDatePlus5 && curWaiverStatus == "Signed" ) return true;
+			if ( curWaiverExpireDate >= curTourEventDatePlus1 && curWaiverStatus == "Signed" ) return true;
 			return false;
 		}
 

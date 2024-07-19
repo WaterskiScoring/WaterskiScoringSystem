@@ -92,8 +92,10 @@ namespace WaterskiScoringSystem.Tools {
                             curMsg = "Output file not available";
                         } else {
                             String curPlcmtMethod = "score", curPlcmtOrg = "div", curPointsMethod = "kbase";
+                            Int16 curSummaryNumPrelim = 0;
+                            Int16.TryParse( myTourProperties.SlalomSummaryNumPrelim, out curSummaryNumPrelim );
+
                             String curDataType = myTourProperties.MasterSummaryDataType;
-                            //String curDataType = Properties.Settings.Default.MasterSummaryV2DataType;
                             if (curDataType.ToLower().Equals( "total" )
                                 || curDataType.ToLower().Equals( "best" )
                                 || curDataType.ToLower().Equals( "final" )
@@ -113,7 +115,7 @@ namespace WaterskiScoringSystem.Tools {
                             myProgressInfo.setProgressValue( 4 );
                             myProgressInfo.Refresh();
 
-                            DataTable mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                            DataTable mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSummaryNumPrelim );
                             myProgressInfo.setProgressValue( 5 );
                             myProgressInfo.Refresh();
 
@@ -184,16 +186,16 @@ namespace WaterskiScoringSystem.Tools {
                                 outLine = new StringBuilder( "<br/><br/><a href=#PageTop>Return to Index</a><br/></div>" );
                                 outBuffer.WriteLine( outLine.ToString() );
 
-                                DataTable mySlalomDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                                DataTable mySlalomDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Slalom", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSummaryNumPrelim );
                                 writeIndexSlalomResults( curPlcmtOrg, mySlalomDataTable, outBuffer );
 
-                                DataTable myTrickDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Trick", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                                DataTable myTrickDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Trick", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSummaryNumPrelim );
                                 writeIndexTrickResults( curPlcmtOrg, myTrickDataTable, outBuffer );
 
-                                DataTable myJumpDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                                DataTable myJumpDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Jump", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSummaryNumPrelim );
                                 writeIndexJumpResults( curPlcmtOrg, myJumpDataTable, outBuffer );
 
-                                DataTable myOverallDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Overall", myTourRules, "best", curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                                DataTable myOverallDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Overall", myTourRules, "best", curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null, curSummaryNumPrelim );
                                 writeIndexOverallResults( curPlcmtOrg, myOverallDataTable, outBuffer );
 
                                 if (isTeamAvailable()) {

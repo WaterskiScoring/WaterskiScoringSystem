@@ -15,6 +15,8 @@ using WaterskiScoringSystem.Trick;
 
 using Microsoft.Win32;
 using System.Configuration;
+using System.Windows;
+using WaterskiScoringSystem.Properties;
 
 namespace WaterskiScoringSystem {
     public partial class SystemMain : Form {
@@ -37,18 +39,27 @@ namespace WaterskiScoringSystem {
             }
             Properties.Settings.Default.AppRegistryName = curAppRegName;
 
+
             // Set application window attributes from application configuration file
             if ( Properties.Settings.Default.Mdi_Width > 0 ) this.Width = Properties.Settings.Default.Mdi_Width;
             if ( Properties.Settings.Default.Mdi_Height > 0 ) this.Height = Properties.Settings.Default.Mdi_Height;
-            if ( Properties.Settings.Default.Mdi_Location.X > 0
-                && Properties.Settings.Default.Mdi_Location.Y > 0 ) {
-                this.Location = Properties.Settings.Default.Mdi_Location;
-            }
-            if ( Properties.Settings.Default.Mdi_Title.Length > 0 ) {
+
+            if (Properties.Settings.Default.Mdi_Title.Length > 0) {
                 this.Text = Properties.Settings.Default.Mdi_Title;
             } else {
                 this.Text = Properties.Settings.Default.AppTitle;
             }
+            this.Location = Properties.Settings.Default.Mdi_Location;
+            System.Drawing.Rectangle curWindowRec = new System.Drawing.Rectangle( this.Location, this.Size );
+            //Check to be sure window is opening in a visiable monitor location
+            bool curWindowOnScreen = false;
+            foreach (Screen curScreen in Screen.AllScreens) {
+                if (curScreen.WorkingArea.Contains( curWindowRec )) {
+                    curWindowOnScreen = true;
+                    break;
+                }
+            }
+            if ( !curWindowOnScreen ) this.Location = new System.Drawing.Point( 10, 10 );
 
             #region Check system settings and current database connection
             //myShowDebugMsgs = true;
