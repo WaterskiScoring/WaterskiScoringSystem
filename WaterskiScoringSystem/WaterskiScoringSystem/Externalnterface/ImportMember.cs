@@ -123,7 +123,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
 			String curContentType = "application/json; charset=UTF-8";
-			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetMemberRegExportJson.asp";
+			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetMemberRegExportJson.asp";
 			String curReqstUrl = curRegExportListUrl;
 			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {
@@ -183,7 +183,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 			* This will include all appointed officials
             ----------------------------------------------------------------------- */
 			String curContentType = "application/json; charset=UTF-8";
-			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetTourAssignedOfficialsJson.asp";
+			String curRegExportListUrl = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetTourAssignedOfficialsJson.asp";
 			String curReqstUrl = curRegExportListUrl;
 			String curSanctionEditCode = (String)myTourRow["SanctionEditCode"];
 			if ( ( curSanctionEditCode == null ) || ( curSanctionEditCode.Length == 0 ) ) {

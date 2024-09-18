@@ -192,6 +192,7 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static bool isValueTrue( String inValue ) {
+			if (String.IsNullOrEmpty( inValue )) return false;
 			String checkValue = inValue.Trim().ToLower();
 			if ( checkValue.Equals( "true" ) ) return true;
 			else if ( checkValue.Equals( "false" ) ) return false;

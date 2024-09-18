@@ -490,22 +490,14 @@ namespace WaterskiScoringSystem.Trick {
 				if ( (Decimal)curSkierClassRow["ListCodeNum"] > (Decimal)myClassERow["ListCodeNum"] ) {
 					// DataRow inViewRow, int inRowIdx, String inColPrefix
 					activePassDataTable.Rows[inRowIdx]["Score"] = retPoints;
-					//if ( inColPrefix.Equals( "Pass1" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = retPoints;
-					//if ( inColPrefix.Equals( "Pass2" ) ) idlePassDataTable.Rows[inRowIdx]["Score"] = retPoints;
 					if ( checkForMaxNumFlips( activePassDataTable, idlePassDataTable ) ) {
 						if ( inColPrefix.Equals( "Pass1" ) ) {
-							if ( (Int16)activePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)activePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
-								retPoints = 0;
-							}
+							if ( (Int16)activePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)activePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) retPoints = 0;
 						} else {
-							if ( (Int16)idlePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)idlePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) {
-								retPoints = 0;
-							}
+							if ( (Int16)activePassDataTable.Rows[inRowIdx]["Score"] == 0 && (String)activePassDataTable.Rows[inRowIdx]["Results"] == "Repeat" ) retPoints = 0;
 						}
 
 						activePassDataTable.Rows[inRowIdx]["Score"] = 0;
-						//if ( inColPrefix.Equals( "Pass1" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = 0;
-						//if ( inColPrefix.Equals( "Pass2" ) ) activePassDataTable.Rows[inRowIdx]["Score"] = 0;
 					}
 				}
 			}

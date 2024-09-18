@@ -327,7 +327,7 @@ namespace WaterskiScoringSystem.Admin {
             String curQueryString = String.Format( "?ContactMemberId={0}&CJMemberId={1}&CDMemberId={2}&CCMemberId={3}&CSMemberId={4}"
                 , curContactMemberId, curChiefJudgeMemberId, curChiefDriverMemberId, curChiefScorerMemberId, curSafetyDirMemberId );
             String curContentType = "application/json; charset=UTF-8";
-            String curExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetChiefOfficalContactExportJson.asp";
+            String curExportListUrl = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetChiefOfficalContactExportJson.asp";
             String curReqstUrl = curExportListUrl + curQueryString;
 
             List<object> curResponseDataList = SendMessageHttp.getMessageResponseJsonArray( curReqstUrl, curHeaderParams, curContentType, mySanctionNum, curSanctionEditCode, false );

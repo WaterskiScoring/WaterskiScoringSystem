@@ -157,7 +157,7 @@ namespace WaterskiScoringSystem.Tournament {
 			String curSanctionEditCode = HelperFunctions.getDataRowColValue(myTourRow, "SanctionEditCode", "");
 
 			String curContentType = "application/json; charset=UTF-8";
-			String curOfficialExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetSafetyIncidentMemberJson.asp";
+			String curOfficialExportListUrl = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetSafetyIncidentMemberJson.asp";
 			String curReqstUrl = curOfficialExportListUrl + "?MemberId=" + myMemberId;
 
 			NameValueCollection curHeaderParams = new NameValueCollection();

@@ -403,5 +403,11 @@ namespace WaterskiScoringSystem.Trick {
 		private void DataGridView_RowEnter( object sender, DataGridViewCellEventArgs e ) {
 			RowStatusLabel.Text = "Row " + ( e.RowIndex + 1 ) + " of " + ( (DataGridView)sender ).Rows.Count;
 		}
-	}
+
+        private void SelectAllButton_Click( object sender, EventArgs e ) {
+            foreach (DataGridViewRow curViewRow in loadedVideoDataGridView.Rows) {
+                curViewRow.Cells["SelectVideo"].Value = "True";
+            }
+        }
+    }
 }

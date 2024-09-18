@@ -30,13 +30,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.loadedVideoDataGridView = new System.Windows.Forms.DataGridView();
-            this.MatchButton = new System.Windows.Forms.Button();
-            this.DeleteButton = new System.Windows.Forms.Button();
-            this.ExportLoadedButton = new System.Windows.Forms.Button();
-            this.ViewButton = new System.Windows.Forms.Button();
-            this.RowStatusLabel = new System.Windows.Forms.Label();
-            this.SanctionTextbox = new System.Windows.Forms.TextBox();
-            this.FindDupsButton = new System.Windows.Forms.Button();
             this.SelectVideo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.VideoTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VideoState = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,6 +40,14 @@
             this.VideoURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VideoId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SortColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MatchButton = new System.Windows.Forms.Button();
+            this.DeleteButton = new System.Windows.Forms.Button();
+            this.ExportLoadedButton = new System.Windows.Forms.Button();
+            this.ViewButton = new System.Windows.Forms.Button();
+            this.RowStatusLabel = new System.Windows.Forms.Label();
+            this.SanctionTextbox = new System.Windows.Forms.TextBox();
+            this.FindDupsButton = new System.Windows.Forms.Button();
+            this.SelectAllButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.loadedVideoDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,88 +87,12 @@
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.loadedVideoDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
-            this.loadedVideoDataGridView.Location = new System.Drawing.Point(2, 34);
+            this.loadedVideoDataGridView.Location = new System.Drawing.Point(2, 58);
             this.loadedVideoDataGridView.Name = "loadedVideoDataGridView";
             this.loadedVideoDataGridView.RowHeadersVisible = false;
-            this.loadedVideoDataGridView.Size = new System.Drawing.Size(795, 414);
+            this.loadedVideoDataGridView.Size = new System.Drawing.Size(795, 390);
             this.loadedVideoDataGridView.TabIndex = 1;
             this.loadedVideoDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_RowEnter);
-            // 
-            // MatchButton
-            // 
-            this.MatchButton.AutoSize = true;
-            this.MatchButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.MatchButton.Location = new System.Drawing.Point(469, 6);
-            this.MatchButton.Name = "MatchButton";
-            this.MatchButton.Size = new System.Drawing.Size(79, 23);
-            this.MatchButton.TabIndex = 21;
-            this.MatchButton.Text = "Match";
-            this.MatchButton.UseVisualStyleBackColor = true;
-            this.MatchButton.Click += new System.EventHandler(this.MatchButton_Click);
-            // 
-            // DeleteButton
-            // 
-            this.DeleteButton.AutoSize = true;
-            this.DeleteButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.DeleteButton.Location = new System.Drawing.Point(390, 6);
-            this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(79, 23);
-            this.DeleteButton.TabIndex = 20;
-            this.DeleteButton.Text = "Delete";
-            this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
-            // 
-            // ExportLoadedButton
-            // 
-            this.ExportLoadedButton.Location = new System.Drawing.Point(301, 6);
-            this.ExportLoadedButton.Name = "ExportLoadedButton";
-            this.ExportLoadedButton.Size = new System.Drawing.Size(89, 23);
-            this.ExportLoadedButton.TabIndex = 19;
-            this.ExportLoadedButton.Text = "Export Loaded";
-            this.ExportLoadedButton.UseVisualStyleBackColor = true;
-            this.ExportLoadedButton.Click += new System.EventHandler(this.ExportLoadedButton_Click);
-            // 
-            // ViewButton
-            // 
-            this.ViewButton.AutoSize = true;
-            this.ViewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ViewButton.Location = new System.Drawing.Point(222, 6);
-            this.ViewButton.Name = "ViewButton";
-            this.ViewButton.Size = new System.Drawing.Size(79, 23);
-            this.ViewButton.TabIndex = 18;
-            this.ViewButton.Text = "View Loaded";
-            this.ViewButton.UseVisualStyleBackColor = true;
-            this.ViewButton.Click += new System.EventHandler(this.ViewButton_Click);
-            // 
-            // RowStatusLabel
-            // 
-            this.RowStatusLabel.AutoSize = true;
-            this.RowStatusLabel.Location = new System.Drawing.Point(9, 8);
-            this.RowStatusLabel.MinimumSize = new System.Drawing.Size(100, 18);
-            this.RowStatusLabel.Name = "RowStatusLabel";
-            this.RowStatusLabel.Size = new System.Drawing.Size(100, 18);
-            this.RowStatusLabel.TabIndex = 0;
-            this.RowStatusLabel.Text = "Row 1 of 0000";
-            this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SanctionTextbox
-            // 
-            this.SanctionTextbox.Location = new System.Drawing.Point(115, 6);
-            this.SanctionTextbox.Name = "SanctionTextbox";
-            this.SanctionTextbox.Size = new System.Drawing.Size(100, 20);
-            this.SanctionTextbox.TabIndex = 1;
-            // 
-            // FindDupsButton
-            // 
-            this.FindDupsButton.AutoSize = true;
-            this.FindDupsButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.FindDupsButton.Location = new System.Drawing.Point(550, 6);
-            this.FindDupsButton.Name = "FindDupsButton";
-            this.FindDupsButton.Size = new System.Drawing.Size(79, 23);
-            this.FindDupsButton.TabIndex = 22;
-            this.FindDupsButton.Text = "Find Dups";
-            this.FindDupsButton.UseVisualStyleBackColor = true;
-            this.FindDupsButton.Click += new System.EventHandler(this.FindDupsButton_Click);
             // 
             // SelectVideo
             // 
@@ -264,11 +189,98 @@
             this.SortColumn.ReadOnly = true;
             this.SortColumn.Width = 300;
             // 
+            // MatchButton
+            // 
+            this.MatchButton.AutoSize = true;
+            this.MatchButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.MatchButton.Location = new System.Drawing.Point(469, 6);
+            this.MatchButton.Name = "MatchButton";
+            this.MatchButton.Size = new System.Drawing.Size(79, 23);
+            this.MatchButton.TabIndex = 21;
+            this.MatchButton.Text = "Match";
+            this.MatchButton.UseVisualStyleBackColor = true;
+            this.MatchButton.Click += new System.EventHandler(this.MatchButton_Click);
+            // 
+            // DeleteButton
+            // 
+            this.DeleteButton.AutoSize = true;
+            this.DeleteButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.DeleteButton.Location = new System.Drawing.Point(390, 6);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(79, 23);
+            this.DeleteButton.TabIndex = 20;
+            this.DeleteButton.Text = "Delete";
+            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+            // 
+            // ExportLoadedButton
+            // 
+            this.ExportLoadedButton.Location = new System.Drawing.Point(301, 6);
+            this.ExportLoadedButton.Name = "ExportLoadedButton";
+            this.ExportLoadedButton.Size = new System.Drawing.Size(89, 23);
+            this.ExportLoadedButton.TabIndex = 19;
+            this.ExportLoadedButton.Text = "Export Loaded";
+            this.ExportLoadedButton.UseVisualStyleBackColor = true;
+            this.ExportLoadedButton.Click += new System.EventHandler(this.ExportLoadedButton_Click);
+            // 
+            // ViewButton
+            // 
+            this.ViewButton.AutoSize = true;
+            this.ViewButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ViewButton.Location = new System.Drawing.Point(222, 6);
+            this.ViewButton.Name = "ViewButton";
+            this.ViewButton.Size = new System.Drawing.Size(79, 23);
+            this.ViewButton.TabIndex = 18;
+            this.ViewButton.Text = "View Loaded";
+            this.ViewButton.UseVisualStyleBackColor = true;
+            this.ViewButton.Click += new System.EventHandler(this.ViewButton_Click);
+            // 
+            // RowStatusLabel
+            // 
+            this.RowStatusLabel.AutoSize = true;
+            this.RowStatusLabel.Location = new System.Drawing.Point(9, 5);
+            this.RowStatusLabel.MinimumSize = new System.Drawing.Size(100, 18);
+            this.RowStatusLabel.Name = "RowStatusLabel";
+            this.RowStatusLabel.Size = new System.Drawing.Size(100, 18);
+            this.RowStatusLabel.TabIndex = 0;
+            this.RowStatusLabel.Text = "Row 1 of 0000";
+            this.RowStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SanctionTextbox
+            // 
+            this.SanctionTextbox.Location = new System.Drawing.Point(115, 4);
+            this.SanctionTextbox.Name = "SanctionTextbox";
+            this.SanctionTextbox.Size = new System.Drawing.Size(100, 20);
+            this.SanctionTextbox.TabIndex = 1;
+            // 
+            // FindDupsButton
+            // 
+            this.FindDupsButton.AutoSize = true;
+            this.FindDupsButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.FindDupsButton.Location = new System.Drawing.Point(550, 6);
+            this.FindDupsButton.Name = "FindDupsButton";
+            this.FindDupsButton.Size = new System.Drawing.Size(79, 23);
+            this.FindDupsButton.TabIndex = 22;
+            this.FindDupsButton.Text = "Find Dups";
+            this.FindDupsButton.UseVisualStyleBackColor = true;
+            this.FindDupsButton.Click += new System.EventHandler(this.FindDupsButton_Click);
+            // 
+            // SelectAllButton
+            // 
+            this.SelectAllButton.Location = new System.Drawing.Point(2, 29);
+            this.SelectAllButton.Name = "SelectAllButton";
+            this.SelectAllButton.Size = new System.Drawing.Size(75, 23);
+            this.SelectAllButton.TabIndex = 23;
+            this.SelectAllButton.Text = "Select All";
+            this.SelectAllButton.UseVisualStyleBackColor = true;
+            this.SelectAllButton.Click += new System.EventHandler(this.SelectAllButton_Click);
+            // 
             // TrickVideoManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SelectAllButton);
             this.Controls.Add(this.FindDupsButton);
             this.Controls.Add(this.SanctionTextbox);
             this.Controls.Add(this.RowStatusLabel);
@@ -307,5 +319,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoURL;
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoId;
         private System.Windows.Forms.DataGridViewTextBoxColumn SortColumn;
+        private System.Windows.Forms.Button SelectAllButton;
     }
 }

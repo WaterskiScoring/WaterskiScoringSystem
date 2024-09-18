@@ -410,15 +410,15 @@ namespace WaterskiScoringSystem.Jump {
             String curSortCmd = "TeamJump ASC";
             if ( TeamDiv.Visible ) {
                 if (divPlcmtButton.Checked) {
-                    curSortCmd += ", AgeGroup ASC, PlcmtJump ASC";
+                    curSortCmd += ", AgeGroup ASC, ReadyForPlcmtJump DESC, PlcmtJump ASC";
                     PrintTeamDiv.Visible = true;
                 }
                 if (groupPlcmtButton.Checked) {
-                    curSortCmd += ", EventGroup ASC, PlcmtJump ASC";
+                    curSortCmd += ", EventGroup ASC, ReadyForPlcmtJump, PlcmtJump ASC";
                     PrintTeamDiv.Visible = true;
                 }
             } else {
-                curSortCmd += ", PlcmtJump ASC";
+                curSortCmd += ", ReadyForPlcmtJump, PlcmtJump ASC";
                 PrintTeamDiv.Visible = false;
             }
             curSortCmd += ", SkierName ASC, RoundJump ASC";
@@ -474,6 +474,8 @@ namespace WaterskiScoringSystem.Jump {
                 curTeamSkierList = curScoreDataTable.Select( curFilterCmd );
 
                 for (curSkierIdx = 0; curSkierIdx < curTeamSkierList.Length; curSkierIdx++) {
+                    if (((String)curTeamSkierList[curSkierIdx]["PlcmtJump"]).Contains( "999" )) continue;
+
                     if (curSkierIdx > 0) {
                         curPrintIdx = PrintDataGridView.Rows.Add();
                         curPrintRow = PrintDataGridView.Rows[curPrintIdx];

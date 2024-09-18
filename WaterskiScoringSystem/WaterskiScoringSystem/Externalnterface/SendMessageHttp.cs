@@ -186,9 +186,10 @@ namespace WaterskiScoringSystem.Externalnterface {
                 //Set the ContentType property of the WebRequest.
                 curRequest.ContentType = inContentType;
                 curRequest.KeepAlive = true;
-                curRequest.Timeout = 50000000;
+                curRequest.Timeout = 750000;
+                curRequest.ReadWriteTimeout = 750000;
 
-				if ( inUserAccount != null ) {
+                if ( inUserAccount != null ) {
 					if ( inUrl.Contains( "usawaterski" ) ) {
 						inHeaderParams.Add( "WSTIMSAPI", "Basic " + inUserAccount + ":" + inPassword );
 					} else if ( inUrl.Contains( "waterskiresults" ) ) {

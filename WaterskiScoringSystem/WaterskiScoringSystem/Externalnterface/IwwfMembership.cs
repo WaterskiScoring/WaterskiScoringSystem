@@ -21,11 +21,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 		 * The web service can accept and return either xml or json format depending on the parameters passed
 		 * 
 		 * Retrieve member information with foreign identifier if not a USA federation skier
-		 * https://www.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
-		 * https://test.usawaterski.org/admin/GetForeignMemberJson.asp?MemberId=700040630
+		 * /admin/GetForeignMemberJson.asp?MemberId=700040630
+		 * /admin/GetForeignMemberJson.asp?MemberId=700040630
 		 */
 		private static String IwwfWebLocation = Properties.Settings.Default.UriIwwfEms + "/licenses/check";
-		private static String GetForeignMember = Properties.Settings.Default.UriUsaWaterski + "/admin/GetForeignMemberJson.asp?MemberId=";
+		private static String GetForeignMember = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetForeignMemberJson.asp?MemberId=";
 
 		private static String authApiKey = "IWWF";
 		//private static String authApiValueProd = "uppdxfsblcgefnrprowjtwjjrnrhismf"; // Prod Obsolete as 8/24/2023

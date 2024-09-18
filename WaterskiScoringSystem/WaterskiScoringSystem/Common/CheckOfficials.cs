@@ -15,15 +15,27 @@ namespace WaterskiScoringSystem.Common {
 					curEventGroup = "MEN A";
 				} else if ( inAgeGroup.Equals( "CW" ) ) {
 					curEventGroup = "WOMEN A";
-				} else if ( inAgeGroup.Equals( "BW" ) ) {
-					curEventGroup = "WOMEN B";
+				} else if ( inAgeGroup.Equals( "BM" ) ) {
+					curEventGroup = "MEN B";
 				} else if ( inAgeGroup.Equals( "BW" ) ) {
 					curEventGroup = "WOMEN B";
 				}
 			}
 			myOfficialAsgmtDataTable = getOfficialWorkAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
 			myDriverAsgmtDataTable = getDriverAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
-		}
+			if ( myOfficialAsgmtDataTable == null || myOfficialAsgmtDataTable.Rows.Count == 0 ) {
+				int curRound = 0;
+				if (int.TryParse( inRound, out curRound )) {
+                    if (curRound >= 25 && HelperFunctions.isObjectPopulated( inEvent ) && HelperFunctions.isObjectPopulated( inEventGroup )) {
+                        int curRowsInserted = CopyOfficialsToRunoff( inSanctionNum, inEvent, curEventGroup, inRound );
+						if ( curRowsInserted > 0 ) {
+                            myOfficialAsgmtDataTable = getOfficialWorkAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
+                            myDriverAsgmtDataTable = getDriverAsgmt( inSanctionNum, inEvent, curEventGroup, inRound );
+                        }
+                    }
+                }
+            }
+        }
 
 		public DataTable officialAsgmtDataTable {
 			get {
@@ -87,5 +99,20 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( "ORDER BY O.Event, O.Round, O.EventGroup, O.StartTime, O.WorkAsgmt, T.SkierName" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );
 		}
-	}
-}
+
+		private static int CopyOfficialsToRunoff( String inSanctionNum, String inEvent, String inEventGroup, String inRound ) {
+			StringBuilder curSqlStmt = new StringBuilder( "" );
+			curSqlStmt.Append( "INSERT INTO OfficialWorkAsgmt (" );
+			curSqlStmt.Append( "SanctionId, MemberId, Round, Event, EventGroup, WorkAsgmt, StartTime, EndTime, Notes" );
+			curSqlStmt.Append( ") " );
+			curSqlStmt.Append( "Select SanctionId, MemberId, 25, Event, EventGroup, WorkAsgmt, StartTime, EndTime, Notes " );
+			curSqlStmt.Append( "From OfficialWorkAsgmt " );
+			curSqlStmt.Append( "WHERE SanctionId = '" + inSanctionNum + "' " );
+			curSqlStmt.Append( "  AND Event = '" + inEvent + "' " );
+			curSqlStmt.Append( "  AND EventGroup = '" + inEventGroup + "' " );
+			curSqlStmt.Append( "  AND Round = 1" );
+			return DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+		}
+
+        }
+    }

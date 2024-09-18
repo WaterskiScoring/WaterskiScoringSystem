@@ -407,15 +407,15 @@ namespace WaterskiScoringSystem.Trick {
             String curSortCmd = "TeamTrick ASC";
             if ( TeamDiv.Visible ) {
                 if (divPlcmtButton.Checked) {
-                    curSortCmd += ", AgeGroup ASC, PlcmtTrick ASC";
+                    curSortCmd += ", AgeGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC";
                     PrintTeamDiv.Visible = true;
                 }
                 if (groupPlcmtButton.Checked) {
-                    curSortCmd += ", EventGroup ASC, PlcmtTrick ASC";
+                    curSortCmd += ", EventGroup ASC, ReadyForPlcmtTrick DESC, PlcmtTrick ASC";
                     PrintTeamDiv.Visible = true;
                 }
             } else {
-                curSortCmd += ", PlcmtTrick ASC";
+                curSortCmd += ", ReadyForPlcmtTrick DESC, PlcmtTrick ASC";
                 PrintTeamDiv.Visible = false;
             }
             curSortCmd += ", SkierName ASC, RoundTrick ASC";
@@ -472,6 +472,8 @@ namespace WaterskiScoringSystem.Trick {
                 curTeamSkierList = curScoreDataTable.Select( curFilterCmd );
 
                 for (curSkierIdx = 0; curSkierIdx < curTeamSkierList.Length; curSkierIdx++) {
+                    if (((String)curTeamSkierList[curSkierIdx]["PlcmtTrick"]).Contains( "999" )) continue;
+
                     if (curSkierIdx > 0) {
                         curPrintIdx = PrintDataGridView.Rows.Add();
                         curPrintRow = PrintDataGridView.Rows[curPrintIdx];

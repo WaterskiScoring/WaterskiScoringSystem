@@ -987,10 +987,10 @@ namespace WaterskiScoringSystem.Slalom {
 					return inScore;
 				}
 				
-				return inScore;
+				return prevPassScore;
 			}
 
-			return prevPassScore;
+			return inScore;
 		}
 
 		private int countPathDevRerides() {
@@ -1082,7 +1082,16 @@ namespace WaterskiScoringSystem.Slalom {
 				decimal curJudgeScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge1ScoreRecap", "-1" );
 				if ( curJudgeScore == 6 ) curGateExitValue++;
 			}
-			if ( myNumJudges > 1 ) {
+            if (myNumJudges > 3) {
+                if (HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "GateExit2Recap", "false" ) )) {
+                    decimal curJudgeScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge4ScoreRecap", "-1" );
+                    if (curJudgeScore == 6) curGateExitValue++;
+                }
+                if (HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "GateExit3Recap", "false" ) )) {
+                    decimal curJudgeScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge5ScoreRecap", "-1" );
+                    if (curJudgeScore == 6) curGateExitValue++;
+                }
+            } else if ( myNumJudges > 1 ) {
 				if ( HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "GateExit2Recap", "false" ) ) ) {
 					decimal curJudgeScore = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge2ScoreRecap", "-1" );
 					if ( curJudgeScore == 6 ) curGateExitValue++;
@@ -1142,7 +1151,10 @@ namespace WaterskiScoringSystem.Slalom {
 			String curTimeKey = String.Format( "{0}-{1}-{2}", inSpeed, (String)myClassRowSkier["ListCode"], inScore );
 			DataRow[] curTimeRowsFound = SlalomEventData.myTimesDataTable.Select( "ListCode = '" + curTimeKey + "'" );
 			if ( curTimeRowsFound.Length > 0 )  return curTimeRowsFound[0];
-			return null;
+            curTimeKey = String.Format( "{0}-{1}-{2}", inSpeed, "C", inScore );
+            curTimeRowsFound = SlalomEventData.myTimesDataTable.Select( "ListCode = '" + curTimeKey + "'" );
+            if (curTimeRowsFound.Length > 0) return curTimeRowsFound[0];
+            return null;
 		}
 
 		public String getBoatTimeMsg() {

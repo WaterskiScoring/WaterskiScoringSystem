@@ -448,7 +448,7 @@ namespace WaterskiScoringSystem.Tournament {
 		private DataTable sendRequest( String inMemberId, String inLastName, String inFirstName, String inState ) {
 			String curMethodName = "sendRequest";
 			String curContentType = "application/json; charset=UTF-8";
-			String curMemberExportListUrl = Properties.Settings.Default.UriUsaWaterski + "/admin/GetMemberRegExportJson.asp";
+			String curMemberExportListUrl = Properties.Settings.Default.UriUsaWaterskiProd + "/admin/GetMemberRegExportJson.asp";
 			String curExportUrl = "";
 
 			StringBuilder curQueryString = new StringBuilder( "" );

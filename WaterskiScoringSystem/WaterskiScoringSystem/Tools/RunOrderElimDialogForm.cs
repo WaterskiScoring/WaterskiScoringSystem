@@ -905,7 +905,7 @@ namespace WaterskiScoringSystem.Tools {
                             curFindRows = curEntriesDataTable.Select( "MemberId = '" + (String)curDataRow["MemberId"] + "' AND AgeGroup = '" + (String)curDataRow["AgeGroup"] + "'" );
                             if (curFindRows.Length > 0) {
                                 if (curNumSkierSelected < myNumSkiers) {
-                                    curNewRoGroup = (String)curFindRows[0]["EventGroup"];
+                                    curNewRoGroup = (String)curFindRows[0]["RunOrderGroup"];
                                     curViewRow.Cells["previewSelected"].Value = true;
                                     curNumSkierSelected++;
                                 } else {
@@ -916,10 +916,10 @@ namespace WaterskiScoringSystem.Tools {
                                         curIdx = previewDataGridView.Rows.Add();
                                         curViewRow = previewDataGridView.Rows[curIdx];
 
-                                        curNewRoGroup = (String)curFindRows[0]["EventGroup"];
+                                        curNewRoGroup = (String)curFindRows[0]["RunOrderGroup"];
                                         curViewRow.Cells["previewSelected"].Value = false;
                                     } else {
-                                        curNewRoGroup = (String)curFindRows[0]["EventGroup"];
+                                        curNewRoGroup = (String)curFindRows[0]["RunOrderGroup"];
                                         curViewRow.Cells["previewSelected"].Value = false;
                                     }
                                 }
@@ -1334,8 +1334,8 @@ namespace WaterskiScoringSystem.Tools {
                 if (!(HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( curViewRow, "previewSelected", "False" ) ))) continue;
 
                 try {
-                    curRunOrderGroup = "";
-                    curRunOrder = "1";
+                    curRunOrderGroup = HelperFunctions.getViewRowColValue( curViewRow, "previewRunOrderGroup", "??" );
+					curRunOrder = HelperFunctions.getViewRowColValue( curViewRow, "previewOrder", "1" );
                     curEventGroup = HelperFunctions.getViewRowColValue( curViewRow, "previewEventGroup", "??" );
                     if (inOrigEventRunOrder.Rows.Count > 0) {
                         DataRow[] curDataRow = inOrigEventRunOrder.Select( String.Format( "SanctionId = '{0}' AND Event = '{1}' AND Round = {2} AND MemberId = {3} AND AgeGroup = '{4}'"
@@ -1357,7 +1357,7 @@ namespace WaterskiScoringSystem.Tools {
                     curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewMemberId"].Value + "'" );
                     curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewAgeGroup"].Value + "'" );
                     curSqlStmt.Append( ", '" + curEventGroup + "'" );
-                    curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );
+                    curSqlStmt.Append( ", '" + (String)curViewRow.Cells["previewEvent"].Value + "'" );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                     curSqlStmt.Append( ", " + (String)curViewRow.Cells["previewRound"].Value );
                     curSqlStmt.Append( ", " + curRunOrder );
                     curSqlStmt.Append( ", '" + curRunOrderGroup + "'" );
@@ -1383,11 +1383,12 @@ namespace WaterskiScoringSystem.Tools {
 			String curPointsName = "Points" + myEvent;
 
 			StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append("SELECT E.Event, E.SanctionId, E.MemberId, O.MemberId as RunOrderMember, T.SkierName, E.EventGroup, E.RunOrder, ");
-            curSqlStmt.Append( "E.TeamCode, E.EventClass, E.RankingScore, E.RankingRating, E.AgeGroup, '" + myRound.ToString() + "' as Round " );
-            curSqlStmt.Append( ", CONVERT(nvarchar(3), E.RunOrder) AS PlcmtGroup, CONVERT(nvarchar(3), E.RunOrder) AS PlcmtTour " );
+            curSqlStmt.Append( "SELECT E.Event, E.SanctionId, E.MemberId, O.MemberId as RunOrderMember, T.SkierName, E.AgeGroup " );
+            curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) AS EventGroup, O.RunOrderGroup, COALESCE(O.RunOrder, E.RunOrder) AS RunOrder" );
+			curSqlStmt.Append( ", E.TeamCode, E.EventClass, E.RankingScore, E.RankingRating, '" + myRound.ToString() + "' as Round " );
+			curSqlStmt.Append( ", CONVERT(nvarchar(3), E.RunOrder) AS PlcmtGroup, CONVERT(nvarchar(3), E.RunOrder) AS PlcmtTour " );
             curSqlStmt.Append( ", E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder " );
-            curSqlStmt.Append( ", E.RankingScore AS " + curScoreName + ", (E.RankingScore + E.HCapScore) AS " + curPointsName );
+            curSqlStmt.Append( ", COALESCE(O.RankingScore, E.RankingScore) AS " + curScoreName + ", (E.RankingScore + E.HCapScore) AS " + curPointsName );
             curSqlStmt.Append( ", " + myRound.ToString() + " AS " + curRoundName );
             curSqlStmt.Append( ", '0' AS " + curPlcmtName + ", '' AS " + curGroupName + ", COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
             curSqlStmt.Append( " FROM EventReg E " );
@@ -1697,7 +1698,7 @@ namespace WaterskiScoringSystem.Tools {
 
         private DataTable getCurrentRoundEntries(String inDivFilter, String inGroupFilter ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT EO.PK, EO.SanctionId, EO.MemberId, EO.AgeGroup, EO.EventGroup, EO.Event, EO.Round, EO.RunOrder, TR.SkierName " );
+            curSqlStmt.Append( "SELECT EO.PK, EO.SanctionId, EO.MemberId, EO.AgeGroup, EO.EventGroup, EO.RunOrderGroup, EO.Event, EO.Round, EO.RunOrder, TR.SkierName " );
             curSqlStmt.Append( "FROM EventRunOrder AS EO " );
             curSqlStmt.Append( "INNER JOIN TourReg AS TR ON TR.SanctionId = EO.SanctionId AND TR.MemberId = EO.MemberId AND TR.AgeGroup = EO.AgeGroup " );
             curSqlStmt.Append( "WHERE EO.SanctionId = '" + (String)myTourRow["SanctionId"] + "' AND EO.Event = '" + myEvent + "' and EO.Round = " + myRound.ToString() );

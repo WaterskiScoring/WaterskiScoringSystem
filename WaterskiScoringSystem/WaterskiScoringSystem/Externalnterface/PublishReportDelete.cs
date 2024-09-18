@@ -53,6 +53,7 @@ namespace WaterskiScoringSystem.Externalnterface {
                     curViewRow.Cells["Event"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Event", "" );
                     curViewRow.Cells["ReportType"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReportType", "" );
                     curViewRow.Cells["ReportTitle"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ReportTitle", "" );
+                    curViewRow.Cells["LastReportDate"].Value = HelperFunctions.getDataRowColValue( curDataRow, "LastUpdateDate", "" );
                 }
 
                 curViewIdx = 0;

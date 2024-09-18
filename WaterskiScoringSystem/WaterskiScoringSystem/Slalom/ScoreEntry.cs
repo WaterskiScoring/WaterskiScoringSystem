@@ -1037,7 +1037,13 @@ namespace WaterskiScoringSystem.Slalom {
 				curMaxSpeedKph = SlalomEventData.getMaxSpeedData( curAgeGroup, SlalomSpeedSelection.MaxSpeedKph );
 			}
 
-			SlalomSpeedSelection.refreshSelectionList( curAgeGroup, curMaxSpeedKph, curMinSpeedKph );
+            if (HelperFunctions.isGroupNcwsa( curAgeGroup )) {
+                DataTable curMinSpeedDataTable = SlalomEventData.getMinSpeedData( curAgeGroup );
+				curMinSpeedKph = Convert.ToInt16((Decimal)curMinSpeedDataTable.Rows[0]["MaxSpeedKph"]);
+            }
+
+
+            SlalomSpeedSelection.refreshSelectionList( curAgeGroup, curMaxSpeedKph, curMinSpeedKph );
 			SlalomLineSelect.showLongLine();
 
 			driverDropdown.SelectedValue = "";
@@ -3227,7 +3233,7 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( curRerideMandatory > 0 ) {
 				// Mandatory reride indicated based on boat path data
 				decimal curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
-				if ( curPassLineLength <= curMinRopeLength ) {
+				if ( curPassLineLength <= curMinRopeLength && (Decimal)mySlalomSetAnalysis.ClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"]) {
 					myRecapRow.Cells["ScoreProtRecap"].Value = "N";
 					myRecapRow.Cells["RerideRecap"].Value = "Y";
 					myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";

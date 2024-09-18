@@ -1202,13 +1202,17 @@ ALTER TABLE TrickVideo ALTER COLUMN Pass2VideoUrl nvarchar(512) NULL;
 
 //------------------------------------------------------------
 ## v24.15
+DROP TABLE LiveWebStatus;
+
 CREATE TABLE LiveWebStatus (
     SanctionId  nchar(6) NOT NULL,
-    StatusActive byte NOT NULL,
+    StatusActive nchar(1) NOT NULL,
     LastUpdateDate datetime
 );
 
 ALTER TABLE LiveWebStatus ADD PRIMARY KEY (SanctionId);
+
+DROP TABLE ChiefJudgeReport;
 
 CREATE TABLE ChiefJudgeReport (
 SanctionId nchar(6) NOT NULL  
@@ -1239,3 +1243,5 @@ ALTER TABLE ChiefJudgeReport ADD PRIMARY KEY (SanctionId);
 ALTER TABLE Tournament DROP COLUMN PlcmtMethod;
 ALTER TABLE Tournament DROP COLUMN OverallMethod;
 
+## v24.17
+ALTER TABLE [OfficialWorkAsgmt] ALTER COLUMN StartTime datetime NULL;

@@ -378,7 +378,9 @@ PK	RuleCode	TrickCode	NumSkis	StartPos	NumTurns	RuleNum	TypeCode	Points	Descript
 0	awsa	FFLF	1	1	3	66	1	850	Front Flip Back to Front
 0	awsa	FFLF	2	1	3	66	1	850	Front Flip Back to Front
 0	awsa	FFLF	9	1	3	66	1	213	Front Flip Back to Front (Kneeboard)
-0	awsa	FFLBB	0	1	4	67	1	450	Front Flip Back to Back (Wakeboard)
+0	awsa	RFFLF	1	1	3	66	1	850	Reverse Front Flip Back to Front
+0	awsa	RFFLF	2	1	3	66	1	850	Reverse Front Flip Back to Front
+0	awsa	FFLBB	0	1	4	67	1	450	Front Flip Back to Back (Wakeboard 
 0	awsa	FFLBB	1	1	4	67	1	900	Front Flip Back to Back
 0	awsa	FFLBB	2	1	4	67	1	900	Front Flip Back to Back
 0	awsa	FFLBB	9	1	4	67	1	225	Front Flip Back to Back (Kneeboard)
