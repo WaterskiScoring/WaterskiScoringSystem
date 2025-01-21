@@ -107,12 +107,17 @@ namespace WaterskiScoringSystem.Slalom {
 			String[] curSelectCommand = new String[10];
 			String tmpFilterCmd = "", tmpFilterCmd2 = "";
 			if ( isNcwsa ) {
-				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) {
-					tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
-					tmpFilterCmd2 = "And XT.EventGroup = '" + HelperFunctions.getEventGroupOfficialAsgmtNcwsa( curEventGroup ) + "' ";
-					
-				}
-			} else {
+                if (curEventGroup.ToLower().Equals( "non team" )) {
+                    //E.AgeGroup not in ('CM', 'CW', 'BM', 'BW')
+                    tmpFilterCmd = "And XT.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
+                    tmpFilterCmd2 = "And XT.EventGroup = '" + curEventGroup + "' ";
+
+                } else {
+                    tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
+                    tmpFilterCmd2 = "And XT.EventGroup = '" + HelperFunctions.getEventGroupOfficialAsgmtNcwsa( curEventGroup ) + "' ";
+                }
+
+            } else {
 				if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) {
 					tmpFilterCmd = "And EventGroup = '" + curEventGroup + "' ";
 					tmpFilterCmd2 = tmpFilterCmd;

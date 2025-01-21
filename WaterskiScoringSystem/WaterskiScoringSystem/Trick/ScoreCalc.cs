@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Externalnterface;
+using WaterskiScoringSystem.Jump;
 using WaterskiScoringSystem.Slalom;
 using WaterskiScoringSystem.Tools;
 
@@ -1212,6 +1213,11 @@ namespace WaterskiScoringSystem.Trick {
             if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
                 curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
                 curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
+
+            } else if (TrickEventData.isCollegiateEvent()) {
+                curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
+
+
             } else {
                 curSelectCommand = TrickEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, false );
             }
@@ -2400,8 +2406,13 @@ namespace WaterskiScoringSystem.Trick {
                 String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
                 if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					if ( LiveWebLabel.Visible ) {
-						LiveWebHandler.sendRunOrder( "Trick", TrickEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-					}
+                        if ( HelperFunctions.isCollegiateEvent( SlalomEventData.myTourRules ) ) {
+                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
+                            LiveWebHandler.sendRunOrder( "Trick", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        } else {
+                            LiveWebHandler.sendRunOrder( "Trick", TrickEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        }
+                    }
 					/*
                      * Provide a warning message for class R events when official assignments have not been entered for the round and event group
                      * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs

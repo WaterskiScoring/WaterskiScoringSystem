@@ -157,9 +157,12 @@ namespace WaterskiScoringSystem.Jump {
 				) {
 				passCountManReride++;
 				if ( ( isIwwfSkier && passScoreMeters > rerideScoreMeters )
-					|| ( !( isIwwfSkier ) && passScoreFeet == rerideScoreFeet && passScoreMeters > rerideScoreMeters )
-					) {
-					rerideScoreMeters = passScoreMeters;
+                    || (!(isIwwfSkier) && passScoreFeet > rerideScoreFeet)
+                    || ( !( isIwwfSkier ) && passScoreFeet == rerideScoreFeet && passScoreMeters > rerideScoreMeters )
+                    ) {
+					//If current distance out jumps previous then previous should count as a good jump
+                    passCountGood++;
+                    rerideScoreMeters = passScoreMeters;
 					rerideScoreFeet = passScoreFeet;
 				}
 

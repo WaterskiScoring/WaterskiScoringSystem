@@ -1245,3 +1245,36 @@ ALTER TABLE Tournament DROP COLUMN OverallMethod;
 
 ## v24.17
 ALTER TABLE [OfficialWorkAsgmt] ALTER COLUMN StartTime datetime NULL;
+
+## v24.19
+ALTER TABLE [Tournament] ADD COLUMN PlcmtMethod nvarchar(256);
+ALTER TABLE [Tournament] ADD COLUMN OverallMethod nvarchar(256);
+
+DROP TABLE EventRunOrderFiltersBackup;
+CREATE TABLE EventRunOrderFiltersBackup (
+    SanctionId nchar(6) NOT NULL
+    , Event nvarchar(12) NOT NULL
+    , FilterName nvarchar(128) NOT NULL
+    , PrintTitle nvarchar(256)
+    , GroupFilterCriteria nvarchar(1024) NULL
+    , LastUpdateDate datetime 
+);
+Insert into EventRunOrderFiltersBackup (
+    SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria, LastUpdateDate
+) 
+Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria, LastUpdateDate From EventRunOrderFilters;
+
+DROP TABLE EventRunOrderFilters;
+CREATE TABLE EventRunOrderFilters (
+    SanctionId nchar(6) NOT NULL
+    , Event nvarchar(12) NOT NULL
+    , FilterName nvarchar(128) NOT NULL
+    , PrintTitle nvarchar(256)
+    , GroupFilterCriteria nvarchar(1024) NULL
+    , LastUpdateDate datetime 
+);
+Insert into EventRunOrderFilters (
+    SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria, LastUpdateDate
+) 
+Select SanctionId, Event, FilterName, PrintTitle, GroupFilterCriteria, LastUpdateDate From EventRunOrderFiltersBackup ;
+DROP TABLE EventRunOrderFiltersBackup;

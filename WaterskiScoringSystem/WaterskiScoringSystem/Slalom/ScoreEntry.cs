@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Externalnterface;
+using WaterskiScoringSystem.Jump;
 
 namespace WaterskiScoringSystem.Slalom {
 	public partial class ScoreEntry : Form {
@@ -1445,8 +1446,18 @@ namespace WaterskiScoringSystem.Slalom {
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					if ( LiveWebLabel.Visible ) {
-						LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-					}
+                        /*
+                         * For collegiate tournaments the curEventGroup contains the rotation value rather than the "group" value
+                         * of Men A, Women A, etc...
+                         * This is causing a problem on the Live Web
+                         */
+						if (HelperFunctions.isCollegiateEvent(SlalomEventData.myTourRules)) {
+                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
+                            LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        } else {
+                            LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        }
+                    }
 
 					/*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
@@ -2334,7 +2345,11 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
 				curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
 				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
-			} else {
+
+            } else if (SlalomEventData.isCollegiateEvent()) {
+                curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
+
+            } else {
 				curSelectCommand = SlalomEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, false );
 			}
 			myExportData.exportData( curTableName, curSelectCommand );
@@ -3805,8 +3820,9 @@ namespace WaterskiScoringSystem.Slalom {
 					curTimerObj.Interval = 5;
 					curTimerObj.Tick += new EventHandler( addRecapRowTimer );
 					curTimerObj.Start();
-				}
-			}
+                    return;
+                }
+            }
 
 			if ( curRerideReqd ) {
 				isAddRecapRowInProg = true;

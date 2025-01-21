@@ -1134,14 +1134,19 @@ namespace WaterskiScoringSystem.Jump {
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
 					if ( LiveWebLabel.Visible ) {
-						LiveWebHandler.sendRunOrder( "Jump", JumpEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-					}
-					/*
+                        if ( HelperFunctions.isCollegiateEvent( SlalomEventData.myTourRules ) ) {
+                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
+                            LiveWebHandler.sendRunOrder( "Jump", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        } else {
+                            LiveWebHandler.sendRunOrder( "Jump", JumpEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                        }
+                    }
+                    /*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 					 */
 
-					if ( (Decimal)JumpEventData.myClassRowTour["ListCodeNum"] >= (Decimal)JumpEventData.myClassERow["ListCodeNum"] ) {
+                    if ( (Decimal)JumpEventData.myClassRowTour["ListCodeNum"] >= (Decimal)JumpEventData.myClassERow["ListCodeNum"] ) {
 						String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
 						if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
 							if ( myCheckOfficials.officialAsgmtCount == 0 ) {
@@ -1241,10 +1246,14 @@ namespace WaterskiScoringSystem.Jump {
 			String[] curTableName = { "TourReg", "EventReg", "EventRunOrder", "JumpScore", "JumpRecap", "TourReg", "OfficialWork", "OfficialWorkAsgmt", "BoatTime", "BoatPath", "JumpMeasurement" };
 			String[] curSelectCommand;
 			String curEventGroup = EventGroupList.SelectedItem.ToString();
-			if ( HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() ) ) {
+			if (HelperFunctions.isGroupValueNcwsa( EventGroupList.SelectedItem.ToString() )) {
 				curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
 				curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
-			} else {
+			
+			} else if (JumpEventData.isCollegiateEvent()) {
+                curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, true );
+
+            } else {
 				curSelectCommand = JumpEventData.buildScoreExport( roundActiveSelect.RoundValue, curEventGroup, false );
 			}
 			myExportData.exportData( curTableName, curSelectCommand );

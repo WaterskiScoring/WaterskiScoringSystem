@@ -112,13 +112,13 @@ namespace LiveWebMessageHandler.Externalnterface {
                 curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
 			
 			} else if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
-                curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
+                curSqlStmt.Append( "SELECT Distinct ER.SanctionId, ER.Event, ER.AgeGroup FROM EventReg ER " );
                 curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
                 curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
                 curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
 			
 			} else {
-                curSqlStmt.Append( "SELECT ER.SanctionId, ER.Event, ER.AgeGroup, ER.EventGroup FROM EventReg ER " );
+                curSqlStmt.Append( "SELECT Distinct ER.SanctionId, ER.Event, ER.EventGroup FROM EventReg ER " );
                 curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
                 curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
                 curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
