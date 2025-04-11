@@ -798,7 +798,14 @@ namespace WaterskiScoringSystem.Common {
 				curMemberId = (String)curRow["MemberId"];
 				curSkierName = (String)curRow["SkierName"];
 
-				if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Slalom", curSanctionId, curMemberId, curRound );
+				/*
+				 * DLA: 2025/02/09
+				 * This statement checkcs to see if the skier skipped a round and adjusts the rounds for missing scores
+				 * This is what the rules state to ensure fairness for overall scores (skiers skiing in the same considitions)
+				 * However it is causing way too many problems when calculating placements for all the different requirements.
+				 * Therefore I'm disabling it at this time.
+				 */
+				//if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Slalom", curSanctionId, curMemberId, curRound );
 
 				curCity = HelperFunctions.getDataRowColValue( curRow, "City", "" );
 				curState = HelperFunctions.getDataRowColValue( curRow, "State", "" );
@@ -989,9 +996,16 @@ namespace WaterskiScoringSystem.Common {
 				curMemberId = (String)curRow["MemberId"];
 				curSkierName = (String)curRow["SkierName"];
 
-				if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Trick", curSanctionId, curMemberId, curRound );
+                /*
+				 * DLA: 2025/02/09
+				 * This statement checkcs to see if the skier skipped a round and adjusts the rounds for missing scores
+				 * This is what the rules state to ensure fairness for overall scores (skiers skiing in the same considitions)
+				 * However it is causing way too many problems when calculating placements for all the different requirements.
+				 * Therefore I'm disabling it at this time.
+				 */
+                //if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Trick", curSanctionId, curMemberId, curRound );
 
-				curCity = HelperFunctions.getDataRowColValue( curRow, "City", "" );
+                curCity = HelperFunctions.getDataRowColValue( curRow, "City", "" );
 				curState = HelperFunctions.getDataRowColValue( curRow, "State", "" );
 				curFederation = HelperFunctions.getDataRowColValue( curRow, "Federation", "" );
 
@@ -1137,7 +1151,14 @@ namespace WaterskiScoringSystem.Common {
 				curMemberId = (String)curRow["MemberId"];
 				curSkierName = (String)curRow["SkierName"];
 
-				if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Jump", curSanctionId, curMemberId, curRound );
+                /*
+				 * DLA: 2025/02/09
+				 * This statement checkcs to see if the skier skipped a round and adjusts the rounds for missing scores
+				 * This is what the rules state to ensure fairness for overall scores (skiers skiing in the same considitions)
+				 * However it is causing way too many problems when calculating placements for all the different requirements.
+				 * Therefore I'm disabling it at this time.
+				 */
+                //if ( !( calcOverallActive ) ) curRound = checkForEventScore( "Jump", curSanctionId, curMemberId, curRound );
 
 				curCity = HelperFunctions.getDataRowColValue( curRow, "City", "" );
 				curState = HelperFunctions.getDataRowColValue( curRow, "State", "" );

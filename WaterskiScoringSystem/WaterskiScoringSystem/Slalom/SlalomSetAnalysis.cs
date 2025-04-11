@@ -62,9 +62,8 @@ namespace WaterskiScoringSystem.Slalom {
 			if ( HelperFunctions.isObjectEmpty( myRecapViewRow.Cells["BoatTimeRecap"].Value ) ) return false;
 			decimal curScore = calcScoreForPass();
 			if ( curScore < 0 ) return false;
-			myRecapViewRow.Cells["ScoreRecap"].Value = curScore.ToString("#.00");
 
-			Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassSpeedKphRecap", "0" ) );
+            Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassSpeedKphRecap", "0" ) );
 			decimal curPassLineLengthMeters = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "PassLineLengthRecap", "0" );
 			myPassRow = SlalomEventData.getPassRow( curPassSpeedKph, curPassLineLengthMeters );
 			
@@ -73,9 +72,9 @@ namespace WaterskiScoringSystem.Slalom {
 			decimal curMaxTime = HelperFunctions.getDataRowColValueDecimal( myPassTimeRow, "MaxValue", 0 );
 			decimal curActualTime = HelperFunctions.getDataRowColValueDecimal( myPassTimeRow, "CodeValue", 0 );
 
-			bool curBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "BoatPathGoodRecap", "Y" ) );
+            bool curBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( myRecapViewRow, "BoatPathGoodRecap", "Y" ) );
 
-			String curBoatTimeOrigValue = myRecapViewRow.Cells["BoatTimeRecap"].Value.ToString();
+            String curBoatTimeOrigValue = myRecapViewRow.Cells["BoatTimeRecap"].Value.ToString();
 			if ( curBoatTimeOrigValue.ToUpper().Equals( "OK" ) ) {
 				myRecapViewRow.Cells["BoatTimeRecap"].Value = curActualTime.ToString( "#0.00" );
 				curBoatTimeOrigValue = curActualTime.ToString( "#0.00" );
@@ -176,17 +175,21 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			return true;
-		}
+        }
 
-		public Decimal calcScoreForPass() {
+        public Decimal calcScoreForPass() {
+			return calcScoreForPass( myRecapViewRow );
+        }
+
+        public Decimal calcScoreForPass(DataGridViewRow inRecapViewRow ) {
 			Decimal[] curJudgeScore = new Decimal[myNumJudges];
 			int[] curGateEntry = new int[myNumJudges];
 			int[] curGateExit = new int[myNumJudges];
 
 			if ( myNumJudges == 1 ) {
-				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge1ScoreRecap", "" ) ) ) return -1;
-				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge1ScoreRecap", "0" );
-				if ( curJudgeScore[0] < 6 ) myRecapViewRow.Cells["GateExit1Recap"].Value = false;
+				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge1ScoreRecap", "" ) ) ) return -1;
+				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge1ScoreRecap", "0" );
+				if ( curJudgeScore[0] < 6 ) inRecapViewRow.Cells["GateExit1Recap"].Value = false;
 				if ( isEntryGatesGood() ) return SlalomRecapScoreCalc( curJudgeScore );
 
 				/*
@@ -194,7 +197,7 @@ namespace WaterskiScoringSystem.Slalom {
 				 * If skier missed entrance gates they are allowe to continue to the 2nd pass
 				 */
 				if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"]
-					&& myRecapViewRow.Index == 0 ) {
+					&& inRecapViewRow.Index == 0 ) {
 					Decimal curScore = SlalomRecapScoreCalc( curJudgeScore );
 					if ( curScore < 6 ) return 0;
 					return curScore;
@@ -204,14 +207,14 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			if ( myNumJudges == 3 ) {
-				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge1ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge2ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge3ScoreRecap", "" ) )
+				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge1ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge2ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge3ScoreRecap", "" ) )
 				   ) return -1;
 
-				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge1ScoreRecap", "0" );
-				curJudgeScore[1] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge2ScoreRecap", "0" );
-				curJudgeScore[2] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge3ScoreRecap", "0" );
+				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge1ScoreRecap", "0" );
+				curJudgeScore[1] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge2ScoreRecap", "0" );
+				curJudgeScore[2] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge3ScoreRecap", "0" );
 
 				if ( isEntryGatesGood() ) return SlalomRecapScoreCalc( curJudgeScore );
 
@@ -220,7 +223,7 @@ namespace WaterskiScoringSystem.Slalom {
 				 * If skier missed entrance gates they are allowe to continue to the 2nd pass
 				 */
 				if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"]
-					&& myRecapViewRow.Index == 0 ) {
+					&& inRecapViewRow.Index == 0 ) {
 					Decimal curScore = SlalomRecapScoreCalc( curJudgeScore );
 					if ( curScore < 6 ) return 0;
 					return curScore;
@@ -230,18 +233,18 @@ namespace WaterskiScoringSystem.Slalom {
 			}
 
 			if ( myNumJudges == 5 ) {
-				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge1ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge2ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge3ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge4ScoreRecap", "" ) )
-					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( myRecapViewRow, "Judge5ScoreRecap", "" ) )
+				if ( HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge1ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge2ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge3ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge4ScoreRecap", "" ) )
+					|| HelperFunctions.isObjectEmpty( HelperFunctions.getViewRowColValue( inRecapViewRow, "Judge5ScoreRecap", "" ) )
 				   ) return -1;
 
-				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge1ScoreRecap", "0" );
-				curJudgeScore[1] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge2ScoreRecap", "0" );
-				curJudgeScore[2] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge3ScoreRecap", "0" );
-				curJudgeScore[3] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge4ScoreRecap", "0" );
-				curJudgeScore[4] = HelperFunctions.getViewRowColValueDecimal( myRecapViewRow, "Judge5ScoreRecap", "0" );
+				curJudgeScore[0] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge1ScoreRecap", "0" );
+				curJudgeScore[1] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge2ScoreRecap", "0" );
+				curJudgeScore[2] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge3ScoreRecap", "0" );
+				curJudgeScore[3] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge4ScoreRecap", "0" );
+				curJudgeScore[4] = HelperFunctions.getViewRowColValueDecimal( inRecapViewRow, "Judge5ScoreRecap", "0" );
 
 				if ( isEntryGatesGood() ) return SlalomRecapScoreCalc( curJudgeScore );
 
@@ -250,7 +253,7 @@ namespace WaterskiScoringSystem.Slalom {
 				 * If skier missed entrance gates they are allowe to continue to the 2nd pass
 				 */
 				if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"]
-					&& myRecapViewRow.Index == 0 ) {
+					&& inRecapViewRow.Index == 0 ) {
 					Decimal curScore = SlalomRecapScoreCalc( curJudgeScore );
 					if ( curScore < 6 ) return 0;
 					return curScore;
@@ -312,13 +315,15 @@ namespace WaterskiScoringSystem.Slalom {
 				Int16 curMaxSpeedKphDiv = SlalomEventData.getMaxSpeedOrigData( myAgeGroup, myDivMaxSpeedKph );
 				Int16 curSkierPassNum = Convert.ToInt16( (String)myRecapViewRow.Cells["skierPassRecap"].Value );
 
-				/*
+                /*
 				 * Check for adjustment for division or class that allows scoring for line shortening alternate score method
 				 * 
 				 * Skiers in qualified divisions can increase their score either by increasing speed or shortening the rope or both
 				 * It is no longer required that the skier be scored at long line when at less than max speed
+				 * 
+				 * See SlalomBoatPathAnalysis for documentation on IWWF Rule 8.15 Boat Path Deviation rerides and scores
                  */
-				Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapViewRow.Cells["PassSpeedKphRecap"].Value );
+                Int16 curPassSpeedKph = Convert.ToInt16( (String)myRecapViewRow.Cells["PassSpeedKphRecap"].Value );
 				bool isSpeedBelowMax = ( curPassSpeedKph < curMaxSpeedKphDiv );
 				Decimal curPassLineLengthMeters = Convert.ToDecimal( (String)myRecapViewRow.Cells["PassLineLengthRecap"].Value );
 				myPassRow = SlalomEventData.getPassRow( curPassSpeedKph, curPassLineLengthMeters );
@@ -977,20 +982,19 @@ namespace WaterskiScoringSystem.Slalom {
 		 */
 		private decimal getProtectedScore( DataGridViewRow prevRecapRow, Decimal inScore ) {
 			//decimal curPassScore = inScore;
-			decimal prevPassScore = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ScoreRecap", "0" );
-			decimal prevPassProtScore = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ProtectedScoreRecap", "0" );
+			//decimal prevPassScoreFull = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ScoreRecap", "0" );
+            decimal prevScoreForPass = calcScoreForPass( prevRecapRow );
+            decimal prevPassProtScore = HelperFunctions.getViewRowColValueDecimal( prevRecapRow, "ProtectedScoreRecap", "0" );
             bool prevBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( prevRecapRow, "BoatPathGoodRecap", "Y" ) );
 
-            if ( prevPassScore > inScore ) {
-				if ( prevPassProtScore > 0 && prevPassProtScore > inScore ) {
-					if ( prevBoatPathGood ) return prevPassProtScore; 
-					return inScore;
-				}
-				
-				return prevPassScore;
+            if ( prevScoreForPass > inScore ) {
+				if ( prevPassProtScore > 0 && prevPassProtScore > inScore ) return prevPassProtScore;
+				return inScore;
 			}
+			
+			if ( prevBoatPathGood ) return inScore; // Previous boat path was good then can improve score
 
-			return inScore;
+			return prevScoreForPass; // If previous boat path not good then can't improve score so previous pass score is used.
 		}
 
 		private int countPathDevRerides() {

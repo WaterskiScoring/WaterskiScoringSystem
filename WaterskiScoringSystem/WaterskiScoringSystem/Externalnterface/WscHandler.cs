@@ -444,7 +444,9 @@ namespace WaterskiScoringSystem.Externalnterface {
 		}
 
 		public static Boolean sendRunningOrder( String inEvent, int inRound, DataTable inDataTable ) {
-			getSanctionNum();
+			if ( inDataTable == null || inDataTable.Rows.Count == 0 ) return false;
+
+            getSanctionNum();
 
 			int curEventRounds = inRound;
 			int curRound = inRound;
@@ -499,9 +501,8 @@ namespace WaterskiScoringSystem.Externalnterface {
 
 				curRound++;
 			}
-
-
-			return true;
+            
+            return true;
 		}
 
 		public static Boolean sendOfficialsAssignments( String curEvent, String eventGroup, Int16 round ) {

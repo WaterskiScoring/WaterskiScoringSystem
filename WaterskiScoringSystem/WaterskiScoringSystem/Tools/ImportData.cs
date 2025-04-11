@@ -40,7 +40,7 @@ namespace WaterskiScoringSystem.Tools {
         private string findColValue( string inColName, string[] inputColNames, string[] inputCols ) {
             int idx = 0;
             foreach ( string colName in inputColNames ) {
-                if ( inColName.Equals( colName ) ) {
+                if ( inColName.ToLower().Equals( colName.ToLower() ) ) {
                     return inputCols[idx].ToString();
                 }
                 idx++;
@@ -68,6 +68,28 @@ namespace WaterskiScoringSystem.Tools {
                 }
             }
             return inputKeys;
+        }
+
+        private String[] getTableColumns( String inTableName ) {
+            String[] inputColumns = null;
+            if ( inTableName.ToLower().Equals( "memberlist" ) ) {
+                inputColumns = new String[1];
+                inputColumns[0] = "MemberId";
+            } else {
+                String selectStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS"
+                    + " WHERE TABLE_NAME = '" + inTableName + "' And COLUMN_NAME != 'PK'"
+                    + " ORDER BY COLUMN_NAME";
+                DataTable curDataTable = DataAccess.getDataTable( selectStmt );
+                if ( curDataTable != null ) {
+                    int idx = 0;
+                    inputColumns = new String[curDataTable.Rows.Count];
+                    foreach ( DataRow curRow in curDataTable.Rows ) {
+                        inputColumns[idx] = (String)curRow["COLUMN_NAME"];
+                        idx++;
+                    }
+                }
+            }
+            return inputColumns;
         }
 
         public void importData() {
@@ -129,7 +151,9 @@ namespace WaterskiScoringSystem.Tools {
 					//Column names are required and must preceed the data rows
 					inputColNames = new string[inputCols.Length];
 					for ( int idx = 0; idx < inputCols.Length; idx++ ) {
-						inputColNames[idx] = inputCols[idx];
+                        inputColNames[idx] = inputCols[idx];
+						//Check for column names that have changed or been deleted
+                        if ( TableName.Equals( "OfficialWork" ) && inputCols[idx].ToLower().Equals( "techofficialrating" ) ) inputColNames[idx] = "TechControllerSlalomRating";
 					}
 
 				} else {
@@ -145,25 +169,28 @@ namespace WaterskiScoringSystem.Tools {
 						MessageBox.Show( "Error: Column definitions not provide.  Unable to process import file." );
 						break;
 
-					} else {
-						myImportCounts[idxRowsRead]++;
+                    } else {
+                        myImportCounts[idxRowsRead]++;
 
-						String returnSanctionId = "";
-						DataRow curRow = null;
-						if ( inputKeys != null ) curRow = findRowExist( inputKeys, inputColNames, inputCols );
+                        String returnSanctionId = "";
+                        DataRow curRow = null;
+                        if ( inputKeys != null ) curRow = findRowExist( inputKeys, inputColNames, inputCols );
 
-						if ( curRow != null ) {
-							returnSanctionId = updateMatchedRow( inputKeys, inputColNames, inputCols, curRow );
+                        if ( curRow != null ) {
+                            returnSanctionId = updateMatchedRow( inputKeys, inputColNames, inputCols, curRow );
+                        } else {
+                            returnSanctionId = addNewDataRow( inputKeys, inputColNames, inputCols );
+                        }
+                        if ( returnSanctionId.Length > 0 ) curSanctionId = returnSanctionId;
 
-						} else {
-							returnSanctionId = addNewDataRow( inputKeys, inputColNames, inputCols );
+						if ( myTableName.Equals( "Tournament" ) ) {
+							CheckTournamentTableNeedSplit( inputKeys, inputColNames, inputCols );
 						}
 
-						if ( returnSanctionId.Length > 0 ) curSanctionId = returnSanctionId;
 
-					}
-				}
-			}
+                        }
+                    }
+            }
 			
 			handleEndOfTable( curSanctionId );
 			showImportStats();
@@ -173,11 +200,38 @@ namespace WaterskiScoringSystem.Tools {
 			curReader.Close();
 		}
 
-		/*
+        /*
+		 * Special handling when importing the tournament table because at the start of 2025 I split the table 
+		 * I moved all attributes related to the chief judges repport to its own table ChiefJudgeReport
+		 */
+        private void CheckTournamentTableNeedSplit( String[] inputKeys, String[] inputColNames, String[] inputCols ) {
+            DataRow curRow = null;
+            bool isNeedSplitTable = false;
+			foreach ( String key in inputColNames ) {
+				if ( key.Equals( "RuleExceptions" ) ) {
+                    isNeedSplitTable = true;
+					break;
+                }
+            }
+
+			if ( isNeedSplitTable ) {
+				string curTableNameSave = myTableName;
+				myTableName = "ChiefJudgeReport";
+                curRow = findRowExist( inputKeys, inputColNames, inputCols );
+                if ( curRow != null ) {
+                    updateMatchedRow( inputKeys, inputColNames, inputCols, curRow );
+                } else {
+                    addNewDataRow( inputKeys, inputColNames, inputCols );
+                }
+				myTableName = curTableNameSave;
+            }
+        }
+
+        /*
 		 * Use key column data items to see if input row already exists on database
 		 * If available use the LastUpdateDate as a criteria (
 		 */
-		private DataRow findRowExist( String[] inputKeys, String[] inputColNames, String[] inputCols ) {
+        private DataRow findRowExist( String[] inputKeys, String[] inputColNames, String[] inputCols ) {
 			String curColValue = "";
 			bool isLastUpdateDateAvail = false;
 			StringBuilder stmtSelect = new StringBuilder( "" );
@@ -304,30 +358,29 @@ namespace WaterskiScoringSystem.Tools {
 					return "";
 				}
 			}
-			//Build update command with input record if specified
-			int idx = 0;
-			foreach ( string colName in inputColNames ) {
-				if ( colName.ToLower().Equals( "pk" ) || HelperFunctions.isColumnObsolete( colName, myTableName ) ) {
-					// Bypass columns that have been dropped or have data that can't be imported
-					idx++;
-					continue;
-				}
 
-				if ( colName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = inputCols[idx];
+            /*
+			 * Loop thru the column names for the current table as defined by the system information
+			 * If the column data is not available on the import file then skip the column from the insert statement.
+			 * This assumes the attribute allows nulls
+			 */
+            string curStmtDelim = "";
+            String[] curTableColumns = getTableColumns( myTableName );
+            foreach ( string colName in curTableColumns ) {
+                curColValue = findColValue( colName, inputColNames, inputCols );
+                if ( curColValue == null ) continue; // If column is not available on the import record then bypass including in the update
+                if ( colName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = curColValue;
 
-				curColValue = "";
-				if ( stmtData.Length > 1 ) stmtData.Append( ", " );
-				if ( inputCols[idx].Length > 0 ) {
-					curColValue = String.Format( "'{0}'", HelperFunctions.stringReplace( inputCols[idx], HelperFunctions.SingleQuoteDelim, "''" ) );
+                if ( HelperFunctions.isObjectPopulated( curColValue ) ) {
+                    curColValue = String.Format( "'{0}'", HelperFunctions.stringReplace( curColValue, HelperFunctions.SingleQuoteDelim, "''" ) );
 				} else if ( inputKeys.Contains( colName ) ) {
 					curColValue = "''";
 				} else {
 					curColValue = "null";
 				}
-				stmtData.Append( String.Format( "[{0}] = {1}", colName, curColValue ) );
-
-				idx++;
-			}
+				stmtData.Append( String.Format( "{0}[{1}] = {2}", curStmtDelim, colName, curColValue ) );
+				curStmtDelim = ", ";
+            }
 
 			//Update database with input record if specified
 			//Delete detail if event scores which assumes the detail will also be imported
@@ -359,35 +412,33 @@ namespace WaterskiScoringSystem.Tools {
 			StringBuilder stmtInsert = new StringBuilder( "" );
 			StringBuilder stmtData = new StringBuilder( "" );
 
-			int idx = 0;
-			foreach ( string colName in inputColNames ) {
-				if ( colName.ToLower().Equals( "pk" ) || HelperFunctions.isColumnObsolete(colName, myTableName ) ) {
-					// Bypass columns that have been dropped or have data that can't be imported
-					idx++;
-					continue;
-				}
-				
-				if ( colName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = inputCols[idx];
+			/*
+			 * Loop thru the column names for the current table as defined by the system information
+			 * If the column data is not available on the import file then skip the column from the insert statement.
+			 * This assumes the attribute allows nulls
+			 */
+			string curColValue;
+			string curStmtDelim = "";
+            String[] curTableColumns = getTableColumns( myTableName );
+            foreach ( string colName in curTableColumns ) {
+                curColValue = findColValue( colName, inputColNames, inputCols );
+                if ( curColValue == null ) continue; // If column is not available on the import record then bypass including in the insert
+                if ( colName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = curColValue;
 
-				if ( stmtInsert.Length > 1 ) {
-					stmtInsert.Append( ", " );
-					stmtData.Append( ", " );
-				}
-
-				stmtInsert.Append( "[" + colName + "]" );
+				stmtInsert.Append( curStmtDelim + "[" + colName + "]" );
 
 				String tempValue = "";
-				if ( inputCols[idx].Length > 0 ) {
-					tempValue = String.Format( "'{0}'", HelperFunctions.stringReplace( inputCols[idx], HelperFunctions.SingleQuoteDelim, "''" ) );
+				if ( HelperFunctions.isObjectPopulated( curColValue ) ) {
+					tempValue = String.Format( "'{0}'", HelperFunctions.stringReplace( curColValue, HelperFunctions.SingleQuoteDelim, "''" ) );
 				} else if ( inputKeys.Contains( colName ) ) {
 					tempValue = "''";
 				} else {
 					tempValue = "null";
 				}
-				stmtData.Append( String.Format("{0}", tempValue ) );
-				
-				idx++;
-			}
+				stmtData.Append( curStmtDelim + String.Format("{0}", tempValue ) );
+
+				curStmtDelim = ", ";
+            }
 
 			/*
 			 * Add new data record to database

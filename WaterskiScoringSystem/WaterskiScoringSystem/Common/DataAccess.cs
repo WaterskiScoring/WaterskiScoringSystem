@@ -148,8 +148,12 @@ namespace WaterskiScoringSystem.Common {
                 String ExcpMsg = ex.Message;
                 if (inSelectStmt != null) { ExcpMsg += "\nSQL=" + inSelectStmt; }
                 Log.WriteFile(curMethodName + ":Exception Performing SQL operation:" + ExcpMsg);
-                MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
-                curReturnValue = -1;
+                if ( inSelectStmt.ToLower().StartsWith("drop")) {
+                    curReturnValue = -99;
+                } else {
+                    MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
+                    curReturnValue = -99;
+                }
             }
 
             if (DataAccessTraceActive && stopwatch != null) {
@@ -184,7 +188,7 @@ namespace WaterskiScoringSystem.Common {
                 if (inSelectStmt != null) { ExcpMsg += "\nSQL=" + inSelectStmt; }
                 Log.WriteFile(curMethodName + ":Exception Performing SQL operation:" + ExcpMsg);
                 MessageBox.Show( curMethodName + "\nException Performing SQL operation" + "\n\nError: " + ExcpMsg );
-                curReturnValue = -1;
+                curReturnValue = -99;
             }
 
             if (DataAccessTraceActive && stopwatch != null) {
@@ -344,6 +348,7 @@ namespace WaterskiScoringSystem.Common {
             return getDatabaseFilename( getConnectionString() );
         }
 
+
         public static String[] TourTableList = {
                 "Tournament"
                 , "TourProperties"
@@ -369,6 +374,7 @@ namespace WaterskiScoringSystem.Common {
                 , "OfficialWork"
                 , "OfficialWorkAsgmt"
                 , "SafetyCheckList"
+                , "ChiefJudgeReport"
                 , "DivOrder"
             };
 

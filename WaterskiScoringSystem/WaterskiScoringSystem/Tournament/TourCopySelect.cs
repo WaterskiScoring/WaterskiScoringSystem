@@ -106,6 +106,26 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
                     curSqlStmt = new StringBuilder( "" );
+                    curSqlStmt = new StringBuilder( "Insert Into ChiefJudgeReport ( SanctionId" );
+                    curSystemTableSqlStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS "
+                        + "WHERE TABLE_NAME = 'ChiefJudgeReport' And COLUMN_NAME != 'PK' And COLUMN_NAME != 'SanctionId' "
+                        + "ORDER BY COLUMN_NAME";
+                    myDataTable = getData( curSystemTableSqlStmt );
+                    foreach ( DataRow curRow in myDataTable.Rows ) {
+                        curSqlStmt.Append( ",  " + (String)curRow["COLUMN_NAME"] );
+                    }
+                    curSqlStmt.Append( ") SELECT '" + NewSanctionIdTextbox.Text + "'" );
+                    foreach ( DataRow curRow in myDataTable.Rows ) {
+                        curSqlStmt.Append( ",  " + (String)curRow["COLUMN_NAME"] );
+                    }
+                    curSqlStmt.Append( " FROM ChiefJudgeReport WHERE SanctionId = '" + SanctionNumToCopy + "' " );
+                    rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                    if ( rowsProc > 0 ) {
+                        MessageBox.Show( "ChiefJudgeReport attributes copied from " + SanctionNumToCopy + " to " + NewSanctionIdTextbox.Text );
+                    } else {
+                    }
+
+                    curSqlStmt = new StringBuilder( "" );
                     curSqlStmt = new StringBuilder( "Insert Into SafetyCheckList ( SanctionId" );
                     curSystemTableSqlStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS "
                         + "WHERE TABLE_NAME = 'SafetyCheckList' And COLUMN_NAME != 'PK' And COLUMN_NAME != 'SanctionId' "
@@ -167,9 +187,6 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation, TourDataLoc, LastUpdateDate" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
             curSqlStmt.Append( ", HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct" );
-            curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs" );
-            curSqlStmt.Append( ", RuleExceptions, RuleInterpretations, SafetyDirPerfReport" );
-            curSqlStmt.Append( ", BuoySpecs, RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
             curSqlStmt.Append( ", ContactMemberId, ContactPhone, ContactEmail, ContactAddress" );
             curSqlStmt.Append( ", ChiefJudgeMemberId, ChiefJudgeAddress, ChiefJudgePhone, ChiefJudgeEmail" );
             curSqlStmt.Append( ", ChiefDriverMemberId, ChiefDriverAddress, ChiefDriverPhone, ChiefDriverEmail" );

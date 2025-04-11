@@ -7,8 +7,11 @@ using SocketIOClient;
 namespace WscMessageHandler.Common {
 	class ConnectMgmtData {
 		private static readonly String myWscApplicationKey = "CAD2FB59-3CCB-4691-9D26-7D68C2222788";
-		private static readonly String myWscWebLocationDefault = "http://ewscdata.com:40000/";
-		private static readonly String myWaterskiRegKeyName = "Software\\WSTIMS For Windows\\WSTIMS For Windows";
+        //private static readonly String myWscWebLocationDefault = "http://ewscdata.com:40000/";
+        //private static readonly String myWscWebLocationDefault = "http://waterskiconnect.com:40000/";
+        private static readonly String myWscWebLocationDefault = "https://waterskiconnect.com:44000/";
+
+        private static readonly String myWaterskiRegKeyName = "Software\\WSTIMS For Windows\\WSTIMS For Windows";
 
 
 		private static String mySanctionNum = "";

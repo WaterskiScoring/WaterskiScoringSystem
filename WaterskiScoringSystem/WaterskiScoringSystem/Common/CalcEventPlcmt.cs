@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Text;
@@ -51,7 +52,7 @@ namespace WaterskiScoringSystem.Common {
                     curSkierList = curPlcmtResults.Select( curFilterCmd );
 
                     //Analyze tied placments and gather all data needed for tie breakers
-                    curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+                    curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, inNumPrelimRounds, curRules, curPlcmtName, inDataType );
 
                     //Analyze data for tied placments utilizing tie breakers to determine placments
                     setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
@@ -95,7 +96,7 @@ namespace WaterskiScoringSystem.Common {
                 curSkierList = curPlcmtResults.Select( curFilterCmd );
 
                 //Analyze tied placments and gather all data needed for tie breakers
-                curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
+                curSkierScoreList = getSlalomTieBreakerData( curSkierList, curEventRounds, inNumPrelimRounds, curRules, curPlcmtName, inDataType );
 
                 //Analyze data for tied placments utilizing tie breakers to determine placments
                 setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
@@ -348,7 +349,7 @@ namespace WaterskiScoringSystem.Common {
             return curPlcmtResults;
         }
 
-        private DataTable getSlalomTieBreakerData( DataRow[] inSkierList, int inEventRounds, String inRules, String inPlcmtName, String inDataType ) {
+        private DataTable getSlalomTieBreakerData( DataRow[] inSkierList, int inEventRounds, int inNumPrelimRounds, String inRules, String inPlcmtName, String inDataType ) {
             /* **********************************************************
              * Retrieve all data required for a slalom tie breaker
              * ******************************************************* */
@@ -358,7 +359,7 @@ namespace WaterskiScoringSystem.Common {
             String curPointsName = "PointsSlalom";
             String curFilter;
             byte curRound, curFinalSpeedKph;
-            decimal curScore, curScoreTemp, curRunoffScore, curRankingScore, curFirstScore, curBackupScore, curPassScore, curFinalLineLength;
+            decimal curScore, curScoreTemp, curRunoffScore, curBackupScore, curRankingScore, curFirstScore, curPassScore, curFinalLineLength;
 
             DataRowView newSkierScoreRow;
             DataRow[] curSkierScoreRow;
@@ -425,6 +426,7 @@ namespace WaterskiScoringSystem.Common {
                 decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "ScoreRunoff", "0" ), out curRunoffScore );
                 byte.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "FinalSpeedKph", "0" ), out curFinalSpeedKph );
                 decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], "FinalLen", "0" ), out curFinalLineLength );
+                curBackupScore = 0;
 
                 newSkierScoreRow["Score"] = curScore;
                 newSkierScoreRow["PassScore"] = curPassScore;
@@ -435,20 +437,13 @@ namespace WaterskiScoringSystem.Common {
                 newSkierScoreRow["LineLength"] = curFinalLineLength;
                 if ( inRules.ToLower().Equals( "iwwf" ) && curFinalLineLength == 23M ) newSkierScoreRow["LineLength"] = 18.25M;
 
-                /*
-				Only utilize backup score when runoff score is not available
-				*/
-                curBackupScore = 0;
-				if ( curRunoffScore == 0 ) {
-					newSkierScoreRow.EndEdit();
-					continue;
-				}
-				if ( inDataType.ToLower().Equals( "best" ) ) {
-					if ( inEventRounds == 1 ) {
-						newSkierScoreRow.EndEdit();
-						continue;
-					}
+                // Backup scores are only available when the event has more than 1 round
+                if ( inEventRounds == 1 ) {
+                    newSkierScoreRow.EndEdit();
+                    continue;
+                }
 
+                if ( inDataType.ToLower().Equals( "best" ) ) {
 					//Retrieve tie score details, related final pass score, line length, final pass speed
 					curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = 1", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"] );
 					curSkierScoreRow = curSkierResultsAll.Select( curFilter );
@@ -472,25 +467,30 @@ namespace WaterskiScoringSystem.Common {
 							}
 						}
 					}
+                    newSkierScoreRow.EndEdit();
+                    continue;
+                } 
+                
+                if ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) ) {
+                    // take the best score achieved in the preliminary rounds
+					//decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curScoreName, "0" ), out curScore );
+                    for ( Byte curSkierRound = 1; curSkierRound <= inNumPrelimRounds; curSkierRound++ ) {
+                        curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
+                        curSkierScoreRow = curSkierResultsAll.Select( curFilter );
+                        if ( curSkierScoreRow.Length <= 0 ) continue;
+                        if ( curRound == curSkierRound ) continue;
 
+                        decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
+                        if ( curScoreTemp > curBackupScore ) {
+                            curBackupScore = curScoreTemp;
+                            newSkierScoreRow["BackupScore"] = curBackupScore;
+                        }
+                    }
 
-				} else if ( inDataType.ToLower().Equals( "final" ) || inDataType.ToLower().Equals( "h2h" ) ) {
-					decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierRow, curScoreName, "0" ), out curScore );
-					for ( Byte curSkierRound = 1; curSkierRound <= inEventRounds; curSkierRound++ ) {
-						curFilter = String.Format( "MemberId = '{0}' AND AgeGroup = '{1}' AND " + curRoundName + " = {2}", (String)curSkierRow["MemberId"], (String)curSkierRow["AgeGroup"], curSkierRound );
-						curSkierScoreRow = curSkierResultsAll.Select( curFilter );
-						if ( curSkierScoreRow.Length <= 0 ) continue;
-						if ( curRound == curSkierRound ) continue;
+                    newSkierScoreRow.EndEdit();
+                    continue;
+                }
 
-						decimal.TryParse( HelperFunctions.getDataRowColValue( curSkierScoreRow[0], curScoreName, "0" ), out curScoreTemp );
-						if ( curScoreTemp > curBackupScore ) {
-							curBackupScore = curScoreTemp;
-							newSkierScoreRow["BackupScore"] = curBackupScore;
-						}
-					}
-				}
-
-				newSkierScoreRow.EndEdit();
             }
 
             return curSkierScoreList;

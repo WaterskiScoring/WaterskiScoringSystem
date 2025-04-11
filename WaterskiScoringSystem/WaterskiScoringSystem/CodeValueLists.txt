@@ -31,39 +31,43 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	OverallEventsReqd	W8		58	2	2	2	Events required to qualify for overall for Womens 8 70+
 0	OverallEventsReqd	W9		59	2	2	2	Events required to qualify for overall for Womens 9 75+
 0	OverallEventsReqd	WA		60	2	2	2	Events required to qualify for overall for Womens 10 80+
-0	OverallEventsReqd	YB		61	2	2	2	Events required to qualify for overall for Intl Boys U10
-0	OverallEventsReqd	WB		61	2	2	2	Events required to qualify for overall for Womens 11 85+
-0	OverallEventsReqd	YG		62	2	2	2	Events required to qualify for overall for Intl Girls U10
-0	OverallEventsReqd	JB		63	3	3	3	Events required to qualify for overall for Intl Junior Boys U14
-0	OverallEventsReqd	JG		64	3	3	3	Events required to qualify for overall for Intl Junior Girls U14
-0	OverallEventsReqd	IB		65	3	3	3	Events required to qualify for overall for Intl Boys U17
-0	OverallEventsReqd	IG		66	3	3	3	Events required to qualify for overall for Intl Girls U17
-0	OverallEventsReqd	IM		71	3	3	3	Events required to qualify for overall for Intl Men
-0	OverallEventsReqd	OM		71	3	3	3	Events required to qualify for overall for Open Men
-0	OverallEventsReqd	IW		72	3	3	3	Events required to qualify for overall for Intl Women
-0	OverallEventsReqd	OW		72	3	3	3	Events required to qualify for overall for Open Women
-0	OverallEventsReqd	JM		73	3	3	3	Events required to qualify for overall for Intl Junior Men
-0	OverallEventsReqd	MM		73	3	3	3	Events required to qualify for overall for Master Men
-0	OverallEventsReqd	JW		74	3	3	3	Events required to qualify for overall for Intl Junior Women
-0	OverallEventsReqd	MW		74	3	3	3	Events required to qualify for overall for Master Women
-0	OverallEventsReqd	NM		75	2	2	2	Events required to qualify for overall for Novice Mens
-0	OverallEventsReqd	NW		76	2	2	2	Events required to qualify for overall for Novice Womens
-0	OverallEventsReqd	S1		81	3	3	3	Events required to qualify for overall for Intl Senior Men 35+
-0	OverallEventsReqd	S2		82	3	3	3	Events required to qualify for overall for Intl Senior Men 45+
-0	OverallEventsReqd	S3		83	3	3	3	Events required to qualify for overall for Intl Senior Men 55+
-0	OverallEventsReqd	S4		84	3	3	3	Events required to qualify for overall for Intl Senior Men 65+
-0	OverallEventsReqd	S5		85	2	2	2	Events required to qualify for overall for Intl Senior Men 70+
-0	OverallEventsReqd	S6		86	2	2	2	Events required to qualify for overall for Intl Senior Men 75+
-0	OverallEventsReqd	S7		87	2	2	2	Events required to qualify for overall for Intl Senior Men 80+
-0	OverallEventsReqd	S8		88	2	2	2	Events required to qualify for overall for Intl Senior Men 85+
-0	OverallEventsReqd	L1		91	3	3	3	Events required to qualify for overall for Intl Senior Women 35+
-0	OverallEventsReqd	L2		92	3	3	3	Events required to qualify for overall for Intl Senior Women 45+
-0	OverallEventsReqd	L3		93	3	3	3	Events required to qualify for overall for Intl Senior Women 55+
-0	OverallEventsReqd	L4		94	3	3	3	Events required to qualify for overall for Intl Senior Women 65+
-0	OverallEventsReqd	L5		95	2	2	2	Events required to qualify for overall for Intl Senior Women 70+
-0	OverallEventsReqd	L6		96	2	2	2	Events required to qualify for overall for Intl Senior Women 75+
-0	OverallEventsReqd	L7		97	2	2	2	Events required to qualify for overall for Intl Senior Women 80+
-0	OverallEventsReqd	L8		98	2	2	2	Events required to qualify for overall for Intl Senior Women 85+
+0	OverallEventsReqd	CM		65	3	3	3	Events required to qualify for overall for Collegiate Men A
+0	OverallEventsReqd	BM		66	3	3	3	Events required to qualify for overall for Collegiate Men B
+0	OverallEventsReqd	CW		67	3	3	3	Events required to qualify for overall for Collegiate Women A
+0	OverallEventsReqd	BW		68	3	3	3	Events required to qualify for overall for Collegiate Women B
+0	OverallEventsReqd	YB		71	2	2	2	Events required to qualify for overall for Intl Boys U10
+0	OverallEventsReqd	WB		72	2	2	2	Events required to qualify for overall for Womens 11 85+
+0	OverallEventsReqd	YG		73	2	2	2	Events required to qualify for overall for Intl Girls U10
+0	OverallEventsReqd	JB		74	3	3	3	Events required to qualify for overall for Intl Junior Boys U14
+0	OverallEventsReqd	JG		75	3	3	3	Events required to qualify for overall for Intl Junior Girls U14
+0	OverallEventsReqd	IB		76	3	3	3	Events required to qualify for overall for Intl Boys U17
+0	OverallEventsReqd	IG		77	3	3	3	Events required to qualify for overall for Intl Girls U17
+0	OverallEventsReqd	IM		81	3	3	3	Events required to qualify for overall for Intl Men
+0	OverallEventsReqd	OM		82	3	3	3	Events required to qualify for overall for Open Men
+0	OverallEventsReqd	IW		83	3	3	3	Events required to qualify for overall for Intl Women
+0	OverallEventsReqd	OW		84	3	3	3	Events required to qualify for overall for Open Women
+0	OverallEventsReqd	JM		85	3	3	3	Events required to qualify for overall for Intl Junior Men
+0	OverallEventsReqd	MM		86	3	3	3	Events required to qualify for overall for Master Men
+0	OverallEventsReqd	JW		87	3	3	3	Events required to qualify for overall for Intl Junior Women
+0	OverallEventsReqd	MW		88	3	3	3	Events required to qualify for overall for Master Women
+0	OverallEventsReqd	NM		89	2	2	2	Events required to qualify for overall for Novice Mens
+0	OverallEventsReqd	NW		89	2	2	2	Events required to qualify for overall for Novice Womens
+0	OverallEventsReqd	S1		91	3	3	3	Events required to qualify for overall for Intl Senior Men 35+
+0	OverallEventsReqd	S2		92	3	3	3	Events required to qualify for overall for Intl Senior Men 45+
+0	OverallEventsReqd	S3		93	3	3	3	Events required to qualify for overall for Intl Senior Men 55+
+0	OverallEventsReqd	S4		94	3	3	3	Events required to qualify for overall for Intl Senior Men 65+
+0	OverallEventsReqd	S5		95	2	2	2	Events required to qualify for overall for Intl Senior Men 70+
+0	OverallEventsReqd	S6		96	2	2	2	Events required to qualify for overall for Intl Senior Men 75+
+0	OverallEventsReqd	S7		97	2	2	2	Events required to qualify for overall for Intl Senior Men 80+
+0	OverallEventsReqd	S8		98	2	2	2	Events required to qualify for overall for Intl Senior Men 85+
+0	OverallEventsReqd	L1		101	3	3	3	Events required to qualify for overall for Intl Senior Women 35+
+0	OverallEventsReqd	L2		102	3	3	3	Events required to qualify for overall for Intl Senior Women 45+
+0	OverallEventsReqd	L3		103	3	3	3	Events required to qualify for overall for Intl Senior Women 55+
+0	OverallEventsReqd	L4		104	3	3	3	Events required to qualify for overall for Intl Senior Women 65+
+0	OverallEventsReqd	L5		105	2	2	2	Events required to qualify for overall for Intl Senior Women 70+
+0	OverallEventsReqd	L6		106	2	2	2	Events required to qualify for overall for Intl Senior Women 75+
+0	OverallEventsReqd	L7		107	2	2	2	Events required to qualify for overall for Intl Senior Women 80+
+0	OverallEventsReqd	L8		108	2	2	2	Events required to qualify for overall for Intl Senior Women 85+
 0	SlalomBoatPathRerideRopeMin	R	1	1	11.25M / 38 OFF	11.25	11.25	Class R Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathRerideRopeMin	L	2	2	11.25M / 38 OFF	11.25	11.25	Class L Reride minimum rope length 11.25M or -38
 0	SlalomBoatPathRerideRopeMin	E	3	3	11.25M / 38 OFF	11.25	11.25	Class E Reride minimum rope length 11.25M or -38
@@ -410,7 +414,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	B3-S		26	Boys 3 (U14) - Slalom		104.5	2.5 bouys at 10.75m @ 55 kph (39 off @ 34.2 mph) 8/11/2015 Stange Griffin
 0	AWSARecords	B3-T		27	Boys 3 (U14) - Trick		11100	5/15/2021 Jake Abelson
 0	AWSARecords	B3-J		28	Boys 3 (U14) - Jump		144	(43.8m) 45kph 5ft 7/17/2016 William Roberts
-0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		112.00	4 bouys at 10.75m @ 58 kph (39 off @ 36 mph) 2/20/2020 2020 BENCHMARK
+0	AWSARecords	B4-S		31	Boys 4 (U16) - Slalom		115.00	1 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 7/6/2023 Jaeden Eade 5/9/2024 Damein Eade
 0	AWSARecords	B4-T		32	Boys 4 (U16) - Trick		11490	6/18/2022 Jake Abelson
 0	AWSARecords	B4-J		33	Boys 4 (U16) - Jump		191	(58.2m) 5.5 51kph 2/20/2020 2020 BENCHMARK
 0	AWSARecords	B5-S		34	Boys 5 (U18) - Slalom		117	3 bouys at 10.25m @ 58 kph (41 off @ 36 mph) 6/30/2012 KC Wilson
@@ -446,21 +450,21 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	M5-T		112	Mens 5 - Trick		6230	9/4/2021 Marc Bedsole
 0	AWSARecords	M5-J		113	Mens 5 - Jump		162	(49.4M) 5 51kph 10/6/2020 Hutch Haines
 0	AWSARecords	M6-S		121	Mens 6 - Slalom		110	2 bouy at 10.25m @ 55 kph (41 off @ 34.2 mph) 12/3/2017 Chet Raley 10/19/2023 Greg Badal
-0	AWSARecords	M6-T		122	Mens 6 - Trick		4830	8/22/2014 Don Parsons
+0	AWSARecords	M6-T		122	Mens 6 - Trick		6230	11/8/2024 Marc Bedsole
 0	AWSARecords	M6-J		123	Mens 6 - Jump		155	(47.1m) 10/12/2014 Frankie Dees
 0	AWSARecords	M7-S		131	Mens 7 - Slalom		103	2 bouys at 10.25m @ 52 kph (41 off @ 32.2 mph) 7/2/2018 Ed Hickey 9/10/2019 Jack Mills
 0	AWSARecords	M7-T		132	Mens 7 - Trick		3800	8/22/2019 Don Parsons
 0	AWSARecords	M7-J		133	Mens 7 - Jump		137	(41.9m) 51kph 5ft 8/27/2022 Joel Norton
-0	AWSARecords	M8-S		141	Mens 8 - Slalom		99.00	3.0 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 4/23/2023 Jack Everett 8/24/2024 Ted McColley
+0	AWSARecords	M8-S		141	Mens 8 - Slalom		99.50	3.5 bouys at 10.75m @ 52 kph (39 off @ 32 mph) 9/21/2024 Jack Mills
 0	AWSARecords	M8-T		142	Mens 8 - Trick		3400	9/5/2021 Bruce Kistler
 0	AWSARecords	M8-J		143	Mens 8 - Jump		123	(37.6m) 5 51kph 9/25/2021 Frankie Dees
 0	AWSARecords	M9-S		151	Mens 9 - Slalom		92.00	2 bouys at 10.75m @ 49 kph (39.5 off @ 30.4 mph) 8/27/2022 Bill Mahan
 0	AWSARecords	M9-T		152	Mens 9 - Trick		2520	7/14/2019 Stan Switzer
 0	AWSARecords	M9-J		153	Mens 9 - Jump		98	(29.8m) 5 48kph 8/7/2014 Bruce Kunde
-0	AWSARecords	MA-S		161	Mens 10 - Slalom		82.00	4 bouys at 12m @ 49 kph (35 off @ 30.4 mph) 9/15/2024 John Atore
+0	AWSARecords	MA-S		161	Mens 10 - Slalom		85.00	1 bouys at 11.25m @ 49 kph (38 off @ 30.4 mph) 10/26/2024 John Atore
 0	AWSARecords	MA-T		162	Mens 10 - Trick		1600	 10/20/2007 Harry Price  
 0	AWSARecords	MA-J		163	Mens 10 - Jump		100	(30.5m) 5 48kph 7/22/2017 Bruce Kunde
-0	AWSARecords	MB-S		171	Mens 11 - Slalom		63.50	3.5 bouys at 14.25m @ 46 kph (28 off @ 28.6 mph) 10/2/2021 Ed Fisher
+0	AWSARecords	MB-S		171	Mens 11 - Slalom		64.00	4.0 bouys at 14.25m @ 46 kph (28 off @ 28.6 mph) 7/28/2023 Floyd McCrieght
 0	AWSARecords	MB-T		172	Mens 11 - Trick		1050	10/29/2012 Harry Price
 0	AWSARecords	MB-J		173	Mens 11 - Jump		41	(12.6m) 5 46 kph (28.5 mph) 7/23/2022 Bruce Kunde
 0	AWSARecords	W1-S		181	Womens 1 - Slalom		110.00	2 buoy at 10.25m @ 55 kph (41 off @ 34.2 mph) 6/7/2020 Samantha Dumala
@@ -476,7 +480,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AWSARecords	W4-T		212	Womens 4 - Trick		5600	 7/4/1988 Barbara Cleveland  
 0	AWSARecords	W4-J		213	Womens 4 - Jump		134	(40.4) 40.4 5 51kph 10/12/2014 Lori Krueger
 0	AWSARecords	W5-S		221	Womens 5 - Slalom		98.00	2 bouys at 10.75m @ 52 kph (39.5 off @ 32.3 mph) 11/7/2019 Jennifer Leachman-LaPoint
-0	AWSARecords	W5-T		222	Womens 5 - Trick		5060	8/18/2007 Kay Nichols 9/18/2016 Lydia Robsham
+0	AWSARecords	W5-T		222	Womens 5 - Trick		5190	10/28/2024 Sally Montavon
 0	AWSARecords	W5-J		223	Womens 5 - Jump		116	(35.5) 48kph 5ft 8/9/2017 Joy Kelly
 0	AWSARecords	W6-S		231	Womens 6 - Slalom		94.50	4.5  bouys at 11.25m @ 52 kph (38 off @ 32.3 mph) 8/28/2022 Phillipa Shedd
 0	AWSARecords	W6-T		232	Womens 6 - Trick		3940	7/24/2019 Joy Kelley
@@ -771,7 +775,7 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22499	IwwfJumpMax	JW		64	54kph, 33.6mph	33.6	54	
 22500	IwwfJumpMax	S1		71	57kph, 35.4mph	35.4	57	
 22501	IwwfJumpMax	S2		72	54kph, 33.6mph	33.6	54	
-22502	IwwfJumpMax	S3		73	51kph, 31.7mph	31.7	51	
+22502	IwwfJumpMax	S3		73	54kph, 33.6mph	33.6	54	
 22502	IwwfJumpMax	S4		74	51kph, 31.7mph	31.7	51	
 22502	IwwfJumpMax	S5		75	51kph, 31.7mph	31.7	51	
 22502	IwwfJumpMax	S6		76	48kph, 29.8mph	29.8	48	
@@ -960,9 +964,9 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	IwwfRecords	IM-S		391	Intl Men - Slalom		74.5	2.5 bouys at 9.75m @ 58 kph (43 off @ 36 mph) 9/7/2013 Nate Smith
 0	IwwfRecords	IM-T		392	Intl Men - Trick		12720		4/28/2024 Jake Abelson
 0	IwwfRecords	IM-J		393	Intl Men - Jump		77.4	7/1/2017 Ryan Dodd
-0	IwwfRecords	IM-O		394	Intl Men Overall		2670.62	12/20/2023 2@10.25/58k, 11680, 69.3m Joel Poland
+0	IwwfRecords	IM-O		394	Intl Men Overall		2704.19	2@10.25/58k, 12030, 69.6m 9/22/2024 Joel Poland
 0	IwwfRecords	IW-S		401	Intl Women - Slalom		71.00	5.0 bouys at 10.25m @ 55 kph (41 off @ 34.2 mph) 9/15/2023 Regina Jaquess
-0	IwwfRecords	IW-T		402	Intl Women - Trick		11360	5/19/2023 Erika Lang
+0	IwwfRecords	IW-T		402	Intl Women - Trick		11430	11/8/2024 Neilly Ross
 0	IwwfRecords	IW-J		403	Intl Women - Jump		61.3	10/31/2022 Jacinta Carroll
 0	IwwfRecords	IW-O		404	Intl Women Overall		3177.26	5/19/2012 Natallia Berdnikava
 0	IwwfRecords	JM-S		411	Intl Junior Men - Slalom		64	4 at 10.25 @ 58kph 11/14/2022 Charlie Ross
@@ -1200,10 +1204,10 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22545	NcwsaRampMax	CW		47	5 Foot	0.235	5	
 22547	NcwsaRampMax	BW		47	5 Foot	0.235	5	
 0	NCWSARecords	CM-S		491	College Men - Slalom		117.5	3.5 buoys at 10.25m @ 58 kph (41 off @ 36 mph) 10/14/2003 Will Asher
-0	NCWSARecords	CM-T		492	College Men - Trick		7050	5/17/2014 Dylan Schaffer
+0	NCWSARecords	CM-T		492	College Men - Trick		7560	9/16/2023	Patricio Font
 0	NCWSARecords	CM-J		493	College Men - Jump		197	(60.1) 9/5/2021 Quinn Haines
 0	NCWSARecords	CW-S		501	College Women - Slalom		107.5	5.5 bouys at 10.75m @ 55 kph (39.5 off @ 34.2 mph) 10/11/2019 Jaimee Bull
-0	NCWSARecords	CW-T		502	College Women - Trick		6110	10/21/2017 Erika Lang
+0	NCWSARecords	CW-T		502	College Women - Trick		6320	9/162023 Neilly Ross
 0	NCWSARecords	CW-J		503	College Women - Jump		159	(48.5m) 10/20/2017 Hanna Straltsova
 22596	NcwsaSlalomMax	CM		44	58kph, 36mph	36	58	
 22598	NcwsaSlalomMax	BM		44	58kph, 36mph	36	58	

@@ -147,7 +147,9 @@ namespace WaterskiScoringSystem.Tournament {
                         curViewRow.Cells["ScorerTrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerTrickRating", "" );
                         curViewRow.Cells["ScorerJumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerJumpRating", "" );
                         curViewRow.Cells["SafetyOfficialRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "SafetyOfficialRating", "" );
-                        curViewRow.Cells["TechOfficialRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechOfficialRating", "" );
+                        curViewRow.Cells["TechControllerSlalomRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerSlalomRating", "" );
+                        curViewRow.Cells["TechControllerTrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerTrickRating", "" );
+                        curViewRow.Cells["TechControllerJumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerJumpRating", "" );
                         curViewRow.Cells["AnncrOfficialRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "AnncrOfficialRating", "" );
                     }
                     listTourMemberDataGridView.CurrentCell = listTourMemberDataGridView.Rows[0].Cells["SkierName"];
@@ -231,7 +233,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", ScorerJumpRating = '" + editScorerJumpRating.Text + "'" );
 
                     curSqlStmt.Append( ", SafetyOfficialRating = '" + editSafetyOfficialRating.Text + "'" );
-                    curSqlStmt.Append( ", TechOfficialRating = '" + editTechOfficialRating.Text + "'" );
+                    curSqlStmt.Append( ", TechControllerSlalomRating = '" + editTechControllerSlalomRating.Text + "'" );
+                    curSqlStmt.Append( ", TechControllerTrickRating = '" + editTechControllerTrickRating.Text + "'" );
+                    curSqlStmt.Append( ", TechControllerJumpRating = '" + editTechControllerJumpRating.Text + "'" );
                     curSqlStmt.Append( ", AnncrOfficialRating = '" + editAnncrOfficialRating.Text + "'" );
                     curSqlStmt.Append( ", LastUpdateDate = getdate()" );
                     curSqlStmt.Append( ", Note = '" + editNote.Text + "'" );
@@ -257,7 +261,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
                     curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
                     curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                    curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating, LastUpdateDate, Note " );
+                    curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating, AnncrOfficialRating, LastUpdateDate, Note " );
                     curSqlStmt.Append( ") Values ( " );
                     curSqlStmt.Append( "'" + mySanctionNum + "'" );
                     curSqlStmt.Append( ", '" + editMemberId.Text + "'" );
@@ -293,8 +297,8 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", '" + getValueCheckBox( TechChiefCB ) + "'" );
                     curSqlStmt.Append( ", '" + getValueCheckBox( TechAsstChiefCB ) + "'" );
                     curSqlStmt.Append( ", '" + getValueCheckBox( TechSlalomCreditCB ) + "'" );
-                    curSqlStmt.Append( ", '" + getValueCheckBox(TechTrickCreditCB) + "'" );
-                    curSqlStmt.Append( ", '" + getValueCheckBox(TechJumpCreditCB) + "'" );
+                    curSqlStmt.Append( ", '" + getValueCheckBox( TechTrickCreditCB ) + "'" );
+                    curSqlStmt.Append( ", '" + getValueCheckBox( TechJumpCreditCB ) + "'" );
 
                     curSqlStmt.Append( ", '" + getValueCheckBox(AnncrChiefCB) + "'" );
                     curSqlStmt.Append( ", '" + getValueCheckBox(AnncrSlalomCreditCB) + "'" );
@@ -311,7 +315,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", '" + editScorerTrickRating.Text + "'" );
                     curSqlStmt.Append( ", '" + editScorerJumpRating.Text + "'" );
                     curSqlStmt.Append( ", '" + editSafetyOfficialRating.Text + "'" );
-                    curSqlStmt.Append( ", '" + editTechOfficialRating.Text + "'" );
+                    curSqlStmt.Append( ", '" + editTechControllerSlalomRating.Text + "'" );
+                    curSqlStmt.Append( ", '" + editTechControllerTrickRating.Text + "'" );
+                    curSqlStmt.Append( ", '" + editTechControllerJumpRating.Text + "'" );
                     curSqlStmt.Append( ", '" + editAnncrOfficialRating.Text + "'" );
                     curSqlStmt.Append( ", getdate()" );
                     curSqlStmt.Append( ", '" + editNote.Text + "'" );
@@ -506,13 +512,29 @@ namespace WaterskiScoringSystem.Tournament {
                             editSafetyOfficialRating.Text = curValue;
                             curViewRow.Cells["SafetyOfficialRating"].Value = curValue;
                         }
-                        curValue = curEditMemberOfficialsRatings.TechOfficialRating;
+                        curValue = curEditMemberOfficialsRatings.TechControllerSlalomRating;
                         if (curValue.Equals( "Unrated" )) {
-                            editTechOfficialRating.Text = "";
-                            curViewRow.Cells["TechOfficialRating"].Value = "";
+                            editTechControllerSlalomRating.Text = "";
+                            curViewRow.Cells["TechControllerSlalomRating"].Value = "";
                         } else {
-                            editTechOfficialRating.Text = curValue;
-                            curViewRow.Cells["TechOfficialRating"].Value = curValue;
+                            editTechControllerSlalomRating.Text = curValue;
+                            curViewRow.Cells["TechControllerSlalomRating"].Value = curValue;
+                        }
+                        curValue = curEditMemberOfficialsRatings.TechControllerTrickRating;
+                        if ( curValue.Equals( "Unrated" ) ) {
+                            editTechControllerTrickRating.Text = "";
+                            curViewRow.Cells["TechControllerTrickRating"].Value = "";
+                        } else {
+                            editTechControllerTrickRating.Text = curValue;
+                            curViewRow.Cells["TechControllerTrickRating"].Value = curValue;
+                        }
+                        curValue = curEditMemberOfficialsRatings.TechControllerJumpRating;
+                        if ( curValue.Equals( "Unrated" ) ) {
+                            editTechControllerJumpRating.Text = "";
+                            curViewRow.Cells["TechControllerJumpRating"].Value = "";
+                        } else {
+                            editTechControllerJumpRating.Text = curValue;
+                            curViewRow.Cells["TechControllerJumpRating"].Value = curValue;
                         }
                         curValue = curEditMemberOfficialsRatings.AnncrOfficialRating;
                         if (curValue.Equals( "Unrated" )) {
@@ -710,8 +732,10 @@ namespace WaterskiScoringSystem.Tournament {
 			editDriverTrickRating.Text = (String) inTourMemberRow.Cells["DriverTrickRating"].Value;
 			editDriverJumpRating.Text = (String) inTourMemberRow.Cells["DriverJumpRating"].Value;
 			editSafetyOfficialRating.Text = (String) inTourMemberRow.Cells["SafetyOfficialRating"].Value;
-			editTechOfficialRating.Text = (String) inTourMemberRow.Cells["TechOfficialRating"].Value;
-			editAnncrOfficialRating.Text = (String) inTourMemberRow.Cells["AnncrOfficialRating"].Value;
+			editTechControllerSlalomRating.Text = (String) inTourMemberRow.Cells["TechControllerSlalomRating"].Value;
+            editTechControllerTrickRating.Text = (String)inTourMemberRow.Cells["TechControllerTrickRating"].Value;
+            editTechControllerJumpRating.Text = (String)inTourMemberRow.Cells["TechControllerJumpRating"].Value;
+            editAnncrOfficialRating.Text = (String) inTourMemberRow.Cells["AnncrOfficialRating"].Value;
 
             isDataModified = false;
         }
@@ -802,14 +826,14 @@ namespace WaterskiScoringSystem.Tournament {
                     initValueCheckBox( "Y", TechJumpCreditCB );
 
                     if ( curControl.Name.Equals( "TechChiefCB" ) ) {
-                        String curRating = editTechOfficialRating.Text;
+                        String curRating = editTechControllerSlalomRating.Text;
                         if (curRating == null) curRating = "";
                         if (curRating.Equals( "A" ) || curRating.Equals( "" ) || curRating.Equals( " " ) || curRating.Length == 0) {
                             MessageBox.Show( " Warning: EVP approval should be obtained if actual ratings is insufficient for position." );
                         }
                     
                     } else if ( curControl.Name.Equals( "TechAsstChiefCB" ) ) {
-                        String curRating = editTechOfficialRating.Text;
+                        String curRating = editTechControllerSlalomRating.Text;
                         if ( curRating == null ) curRating = "";
                         if ( curRating.Equals( "" ) || curRating.Equals( " " ) || curRating.Length == 0 ) {
                             MessageBox.Show( " Warning: EVP approval should be obtained if actual ratings is insufficient for position." );
@@ -923,7 +947,9 @@ namespace WaterskiScoringSystem.Tournament {
                 || curView.Columns[e.ColumnIndex].Name.Equals( "DriverTrickRating" )
                 || curView.Columns[e.ColumnIndex].Name.Equals( "DriverJumpRating" )
                 || curView.Columns[e.ColumnIndex].Name.Equals( "SafetyOfficialRating" )
-                || curView.Columns[e.ColumnIndex].Name.Equals( "TechOfficialRating" )
+                || curView.Columns[e.ColumnIndex].Name.Equals( "TechControllerSlalomRating" )
+                || curView.Columns[e.ColumnIndex].Name.Equals( "TechControllerTrickRating" )
+                || curView.Columns[e.ColumnIndex].Name.Equals( "TechControllerJumpRating" )
                 || curView.Columns[e.ColumnIndex].Name.Equals( "AnncrOfficialRating" )
                 ) {
                 if ( e.Value == System.DBNull.Value ) {
@@ -988,7 +1014,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curPrintRow.Cells["PrintScorerTrickRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "ScorerTrickRating", "" ));
                     curPrintRow.Cells["PrintScorerJumpRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "ScorerJumpRating", "" ));
                     curPrintRow.Cells["PrintSafetyOfficialRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "SafetyOfficialRating", "" ));
-                    curPrintRow.Cells["PrintTechOfficialRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "TechOfficialRating", "" ));
+                    curPrintRow.Cells["PrintTechControllerSlalomRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "TechControllerSlalomRating", "" ));
+                    curPrintRow.Cells["PrintTechControllerTrickRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "TechControllerTrickRating", "" ) );
+                    curPrintRow.Cells["PrintTechControllerJumpRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "TechControllerJumpRating", "" ) );
                     curPrintRow.Cells["PrintAnncrOfficialRating"].Value = getRatingAbrev( HelperFunctions.getDataRowColValue( curDataRow, "AnncrOfficialRating", "" ));
                 }
 
@@ -1110,8 +1138,10 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( O.DriverTrickRating, ' ' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( O.DriverJumpRating, ' ' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( O.SafetyOfficialRating, ' ' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.TechOfficialRating, ' ' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( O.TechControllerSlalomRating, ' ' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerTrickRating, ' ' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerJumpRating, ' ' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
 
 			curSqlStmt.Append( ", O.Note " );
 
@@ -1141,8 +1171,10 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( O.DriverTrickRating, ' ' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( O.DriverJumpRating, ' ' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( O.SafetyOfficialRating, ' ' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.TechOfficialRating, ' ' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( O.TechControllerSlalomRating, ' ' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerTrickRating, ' ' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerJumpRating, ' ' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
             curSqlStmt.Append( "FROM OfficialWork O " );
             curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "     LEFT OUTER JOIN MemberList ML ON ML.MemberId = O.MemberId " );
@@ -1284,8 +1316,10 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( O.DriverTrickRating, ' ' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( O.DriverJumpRating, ' ' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( O.SafetyOfficialRating, ' ' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.TechOfficialRating, ' ' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( O.TechControllerSlalomRating, ' ' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerTrickRating, ' ' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( O.TechControllerJumpRating, ' ' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( O.AnncrOfficialRating, ' ' ) as AnncrOfficialRating " );
 			curSqlStmt.Append( "FROM OfficialWork O " );
 			curSqlStmt.Append( "     INNER JOIN TourReg TR ON TR.MemberId = O.MemberId AND TR.SanctionId = O.SanctionId " );
 			curSqlStmt.Append( "     LEFT OUTER JOIN EventReg ERS ON ERS.MemberId = O.MemberId AND ERS.SanctionId = O.SanctionId AND ERS.AgeGroup = TR.AgeGroup and ERS.Event = 'Slalom' " );

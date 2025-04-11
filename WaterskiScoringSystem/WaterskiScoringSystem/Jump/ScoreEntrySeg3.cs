@@ -1128,24 +1128,25 @@ namespace WaterskiScoringSystem.Jump {
 				}
 
 				String curEventGroup = TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["EventGroup"].Value.ToString();
-				if ( WscHandler.isConnectActive ) {
-					WscHandler.sendOfficialsAssignments( "Jump", curEventGroup, Convert.ToInt16( roundActiveSelect.RoundValue ) );
-				} else if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
+                if ( HelperFunctions.isCollegiateEvent( JumpEventData.myTourRules ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
+                if ( WscHandler.isConnectActive ) WscHandler.sendOfficialsAssignments( "Jump", curEventGroup, Convert.ToInt16( roundActiveSelect.RoundValue ) );
+				if ( !WaterskiConnectLabel.Visible ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-					if ( LiveWebLabel.Visible ) {
-                        if ( HelperFunctions.isCollegiateEvent( SlalomEventData.myTourRules ) ) {
-                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
-                            LiveWebHandler.sendRunOrder( "Jump", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        } else {
-                            LiveWebHandler.sendRunOrder( "Jump", JumpEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        }
+					if ( WscHandler.isConnectActive ) {
+                        DataTable curStartListDataTable = getEventGroupStartList( curEventGroup, Convert.ToInt32( roundActiveSelect.RoundValue ) );
+                        WscHandler.sendRunningOrder( "Jump", Convert.ToInt32( roundActiveSelect.RoundValue ), curStartListDataTable );
+					}
+                    if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
+
+                    if ( LiveWebLabel.Visible ) {
+                        LiveWebHandler.sendRunOrder( "Jump", JumpEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
                     }
+
                     /*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 					 */
-
                     if ( (Decimal)JumpEventData.myClassRowTour["ListCodeNum"] >= (Decimal)JumpEventData.myClassERow["ListCodeNum"] ) {
 						String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
 						if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
@@ -3624,54 +3625,61 @@ namespace WaterskiScoringSystem.Jump {
             getEventRegData( "All", inRound );
         }
         private void getEventRegData(String inEventGroup, int inRound) {
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, E.AgeGroup, E.AgeGroup as Div, T.Gender, O.RunOrder, E.TeamCode" );
-			curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) as EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
-			curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating" );
-			curSqlStmt.Append( ", E.HCapBase, E.HCapScore, T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
-			curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
-			curSqlStmt.Append( "FROM EventReg E " );
-			curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-			curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-			curSqlStmt.Append( "WHERE E.SanctionId = '" + JumpEventData.mySanctionNum + "' AND E.Event = 'Jump' " );
-
-			if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
-				if ( JumpEventData.isCollegiateEvent() ) {
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
-
-				} else {
-					curSqlStmt.Append( "And (O.EventGroup = '" + inEventGroup + "' AND (O.RunOrderGroup IS NULL OR O.RunOrderGroup = '')" );
-					curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
-				}
-			}
-			myTourEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-
-			if ( myTourEventRegDataTable.Rows.Count == 0 ) {
-				curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, T.Gender, E.EventGroup, '' as RunOrderGroup, E.RunOrder, E.TeamCode" );
-				curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
-				curSqlStmt.Append( ", T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
-				curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
-				curSqlStmt.Append( "FROM EventReg E " );
-				curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-				curSqlStmt.Append( "     LEFT OUTER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-				curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-				curSqlStmt.Append( "WHERE E.SanctionId = '" + JumpEventData.mySanctionNum + "' AND E.Event = 'Jump' " );
-				if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
-					if ( JumpEventData.isCollegiateEvent() ) {
-						curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
-
-					} else {
-						curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
-					}
-				}
-				myTourEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			}
+            myPrevEventGroup = "";
+            myTourEventRegDataTable = getEventGroupStartList( inEventGroup, inRound );
 		}
 
-		private Boolean isRunOrderByRound( int inRound ) {
+        private DataTable getEventGroupStartList( String inEventGroup, int inRound ) {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, E.AgeGroup, E.AgeGroup as Div, T.Gender, O.RunOrder, E.TeamCode" );
+            curSqlStmt.Append( ", COALESCE(O.EventGroup, E.EventGroup) as EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
+            curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating" );
+            curSqlStmt.Append( ", E.HCapBase, E.HCapScore, T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
+            curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+            curSqlStmt.Append( "FROM EventReg E " );
+            curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+            curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+            curSqlStmt.Append( "WHERE E.SanctionId = '" + JumpEventData.mySanctionNum + "' AND E.Event = 'Jump' " );
+
+            if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                if ( JumpEventData.isCollegiateEvent() ) {
+                    curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+
+                } else {
+                    curSqlStmt.Append( "And (O.EventGroup = '" + inEventGroup + "' AND (O.RunOrderGroup IS NULL OR O.RunOrderGroup = '')" );
+                    curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
+                }
+            }
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+
+            if ( curDataTable.Rows.Count == 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, E.AgeGroup, T.Gender, E.EventGroup, '' as RunOrderGroup, E.RunOrder, E.TeamCode" );
+                curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
+                curSqlStmt.Append( ", T.JumpHeight, T.SkiYearAge, S.ScoreFeet as Score, S.ScoreFeet, S.ScoreMeters, S.NopsScore" );
+                curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+                curSqlStmt.Append( "FROM EventReg E " );
+                curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN JumpScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+                curSqlStmt.Append( "WHERE E.SanctionId = '" + JumpEventData.mySanctionNum + "' AND E.Event = 'Jump' " );
+                if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                    if ( JumpEventData.isCollegiateEvent() ) {
+                        curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+
+                    } else {
+                        curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
+                    }
+                }
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            }
+
+            return curDataTable;
+        }
+
+        private Boolean isRunOrderByRound( int inRound ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + JumpEventData.mySanctionNum + "' AND Event = 'Jump' AND Round = " + inRound );

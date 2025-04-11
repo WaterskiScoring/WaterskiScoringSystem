@@ -213,9 +213,13 @@ namespace LiveWebMessageHandler.Message {
 					
 					} else if ( msgType.Equals( "TeamScore" ) ) {
 						curReturn = handleTeamScoreMsg( curDataRow );
-					}
+                    
+					} else if ( msgType.Equals( "TourProperties" ) ) {
+                        curReturn = handleTourPropertiesMsg( curDataRow );
 
-					if ( !curReturn ) break;
+                    }
+
+                    if ( !curReturn ) break;
 				}
 				
 			} catch ( Exception ex ) {
@@ -365,7 +369,33 @@ namespace LiveWebMessageHandler.Message {
 			}
 		}
 
-		private bool handleDisableCurrentSkierMsg( DataRow curDataRow ) {
+		private bool handleTourPropertiesMsg( DataRow curDataRow ) {
+            String curMethodName = "Controller: handleTourPropertiesMsg: ";
+            Dictionary<string, object> curMsgDataList = null;
+
+            try {
+                curMsgDataList = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( (String)curDataRow["MsgData"] );
+
+                String curSanctionId = HelperFunctions.getAttributeValue( curMsgDataList, "sanctionId" );
+                ExportLiveWeb.exportTourProperties( curSanctionId );
+
+                String curMsg = String.Format( "{0}Message Sent: PK={1} MsgType={2} MsgData={3}", curMethodName, curDataRow["PK"], curDataRow["MsgType"], curDataRow["MsgData"] );
+                addViewMessage( curMsg, false, false );
+                Log.WriteFile( curMsg );
+                if ( HelperFunctions.isObjectPopulated( ExportLiveWeb.LastErrorMsg ) ) addViewMessage( ExportLiveWeb.LastErrorMsg, true, true );
+
+                removeLiveWebMsgSent( (int)curDataRow["PK"] );
+                return true;
+
+            } catch ( Exception ex ) {
+                String curErrMsg = String.Format( "{0}Request failed: {1}", curMethodName, ex.Message );
+                addViewMessage( curErrMsg, true, true );
+                Log.WriteFile( curErrMsg );
+                return false;
+            }
+        }
+
+        private bool handleDisableCurrentSkierMsg( DataRow curDataRow ) {
 			String curMethodName = "Controller: handleDisableCurrentSkierMsg: ";
 			Dictionary<string, object> curMsgDataList = null;
 

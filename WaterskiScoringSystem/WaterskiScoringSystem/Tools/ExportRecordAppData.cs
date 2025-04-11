@@ -36,8 +36,8 @@ namespace WaterskiScoringSystem.Tools {
                     myExcelApp = Activator.CreateInstance( curAppType );
                     MessageBox.Show( "ExcelApp instance created of type: " + myExcelApp.GetType() );
                     // make it visible
-                    myExcelApp.GetType().InvokeMember( "Visible", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
-                    myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
+                    //myExcelApp.GetType().InvokeMember( "Visibhttps://duckduckgo.com/?t=chromentple", BindingFlags.SetProperty, null, myExcelApp, new object[] { true } );
+                    //myExcelApp.GetType().InvokeMember( "DisplayAlerts", BindingFlags.SetProperty, null, myExcelApp, new object[] { false } );
 
                     try {
                         myDeploymentDirectory = Application.StartupPath;
@@ -265,7 +265,7 @@ namespace WaterskiScoringSystem.Tools {
 
                 if ( curTechRow != null ) {
                     setCellValue( 43, "B", transformName( HelperFunctions.getDataRowColValue( curTechRow, "ChiefTechName", "" ) ) );
-                    setCellValue( 43, "E", HelperFunctions.getDataRowColValue( curTechRow, "TechOfficialRating", "" ) );
+                    setCellValue( 43, "E", HelperFunctions.getDataRowColValue( curTechRow, "TechController" + inEvent + "Rating", "" ) );
                 }
 
                 curOfficialRow = getOfficialInfo( inTourRow["SanctionId"].ToString(), inTourRow["ChiefScorerMemberId"].ToString() );
@@ -725,7 +725,7 @@ namespace WaterskiScoringSystem.Tools {
                     outLine.Append( tabDelim + "" + tabDelim + "" );
                 } else {
                     outLine.Append( tabDelim + transformName( HelperFunctions.getDataRowColValue( curTechRow, "ChiefTechName", "" ) ) );
-                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curTechRow, "TechOfficialRating", "" ) );
+                    outLine.Append( tabDelim + HelperFunctions.getDataRowColValue( curTechRow, "TechControllerSlalomRating", "" ) );
                 }
                 myOutBuffer.WriteLine( outLine.ToString() );
 
@@ -1036,7 +1036,10 @@ namespace WaterskiScoringSystem.Tools {
                     decimal curPassLineLength = HelperFunctions.getDataRowColValueDecimal( curRow, "PassLineLength", 18.25M );
                     byte curPassSpeedKph = Convert.ToByte( HelperFunctions.getDataRowColValue( curRow, "PassSpeedKph", "0" ));
                     boatPathRow = WscHandler.getBoatPath( "Slalom", memberId, round, passNum.ToString(), curPassLineLength, curPassSpeedKph );
-					if ( boatPathRow == null ) continue;
+                    if ( boatPathRow == null ) {
+                        curExcelRow += 4;
+                        continue;
+                    }
 
 					int curColNum = 4;
 					for ( int colIdx = 1; colIdx <= 7; colIdx++, curColNum++ ) {
@@ -1272,9 +1275,6 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( "SELECT Distinct T.SanctionId, T.Name, T.Class, T.Federation, T.TourDataLoc, T.LastUpdateDate" );
             curSqlStmt.Append( ", T.SlalomRounds, T.TrickRounds, T.JumpRounds, T.Rules, T.EventDates, T.EventLocation" );
             curSqlStmt.Append( ", T.HcapSlalomBase, T.HcapTrickBase, T.HcapJumpBase, T.HcapSlalomPct, T.HcapTrickPct, T.HcapJumpPct " );
-            curSqlStmt.Append( ", T.RopeHandlesSpecs, T.SlalomRopesSpecs, T.JumpRopesSpecs, T.SlalomCourseSpecs, T.JumpCourseSpecs, T.TrickCourseSpecs, T.BuoySpecs" );
-            curSqlStmt.Append( ", T.SafetyDirPerfReport, T.RuleExceptions, T.RuleExceptQ1, T.RuleExceptQ2, T.RuleExceptQ3, T.RuleExceptQ4" );
-            curSqlStmt.Append( ", T.RuleInterpretations, T.RuleInterQ1, T.RuleInterQ2, T.RuleInterQ3, T.RuleInterQ4" );
             curSqlStmt.Append( ", T.ContactMemberId, TourRegCO.SkierName AS ContactName, T.ContactPhone, T.ContactEmail, T.ContactAddress" );
             curSqlStmt.Append( ", T.ChiefJudgeMemberId, TourRegCJ.SkierName AS ChiefJudgeName, T.ChiefJudgeAddress, T.ChiefJudgePhone, T.ChiefJudgeEmail" );
             curSqlStmt.Append( ", T.ChiefDriverMemberId, TourRegCD.SkierName AS ChiefDriverName, T.ChiefDriverAddress, T.ChiefDriverPhone, T.ChiefDriverEmail" );
@@ -1299,7 +1299,8 @@ namespace WaterskiScoringSystem.Tools {
         private DataRow getTechController(String inSanctionId) {
             DataRow curDataRow = null;
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT T.SanctionId, T.MemberId, T.SkierName as ChiefTechName, T.State, T.City, O.TechOfficialRating " );
+            curSqlStmt.Append( "SELECT T.SanctionId, T.MemberId, T.SkierName as ChiefTechName, T.State, T.City " );
+            curSqlStmt.Append( ", O.TechControllerSlalomRating, O.TechControllerTrickRating, O.TechControllerJumpRating " );
             curSqlStmt.Append( "FROM OfficialWork O " );
             curSqlStmt.Append( "     INNER JOIN TourReg T ON T.MemberId = O.MemberId AND T.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + inSanctionId + "' " );
@@ -1332,7 +1333,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( ", O.JudgeSlalomRating, O.JudgeJumpRating, O.JudgeTrickRating" );
             curSqlStmt.Append( ", O.ScorerSlalomRating, O.ScorerTrickRating, O.ScorerJumpRating" );
             curSqlStmt.Append( ", O.DriverSlalomRating, O.DriverTrickRating, O.DriverJumpRating" );
-            curSqlStmt.Append( ", O.SafetyOfficialRating, O.TechOfficialRating, O.AnncrOfficialRating, O.Note " );
+            curSqlStmt.Append( ", O.SafetyOfficialRating, O.TechControllerSlalomRating, O.TechControllerTrickRating, O.TechControllerJumpRating, O.AnncrOfficialRating, O.Note " );
             curSqlStmt.Append( "FROM OfficialWork O " );
             curSqlStmt.Append( "	INNER JOIN TourReg T ON T.MemberId = O.MemberId AND T.SanctionId = O.SanctionId " );
             curSqlStmt.Append( "WHERE O.SanctionId = '" + inSanctionId + "' " );

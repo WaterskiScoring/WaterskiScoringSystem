@@ -13,6 +13,7 @@ namespace WaterskiScoringSystem.Common {
 		public static char[] TabDelim = new char[] { '\t' };
 		public static char[] SingleQuoteDelim = new char[] { '\'' };
 		public static String TabChar = "\t";
+		public static String[] CollegiateDivisions = {"CM", "CW", "BM", "BW"};
 
 		public static String getEventGroupFilterNcwsa( String inGroupValue ) {
 			if ( inGroupValue.ToUpper().Equals( "MEN A" ) ) return "AgeGroup = 'CM' ";
@@ -206,19 +207,23 @@ namespace WaterskiScoringSystem.Common {
 		}
 
 		public static bool isCollegiateSanction( String inSanctionId ) {
+			if ( inSanctionId == null || inSanctionId.Length < 6 ) return false;
 			if ( inSanctionId.Substring( 2, 1 ).ToUpper().Equals( "U" ) ) return true;
 			return false;
 		}
 		public static bool isCollegiateEvent( String inTourRules ) {
-			if ( inTourRules.ToLower().Equals( "ncwsa" ) ) return true;
+            if ( inTourRules == null || inTourRules.Length == 0 ) return false;
+            if ( inTourRules.ToLower().Equals( "ncwsa" ) ) return true;
 			return false;
 		}
 		public static bool isIwwfEvent( String inTourRules ) {
-			if ( inTourRules.ToLower().Equals( "iwwf" ) ) return true;
+            if ( inTourRules == null || inTourRules.Length == 0 ) return false;
+            if ( inTourRules.ToLower().Equals( "iwwf" ) ) return true;
 			return false;
 		}
 		public static bool isAwsaEvent( String inTourRules ) {
-			if ( inTourRules.ToLower().Equals( "awsa" ) ) return true;
+            if ( inTourRules == null || inTourRules.Length == 0 ) return false;
+            if ( inTourRules.ToLower().Equals( "awsa" ) ) return true;
 			return false;
 		}
 
@@ -605,5 +610,22 @@ namespace WaterskiScoringSystem.Common {
 			return curReturnValue;
 		}
 
-	}
+        public static int ConvertToInt( string inValue ) {
+            if ( isObjectEmpty( inValue ) ) return 0;
+            bool curReturn;
+            int curReturnValue;
+            curReturn = int.TryParse( inValue, out curReturnValue );
+            if ( curReturn ) return curReturnValue;
+            return 0;
+        }
+        public static DateTime ConvertToDate( string inValue ) {
+            if ( isObjectEmpty( inValue ) ) return DateTime.Parse( "1900/01/01" );
+            bool curReturn;
+            DateTime curReturnValue;
+            curReturn = DateTime.TryParse( inValue, out curReturnValue );
+            if ( curReturn ) return curReturnValue;
+            return DateTime.Parse( "1900/01/01" );
+        }
+
+    }
 }

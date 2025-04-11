@@ -861,9 +861,11 @@ namespace WaterskiScoringSystem.Externalnterface {
 			curMemberEntry.ScorerJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "ScorerJump" );
 
 			curMemberEntry.SafetyOfficialRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "Safety" );
-			curMemberEntry.TechControllerRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechController" );
+			curMemberEntry.TechControllerSlalomRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechControllerSlalom" );
+            curMemberEntry.TechControllerTrickRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechControllerTrick" );
+            curMemberEntry.TechControllerJumpRating = HelperFunctions.getAttributeValue( curImportMemberEntry, "TechControllerJump" );
 
-			curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberEntry.MemberId + "'" );
+            curSqlStmt = new StringBuilder( "Select MemberId, UpdateDate from MemberList Where MemberId = '" + curMemberEntry.MemberId + "'" );
 			DataTable curMemberDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 			if ( curMemberDataTable.Rows.Count > 0 ) {
 				lastRecModDate = (DateTime)curMemberDataTable.Rows[0]["UpdateDate"];
@@ -881,7 +883,7 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
 				curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
 				curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-				curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating" );
+				curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating" );
 				curSqlStmt.Append( ", Note, MemberExpireDate, InsertDate, UpdateDate" );
 				curSqlStmt.Append( ") Values (" );
 				curSqlStmt.Append( "'" + curMemberEntry.MemberId + "'" );
@@ -904,8 +906,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", '" + curMemberEntry.ScorerTrickRating + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.ScorerJumpRating + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.SafetyOfficialRating + "'" );
-				curSqlStmt.Append( ", '" + curMemberEntry.TechControllerRating + "'" );
-				curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
+				curSqlStmt.Append( ", '" + curMemberEntry.TechControllerSlalomRating + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.TechControllerTrickRating + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.TechControllerJumpRating + "'" );
+                curSqlStmt.Append( ", '" + curMemberEntry.Note + "'" );
 				curSqlStmt.Append( ", '" + curMemberEntry.MemberExpireDate.ToString( "MM/dd/yy" ) + "'" );
 				curSqlStmt.Append( ", getdate(), getdate() )" );
 
@@ -937,8 +941,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 				curSqlStmt.Append( ", ScorerTrickRating = '" + curMemberEntry.ScorerTrickRating + "'" );
 				curSqlStmt.Append( ", ScorerJumpRating = '" + curMemberEntry.ScorerJumpRating + "'" );
 				curSqlStmt.Append( ", SafetyOfficialRating = '" + curMemberEntry.SafetyOfficialRating + "'" );
-				curSqlStmt.Append( ", TechOfficialRating = '" + curMemberEntry.TechControllerRating + "'" );
-				curSqlStmt.Append( " Where MemberId = '" + curMemberEntry.MemberId + "'" );
+				curSqlStmt.Append( ", TechControllerSlalomRating = '" + curMemberEntry.TechControllerSlalomRating + "'" );
+                curSqlStmt.Append( ", TechControllerTrickRating = '" + curMemberEntry.TechControllerTrickRating + "'" );
+                curSqlStmt.Append( ", TechControllerJumpRating = '" + curMemberEntry.TechControllerJumpRating + "'" );
+                curSqlStmt.Append( " Where MemberId = '" + curMemberEntry.MemberId + "'" );
 				rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 				if ( rowsProc > 0 ) myCountMemberUpdated++;
 			}
@@ -1136,8 +1142,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 					curSqlStmt.Append( ", ScorerTrickRating = '" + curMemberEntry.ScorerTrickRating + "'" );
 					curSqlStmt.Append( ", ScorerJumpRating = '" + curMemberEntry.ScorerJumpRating + "'" );
 					curSqlStmt.Append( ", SafetyOfficialRating = '" + curMemberEntry.SafetyOfficialRating + "'" );
-					curSqlStmt.Append( ", TechOfficialRating = '" + curMemberEntry.TechControllerRating + "'" );
-					curSqlStmt.Append( ", LastUpdateDate = getdate() " );
+					curSqlStmt.Append( ", TechControllerSlalomRating = '" + curMemberEntry.TechControllerSlalomRating + "'" );
+                    curSqlStmt.Append( ", TechControllerTrickRating = '" + curMemberEntry.TechControllerTrickRating + "'" );
+                    curSqlStmt.Append( ", TechControllerJumpRating = '" + curMemberEntry.TechControllerJumpRating + "'" );
+                    curSqlStmt.Append( ", LastUpdateDate = getdate() " );
 					curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", curSanctionId, curMemberEntry.MemberId ) );
 					rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 					if ( rowsProc > 0 ) myCountMemberTourOfficialUpdated++;

@@ -58,7 +58,9 @@ namespace WaterskiScoringSystem.Admin {
                         loadRatingSelect( "ScorerRating", ScorerJumpRatingSelect );
 
                         loadRatingSelect( "SafetyRating", SafetyRatingSelect );
-                        loadRatingSelect( "TechRating", TechOfficialRatingSelect );
+                        loadRatingSelect( "TechRating", TechControllerSlalomSelect );
+                        loadRatingSelect( "TechRating", TechControllerTrickSelect );
+                        loadRatingSelect( "TechRating", TechControllerJumpSelect );
                         loadRatingSelect( "AnnouncerRating", AnncrOfficialRatingSelect );
 
                         editMemberDataLoad();
@@ -89,8 +91,10 @@ namespace WaterskiScoringSystem.Admin {
 			curSqlStmt.Append( ", Coalesce( OW.DriverTrickRating, '' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( OW.DriverJumpRating, '' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( OW.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( OW.TechOfficialRating, '' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( OW.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( OW.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( OW.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( OW.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( OW.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
@@ -110,8 +114,10 @@ namespace WaterskiScoringSystem.Admin {
 				curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
 				curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
 				curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+                curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + myMemberId + "' " );
@@ -144,8 +150,10 @@ namespace WaterskiScoringSystem.Admin {
 				ScorerTrickRatingSelect.SelectedItem = (String) curRow["ScorerTrickRating"];
 				ScorerJumpRatingSelect.SelectedItem = (String) curRow["ScorerJumpRating"];
 				SafetyRatingSelect.SelectedItem = (String) curRow["SafetyOfficialRating"];
-				TechOfficialRatingSelect.SelectedItem = (String) curRow["TechOfficialRating"];
-				AnncrOfficialRatingSelect.SelectedItem = (String) curRow["AnncrOfficialRating"];
+				TechControllerSlalomSelect.SelectedItem = (String) curRow["TechControllerSlalomRating"];
+                TechControllerTrickSelect.SelectedItem = (String)curRow["TechControllerTrickRating"];
+                TechControllerJumpSelect.SelectedItem = (String)curRow["TechControllerJumpRating"];
+                AnncrOfficialRatingSelect.SelectedItem = (String) curRow["AnncrOfficialRating"];
 
 			} else {
                 MessageBox.Show( "Error: Member data not found" );
@@ -162,7 +170,7 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
                 curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
                 curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+                curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating, AnncrOfficialRating " );
                 curSqlStmt.Append( ") Values (" );
                 curSqlStmt.Append( "'" + mySanctionNum + "'" );
                 curSqlStmt.Append( ", '" + editMemberId.Text + "'" );
@@ -177,7 +185,9 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( ", '" + ScorerTrickRatingSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", '" + ScorerJumpRatingSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", '" + SafetyRatingSelect.SelectedItem + "'" );
-                curSqlStmt.Append( ", '" + TechOfficialRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + TechControllerSlalomSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + TechControllerTrickSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", '" + TechControllerJumpSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", '" + AnncrOfficialRatingSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ")" );
             
@@ -195,7 +205,9 @@ namespace WaterskiScoringSystem.Admin {
                 curSqlStmt.Append( ", ScorerTrickRating = '" + ScorerTrickRatingSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", ScorerJumpRating = '" + ScorerJumpRatingSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", SafetyOfficialRating = '" + SafetyRatingSelect.SelectedItem + "'" );
-                curSqlStmt.Append( ", TechOfficialRating = '" + TechOfficialRatingSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", TechControllerSlalomRating = '" + TechControllerSlalomSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", TechControllerTrickRating = '" + TechControllerTrickSelect.SelectedItem + "'" );
+                curSqlStmt.Append( ", TechControllerJumpRating = '" + TechControllerJumpSelect.SelectedItem + "'" );
                 curSqlStmt.Append( ", AnncrOfficialRating = '" + AnncrOfficialRatingSelect.SelectedItem + "' " );
                 curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + " ' AND MemberId = '" + editMemberId.Text + "' " );
             }
@@ -264,8 +276,14 @@ namespace WaterskiScoringSystem.Admin {
         public String SafetyRating {
             get {return (String)SafetyRatingSelect.SelectedItem;}
         }
-        public String TechOfficialRating {
-            get {return (String)TechOfficialRatingSelect.SelectedItem;}
+        public String TechControllerSlalomRating {
+            get {return (String)TechControllerSlalomSelect.SelectedItem;}
+        }
+        public String TechControllerTrickRating {
+            get { return (String)TechControllerTrickSelect.SelectedItem; }
+        }
+        public String TechControllerJumpRating {
+            get { return (String)TechControllerJumpSelect.SelectedItem; }
         }
         public String AnncrOfficialRating {
             get {return (String)AnncrOfficialRatingSelect.SelectedItem;}

@@ -494,7 +494,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", OW.JudgeSlalomRating, OW.JudgeTrickRating, OW.JudgeJumpRating" );
             curSqlStmt.Append( ", OW.DriverSlalomRating, OW.DriverTrickRating, OW.DriverJumpRating" );
             curSqlStmt.Append( ", OW.ScorerSlalomRating, OW.ScorerTrickRating, OW.ScorerJumpRating" );
-            curSqlStmt.Append( ", OW.SafetyOfficialRating, OW.TechOfficialRating, OW.AnncrOfficialRating " );
+            curSqlStmt.Append( ", OW.SafetyOfficialRating, OW.TechControllerSlalomRating, OW.TechControllerTrickRating, OW.TechControllerJumpRating, OW.AnncrOfficialRating " );
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
@@ -512,8 +512,10 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
 				curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
 				curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+				curSqlStmt.Append( ", Coalesce( ML.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+                curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );

@@ -187,9 +187,13 @@ namespace WaterskiScoringSystem.Tournament {
 
 				listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].HeaderText = "Safety";
 				listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].ReadOnly = true;
-				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].HeaderText = "Tech";
-				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].ReadOnly = true;
-				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].HeaderText = "Announcer";
+				listTourMemberDataGridView.Columns["TechControllerSlalomRatingDesc"].HeaderText = "Tech Slalom";
+				listTourMemberDataGridView.Columns["TechControllerSlalomRatingDesc"].ReadOnly = true;
+                listTourMemberDataGridView.Columns["TechControllerTrickRatingDesc"].HeaderText = "Tech Trick";
+                listTourMemberDataGridView.Columns["TechControllerTrickRatingDesc"].ReadOnly = true;
+                listTourMemberDataGridView.Columns["TechControllerJumpRatingDesc"].HeaderText = "Tech Jump";
+                listTourMemberDataGridView.Columns["TechControllerJumpRatingDesc"].ReadOnly = true;
+                listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].HeaderText = "Announcer";
 				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].ReadOnly = true;
 
 				if ( listTourMemberDataGridView.Rows.Count > 0 ) {
@@ -390,7 +394,7 @@ namespace WaterskiScoringSystem.Tournament {
                             String curSanctionId = (String)curViewRow.Cells["SanctionId"].Value;
                             String curMemberId = (String)curViewRow.Cells["MemberId"].Value;
                             String curEvent = curViewRow.Cells["Event"].Value.ToString();
-                            String curEventGroup = curViewRow.Cells["EventGroup"].Value.ToString();
+                            String curEventGroup = HelperFunctions.isCollegiateEvent( myTourRules ) ? curViewRow.Cells["EventGroup"].Value.ToString() : HelperFunctions.getEventGroupValueNcwsa( curViewRow.Cells["EventGroup"].Value.ToString() );
                             String curRound = curViewRow.Cells["Round"].Value.ToString();
                             String curStartTime = curViewRow.Cells["StartTime"].Value.ToString();
                             String curEndTime = "";
@@ -625,8 +629,8 @@ namespace WaterskiScoringSystem.Tournament {
 				curViewRow.Cells["Updated"].Value = "N";
 				curViewRow.Cells["SanctionId"].Value = mySanctionNum;
 				curViewRow.Cells["Event"].Value = myEvent;
-				curViewRow.Cells["EventGroup"].Value = EventGroupList.SelectedValue.ToString();
-				curViewRow.Cells["Round"].Value = roundActiveSelect.RoundValue.ToString();
+				curViewRow.Cells["EventGroup"].Value = HelperFunctions.isCollegiateEvent( myTourRules ) ? HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedValue.ToString()) : EventGroupList.SelectedValue.ToString();
+                curViewRow.Cells["Round"].Value = roundActiveSelect.RoundValue.ToString();
 				curViewRow.Cells["MemberId"].Value = "";
 				curViewRow.Cells["MemberName"].Value = "";
 				curViewRow.Cells["WorkAsgmt"].Value = "";
@@ -1012,8 +1016,11 @@ namespace WaterskiScoringSystem.Tournament {
 			listTourMemberDataGridView.Columns["DriverJumpRatingDesc"].Visible = false;
 
 			listTourMemberDataGridView.Columns["SafetyOfficialRatingDesc"].Visible = false;
-			listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = false;
-			listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = false;
+			listTourMemberDataGridView.Columns["TechControllerSlalomRatingDesc"].Visible = false;
+            listTourMemberDataGridView.Columns["TechControllerTrickRatingDesc"].Visible = false;
+            listTourMemberDataGridView.Columns["TechControllerJumpRatingDesc"].Visible = false;
+
+            listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = false;
 
             if ( inRole.Equals("Boat Judge") || inRole.Equals("Event Judge") || inRole.Equals("Event Judge ACJ") ) {
                 if (myEvent.Equals("Slalom")) {
@@ -1031,10 +1038,10 @@ namespace WaterskiScoringSystem.Tournament {
 
             } else if ( inRole.Equals("End Course Official") ) {
                 if (myEvent.Equals("Slalom")) {
-                    myMemberSelectFilter = "JudgeSlalomRatingDesc <> '' OR DriverSlalomRatingDesc <> '' OR TechOfficialRatingDesc <> ''";
+                    myMemberSelectFilter = "JudgeSlalomRatingDesc <> '' OR DriverSlalomRatingDesc <> '' OR TechControllerSlalomRatingDesc <> ''";
                     listTourMemberDataGridView.Columns["JudgeSlalomRatingDesc"].Visible = true;
                     listTourMemberDataGridView.Columns["DriverSlalomRatingDesc"].Visible = true;
-					listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
+					listTourMemberDataGridView.Columns["TechControllerSlalomRatingDesc"].Visible = true;
 
 				} else if (myEvent.Equals("Trick")) {
                     myMemberSelectFilter = "JudgeTrickRatingDesc <> '' OR DriverTrickRatingDesc <> ''";
@@ -1082,10 +1089,20 @@ namespace WaterskiScoringSystem.Tournament {
 				listTourMemberDataGridView.Columns["AnncrOfficialRatingDesc"].Visible = true;
 
 			} else if ( inRole.Equals( "Technical Controller" ) ) {
-				myMemberSelectFilter = "TechOfficialRatingDesc <> ''";
-				listTourMemberDataGridView.Columns["TechOfficialRatingDesc"].Visible = true;
+                if ( myEvent.Equals( "Slalom" ) ) {
+                    myMemberSelectFilter = "TechControllerSlalomRatingDesc <> ''";
+                    listTourMemberDataGridView.Columns["TechControllerSlalomRatingDesc"].Visible = true;
 
-			} else {
+                } else if ( myEvent.Equals( "Trick" ) ) {
+                    myMemberSelectFilter = "TechControllerTrickRatingDesc <> ''";
+                    listTourMemberDataGridView.Columns["TechControllerTrickRatingDesc"].Visible = true;
+
+                } else if ( myEvent.Equals( "Jump" ) ) {
+                    myMemberSelectFilter = "TechControllerJumpRatingDesc <> ''";
+                    listTourMemberDataGridView.Columns["TechControllerJumpRatingDesc"].Visible = true;
+                }
+
+            } else {
 				myMemberSelectFilter = "";
             }
 
@@ -1406,7 +1423,7 @@ namespace WaterskiScoringSystem.Tournament {
                 }
             }
 
-            if ( myTourRules.ToLower().Equals( "ncwsa" ) ) {
+            if ( HelperFunctions.isCollegiateEvent(myTourRules) ) {
                 myEventGroupDropdownList = HelperFunctions.buildEventGroupListNcwsa();
 
             } else {
@@ -1452,7 +1469,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
             if ( inEventGroup != null ) {
                 if ( inEventGroup.Length > 0 ) {
-                curSqlStmt.Append( "  AND O.EventGroup = '" + inEventGroup + "' " );
+                    curSqlStmt.Append( String.Format( "  AND O.EventGroup = '{0}' ", HelperFunctions.isCollegiateEvent( myTourRules ) ? HelperFunctions.getEventGroupValueNcwsa( inEventGroup ) : inEventGroup ) );
                 }
             }
             if ( inRound != null ) {
@@ -1477,7 +1494,9 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", OfficialWork.DriverTrickRating AS DriverTrickRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.DriverJumpRating AS DriverJumpRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.SafetyOfficialRating AS SafetyOfficialRatingDesc" );
-            curSqlStmt.Append( ", OfficialWork.TechOfficialRating AS TechOfficialRatingDesc" );
+            curSqlStmt.Append( ", OfficialWork.TechControllerSlalomRating AS TechControllerSlalomRatingDesc" );
+            curSqlStmt.Append( ", OfficialWork.TechControllerTrickRating AS TechControllerTrickRatingDesc" );
+            curSqlStmt.Append( ", OfficialWork.TechControllerJumpRating AS TechControllerJumpRatingDesc" );
             curSqlStmt.Append( ", OfficialWork.AnncrOfficialRating AS AnncrOfficialRatingDesc " );
             curSqlStmt.Append( "FROM OfficialWork " );
             curSqlStmt.Append( "     INNER JOIN TourReg ON TourReg.MemberId = OfficialWork.MemberId AND TourReg.SanctionId = OfficialWork.SanctionId " );
@@ -1506,7 +1525,7 @@ namespace WaterskiScoringSystem.Tournament {
 
             } else if ( inRole.Equals( "End Course Official" ) ) {
                 if ( curEvent.Equals( "Slalom" ) ) {
-                    curRoleName = "JudgeSlalomRating !='' OR DriverSlalomRating !='' OR TechOfficialRating";
+                    curRoleName = "JudgeSlalomRating !='' OR DriverSlalomRating !='' OR TechControllerSlalomRating";
 
                 } else if ( curEvent.Equals( "Trick" ) ) {
                     curRoleName = "JudgeTrickRating !='' OR DriverTrickRating";
@@ -1544,7 +1563,15 @@ namespace WaterskiScoringSystem.Tournament {
                 curRoleName = "AnncrOfficialRating";
 
             } else if ( inRole.Equals( "Technical Controller" ) ) {
-                curRoleName = "TechOfficialRating";
+                if ( curEvent.Equals( "Slalom" ) ) {
+                    curRoleName = "TechControllerSlalomRating";
+
+                } else if ( curEvent.Equals( "Trick" ) ) {
+                    curRoleName = "TechControllerTrickRating";
+
+                } else if ( curEvent.Equals( "Jump" ) ) {
+                    curRoleName = "TechControllerJumpRating";
+                }
 
             } else {
                 curRoleName = "";
@@ -1557,84 +1584,6 @@ namespace WaterskiScoringSystem.Tournament {
             if ( curDataTable != null && curDataTable.Rows.Count > 0 ) return true;
             return false;
         }
-
-        private void removeUnratedValues() {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeSlalomRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch (Exception ex) {
-				Log.WriteFile( String.Format("Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString()) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeTrickRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set JudgeJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND JudgeJumpRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerSlalomRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerTrickRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set ScorerJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND ScorerJumpRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverSlalomRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverSlalomRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverTrickRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverTrickRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set DriverJumpRating = '' Where SanctionId = '" + mySanctionNum + "' AND DriverJumpRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set SafetyOfficialRating = '' Where SanctionId = '" + mySanctionNum + "' AND SafetyOfficialRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set TechOfficialRating = '' Where SanctionId = '" + mySanctionNum + "' AND TechOfficialRating = 'Unrated'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-			try {
-				curSqlStmt = new StringBuilder( "Update OfficialWork Set AnncrOfficialRating = '' Where SanctionId = '" + mySanctionNum + "'" );
-				DataAccess.ExecuteCommand( curSqlStmt.ToString() );
-			} catch ( Exception ex ) {
-				Log.WriteFile( String.Format( "Exception encountered removing unrated values {0}, {1}", ex.Message, curSqlStmt.ToString() ) );
-			}
-
-		}
-
 
 		private DataTable getTourData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );

@@ -144,7 +144,8 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName("MasterSummaryOverallPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
                     curReturnValue = "nops";
-                    setMasterSummaryOverallPointsMethod(curReturnValue);
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setMasterSummaryOverallPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -222,7 +223,8 @@ namespace WaterskiScoringSystem.Common {
                 String curReturnValue = getPropertyByName("TeamSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
                     curReturnValue = "nops";
-                    setTeamSummaryPointsMethod(curReturnValue);
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setTeamSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -266,11 +268,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TeamSummary_NumPerTeam");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "4";
-                    } else {
-                        curReturnValue = "0";
-                    }
+                    curReturnValue = "0";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "4";
                     setTeamSummary_NumPerTeam(curReturnValue);
                 }
                 return curReturnValue;
@@ -287,13 +286,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomTeamSummaryDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    curReturnValue = "points";
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setSlalomTeamSummaryDataType(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setSlalomTeamSummaryDataType( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -307,12 +302,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomTeamSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setSlalomTeamSummaryPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setSlalomTeamSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -326,12 +318,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomTeamSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setSlalomTeamSummaryPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setSlalomTeamSummaryPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -345,11 +334,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomTeamSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "tour";
-                    }
+                    curReturnValue = "tour";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "div";
                     setSlalomTeamSummaryPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -364,11 +350,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomTeamSummary_NumPerTeam");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "4";
-                    } else {
-                        curReturnValue = "0";
-                    }
+                    curReturnValue = "0";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "4";
                     setSlalomTeamSummary_NumPerTeam(curReturnValue);
                 }
                 return curReturnValue;
@@ -385,13 +368,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickTeamSummaryDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    curReturnValue = "points";
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setTrickTeamSummaryDataType(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setTrickTeamSummaryDataType( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -405,12 +384,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickTeamSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setTrickTeamSummaryPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setTrickTeamSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -424,12 +400,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickTeamSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setTrickTeamSummaryPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setTrickTeamSummaryPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -443,11 +416,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickTeamSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "tour";
-                    }
+                    curReturnValue = "tour";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "div";
                     setTrickTeamSummaryPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -462,11 +432,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickTeamSummary_NumPerTeam");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "4";
-                    } else {
-                        curReturnValue = "0";
-                    }
+                    curReturnValue = "0";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "4";
                     setTrickTeamSummary_NumPerTeam(curReturnValue);
                 }
                 return curReturnValue;
@@ -483,12 +450,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpTeamSummaryDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setJumpTeamSummaryDataType(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setJumpTeamSummaryDataType( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -502,12 +466,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpTeamSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setJumpTeamSummaryPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setJumpTeamSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -521,12 +482,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpTeamSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setJumpTeamSummaryPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setJumpTeamSummaryPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -540,11 +498,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpTeamSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "tour";
-                    }
+                    curReturnValue = "tour";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "div";
                     setJumpTeamSummaryPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -559,11 +514,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpTeamSummary_NumPerTeam");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "4";
-                    } else {
-                        curReturnValue = "0";
-                    }
+                    curReturnValue = "0";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "4";
                     setJumpTeamSummary_NumPerTeam(curReturnValue);
                 }
                 return curReturnValue;
@@ -596,12 +548,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setSlalomSummaryPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setSlalomSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -615,11 +564,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
                     setSlalomSummaryPlcmtMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -634,11 +580,7 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
+                    curReturnValue = "div";
                     setSlalomSummaryPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -701,11 +643,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("RunningOrderSortSlalom");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    } else {
-                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    }
+                    curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     setRunningOrderSortSlalom(curReturnValue);
                 }
                 return curReturnValue;
@@ -781,11 +720,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
                     setSlalomScorebookDataType(curReturnValue);
                 }
                 return curReturnValue;
@@ -800,11 +736,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomScorebookPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
                     setSlalomScorebookPointsMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -819,11 +752,7 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomScorebookPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
+                    curReturnValue = "div";
                     setSlalomScorebookPlcmtMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -838,11 +767,7 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("SlalomScorebookPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
+                    curReturnValue = "div";
                     setSlalomScorebookPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -876,11 +801,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
                     setTrickTeamSummaryPointsMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -895,11 +817,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
                     setTrickSummaryPlcmtMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -914,11 +833,7 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
+                    curReturnValue = "div";
                     setTrickSummaryPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -982,11 +897,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("RunningOrderSortTrick");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    } else {
-                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    }
+                    curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     setRunningOrderSortTrick(curReturnValue);
                 }
                 return curReturnValue;
@@ -1059,11 +971,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
                     setTrickScorebookDataType(curReturnValue);
                 }
                 return curReturnValue;
@@ -1078,11 +987,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickScorebookPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
                     setTrickScorebookPointsMethod(curReturnValue);
                 }
                 return curReturnValue;
@@ -1097,12 +1003,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickScorebookPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "score";
-                    }
-                    setTrickScorebookPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setTrickScorebookPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1117,11 +1020,7 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("TrickScorebookPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
+                    curReturnValue = "div";
                     setTrickScorebookPlcmtOrg(curReturnValue);
                 }
                 return curReturnValue;
@@ -1155,12 +1054,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpSummaryPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setJumpSummaryPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setJumpSummaryPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1174,12 +1070,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpSummaryPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "points";
-                    }
-                    setJumpSummaryPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setJumpSummaryPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1193,12 +1086,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpSummaryPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
-                    setJumpSummaryPlcmtOrg(curReturnValue);
+                    curReturnValue = "div";
+                    setJumpSummaryPlcmtOrg( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1261,11 +1150,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("RunningOrderSortJump");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    } else {
-                        curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
-                    }
+                    curReturnValue = "EventGroup ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "DivOrder ASC, Div ASC, ReadyForPlcmt ASC, RunOrder ASC, RankingScore ASC, SkierName ASC";
                     setRunningOrderSortJump(curReturnValue);
                 }
                 return curReturnValue;
@@ -1354,12 +1240,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpScorebookDataType");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "score";
-                    }
-                    setJumpScorebookDataType(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setJumpScorebookDataType( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1373,12 +1256,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpScorebookPointsMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "plcmt";
-                    } else {
-                        curReturnValue = "nops";
-                    }
-                    setJumpScorebookPointsMethod(curReturnValue);
+                    curReturnValue = "nops";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "plcmt";
+                    setJumpScorebookPointsMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1392,12 +1272,9 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpScorebookPlcmtMethod");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "score";
-                    } else {
-                        curReturnValue = "score";
-                    }
-                    setJumpScorebookPlcmtMethod(curReturnValue);
+                    curReturnValue = "score";
+                    if ( HelperFunctions.isCollegiateEvent( myTourRules ) ) curReturnValue = "points";
+                    setJumpScorebookPlcmtMethod( curReturnValue);
                 }
                 return curReturnValue;
             }
@@ -1411,12 +1288,8 @@ namespace WaterskiScoringSystem.Common {
             get {
                 String curReturnValue = getPropertyByName("JumpScorebookPlcmtOrg");
                 if ( curReturnValue.Length == 0 ) {
-                    if ( myTourRules.ToLower().Equals("ncwsa") ) {
-                        curReturnValue = "div";
-                    } else {
-                        curReturnValue = "div";
-                    }
-                    setJumpScorebookPlcmtOrg(curReturnValue);
+                    curReturnValue = "div";
+                    setJumpScorebookPlcmtOrg( curReturnValue);
                 }
                 return curReturnValue;
             }

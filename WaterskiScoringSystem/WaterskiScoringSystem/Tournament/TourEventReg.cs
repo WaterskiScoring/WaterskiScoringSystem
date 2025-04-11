@@ -554,7 +554,7 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
                 curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
                 curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+                curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating, AnncrOfficialRating " );
                 curSqlStmt.Append( ") VALUES ( " );
                 curSqlStmt.Append( "'" + mySanctionNum + "'" );
                 curSqlStmt.Append( ", '" + curMemberEntry.MemberId + "'" );
@@ -569,7 +569,9 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( ", '" + (String)curMemberRow["ScorerTrickRating"] + "'" );
                 curSqlStmt.Append( ", '" + (String)curMemberRow["ScorerJumpRating"] + "'" );
                 curSqlStmt.Append( ", '" + (String)curMemberRow["SafetyOfficialRating"] + "'" );
-                curSqlStmt.Append( ", '" + (String)curMemberRow["TechOfficialRating"] + "'" );
+                curSqlStmt.Append( ", '" + (String)curMemberRow["TechControllerSlalomRating"] + "'" );
+                curSqlStmt.Append( ", '" + (String)curMemberRow["TechControllerTrickRating"] + "'" );
+                curSqlStmt.Append( ", '" + (String)curMemberRow["TechControllerJumpRating"] + "'" );
                 curSqlStmt.Append( ", '" + (String)curMemberRow["AnncrOfficialRating"] + "'" );
                 curSqlStmt.Append( " )" );
 
@@ -593,7 +595,9 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( ", ScorerTrickRating = '" + (String)curMemberRow["ScorerTrickRating"] + "'" );
                 curSqlStmt.Append( ", ScorerJumpRating = '" + (String)curMemberRow["ScorerJumpRating"] + "'" );
                 curSqlStmt.Append( ", SafetyOfficialRating = '" + (String)curMemberRow["SafetyOfficialRating"] + "'" );
-                curSqlStmt.Append( ", TechOfficialRating = '" + (String)curMemberRow["TechOfficialRating"] + "'" );
+                curSqlStmt.Append( ", TechControllerSlalomRating = '" + (String)curMemberRow["TechControllerSlalomRating"] + "'" );
+                curSqlStmt.Append( ", TechControllerTrickRating = '" + (String)curMemberRow["TechControllerTrickRating"] + "'" );
+                curSqlStmt.Append( ", TechControllerJumpRating = '" + (String)curMemberRow["TechControllerJumpRating"] + "'" );
                 curSqlStmt.Append( ", AnncrOfficialRating = '" + (String)curMemberRow["AnncrOfficialRating"] + "'" );
                 curSqlStmt.Append( ", LastUpdateDate = getdate() " );
                 curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}'", mySanctionNum, curMemberEntry.MemberId ) );
@@ -627,7 +631,7 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
                     curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
                     curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
-                    curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+                    curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating, AnncrOfficialRating " );
                     curSqlStmt.Append( ") SELECT Distinct " );
                     curSqlStmt.Append( "  TourReg.SanctionId, TourReg.MemberId" );
                     curSqlStmt.Append( ", Coalesce( MemberList.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
@@ -640,7 +644,9 @@ namespace WaterskiScoringSystem.Tournament {
                     curSqlStmt.Append( ", Coalesce( MemberList.ScorerTrickRating, '' ) as ScorerTrickRating" );
                     curSqlStmt.Append( ", Coalesce( MemberList.ScorerJumpRating, '' ) as ScorerJumpRating" );
                     curSqlStmt.Append( ", Coalesce( MemberList.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-                    curSqlStmt.Append( ", Coalesce( MemberList.TechOfficialRating, '' ) as TechOfficialRating" );
+                    curSqlStmt.Append( ", Coalesce( MemberList.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+                    curSqlStmt.Append( ", Coalesce( MemberList.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+                    curSqlStmt.Append( ", Coalesce( MemberList.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
                     curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
                     curSqlStmt.Append( "FROM TourReg " );
                     curSqlStmt.Append( "	INNER JOIN MemberList ON MemberList.MemberId = TourReg.MemberId  " );
@@ -1058,8 +1064,10 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( DriverTrickRating, '' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( DriverJumpRating, '' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( TechOfficialRating, '' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficialRating" );
+			curSqlStmt.Append( ", Coalesce( TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficialRating" );
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
             curSqlStmt.Append( "FROM MemberList " );
             curSqlStmt.Append( "WHERE MemberId = '" + inMemberId + "'" );

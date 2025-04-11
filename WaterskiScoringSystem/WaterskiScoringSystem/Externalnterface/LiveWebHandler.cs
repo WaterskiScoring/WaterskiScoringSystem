@@ -133,9 +133,30 @@ namespace WaterskiScoringSystem.Externalnterface {
 			}
 		}
 
-		/*
+		public static bool sendTourProperties( String inSanctionId ) {
+            String curMethodName = "LiveWebHandler: sendTourProperties: ";
+
+            try {
+                Dictionary<string, dynamic> sendMsg = new Dictionary<string, dynamic> {
+                    { "sanctionId", inSanctionId }
+                };
+
+                addLiveWebMsgSend( inSanctionId, "TourProperties", JsonConvert.SerializeObject( sendMsg ) );
+                return true;
+
+            } catch ( Exception ex ) {
+                String curErrMsg = String.Format( "{0} Exception encountered {1}", curMethodName, ex.Message );
+                Log.WriteFile( curErrMsg );
+                MessageBox.Show( curErrMsg );
+                return false;
+            }
+
+        }
+
+
+        /*
 		 */
-		public static bool sendTeamScore( String inSanctionId ) {
+        public static bool sendTeamScore( String inSanctionId ) {
 			String curMethodName = "LiveWebHandler: sendTeamScore: ";
 
 			try {

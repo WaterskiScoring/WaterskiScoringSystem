@@ -84,9 +84,6 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( "SELECT SanctionId, Name, Class, Federation, TourDataLoc, LastUpdateDate" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
             curSqlStmt.Append( ", HcapSlalomBase, HcapTrickBase, HcapJumpBase, HcapSlalomPct, HcapTrickPct, HcapJumpPct" );
-            curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs" );
-            curSqlStmt.Append( ", RuleExceptions, RuleInterpretations, SafetyDirPerfReport" );
-            curSqlStmt.Append( ", BuoySpecs, RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
             curSqlStmt.Append( ", ContactMemberId, ContactPhone, ContactEmail, ContactAddress" );
             curSqlStmt.Append( ", ChiefJudgeMemberId, ChiefJudgeAddress, ChiefJudgePhone, ChiefJudgeEmail" );
             curSqlStmt.Append( ", ChiefDriverMemberId, ChiefDriverAddress, ChiefDriverPhone, ChiefDriverEmail" );

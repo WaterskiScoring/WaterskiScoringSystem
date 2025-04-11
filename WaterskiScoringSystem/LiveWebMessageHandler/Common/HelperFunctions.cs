@@ -131,7 +131,10 @@ namespace LiveWebMessageHandler.Common {
 			if ( inGroupValue.ToUpper().Equals( "WOMEN A" ) ) return "And ER.AgeGroup = 'CW' ";
 			if ( inGroupValue.ToUpper().Equals( "MEN B" ) ) return "And ER.AgeGroup = 'BM' ";
 			if ( inGroupValue.ToUpper().Equals( "WOMEN B" ) ) return "And ER.AgeGroup = 'BW' ";
-			if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
+            if ( inGroupValue.ToUpper().Equals( "CM" ) || inGroupValue.ToUpper().Equals( "BM" ) 
+				|| inGroupValue.ToUpper().Equals( "CW" ) || inGroupValue.ToUpper().Equals( "BW" ) ) 
+				return String.Format("And ER.AgeGroup = '{0}' ", inGroupValue);
+            if ( inGroupValue.ToUpper().Equals( "ALL" ) ) return "";
 			if ( inGroupValue.ToUpper().Equals( "NON TEAM" ) ) return "AND ER.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
 			if ( isTrickVideo ) return "And ER.AgeGroup = '" + inGroupValue + "' ";
 			if ( isOrderByRound ) return "And COALESCE( O.EventGroup +'-' + O.RunOrderGroup, ER.EventGroup) = '" + inGroupValue + "' ";

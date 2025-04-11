@@ -797,7 +797,7 @@ namespace WaterskiScoringSystem.Tools {
             curSqlStmt.Append( ", O.JudgeSlalomRating, O.JudgeTrickRating, O.JudgeJumpRating" );
             curSqlStmt.Append( ", O.ScorerSlalomRating, O.ScorerTrickRating, O.ScorerJumpRating" );
             curSqlStmt.Append( ", O.DriverSlalomRating, O.DriverTrickRating, O.DriverJumpRating" );
-            curSqlStmt.Append( ", O.SafetyOfficialRating, O.TechOfficialRating, O.AnncrOfficialRating " );
+            curSqlStmt.Append( ", O.SafetyOfficialRating, O.TechControllerSlalomRating, O.TechControllerTrickRating, O.TechControllerJumpRating, O.AnncrOfficialRating " );
             curSqlStmt.Append( ", O.Note " );
             curSqlStmt.Append( "FROM OfficialWork O " );
             curSqlStmt.Append( "	INNER JOIN TourReg T ON T.MemberId = O.MemberId AND T.SanctionId = O.SanctionId " );

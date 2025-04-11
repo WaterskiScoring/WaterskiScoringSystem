@@ -250,10 +250,12 @@ namespace WaterskiScoringSystem.Tournament {
 					curViewRow.Cells["ScorerTrick"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerTrick", "" );
 					curViewRow.Cells["ScorerJump"].Value = HelperFunctions.getDataRowColValue( curDataRow, "ScorerJump", "" );
 					curViewRow.Cells["Safety"].Value = HelperFunctions.getDataRowColValue( curDataRow, "Safety", "" );
-					curViewRow.Cells["TechController"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechController", "" );
-					#endregion
+					curViewRow.Cells["TechControllerSlalomRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerSlalom", "" );
+                    curViewRow.Cells["TechControllerTrickRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerTrick", "" );
+                    curViewRow.Cells["TechControllerJumpRating"].Value = HelperFunctions.getDataRowColValue( curDataRow, "TechControllerJump", "" );
+                    #endregion
 
-					if ( localSearchLoc.Checked ) {
+                    if ( localSearchLoc.Checked ) {
 						#region Member record retrieved from local member list
 
 						curViewRow.Cells["MemberId"].Value = HelperFunctions.getDataRowColValue( curDataRow, "MemberId", "" );
@@ -405,8 +407,10 @@ namespace WaterskiScoringSystem.Tournament {
 			curSqlStmt.Append( ", Coalesce( MemberList.ScorerTrickRating, '' ) as ScorerTrick" );
 			curSqlStmt.Append( ", Coalesce( MemberList.ScorerJumpRating, '' ) as ScorerJump" );
 			curSqlStmt.Append( ", Coalesce( MemberList.SafetyOfficialRating, '' ) as Safety" );
-			curSqlStmt.Append( ", Coalesce( MemberList.TechOfficialRating, '' ) as TechController" );
-			curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficial " );
+			curSqlStmt.Append( ", Coalesce( MemberList.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( MemberList.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( MemberList.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( MemberList.AnncrOfficialRating, '' ) as AnncrOfficial " );
 			curSqlStmt.Append( ", InsertDate, UpdateDate " );
 
 			String curLastName = "";

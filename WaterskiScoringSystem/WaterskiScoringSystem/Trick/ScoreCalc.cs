@@ -2403,21 +2403,25 @@ namespace WaterskiScoringSystem.Trick {
                 }
 
                 String curEventGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "EventGroup", "" );
+                if ( HelperFunctions.isCollegiateEvent( TrickEventData.myTourRules ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
                 String curAgeGroup = HelperFunctions.getViewRowColValue( TourEventRegDataGridView.Rows[myEventRegViewIdx], "AgeGroup", "" );
                 if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
-					if ( LiveWebLabel.Visible ) {
-                        if ( HelperFunctions.isCollegiateEvent( SlalomEventData.myTourRules ) ) {
-                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
-                            LiveWebHandler.sendRunOrder( "Trick", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        } else {
-                            LiveWebHandler.sendRunOrder( "Trick", TrickEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        }
+                    if ( WscHandler.isConnectActive ) {
+                        DataTable curStartListDataTable = getEventGroupStartList( curEventGroup, Convert.ToInt32( roundActiveSelect.RoundValue ) );
+                        WscHandler.sendRunningOrder( "Trick", Convert.ToInt32( roundActiveSelect.RoundValue ), curStartListDataTable );
                     }
-					/*
+
+                    if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
+                    
+                    if ( LiveWebLabel.Visible ) {
+                        LiveWebHandler.sendRunOrder( "Trick", TrickEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
+                    }
+
+                    /*
                      * Provide a warning message for class R events when official assignments have not been entered for the round and event group
                      * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
                      */
-					myCheckOfficials.readOfficialAssignments( TrickEventData.mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
+                    myCheckOfficials.readOfficialAssignments( TrickEventData.mySanctionNum, "Trick", curAgeGroup, curEventGroup, roundActiveSelect.RoundValue );
                     
                     DataRow curClassRowSkier = TrickEventData.getSkierClass( (String)scoreEventClass.SelectedValue );
                     if ( (Decimal)curClassRowSkier["ListCodeNum"] >= (Decimal)TrickEventData.myClassERow["ListCodeNum"] ) {
@@ -3304,9 +3308,13 @@ namespace WaterskiScoringSystem.Trick {
             getEventRegData( "All", inRound );
         }
         private void getEventRegData( String inEventGroup, int inRound ) {
+            myPrevEventGroup = "";
+            myEventRegDataTable = getEventGroupStartList( inEventGroup, inRound );
+        }
+        private DataTable getEventGroupStartList( String inEventGroup, int inRound ) {
             StringBuilder curSqlStmt = new StringBuilder( "" );
             curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, O.RunOrder, E.TeamCode, T.State" );
+            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, O.RunOrder, E.TeamCode, T.State, T.Federation" );
             curSqlStmt.Append( ", O.EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
             curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
             curSqlStmt.Append( ", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate" );
@@ -3326,11 +3334,11 @@ namespace WaterskiScoringSystem.Trick {
                     curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
                 }
             }
-            myEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-            if ( myEventRegDataTable.Rows.Count == 0 ) {
+            if ( curDataTable.Rows.Count == 0 ) {
                 curSqlStmt = new StringBuilder( "" );
-                curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, E.RunOrder, E.TeamCode, T.State" );
+                curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, E.AgeGroup, E.AgeGroup as Div, E.RunOrder, E.TeamCode, T.State, T.Federation" );
                 curSqlStmt.Append( ", E.EventGroup, '' as RunOrderGroup" );
                 curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
                 curSqlStmt.Append( ", T.TrickBoat, COALESCE (S.Status, 'TBD') AS Status, S.Score, S.LastUpdateDate" );
@@ -3349,11 +3357,13 @@ namespace WaterskiScoringSystem.Trick {
                         curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
                     }
                 }
-                myEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
             }
+
+            return curDataTable;
         }
 
-		private Boolean isRunOrderByRound( int inRound ) {
+        private Boolean isRunOrderByRound( int inRound ) {
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			curSqlStmt.Append( "Select count(*) as SkierCount From EventRunOrder " );
 			curSqlStmt.Append( "WHERE SanctionId = '" + TrickEventData.mySanctionNum + "' AND Event = 'Trick' AND Round = " + inRound );

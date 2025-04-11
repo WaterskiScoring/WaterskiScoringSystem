@@ -34,7 +34,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( ", JudgeSlalomRating, JudgeTrickRating, JudgeJumpRating" );
 			curSqlStmt.Append( ", ScorerSlalomRating, ScorerTrickRating, ScorerJumpRating" );
 			curSqlStmt.Append( ", DriverSlalomRating, DriverTrickRating, DriverJumpRating" );
-			curSqlStmt.Append( ", SafetyOfficialRating, TechOfficialRating, AnncrOfficialRating " );
+			curSqlStmt.Append( ", SafetyOfficialRating, TechControllerSlalomRating, TechControllerTrickRating, TechControllerJumpRating, AnncrOfficialRating " );
 			curSqlStmt.Append( ") SELECT Distinct " );
 			curSqlStmt.Append( "  TR.SanctionId, TR.MemberId" );
 			curSqlStmt.Append( ", Coalesce( ML.JudgeSlalomRating, '' ) as JudgeSlalomRating" );
@@ -47,8 +47,10 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
 			curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
 			curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
-			curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+			curSqlStmt.Append( ", Coalesce( ML.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( ML.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( ML.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
 			curSqlStmt.Append( "FROM TourReg TR " );
 			curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 			curSqlStmt.Append( "WHERE TR.SanctionId = '" + mySanctionNum + "'" );
@@ -75,7 +77,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append("     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge ACJ', 'End Course Official'))))");
+			curSqlStmt.Append("     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge Aspiring'	, 'Event Judge ACJ', 'End Course Official'))))");
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -89,7 +91,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge ACJ'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge Aspiring'	, 'Event Judge ACJ'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -103,7 +105,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge ACJ'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Boat Judge', 'Event Judge', 'Event Judge Aspiring'	, 'Event Judge ACJ'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -156,7 +158,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer', 'Scorer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -170,7 +172,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer', 'Scorer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -184,7 +186,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Scorer', 'Scorer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -198,7 +200,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety', 'Safety Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -212,7 +214,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety', 'Safety Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -226,7 +228,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Safety', 'Safety Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
 			#endregion
 
@@ -240,7 +242,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer', 'Announcer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -254,7 +256,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer', 'Announcer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -268,7 +270,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Announcer', 'Announcer Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -282,7 +284,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Slalom') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller', 'Technical Controller Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -296,7 +298,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Trick') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller', 'Technical Controller Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 
@@ -310,7 +312,7 @@ namespace WaterskiScoringSystem.Tools {
 			curSqlStmt.Append( "        OfficialWork AS OfficialWork_1 ON OfficialWorkAsgmt.SanctionId = OfficialWork_1.SanctionId " );
 			curSqlStmt.Append( "        AND OfficialWorkAsgmt.MemberId = OfficialWork_1.MemberId " );
 			curSqlStmt.Append( "        AND OfficialWork_1.SanctionId = '" + mySanctionNum + "'" );
-			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller'))))" );
+			curSqlStmt.Append( "     WHERE (OfficialWorkAsgmt.Event = 'Jump') AND (OfficialWorkAsgmt.WorkAsgmt IN ('Technical Controller', 'Technical Controller Aspiring'))))" );
 			rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
 			#endregion
 

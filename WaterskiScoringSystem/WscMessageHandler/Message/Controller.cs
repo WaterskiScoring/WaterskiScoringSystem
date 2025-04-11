@@ -167,8 +167,8 @@ namespace WscMessageHandler.Message {
 			try {
 				ActivateTournament();
 
-				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect for tournament {1} / {2}"
-					, curMethodName, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
+				curMsg = String.Format( "{0}attempting connection to WaterSkiConnect {1} for tournament {2} / {3}"
+					, curMethodName, ConnectMgmtData.wscWebLocationDefault, ConnectMgmtData.sanctionNum, ConnectMgmtData.eventSubId );
 				addViewMessage( curMsg, boldMsg, errorMsg );
 
 				HelperFunctions.cleanMsgQueues();

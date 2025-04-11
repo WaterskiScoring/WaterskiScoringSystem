@@ -3,6 +3,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using WaterskiScoringSystem.Common;
+using WaterskiScoringSystem.Tournament;
 
 namespace WaterskiScoringSystem.Admin {
     public partial class TourRuleExcept : Form {
@@ -78,21 +79,51 @@ namespace WaterskiScoringSystem.Admin {
             bool curReturnValue = false;
             int rowsProc = 0;
 
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Update Tournament Set " );
-            curSqlStmt.Append( "LastUpdateDate = getdate() " );
-            curSqlStmt.Append( ",RuleExceptions = '" + HelperFunctions.escapeString( ruleExceptionsTextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleExceptQ1 = '" + HelperFunctions.escapeString( ruleExceptQ1TextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleExceptQ2 = '" + HelperFunctions.escapeString( ruleExceptQ2TextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleExceptQ3 = '" + ruleExceptQ3TextBox.Text + "'" );
-            curSqlStmt.Append( ",RuleExceptQ4 = '" + ruleExceptQ4TextBox.Text + "'" );
-            curSqlStmt.Append( ",RuleInterpretations = '" + HelperFunctions.escapeString( ruleInterpretationsTextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleInterQ1 = '" + HelperFunctions.escapeString( ruleInterQ1TextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleInterQ2 = '" + HelperFunctions.escapeString( ruleInterQ2TextBox.Text ) + "'" );
-            curSqlStmt.Append( ",RuleInterQ3 = '" + ruleInterQ3TextBox.Text + "'" );
-            curSqlStmt.Append( ",RuleInterQ4 = '" + ruleInterQ4TextBox.Text + "'" );
-            curSqlStmt.Append( ",SafetyDirPerfReport = '" + HelperFunctions.escapeString( safetyDirPerfReportTextBox.Text ) + "'" );
-            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
+            StringBuilder curSqlStmt = new StringBuilder( String.Format( "Select SanctionId From ChiefJudgeReport Where SanctionId = '{0}'", mySanctionNum ) );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable != null && curDataTable.Rows.Count > 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Update ChiefJudgeReport Set " );
+                curSqlStmt.Append( "LastUpdateDate = getdate() " );
+                curSqlStmt.Append( ", RuleExceptions = '" + HelperFunctions.escapeString( ruleExceptionsTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleExceptQ1 = '" + HelperFunctions.escapeString( ruleExceptQ1TextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleExceptQ2 = '" + HelperFunctions.escapeString( ruleExceptQ2TextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleExceptQ3 = '" + ruleExceptQ3TextBox.Text + "'" );
+                curSqlStmt.Append( ", RuleExceptQ4 = '" + ruleExceptQ4TextBox.Text + "'" );
+                curSqlStmt.Append( ", RuleInterpretations = '" + HelperFunctions.escapeString( ruleInterpretationsTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleInterQ1 = '" + HelperFunctions.escapeString( ruleInterQ1TextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleInterQ2 = '" + HelperFunctions.escapeString( ruleInterQ2TextBox.Text ) + "'" );
+                curSqlStmt.Append( ", RuleInterQ3 = '" + ruleInterQ3TextBox.Text + "'" );
+                curSqlStmt.Append( ", RuleInterQ4 = '" + ruleInterQ4TextBox.Text + "'" );
+                curSqlStmt.Append( ", SafetyDirPerfReport = '" + HelperFunctions.escapeString( safetyDirPerfReportTextBox.Text ) + "'" );
+                curSqlStmt.Append( " Where SanctionId = '" + mySanctionNum + "'" );
+            
+            } else {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Insert INTO ChiefJudgeReport( " );
+                curSqlStmt.Append( "SanctionId, LastUpdateDate" );
+                curSqlStmt.Append( ", RuleExceptions, RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4" );
+                curSqlStmt.Append( ", RuleInterpretations, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
+                curSqlStmt.Append( ", SafetyDirPerfReport" );
+                curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs, BuoySpecs" );
+
+                curSqlStmt.Append( ") Values (" );
+                curSqlStmt.Append( String.Format( "'{0}', GetDate()", mySanctionNum ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleExceptionsTextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleExceptQ1TextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleExceptQ2TextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", ruleExceptQ3TextBox.Text ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", ruleExceptQ4TextBox.Text ) );
+
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleInterpretationsTextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleInterQ1TextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( ruleInterQ2TextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", ruleInterQ3TextBox.Text ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", ruleInterQ4TextBox.Text ) );
+
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( safetyDirPerfReportTextBox.Text ) ) );
+                curSqlStmt.Append( ", '', '', '', '', '', '', '' )" );
+            }
 
             rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
             if ( rowsProc > 0 ) {
@@ -111,113 +142,60 @@ namespace WaterskiScoringSystem.Admin {
                 myDataTable = getTourData();
                 if (myDataTable != null) {
                     if (myDataTable.Rows.Count > 0) {
-                        String curValue = "";
                         DataRow curRow = myDataTable.Rows[0];
 
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptions"] )) {
-                            ruleExceptionsTextBox.Text = "";
-                        } else {
-                            ruleExceptionsTextBox.Text = (String)curRow["RuleExceptions"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ1"] )) {
-                            ruleExceptQ1TextBox.Text = "";
-                        } else {
-                            ruleExceptQ1TextBox.Text = (String)curRow["RuleExceptQ1"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ2"] )) {
-                            ruleExceptQ2TextBox.Text = "";
-                        } else {
-                            ruleExceptQ2TextBox.Text = (String)curRow["RuleExceptQ2"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ3"] )) {
-                            curValue = "";
-                        } else {
-                            curValue = (String)curRow["RuleExceptQ3"];
-                        }
-                        ruleExceptQ3TextBox.Text = curValue;
-                        if (curValue.Equals( "Y" )) {
+                        ruleExceptionsTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleExceptions", "");
+                        ruleExceptQ1TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleExceptQ1", "" );
+                        ruleExceptQ2TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleExceptQ2", "" );
+                        ruleExceptQ3TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleExceptQ3", "" );
+                        if ( ruleExceptQ3TextBox.Text.Equals( "Y" )) {
                             RuleExceptQ3Yes.Checked = true;
-                        } else if (curValue.Equals( "N" )) {
+                        } else if ( ruleExceptQ3TextBox.Text.Equals( "N" )) {
                             RuleExceptQ3No.Checked = true;
-                        } else if (curValue.Equals( "A" )) {
+                        } else if ( ruleExceptQ3TextBox.Text.Equals( "A" )) {
                             RuleExceptQ3NA.Checked = true;
                         } else {
                             RuleExceptQ3NA.Checked = true;
                         }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleExceptQ4"] )) {
-                            curValue = "";
-                        } else {
-                            curValue = (String)curRow["RuleExceptQ4"];
-                        }
-                        ruleExceptQ4TextBox.Text = curValue;
-                        if (curValue.Equals( "Y" )) {
+                        ruleExceptQ4TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleExceptQ4", "" );
+                        if ( ruleExceptQ4TextBox.Text.Equals( "Y" )) {
                             RuleExceptQ4Yes.Checked = true;
-                        } else if (curValue.Equals( "N" )) {
+                        } else if ( ruleExceptQ4TextBox.Text.Equals( "N" )) {
                             RuleExceptQ4No.Checked = true;
-                        } else if (curValue.Equals( "A" )) {
+                        } else if ( ruleExceptQ4TextBox.Text.Equals( "A" )) {
                             RuleExceptQ4NA.Checked = true;
                         } else {
                             RuleExceptQ4NA.Checked = true;
                         }
 
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterpretations"] )) {
-                            ruleInterpretationsTextBox.Text = "";
-                        } else {
-                            ruleInterpretationsTextBox.Text = (String)curRow["RuleInterpretations"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ1"] )) {
-                            ruleInterQ1TextBox.Text = "";
-                        } else {
-                            ruleInterQ1TextBox.Text = (String)curRow["RuleInterQ1"];
-                        }
+                        ruleInterpretationsTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleInterpretations", "" );
+                        ruleInterQ1TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleInterQ1", "" );
+                        ruleInterQ2TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleInterQ2", "" );
 
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ2"] )) {
-                            ruleInterQ2TextBox.Text = "";
-                        } else {
-                            ruleInterQ2TextBox.Text = (String)curRow["RuleInterQ2"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ3"] )) {
-                            curValue = "";
-                        } else {
-                            curValue = (String)curRow["RuleInterQ3"];
-                        }
-                        ruleInterQ3TextBox.Text = curValue;
-                        if (curValue.Equals( "Y" )) {
+                        ruleInterQ3TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleInterQ3", "" );
+                        if ( ruleInterQ3TextBox.Text.Equals( "Y" )) {
                             RuleInterQ3Yes.Checked = true;
-                        } else if (curValue.Equals( "N" )) {
+                        } else if ( ruleInterQ3TextBox.Text.Equals( "N" )) {
                             RuleInterQ3No.Checked = true;
-                        } else if (curValue.Equals( "A" )) {
+                        } else if ( ruleInterQ3TextBox.Text.Equals( "A" )) {
                             RuleInterQ3NA.Checked = true;
                         } else {
                             RuleInterQ3NA.Checked = true;
                         }
 
-                        if (HelperFunctions.isObjectEmpty( curRow["RuleInterQ4"] )) {
-                            curValue = "";
-                        } else {
-                            curValue = (String)curRow["RuleInterQ4"];
-                        }
-                        ruleInterQ4TextBox.Text = curValue;
-                        if (curValue.Equals( "Y" )) {
+                        ruleInterQ4TextBox.Text = HelperFunctions.getDataRowColValue( curRow, "RuleInterQ4", "" );
+                        if ( ruleInterQ4TextBox.Text.Equals( "Y" )) {
                             RuleInterQ4Yes.Checked = true;
-                        } else if (curValue.Equals( "N" )) {
+                        } else if ( ruleInterQ4TextBox.Text.Equals( "N" )) {
                             RuleInterQ4No.Checked = true;
-                        } else if (curValue.Equals( "A" )) {
+                        } else if ( ruleInterQ4TextBox.Text.Equals( "A" )) {
                             RuleInterQ4NA.Checked = true;
                         } else {
                             RuleInterQ4NA.Checked = true;
                         }
 
-                        if (HelperFunctions.isObjectEmpty( curRow["ChiefSafetyName"] )) {
-                            SafetyDirNameTextBox.Text = "";
-                        } else {
-                            SafetyDirNameTextBox.Text = (String)curRow["ChiefSafetyName"];
-                        }
-                        if (HelperFunctions.isObjectEmpty( curRow["SafetyDirPerfReport"] )) {
-                            safetyDirPerfReportTextBox.Text = "";
-                        } else {
-                            safetyDirPerfReportTextBox.Text = (String)curRow["SafetyDirPerfReport"];
-                        }
+                        SafetyDirNameTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "ChiefSafetyName", "" );
+                        safetyDirPerfReportTextBox.Text = HelperFunctions.getDataRowColValue( curRow, "SafetyDirPerfReport", "" );
                     
                     }
                 }
@@ -340,6 +318,7 @@ namespace WaterskiScoringSystem.Admin {
             curSqlStmt.Append( ", RuleInterpretations, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
             curSqlStmt.Append( ", SafetyDirMemberId, SafetyDirPerfReport, TourRegCS.SkierName AS ChiefSafetyName " );
             curSqlStmt.Append( "FROM Tournament T" );
+            curSqlStmt.Append( "  LEFT OUTER JOIN ChiefJudgeReport C ON C.SanctionId = T.SanctionId" );
             curSqlStmt.Append( "  LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class" );
             curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCS ON T.SanctionId = TourRegCS.SanctionId AND T.SafetyDirMemberId = TourRegCS.MemberId " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );

@@ -47,8 +47,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 		private String myScorerTrickRating = "";
 		private String myScorerJumpRating = "";
 		private String mySafetyOfficialRating = "";
-		private String myTechControllerRating = "";
-		private String myAnncrOfficialRating = "";
+		private String myTechControllerSlalomRating = "";
+        private String myTechControllerTrickRating = "";
+        private String myTechControllerJumpRating = "";
+        private String myAnncrOfficialRating = "";
 
 		private DateTime myInsertDate = DateTime.Today;
 		private DateTime myUpdateDate = DateTime.Today;
@@ -134,8 +136,10 @@ namespace WaterskiScoringSystem.Externalnterface {
 		public string ScorerTrickRating { get => myScorerTrickRating; set => myScorerTrickRating = convertUnratedRating( value ); }
 		public string ScorerJumpRating { get => myScorerJumpRating; set => myScorerJumpRating = convertUnratedRating( value ); }
 		public string SafetyOfficialRating { get => mySafetyOfficialRating; set => mySafetyOfficialRating = convertUnratedRating( value ); }
-		public string TechControllerRating { get => myTechControllerRating; set => myTechControllerRating = convertUnratedRating( value ); }
-		public string AnncrOfficialRating { get => myAnncrOfficialRating; set => myAnncrOfficialRating = convertUnratedRating( value ); }
+		public string TechControllerSlalomRating { get => myTechControllerSlalomRating; set => myTechControllerSlalomRating = convertUnratedRating( value ); }
+        public string TechControllerTrickRating { get => myTechControllerTrickRating; set => myTechControllerTrickRating = convertUnratedRating( value ); }
+        public string TechControllerJumpRating { get => myTechControllerJumpRating; set => myTechControllerJumpRating = convertUnratedRating( value ); }
+        public string AnncrOfficialRating { get => myAnncrOfficialRating; set => myAnncrOfficialRating = convertUnratedRating( value ); }
 		public DateTime InsertDate { get => myInsertDate; set => myInsertDate = value; }
 		public DateTime UpdateDate { get => myUpdateDate; set => myUpdateDate =  value ; }
 		public Boolean WaiverSigned { get => myWaiverSigned; set => myWaiverSigned =  value ; }

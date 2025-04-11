@@ -214,7 +214,9 @@ namespace WaterskiScoringSystem.Slalom {
 						return;
 					} else {
 						curNumPrelimRounds = Convert.ToInt16( numPrelimTextBox.Text );
-					}
+                        myTourProperties.SlalomSummaryNumPrelim = numPrelimTextBox.Text;
+
+                    }
 				}
 
 				String curGroupValue = "";

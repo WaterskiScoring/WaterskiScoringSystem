@@ -676,9 +676,9 @@ namespace WaterskiScoringSystem.Tournament {
 				SendKeys.Send( "{TAB}" );
 
 			} else if ( curColName.Equals( "IwwfLicense" ) ) {
-				DataGridViewRow curViewRow = tourRegDataGridView.Rows[e.RowIndex];
 				if ( tourRegDataGridView.Rows.Count > 0 ) {
-					String curValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "N" );
+                    DataGridViewRow curViewRow = tourRegDataGridView.Rows[e.RowIndex];
+                    String curValue = HelperFunctions.getViewRowColValue( curViewRow, curColName, "N" );
 					if ( curValue.Equals( "N" ) ) checkEmsLicense( curViewRow );
 				}
 			}

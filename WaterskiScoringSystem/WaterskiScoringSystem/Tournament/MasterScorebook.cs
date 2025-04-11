@@ -47,6 +47,7 @@ namespace WaterskiScoringSystem.Tournament {
             }
             myTourProperties = TourProperties.Instance;
 
+            /*
             bestScoreButton.Checked = true;
             if (myTourProperties.MasterSummaryDataType.ToLower().Equals( "total" )) finalScoreButton.Checked = true;
             if ( myTourProperties.MasterSummaryDataType.ToLower().Equals( "final" ) ) finalScoreButton.Checked = true;
@@ -61,6 +62,8 @@ namespace WaterskiScoringSystem.Tournament {
             plcmtDivButton.Checked = true;
             if ( myTourProperties.MasterSummaryPlcmtOrg.ToLower().Equals( "div" ) ) plcmtDivButton.Checked = true;
             if ( myTourProperties.MasterSummaryPlcmtOrg.ToLower().Equals( "divgr" ) ) plcmtDivGrpButton.Checked = true;
+
+             */
 
             // Retrieve data from database
             mySanctionNum = Properties.Settings.Default.AppSanctionNum;
@@ -100,51 +103,29 @@ namespace WaterskiScoringSystem.Tournament {
 
         public void navRefresh_Click( object sender, EventArgs e ) {
             if ( mySanctionNum != null && myTourRow != null ) {
-                String curDataType = "best", curPlcmtMethod = "score", curPointsMethod = "";
-                String curPlcmtOrg = "", curPlcmtOverallOrg = "";
-                //String curPlcmtOrg = "div";
-
                 // Retrieve data from database depending on selection criteria
                 String curMsg = "Tournament scores retrieved ";
 
-                if ( bestScoreButton.Checked ) {
-                    curDataType = "best";
-                    winStatusMsg.Text = curMsg + "- best scores ";
-                } else if ( finalScoreButton.Checked ) {
-                    curDataType = "final";
-                    winStatusMsg.Text = curMsg + "- final scores";
-                } else if ( firstScoreButton.Checked ) {
-                    curDataType = "first";
-                    winStatusMsg.Text = curMsg + "- first scores";
-                }
-                myTourProperties.MasterSummaryDataType = curDataType;
-                if ( nopsPointsButton.Checked ) {
-                    curPointsMethod = "nops";
-                } else if ( plcmtPointsButton.Checked ) {
-                    curPointsMethod = "plcmt";
-                } else if ( kBasePointsButton.Checked ) {
-                    curPointsMethod = "kbase";
-                } else if ( ratioPointsButton.Checked ) {
-                    curPointsMethod = "ratio";
-                } else {
-                    curPointsMethod = "nops";
-                }
-                myTourProperties.MasterSummaryPointsMethod = curPointsMethod;
+                string curDataTypeSlalom = myTourProperties.SlalomSummaryDataType;
+                string curPlcmtMethodSlalom = myTourProperties.SlalomSummaryPlcmtMethod;
+                string curPlcmtOrgSlalom = "div";
+                string curPointsMethodSlalom = myTourProperties.SlalomSummaryPointsMethod;
+                Int16 curNumPrelimRoundsSlalom = 0;
+                Int16.TryParse( myTourProperties.SlalomSummaryNumPrelim, out curNumPrelimRoundsSlalom );
 
-                if ( plcmtDivButton.Checked ) {
-                    curPlcmtOrg = "div";
-                    curPlcmtOverallOrg = "agegroup";
-                    EventGroup.Visible = false;
-                } else if ( plcmtDivGrpButton.Checked ) {
-                    curPlcmtOrg = "divgr";
-                    curPlcmtOverallOrg = "agegroupgroup";
-                    EventGroup.Visible = true;
-                } else {
-                    curPlcmtOrg = "div";
-                    curPlcmtOverallOrg = "agegroup";
-                    EventGroup.Visible = false;
-                }
-                myTourProperties.MasterSummaryPlcmtOrg = curPlcmtOrg;
+                string curDataTypeTrick = myTourProperties.TrickSummaryDataType;
+                string curPlcmtMethodTrick = myTourProperties.TrickSummaryPlcmtMethod;
+                string curPlcmtOrgTrick = "div";
+                string curPointsMethodTrick = myTourProperties.TrickSummaryPointsMethod;
+                Int16 curNumPrelimRoundsTrick = 0;
+                Int16.TryParse( myTourProperties.TrickSummaryNumPrelim, out curNumPrelimRoundsTrick );
+
+                string curDataTypeJump = myTourProperties.JumpSummaryDataType;
+                string curPlcmtMethodJump = myTourProperties.JumpSummaryPlcmtMethod;
+                string curPlcmtOrgJump = myTourProperties.JumpSummaryPlcmtOrg; ;
+                string curPointsMethodJump = myTourProperties.JumpSummaryPointsMethod;
+                Int16 curNumPrelimRoundsJump = 0;
+                Int16.TryParse( myTourProperties.JumpSummaryNumPrelim, out curNumPrelimRoundsJump );
 
                 if ( EventGroup.Visible ) {
                     SlalomLabel.Location = new Point( 202, SlalomLabel.Location.Y );
@@ -188,52 +169,47 @@ namespace WaterskiScoringSystem.Tournament {
                 CalcScoreSummary curCalcSummary = new CalcScoreSummary();
 
                 if ( curGroupValue.ToLower().Equals( "all" ) ) {
-                    if ( myTourRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" ) ) {
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                    if ( myTourRules.ToLower().Equals( "iwwf" ) && curPointsMethodSlalom.ToLower().Equals( "kbase" ) ) {
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataTypeSlalom, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, null, null );
 
                         myMemberData = curCalcSummary.getMemberData( mySanctionNum );
-                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, null, null );
+                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, null, null );
+                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, null, null );
                         mySummaryDataTable = curCalcSummary.buildTourScorebook( mySanctionNum, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
                     } else {
-                        mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod );
-                        mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, curDataType, curPlcmtOverallOrg );
+                        mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataTypeSlalom, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, curNumPrelimRoundsSlalom );
+                        myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataTypeTrick, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, curNumPrelimRoundsTrick );
+                        myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataTypeJump, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, curNumPrelimRoundsJump );
+                        mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, "Best", "Div" );
 
                         myMemberData = curCalcSummary.getMemberData( mySanctionNum );
-                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
-                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, null, null );
+                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, null, null );
+                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, null, null );
+                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, null, null );
                         mySummaryDataTable = curCalcSummary.buildTourScorebook( mySanctionNum, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
                     }
                 } else {
-                    if ( myTourRules.ToLower().Equals( "iwwf" ) && curPointsMethod.ToLower().Equals( "kbase" ) ) {
-                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
+                    if ( myTourRules.ToLower().Equals( "iwwf" ) && curPointsMethodSlalom.ToLower().Equals( "kbase" ) ) {
+                        mySummaryDataTable = curCalcSummary.CalcIwwfEventPlcmts( myTourRow, mySanctionNum, "Scorebook", myTourRules, curDataTypeSlalom, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, "All", curGroupValue );
 
                         myMemberData = curCalcSummary.getMemberData( mySanctionNum, curGroupValue );
-                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
+                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, "All", curGroupValue );
+                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, "All", curGroupValue );
+                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, "All", curGroupValue );
                         mySummaryDataTable = curCalcSummary.buildTourScorebook( mySanctionNum, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
                     } else {
-                        mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataType, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, curDataType, curPlcmtOverallOrg );
+                        mySlalomDataTable = curCalcSummary.getSlalomSummary( myTourRow, curDataTypeSlalom, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, "All", curGroupValue, curNumPrelimRoundsSlalom );
+                        myTrickDataTable = curCalcSummary.getTrickSummary( myTourRow, curDataTypeTrick, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, "All", curGroupValue, curNumPrelimRoundsTrick );
+                        myJumpDataTable = curCalcSummary.getJumpSummary( myTourRow, curDataTypeJump, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, "All", curGroupValue, curNumPrelimRoundsJump );
+                        mySummaryDataTable = curCalcSummary.buildOverallSummary( myTourRow, mySlalomDataTable, myTrickDataTable, myJumpDataTable, "Best", "div" );
 
                         myMemberData = curCalcSummary.getMemberData( mySanctionNum, curGroupValue );
-                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
-                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethod, curPlcmtOrg, curPointsMethod, "All", curGroupValue );
+                        mySlalomDetail = curCalcSummary.getSlalomScoreDetail( myTourRow, curPlcmtMethodSlalom, curPlcmtOrgSlalom, curPointsMethodSlalom, "All", curGroupValue );
+                        myTrickDetail = curCalcSummary.getTrickScoreDetail( myTourRow, curPlcmtMethodTrick, curPlcmtOrgTrick, curPointsMethodTrick, "All", curGroupValue );
+                        myJumpDetail = curCalcSummary.getJumpScoreDetail( myTourRow, curPlcmtMethodJump, curPlcmtOrgJump, curPointsMethodJump, "All", curGroupValue );
                         mySummaryDataTable = curCalcSummary.buildTourScorebook( mySanctionNum, myTourRow, myMemberData, mySummaryDataTable, mySlalomDetail, myTrickDetail, myJumpDetail );
                     }
-                }
-
-                if (plcmtDivGrpButton.Checked) {
-                    mySummaryDataTable.DefaultView.Sort = "AgeGroup, EventGroup, SkierName, RoundOverall";
-                    mySummaryDataTable = mySummaryDataTable.DefaultView.ToTable();
                 }
 
                 loadSummaryDataGrid();
@@ -584,42 +560,22 @@ namespace WaterskiScoringSystem.Tournament {
             SubtitleStringFormat.FormatFlags = StringFormatFlags.NoWrap | StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
             SubtitleStringFormat.Alignment = StringAlignment.Center;
 
-            if ( plcmtDivButton.Checked ) {
-                mySubtitle = new StringRowPrinter( SlalomLabel.Text,
-                    140, 0, 302, SlalomLabel.Size.Height,
-                    SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( TrickLabel.Text,
-                    451, 0, 215, TrickLabel.Size.Height,
-                    TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( JumpLabel.Text,
-                    676, 0, 195, JumpLabel.Size.Height,
-                    JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( OverallLabel.Text,
-                    885, 0, 83, OverallLabel.Size.Height,
-                    OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-
-            } else {
-                mySubtitle = new StringRowPrinter( SlalomLabel.Text,
-                    175, 0, 302, SlalomLabel.Size.Height,
-                    SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( TrickLabel.Text,
-                    486, 0, 215, TrickLabel.Size.Height,
-                    TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( JumpLabel.Text,
-                    711, 0, 195, JumpLabel.Size.Height,
-                    JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-                mySubtitle = new StringRowPrinter( OverallLabel.Text,
-                    920, 0, 83, OverallLabel.Size.Height,
-                    OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
-                myPrintDataGrid.SubtitleRow = mySubtitle;
-            }
+            mySubtitle = new StringRowPrinter( SlalomLabel.Text,
+                140, 0, 302, SlalomLabel.Size.Height,
+                SlalomLabel.ForeColor, SlalomLabel.BackColor, SlalomLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( TrickLabel.Text,
+                451, 0, 215, TrickLabel.Size.Height,
+                TrickLabel.ForeColor, TrickLabel.BackColor, TrickLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( JumpLabel.Text,
+                676, 0, 195, JumpLabel.Size.Height,
+                JumpLabel.ForeColor, JumpLabel.BackColor, JumpLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
+            mySubtitle = new StringRowPrinter( OverallLabel.Text,
+                885, 0, 83, OverallLabel.Size.Height,
+                OverallLabel.ForeColor, OverallLabel.BackColor, OverallLabel.Font, SubtitleStringFormat );
+            myPrintDataGrid.SubtitleRow = mySubtitle;
 
             myPrintDoc.PrinterSettings = curPrintDialog.PrinterSettings;
             myPrintDoc.DefaultPageSettings = curPrintDialog.PrinterSettings.DefaultPageSettings;

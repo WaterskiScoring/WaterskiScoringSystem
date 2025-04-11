@@ -182,11 +182,7 @@ namespace WaterskiScoringSystem.Tournament {
                         RuleExceptQ3NA.Checked = true;
                     }
 
-                    if ( myTourRow["RuleExceptQ4"] != System.DBNull.Value ) {
-                        curValue = (String)myTourRow["RuleExceptQ4"];
-                    } else {
-                        curValue = "";
-                    }
+                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ4", "" );
                     if ( curValue.Equals( "Y" ) ) {
                         RuleExceptQ4Yes.Checked = true;
                     } else if ( curValue.Equals( "N" ) ) {
@@ -197,21 +193,9 @@ namespace WaterskiScoringSystem.Tournament {
                         RuleExceptQ4NA.Checked = true;
                     }
 
-                    if (myTourRow["RuleInterQ1"] != System.DBNull.Value) {
-                        RuleInterQ1TextBox.Text = (String)myTourRow["RuleInterQ1"];
-                    } else {
-                        RuleInterQ1TextBox.Text = "";
-                    }
-                    if (myTourRow["RuleInterQ2"] != System.DBNull.Value) {
-                        RuleInterQ2TextBox.Text = (String)myTourRow["RuleInterQ2"];
-                    } else {
-                        RuleInterQ2TextBox.Text = "";
-                    }
-                    if (myTourRow["RuleInterQ3"] != System.DBNull.Value) {
-                        curValue = (String)myTourRow["RuleInterQ3"];
-                    } else {
-                        curValue = "";
-                    }
+                    RuleInterQ1TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ1", "" );
+                    RuleInterQ2TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ2", "" );
+                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ3", "" );
                     if ( curValue.Equals( "Y" ) ) {
                         RuleInterQ3Yes.Checked = true;
                     } else if ( curValue.Equals( "N" ) ) {
@@ -222,11 +206,7 @@ namespace WaterskiScoringSystem.Tournament {
                         RuleInterQ3NA.Checked = true;
                     }
 
-                    if ( myTourRow["RuleInterQ4"] != System.DBNull.Value ) {
-                        curValue = (String)myTourRow["RuleInterQ4"];
-                    } else {
-                        curValue = "";
-                    }
+                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ4", "" );
                     if ( curValue.Equals( "Y" ) ) {
                         RuleInterQ4Yes.Checked = true;
                     } else if ( curValue.Equals( "N" ) ) {
@@ -238,74 +218,23 @@ namespace WaterskiScoringSystem.Tournament {
                     }
 
                     if (myJumpMeterSetupRow != null) {
-                        if (myJumpMeterSetupRow["AngleAtoB"] == System.DBNull.Value) {
-                        } else {
-                            angleAtoBTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleAtoB"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleAtoC"] == System.DBNull.Value) {
-                        } else {
-                            angleAtoCTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleAtoC"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleBtoA"] == System.DBNull.Value) {
-                        } else {
-                            angleBtoATextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleBtoA"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleBtoC"] == System.DBNull.Value) {
-                        } else {
-                            angleBtoCTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleBtoC"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleCtoA"] == System.DBNull.Value) {
-                        } else {
-                            angleCtoATextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleCtoA"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleCtoB"] == System.DBNull.Value) {
-                        } else {
-                            angleCtoBTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleCtoB"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleAtoZ"] == System.DBNull.Value) {
-                        } else {
-                            angleAtoZTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleAtoZ"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleBtoZ"] == System.DBNull.Value) {
-                        } else {
-                            angleBtoZTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleBtoZ"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleCtoZ"] == System.DBNull.Value) {
-                        } else {
-                            angleCtoZTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleCtoZ"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleAto15ET"] == System.DBNull.Value) {
-                        } else {
-                            angleAto15ETTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleAto15ET"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleBto15ET"] == System.DBNull.Value) {
-                        } else {
-                            angleBto15ETTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleBto15ET"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["AngleCto15ET"] == System.DBNull.Value) {
-                        } else {
-                            angleCto15ETTextBox.Text = ( (Decimal)myJumpMeterSetupRow["AngleCto15ET"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["DistAtoB"] == System.DBNull.Value) {
-                        } else {
-                            distAtoBTextBox.Text = ( (Decimal)myJumpMeterSetupRow["DistAtoB"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["DistAtoC"] == System.DBNull.Value) {
-                        } else {
-                            distAtoCTextBox.Text = ( (Decimal)myJumpMeterSetupRow["DistAtoC"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["DistBtoC"] == System.DBNull.Value) {
-                        } else {
-                            distBtoCTextBox.Text = ( (Decimal)myJumpMeterSetupRow["DistBtoC"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["Triangle15ET"] == System.DBNull.Value) {
-                        } else {
-                            triangle15ETTextBox.Text = ( (Decimal)myJumpMeterSetupRow["Triangle15ET"] ).ToString();
-                        }
-                        if (myJumpMeterSetupRow["TriangleZero"] == System.DBNull.Value) {
-                        } else {
-                            triangleZeroTextBox.Text = ( (Decimal)myJumpMeterSetupRow["TriangleZero"] ).ToString();
-                        }
+                        angleAtoBTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleAtoB", "" );
+                        angleAtoCTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleAtoC", "" );
+                        angleBtoATextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleBtoA", "" );
+                        angleBtoCTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleBtoC", "" );
+                        angleCtoATextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleCtoA", "" );
+                        angleCtoBTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleCtoB", "" );
+                        angleAtoZTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleAtoZ", "" );
+                        angleBtoZTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleBtoZ", "" );
+                        angleCtoZTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleCtoZ", "" );
+                        angleAto15ETTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleAto15ET", "" );
+                        angleBto15ETTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleBto15ET", "" );
+                        angleCto15ETTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "AngleCto15ET", "" );
+                        distAtoBTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "DistAtoB", "" );
+                        distAtoCTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "DistAtoC", "" );
+                        distBtoCTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "DistBtoC", "" );
+                        triangle15ETTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "Triangle15ET", "" );
+                        triangleZeroTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "TriangleZero", "" );
                     }
 
                     if ( myTourRow["ChiefJudgeName"] != System.DBNull.Value ) {
@@ -988,21 +917,9 @@ namespace WaterskiScoringSystem.Tournament {
 			}
 
 			if ( !(isTourClassELR) ) {
-                try {
-                    mySlalomRounds = Convert.ToInt16( myTourRow["SlalomRounds"].ToString() );
-                } catch {
-                    mySlalomRounds = 0;
-                }
-                try {
-                    myTrickRounds = Convert.ToInt16( myTourRow["TrickRounds"].ToString() );
-                } catch {
-                    myTrickRounds = 0;
-                }
-                try {
-                    myJumpRounds = Convert.ToInt16( myTourRow["JumpRounds"].ToString() );
-                } catch {
-                    myJumpRounds = 0;
-                }
+                mySlalomRounds = (Int16)HelperFunctions.ConvertToInt( HelperFunctions.getDataRowColValue( myTourRow, "SlalomRounds", "0" ) );
+                myTrickRounds = (Int16)HelperFunctions.ConvertToInt( HelperFunctions.getDataRowColValue( myTourRow, "TrickRounds", "0" ) );
+                myJumpRounds = (Int16)HelperFunctions.ConvertToInt( HelperFunctions.getDataRowColValue( myTourRow, "JumpRounds", "0" ) );
 
                 if ( mySlalomRounds > 0 ) {
 					curValue = HelperFunctions.getDataRowColValue( myTourRow, "SlalomRopesSpecs", "" );
@@ -1156,21 +1073,22 @@ namespace WaterskiScoringSystem.Tournament {
                 curSqlStmt.Append( "SELECT Distinct T.SanctionId, T.Name, T.Federation, T.TourDataLoc, T.LastUpdateDate, T.Class, COALESCE(L.CodeValue, 'C') as EventScoreClass" );
                 curSqlStmt.Append( ", T.SlalomRounds, T.TrickRounds, T.JumpRounds, T.Rules, T.EventDates, T.EventLocation" );
                 curSqlStmt.Append( ", T.HcapSlalomBase, T.HcapTrickBase, T.HcapJumpBase, T.HcapSlalomPct, T.HcapTrickPct, T.HcapJumpPct " );
-                curSqlStmt.Append( ", T.RopeHandlesSpecs, T.SlalomRopesSpecs, T.JumpRopesSpecs, T.SlalomCourseSpecs, T.JumpCourseSpecs, T.TrickCourseSpecs, T.BuoySpecs" );
-                curSqlStmt.Append( ", T.SafetyDirPerfReport, T.RuleExceptions, T.RuleExceptQ1, T.RuleExceptQ2, T.RuleExceptQ3, T.RuleExceptQ4" );
-                curSqlStmt.Append( ", T.RuleInterpretations, T.RuleInterQ1, T.RuleInterQ2, T.RuleInterQ3, T.RuleInterQ4" );
+                curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs, BuoySpecs" );
+                curSqlStmt.Append( ", SafetyDirPerfReport, RuleExceptions, RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4" );
+                curSqlStmt.Append( ", RuleInterpretations, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
                 curSqlStmt.Append( ", T.ContactMemberId, TourRegCO.SkierName AS ContactName, T.ContactPhone, T.ContactEmail, T.ContactAddress" );
                 curSqlStmt.Append( ", T.ChiefJudgeMemberId, TourRegCJ.SkierName AS ChiefJudgeName, T.ChiefJudgeAddress, T.ChiefJudgePhone, T.ChiefJudgeEmail" );
                 curSqlStmt.Append( ", T.ChiefDriverMemberId, TourRegCD.SkierName AS ChiefDriverName, T.ChiefDriverAddress, T.ChiefDriverPhone, T.ChiefDriverEmail" );
                 curSqlStmt.Append( ", T.SafetyDirMemberId, TourRegCS.SkierName AS ChiefSafetyName, T.SafetyDirAddress, T.SafetyDirPhone, T.SafetyDirEmail" );
                 curSqlStmt.Append( ", T.ChiefScorerMemberId, TourRegCC.SkierName AS ChiefScorerName, T.ChiefScorerAddress, T.ChiefScorerPhone, T.ChiefScorerEmail " );
                 curSqlStmt.Append( "FROM Tournament T " );
-                curSqlStmt.Append( "    LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
-                curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCC ON T.SanctionId = TourRegCC.SanctionId AND T.ChiefScorerMemberId = TourRegCC.MemberId " );
-                curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCJ ON T.SanctionId = TourRegCJ.SanctionId AND T.ChiefJudgeMemberId = TourRegCJ.MemberId " );
-                curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCD ON T.SanctionId = TourRegCD.SanctionId AND T.ChiefDriverMemberId = TourRegCD.MemberId " );
-                curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCS ON T.SanctionId = TourRegCS.SanctionId AND T.SafetyDirMemberId = TourRegCS.MemberId " );
-                curSqlStmt.Append( "	LEFT OUTER JOIN TourReg AS TourRegCO ON T.SanctionId = TourRegCO.SanctionId AND T.ContactMemberId = TourRegCO.MemberId " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN ChiefJudgeReport C ON C.SanctionId = T.SanctionId" );
+                curSqlStmt.Append( "  LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCC ON T.SanctionId = TourRegCC.SanctionId AND T.ChiefScorerMemberId = TourRegCC.MemberId " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCJ ON T.SanctionId = TourRegCJ.SanctionId AND T.ChiefJudgeMemberId = TourRegCJ.MemberId " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCD ON T.SanctionId = TourRegCD.SanctionId AND T.ChiefDriverMemberId = TourRegCD.MemberId " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCS ON T.SanctionId = TourRegCS.SanctionId AND T.SafetyDirMemberId = TourRegCS.MemberId " );
+                curSqlStmt.Append( "  LEFT OUTER JOIN TourReg AS TourRegCO ON T.SanctionId = TourRegCO.SanctionId AND T.ContactMemberId = TourRegCO.MemberId " );
                 curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
                 curSqlStmt.Append( "ORDER BY T.SanctionId " );
                 
@@ -1222,7 +1140,7 @@ namespace WaterskiScoringSystem.Tournament {
             curSqlStmt.Append( ", OW.JudgeSlalomRating, OW.JudgeTrickRating, OW.JudgeJumpRating" );
             curSqlStmt.Append( ", OW.DriverSlalomRating, OW.DriverTrickRating, OW.DriverJumpRating" );
             curSqlStmt.Append( ", OW.ScorerSlalomRating, OW.ScorerTrickRating, OW.ScorerJumpRating" );
-            curSqlStmt.Append( ", OW.SafetyOfficialRating, OW.TechOfficialRating, OW.AnncrOfficialRating " );
+            curSqlStmt.Append( ", OW.SafetyOfficialRating, OW.TechControllerSlalomRating, OW.TechControllerTrickRating, OW.TechControllerJumpRating, OW.AnncrOfficialRating " );
             curSqlStmt.Append( "FROM TourReg TR " );
             curSqlStmt.Append( "INNER JOIN OfficialWork OW ON OW.SanctionId = TR.SanctionId AND OW.MemberId = TR.MemberId " );
             curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );
@@ -1241,8 +1159,10 @@ namespace WaterskiScoringSystem.Tournament {
 				curSqlStmt.Append( ", Coalesce( ML.DriverTrickRating, '' ) as DriverTrickRating" );
 				curSqlStmt.Append( ", Coalesce( ML.DriverJumpRating, '' ) as DriverJumpRating" );
 				curSqlStmt.Append( ", Coalesce( ML.SafetyOfficialRating, '' ) as SafetyOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.TechOfficialRating, '' ) as TechOfficialRating" );
-				curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
+				curSqlStmt.Append( ", Coalesce( ML.TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+                curSqlStmt.Append( ", Coalesce( ML.TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+                curSqlStmt.Append( ", Coalesce( ML.AnncrOfficialRating, '' ) as AnncrOfficialRating " );
 				curSqlStmt.Append( "FROM TourReg TR " );
 				curSqlStmt.Append( "	INNER JOIN MemberList ML ON ML.MemberId = TR.MemberId  " );
 				curSqlStmt.Append( "Where TR.SanctionId = '" + mySanctionNum + " ' AND TR.MemberId = '" + inMemberId + "' " );

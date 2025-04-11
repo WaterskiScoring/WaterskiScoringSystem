@@ -12,6 +12,7 @@ using WaterskiScoringSystem.Common;
 using WaterskiScoringSystem.Tools;
 using WaterskiScoringSystem.Externalnterface;
 using WaterskiScoringSystem.Jump;
+using System.Linq;
 
 namespace WaterskiScoringSystem.Slalom {
 	public partial class ScoreEntry : Form {
@@ -1441,29 +1442,26 @@ namespace WaterskiScoringSystem.Slalom {
 				setEventRegRowStatus( "2-InProg" );
 
 				String curEventGroup = curEventRegRow.Cells["EventGroup"].Value.ToString();
-				if ( WscHandler.isConnectActive ) WscHandler.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundActiveSelect.RoundValue ) );
-				if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
+                if ( HelperFunctions.isCollegiateEvent( SlalomEventData.myTourRules ) ) curEventGroup = HelperFunctions.getEventGroupValueNcwsa( EventGroupList.SelectedItem.ToString() );
+                if ( WscHandler.isConnectActive ) WscHandler.sendOfficialsAssignments( "Slalom", curEventGroup, Convert.ToInt16( roundActiveSelect.RoundValue ) );
+                if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
 
 				if ( !( curEventGroup.Equals( myPrevEventGroup ) ) ) {
+					if ( WscHandler.isConnectActive ) {
+                        DataTable curStartListDataTable = getEventGroupStartList( curEventGroup, Convert.ToInt32( roundActiveSelect.RoundValue ) );
+                        WscHandler.sendRunningOrder( "Slalom", Convert.ToInt32( roundActiveSelect.RoundValue ), curStartListDataTable );
+					}
+                    if ( WaterskiConnectLabel.Visible && !WscHandler.isConnectActive ) WaterskiConnectLabel.Visible = false;
+                    
 					if ( LiveWebLabel.Visible ) {
-                        /*
-                         * For collegiate tournaments the curEventGroup contains the rotation value rather than the "group" value
-                         * of Men A, Women A, etc...
-                         * This is causing a problem on the Live Web
-                         */
-						if (HelperFunctions.isCollegiateEvent(SlalomEventData.myTourRules)) {
-                            String tempEventGroup = EventGroupList.SelectedItem.ToString();
-                            LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, tempEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        } else {
-                            LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
-                        }
+                        LiveWebHandler.sendRunOrder( "Slalom", SlalomEventData.mySanctionNum, curEventGroup, Convert.ToByte( roundActiveSelect.RoundValue ) );
                     }
 
-					/*
+                    /*
 					 * Provide a warning message for class R events when official assignments have not been entered for the round and event group
 					 * These assignments are not mandatory but they are strongly preferred and are very helpful for the TCs
 					 */
-					if ( (Decimal)SlalomEventData.myClassRowTour["ListCodeNum"] >= (Decimal)SlalomEventData.myClassERow["ListCodeNum"] ) {
+                    if ( (Decimal)SlalomEventData.myClassRowTour["ListCodeNum"] >= (Decimal)SlalomEventData.myClassERow["ListCodeNum"] ) {
 						String curWarnMsg = String.Format( "Warn:Officials:Round:{0}:EventGroup:{1}", roundActiveSelect.RoundValue, curEventGroup );
 						if ( !( myCompletedNotices.Contains( curWarnMsg ) ) ) {
 							if ( myCheckOfficials.officialAsgmtCount == 0 ) {
@@ -3123,8 +3121,7 @@ namespace WaterskiScoringSystem.Slalom {
 		}
 
 		/*
-		 * Retrieve data for current tournament
-		 * Used for initial load and to refresh data after updates
+		 * Retrieve and load specified skier pass boat path deviation data
 		 */
 		private Decimal loadBoatPathDataGridView( String curEvent, String curSkierClass, String curMemberId, String curRound, String curPassNum, Decimal curPassScore ) {
 			winStatusMsg.Text = "Retrieving boat path data";
@@ -3151,6 +3148,7 @@ namespace WaterskiScoringSystem.Slalom {
 					BpmsDriver.Text = "";
 					return curPassScore;
 				}
+				
 				Int16 curPassSpeedKph;
 				decimal curPassLineLength;
 				if ( curMemberId.Equals( "000000000" ) ) {
@@ -3173,6 +3171,8 @@ namespace WaterskiScoringSystem.Slalom {
 					return curPassScore;
 				}
 
+                SlalomBoatPathAnalysis curBoatPathAnalysis = new SlalomBoatPathAnalysis( mySlalomSetAnalysis, boatPathDataGridView, myRecapRow, myBoatPathDataRow );
+                
 				bool isRerideReqd = false;
 				int curViewIdx = -1;
 				while ( curViewIdx < 7 ) {
@@ -3180,7 +3180,7 @@ namespace WaterskiScoringSystem.Slalom {
 					if ( curPassScore < ( curViewIdx - 1 ) ) break;
 
 					DataGridViewRow curViewRow = boatPathDataGridView.Rows[curViewIdx];
-					bool isPassGood = loadBoatPathDataGridRow( curViewRow, curViewIdx, curEvent, curSkierClass, curMemberId, curRound, curPassNum, curPassScore );
+					bool isPassGood = curBoatPathAnalysis.loadBoatPathDataGridRow( curViewRow, curViewIdx, curEvent, curSkierClass, curMemberId, curRound, curPassNum, curPassScore );
 					if ( !( isPassGood ) ) isRerideReqd = true;
 				}
 
@@ -3196,8 +3196,14 @@ namespace WaterskiScoringSystem.Slalom {
 
 				if ( !( curMemberId.Equals( "000000000" ) ) ) myRecapRow.Cells["BoatPathGoodRecap"].Value = "Y";
 				if ( isRerideReqd && Convert.ToInt32(curPassNum) == slalomRecapDataGridView.RowCount) {
-					return checkBoatPathReride( curSkierClass, curPassScore );
-				}
+                    curPassScore = curBoatPathAnalysis.checkBoatPathReride( curSkierClass, curPassScore );
+					if ( HelperFunctions.isObjectPopulated( curBoatPathAnalysis.SkierPassMsg ) ) {
+                        skierPassMsg.ForeColor = Color.Red;
+                        skierPassMsg.Text = curBoatPathAnalysis.SkierPassMsg;
+                    }
+					if ( curBoatPathAnalysis.CalcScoreReqd ) SlalomScoreCalc( curPassScore );
+					return curPassScore;
+                }
 
 				return curPassScore;
 
@@ -3208,202 +3214,6 @@ namespace WaterskiScoringSystem.Slalom {
 			} finally {
 				Cursor.Current = Cursors.Default;
 			}
-		}
-
-		/*
-		 * All passes (E/L/R) at 11.25 and shorter shall be monitored with applicable buoy and cumulative deviation tolerances applied
-		 * 
-		 * If the Buoy Deviation or cumulative deviation is NEGATIVE (path away from the skier) and is greater than 25cm
-		 * The skier is entitled to an optional re-ride. The skier can improve. 
-		 * The maximum score not out of tolerance to the positive is protected. 
-		 * 
-		 * If the Buoy Deviation or cumulative deviation is POSITIVE (path towards the skier) and is greater than 25cm: 
-		 * The skier has the following options: 
-		 * • Accept the score that was achieved within tolerance. 
-		 * • Take a re-ride. The skier can improve.  
-		 * However, for a score of less than 6, if the deviation occurred at the last buoy the skier scored, 
-		 * the skier cannot improve over that score.  
-		 * The original score is not protected. 
-		 * • For a completed pass, “Continue at Risk” as outlined below. 
-		 * 
-		 */
-		private decimal checkBoatPathReride( String curSkierClass, Decimal curPassScore ) {
-			Int16 curViewIdx  = 0, curRerideFlag = 0, curRerideOptional = 0, curRerideMandatory = 0;
-            Decimal curPassScoreOrig = curPassScore;
-
-            decimal curMinRopeLength = 14.25M;
-			DataRow curMinRopeLengthRow = SlalomEventData.getSlalomBoatPathRerideRopeMin( curSkierClass );
-			if ( curMinRopeLengthRow == null ) return curPassScore;
-			curMinRopeLength = HelperFunctions.getDataRowColValueDecimal( curMinRopeLengthRow, "MinRopeLength", 14.25M );
-
-			foreach ( DataGridViewRow curViewRow in boatPathDataGridView.Rows ) {
-				curRerideFlag = Convert.ToInt16( HelperFunctions.getViewRowColValue( curViewRow, "boatPathRerideFlag", "0" ) );
-				if ( curRerideFlag < 0 && curRerideOptional == 0 ) curRerideOptional = curViewIdx;
-				if ( curRerideFlag > 0 && curRerideMandatory == 0 ) curRerideMandatory = curViewIdx;
-				curViewIdx++;
-			}
-
-			if ( curRerideOptional == 0 && curRerideMandatory == 0 ) return curPassScore;
-			
-			if ( curRerideMandatory > 0 ) {
-				// Mandatory reride indicated based on boat path data
-				decimal curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
-				if ( curPassLineLength <= curMinRopeLength && (Decimal)mySlalomSetAnalysis.ClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"]) {
-					myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-					myRecapRow.Cells["RerideRecap"].Value = "Y";
-					myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";
-
-					String curProtectMsg = "Cannot improve score";
-					Decimal curScoreProtected = curRerideMandatory - 1;
-					if ( curScoreProtected < curPassScore ) {
-						curPassScore = curScoreProtected;
-                        curProtectMsg = String.Format( "score {0} protected if no reride taken ", curScoreProtected );
-						myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-						myRecapRow.Cells["ProtectedScoreRecap"].Value = curScoreProtected.ToString( "#.00" );
-					}
-                    if ( curPassScore < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScoreOrig );
-					String errMsg = String.Format( "Mandatory reride based on boat path deviation at buoy {0}, {1}"
-						, curRerideMandatory, curProtectMsg );
-					myRecapRow.Cells["RerideReasonRecap"].Value = errMsg;
-					
-					skierPassMsg.ForeColor = Color.Red;
-					skierPassMsg.Text = errMsg;
-					SlalomScoreCalc( curPassScore );
-					return curPassScore;
-				}
-			}
-			
-			if ( curPassScore == 6 ) return curPassScore;
-			if ( curRerideOptional > 0 ) {
-				// Mandatory reride indicated based on boat path data
-				String errMsg = String.Format( "Optional reride based on boat path deviation at buoy {0}" +
-					", score {1} protected, can improve "
-					, curRerideOptional, curPassScore );
-				myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-				myRecapRow.Cells["ProtectedScoreRecap"].Value = curPassScore;
-				myRecapRow.Cells["RerideRecap"].Value = "Y";
-				myRecapRow.Cells["RerideReasonRecap"].Value = errMsg;
-				skierPassMsg.ForeColor = Color.Red;
-				skierPassMsg.Text = errMsg;
-			}
-			return curPassScore;
-		}
-
-		/*
-		 * Retrieve data for current tournament
-		 * Used for initial load and to refresh data after updates
-		 */
-		private bool loadBoatPathDataGridRow( DataGridViewRow curViewRow, int curViewIdx, String curEvent, String curSkierClass
-			, String curMemberId, String curRound, String curPassNum, Decimal curPassScore ) {
-			Font curFontBold = new Font( "Arial Narrow", 9, FontStyle.Bold );
-			Font curFont = new Font( "Arial Narrow", 9, FontStyle.Regular );
-
-			bool curReturnValue = true;
-			int[] curTolCheckResults = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-			Decimal curBuoyDevTol = 0;
-			Decimal curCumDevTol = 0;
-
-			curViewRow.Cells["boatPathScoreRange"].Style.Font = curFont;
-			curViewRow.Cells["boatTimeBuoy"].Style.Font = curFont;
-			curViewRow.Cells["boatTimeBuoy"].Style.ForeColor = Color.DarkGreen;
-			curViewRow.Cells["boatPathBuoyDev"].Style.Font = curFont;
-			curViewRow.Cells["boatPathBuoyDev"].Style.ForeColor = Color.DarkGreen;
-			curViewRow.Cells["boatPathZoneDev"].Style.Font = curFont;
-			curViewRow.Cells["boatPathZoneDev"].Style.ForeColor = Color.DarkGreen;
-			curViewRow.Cells["boatPathCumDev"].Style.Font = curFont;
-			curViewRow.Cells["boatPathCumDev"].Style.ForeColor = Color.DarkGreen;
-			curViewRow.Cells["boatPathBuoyTol"].Style.Font = curFont;
-			curViewRow.Cells["boatPathBuoyTol"].Style.ForeColor = Color.DarkGray;
-			curViewRow.Cells["boatPathCumTol"].Style.Font = curFont;
-			curViewRow.Cells["boatPathCumTol"].Style.ForeColor = Color.DarkGray;
-
-			DataRow curBoatPathDevMaxRow = SlalomEventData.getBoatPathDevMaxRow( curViewIdx, curSkierClass );
-			if ( curBoatPathDevMaxRow != null ) {
-				curBuoyDevTol = (Decimal)curBoatPathDevMaxRow["BuoyDev"];
-				curCumDevTol = (Decimal)curBoatPathDevMaxRow["CumDev"];
-			}
-
-			Decimal curPathBuoyDev = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevBuoy" + curViewIdx, 0 );
-			Decimal curPathZoneDev = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevZone" + curViewIdx, 0 );
-			Decimal curPathCumDev = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "PathDevCum" + curViewIdx, 0 );
-
-			if ( curViewIdx == 0 ) {
-				curViewRow.Cells["boatPathPos"].Value = (String)curBoatPathDevMaxRow["Buoy"];
-				curViewRow.Cells["boatPathScoreRange"].Value = "";
-				curViewRow.Cells["boatPathBuoyTol"].Value = curBuoyDevTol.ToString( "##0" );
-				curViewRow.Cells["boatPathCumTol"].Value = curCumDevTol.ToString( "##0" );
-				curViewRow.Cells["boatPathZoneDev"].Value = curPathZoneDev.ToString( "##0" );
-				curViewRow.Cells["boatPathBuoyDev"].Value = curPathBuoyDev.ToString( "##0" );
-
-				if ( (Decimal)SlalomEventData.myClassRowTour["ListCodeNum"] >= (Decimal)SlalomEventData.myClassERow["ListCodeNum"] 
-					&& curBuoyDevTol > 0 
-					&& Math.Abs( curPathBuoyDev ) > curBuoyDevTol 
-					) {
-					curReturnValue = false;
-					curViewRow.Cells["boatPathBuoyDev"].Style.Font = curFontBold;
-					if ( curPathBuoyDev > 0 ) {
-						curTolCheckResults[curViewIdx] = 1;
-						curViewRow.Cells["boatPathBuoyDev"].Style.ForeColor = Color.Red;
-					} else {
-						curTolCheckResults[curViewIdx] = -1;
-						curViewRow.Cells["boatPathBuoyDev"].Style.ForeColor = Color.BlueViolet;
-					}
-				}
-				curViewRow.Cells["boatPathRerideFlag"].Value = curTolCheckResults[curViewIdx].ToString();
-				return curReturnValue;
-
-			} else if ( curViewIdx == 7 ) {
-				curViewRow.Cells["boatPathPos"].Value = "EXIT";
-				curViewRow.Cells["boatTimeBuoy"].Value = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "boatTimeBuoy" + curViewIdx, "0", 2 );
-				curViewRow.Cells["boatPathRerideFlag"].Value = "0";
-				return true ;
-			}
-
-			curViewRow.Cells["boatPathPos"].Value = (String)curBoatPathDevMaxRow["Buoy"];
-
-			if ( curPassScore == ( curViewIdx - 1 ) ) {
-				curViewRow.Cells["boatTimeBuoy"].Value = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "boatTimeBuoy" + curViewIdx, "0", 2 );
-				curViewRow.Cells["boatPathRerideFlag"].Value = "0";
-				return true;
-			}
-
-			curViewRow.Cells["boatPathScoreRange"].Value = ( (String)curBoatPathDevMaxRow["CodeDesc"] ).Substring( 6, 9 );
-			curViewRow.Cells["boatPathBuoyTol"].Value = curBuoyDevTol.ToString( "##0" );
-			curViewRow.Cells["boatPathCumTol"].Value = curCumDevTol.ToString( "##0" );
-			
-			curViewRow.Cells["boatPathZoneDev"].Value = curPathZoneDev.ToString( "##0" );
-			curViewRow.Cells["boatPathBuoyDev"].Value = curPathBuoyDev.ToString( "##0" );
-			curViewRow.Cells["boatPathCumDev"].Value = curPathCumDev.ToString( "##0" );
-			
-			curViewRow.Cells["boatTimeBuoy"].Value = HelperFunctions.getDataRowColValueDecimal( myBoatPathDataRow, "boatTimeBuoy" + curViewIdx, "0", 2 );
-
-			if ( curBuoyDevTol > 0 && Math.Abs( curPathBuoyDev ) > curBuoyDevTol ) {
-				curReturnValue = false;
-				curViewRow.Cells["boatPathBuoyDev"].Style.Font = curFontBold;
-				if ( curPathBuoyDev > 0 ) {
-					curTolCheckResults[curViewIdx] = 1;
-					curViewRow.Cells["boatPathBuoyDev"].Style.ForeColor = Color.Red;
-				} else {
-					curTolCheckResults[curViewIdx] = -1;
-					curViewRow.Cells["boatPathBuoyDev"].Style.ForeColor = Color.BlueViolet;
-				}
-			}
-
-			if ( curCumDevTol > 0 && Math.Abs( curPathCumDev ) > curCumDevTol ) {
-				curReturnValue = false;
-				curViewRow.Cells["boatPathCumDev"].Style.Font = curFontBold;
-				if ( curPathBuoyDev > 0 ) {
-					curTolCheckResults[curViewIdx] = 1;
-					curViewRow.Cells["boatPathCumDev"].Style.ForeColor = Color.Red;
-				} else {
-					curTolCheckResults[curViewIdx] = -1;
-					curViewRow.Cells["boatPathCumDev"].Style.ForeColor = Color.BlueViolet;
-				}
-			}
-			
-			curViewRow.Cells["boatPathRerideFlag"].Value = curTolCheckResults[curViewIdx].ToString();
-
-			return curReturnValue;
 		}
 
 		private void scoreEntryInprogress() {
@@ -3845,19 +3655,25 @@ namespace WaterskiScoringSystem.Slalom {
 			Int16 curPassSpeedKph = Convert.ToInt16( HelperFunctions.getViewRowColValueDecimal( myRecapRow, "PassSpeedKphRecap", "0" ) );
 			loadBoatTimeView( curPassSpeedKph );
 
-			if ( HelperFunctions.isObjectEmpty( mySlalomSetAnalysis.SkierPassMsg ) ) {
-				skierPassMsg.ForeColor = Color.DarkBlue;
+			if ( HelperFunctions.isObjectPopulated( skierPassMsg.Text ) ) {
+                skierPassMsg.ForeColor = Color.Red;
+				if ( !curTimeValid ) skierPassMsg.Text += mySlalomSetAnalysis.SkierPassMsg;
 
-			} else {
-				if ( curTimeValid && curBoatPathGood ) {
-					skierPassMsg.ForeColor = Color.DarkBlue;
-				} else {
-					skierPassMsg.ForeColor = Color.Red;
-				}
-				skierPassMsg.Text = mySlalomSetAnalysis.SkierPassMsg;
-			}
+            } else {
+                if ( HelperFunctions.isObjectEmpty( mySlalomSetAnalysis.SkierPassMsg ) ) {
+                    skierPassMsg.ForeColor = Color.DarkBlue;
 
-			decimal curPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "0" ) );
+                } else {
+                    if ( curTimeValid && curBoatPathGood ) {
+                        skierPassMsg.ForeColor = Color.DarkBlue;
+                    } else {
+                        skierPassMsg.ForeColor = Color.Red;
+                    }
+                    skierPassMsg.Text = mySlalomSetAnalysis.SkierPassMsg;
+                }
+            }
+
+            decimal curPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( myRecapRow, "ScoreRecap", "0" ) );
 			SlalomScoreCalc( curPassScore );
 		}
 
@@ -3878,7 +3694,7 @@ namespace WaterskiScoringSystem.Slalom {
 				Decimal skierScore = mySlalomSetAnalysis.SlalomScoreCalc( inScore, SlalomSpeedSelection.MaxSpeedKph );
 				myRecapRow.Cells["Updated"].Value = "Y";
 
-				if ( HelperFunctions.isObjectPopulated( mySlalomSetAnalysis.SkierPassMsg ) ) skierPassMsg.Text = mySlalomSetAnalysis.SkierPassMsg;
+				if ( HelperFunctions.isObjectPopulated( mySlalomSetAnalysis.SkierPassMsg ) ) skierPassMsg.Text += mySlalomSetAnalysis.SkierPassMsg;
 				scoreTextBox.Text = skierScore.ToString();
 				TourEventRegDataGridView.Rows[myEventRegViewIdx].Cells["score"].Value = skierScore.ToString( "###.00" );
 				hcapScoreTextBox.Text = "";
@@ -4402,53 +4218,60 @@ namespace WaterskiScoringSystem.Slalom {
 			getEventRegData( "All", inRound );
 		}
 		private void getEventRegData( String inEventGroup, int inRound ) {
-			StringBuilder curSqlStmt = new StringBuilder( "" );
-			curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, T.Gender, E.AgeGroup, E.AgeGroup as Div, O.RunOrder, E.TeamCode" );
-			curSqlStmt.Append( ", O.EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
-			curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
-			curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
-			curSqlStmt.Append( "FROM EventReg E " );
-			curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-			curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-			curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-			curSqlStmt.Append( "WHERE E.SanctionId = '" + SlalomEventData.mySanctionNum + "' AND E.Event = 'Slalom' " );
+			myPrevEventGroup = "";
+            myTourEventRegDataTable = getEventGroupStartList( inEventGroup, inRound );
+        }
 
-			if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
-				if ( SlalomEventData.isCollegiateEvent() ) {
-					curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+        private DataTable getEventGroupStartList( String inEventGroup, int inRound ) {
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, T.Gender, E.AgeGroup, E.AgeGroup as Div, O.RunOrder, E.TeamCode" );
+            curSqlStmt.Append( ", O.EventGroup, COALESCE(O.RunOrderGroup, '') as RunOrderGroup" );
+            curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, COALESCE(O.RankingScore, E.RankingScore) as RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
+            curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+            curSqlStmt.Append( "FROM EventReg E " );
+            curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+            curSqlStmt.Append( "     INNER JOIN EventRunOrder O ON E.SanctionId = O.SanctionId AND E.MemberId = O.MemberId AND E.AgeGroup = O.AgeGroup AND E.Event = O.Event AND O.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+            curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+            curSqlStmt.Append( "WHERE E.SanctionId = '" + SlalomEventData.mySanctionNum + "' AND E.Event = 'Slalom' " );
 
-				} else {
-					curSqlStmt.Append( "And (O.EventGroup = '" + inEventGroup + "' AND (O.RunOrderGroup IS NULL OR O.RunOrderGroup = '')" );
-					curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
-				}
-			}
-			myTourEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                if ( SlalomEventData.isCollegiateEvent() ) {
+                    curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
 
-			if ( myTourEventRegDataTable.Rows.Count == 0 ) {
-				curSqlStmt = new StringBuilder( "" );
-				curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, T.Gender, E.AgeGroup, E.EventGroup, '' as RunOrderGroup,  E.RunOrder, E.TeamCode" );
-				curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
-				curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
-				curSqlStmt.Append( "FROM EventReg E " );
-				curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
-				curSqlStmt.Append( "     LEFT OUTER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
-				curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
-				curSqlStmt.Append( "WHERE E.SanctionId = '" + SlalomEventData.mySanctionNum + "' AND E.Event = 'Slalom' " );
+                } else {
+                    curSqlStmt.Append( "And (O.EventGroup = '" + inEventGroup + "' AND (O.RunOrderGroup IS NULL OR O.RunOrderGroup = '')" );
+                    curSqlStmt.Append( "     OR O.EventGroup + '-' + O.RunOrderGroup = '" + inEventGroup + "' ) " );
+                }
+            }
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
 
-				if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
-					if ( SlalomEventData.isCollegiateEvent() ) {
-						curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
+            if ( curDataTable.Rows.Count == 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "SELECT E.PK, E.Event, E.SanctionId, E.MemberId, T.SkierName, T.Federation, T.State, T.Gender, E.AgeGroup, E.EventGroup, '' as RunOrderGroup,  E.RunOrder, E.TeamCode" );
+                curSqlStmt.Append( ", COALESCE(S.EventClass, E.EventClass) as EventClass, E.RankingScore, E.RankingRating, E.HCapBase, E.HCapScore" );
+                curSqlStmt.Append( ", COALESCE (S.Status, 'TBD') AS Status, S.Score, E.AgeGroup as Div, COALESCE(D.RunOrder, 999) as DivOrder, COALESCE(E.ReadyForPlcmt, 'N') as ReadyForPlcmt " );
+                curSqlStmt.Append( "FROM EventReg E " );
+                curSqlStmt.Append( "     INNER JOIN TourReg T ON E.SanctionId = T.SanctionId AND E.MemberId = T.MemberId AND E.AgeGroup = T.AgeGroup " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN SlalomScore S ON E.SanctionId = S.SanctionId AND E.MemberId = S.MemberId AND E.AgeGroup = S.AgeGroup AND S.Round = " + inRound.ToString() + " " );
+                curSqlStmt.Append( "     LEFT OUTER JOIN DivOrder D ON D.SanctionId = E.SanctionId AND D.AgeGroup = E.AgeGroup AND D.Event = E.Event " );
+                curSqlStmt.Append( "WHERE E.SanctionId = '" + SlalomEventData.mySanctionNum + "' AND E.Event = 'Slalom' " );
 
-					} else {
-						curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
-					}
-				}
-				myTourEventRegDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
-			}
-		}
+                if ( !( inEventGroup.ToLower().Equals( "all" ) ) ) {
+                    if ( SlalomEventData.isCollegiateEvent() ) {
+                        curSqlStmt.Append( HelperFunctions.getEventGroupFilterNcwsaSql( inEventGroup ) );
 
-		private int cleanSkierSlalomScore(String inMemberId, String inAgeGroup, int inRound ) {
+                    } else {
+                        curSqlStmt.Append( "And E.EventGroup = '" + inEventGroup + "' " );
+                    }
+                }
+                curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            }
+
+			return curDataTable;
+        }
+
+        private int cleanSkierSlalomScore(String inMemberId, String inAgeGroup, int inRound ) {
 			StringBuilder curSqlStmt = new StringBuilder( "Delete SlalomScore " );
 			curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' AND MemberId = '{1}' AND MemberId = '{2}' AND MemberId = '{3}'"
 				, SlalomEventData.mySanctionNum, inMemberId, inAgeGroup, inRound ) );

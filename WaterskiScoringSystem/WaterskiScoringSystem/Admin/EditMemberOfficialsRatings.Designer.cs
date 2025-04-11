@@ -37,8 +37,10 @@
             System.Windows.Forms.Label ScorerTrickLabel;
             System.Windows.Forms.Label ScorerSlalomLabel;
             System.Windows.Forms.Label SafetyRatingLabel;
-            System.Windows.Forms.Label TechControllerRatingLabel;
             System.Windows.Forms.Label AnnouncerRatingLabel;
+            System.Windows.Forms.Label TechControllerJumpLabel;
+            System.Windows.Forms.Label TechControllerTrickLabel;
+            System.Windows.Forms.Label TechControllerSlalomLabel;
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,12 +63,14 @@
             this.ScorerTrickRatingSelect = new System.Windows.Forms.ComboBox();
             this.ScorerSlalomRatingSelect = new System.Windows.Forms.ComboBox();
             this.SafetyRatingSelect = new System.Windows.Forms.ComboBox();
-            this.TechOfficialRatingSelect = new System.Windows.Forms.ComboBox();
+            this.TechControllerSlalomSelect = new System.Windows.Forms.ComboBox();
             this.AnncrOfficialRatingSelect = new System.Windows.Forms.ComboBox();
             this.editMemberId = new System.Windows.Forms.Label();
             this.editFirstName = new System.Windows.Forms.Label();
             this.editLastName = new System.Windows.Forms.Label();
             this.editEntityName = new System.Windows.Forms.Label();
+            this.TechControllerTrickSelect = new System.Windows.Forms.ComboBox();
+            this.TechControllerJumpSelect = new System.Windows.Forms.ComboBox();
             reqdFlagInfo = new System.Windows.Forms.Label();
             memberIdLabel = new System.Windows.Forms.Label();
             lastNameLabel = new System.Windows.Forms.Label();
@@ -81,8 +85,10 @@
             ScorerTrickLabel = new System.Windows.Forms.Label();
             ScorerSlalomLabel = new System.Windows.Forms.Label();
             SafetyRatingLabel = new System.Windows.Forms.Label();
-            TechControllerRatingLabel = new System.Windows.Forms.Label();
             AnnouncerRatingLabel = new System.Windows.Forms.Label();
+            TechControllerJumpLabel = new System.Windows.Forms.Label();
+            TechControllerTrickLabel = new System.Windows.Forms.Label();
+            TechControllerSlalomLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // reqdFlagInfo
@@ -237,17 +243,6 @@
             SafetyRatingLabel.TabIndex = 0;
             SafetyRatingLabel.Text = "Rating";
             SafetyRatingLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // TechControllerRatingLabel
-            // 
-            TechControllerRatingLabel.AutoSize = true;
-            TechControllerRatingLabel.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            TechControllerRatingLabel.Location = new System.Drawing.Point(460, 345);
-            TechControllerRatingLabel.Name = "TechControllerRatingLabel";
-            TechControllerRatingLabel.Size = new System.Drawing.Size(41, 15);
-            TechControllerRatingLabel.TabIndex = 0;
-            TechControllerRatingLabel.Text = "Rating";
-            TechControllerRatingLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // AnnouncerRatingLabel
             // 
@@ -485,14 +480,14 @@
             this.SafetyRatingSelect.Size = new System.Drawing.Size(110, 21);
             this.SafetyRatingSelect.TabIndex = 141;
             // 
-            // TechOfficialRatingSelect
+            // TechControllerSlalomSelect
             // 
-            this.TechOfficialRatingSelect.DropDownWidth = 110;
-            this.TechOfficialRatingSelect.FormattingEnabled = true;
-            this.TechOfficialRatingSelect.Location = new System.Drawing.Point(425, 361);
-            this.TechOfficialRatingSelect.Name = "TechOfficialRatingSelect";
-            this.TechOfficialRatingSelect.Size = new System.Drawing.Size(110, 21);
-            this.TechOfficialRatingSelect.TabIndex = 151;
+            this.TechControllerSlalomSelect.DropDownWidth = 110;
+            this.TechControllerSlalomSelect.FormattingEnabled = true;
+            this.TechControllerSlalomSelect.Location = new System.Drawing.Point(328, 361);
+            this.TechControllerSlalomSelect.Name = "TechControllerSlalomSelect";
+            this.TechControllerSlalomSelect.Size = new System.Drawing.Size(75, 21);
+            this.TechControllerSlalomSelect.TabIndex = 151;
             // 
             // AnncrOfficialRatingSelect
             // 
@@ -546,19 +541,74 @@
             this.editEntityName.TabIndex = 0;
             this.editEntityName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // TechControllerJumpLabel
+            // 
+            TechControllerJumpLabel.AutoSize = true;
+            TechControllerJumpLabel.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TechControllerJumpLabel.Location = new System.Drawing.Point(578, 344);
+            TechControllerJumpLabel.Name = "TechControllerJumpLabel";
+            TechControllerJumpLabel.Size = new System.Drawing.Size(35, 15);
+            TechControllerJumpLabel.TabIndex = 162;
+            TechControllerJumpLabel.Text = "Jump";
+            TechControllerJumpLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TechControllerTrickLabel
+            // 
+            TechControllerTrickLabel.AutoSize = true;
+            TechControllerTrickLabel.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TechControllerTrickLabel.Location = new System.Drawing.Point(464, 344);
+            TechControllerTrickLabel.Name = "TechControllerTrickLabel";
+            TechControllerTrickLabel.Size = new System.Drawing.Size(33, 15);
+            TechControllerTrickLabel.TabIndex = 163;
+            TechControllerTrickLabel.Text = "Trick";
+            TechControllerTrickLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TechControllerSlalomLabel
+            // 
+            TechControllerSlalomLabel.AutoSize = true;
+            TechControllerSlalomLabel.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            TechControllerSlalomLabel.Location = new System.Drawing.Point(343, 344);
+            TechControllerSlalomLabel.Name = "TechControllerSlalomLabel";
+            TechControllerSlalomLabel.Size = new System.Drawing.Size(45, 15);
+            TechControllerSlalomLabel.TabIndex = 164;
+            TechControllerSlalomLabel.Text = "Slalom";
+            TechControllerSlalomLabel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // TechControllerTrickSelect
+            // 
+            this.TechControllerTrickSelect.DropDownWidth = 110;
+            this.TechControllerTrickSelect.FormattingEnabled = true;
+            this.TechControllerTrickSelect.Location = new System.Drawing.Point(443, 361);
+            this.TechControllerTrickSelect.Name = "TechControllerTrickSelect";
+            this.TechControllerTrickSelect.Size = new System.Drawing.Size(75, 21);
+            this.TechControllerTrickSelect.TabIndex = 165;
+            // 
+            // TechControllerJumpSelect
+            // 
+            this.TechControllerJumpSelect.DropDownWidth = 110;
+            this.TechControllerJumpSelect.FormattingEnabled = true;
+            this.TechControllerJumpSelect.Location = new System.Drawing.Point(558, 361);
+            this.TechControllerJumpSelect.Name = "TechControllerJumpSelect";
+            this.TechControllerJumpSelect.Size = new System.Drawing.Size(75, 21);
+            this.TechControllerJumpSelect.TabIndex = 166;
+            // 
             // EditMemberOfficialsRatings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 491);
+            this.Controls.Add(this.TechControllerJumpSelect);
+            this.Controls.Add(this.TechControllerTrickSelect);
+            this.Controls.Add(TechControllerJumpLabel);
+            this.Controls.Add(TechControllerTrickLabel);
+            this.Controls.Add(TechControllerSlalomLabel);
             this.Controls.Add(this.editEntityName);
             this.Controls.Add(this.editLastName);
             this.Controls.Add(this.editFirstName);
             this.Controls.Add(this.editMemberId);
             this.Controls.Add(AnnouncerRatingLabel);
             this.Controls.Add(this.AnncrOfficialRatingSelect);
-            this.Controls.Add(TechControllerRatingLabel);
-            this.Controls.Add(this.TechOfficialRatingSelect);
+            this.Controls.Add(this.TechControllerSlalomSelect);
             this.Controls.Add(SafetyRatingLabel);
             this.Controls.Add(this.SafetyRatingSelect);
             this.Controls.Add(ScorerJumpLabel);
@@ -628,11 +678,13 @@
         private System.Windows.Forms.ComboBox ScorerTrickRatingSelect;
         private System.Windows.Forms.ComboBox ScorerSlalomRatingSelect;
         private System.Windows.Forms.ComboBox SafetyRatingSelect;
-        private System.Windows.Forms.ComboBox TechOfficialRatingSelect;
+        private System.Windows.Forms.ComboBox TechControllerSlalomSelect;
         private System.Windows.Forms.ComboBox AnncrOfficialRatingSelect;
         private System.Windows.Forms.Label editMemberId;
         private System.Windows.Forms.Label editFirstName;
         private System.Windows.Forms.Label editLastName;
         private System.Windows.Forms.Label editEntityName;
+        private System.Windows.Forms.ComboBox TechControllerTrickSelect;
+        private System.Windows.Forms.ComboBox TechControllerJumpSelect;
     }
 }

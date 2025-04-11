@@ -49,8 +49,8 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>9.1.2.%2a</ApplicationVersion>
+    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationVersion>10.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -249,6 +249,12 @@
     </Compile>
     <Compile Include="Admin\TourRuleExcept.Designer.cs">
       <DependentUpon>TourRuleExcept.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\TourSetupWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\TourSetupWizard.Designer.cs">
+      <DependentUpon>TourSetupWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\AgeGroupDropdownList.cs">
     </Compile>
@@ -484,6 +490,7 @@
     <Compile Include="Slalom\PrintSlalomFormDialog.Designer.cs">
       <DependentUpon>PrintSlalomFormDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Slalom\SlalomBoatPathAnalysis.cs" />
     <Compile Include="Slalom\SlalomEventData.cs" />
     <Compile Include="Slalom\SlalomPassDetailExport.cs">
       <SubType>Form</SubType>
@@ -701,6 +708,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\TourRuleExcept.resx">
       <DependentUpon>TourRuleExcept.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\TourSetupWizard.resx">
+      <DependentUpon>TourSetupWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\AgeGroupSelect.resx">
       <DependentUpon>AgeGroupSelect.cs</DependentUpon>

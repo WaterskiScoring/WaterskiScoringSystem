@@ -111,17 +111,17 @@ namespace LiveWebMessageHandler.Externalnterface {
                 curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
                 curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event" }, curSqlStmt.ToString(), "Delete" ) );
 			
-			} else if ( inSanctionId.Substring( 2, 1 ) == "U" ) {
-                curSqlStmt.Append( "SELECT Distinct ER.SanctionId, ER.Event, ER.AgeGroup FROM EventReg ER " );
-                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
-                curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
-                curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
-			
-			} else {
+			} else if ( inSanctionId.ToUpper().Substring( 2, 1 ) == "U" ) {
                 curSqlStmt.Append( "SELECT Distinct ER.SanctionId, ER.Event, ER.EventGroup FROM EventReg ER " );
                 curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
                 curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
                 curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "EventGroup" }, curSqlStmt.ToString(), "Delete" ) );
+
+            } else {
+                curSqlStmt.Append( "SELECT Distinct ER.SanctionId, ER.Event, ER.AgeGroup FROM EventReg ER " );
+                curSqlStmt.Append( String.Format( "Where ER.SanctionId = '{0}' AND ER.Event = '{1}' ", inSanctionId, inEvent ) );
+                curSqlStmt.Append( HelperFunctions.getEventGroupFilterSql( inEventGroup, false, false ) );
+                curTableList.Add( exportTableWithData( "EventReg", new String[] { "SanctionId", "Event", "AgeGroup" }, curSqlStmt.ToString(), "Delete" ) );
 			}
 
 			curSqlStmt = new StringBuilder( "" );
@@ -211,7 +211,34 @@ namespace LiveWebMessageHandler.Externalnterface {
 			}
 		}
 
-		public static void exportCurrentSkiers( String inEvent, String inSanctionId, byte inRound, String inEventGroup ) {
+        public static void exportTourProperties( String inSanctionId ) {
+            String curMethodName = "ExportLiveWeb: exportTourProperties: ";
+            StringBuilder curSqlStmt = new StringBuilder( "" );
+            myLastErrorMsg = new StringBuilder( "" );
+            ArrayList curTableList = new ArrayList();
+            Dictionary<string, dynamic> curLiveWebRequest = null;
+            Dictionary<string, dynamic> curTables = null;
+
+            curSqlStmt = new StringBuilder( "" );
+            curSqlStmt.Append( "SELECT * FROM TourProperties " );
+            curSqlStmt.Append( String.Format( "Where SanctionId = '{0}' ", inSanctionId ) );
+            curTableList.Add( exportTableWithData( "TourProperties", new String[] { "SanctionId", "PropKey" }, curSqlStmt.ToString(), "Update" ) );
+
+            curTables = new Dictionary<string, object> { { "Tables", curTableList } };
+            curLiveWebRequest = new Dictionary<string, object> { { "LiveWebRequest", curTables } };
+
+            String curMsgResp = SendMessageHttp.sendMessagePostJson( LiveWebScoreboardUri, JsonConvert.SerializeObject( curLiveWebRequest ) );
+            if ( curMsgResp.Length > 0 ) {
+                String curMsg = String.Format( "{0}{1}", curMethodName, curMsgResp );
+                Log.WriteFile( curMsg );
+
+            } else {
+                String curMsg = String.Format( "{0}Request failed: likely connection issue", curMethodName );
+                throw new Exception( curMsg );
+            }
+        }
+
+        public static void exportCurrentSkiers( String inEvent, String inSanctionId, byte inRound, String inEventGroup ) {
 			String curMethodName = "ExportLiveWeb: exportCurrentSkiers: ";
 			StringBuilder curSqlStmt = new StringBuilder( "" );
 			myLastErrorMsg = new StringBuilder( "" );

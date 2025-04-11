@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
@@ -137,17 +138,39 @@ namespace WaterskiScoringSystem.Admin {
             curValue = HelperFunctions.escapeString( curJumpRopesSpecs );
             curJumpRopesSpecs = curValue;
 
-            StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "Update Tournament Set " );
-            curSqlStmt.Append( "LastUpdateDate = getdate() " );
-            curSqlStmt.Append( ", SlalomRopesSpecs = '" + curSlalomRopesSpecs + "'" );
-            curSqlStmt.Append( ", RopeHandlesSpecs = '" + curRopeHandlesSpecs + "'" );
-            curSqlStmt.Append( ", JumpRopesSpecs = '" + curJumpRopesSpecs + "'" );
-            curSqlStmt.Append( ", SlalomCourseSpecs = '" + HelperFunctions.escapeString( slalomCourseSpecsTextBox.Text ) + "'" );
-            curSqlStmt.Append( ", JumpCourseSpecs = '" + HelperFunctions.escapeString( jumpCourseSpecsTextBox.Text ) + "'" );
-            curSqlStmt.Append( ", TrickCourseSpecs = '" + HelperFunctions.escapeString( trickCourseSpecsTextBox.Text ) + "'" );
-            curSqlStmt.Append( ", BuoySpecs = '" + HelperFunctions.escapeString( buoySpecsTextBox.Text ) + "' " );
-            curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
+            StringBuilder curSqlStmt = new StringBuilder( String.Format("Select SanctionId From ChiefJudgeReport Where SanctionId = '{0}'", mySanctionNum ) );
+            DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+            if ( curDataTable != null && curDataTable.Rows.Count > 0 ) {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Update ChiefJudgeReport Set " );
+                curSqlStmt.Append( "LastUpdateDate = getdate() " );
+                curSqlStmt.Append( ", SlalomRopesSpecs = '" + curSlalomRopesSpecs + "'" );
+                curSqlStmt.Append( ", RopeHandlesSpecs = '" + curRopeHandlesSpecs + "'" );
+                curSqlStmt.Append( ", JumpRopesSpecs = '" + curJumpRopesSpecs + "'" );
+                curSqlStmt.Append( ", SlalomCourseSpecs = '" + HelperFunctions.escapeString( slalomCourseSpecsTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", JumpCourseSpecs = '" + HelperFunctions.escapeString( jumpCourseSpecsTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", TrickCourseSpecs = '" + HelperFunctions.escapeString( trickCourseSpecsTextBox.Text ) + "'" );
+                curSqlStmt.Append( ", BuoySpecs = '" + HelperFunctions.escapeString( buoySpecsTextBox.Text ) + "' " );
+                curSqlStmt.Append( "Where SanctionId = '" + mySanctionNum + "'" );
+
+            } else {
+                curSqlStmt = new StringBuilder( "" );
+                curSqlStmt.Append( "Insert INTO ChiefJudgeReport( " );
+                curSqlStmt.Append( "SanctionId, RuleExceptions, RuleInterpretations, SafetyDirPerfReport" );
+                curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs, BuoySpecs" );
+                curSqlStmt.Append( ", RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
+                curSqlStmt.Append( ", LastUpdateDate" );
+                curSqlStmt.Append( ") Values (" );
+                curSqlStmt.Append( String.Format( "'{0}', '', '', ''", mySanctionNum ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( curRopeHandlesSpecs ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( curSlalomRopesSpecs ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( curJumpRopesSpecs ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( slalomCourseSpecsTextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( jumpCourseSpecsTextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( trickCourseSpecsTextBox.Text ) ) );
+                curSqlStmt.Append( String.Format( ", '{0}'", HelperFunctions.escapeString( buoySpecsTextBox.Text ) ) );
+                curSqlStmt.Append( ", '', '', '', '', '', '', '', '', GetDate() )" );
+            }
 
             rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
             if ( rowsProc > 0 ) {
@@ -262,12 +285,13 @@ namespace WaterskiScoringSystem.Admin {
 
         private DataTable getTourData() {
             StringBuilder curSqlStmt = new StringBuilder( "" );
-            curSqlStmt.Append( "SELECT SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
+            curSqlStmt.Append( "SELECT T.SanctionId, ContactMemberId, Name, Class, COALESCE(L.CodeValue, 'C') as EventScoreClass, T.Federation" );
             curSqlStmt.Append( ", SlalomRounds, TrickRounds, JumpRounds, Rules, EventDates, EventLocation" );
             curSqlStmt.Append( ", SlalomRopesSpecs, RopeHandlesSpecs, JumpRopesSpecs" );
             curSqlStmt.Append( ", SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs, BuoySpecs " );
             curSqlStmt.Append( "FROM Tournament T " );
-            curSqlStmt.Append( "LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
+            curSqlStmt.Append( "  LEFT OUTER JOIN ChiefJudgeReport C ON C.SanctionId = T.SanctionId " );
+            curSqlStmt.Append( "  LEFT OUTER JOIN CodeValueList L ON ListName = 'ClassToEvent' AND ListCode = T.Class " );
             curSqlStmt.Append( "WHERE T.SanctionId = '" + mySanctionNum + "' " );
             return DataAccess.getDataTable( curSqlStmt.ToString() );
         }

@@ -457,7 +457,32 @@ namespace WaterskiScoringSystem.Admin {
                     rowsProc = DataAccess.ExecuteCommand(curSqlStmt.ToString());
                     if ( rowsProc > 0 ) {
                         isDataModified = false;
-                        if (isDataModifiedSlalomRounds) {
+
+                        curSqlStmt = new StringBuilder( "" );
+                        curSqlStmt.Append( "Select SanctionId From ChiefJudgeReport " );
+                        curSqlStmt.Append( String.Format( "Where SanctionId = '{0}'", editSanctionId.Text ) );
+                        DataTable curDataTable = DataAccess.getDataTable( curSqlStmt.ToString() );
+                        if ( curDataTable.Rows.Count == 0 ) {
+                            curSqlStmt = new StringBuilder( "" );
+                            curSqlStmt.Append( "Insert INTO ChiefJudgeReport( " );
+                            curSqlStmt.Append( "SanctionId, RuleExceptions, RuleInterpretations, SafetyDirPerfReport" );
+                            curSqlStmt.Append( ", RopeHandlesSpecs, SlalomRopesSpecs, JumpRopesSpecs, SlalomCourseSpecs, JumpCourseSpecs, TrickCourseSpecs, BuoySpecs" );
+                            curSqlStmt.Append( ", RuleExceptQ1, RuleExceptQ2, RuleExceptQ3, RuleExceptQ4, RuleInterQ1, RuleInterQ2, RuleInterQ3, RuleInterQ4" );
+                            curSqlStmt.Append( ", LastUpdateDate" );
+                            curSqlStmt.Append( ") Values (" );
+                            curSqlStmt.Append( String.Format( "'{0}', '', '', ''", editSanctionId.Text ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( String.Format( ", '{0}'", "" ) );
+                            curSqlStmt.Append( ", '', '', '', '', '', '', '', '', GetDate() )" );
+                            rowsProc = DataAccess.ExecuteCommand( curSqlStmt.ToString() );
+                        }
+
+                        if ( isDataModifiedSlalomRounds) {
                             Int16 curSlalomRounds = 0;
                             try {
                                 curSlalomRounds = Convert.ToInt16( editSlalomRounds.Text );
@@ -1071,11 +1096,13 @@ namespace WaterskiScoringSystem.Admin {
 			Properties.Settings.Default.Mdi_Title = this.MdiParent.Text;
 			String[] curLog = { "Tournament activated: " + this.MdiParent.Text };
 			Log.WriteFile( curLog );
-			bool curResults = myTourProperties.loadProperties( (String)editRules.SelectedValue, (String)editClass.SelectedValue );
+            /*
+            bool curResults = myTourProperties.loadProperties( (String)editRules.SelectedValue, (String)editClass.SelectedValue );
 			if ( curResults == false ) {
 				ReportPropButton_Click( null, null );
 			}
-            Properties.Settings.Default.Save();
+			 */
+            ReportPropButton_Click( null, null );
 
             MessageBox.Show( "Setting current application tournament to "
 				+ Properties.Settings.Default.AppSanctionNum
@@ -1237,7 +1264,8 @@ namespace WaterskiScoringSystem.Admin {
         }
 
         private void ReportPropButton_Click(object sender, EventArgs e) {
-            WaterskiScoringSystem.Admin.TourReportProps curForm = new WaterskiScoringSystem.Admin.TourReportProps();
+            //WaterskiScoringSystem.Admin.TourReportProps curForm = new WaterskiScoringSystem.Admin.TourReportProps();
+            TourSetupWizard curForm = new TourSetupWizard();
 
             // Check for open instance of selected form
             for (int idx = 0; idx < this.MdiParent.MdiChildren.Length; idx++) {
@@ -1249,7 +1277,7 @@ namespace WaterskiScoringSystem.Admin {
 
             curForm.MdiParent = this.MdiParent;
             curForm.Show();
-            curForm.TourChiefOfficialContact_Show( editSanctionId.Text, (String)editClass.SelectedValue, (String)editRules.SelectedValue, editName.Text );
+            //curForm.TourChiefOfficialContact_Show( editSanctionId.Text, (String)editClass.SelectedValue, (String)editRules.SelectedValue, editName.Text );
         }
 
         private void OfficialContactButton_Click(object sender, EventArgs e) {
@@ -1458,13 +1486,13 @@ namespace WaterskiScoringSystem.Admin {
 				myTourViewRow.Cells["HcapJumpPct"].Value = "0";
 
 			} else {
-                String curSanctionId = (String)curSanctionEntry["TournAppID"];
-                myTourViewRow.Cells["SanctionId"].Value = (String) curSanctionEntry["TournAppID"];
-				myTourViewRow.Cells["TourName"].Value = (String) curSanctionEntry["TName"];
-				myTourViewRow.Cells["TourClass"].Value = ( (String) curSanctionEntry["TSanction"] ).Substring( 6, 1 );
+                String curSanctionId = HelperFunctions.getAttributeValue( curSanctionEntry, "TournAppId" );
+                myTourViewRow.Cells["SanctionId"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TournAppId" );
+                myTourViewRow.Cells["TourName"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TName" );
+				myTourViewRow.Cells["TourClass"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TSanction" ).Substring( 6, 1 );
 				myTourViewRow.Cells["SanctionEditCode"].Value = ((int) curSanctionEntry["EditCode"]).ToString();
 				myTourViewRow.Cells["TourFederation"].Value = "usa";
-				myTourViewRow.Cells["EventDates"].Value = (String) curSanctionEntry["TDateE"] ;
+				myTourViewRow.Cells["EventDates"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TDateE") ;
 				myTourViewRow.Cells["TourDataLoc"].Value = "";
 				myTourViewRow.Cells["EventLocation"].Value = String.Format( "{0} ({1}), {2}, {3}"
                     , (String)curSanctionEntry["TSite"]
@@ -1476,21 +1504,11 @@ namespace WaterskiScoringSystem.Admin {
                 } else {
                     myTourViewRow.Cells["Rules"].Value = "awsa";
                 }
-                if ( (bool) curSanctionEntry["TEventSlalom"] ) {
-					myTourViewRow.Cells["SlalomRounds"].Value = "1";
-				} else { 
-					myTourViewRow.Cells["SlalomRounds"].Value = "0";
-				}
-				if ( (bool) curSanctionEntry["TEventTrick"] ) {
-					myTourViewRow.Cells["TrickRounds"].Value = "1";
-				} else {
-					myTourViewRow.Cells["TrickRounds"].Value = "0";
-				}
-				if ( (bool) curSanctionEntry["TEventJump"] ) {
-					myTourViewRow.Cells["JumpRounds"].Value = "1";
-				} else {
-					myTourViewRow.Cells["JumpRounds"].Value = "0";
-				}
+                
+                myTourViewRow.Cells["SlalomRounds"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TEventSlalomRounds" );
+                myTourViewRow.Cells["TrickRounds"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TEventTrickRounds" );
+                myTourViewRow.Cells["JumpRounds"].Value = HelperFunctions.getAttributeValue( curSanctionEntry, "TEventJumpRounds" );
+
 				myTourViewRow.Cells["HcapSlalomBase"].Value = "0";
 				myTourViewRow.Cells["HcapTrickBase"].Value = "0";
 				myTourViewRow.Cells["HcapJumpBase"].Value = "0";

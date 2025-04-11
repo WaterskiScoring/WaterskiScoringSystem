@@ -44,21 +44,21 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '24.19', 24.19, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '25.06', 25.06, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
 
                 copyDatabaseFile();
                 
-				if (myDatabaseVersion < 24.19M ) {
+				if (myDatabaseVersion < 25.03M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         String curFileRef = Path.Combine(Application.StartupPath, "DatabaseSchemaUpdates.sql");
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
 
-				if ( myDatabaseVersion < 24.19M ) {
+				if ( myDatabaseVersion < 25.06M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}
@@ -70,7 +70,7 @@ namespace WaterskiScoringSystem.Tools {
                     }
                 }
 
-                if (myDatabaseVersion < 24.19M ) {
+                if (myDatabaseVersion < 25.04M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         loadNopsData();
                     }
@@ -324,9 +324,13 @@ namespace WaterskiScoringSystem.Tools {
         private bool execSchemaCmd( String inSqlStmt ) {
             try {
 				int rowsProc = DataAccess.ExecuteCommand( inSqlStmt );
-				return true;
-            
-			} catch ( Exception ex ) {
+				if (  rowsProc >= -1 ) return true;
+                if ( inSqlStmt.Trim().ToLower().StartsWith( "drop table" ) ) return false;
+                
+				MessageBox.Show( "execSchemaCmd: Exception encountered with statement: \n\nSqlStmt: " + inSqlStmt );
+                return false;
+
+            } catch ( Exception ex ) {
 				if ( inSqlStmt.Trim().ToLower().StartsWith( "drop table" ) ) return false;
 
 				MessageBox.Show( "execSchemaCmd: Exception encountered: "

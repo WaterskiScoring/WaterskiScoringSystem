@@ -12,7 +12,7 @@ namespace WaterskiScoringSystem.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -763,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.2.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.1.1.7")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1553,7 +1553,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9.1.2.7 9/18/2024")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.1.1.7 4/11/2025")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2781,6 +2781,18 @@ namespace WaterskiScoringSystem.Properties {
         public string UriUsaWaterskiProdBackup {
             get {
                 return ((string)(this["UriUsaWaterskiProdBackup"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point TourSetupWizard_Location {
+            get {
+                return ((global::System.Drawing.Point)(this["TourSetupWizard_Location"]));
+            }
+            set {
+                this["TourSetupWizard_Location"] = value;
             }
         }
     }

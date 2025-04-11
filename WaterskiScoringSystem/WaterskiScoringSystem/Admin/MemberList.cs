@@ -262,8 +262,10 @@ namespace WaterskiScoringSystem.Admin {
 			curSqlStmt.Append( ", Coalesce( ScorerTrickRating, '' ) as ScorerTrick" );
 			curSqlStmt.Append( ", Coalesce( ScorerJumpRating, '' ) as ScorerJump" );
 			curSqlStmt.Append( ", Coalesce( SafetyOfficialRating, '' ) as SafetyOfficial" );
-			curSqlStmt.Append( ", Coalesce( TechOfficialRating, '' ) as TechController" );
-			curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficial " );
+			curSqlStmt.Append( ", Coalesce( TechControllerSlalomRating, '' ) as TechControllerSlalomRating" );
+            curSqlStmt.Append( ", Coalesce( TechControllerTrickRating, '' ) as TechControllerTrickRating" );
+            curSqlStmt.Append( ", Coalesce( TechControllerJumpRating, '' ) as TechControllerJumpRating" );
+            curSqlStmt.Append( ", Coalesce( AnncrOfficialRating, '' ) as AnncrOfficial " );
 			curSqlStmt.Append( "FROM MemberList " );
             curSqlStmt.Append( " Order by LastName, FirstName" );
 			return DataAccess.getDataTable( curSqlStmt.ToString() );

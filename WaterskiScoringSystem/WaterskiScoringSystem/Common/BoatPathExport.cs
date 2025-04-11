@@ -254,9 +254,10 @@ namespace WaterskiScoringSystem.Common {
 					} else {
 						curViewRow.Cells["PassNotes"].Value = (String)curRow["PassNotes"];
 					}
-				}
+                }
 
-				curViewRow.Cells["ScoreNotes"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreNotes", "" );
+                curViewRow.Cells["RerideReason"].Value = HelperFunctions.getDataRowColValue( curRow, "RerideReason", "" );
+                curViewRow.Cells["ScoreNotes"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreNotes", "" );
 				curViewRow.Cells["ScoreDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "ScoreDatetime", "" );
 				curViewRow.Cells["PassDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "PassDatetime", "" );
 				curViewRow.Cells["BoatPathDatetime"].Value = HelperFunctions.getDataRowColValue( curRow, "BoatPathDatetime", "" );
@@ -491,7 +492,7 @@ namespace WaterskiScoringSystem.Common {
 			StringBuilder curSqlStmt = new StringBuilder("");
 			curSqlStmt.Append( "SELECT S.SanctionId, T.SkierName, E.Event, S.AgeGroup, E.EventGroup, E.EventClass, E.RankingScore" );
 			curSqlStmt.Append( ", S.Round, BP.BoatDescription as Boat, BP.DriverName" );
-			curSqlStmt.Append( ", S.Score, R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
+			curSqlStmt.Append( ", S.Score, R.SkierRunNum, R.BoatTime, R.Score AS PassScore, R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes, R.RerideReason" );
 			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime, BP.InsertDate as BoatPathDatetime" );
 			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0, PathDevZone0" );
@@ -526,7 +527,7 @@ namespace WaterskiScoringSystem.Common {
 			curSqlStmt.Append( ", S.Round,BP.BoatDescription as Boat, BP.DriverName as DriverName" );
 			curSqlStmt.Append( ", R.ScoreFeet, R.ScoreMeters, R.SkierBoatPath" );
 			curSqlStmt.Append( ", R.PassNum, R.BoatSplitTime, R.BoatSplitTime2, BoatEndTime, R.ScoreFeet as PassScoreFeet, R.ScoreMeters as PassScoreMeters" );
-			curSqlStmt.Append( ", R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes" );
+			curSqlStmt.Append( ", R.TimeInTol, R.Note AS PassNotes, S.Note as ScoreNotes, R.RerideReason" );
 			curSqlStmt.Append( ", S.LastUpdateDate as ScoreDatetime, R.InsertDate as PassDatetime, BP.InsertDate as BoatPathDatetime" );
 			curSqlStmt.Append( ", COALESCE(BP.homologation, '') as homologation, BP.PassLineLength, BP.PassSpeedKph" );
 			curSqlStmt.Append( ", BP.PathDevBuoy0, BP.PathDevCum0" );
