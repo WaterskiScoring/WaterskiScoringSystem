@@ -77,144 +77,128 @@ namespace WaterskiScoringSystem.Tournament {
                     eventDatesTextBox.Text = (String)myTourRow["EventDates"];
                     eventLocationTextBox.Text = (String)myTourRow["EventLocation"];
 
+					slalomCourseSpecsTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "SlalomCourseSpecs", "" );
+                    jumpCourseSpecsTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "JumpCourseSpecs", "" );
+                    trickCourseSpecsTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "TrickCourseSpecs", "" );
+                    buoySpecsTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "BuoySpecs", "" );
+                    safetyDirPerfReportTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirPerfReport", "" );
 
-
-                    if (myTourRow["slalomCourseSpecs"] == System.DBNull.Value) {
-                    } else {
-                        slalomCourseSpecsTextBox.Text = (String)myTourRow["SlalomCourseSpecs"];
-                    }
-                    if (myTourRow["JumpCourseSpecs"] == System.DBNull.Value) {
-                    } else {
-                        jumpCourseSpecsTextBox.Text = (String)myTourRow["JumpCourseSpecs"];
-                    }
-                    if (myTourRow["TrickCourseSpecs"] == System.DBNull.Value) {
-                    } else {
-                        trickCourseSpecsTextBox.Text = (String)myTourRow["TrickCourseSpecs"];
-                    }
-                    if (myTourRow["BuoySpecs"] == System.DBNull.Value) {
-                    } else {
-                        buoySpecsTextBox.Text = (String)myTourRow["BuoySpecs"];
-                    }
-
-                    if ( myTourRow["SlalomRopesSpecs"] == System.DBNull.Value ) {
-                    } else {
-                        curValueList = ( (String)myTourRow["SlalomRopesSpecs"] ).Split( ';' );
-
-                        Rope1Line2300TextBox.Text = curValueList[1];
-                        Rope1Line1825TextBox.Text = curValueList[2];
-                        Rope1Line1600TextBox.Text = curValueList[3];
-                        Rope1Line1425TextBox.Text = curValueList[4];
-                        Rope1Line1300TextBox.Text = curValueList[5];
-                        Rope1Line1200TextBox.Text = curValueList[6];
-                        Rope1Line1125TextBox.Text = curValueList[7];
-                        Rope1Line1075TextBox.Text = curValueList[8];
-                        Rope1Line1025TextBox.Text = curValueList[9];
-                        Rope2Line2300TextBox.Text = curValueList[11];
-                        Rope2Line1825TextBox.Text = curValueList[12];
-                        Rope2Line1600TextBox.Text = curValueList[13];
-                        Rope2Line1425TextBox.Text = curValueList[14];
-                        Rope2Line1300TextBox.Text = curValueList[15];
-                        Rope2Line1200TextBox.Text = curValueList[16];
-                        Rope2Line1125TextBox.Text = curValueList[17];
-                        Rope2Line1075TextBox.Text = curValueList[18];
-                        Rope2Line1025TextBox.Text = curValueList[19];
-                        Rope3Line2300TextBox.Text = curValueList[21];
-                        Rope3Line1825TextBox.Text = curValueList[22];
-                        Rope3Line1600TextBox.Text = curValueList[23];
-                        Rope3Line1425TextBox.Text = curValueList[24];
-                        Rope3Line1300TextBox.Text = curValueList[25];
-                        Rope3Line1200TextBox.Text = curValueList[26];
-                        Rope3Line1125TextBox.Text = curValueList[27];
-                        Rope3Line1075TextBox.Text = curValueList[28];
-                        Rope3Line1025TextBox.Text = curValueList[29];
+                    string curSlalomRopesSpecs = HelperFunctions.getDataRowColValue( myTourRow, "SlalomRopesSpecs", "" );
+					if ( HelperFunctions.isObjectPopulated( curSlalomRopesSpecs ) ) {
+                        curValueList = curSlalomRopesSpecs.Split( ';' );
+						if ( curValueList.Length >= 29 ) {
+                            Rope1Line2300TextBox.Text = curValueList[1];
+                            Rope1Line1825TextBox.Text = curValueList[2];
+                            Rope1Line1600TextBox.Text = curValueList[3];
+                            Rope1Line1425TextBox.Text = curValueList[4];
+                            Rope1Line1300TextBox.Text = curValueList[5];
+                            Rope1Line1200TextBox.Text = curValueList[6];
+                            Rope1Line1125TextBox.Text = curValueList[7];
+                            Rope1Line1075TextBox.Text = curValueList[8];
+                            Rope1Line1025TextBox.Text = curValueList[9];
+                            Rope2Line2300TextBox.Text = curValueList[11];
+                            Rope2Line1825TextBox.Text = curValueList[12];
+                            Rope2Line1600TextBox.Text = curValueList[13];
+                            Rope2Line1425TextBox.Text = curValueList[14];
+                            Rope2Line1300TextBox.Text = curValueList[15];
+                            Rope2Line1200TextBox.Text = curValueList[16];
+                            Rope2Line1125TextBox.Text = curValueList[17];
+                            Rope2Line1075TextBox.Text = curValueList[18];
+                            Rope2Line1025TextBox.Text = curValueList[19];
+                            Rope3Line2300TextBox.Text = curValueList[21];
+                            Rope3Line1825TextBox.Text = curValueList[22];
+                            Rope3Line1600TextBox.Text = curValueList[23];
+                            Rope3Line1425TextBox.Text = curValueList[24];
+                            Rope3Line1300TextBox.Text = curValueList[25];
+                            Rope3Line1200TextBox.Text = curValueList[26];
+                            Rope3Line1125TextBox.Text = curValueList[27];
+                            Rope3Line1075TextBox.Text = curValueList[28];
+                            Rope3Line1025TextBox.Text = curValueList[29];
+                        }
                     }
 
-                    if (myTourRow["SafetyDirPerfReport"] == System.DBNull.Value) {
-                    } else {
-                        safetyDirPerfReportTextBox.Text = (String)myTourRow["SafetyDirPerfReport"];
+                    string curRopeHandlesSpecs = HelperFunctions.getDataRowColValue( myTourRow, "RopeHandlesSpecs", "" );
+					if ( HelperFunctions.isObjectPopulated( curRopeHandlesSpecs ) ) {
+						curValueList = curRopeHandlesSpecs.Split( ';' );
+						if ( curValueList.Length >= 4 ) {
+							RopeHandle1TextBox.Text = curValueList[1];
+							RopeHandle2TextBox.Text = curValueList[2];
+							RopeHandle3TextBox.Text = curValueList[3];
+							RopeHandle4TextBox.Text = curValueList[4];
+						}
+					}
+
+                    string curJumpRopesSpecs = HelperFunctions.getDataRowColValue( myTourRow, "JumpRopesSpecs", "" );
+                    if ( HelperFunctions.isObjectPopulated( curJumpRopesSpecs ) ) {
+                        curValueList = curJumpRopesSpecs.Split( ';' );
+                        if ( curValueList.Length >= 9 ) {
+                            JumpLine1TextBox.Text = curValueList[1];
+                            JumpLine2TextBox.Text = curValueList[2];
+                            JumpLine3TextBox.Text = curValueList[3];
+                            JumpLine4TextBox.Text = curValueList[4];
+                            JumpHandle1TextBox.Text = curValueList[6];
+                            JumpHandle2TextBox.Text = curValueList[7];
+                            JumpHandle3TextBox.Text = curValueList[8];
+                            JumpHandle4TextBox.Text = curValueList[9];
+                        }
                     }
+
+                    RuleExceptQ1TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ1", "" );
+                    RuleExceptQ2TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ2", "" );
                     
-                    if ( myTourRow["RopeHandlesSpecs"] == System.DBNull.Value ) {
-                    } else {
-                        curValueList = ( (String)myTourRow["RopeHandlesSpecs"] ).Split( ';' );
-                        RopeHandle1TextBox.Text = curValueList[1];
-                        RopeHandle2TextBox.Text = curValueList[2];
-                        RopeHandle3TextBox.Text = curValueList[3];
-                        RopeHandle4TextBox.Text = curValueList[4];
+					string curRuleExceptQ3 = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ3", "" );
+					if ( HelperFunctions.isObjectPopulated( curRuleExceptQ3 ) ) {
+                        if ( curRuleExceptQ3.Equals( "Y" ) ) {
+                            RuleExceptQ3Yes.Checked = true;
+                        } else if ( curRuleExceptQ3.Equals( "N" ) ) {
+                            RuleExceptQ3No.Checked = true;
+                        } else if ( curRuleExceptQ3.Equals( "A" ) ) {
+                            RuleExceptQ3NA.Checked = true;
+                        } else {
+                            RuleExceptQ3NA.Checked = true;
+                        }
                     }
 
-                    if ( myTourRow["JumpRopesSpecs"] == System.DBNull.Value ) {
-                    } else {
-                        curValueList = ( (String)myTourRow["JumpRopesSpecs"] ).Split( ';' );
-                        JumpLine1TextBox.Text = curValueList[1];
-                        JumpLine2TextBox.Text = curValueList[2];
-                        JumpLine3TextBox.Text = curValueList[3];
-                        JumpLine4TextBox.Text = curValueList[4];
-                        JumpHandle1TextBox.Text = curValueList[6];
-                        JumpHandle2TextBox.Text = curValueList[7];
-                        JumpHandle3TextBox.Text = curValueList[8];
-                        JumpHandle4TextBox.Text = curValueList[9];
-                    }
-
-                    String curValue = "";
-                    if (myTourRow["RuleExceptQ1"] != System.DBNull.Value) {
-                        RuleExceptQ1TextBox.Text = (String)myTourRow["RuleExceptQ1"];
-                    } else {
-                        RuleExceptQ1TextBox.Text = "";
-                    }
-                    if (myTourRow["RuleExceptQ2"] != System.DBNull.Value) {
-                        RuleExceptQ2TextBox.Text = (String)myTourRow["RuleExceptQ2"];
-                    } else {
-                        RuleExceptQ2TextBox.Text = "";
-                    }
-                    if ( myTourRow["RuleExceptQ3"] != System.DBNull.Value ) {
-                        curValue = (String)myTourRow["RuleExceptQ3"];
-                    } else {
-                        curValue = "";
-                    }
-                    if ( curValue.Equals( "Y" ) ) {
-                        RuleExceptQ3Yes.Checked = true;
-                    } else if ( curValue.Equals( "N" ) ) {
-                        RuleExceptQ3No.Checked = true;
-                    } else if ( curValue.Equals( "A" ) ) {
-                        RuleExceptQ3NA.Checked = true;
-                    } else {
-                        RuleExceptQ3NA.Checked = true;
-                    }
-
-                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ4", "" );
-                    if ( curValue.Equals( "Y" ) ) {
-                        RuleExceptQ4Yes.Checked = true;
-                    } else if ( curValue.Equals( "N" ) ) {
-                        RuleExceptQ4No.Checked = true;
-                    } else if ( curValue.Equals( "A" ) ) {
-                        RuleExceptQ4NA.Checked = true;
-                    } else {
-                        RuleExceptQ4NA.Checked = true;
+                    string curRuleExceptQ4 = HelperFunctions.getDataRowColValue( myTourRow, "RuleExceptQ4", "" );
+					if ( HelperFunctions.isObjectPopulated( curRuleExceptQ4 ) ) {
+                        if ( curRuleExceptQ4.Equals( "Y" ) ) {
+                            RuleExceptQ4Yes.Checked = true;
+                        } else if ( curRuleExceptQ4.Equals( "N" ) ) {
+                            RuleExceptQ4No.Checked = true;
+                        } else if ( curRuleExceptQ4.Equals( "A" ) ) {
+                            RuleExceptQ4NA.Checked = true;
+                        } else {
+                            RuleExceptQ4NA.Checked = true;
+                        }
                     }
 
                     RuleInterQ1TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ1", "" );
                     RuleInterQ2TextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ2", "" );
-                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ3", "" );
-                    if ( curValue.Equals( "Y" ) ) {
-                        RuleInterQ3Yes.Checked = true;
-                    } else if ( curValue.Equals( "N" ) ) {
-                        RuleInterQ3No.Checked = true;
-                    } else if ( curValue.Equals( "A" ) ) {
-                        RuleInterQ3NA.Checked = true;
-                    } else {
-                        RuleInterQ3NA.Checked = true;
+
+                    string curRuleInterQ3 = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ3", "" );
+					if ( HelperFunctions.isObjectPopulated( curRuleInterQ3 ) ) {
+                        if ( curRuleInterQ3.Equals( "Y" ) ) {
+                            RuleInterQ3Yes.Checked = true;
+                        } else if ( curRuleInterQ3.Equals( "N" ) ) {
+                            RuleInterQ3No.Checked = true;
+                        } else if ( curRuleInterQ3.Equals( "A" ) ) {
+                            RuleInterQ3NA.Checked = true;
+                        } else {
+                            RuleInterQ3NA.Checked = true;
+                        }
                     }
 
-                    curValue = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ4", "" );
-                    if ( curValue.Equals( "Y" ) ) {
-                        RuleInterQ4Yes.Checked = true;
-                    } else if ( curValue.Equals( "N" ) ) {
-                        RuleInterQ4No.Checked = true;
-                    } else if ( curValue.Equals( "A" ) ) {
-                        RuleInterQ4NA.Checked = true;
-                    } else {
-                        RuleInterQ4NA.Checked = true;
+                    string curRuleInterQ4 = HelperFunctions.getDataRowColValue( myTourRow, "RuleInterQ4", "" );
+                    if ( HelperFunctions.isObjectPopulated( curRuleInterQ4 ) ) {
+                        if ( curRuleInterQ4.Equals( "Y" ) ) {
+                            RuleInterQ4Yes.Checked = true;
+                        } else if ( curRuleInterQ4.Equals( "N" ) ) {
+                            RuleInterQ4No.Checked = true;
+                        } else if ( curRuleInterQ4.Equals( "A" ) ) {
+                            RuleInterQ4NA.Checked = true;
+                        } else {
+                            RuleInterQ4NA.Checked = true;
+                        }
                     }
 
                     if (myJumpMeterSetupRow != null) {
@@ -237,23 +221,23 @@ namespace WaterskiScoringSystem.Tournament {
                         triangleZeroTextBox.Text = HelperFunctions.getDataRowColValue( myJumpMeterSetupRow, "TriangleZero", "" );
                     }
 
-                    if ( myTourRow["ChiefJudgeName"] != System.DBNull.Value ) {
-                        curValue = (String)myTourRow["ChiefJudgeName"];
-                        int curDelim = curValue.IndexOf( ',' );
-                        ChiefJudgeSigTextBox.Text = curValue.Substring( curDelim + 1 ) + " " + curValue.Substring( 0, curDelim );
-                        ChiefJudgeNameTextBox.Text = curValue.Substring( curDelim + 1 ) + " " + curValue.Substring( 0, curDelim );
+                    string curChiefJudgeName = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeName", "" );
+                    if ( HelperFunctions.isObjectPopulated( curChiefJudgeName ) ) {
+                        int curDelim = curChiefJudgeName.IndexOf( ',' );
+                        ChiefJudgeSigTextBox.Text = curChiefJudgeName.Substring( curDelim + 1 ) + " " + curChiefJudgeName.Substring( 0, curDelim );
+                        ChiefJudgeNameTextBox.Text = curChiefJudgeName.Substring( curDelim + 1 ) + " " + curChiefJudgeName.Substring( 0, curDelim );
                         ChiefJudgeSigDateTextBox.Text = DateTime.Today.ToString( "MM/dd/yyyy" );
                         ChiefJudgeAddressTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgeAddress", "" );
                         ChiefJudgeDayPhoneTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "ChiefJudgePhone", "" );
-                        curValue = (String)myTourRow["ChiefJudgeMemberId"];
-                        DataRow curMemberRow = getTourMemberRating( curValue );
+                        curChiefJudgeName = (String)myTourRow["ChiefJudgeMemberId"];
+                        DataRow curMemberRow = getTourMemberRating( curChiefJudgeName );
                         ChiefJudgeRatingTextBox.Text = HelperFunctions.getDataRowColValue( myTourRow, "JudgeSlalomRating", "Unrated" );
                     }
 
-                    if ( myTourRow["ChiefSafetyName"] != System.DBNull.Value ) {
-                        curValue = (String)myTourRow["ChiefSafetyName"];
-                        int curDelim = curValue.IndexOf( ',' );
-                        SafetyDirNameTextBox.Text = curValue.Substring( curDelim + 1 ) + " " + curValue.Substring( 0, curDelim );
+                    string curChiefSafetyName = HelperFunctions.getDataRowColValue( myTourRow, "ChiefSafetyName", "" );
+					if ( HelperFunctions.isObjectPopulated( curChiefJudgeName ) ) {
+                        int curDelim = curChiefSafetyName.IndexOf( ',' );
+                        SafetyDirNameTextBox.Text = curChiefSafetyName.Substring( curDelim + 1 ) + " " + curChiefSafetyName.Substring( 0, curDelim );
                     }
 
                     validateData();
@@ -459,8 +443,8 @@ namespace WaterskiScoringSystem.Tournament {
 				//Chief Driver
 				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverMemberId"] );
 				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["ChiefDriverName"] );
-				String curValue = (String)myTourRow["ChiefDriverMemberId"];
-				DataRow curMemberRow = getTourMemberRating( curValue );
+                string curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverMemberId", "" );
+                DataRow curMemberRow = getTourMemberRating( curValue );
 				if ( curMemberRow != null ) {
 					if ( curMemberRow["DriverSlalomRating"] == System.DBNull.Value ) {
 						curValue = "";
@@ -477,7 +461,7 @@ namespace WaterskiScoringSystem.Tournament {
                 //Chief Scorer
                 outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerMemberId", "" ) );
                 outLine.Append( HelperFunctions.TabChar + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerName", "" ) );
-				curValue = (String)myTourRow["ChiefScorerMemberId"];
+                curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerMemberId", "" );
 				curMemberRow = getTourMemberRating( curValue );
                 curValue = "";
                 if ( curMemberRow != null ) {
@@ -495,7 +479,7 @@ namespace WaterskiScoringSystem.Tournament {
 				//Chief Safety Director
 				outLine.Append( HelperFunctions.TabChar + (String)myTourRow["SafetyDirMemberId"] );
 				outLine.Append( HelperFunctions.TabChar + SafetyDirNameTextBox.Text );
-				curValue = (String)myTourRow["SafetyDirMemberId"];
+                curValue = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirMemberId", "" );
 				curMemberRow = getTourMemberRating( curValue );
                 curValue = "";
                 if ( curMemberRow != null ) {
@@ -708,8 +692,8 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine = new StringBuilder( "" );
 				//Chief Driver
 				outLine.Append( Environment.NewLine + "Chief Driver: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverName", "") );
-				String curValue = (String)myTourRow["ChiefDriverMemberId"];
-				DataRow curMemberRow = getTourMemberRating( curValue );
+				String curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefDriverMemberId", "" );
+                DataRow curMemberRow = getTourMemberRating( curValue );
                 curValue = "";
                 if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "DriverSlalomRating", "Unrated" );
 				outLine.Append( "  Rating: " + curValue );
@@ -720,9 +704,9 @@ namespace WaterskiScoringSystem.Tournament {
                 outBuffer.WriteLine( outLine.ToString() );
 
 				outLine = new StringBuilder( "" );
-				//Chief Scorer
-				outLine.Append( Environment.NewLine + "Chief Scorer: " + (String)myTourRow["ChiefScorerName"] );
-				curValue = (String)myTourRow["ChiefScorerMemberId"];
+                //Chief Scorer
+                outLine.Append( Environment.NewLine + "Chief Scorer: " + HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerName", "" ) );
+                curValue = HelperFunctions.getDataRowColValue( myTourRow, "ChiefScorerMemberId", "" );
 				curMemberRow = getTourMemberRating( curValue );
 				curValue = "";
 				if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "ScorerSlalomRating", "Unrated" );
@@ -735,7 +719,7 @@ namespace WaterskiScoringSystem.Tournament {
 				outLine = new StringBuilder( "" );
 				//Chief Safety Director
 				outLine.Append( Environment.NewLine + "Chief Safety: " + SafetyDirNameTextBox.Text );
-				curValue = (String)myTourRow["SafetyDirMemberId"];
+                curValue = HelperFunctions.getDataRowColValue( myTourRow, "SafetyDirMemberId", "" );
 				curMemberRow = getTourMemberRating( curValue );
 				curValue = "";
 				if ( curMemberRow != null ) curValue = HelperFunctions.getDataRowColValue( curMemberRow, "SafetyOfficialRating", "Unrated" );

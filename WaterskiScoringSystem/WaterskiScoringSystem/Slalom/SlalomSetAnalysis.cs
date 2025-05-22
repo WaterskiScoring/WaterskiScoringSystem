@@ -447,20 +447,35 @@ namespace WaterskiScoringSystem.Slalom {
 			bool prevScoreProtInd = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( prevRecapRow, "ScoreProtRecap", "N" ) );
 			bool prevTimeGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( prevRecapRow, "TimeInTolRecap", "N" ) );
 			bool prevBoatPathGood = HelperFunctions.isValueTrue( HelperFunctions.getViewRowColValue( prevRecapRow, "BoatPathGoodRecap", "N" ) );
+            
+			decimal curPassScore = inScore;
+            decimal prevPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( prevRecapRow, "ScoreRecap", "0" ) );
 
-			// If 1st previous pass has a protected score or the previous pass had a good time and path, then simply use full current pass score
-			if ( prevScoreProtInd || ( prevTimeGood && prevBoatPathGood ) ) return 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed );
+            // If 1st previous pass has a good time and path, then simply use full current pass score
+            if ( prevTimeGood && prevBoatPathGood ) return 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed );
 
-			/*
+            /*
+             * If 1st previous pass has a protected score and if previous pass was an optional reride improvement is allowed
+             * However if previous pass was mandatory reride then improvement is not allowed
+             */
+            if ( prevScoreProtInd ) {
+				if ( ( (String)prevRecapRow.Cells["RerideReasonRecap"].Value ).ToLower().Contains( "mandatory" ) ) {
+                    curPassScore = getProtectedScore( prevRecapRow, inScore );
+                    myRecapViewRow.Cells["ScoreRecap"].Value = curPassScore.ToString( "#.00" );
+                    return curPassScore + (6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed ) - 6 );
+
+                } else {
+                    return 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed );
+                }
+            }
+
+            /*
 			 * Scoring when time for current pass is good and full pass for class C and below skiers
 			 * Note: Class C skiers are allowed to improve score if previous pass required a reride for slow time
 			 */
-			if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"] ) {
+            if ( (Decimal)myClassRowSkier["ListCodeNum"] < (Decimal)SlalomEventData.myClassERow["ListCodeNum"] ) {
 				return 6 * ( curPassSpeedNum + curPassLineNum + inPassNumMinSpeed );
 			}
-
-			decimal curPassScore = inScore;
-			decimal prevPassScore = Convert.ToDecimal( HelperFunctions.getViewRowColValue( prevRecapRow, "ScoreRecap", "0" ) );
 
 			/*
 			 * Current pass is a full pass with no reride required for class E and above skiers

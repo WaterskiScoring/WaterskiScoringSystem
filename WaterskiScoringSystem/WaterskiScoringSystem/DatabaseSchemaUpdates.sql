@@ -463,3 +463,8 @@ ALTER TABLE Tournament DROP COLUMN RuleInterQ2;
 ALTER TABLE Tournament DROP COLUMN RuleInterQ3;
 ALTER TABLE Tournament DROP COLUMN RuleInterQ4;
 
+## v25.08
+Update OfficialWorkAsgmt Set EventGroup = 'CM' Where EventGroup = 'Men A';
+Update OfficialWorkAsgmt Set EventGroup = 'CW' Where EventGroup = 'Women A';
+Update OfficialWorkAsgmt Set EventGroup = 'BM' Where EventGroup = 'Men B';
+Update OfficialWorkAsgmt Set EventGroup = 'BW' Where EventGroup = 'Women B';

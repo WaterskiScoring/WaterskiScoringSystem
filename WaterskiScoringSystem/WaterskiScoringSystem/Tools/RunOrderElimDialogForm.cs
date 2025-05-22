@@ -698,7 +698,9 @@ namespace WaterskiScoringSystem.Tools {
 						}
 						if ( curPlcmt.Contains( "T" ) ) {
 							curNumPlcmt = Convert.ToInt32( curPlcmt.Substring( 0, curPlcmt.IndexOf( "T" ) ) );
-						} else {
+                        } else if ( HelperFunctions.isObjectEmpty( curPlcmt.Trim()) ) {
+                            curNumPlcmt = 999;
+                        } else {
 							curNumPlcmt = Convert.ToInt32( curPlcmt );
 						}
 						prevReportGroup = curReportGroup;

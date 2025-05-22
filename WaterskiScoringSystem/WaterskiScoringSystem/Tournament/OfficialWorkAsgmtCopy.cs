@@ -61,28 +61,28 @@ namespace WaterskiScoringSystem.Tournament {
 
 			CopyFromLabel.Text = "Copying from group " + myCopyFromGroup + " round " + myCopyFromRound;
 
-            if (inRules.ToLower().Equals( "ncwsa" )) {
+            if ( HelperFunctions.isCollegiateSanction( inSanctionId ) ) {
                 DataGridViewRow curViewRow;
                 int curViewIdx = 0;
                 for (Int16 curRound = 1; curRound <= inRounds; curRound++) {
                     curViewIdx = dataGridView.Rows.Add();
                     curViewRow = dataGridView.Rows[curViewIdx];
-                    curViewRow.Cells["EventGroup"].Value = "Men A";
+                    curViewRow.Cells["EventGroup"].Value = "CM";
                     curViewRow.Cells["Round"].Value = ( (int)curRound ).ToString();
 
                     curViewIdx = dataGridView.Rows.Add();
                     curViewRow = dataGridView.Rows[curViewIdx];
-                    curViewRow.Cells["EventGroup"].Value = "Women A";
+                    curViewRow.Cells["EventGroup"].Value = "CW";
                     curViewRow.Cells["Round"].Value = ( (int)curRound ).ToString();
 
                     curViewIdx = dataGridView.Rows.Add();
                     curViewRow = dataGridView.Rows[curViewIdx];
-                    curViewRow.Cells["EventGroup"].Value = "Men B";
+                    curViewRow.Cells["EventGroup"].Value = "BM";
                     curViewRow.Cells["Round"].Value = ( (int)curRound ).ToString();
 
                     curViewIdx = dataGridView.Rows.Add();
                     curViewRow = dataGridView.Rows[curViewIdx];
-                    curViewRow.Cells["EventGroup"].Value = "Women B";
+                    curViewRow.Cells["EventGroup"].Value = "BW";
                     curViewRow.Cells["Round"].Value = ( (int)curRound ).ToString();
 
                     curViewIdx = dataGridView.Rows.Add();

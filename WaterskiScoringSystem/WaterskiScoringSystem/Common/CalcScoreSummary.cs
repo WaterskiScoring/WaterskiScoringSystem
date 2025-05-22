@@ -3173,8 +3173,15 @@ namespace WaterskiScoringSystem.Common {
 				}
 				if ( curScore > 0 && curScoreMax > 0 ) {
 					if ( isJumpEvent ) {
-						curScore = Convert.ToDecimal( Math.Sqrt( Convert.ToDouble( ( curScore * curScore ) / ( curScoreMax * curScoreMax ) ) ) * 1000 );
-					} else {
+						/* 
+						 * I had the original calculation using the square root of the results 
+						 * but further of the rule in 2025 doesn't use the square root
+						 * Not sure if this changed or I misinterpreted it originally.
+						 * In any event as of 2025 Rules this is correct for jump
+						 */
+						//curScore = Convert.ToDecimal( Math.Sqrt( Convert.ToDouble( ( curScore * curScore ) / ( curScoreMax * curScoreMax ) ) ) * 1000 );
+                        curScore = Convert.ToDecimal( Convert.ToDouble( ( curScore * curScore ) / ( curScoreMax * curScoreMax ) ) * 1000 );
+                    } else {
 						curScore = Math.Round( ( ( curScore / curScoreMax ) * 1000 ), 1 );
 					}
 				} else {

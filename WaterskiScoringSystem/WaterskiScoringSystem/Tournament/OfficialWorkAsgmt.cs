@@ -1128,8 +1128,9 @@ namespace WaterskiScoringSystem.Tournament {
 				MessageBox.Show( "You must select an event group to be copied" );
 				return;
 			}
+            if ( HelperFunctions.isCollegiateSanction(mySanctionNum)) curFromGroup = HelperFunctions.getEventGroupValueNcwsa( curFromGroup );
 
-			if ( officialWorkAsgmtDataGridView.Rows.Count <= 0 ) {
+            if ( officialWorkAsgmtDataGridView.Rows.Count <= 0 ) {
 				MessageBox.Show( "No rows available to be copied" );
 				return;
 			}

@@ -31,7 +31,7 @@ namespace WaterskiScoringSystem.Slalom {
          *		All passes shall be monitored and applicable buoy and cumulative deviation tolerances with re-ride situations applied at 11.25 and shorter.
          *	Titled Events (World or Confederation)
          *		All passes shall be monitored and applicable buoy and cumulative deviation tolerances with re-ride situations applied at 14.25 and shorter.
-         *		Note: currently this system is not used for titled events so deviations are only mandatory for 11.215
+         *		Note: currently this system is not used for titled events so deviations are only mandatory for 11.25
 		 * 
 		 * Reride scenarios for buoy deviation
 		 *	Pass not completed
@@ -130,41 +130,51 @@ namespace WaterskiScoringSystem.Slalom {
 
             if ( curRerideOptional == 0 && curRerideMandatory == 0 ) return curPassScore;
 
-            if ( curRerideMandatory > 0 ) {
+            decimal curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
+            if ( curRerideMandatory > 0 
+                && curPassLineLength <= curMinRopeLength 
+                && (Decimal)mySlalomSetAnalysis.ClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"] 
+                ) {
                 // Mandatory reride indicated based on boat path data
-                decimal curPassLineLength = Convert.ToDecimal( (String)myRecapRow.Cells["PassLineLengthRecap"].Value );
-                if ( curPassLineLength <= curMinRopeLength && (Decimal)mySlalomSetAnalysis.ClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"] ) {
-                    myRecapRow.Cells["ScoreProtRecap"].Value = "N";
-                    myRecapRow.Cells["RerideRecap"].Value = "Y";
-                    myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";
+                myRecapRow.Cells["ScoreProtRecap"].Value = "N";
+                myRecapRow.Cells["RerideRecap"].Value = "Y";
+                myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";
 
-                    String curProtectMsg = "Cannot improve score";
-                    Decimal curScoreProtected = curRerideMandatory - 1;
-                    if ( curScoreProtected < curPassScore ) {
-                        curPassScore = curScoreProtected;
-                        curProtectMsg = String.Format( "score {0} protected ", curScoreProtected );
-                        myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
-                        myRecapRow.Cells["ProtectedScoreRecap"].Value = curScoreProtected.ToString( "#.00" );
-                    }
-                    if ( curPassScoreOrig < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScoreOrig );
+                String curProtectMsg = "Cannot improve score";
+                Decimal curScoreProtected = curRerideMandatory - 1;
+                if ( curScoreProtected < curPassScore ) {
+                    curPassScore = curScoreProtected;
+                    curProtectMsg = String.Format( "score {0} protected ", curScoreProtected );
+                    myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
+                    myRecapRow.Cells["ProtectedScoreRecap"].Value = curScoreProtected.ToString( "#.00" );
+                }
+                if ( curPassScoreOrig < 6 ) curProtectMsg += String.Format( ", can't improve score {0}", curPassScoreOrig );
+                CalcScoreReqd = true;
+
+                if ( curPassLineLength <= curMinRopeLength && (Decimal)mySlalomSetAnalysis.ClassRowSkier["ListCodeNum"] > (Decimal)SlalomEventData.myClassCRow["ListCodeNum"] ) {
                     SkierPassMsg = String.Format( "Mandatory reride based on boat path deviation at buoy {0}, {1}"
                         , curRerideMandatory, curProtectMsg );
                     myRecapRow.Cells["RerideReasonRecap"].Value = SkierPassMsg;
-
-                    CalcScoreReqd = true;
-                    return curPassScore;
+                
+                } else {
+                    myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";
+                    SkierPassMsg = String.Format( "Due to skier classification optional reride based on boat path deviation at buoy {0}, {1}"
+                        , curRerideMandatory, curProtectMsg );
+                    myRecapRow.Cells["RerideReasonRecap"].Value = SkierPassMsg;
                 }
+                return curPassScore;
             }
 
             if ( curPassScore == 6 ) return curPassScore;
             if ( curRerideOptional > 0 ) {
-                // Mandatory reride indicated based on boat path data
+                // Optional reride indicated based on boat path data
                 SkierPassMsg = String.Format( "Optional reride based on boat path deviation at buoy {0}" +
                     ", score {1} protected, can improve "
                     , curRerideOptional, curPassScore );
                 myRecapRow.Cells["ScoreProtRecap"].Value = "Y";
                 myRecapRow.Cells["ProtectedScoreRecap"].Value = curPassScore;
-                myRecapRow.Cells["RerideRecap"].Value = "Y";
+                myRecapRow.Cells["BoatPathGoodRecap"].Value = "N";
+                //myRecapRow.Cells["RerideRecap"].Value = "Y";
                 myRecapRow.Cells["RerideReasonRecap"].Value = SkierPassMsg;
             }
             return curPassScore;

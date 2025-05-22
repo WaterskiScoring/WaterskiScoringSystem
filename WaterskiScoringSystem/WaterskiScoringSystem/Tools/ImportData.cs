@@ -13,6 +13,7 @@ namespace WaterskiScoringSystem.Tools {
         private String mySanctionNum;
         private String myTableName = null;
 		private String myMatchCommand = "";
+		private String[] myColumnSkip = { "tournament:tourdataloc" };
 		
 		private int idxRowsRead = 0, idxRowsFound = 1, idxRowsAdded = 2, idxRowsUpdated = 3, idxRowsSkipped = 4;
 		private int[] myImportCounts = new int[] { 0, 0, 0, 0, 0 };
@@ -72,21 +73,16 @@ namespace WaterskiScoringSystem.Tools {
 
         private String[] getTableColumns( String inTableName ) {
             String[] inputColumns = null;
-            if ( inTableName.ToLower().Equals( "memberlist" ) ) {
-                inputColumns = new String[1];
-                inputColumns[0] = "MemberId";
-            } else {
-                String selectStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS"
-                    + " WHERE TABLE_NAME = '" + inTableName + "' And COLUMN_NAME != 'PK'"
-                    + " ORDER BY COLUMN_NAME";
-                DataTable curDataTable = DataAccess.getDataTable( selectStmt );
-                if ( curDataTable != null ) {
-                    int idx = 0;
-                    inputColumns = new String[curDataTable.Rows.Count];
-                    foreach ( DataRow curRow in curDataTable.Rows ) {
-                        inputColumns[idx] = (String)curRow["COLUMN_NAME"];
-                        idx++;
-                    }
+            String selectStmt = "SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS"
+                + " WHERE TABLE_NAME = '" + inTableName + "' And COLUMN_NAME != 'PK'"
+                + " ORDER BY COLUMN_NAME";
+            DataTable curDataTable = DataAccess.getDataTable( selectStmt );
+            if ( curDataTable != null ) {
+                int idx = 0;
+                inputColumns = new String[curDataTable.Rows.Count];
+                foreach ( DataRow curRow in curDataTable.Rows ) {
+                    inputColumns[idx] = (String)curRow["COLUMN_NAME"];
+                    idx++;
                 }
             }
             return inputColumns;
@@ -132,42 +128,42 @@ namespace WaterskiScoringSystem.Tools {
 
 				inputCols = inputBuffer.Split( HelperFunctions.TabDelim );
 
-				if ( inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" ) ) {
-					//Display statistics when another table entry is found
-					if ( myTableName != null ) {
-						handleEndOfTable( curSanctionId );
-						curSanctionId = "";
-					}
+                if ( inputCols[0].ToLower().Equals( "table:" ) || inputCols[0].ToLower().Equals( "tablename:" ) ) {
+                    //Display statistics when another table entry is found
+                    if ( myTableName != null ) {
+                        handleEndOfTable( curSanctionId );
+                        curSanctionId = "";
+                    }
 
-					//Check for table name and assume all subsequent records are for this table
-					TableName = inputCols[1];
-					myProgressInfo.setProgessMsg( "Processing " + TableName );
-					myProgressInfo.Refresh();
+                    //Check for table name and assume all subsequent records are for this table
+                    TableName = inputCols[1];
+                    myProgressInfo.setProgessMsg( "Processing " + TableName );
+                    myProgressInfo.Refresh();
 
-					inputColNames = null;
-					inputKeys = getTableKeys( TableName );
+                    inputColNames = null;
+                    inputKeys = getTableKeys( TableName );
 
-				} else if ( inputColNames == null ) {
-					//Column names are required and must preceed the data rows
-					inputColNames = new string[inputCols.Length];
-					for ( int idx = 0; idx < inputCols.Length; idx++ ) {
+                } else if ( inputColNames == null ) {
+                    //Column names are required and must preceed the data rows
+                    inputColNames = new string[inputCols.Length];
+                    for ( int idx = 0; idx < inputCols.Length; idx++ ) {
                         inputColNames[idx] = inputCols[idx];
-						//Check for column names that have changed or been deleted
+                        //Check for column names that have changed or been deleted
                         if ( TableName.Equals( "OfficialWork" ) && inputCols[idx].ToLower().Equals( "techofficialrating" ) ) inputColNames[idx] = "TechControllerSlalomRating";
-					}
+                    }
 
-				} else {
-					/*
+                } else {
+                    /*
 					 * Process data rows
 					 * Table name and column names are required to process data rows
 					 */
-					if ( myTableName == null ) {
-						MessageBox.Show( "Error: Table name not provide.  Unable to process import file." );
-						break;
+                    if ( myTableName == null ) {
+                        MessageBox.Show( "Error: Table name not provide.  Unable to process import file." );
+                        break;
 
-					} else if ( inputColNames == null ) {
-						MessageBox.Show( "Error: Column definitions not provide.  Unable to process import file." );
-						break;
+                    } else if ( inputColNames == null ) {
+                        MessageBox.Show( "Error: Column definitions not provide.  Unable to process import file." );
+                        break;
 
                     } else {
                         myImportCounts[idxRowsRead]++;
@@ -183,16 +179,16 @@ namespace WaterskiScoringSystem.Tools {
                         }
                         if ( returnSanctionId.Length > 0 ) curSanctionId = returnSanctionId;
 
-						if ( myTableName.Equals( "Tournament" ) ) {
-							CheckTournamentTableNeedSplit( inputKeys, inputColNames, inputCols );
-						}
-
-
+                        if ( myTableName.Equals( "Tournament" ) ) {
+                            CheckTournamentTableNeedSplit( inputKeys, inputColNames, inputCols );
                         }
+
+
                     }
+                }
             }
-			
-			handleEndOfTable( curSanctionId );
+
+            handleEndOfTable( curSanctionId );
 			showImportStats();
 			
 			myImportCounts = new int[] { 0, 0, 0, 0, 0 };
@@ -367,8 +363,11 @@ namespace WaterskiScoringSystem.Tools {
             string curStmtDelim = "";
             String[] curTableColumns = getTableColumns( myTableName );
             foreach ( string colName in curTableColumns ) {
+				if ( myColumnSkip.Contains( myTableName.ToLower() + ":" + colName.ToLower() ) ) continue;
+				//if ( myTableName.ToLower().Equals( "tournament" ) && colName.ToLower().Equals( "tourdataloc" ) ) continue;
                 curColValue = findColValue( colName, inputColNames, inputCols );
                 if ( curColValue == null ) continue; // If column is not available on the import record then bypass including in the update
+                
                 if ( colName.Trim().ToLower().Equals( "sanctionid" ) ) curSanctionId = curColValue;
 
                 if ( HelperFunctions.isObjectPopulated( curColValue ) ) {

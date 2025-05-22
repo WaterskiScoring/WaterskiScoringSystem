@@ -536,8 +536,9 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curScoreFeet.Length == 0 ) curScoreFeet = "Null";
 			String curScoreMeters = scoreMetersTextBox.Text;
 			if ( curScoreMeters.Length == 0 ) curScoreMeters = "Null";
-			decimal curNopsScoreNum = Convert.ToDecimal( nopsScoreTextBox.Text );
-			if ( curNopsScoreNum > 99999m ) {
+			decimal curNopsScoreNum = 0;
+			if ( !decimal.TryParse( nopsScoreTextBox.Text, out curNopsScoreNum )) curNopsScoreNum = 0;
+            if ( curNopsScoreNum > 99999m ) {
 				curNopsScoreNum = 99999m;
 				scoreMetersTextBox.Text = curNopsScoreNum.ToString( "####0.0" ); ;
 			}
@@ -2247,21 +2248,36 @@ namespace WaterskiScoringSystem.Jump {
 			if ( curColumnName.Equals( "ReturnToBaseRecap" )
 				 || curColumnName.Equals( "RerideRecap" )
 			   ) {
-					SendKeys.Send( "{TAB}" );
+				SendKeys.Send( "{TAB}" );
 
 			} else if ( curColumnName.StartsWith( "TimeInTolImg" ) ) {
 				if ( curBoatSplitTime.Length == 0 && curBoatSplitTime2.Length == 0 && curBoatEndTime.Length == 0
 					&& WscHandler.isConnectActive
 					) checkTimeFromBpms( curViewRow, e.ColumnIndex );
 
-			} else if ( curColumnName.StartsWith( "ScoreFeetRecap" ) && curColumnName.StartsWith( "ScoreMetersRecap" ) ) {
+			} else if ( curColumnName.StartsWith( "ScoreFeetRecap" ) || curColumnName.StartsWith( "ScoreMetersRecap" ) ) {
 				if ( curBoatSplitTime.Length > 0 && curBoatSplitTime2.Length > 0 && curBoatEndTime.Length > 0
 					&& WscHandler.isConnectActive
 					) checkTimeFromBpms( curViewRow, e.ColumnIndex );
 			}
-		}
+            if ( curColumnName.StartsWith( "TimeInTolImg" )
+				|| curColumnName.StartsWith( "ScoreFeetRecap" )
+				|| curColumnName.StartsWith( "ScoreMetersRecap" )
+				) {
+                if ( boatPathDataGridView.Visible == false ) {
+                    loadBoatPathArgs = new string[] { "Jump"
+                    , HelperFunctions.getViewRowColValue( curViewRow, "MemberIdRecap", "")
+                    , HelperFunctions.getViewRowColValue( curViewRow, "RoundRecap", "")
+                    , HelperFunctions.getViewRowColValue( curViewRow, "PassNumRecap", "") };
+                    Timer curTimerObj = new Timer();
+                    curTimerObj.Interval = 5;
+                    curTimerObj.Tick += new EventHandler( loadBoatPathDataTimer );
+                    curTimerObj.Start();
+                }
+            }
+        }
 
-		private void checkTimeFromBpms( DataGridViewRow curViewRow, int colIdx ) {
+        private void checkTimeFromBpms( DataGridViewRow curViewRow, int colIdx ) {
 			if ( myRecapRow.Cells["ResultsRecap"].Value.ToString().Equals( "Pass" )
 				&& ( (String)curViewRow.Cells["BoatSplitTimeRecap"].Value ).Length > 0
 				&& ( (String)curViewRow.Cells["BoatSplitTime2Recap"].Value ).Length > 0
@@ -2368,7 +2384,23 @@ namespace WaterskiScoringSystem.Jump {
 					}
 				}
 
-			} else if ( curColName.Equals( "ScoreProtRecap" )
+                if ( curColName.StartsWith( "TimeInTolImg" )
+                    || curColName.StartsWith( "ScoreFeetRecap" )
+                    || curColName.StartsWith( "ScoreMetersRecap" )
+                    ) {
+                    if ( boatPathDataGridView.Visible == false ) {
+                        loadBoatPathArgs = new string[] { "Jump"
+                    , HelperFunctions.getViewRowColValue( myRecapRow, "MemberIdRecap", "")
+                    , HelperFunctions.getViewRowColValue( myRecapRow, "RoundRecap", "")
+                    , HelperFunctions.getViewRowColValue( myRecapRow, "PassNumRecap", "") };
+                        Timer curTimerObj = new Timer();
+                        curTimerObj.Interval = 5;
+                        curTimerObj.Tick += new EventHandler( loadBoatPathDataTimer );
+                        curTimerObj.Start();
+                    }
+                }
+
+            } else if ( curColName.Equals( "ScoreProtRecap" )
 				|| curColName.Equals( "RerideRecap" )
 				|| curColName.Equals( "ReturnToBaseRecap" )
 				|| curColName.Equals( "ResultsRecap" )

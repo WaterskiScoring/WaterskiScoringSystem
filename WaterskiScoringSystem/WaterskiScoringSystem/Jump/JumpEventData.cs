@@ -177,7 +177,7 @@ namespace WaterskiScoringSystem.Jump {
                         tmpFilterCmd = "And XT.AgeGroup not in ('CM', 'CW', 'BM', 'BW') ";
                         tmpFilterCmd2 = "And XT.EventGroup = '" + curEventGroup  + "' ";
 
-                    } else {
+                    } else if ( !( curEventGroup.ToLower().Equals( "all" ) ) ) {
                         tmpFilterCmd = "And XT.AgeGroup = '" + curEventGroup + "' ";
                         tmpFilterCmd2 = "And XT.EventGroup = '" + HelperFunctions.getEventGroupOfficialAsgmtNcwsa( curEventGroup ) + "' ";
                     }

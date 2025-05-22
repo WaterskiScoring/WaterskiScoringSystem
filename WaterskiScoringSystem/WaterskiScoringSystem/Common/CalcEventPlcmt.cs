@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Eventing.Reader;
 using System.Text;
-using System.Windows.Forms;
 
 namespace WaterskiScoringSystem.Common {
     class CalcEventPlcmt {
@@ -31,6 +28,7 @@ namespace WaterskiScoringSystem.Common {
             DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
             String curPlcmtName = "PlcmtSlalom";
+            String curRoundName = "RoundSlalom";
             if ( HelperFunctions.isIwwfEvent( curRules ) ) {
                 curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Slalom", inNumPrelimRounds );
             } else {
@@ -58,7 +56,7 @@ namespace WaterskiScoringSystem.Common {
                     setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
                     //Analyze results of tie breakers and update event skier placments
-                    setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+                    setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
                 }
 
                 return curPlcmtResults;
@@ -67,7 +65,7 @@ namespace WaterskiScoringSystem.Common {
             /*
 			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
 			 */
-            curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+            curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults, inDataType );
             foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
                 curPlcmt = (String)curRow[curPlcmtName];
                 curGroup = "";
@@ -90,6 +88,7 @@ namespace WaterskiScoringSystem.Common {
                     curGroup = "";
                     curSelectCmd = "";
                 }
+                if ( curSelectCmd.Length > 0 && inDataType.ToLower().Equals( "round" ) ) curSelectCmd += " AND " + curRoundName + " = '" + HelperFunctions.getDataRowColValue( curRow, curRoundName, "0") + "'";
 
                 //Get results for the skiers that are tied for the placement by age group and position
                 curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
@@ -102,7 +101,7 @@ namespace WaterskiScoringSystem.Common {
                 setSlalomTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
                 //Analyze results of tie breakers and update event skier placments
-                setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+                setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
             }
 
             return curPlcmtResults;
@@ -127,7 +126,8 @@ namespace WaterskiScoringSystem.Common {
 			DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
 			String curPlcmtName = "PlcmtTrick";
-			if ( HelperFunctions.isIwwfEvent( curRules ) ) {
+            String curRoundName = "RoundTrick";
+            if ( HelperFunctions.isIwwfEvent( curRules ) ) {
 				curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Trick", inNumPrelimRounds );
 			} else {
 				curPlcmtResults = setInitEventPlcmt( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, "Trick", inNumPrelimRounds );
@@ -154,7 +154,7 @@ namespace WaterskiScoringSystem.Common {
 					setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
 					//Analyze results of tie breakers and update event skier placments
-					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
 				}
 				return curPlcmtResults;
 			}
@@ -162,7 +162,7 @@ namespace WaterskiScoringSystem.Common {
 			/*
 			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
 			 */
-			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults, inDataType );
 			foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
 				curPlcmt = (String)curRow[curPlcmtName];
 				curGroup = "";
@@ -185,9 +185,10 @@ namespace WaterskiScoringSystem.Common {
 					curGroup = "";
 					curSelectCmd = "";
 				}
+                if ( inDataType.ToLower().Equals( "round" ) ) curSelectCmd += curRoundName + " = " + HelperFunctions.getDataRowColValue( curRow, curRoundName, "0" ) + " AND ";
 
-				//Get results for the skiers that are tied for the placement by age group and position
-				curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
+                //Get results for the skiers that are tied for the placement by age group and position
+                curFilterCmd = curSelectCmd + " AND " + curPlcmtName + " = '" + curPlcmt + "'";
 				curSkierList = curPlcmtResults.Select( curFilterCmd );
 
 				//Analyze tied placments and gather all data needed for tie breakers
@@ -197,7 +198,7 @@ namespace WaterskiScoringSystem.Common {
 				setTrickTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
 				//Analyze results of tie breakers and update event skier placments
-				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
 			}
 
 			return curPlcmtResults;
@@ -222,6 +223,8 @@ namespace WaterskiScoringSystem.Common {
             DataTable curPlcmtResults, curSkierScoreList, curTiePlcmtList;
 
             String curPlcmtName = "PlcmtJump";
+            String curRoundName = "RoundJump";
+
             if ( HelperFunctions.isIwwfEvent( curRules ) ) {
                 curPlcmtResults = setInitEventPlcmtIwwf( inEventResults, inPlcmtMethod, inPlcmtOrg, inDataType, "Jump", inNumPrelimRounds );
             } else {
@@ -232,7 +235,7 @@ namespace WaterskiScoringSystem.Common {
 				/*
 				 * Collegiate placement calculations - Analzye and assign placements by age group and / or event groups as specifeid by request
 				 */
-				curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+				curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults, inDataType );
 				foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
 					curPlcmt = (String)curRow[curPlcmtName];
 					if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
@@ -254,9 +257,10 @@ namespace WaterskiScoringSystem.Common {
 						curGroup = "";
 						curSelectCmd = "";
 					}
+                    if ( inDataType.ToLower().Equals( "round" ) ) curSelectCmd += curRoundName + " = " + HelperFunctions.getDataRowColValue( curRow, curRoundName, "0") + " AND ";
 
-					//Get results for the skiers that are tied for the placement by age group and position
-					curFilterCmd = curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'";
+                    //Get results for the skiers that are tied for the placement by age group and position and round if needed
+                    curFilterCmd = curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'";
 					curSkierList = curPlcmtResults.Select( curFilterCmd );
 
 					//Analyze tied placments and gather all data needed for tie breakers
@@ -266,7 +270,7 @@ namespace WaterskiScoringSystem.Common {
 					setJumpTieBreakerNcwsaPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
 					//Analyze results of tie breakers and update event skier placments
-					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, inDataType, curPlcmtName, curPlcmtName );
 				}
 				
                 return curPlcmtResults;
@@ -290,7 +294,7 @@ namespace WaterskiScoringSystem.Common {
 					setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
 					//Analyze results of tie breakers and update event skier placments
-					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+					setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
 				}
 				
                 return curPlcmtResults;
@@ -299,7 +303,7 @@ namespace WaterskiScoringSystem.Common {
 			/*
 			 * Identify placement ties and gather scores to be used for breaking ties depending specified criteria
 			 */
-			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults );
+			curTiePlcmtList = findEventPlcmtTiesGroup( curPlcmtName, inPlcmtOrg, curPlcmtResults, inDataType );
 			foreach ( DataRow curRow in curTiePlcmtList.Rows ) {
 				curPlcmt = (String)curRow[curPlcmtName];
 				curGroup = "";
@@ -322,9 +326,10 @@ namespace WaterskiScoringSystem.Common {
 					curGroup = "";
 					curSelectCmd = "";
 				}
+                if ( inDataType.ToLower().Equals( "round" ) ) curSelectCmd += curRoundName + " = " + HelperFunctions.getDataRowColValue( curRow, curRoundName, "0" ) + " AND ";
 
-				//Get results for the skiers that are tied for the placement by age group and position
-				curSkierList = curPlcmtResults.Select( curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'" );
+                //Get results for the skiers that are tied for the placement by age group and position
+                curSkierList = curPlcmtResults.Select( curSelectCmd + curPlcmtName + " = '" + curPlcmt + "'" );
 
 				//Analyze tied placments and gather all data needed for tie breakers
 				curSkierScoreList = getJumpTieBreakerData( curSkierList, curEventRounds, curRules, curPlcmtName, inDataType );
@@ -333,7 +338,7 @@ namespace WaterskiScoringSystem.Common {
 				setJumpTieBreakerPlcmt( curSkierScoreList, curPlcmtName, curPlcmt );
 
 				//Analyze results of tie breakers and update event skier placments
-				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, curPlcmtName );
+				setEventFinalPlcmt( curSkierScoreList, curPlcmtResults, inPlcmtMethod, inPlcmtOrg, curPlcmtName, inDataType, curPlcmtName );
 			}
 
 			return curPlcmtResults;
@@ -491,6 +496,7 @@ namespace WaterskiScoringSystem.Common {
                     continue;
                 }
 
+                newSkierScoreRow.EndEdit();
             }
 
             return curSkierScoreList;
@@ -998,7 +1004,7 @@ namespace WaterskiScoringSystem.Common {
             }
         }
 
-        private void setEventFinalPlcmt( DataTable inSkierScoreList, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inPlcmtName, String inPlcmtNameSmry ) {
+        private void setEventFinalPlcmt( DataTable inSkierScoreList, DataTable inEventResults, String inPlcmtMethod, String inPlcmtOrg, String inPlcmtName, String inDataType, String inPlcmtNameSmry ) {
             /* **********************************************************
              * Analyze results of tie breakers and update event skier placments
              * ******************************************************* */
@@ -1007,12 +1013,15 @@ namespace WaterskiScoringSystem.Common {
             DataRow prevSkierScoreRow;
             DataRow[] curSkierList;
             int prevIdx = 0, curIdx = 0;
+            String curFilter = "";
             String curPlcmt = "";
             foreach ( DataRow curSkierScoreRow in curSkierScoreList.Rows ) {
                 if ( curIdx > 0 ) {
                     prevSkierScoreRow = curSkierScoreList.Rows[prevIdx];
                     if ( curSkierScoreRow[inPlcmtNameSmry].Equals( prevSkierScoreRow[inPlcmtNameSmry] ) ) {
-                        curSkierList = inEventResults.Select( "MemberId = '" + prevSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + prevSkierScoreRow["AgeGroup"] + "'" );
+                        curFilter = "MemberId = '" + prevSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + prevSkierScoreRow["AgeGroup"] + "'";
+                        if ( inDataType.ToLower().Equals( "round" ) ) curFilter += " AND Round = " + prevSkierScoreRow["Round"];
+                        curSkierList = inEventResults.Select( curFilter );
                         if ( curSkierList.Length > 0 ) {
                             curPlcmt = ( (String)prevSkierScoreRow[inPlcmtNameSmry] );
                             if ( curPlcmt.Length > 3 ) {
@@ -1021,7 +1030,9 @@ namespace WaterskiScoringSystem.Common {
                                 curSkierList[0][inPlcmtName] = curPlcmt.PadLeft( 3, ' ' ) + "T";
                             }
                         }
-                        curSkierList = inEventResults.Select( "MemberId = '" + curSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + curSkierScoreRow["AgeGroup"] + "'" );
+                        curFilter = "MemberId = '" + curSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + curSkierScoreRow["AgeGroup"] + "'";
+                        if ( inDataType.ToLower().Equals( "round" ) ) curFilter += " AND Round = " + curSkierScoreRow["Round"];
+                        curSkierList = inEventResults.Select( curFilter );
                         if ( curSkierList.Length > 0 ) {
                             curPlcmt = ( (String)curSkierScoreRow[inPlcmtNameSmry] );
                             if ( curPlcmt.Length > 3 ) {
@@ -1031,7 +1042,9 @@ namespace WaterskiScoringSystem.Common {
                             }
                         }
                     } else {
-                        curSkierList = inEventResults.Select( "MemberId = '" + curSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + curSkierScoreRow["AgeGroup"] + "'" );
+                        curFilter = "MemberId = '" + curSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + curSkierScoreRow["AgeGroup"] + "'";
+                        if ( inDataType.ToLower().Equals( "round" ) ) curFilter += " AND Round = " + curSkierScoreRow["Round"];
+                        curSkierList = inEventResults.Select( curFilter );
                         if ( curSkierList.Length > 0 ) {
                             curPlcmt = ( (String)curSkierScoreRow[inPlcmtNameSmry] );
                             if ( curPlcmt.Length > 3 ) {
@@ -1041,7 +1054,9 @@ namespace WaterskiScoringSystem.Common {
                             }
                         }
                         if ( curIdx == 1 ) {
-                            curSkierList = inEventResults.Select( "MemberId = '" + prevSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + prevSkierScoreRow["AgeGroup"] + "'" );
+                            curFilter = "MemberId = '" + prevSkierScoreRow["MemberId"] + "' AND AgeGroup = '" + prevSkierScoreRow["AgeGroup"] + "'";
+                            if ( inDataType.ToLower().Equals( "round" ) ) curFilter += " AND Round = " + prevSkierScoreRow["Round"];
+                            curSkierList = inEventResults.Select( curFilter );
                             if ( curSkierList.Length > 0 ) {
                                 curPlcmt = ( (String)prevSkierScoreRow[inPlcmtNameSmry] );
                                 if ( curPlcmt.Length > 3 ) {
@@ -1447,11 +1462,12 @@ namespace WaterskiScoringSystem.Common {
 			return curPlcmtResults;
 		}
 
-		private DataTable findEventPlcmtTiesGroup(String inPlcmtName, String inPlcmtOrg, DataTable inResults) {
+		private DataTable findEventPlcmtTiesGroup(String inPlcmtName, String inPlcmtOrg, DataTable inResults, String inDataType ) {
             /* **********************************************************
              * Analyze event results to identify ties
              * ******************************************************* */
-            String curPlcmt = "", curDiv = "", curGroup = "", curPlcmtValue = "", prevPlcmtValue = "";
+            String curPlcmt = "", curDiv = "", curGroup = "", curPlcmtValue = "", prevPlcmtValue = "", curRoundName = "";
+            Int16 curRound = 0;
             DataRowView newPlcmtRow;
             DataTable curPlcmtList = new DataTable();
 
@@ -1505,36 +1521,57 @@ namespace WaterskiScoringSystem.Common {
                 curCol.DefaultValue = "";
                 curPlcmtList.Columns.Add( curCol );
             }
+            curRoundName = "";
+            curRound = 0;
+            if ( inDataType.ToLower().Equals( "round" ) ) {
+                if ( inPlcmtName.Contains("Slalom") ) curRoundName = "RoundSlalom";
+                else if ( inPlcmtName.Contains( "Trick" ) ) curRoundName = "RoundTrick";
+                else if ( inPlcmtName.Contains( "Jump" ) ) curRoundName = "RoundJump";
+
+                curCol = new DataColumn();
+                curCol.ColumnName = curRoundName;
+                curCol.DataType = System.Type.GetType( "System.Int16" );
+                curCol.AllowDBNull = false;
+                curCol.ReadOnly = false;
+                curCol.DefaultValue = 0;
+                curPlcmtList.Columns.Add( curCol );
+            }
             #endregion
 
             #region Find ties in initial placement determinations
             foreach ( DataRow curRow in inResults.Rows ) {
                 curPlcmt = curRow[inPlcmtName].ToString();
                 curPlcmtValue = "";
+
+                if ( inDataType.ToLower().Equals( "round" ) ) {
+                    Int16.TryParse( HelperFunctions.getDataRowColValue( curRow, curRoundName, "1" ), out curRound );
+                }
+
                 if ( curPlcmt.Contains( "T" ) ) {
                     if ( inPlcmtOrg.ToLower().Equals( "div" ) ) {
-                        curDiv = (String)curRow["AgeGroup"];
-                        curPlcmtValue = curDiv + "-" + curPlcmt;
+                        curDiv = HelperFunctions.getDataRowColValue( curRow, "AgeGroup", "" );
+                        if ( inDataType.ToLower().Equals( "round" ) ) curPlcmtValue = curDiv + "-" + curRound.ToString() + "-" + curPlcmt;
+                        else curPlcmtValue = curDiv + "-" + curPlcmt;
                     } else if ( inPlcmtOrg.ToLower().Equals( "divgr" ) ) {
-                        curDiv = (String)curRow["AgeGroup"];
-                        curGroup = (String)curRow["EventGroup"];
-                        curPlcmtValue = curDiv + "-" + curGroup + "-" + curPlcmt;
+                        curDiv = HelperFunctions.getDataRowColValue( curRow, "AgeGroup", "" );
+                        curGroup = HelperFunctions.getDataRowColValue( curRow, "EventGroup", "" );
+                        if ( inDataType.ToLower().Equals( "round" ) ) curPlcmtValue = curDiv + "-" + curGroup + "-" + curRound.ToString() + "-" + curPlcmt;
+                        else curPlcmtValue = curDiv + "-" + curGroup + "-" + curPlcmt;
                     } else if ( inPlcmtOrg.ToLower().Equals( "group" ) ) {
-                        curGroup = (String)curRow["EventGroup"];
-                        curPlcmtValue = curGroup + "-" + curPlcmt;
+                        curGroup = HelperFunctions.getDataRowColValue( curRow, "EventGroup", "" );
+                        if ( inDataType.ToLower().Equals( "round" ) ) curPlcmtValue = curGroup + "-" + curRound.ToString() + "-" + curPlcmt;
+                        else curPlcmtValue = curGroup + "-" + curPlcmt;
                     } else {
-                        curDiv = (String)curRow["AgeGroup"];
-                        curPlcmtValue = curDiv + "-" + curPlcmt;
+                        curDiv = HelperFunctions.getDataRowColValue( curRow, "AgeGroup", "" );
+                        if ( inDataType.ToLower().Equals( "round" ) ) curPlcmtValue = curDiv + "-" + curRound.ToString() + "-" + curPlcmt;
+                        else curPlcmtValue = curDiv + "-" + curPlcmt;
                     }
 
                     if ( !( curPlcmtValue.Equals( prevPlcmtValue ) ) ) {
                         newPlcmtRow = curPlcmtList.DefaultView.AddNew();
-                        if ( curDiv.Length > 0 ) {
-                            newPlcmtRow["AgeGroup"] = curDiv;
-                        }
-                        if ( curGroup.Length > 0 ) {
-                            newPlcmtRow["EventGroup"] = curGroup;
-                        }
+                        if ( curDiv.Length > 0 ) newPlcmtRow["AgeGroup"] = curDiv;
+                        if ( curGroup.Length > 0 ) newPlcmtRow["EventGroup"] = curGroup;
+                        if ( inDataType.ToLower().Equals( "round" ) ) newPlcmtRow[curRoundName] = curRound;
                         newPlcmtRow[inPlcmtName] = curPlcmt;
                         newPlcmtRow.EndEdit();
                     }

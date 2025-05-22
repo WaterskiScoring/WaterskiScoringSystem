@@ -763,7 +763,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10.1.1.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.1.2.2")]
         public string AppVersion {
             get {
                 return ((string)(this["AppVersion"]));
@@ -1553,7 +1553,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10.1.1.7 4/11/2025")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.1.2.2 5/22/2025")]
         public string BuildVersion {
             get {
                 return ((string)(this["BuildVersion"]));
@@ -2606,7 +2606,7 @@ namespace WaterskiScoringSystem.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://test.usawaterski.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.usawaterski.org")]
         public string UriUsaWaterskiProd {
             get {
                 return ((string)(this["UriUsaWaterskiProd"]));

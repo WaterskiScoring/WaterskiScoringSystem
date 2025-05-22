@@ -159,6 +159,14 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 0	AnnouncerRating	R	3	3	Regional			
 0	AnnouncerRating	N	4	4	National			
 0	AnnouncerRating	E	5	5	Emeritus			
+0	ApprovedBoats	MATXI-53-25	250001	1250001	Malibu Response Txi 5.3L			2025 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MATXI-62-25	250002	1250002	Malibu Response Txi 6.2L			2025 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
+0	ApprovedBoats	MCPro-60-25	250003	1250003	MasterCraft ProStar 6.0L			2025 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
+0	ApprovedBoats	MCPro-62-25	250004	1250004	MasterCraft ProStar 6.2L			2025 | Ilmor MV8 6.2L | Fuel | Trans: 1.22:1 | Propeller Mfr,Blades, Size:OJ 867-MF 3 14 x 13.5 Nibral | ZO-S
+0	ApprovedBoats	CC002-25	250006	1250006	Nautique			2025 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC003-25	250007	1250007	Nautique			2025 | PCM ZZ6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC201-25	250008	1250008	Nautique 200			2025 | PCM ZR4 (6.0L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
+0	ApprovedBoats	CC202-25	250009	1250009	Nautique 200			2025 | PCM ZZ6 (6.2L) | Fuel | Trans:1.23:1 | Propeller Mfr,Blades, Size:AC 668* 4 12.5 x 15.5 Nibral, AC 4000 3 13.25 x 15 Nibral | ZO-S
 0	ApprovedBoats	MATXI-53-24	240001	1240001	Malibu Response Txi 5.3L			2024 | 5.3L M5Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525, 3, 13 x 11.5 Nibral | ZO-S
 0	ApprovedBoats	MATXI-62-24	240002	1240002	Malibu Response Txi 6.2L			2024 | 6.2L M6Di STD | Fuel | Trans: 1:1 | Propeller Mfr,Blades, Size:AC525 3 13 x 11.5 Nibral, AC 515* 3 13 x 12 Nibral, OJ 330 3 13 x 11.5 Nibral | ZO-S
 0	ApprovedBoats	MCPro-60-24	240003	1240003	MasterCraft ProStar 6.0L			2024 | Ilmor MV8 6.0L | Fuel | Trans: 1.26:1 | Propeller Mfr,Blades, Size:OJ 1079-MF* 4 13.9 x 14.25 Nibral | ZO-S
@@ -346,8 +354,8 @@ PK	ListName	ListCode	ListCodeNum	SortSeq	CodeValue	MinValue	MaxValue	CodeDesc
 22461	AWSAJumpMax	M2		32	57kph, 35.4mph	35.4	57	
 22462	AWSAJumpMax	M3		33	57kph, 35.4mph	35.4	57	
 22463	AWSAJumpMax	M4		34	54kph, 33.6mph	33.6	54	
-22464	AWSAJumpMax	M5		35	51kph, 31.7mph	31.7	51	
-22465	AWSAJumpMax	M6		36	51kph, 31.7mph	31.7	51	
+22464	AWSAJumpMax	M5		35	54kph, 33.6mph	33.6	54	
+22465	AWSAJumpMax	M6		36	54kph, 33.6mph	33.6	54	
 22466	AWSAJumpMax	M7		37	51kph, 31.7mph	31.7	51	
 22467	AWSAJumpMax	M8		38	51kph, 31.7mph	31.7	51	
 22468	AWSAJumpMax	M9		39	48kph, 29.8mph	29.8	48	

@@ -156,7 +156,11 @@ namespace WaterskiScoringSystem.Jump {
 				|| ( !( isIwwfSkier ) && passScoreFeet == bestScoreFeet && passScoreMeters > bestScoreMeters )
 				) {
 				passCountManReride++;
-				if ( ( isIwwfSkier && passScoreMeters > rerideScoreMeters )
+				if ( rerideScoreMeters == 0 && rerideScoreFeet == 0 ) {
+                    rerideScoreMeters = passScoreMeters;
+                    rerideScoreFeet = passScoreFeet;
+
+                } else if ( ( isIwwfSkier && passScoreMeters > rerideScoreMeters )
                     || (!(isIwwfSkier) && passScoreFeet > rerideScoreFeet)
                     || ( !( isIwwfSkier ) && passScoreFeet == rerideScoreFeet && passScoreMeters > rerideScoreMeters )
                     ) {

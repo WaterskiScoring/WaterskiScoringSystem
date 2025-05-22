@@ -44,21 +44,21 @@ namespace WaterskiScoringSystem.Tools {
 
         public bool checkForUpgrade() {
             try {
-                myNewVersionStmt = "'DatabaseVersion', 'Version', '25.06', 25.06, 1";
+                myNewVersionStmt = "'DatabaseVersion', 'Version', '25.10', 25.10, 1";
 
                 Decimal curVersion = Convert.ToDecimal( myNewVersionStmt.Split( ',' )[3] );
 				if ( myDatabaseVersion >= curVersion ) return true;
 
                 copyDatabaseFile();
                 
-				if (myDatabaseVersion < 25.03M ) {
+				if (myDatabaseVersion < 25.08M ) {
                     if ( DataAccess.DataAccessOpen() ) {
                         String curFileRef = Path.Combine(Application.StartupPath, "DatabaseSchemaUpdates.sql");
                         updateSchemaUpgrade( curFileRef );
                     }
                 }
 
-				if ( myDatabaseVersion < 25.06M ) {
+				if ( myDatabaseVersion < 25.10M ) {
 					if ( DataAccess.DataAccessOpen() ) {
 						loadListValues();
 					}
